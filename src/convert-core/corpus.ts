@@ -12,7 +12,7 @@ import { createHash } from "node:crypto";
 import { decodeHtml } from "../ladom/encoding.js";
 import { parseHtml } from "../ladom/parse.js";
 import { quarantineServerMarkup } from "../ladom/quarantine.js";
-import { sanitizeS1 } from "../ladom/sanitize.js";
+import { dropHead, sanitizeS1 } from "../ladom/sanitize.js";
 import { type LadomNode, rawTextOf, textOf, walkElements } from "../ladom/types.js";
 import { Lexicon } from "./lexicon.js";
 
@@ -43,10 +43,22 @@ export interface CorpusPassOptions {
  * *structure* carrying different content, which is what distinguishes a
  * template from a coincidence.
  */
+/**
+ * Elements excluded from a fingerprint.
+ *
+ * The corpus pass and the conversion pipeline sanitize to different depths — the
+ * pipeline keeps stylesheets until after it has rendered the page — so a
+ * fingerprint that counted them would differ between the two for the same
+ * structure, and *every* chrome lookup would miss. Excluding them here makes the
+ * fingerprint a property of the page's shape rather than of when it was taken.
+ */
+const FINGERPRINT_IGNORED = new Set(["script", "noscript", "style", "link", "meta", "head", "template"]);
+
 export function fingerprint(node: LadomNode): string {
   const parts: string[] = [];
   const visit = (n: LadomNode, depth: number): void => {
     if (depth > 6 || n.kind !== "element") return;
+    if (FINGERPRINT_IGNORED.has(n.tag)) return;
     const classes = (n.attrs["class"] ?? "").trim().split(/\s+/u).filter(Boolean).sort().join(".");
     const id = n.attrs["id"] ?? "";
     // Structural attributes only: the shape of the scaffold, not its content.
@@ -108,6 +120,11 @@ export function runCorpusPass(files: readonly CorpusFile[], options: CorpusPassO
     // de-hyphenation cascade, which is precisely where wrong evidence does
     // the most damage.
     sanitizeS1(doc.root, { removeStyles: true });
+    // The conversion pipeline drops `<head>` too, and a fingerprint taken over a
+    // tree that still has one would never match the tree the converter measures
+    // against. Both sides must see the same shape or chrome detection silently
+    // matches nothing at all.
+    dropHead(doc.root);
 
     // Raw text: the lexicon needs source line breaks so it can refuse to learn
     // from hyphen-wrapped fragments.

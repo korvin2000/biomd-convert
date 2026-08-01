@@ -24,11 +24,19 @@ import {
   makeImage,
   makeImages,
   makeLead,
+  makeNav,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
-import { type GridCell, type TableGrid, rowCells } from "../ladom/grid.js";
+import type { TableGrid } from "../ladom/grid.js";
 import { type LadomNode, textOf } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
+import {
+  type LogicalTablePlan,
+  type PlannedCell,
+  type PlannedRow,
+  cellText,
+  planDataTable,
+} from "./data-table.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 
@@ -46,7 +54,29 @@ export interface StructureOptions {
   layoutFidelity?: LayoutFidelity;
   /** Classification override, e.g. from a hook. Keyed by table node id. */
   classifications?: Map<string, Classification>;
+  /**
+   * Column labels for tables whose source had no header row, keyed by table node
+   * id. Supplied by the `table.records` hook; absent means the emitter falls
+   * back to labels the column repeats, and to a review item if there are none.
+   */
+  tableHeaders?: Map<string, string[]>;
 }
+
+/** What happened to one source table, for the structural conservation audit. */
+export interface TableOutcome {
+  tableId: string;
+  classification: TableClassName;
+  /** True when a Markdown table was actually emitted for this region. */
+  emittedTable: boolean;
+  /** Set when a DATA/UNKNOWN region could not be planned; names the obstacle. */
+  failure?: string;
+  /** Semantic shape of the emitted table. */
+  shape?: { rows: number; cols: number };
+  /** True when the table was emitted with header cells the source never had. */
+  headerMissing?: boolean;
+}
+
+type TableClassName = Classification["class"];
 
 export interface StructureResult {
   root: BiomdRoot;
@@ -56,6 +86,8 @@ export interface StructureResult {
   targets: string[];
   images: string[];
   warnings: string[];
+  /** Per-table record, so structural loss is auditable independently of text recall. */
+  tables: TableOutcome[];
 }
 
 interface Ctx {
@@ -68,6 +100,55 @@ interface Ctx {
   grids: Map<string, TableGrid>;
   emittedIds: Set<string>;
   counter: { n: number };
+  tables: TableOutcome[];
+  /**
+   * Depth inside a bounded container (`column`, `align`, `frame`).
+   *
+   * §4.1 forbids `nav` there, and the bounded-content filter would drop one
+   * silently — taking every link in it with it. Not emitting one is the safe
+   * shape of that rule.
+   */
+  boundedDepth: number;
+}
+
+/**
+ * Emission is speculative: a region is converted, inspected, and sometimes
+ * rejected in favour of a different shape. Everything a conversion appends to
+ * the context therefore has to be undoable, or a rejected attempt leaves its
+ * links and images behind and the conservation gate reports them as invented
+ * content. That was a real defect: a rejected data table contributed exactly its
+ * first ten rows' links as "unexpected" targets.
+ */
+interface Snapshot {
+  ledger: number;
+  downgrades: number;
+  targets: number;
+  images: number;
+  warnings: number;
+  counter: number;
+  tables: number;
+}
+
+function begin(ctx: Ctx): Snapshot {
+  return {
+    ledger: ctx.ledger.length,
+    downgrades: ctx.downgrades.length,
+    targets: ctx.targets.length,
+    images: ctx.images.length,
+    warnings: ctx.warnings.length,
+    counter: ctx.counter.n,
+    tables: ctx.tables.length,
+  };
+}
+
+function rollback(ctx: Ctx, snapshot: Snapshot): void {
+  ctx.ledger.length = snapshot.ledger;
+  ctx.downgrades.length = snapshot.downgrades;
+  ctx.targets.length = snapshot.targets;
+  ctx.images.length = snapshot.images;
+  ctx.warnings.length = snapshot.warnings;
+  ctx.counter.n = snapshot.counter;
+  ctx.tables.length = snapshot.tables;
 }
 
 const HEADING_TAGS: Record<string, number> = { h1: 1, h2: 2, h3: 3, h4: 4, h5: 5, h6: 6 };
@@ -87,6 +168,8 @@ export function recoverStructure(
     grids: new Map(grids.map((g) => [g.id, g])),
     emittedIds: new Set(),
     counter: { n: 0 },
+    tables: [],
+    boundedDepth: 0,
   };
 
   const children = blocksFrom(root, ctx);
@@ -97,6 +180,7 @@ export function recoverStructure(
     targets: ctx.targets,
     images: ctx.images,
     warnings: ctx.warnings,
+    tables: ctx.tables,
   };
 }
 
@@ -112,6 +196,36 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
 
   const flushInline = (): void => {
     if (inlineRun.length === 0) return;
+
+    // A floated image is not inline with the text — the text wraps *around* it.
+    // §16.1 maps a floated portrait to a standalone `::: image` with left/right,
+    // and §7.2 places it immediately before the paragraph it accompanies. Left
+    // in the run it degrades to a bare `![]()` glued to the first word, which is
+    // both wrong and what every legacy biography page looks like.
+    let hoisted = 0;
+    for (const node of inlineRun) {
+      if (node.kind !== "element" || node.tag !== "img" || !isFloated(node)) continue;
+      const figure = imageFrom(node, ctx, true);
+      if (figure) {
+        out.push(figure);
+        hoisted += 1;
+      }
+    }
+    if (hoisted > 0) {
+      inlineRun = inlineRun.filter((n) => !(n.kind === "element" && n.tag === "img" && isFloated(n)));
+      if (inlineRun.length === 0) return;
+    }
+
+    // A stack of links separated by nothing but `<br>` is a menu — a side rail,
+    // a pagination strip, a discography index. §16.1 maps it to `::: nav`, and
+    // the difference is not cosmetic: as a paragraph it renders as a wall of
+    // run-together links, and as a nav it renders as the bar the source drew.
+    const nav = navFrom(inlineRun, ctx);
+    if (nav) {
+      inlineRun = [];
+      out.push(nav);
+      return;
+    }
 
     // A run that is nothing but one image is a standalone figure, not a
     // paragraph containing an image. Only `::: image` carries position, size,
@@ -159,6 +273,109 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   return out;
 }
 
+/**
+ * `::: nav` from a run of links, or null when the run is ordinary prose.
+ *
+ * The evidence is negative as much as positive: what makes a stack of links a
+ * menu is that there is *nothing else* between them. One sentence of prose in
+ * the middle and it is a paragraph that happens to contain links, which is a
+ * completely different thing and must stay one.
+ */
+function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
+  // Nav is not permitted inside `align`, `frame` or a bounded column (§4.1), and
+  // silently dropping it there would lose every link in it.
+  if (ctx.boundedDepth > 0) return null;
+
+  const links: LadomNode[] = [];
+  /** The one plain-text item §11 allows: the page you are already on. */
+  const plainItems: string[] = [];
+  const order: Array<{ kind: "link"; node: LadomNode } | { kind: "plain"; text: string }> = [];
+
+  for (const node of nodes) {
+    if (node.kind === "comment") continue;
+    if (node.kind === "text") {
+      // Separators, not words. Legacy menus bracket their items — `[ 2007 ]` —
+      // and rejecting punctuation outright missed every one of them.
+      const value = node.value ?? "";
+      if (NAV_SEPARATOR.test(value)) continue;
+      const label = value.replace(NAV_SEPARATOR_CHARS, " ").replace(/\s+/gu, " ").trim();
+      if (label === "" ) continue;
+      if (label.length > 40 || plainItems.length > 0) return null;
+      plainItems.push(label);
+      order.push({ kind: "plain", text: label });
+      continue;
+    }
+    if (node.tag === "br") continue;
+    if (node.tag === "a") {
+      links.push(node);
+      order.push({ kind: "link", node });
+      continue;
+    }
+    // A wrapper around exactly one link is still a link.
+    if (textOf(node) === "" && node.metrics.images === 0) continue;
+    return null;
+  }
+
+  if (links.length < 3) return null;
+
+  // Decide before emitting: every check below is pure, so a run that turns out
+  // not to be a menu leaves nothing behind in the conservation inventory.
+  const targets: string[] = [];
+  const seen = new Set<string>();
+  for (const link of links) {
+    const rewritten = rewriteTarget(link.attrs["href"] ?? "", ctx.options.links);
+    if (rewritten.kind === "unsafe" || rewritten.href === "") return null;
+    const label = textOf(link);
+    // A menu item is a label. An item carrying a sentence is a citation list.
+    if (label === "" || label.length > 100) return null;
+    // Repeated destinations mean the source was listing, not navigating — and
+    // §11 makes duplicate labels invalid outright.
+    if (seen.has(rewritten.href)) return null;
+    seen.add(rewritten.href);
+    targets.push(rewritten.href);
+  }
+
+  // A plain item that duplicates a link's label would make `active` ambiguous,
+  // which §11 makes invalid outright.
+  const labels = links.map((l) => textOf(l).trim());
+  const active = plainItems[0];
+  if (active !== undefined && labels.includes(active)) return null;
+
+  let linkIndex = 0;
+  const items: ListItem[] = order.map((entry) => {
+    if (entry.kind === "plain") {
+      return {
+        type: "listItem",
+        spread: false,
+        children: [{ type: "paragraph", children: [{ type: "text", value: entry.text }] }],
+      };
+    }
+    const url = targets[linkIndex] as string;
+    linkIndex += 1;
+    return {
+      type: "listItem",
+      spread: false,
+      children: [
+        { type: "paragraph", children: [{ type: "link", url, children: inlineFrom(entry.node.children, ctx) }] },
+      ],
+    };
+  });
+
+  for (let i = 0; i < links.length; i += 1) {
+    ctx.targets.push(targets[i] as string);
+    ctx.ledger.push(emitted((links[i] as LadomNode).id, nextId(ctx, "nav-item")));
+  }
+
+  return makeNav({
+    list: { type: "list", ordered: false, spread: false, children: items },
+    ...(active !== undefined ? { active } : {}),
+  });
+}
+
+/** Punctuation legacy menus used to fence their items. */
+const NAV_SEPARATOR_CHARS = /[[\]()|·•—–\-/,;«»]/gu;
+const NAV_SEPARATOR = /^[\s[\]()|·•—–\-/,;«»]*$/u;
+
 const INLINE_TAGS = new Set([
   "a", "b", "strong", "i", "em", "u", "s", "strike", "sub", "sup", "code", "span",
   "img", "br", "small", "big", "font", "tt", "abbr", "cite", "q", "mark",
@@ -170,9 +387,19 @@ function isInline(node: LadomNode): boolean {
 
 /** Convert one block-level element. */
 function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
+  // A heading the typography carried rather than a tag (see headings.ts).
+  const recovered = Number.parseInt(el.attrs["data-biomd-heading"] ?? "", 10);
+  if (Number.isFinite(recovered) && recovered >= 1 && recovered <= 6) {
+    const text = headingPhrasing(inlineFrom(flattenBlocks(el.children), ctx));
+    if (text.length > 0) {
+      ctx.ledger.push(emitted(el.id, nextId(ctx, "heading")));
+      return [{ type: "heading", depth: recovered as 1 | 2 | 3 | 4 | 5 | 6, children: text }];
+    }
+  }
+
   const depth = HEADING_TAGS[el.tag];
   if (depth !== undefined) {
-    const text = inlineFrom(el.children, ctx);
+    const text = headingPhrasing(inlineFrom(flattenBlocks(el.children), ctx));
     if (text.length === 0) {
       ctx.ledger.push(removed(el.id, "empty heading"));
       return [];
@@ -246,6 +473,48 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   }
 }
 
+/**
+ * Reduce a phrasing run to something a heading can hold.
+ *
+ * A heading is one line: a source `<br>` inside it was line-fitting for a fixed
+ * layout, and keeping it forces the serializer into setext form, where `# ` is
+ * replaced by an `====` underline that no `^#` reader recognises. Emphasis that
+ * covers the whole heading is likewise redundant — the heading already is the
+ * emphasis — and `**Title**` differs from `Title` for every consumer that
+ * matches on the label.
+ */
+function headingPhrasing(nodes: PhrasingContent[]): PhrasingContent[] {
+  const flat: PhrasingContent[] = [];
+  const push = (list: readonly PhrasingContent[]): void => {
+    for (const node of list) {
+      if (node.type === "break") {
+        flat.push({ type: "text", value: " " });
+        continue;
+      }
+      flat.push(node);
+    }
+  };
+  push(nodes);
+
+  // Drop emphasis outright. A heading is uniformly prominent already, and a
+  // partially bold one — `# **Андрес** Сеговия`, which is what the source
+  // markup literally said — is a different label from the same words plain, for
+  // anything that matches on it.
+  return collapseAdjacentText(dropEmphasis(flat));
+}
+
+function dropEmphasis(nodes: readonly PhrasingContent[]): PhrasingContent[] {
+  const out: PhrasingContent[] = [];
+  for (const node of nodes) {
+    if (node.type === "strong" || node.type === "emphasis" || node.type === "delete") {
+      out.push(...dropEmphasis(node.children));
+      continue;
+    }
+    out.push(node);
+  }
+  return out;
+}
+
 function isBlockContent(node: BiomdContent): node is BlockContent {
   return node.type !== "definition" && node.type !== "footnoteDefinition";
 }
@@ -296,13 +565,20 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         out.push({ type: "break" });
         break;
       case "b":
-      case "strong":
-        out.push({ type: "strong", children: inlineFrom(node.children, ctx) });
+      case "strong": {
+        const children = inlineFrom(node.children, ctx);
+        // `<b><b>x</b></b>` — legacy markup nests emphasis constantly, and the
+        // serializer renders the redundant level as `****x****`, which is not
+        // emphasis in Markdown at all.
+        out.push(unwrapRedundant(children, "strong") ?? { type: "strong", children });
         break;
+      }
       case "i":
-      case "em":
-        out.push({ type: "emphasis", children: inlineFrom(node.children, ctx) });
+      case "em": {
+        const children = inlineFrom(node.children, ctx);
+        out.push(unwrapRedundant(children, "emphasis") ?? { type: "emphasis", children });
         break;
+      }
       case "s":
       case "strike":
       case "del":
@@ -350,12 +626,20 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
   return collapseAdjacentText(out);
 }
 
+/** The inner node when a wrapper's only child already carries the same mark. */
+function unwrapRedundant(children: PhrasingContent[], type: "strong" | "emphasis"): PhrasingContent | null {
+  return children.length === 1 && children[0]?.type === type ? (children[0] as PhrasingContent) : null;
+}
+
 function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
   const merged: PhrasingContent[] = [];
   for (const node of nodes) {
     const last = merged[merged.length - 1];
     if (node.type === "text" && last?.type === "text") {
-      last.value += node.value;
+      // Re-collapse after the join: two runs that were each "one space" at their
+      // own boundary become two spaces once concatenated, and source indentation
+      // inside a flattened block turns into a visible gap.
+      last.value = `${last.value}${node.value}`.replace(/[ \t]{2,}/gu, " ");
       continue;
     }
     merged.push(node);
@@ -364,14 +648,25 @@ function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
   // Whitespace sitting directly against a hard break is source indentation, not
   // content. Left in place it serializes as an escaped `&#x20;`, which is both
   // ugly and a spurious difference in any later diff.
+  //
+  // Trimming only *whitespace-only* nodes was not enough, and the gap was
+  // expensive: a legacy track list is `<br>` followed by a newline and six
+  // spaces of indentation *and then* the text, all in one node. That node is not
+  // whitespace-only, so its leading run survived, and every single line of the
+  // output began with a literal `&#x20;`.
   const cleaned: PhrasingContent[] = [];
   merged.forEach((node, index) => {
-    if (node.type === "text" && node.value.trim() === "") {
-      const before = merged[index - 1];
-      const after = merged[index + 1];
-      if (before?.type === "break" || after?.type === "break") return;
+    if (node.type !== "text") {
+      cleaned.push(node);
+      return;
     }
-    cleaned.push(node);
+    const before = merged[index - 1];
+    const after = merged[index + 1];
+    let value = node.value;
+    if (before?.type === "break") value = value.replace(/^[ \t]*\n?[ \t]*/u, "");
+    if (after?.type === "break") value = value.replace(/[ \t]*\n?[ \t]*$/u, "");
+    if (value === "" && (before?.type === "break" || after?.type === "break")) return;
+    cleaned.push({ ...node, value });
   });
 
   // Trim the run's outer whitespace without touching interior spacing.
@@ -465,10 +760,30 @@ function estimateSize(width: number | undefined, container: number | undefined):
   return "small";
 }
 
+/**
+ * Whether an image floats, from measurement or from the legacy attribute.
+ *
+ * `align="right"` on an `<img>` *is* a float in every browser; the attribute is
+ * the only evidence available when the render pass has not run, which is the
+ * common case for a batch conversion.
+ */
+function isFloated(el: LadomNode): boolean {
+  return floatOf(el) !== null;
+}
+
+function floatOf(el: LadomNode): "left" | "right" | null {
+  const measured = el.style?.float;
+  if (measured === "left" || measured === "right") return measured;
+  const attr = (el.attrs["align"] ?? "").toLowerCase();
+  if (attr === "left" || attr === "right") return attr;
+  const inline = /(?:^|;)\s*float\s*:\s*(left|right)/iu.exec(el.attrs["style"] ?? "");
+  if (inline) return (inline[1] as string).toLowerCase() as "left" | "right";
+  return null;
+}
+
 function estimatePosition(el: LadomNode): "left" | "right" | "center" | "full" {
-  const float = el.style?.float ?? el.attrs["align"];
-  if (float === "left") return "left";
-  if (float === "right") return "right";
+  const float = floatOf(el);
+  if (float) return float;
   const align = el.style?.textAlign ?? el.parent?.attrs["align"];
   if (align === "center") return "center";
   return "center";
@@ -490,93 +805,262 @@ function tableFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   switch (classification.class) {
     case "SHELL":
       ctx.ledger.push(removed(el.id, `page chrome (${classification.reason})`));
+      ctx.tables.push({ tableId: el.id, classification: "SHELL", emittedTable: false });
       return [];
 
-    case "DATA": {
-      const table = dataTableFrom(grid, ctx);
-      if (table) {
-        ctx.ledger.push(emitted(el.id, nextId(ctx, "table"), { confidence: classification.confidence }));
-        return [table];
-      }
-      // A DATA verdict that cannot be expressed as a GFM table means the cells
-      // want block content — which is the definition of HYBRID, not DATA.
-      ctx.warnings.push(
-        `${el.id}: classified DATA but cells require block content; emitting as sections instead (C1).`,
-      );
-      return decomposeFrom(grid, ctx, el);
-    }
+    case "DATA":
+      return dataRegionFrom(grid, ctx, el, classification, /* requireEvidence */ false);
+
+    case "UNKNOWN":
+      // An inconclusive verdict is not the same as "not a table". If the region
+      // nevertheless plans cleanly *and* carries its own header, the source
+      // stated the column model explicitly and that outranks a thin score
+      // margin. Everything else stays a review item, which is what the hook
+      // layer exists to resolve.
+      return dataRegionFrom(grid, ctx, el, classification, /* requireEvidence */ true);
 
     case "CATALOG":
     case "LAYOUT":
     case "HYBRID":
-      return layoutFrom(grid, ctx, el, classification);
-
-    case "UNKNOWN":
     default:
-      ctx.ledger.push(
-        review(el.id, `classification inconclusive (${classification.reason}); emitted as linear flow`),
-      );
-      return decomposeFrom(grid, ctx, el);
+      return layoutFrom(grid, ctx, el, classification);
   }
 }
 
 /**
- * A GFM table, or null when the content will not fit one.
+ * Emit a region the classifier believes is (or might be) a record matrix.
  *
- * C1: cells are inline-only. Rather than silently flattening block content into
- * a cell — which loses lists and produces unreadable output — this returns null
- * and lets the caller decompose.
+ * Speculative: the plan is built, the table is constructed, and if anything
+ * fails the whole attempt is rolled back before the fallback runs. Without the
+ * rollback the abandoned attempt's links survive in the conservation inventory.
  */
-function dataTableFrom(grid: TableGrid, ctx: Ctx): Table | null {
-  if (grid.rows < 2 || grid.cols < 1) return null;
+function dataRegionFrom(
+  grid: TableGrid,
+  ctx: Ctx,
+  el: LadomNode,
+  classification: Classification,
+  requireEvidence: boolean,
+): BiomdContent[] {
+  const snapshot = begin(ctx);
+  const planned = planDataTable(grid);
 
-  const rows: TableRow[] = [];
-  for (let r = 0; r < grid.rows; r += 1) {
-    const cells = rowCells(grid, r);
-    if (cells.length === 0) continue;
-    const rowNode: TableRow = { type: "tableRow", children: [] };
+  const supplied = ctx.options.tableHeaders?.get(el.id);
 
-    for (const cell of cells) {
-      const phrasing = inlineFrom(cell.node.children, ctx);
-      // A cell containing a list or several paragraphs cannot be represented.
-      if (hasBlockContent(cell)) return null;
-      rowNode.children.push({ type: "tableCell", children: phrasing });
-      ctx.ledger.push(emitted(cell.id, nextId(ctx, "cell")));
+  // On the abstention path the region has to carry its own evidence for being a
+  // record matrix — a source header row, or three-plus inferred columns.
+  // Supplied labels deliberately do *not* count: a model will happily name the
+  // columns of a two-column news list, and accepting that would let the label
+  // hook quietly promote every ambiguous region into a table.
+  const evidence =
+    planned.plan !== null && (!planned.plan.headerSynthesized || planned.plan.bands.length >= 3);
+
+  if (planned.plan && (!requireEvidence || evidence)) {
+    const table = tableFromPlan(planned.plan, ctx, supplied);
+    if (table) {
+      const shape = { rows: planned.plan.body.length, cols: planned.plan.bands.length };
+      ctx.ledger.push(
+        emitted(el.id, nextId(ctx, "table"), {
+          confidence: classification.confidence,
+          note: planned.plan.reason,
+        }),
+      );
+      if (planned.plan.headerSynthesized && supplied === undefined) {
+        ctx.ledger.push(
+          review(el.id, "table has no header row in the source; column labels need to be supplied (§3.8)"),
+        );
+      }
+      ctx.tables.push({
+        tableId: el.id,
+        classification: classification.class,
+        emittedTable: true,
+        shape,
+        ...(planned.plan.headerSynthesized && supplied === undefined ? { headerMissing: true } : {}),
+      });
+      return [table];
     }
-    rows.push(rowNode);
   }
 
-  if (rows.length < 2) return null;
+  rollback(ctx, snapshot);
 
-  // Every row must have the header's width, or the table is ragged.
-  const width = rows[0]?.children.length ?? 0;
-  if (width === 0) return null;
-  for (const row of rows) {
-    while (row.children.length < width) row.children.push({ type: "tableCell", children: [] });
-    if (row.children.length > width) row.children.length = width;
+  const failure = planned.failure ?? (requireEvidence ? "no-source-header" : "unrepresentable");
+  const detail = planned.detail || "no source header row and the classifier abstained";
+  ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
+
+  if (classification.class === "DATA") {
+    // A DATA verdict that cannot be expressed as a table is a classification
+    // finding, not a formatting detail: rows and columns are about to be lost.
+    ctx.ledger.push(
+      review(el.id, `classified DATA but not representable as a table (${failure}: ${detail}); emitted as flow`),
+    );
+    ctx.warnings.push(`${el.id}: DATA table decomposed to linear flow — ${failure}: ${detail}.`);
+  } else {
+    ctx.ledger.push(
+      review(el.id, `classification inconclusive (${classification.reason}); emitted as linear flow`),
+    );
   }
+  return decomposeFrom(grid, ctx, el);
+}
 
-  // A header must be honest. Without one, the first row is promoted only if it
-  // reads like labels; otherwise the table is not a data table after all.
-  const firstRow = rowCells(grid, 0);
-  const headerLooksReal = firstRow.every((c) => c.isHeader) || firstRow.every((c) => c.text.length > 0 && c.text.length < 60);
-  if (!headerLooksReal) return null;
+/** Lower a planned semantic matrix to a GFM table, or null if a cell will not fit. */
+function tableFromPlan(plan: LogicalTablePlan, ctx: Ctx, supplied?: readonly string[]): Table | null {
+  const width = plan.bands.length;
+  const header = plan.header
+    ? plannedRowTo(plan.header, ctx)
+    : supplied && supplied.length === width
+      ? suppliedHeader(supplied)
+      : synthesizeHeader(plan, ctx);
+  if (!header) return null;
+
+  const rows: TableRow[] = [header];
+  for (const row of plan.body) {
+    const node = plannedRowTo(row, ctx);
+    if (!node) return null;
+    rows.push(node);
+  }
 
   return { type: "table", align: Array.from({ length: width }, () => null), children: rows };
 }
 
-function hasBlockContent(cell: GridCell): boolean {
-  for (const child of cell.node.children) {
-    if (child.kind !== "element") continue;
-    if (["ul", "ol", "table", "p", "div", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6"].includes(child.tag)) {
-      // A single wrapping <p> is fine; more than one, or a list, is not.
-      if (child.tag === "p" && cell.node.children.filter((c) => c.kind === "element" && c.tag === "p").length === 1) {
-        continue;
-      }
-      return true;
-    }
+function plannedRowTo(row: PlannedRow, ctx: Ctx): TableRow | null {
+  const node: TableRow = { type: "tableRow", children: [] };
+  for (const cell of row.cells) {
+    const phrasing = plannedCellTo(cell, ctx);
+    if (phrasing === null) return null;
+    node.children.push({ type: "tableCell", children: phrasing });
+    for (const source of cell.sources) ctx.ledger.push(emitted(source.id, nextId(ctx, "cell")));
   }
-  return false;
+  return node;
+}
+
+/**
+ * One semantic cell's phrasing.
+ *
+ * Several physical cells inside one band are joined in reading order with a
+ * single space. A separator richer than a space would be invented punctuation,
+ * which §16.3 classes as an editorial change.
+ */
+function plannedCellTo(cell: PlannedCell, ctx: Ctx): PhrasingContent[] | null {
+  const nodes: LadomNode[] = [];
+  for (const source of cell.sources) {
+    const flat = flattenBlocks(source.node.children);
+    if (flat.length === 0) continue;
+    if (nodes.length > 0) nodes.push(spaceNode());
+    nodes.push(...flat);
+  }
+  const phrasing = inlineFrom(nodes, ctx);
+  if (phrasing.some((p) => !isPhrasingType(p.type))) return null;
+  // An intentionally empty value reads as an em dash (§3.8) rather than a hole.
+  if (phrasing.length === 0) return [{ type: "text", value: "—" }];
+  return phrasing;
+}
+
+const PHRASING_TYPES = new Set([
+  "text", "emphasis", "strong", "delete", "inlineCode", "break", "link", "image",
+  "linkReference", "imageReference", "footnoteReference", "html",
+]);
+
+function isPhrasingType(type: string): boolean {
+  return PHRASING_TYPES.has(type);
+}
+
+/** Column labels resolved by a hook. Plain text only — a label is not markup. */
+function suppliedHeader(labels: readonly string[]): TableRow {
+  return {
+    type: "tableRow",
+    children: labels.map((label) => ({
+      type: "tableCell" as const,
+      children: [{ type: "text" as const, value: label.replace(/\s+/gu, " ").trim() }],
+    })),
+  };
+}
+
+/**
+ * Column labels for a table the source never gave a header.
+ *
+ * Only ever *transcribed*: a label is used when it is the dominant repeated text
+ * of that column ("TAB" down a whole column of tablature links). Where the
+ * column has no such label the header cell is left empty, which the validator
+ * reports as an error and the ledger as a review item — the honest outcome,
+ * because inventing a caption is an editorial change (§16.3). The `table.records`
+ * hook is what resolves it when a model is available.
+ */
+function synthesizeHeader(plan: LogicalTablePlan, ctx: Ctx): TableRow | null {
+  const row: TableRow = { type: "tableRow", children: [] };
+  for (let band = 0; band < plan.bands.length; band += 1) {
+    const label = dominantLabel(plan.body.map((r) => r.cells[band] as PlannedCell));
+    row.children.push({
+      type: "tableCell",
+      children: label ? [{ type: "text", value: label }] : [],
+    });
+  }
+  if (row.children.every((c) => c.children.length === 0)) {
+    // Not a single column has a recurring label. Emitting an entirely blank
+    // header row helps nobody; leave it to the review path.
+    ctx.warnings.push("table has neither a source header nor any recurring column label");
+    return null;
+  }
+  return row;
+}
+
+/** The text that at least 60% of a column's non-empty cells repeat verbatim. */
+function dominantLabel(cells: readonly PlannedCell[]): string | null {
+  const counts = new Map<string, number>();
+  let total = 0;
+  for (const cell of cells) {
+    const text = cellText(cell).trim();
+    if (text === "" || text.length > 24) continue;
+    total += 1;
+    counts.set(text, (counts.get(text) ?? 0) + 1);
+  }
+  if (total < 3) return null;
+  const best = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+  if (!best) return null;
+  return best[1] / total >= 0.6 ? best[0] : null;
+}
+
+/**
+ * Flatten block wrappers inside a cell into an inline node sequence.
+ *
+ * `<p>`, `<div>`, a one-item `<ul>` used as a bullet glyph and the rest of the
+ * FrontPage repertoire are typography. Removing them is what lets a cell whose
+ * markup looks block-shaped be represented inline without losing a link, an
+ * image or the order of either.
+ */
+const FLATTENABLE = new Set([
+  "p", "div", "center", "ul", "ol", "li", "blockquote", "dl", "dt", "dd", "section", "article",
+]);
+
+export function flattenBlocks(nodes: readonly LadomNode[]): LadomNode[] {
+  const out: LadomNode[] = [];
+  for (const node of nodes) {
+    if (node.kind === "element" && FLATTENABLE.has(node.tag)) {
+      const inner = flattenBlocks(node.children);
+      if (inner.length === 0) continue;
+      if (out.length > 0) out.push(spaceNode());
+      out.push(...inner);
+      continue;
+    }
+    out.push(node);
+  }
+  return out;
+}
+
+let syntheticCounter = 0;
+
+function spaceNode(): LadomNode {
+  syntheticCounter += 1;
+  return {
+    id: `#synthetic-space[${syntheticCounter}]`,
+    kind: "text",
+    tag: "",
+    attrs: {},
+    value: " ",
+    src: null,
+    synthetic: true,
+    metrics: { textLen: 0, links: 0, images: 0, depth: 0 },
+    parent: null,
+    children: [],
+  };
 }
 
 /**
@@ -600,12 +1084,22 @@ function layoutFrom(
         const slot = grid.slots[r]?.[c];
         if (!slot?.isOrigin) continue;
         const cell = grid.cells.find((x) => x.id === slot.originId);
-        if (cell) cells.push(...blocksFrom(cell.node, ctx).filter(isBounded));
+        if (!cell) continue;
+        ctx.boundedDepth += 1;
+        const inner = blocksFrom(cell.node, ctx);
+        ctx.boundedDepth -= 1;
+        cells.push(...inner.filter(isBounded));
       }
       if (cells.length > 0) columns.push(makeColumn(cells));
     }
     if (columns.length >= 2 && columns.length <= 3) {
       ctx.ledger.push(emitted(el.id, nextId(ctx, "columns"), { confidence: classification.confidence }));
+      ctx.tables.push({
+        tableId: el.id,
+        classification: classification.class,
+        emittedTable: false,
+        failure: "emitted-as-columns",
+      });
       return [makeColumns({ children: columns, profile: ctx.options.profile })];
     }
   }
@@ -619,6 +1113,12 @@ function layoutFrom(
       note: `layout flattened to linear flow (${classification.reason})`,
     }),
   );
+  ctx.tables.push({
+    tableId: el.id,
+    classification: classification.class,
+    emittedTable: false,
+    failure: "flattened-to-flow",
+  });
   return decomposeFrom(grid, ctx, el, /* alreadyLedgered */ true);
 }
 

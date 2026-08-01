@@ -1,0 +1,442 @@
+/**
+ * Physical table grid → semantic record matrix.
+ *
+ * Three representations have to stay separate, and conflating any two of them is
+ * what made whole tables disappear:
+ *
+ *   1. the repaired HTML tree;
+ *   2. the **physical** occupancy grid — span coverage, origin cells (grid.ts);
+ *   3. the **semantic** record matrix — what a Markdown table can express.
+ *
+ * Legacy tables routinely use more physical slots than they have semantic
+ * columns. A FrontPage discography table declares nine slots per row in a stable
+ * `7 + 1 + 1` pattern; it has three columns. Rows that carry extra resource links
+ * split the leading seven slots into several cells without changing what the row
+ * *means*. The old converter required the physical width to equal the Markdown
+ * width, so it rejected the table, classified it DATA anyway, and flattened it
+ * into paragraphs — text recall stayed at 100% while the table ceased to exist.
+ *
+ * The fix is to plan the entire matrix before emitting anything:
+ *
+ *   - infer semantic **column bands** from the dominant complete-row partition,
+ *     corrected by an explicit header row when there is one;
+ *   - assign every origin cell to exactly one band; several physical cells inside
+ *     one band become one semantic cell, joined in reading order;
+ *   - never read a covered span slot, so a spanned value is not duplicated;
+ *   - flatten harmless wrappers (`<p>`, `<div>`, a one-item `<ul>`, `<font>`) to
+ *     inline content, because they are typography, not structure;
+ *   - accept only when every source cell is placed exactly once, no cell crosses
+ *     a band boundary, and every row has the semantic width.
+ *
+ * Anything that fails those conditions returns null, and the caller falls back to
+ * a *reviewed* decomposition rather than to a fabricated table.
+ */
+import { type GridCell, type TableGrid } from "../ladom/grid.js";
+import type { LadomNode } from "../ladom/types.js";
+
+/** One semantic cell: the origin cells that fall inside one band of one row. */
+export interface PlannedCell {
+  /** Physical cells contributing to this semantic cell, in reading order. */
+  sources: GridCell[];
+  /** True when the source marked every contributing cell as a header. */
+  isHeader: boolean;
+  /** Nothing to show — the caller emits the em-dash placeholder. */
+  isEmpty: boolean;
+}
+
+export interface PlannedRow {
+  /** Exactly `bands.length` cells. */
+  cells: PlannedCell[];
+  /** Grid row index this came from, for provenance. */
+  row: number;
+}
+
+export interface LogicalTablePlan {
+  /** Semantic column boundaries as half-open physical slot ranges. */
+  bands: Array<{ start: number; end: number }>;
+  /** Header row, when the source has an honest one. */
+  header: PlannedRow | null;
+  body: PlannedRow[];
+  /** Why the plan was accepted — recorded on the ledger entry. */
+  reason: string;
+  /**
+   * True when the source supplied no header row. The caller must either obtain
+   * labels from a hook or emit a review item; inventing them is an editorial
+   * change the spec forbids (§16.3).
+   */
+  headerSynthesized: boolean;
+}
+
+export interface PlanOptions {
+  /** Reject tables narrower/shorter than this. */
+  minRows?: number;
+  minCols?: number;
+  /** Maximum semantic columns a reader can still use on a narrow screen. */
+  maxCols?: number;
+}
+
+const DEFAULTS: Required<PlanOptions> = { minRows: 2, minCols: 2, maxCols: 8 };
+
+// ---------------------------------------------------------------------------
+// Cell shape
+// ---------------------------------------------------------------------------
+
+/** Wrappers that carry typography rather than structure; flattened to inline. */
+const TRANSPARENT_BLOCKS = new Set(["p", "div", "center", "font", "span", "nobr", "small", "big", "blockquote"]);
+
+/** Block constructs a GFM cell genuinely cannot hold. */
+const HARD_BLOCKS = new Set(["table", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "hr", "dl", "form"]);
+
+/**
+ * Whether a cell's content survives being flattened to inline phrasing.
+ *
+ * A single wrapping `<p>`, a stack of them, or a one-item `<ul>` used as a bullet
+ * glyph are all typography. A multi-item list, a nested table or a heading are
+ * structure, and flattening those produces the unreadable output that made
+ * rejecting block content the right instinct in the first place.
+ */
+export function isInlineable(node: LadomNode): boolean {
+  for (const child of node.children) {
+    if (child.kind !== "element") continue;
+    if (HARD_BLOCKS.has(child.tag)) return false;
+    if (child.tag === "ul" || child.tag === "ol") {
+      const items = child.children.filter((c) => c.kind === "element" && c.tag === "li");
+      if (items.length > 1) return false;
+      for (const item of items) if (!isInlineable(item)) return false;
+      continue;
+    }
+    if (TRANSPARENT_BLOCKS.has(child.tag)) {
+      if (!isInlineable(child)) return false;
+      continue;
+    }
+    // Anything else is inline (a, b, i, img, br, u, sup…) — its own children may
+    // still hide a table, so keep descending.
+    if (!isInlineable(child)) return false;
+  }
+  return true;
+}
+
+/**
+ * How many block-ish paragraphs a cell holds.
+ *
+ * One or two short paragraphs flatten acceptably (they become `a b`); a cell with
+ * five is prose, and prose beside prose is a layout table, not a data table.
+ */
+export function paragraphCount(node: LadomNode): number {
+  let n = 0;
+  for (const child of node.children) {
+    if (child.kind === "element" && (child.tag === "p" || child.tag === "div")) n += 1;
+  }
+  return n;
+}
+
+// ---------------------------------------------------------------------------
+// Band inference
+// ---------------------------------------------------------------------------
+
+/** The physical slot ranges each row's origin cells occupy. */
+function rowPartition(grid: TableGrid, row: number): Array<{ start: number; end: number; cell: GridCell }> {
+  const out: Array<{ start: number; end: number; cell: GridCell }> = [];
+  const seen = new Set<string>();
+  const slots = grid.slots[row] ?? [];
+  for (let c = 0; c < slots.length; c += 1) {
+    const slot = slots[c];
+    if (!slot || !slot.isOrigin || seen.has(slot.originId)) continue;
+    seen.add(slot.originId);
+    const cell = grid.cells.find((x) => x.id === slot.originId);
+    if (!cell) continue;
+    out.push({ start: cell.col, end: cell.col + cell.colSpan, cell });
+  }
+  out.sort((a, b) => a.start - b.start);
+  return out;
+}
+
+/**
+ * Infer the semantic column bands.
+ *
+ * The signal is the **dominant partition**: the boundary set that the largest
+ * number of rows agrees on. In the `7 + 1 + 1` case twenty-four of twenty-seven
+ * rows vote for `{0, 7, 8}`, and the three score rows that subdivide the leading
+ * band are the minority — which is exactly the right way round, because they are
+ * the exception the layout was bent to accommodate.
+ *
+ * An explicit header row overrides the vote when it is at least as coarse: the
+ * author stated the column count there.
+ */
+export function inferColumnBands(grid: TableGrid): Array<{ start: number; end: number }> {
+  const votes = new Map<string, { boundaries: number[]; rows: number }>();
+
+  for (let r = 0; r < grid.rows; r += 1) {
+    const partition = rowPartition(grid, r);
+    if (partition.length === 0) continue;
+    // A row that does not span the full width is ragged; it cannot define the
+    // column model, though it may still be placed into one.
+    if ((partition[partition.length - 1] as { end: number }).end !== grid.cols) continue;
+    const boundaries = partition.map((p) => p.start);
+    const key = boundaries.join(",");
+    const entry = votes.get(key) ?? { boundaries, rows: 0 };
+    entry.rows += 1;
+    votes.set(key, entry);
+  }
+
+  if (votes.size === 0) return [];
+
+  const headerBoundaries = headerRowBoundaries(grid);
+  const ranked = [...votes.values()].sort((a, b) => b.rows - a.rows || a.boundaries.length - b.boundaries.length);
+  let chosen = (ranked[0] as { boundaries: number[] }).boundaries;
+
+  // The header states the column count; prefer it unless it is *finer* than the
+  // dominant body partition, which would mean the header itself was subdivided
+  // for layout reasons.
+  if (headerBoundaries && headerBoundaries.length <= chosen.length) chosen = headerBoundaries;
+
+  return toBands(chosen, grid.cols);
+}
+
+function headerRowBoundaries(grid: TableGrid): number[] | null {
+  for (let r = 0; r < Math.min(grid.rows, 2); r += 1) {
+    const partition = rowPartition(grid, r);
+    if (partition.length < 2) continue;
+    if (!partition.every((p) => p.cell.isHeader)) continue;
+    if ((partition[partition.length - 1] as { end: number }).end !== grid.cols) continue;
+    return partition.map((p) => p.start);
+  }
+  return null;
+}
+
+function toBands(boundaries: readonly number[], cols: number): Array<{ start: number; end: number }> {
+  const sorted = [...new Set(boundaries)].sort((a, b) => a - b);
+  const bands: Array<{ start: number; end: number }> = [];
+  for (let i = 0; i < sorted.length; i += 1) {
+    const start = sorted[i] as number;
+    const end = i + 1 < sorted.length ? (sorted[i + 1] as number) : cols;
+    if (end > start) bands.push({ start, end });
+  }
+  return bands;
+}
+
+// ---------------------------------------------------------------------------
+// Planning
+// ---------------------------------------------------------------------------
+
+export type PlanFailure =
+  | "too-small"
+  | "no-bands"
+  | "too-many-columns"
+  | "cell-crosses-band"
+  | "cell-needs-blocks"
+  | "prose-matrix"
+  | "media-lane"
+  | "no-body";
+
+export interface PlanResult {
+  plan: LogicalTablePlan | null;
+  failure?: PlanFailure;
+  /** Human-readable detail for the ledger and for a hook payload. */
+  detail: string;
+}
+
+export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanResult {
+  const opts = { ...DEFAULTS, ...options };
+
+  if (grid.rows < opts.minRows || grid.cols < 1) {
+    return { plan: null, failure: "too-small", detail: `${grid.rows}×${grid.cols} is below the minimum` };
+  }
+
+  const bands = inferColumnBands(grid);
+  if (bands.length < opts.minCols) {
+    return {
+      plan: null,
+      failure: bands.length === 0 ? "no-bands" : "too-small",
+      detail: `inferred ${bands.length} semantic column(s) from ${grid.cols} physical slots`,
+    };
+  }
+  if (bands.length > opts.maxCols) {
+    return {
+      plan: null,
+      failure: "too-many-columns",
+      detail: `${bands.length} semantic columns is wider than a reader can use`,
+    };
+  }
+
+  const rows: PlannedRow[] = [];
+
+  for (let r = 0; r < grid.rows; r += 1) {
+    const partition = rowPartition(grid, r);
+    if (partition.length === 0) continue;
+
+    const cells: PlannedCell[] = bands.map(() => ({ sources: [], isHeader: true, isEmpty: true }));
+
+    for (const part of partition) {
+      const bandIndex = bands.findIndex((b) => part.start >= b.start && part.start < b.end);
+      if (bandIndex < 0) {
+        return {
+          plan: null,
+          failure: "cell-crosses-band",
+          detail: `cell ${part.cell.id} starts at slot ${part.start}, outside every inferred band`,
+        };
+      }
+      const band = bands[bandIndex] as { start: number; end: number };
+      // A cell may end past its band only when it ends at the table edge — a
+      // trailing colspan filler. Anything else genuinely straddles two columns
+      // and cannot be represented without inventing a merge.
+      if (part.end > band.end && part.end !== grid.cols) {
+        return {
+          plan: null,
+          failure: "cell-crosses-band",
+          detail: `cell ${part.cell.id} covers slots ${part.start}–${part.end - 1}, crossing the band ending at ${band.end}`,
+        };
+      }
+      if (!isInlineable(part.cell.node)) {
+        return {
+          plan: null,
+          failure: "cell-needs-blocks",
+          detail: `cell ${part.cell.id} contains block structure a table cell cannot hold`,
+        };
+      }
+
+      const target = cells[bandIndex] as PlannedCell;
+      target.sources.push(part.cell);
+      if (!part.cell.isHeader) target.isHeader = false;
+      if (!part.cell.isEmpty) target.isEmpty = false;
+    }
+
+    for (const cell of cells) if (cell.sources.length === 0) cell.isHeader = false;
+    rows.push({ cells, row: r });
+  }
+
+  if (rows.length < opts.minRows) {
+    return { plan: null, failure: "no-body", detail: `only ${rows.length} usable row(s)` };
+  }
+
+  // Long prose in more than one column of the same row is a layout table wearing
+  // a grid: rendering it as a table produces columns nobody can read.
+  const proseRows = rows.filter(
+    (row) => row.cells.filter((c) => textLengthOf(c) > 180).length > 1,
+  ).length;
+  if (proseRows > 0) {
+    return {
+      plan: null,
+      failure: "prose-matrix",
+      detail: `${proseRows} row(s) carry long prose in more than one column`,
+    };
+  }
+
+  // A column that is mostly bare pictures is a *lane*, not a column of values.
+  // §16.1 maps text beside a cover to `columns`, and the distinction is real: a
+  // record matrix compares values down a column, while a catalog puts an album's
+  // cover next to its track list. Forcing the second into a table produces two
+  // meaningless headers over a picture strip — which is exactly what a model
+  // asked "is this DATA?" will happily agree to.
+  for (let band = 0; band < bands.length; band += 1) {
+    const column = rows.map((r) => r.cells[band] as PlannedCell).filter((c) => !c.isEmpty);
+    if (column.length < 2) continue;
+    const pictures = column.filter((c) => isPictureCell(c)).length;
+    if (pictures / column.length >= 0.6) {
+      return {
+        plan: null,
+        failure: "media-lane",
+        detail: `column ${band + 1} is ${Math.round((pictures / column.length) * 100)}% bare images: a catalog lane, not a data column`,
+      };
+    }
+  }
+
+  // The same judgement one level up: a grid where most cells carry a picture is
+  // a catalog of items — cover plus caption, repeated — not a matrix of values.
+  // Its two "columns" are two lanes of the same list, which is why the second
+  // lane's header can only ever repeat the first's.
+  const populated = rows.flatMap((r) => r.cells).filter((c) => !c.isEmpty);
+  const withMedia = populated.filter((c) => c.sources.some((s) => s.images > 0)).length;
+  if (populated.length >= 4 && withMedia / populated.length >= 0.5) {
+    return {
+      plan: null,
+      failure: "media-lane",
+      detail: `${Math.round((withMedia / populated.length) * 100)}% of cells carry an image: a media catalog, not a record matrix`,
+    };
+  }
+
+  const headerRow = rows[0] as PlannedRow;
+  const hasRealHeader = headerRow.cells.every((c) => c.isHeader) || looksLikeLabels(rows);
+
+  const header = hasRealHeader ? headerRow : null;
+  const body = hasRealHeader ? rows.slice(1) : rows;
+  if (body.length === 0) return { plan: null, failure: "no-body", detail: "header row with no body" };
+
+  return {
+    plan: {
+      bands,
+      header,
+      body,
+      headerSynthesized: !hasRealHeader,
+      reason:
+        `${bands.length} semantic column(s) folded from ${grid.cols} physical slots across ` +
+        `${rows.length} row(s)${hasRealHeader ? " with a source header" : " with no source header"}`,
+    },
+    detail: "",
+  };
+}
+
+function textLengthOf(cell: PlannedCell): number {
+  return cell.sources.reduce((a, c) => a + c.text.length, 0);
+}
+
+/** An image with no caption of its own — a cover, not a value. */
+function isPictureCell(cell: PlannedCell): boolean {
+  const images = cell.sources.reduce((a, c) => a + c.images, 0);
+  return images > 0 && textLengthOf(cell) < 3;
+}
+
+/**
+ * Whether the first row reads like column labels rather than like a record.
+ *
+ * Deliberately strict. Promoting a data row to a header silently deletes it from
+ * the table, and every legacy resource matrix in this corpus starts with a real
+ * record, so the default answer must be "no".
+ */
+function looksLikeLabels(rows: readonly PlannedRow[]): boolean {
+  const first = rows[0];
+  const rest = rows.slice(1);
+  if (!first || rest.length < 2) return false;
+
+  // Labels never link anywhere and never carry media.
+  for (const cell of first.cells) {
+    if (cell.isEmpty) return false;
+    if (cell.sources.some((s) => s.links > 0 || s.images > 0)) return false;
+    if (textLengthOf(cell) === 0 || textLengthOf(cell) > 60) return false;
+  }
+
+  // A header is unlike the rows beneath it. If the body also has link-free short
+  // text in every column, the first row is simply the first record.
+  const bodyLooksTheSame = rest.every((row) =>
+    row.cells.every((c) => c.sources.every((s) => s.links === 0 && s.images === 0)),
+  );
+  return !bodyLooksTheSame;
+}
+
+/**
+ * A compact textual rendering of the plan, for a hook payload and for diagnostics.
+ */
+export function describePlan(plan: LogicalTablePlan, limit = 4): string {
+  const lines: string[] = [
+    `Semantic shape: ${plan.bands.length} columns × ${plan.body.length} body rows ` +
+      `(bands ${plan.bands.map((b) => `${b.start}–${b.end - 1}`).join(" | ")}).`,
+  ];
+  if (plan.header) {
+    lines.push(`Header: ${plan.header.cells.map((c) => JSON.stringify(cellText(c, 30))).join(" | ")}`);
+  } else {
+    lines.push("Header: none in the source.");
+  }
+  for (const row of plan.body.slice(0, limit)) {
+    lines.push(`  ${row.cells.map((c) => JSON.stringify(cellText(c, 30))).join(" | ")}`);
+  }
+  if (plan.body.length > limit) lines.push(`  … ${plan.body.length - limit} more rows`);
+  return lines.join("\n");
+}
+
+export function cellText(cell: PlannedCell, max = Infinity): string {
+  const text = cell.sources
+    .map((s) => s.text.replace(/\s+/gu, " ").trim())
+    .filter((t) => t !== "")
+    .join(" ");
+  return text.length > max ? `${text.slice(0, max)}…` : text;
+}

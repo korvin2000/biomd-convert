@@ -15,7 +15,6 @@ import {
   ABC_LINK_PROFILE,
   Lexicon,
   convert,
-  frequencyForDocument,
   runCorpusPass,
   type CorpusProfile,
 } from "../convert-core/index.js";
@@ -25,10 +24,98 @@ import { parseHtml } from "../ladom/parse.js";
 import { quarantineServerMarkup } from "../ladom/quarantine.js";
 import { decodeHtml } from "../ladom/encoding.js";
 import { PROFILES, resolveProfile, read as readBiomd, lintText } from "../biomd-ast/index.js";
+import { renderReport, scoreDocumentSources } from "../eval/index.js";
 import { ENGINE_VERSION, JobStore, hashOf, writeAtomic } from "./store.js";
-import { GatewayTransport, runTransportProbe } from "../llm/index.js";
+import {
+  Budget,
+  FileCache,
+  GatewayResolver,
+  GatewayTransport,
+  MemoryCache,
+  runTransportProbe,
+} from "../llm/index.js";
+import type { DecisionResolver, ResolverStats } from "../convert-core/index.js";
 import { loadConfig, resolveGateway, redactKey, type Config } from "./config.js";
 import { registerConfigCommands } from "./config-cmd.js";
+
+/**
+ * Build the escalation boundary from configuration.
+ *
+ * Returns null whenever a model must not be used — `llm.enabled` off, `--llm
+ * off`, no gateway, no key. Every one of those is a normal, supported state: the
+ * pipeline is deterministic-first and a null resolver simply means the residual
+ * ambiguity becomes review items instead of requests.
+ */
+function makeResolver(
+  cfg: Config,
+  options: { llm?: string; gateway?: string; replay?: boolean },
+  onEvent?: (event: { type: string; hook: string }) => void,
+): { resolver: DecisionResolver | null; budget: Budget | null; note: string } {
+  const mode = (options.llm as string | undefined) ?? (cfg.llm.enabled ? "assist" : "off");
+  if (mode === "off") return { resolver: null, budget: null, note: "llm off — fully deterministic" };
+
+  let gateway;
+  try {
+    gateway = resolveGateway(cfg, options.gateway);
+  } catch (error) {
+    return { resolver: null, budget: null, note: `llm unavailable: ${(error as Error).message.split("\n")[0]}` };
+  }
+  if (!gateway.apiKey && !options.replay) {
+    return {
+      resolver: null,
+      budget: null,
+      note: `llm unavailable: no API key for gateway "${gateway.name}" (${gateway.apiKeySource}). ` +
+        "Run `biomd config set-key <gateway>`.",
+    };
+  }
+
+  const transport = new GatewayTransport({
+    baseUrl: gateway.baseUrl,
+    ...(gateway.apiKey ? { apiKey: gateway.apiKey } : {}),
+    headers: gateway.headers,
+    structuredOutput: gateway.structuredOutput,
+    extraBody: gateway.extraBody,
+    enforceModelIdentity: gateway.enforceModelIdentity,
+    timeoutMs: gateway.timeoutMs,
+  });
+  const budget = new Budget(cfg.llm.budget, {
+    input: cfg.llm.prices.input,
+    output: cfg.llm.prices.output,
+    cachedInputMultiplier: cfg.llm.prices.cachedInputMultiplier,
+  });
+  const cache = cfg.llm.cacheDir ? new FileCache(resolve(cfg.llm.cacheDir)) : new MemoryCache();
+
+  const resolver = new GatewayResolver({
+    transport,
+    cache,
+    budget,
+    models: gateway.models,
+    lang: cfg.lang,
+    ...(options.replay ? { replay: true } : {}),
+    ...(onEvent ? { onEvent } : {}),
+  });
+  return {
+    resolver,
+    budget,
+    note: `llm ${mode} via "${gateway.name}" (${gateway.models.fast} → ${gateway.models.deep}), key ${redactKey(gateway.apiKey)}`,
+  };
+}
+
+function describeResolverStats(stats: ResolverStats, budget: Budget | null): string {
+  const usage = budget?.usage();
+  const parts = [
+    `escalations: ${stats.resolved}/${stats.consulted} resolved`,
+    `model calls: ${stats.calls}`,
+    `cache hits: ${stats.cacheHits}`,
+  ];
+  if (usage && usage.calls > 0) {
+    parts.push(
+      `tokens: ${usage.inputTokens} in / ${usage.outputTokens} out`,
+      usage.estimatedCostUsd > 0 ? `est. $${usage.estimatedCostUsd.toFixed(4)}` : "unpriced",
+    );
+  }
+  return parts.join("  ");
+}
 
 /**
  * Resolve settings for a command: config file first, CLI flags on top.
@@ -70,6 +157,9 @@ program
   .option("--asset-root <dir>", "resolve relative assets from here during measurement")
   .option("--lang <code>", "primary language for hyphenation")
   .option("--corpus <file>", "corpus-profile.json from `biomd corpus scan`")
+  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
+  .option("-g, --gateway <name>", "which configured gateway to use")
+  .option("--replay", "use only cached model decisions; never call the network")
   .option("-c, --config <file>", "explicit config file")
   .option("--quiet", "only print the output path")
   .action(async (input: string, options) => {
@@ -80,6 +170,8 @@ program
 
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
+    const { resolver, budget, note } = makeResolver(cfg, options);
+    if (!options.quiet) process.stderr.write(`${note}\n`);
 
     try {
       const store = await JobStore.open(resolve(cfg.workDir), basename(input), bytes, profile.id);
@@ -91,9 +183,10 @@ program
         measurer,
         oracle,
         lang: cfg.lang,
+        ...(resolver ? { resolver } : {}),
         ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
         ...(corpus ? { lexicon: Lexicon.fromJSON(corpus.lexicon) } : {}),
-        ...(corpus ? { corpusFrequency: corpusFrequencyFor(bytes, corpus) } : {}),
+        ...(corpus ? { corpusProfile: corpus } : {}),
       });
 
       const sourceHash = hashOf(bytes);
@@ -130,6 +223,7 @@ program
         process.stdout.write(`${outPath}\n`);
       } else {
         printResult(input, outPath, result, store.root);
+        if (resolver) process.stdout.write(`LLM:          ${describeResolverStats(result.resolverStats, budget)}\n`);
       }
       process.exitCode = result.state === "conversion-review-required" ? 2 : 0;
     } finally {
@@ -195,6 +289,9 @@ corpus
   .option("--corpus <file>", "corpus-profile.json")
   .option("--lang <code>", "primary language")
   .option("-j, --jobs <n>", "concurrent conversions")
+  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
+  .option("-g, --gateway <name>", "which configured gateway to use")
+  .option("--replay", "use only cached model decisions; never call the network")
   .option("-c, --config <file>", "explicit config file")
   .action(async (dirArg: string | undefined, options) => {
     const cfg = settings(options);
@@ -216,7 +313,14 @@ corpus
     // Browser contexts are the scarce resource; conversions are cheap.
     const queue = new PQueue({ concurrency: measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs });
 
+    // One resolver for the whole run: the budget is a corpus-wide cap, and the
+    // decision cache is shared, so the same ambiguous table on forty pages costs
+    // one request rather than forty.
+    const { resolver, budget, note } = makeResolver(cfg, options);
+    process.stderr.write(`${note}\n`);
+
     const tally = { complete: 0, review: 0, failed: 0 };
+    const escalationTotals = { consulted: 0, resolved: 0 };
     const rows: string[] = [];
 
     try {
@@ -234,8 +338,9 @@ corpus
                 oracle,
                 lexicon,
                 lang: cfg.lang,
+                ...(resolver ? { resolver } : {}),
                 ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
-                ...(corpusProfile ? { corpusFrequency: corpusFrequencyFor(bytes, corpusProfile) } : {}),
+                ...(corpusProfile ? { corpusProfile } : {}),
               });
 
               const outPath = join(resolve(cfg.outDir), `${basename(path, extname(path))}.bio.md`);
@@ -250,10 +355,17 @@ corpus
 
               if (result.state === "conversion-review-required") tally.review += 1;
               else tally.complete += 1;
+              escalationTotals.consulted += result.resolverStats.consulted;
+              escalationTotals.resolved += result.resolverStats.resolved;
+              const wantTables = result.tables.filter((t) => t.classification === "DATA").length;
+              const gotTables = result.tables.filter((t) => t.emittedTable).length;
               rows.push(
                 `${result.state === "conversion-review-required" ? "REVIEW " : "ok     "} ${basename(path)}  ` +
                   `recall=${(result.conservation.text.recall * 100).toFixed(1)}%  ` +
-                  `errors=${result.diagnostics.filter((d) => d.severity === "error").length}`,
+                  `errors=${result.diagnostics.filter((d) => d.severity === "error").length}  ` +
+                  `reviews=${result.ledger.filter((e) => e.terminal.kind === "REVIEW").length}  ` +
+                  `tables=${gotTables}/${wantTables}  ` +
+                  `llm=${result.resolverStats.resolved}/${result.resolverStats.consulted}`,
               );
             } catch (error) {
               tally.failed += 1;
@@ -268,17 +380,64 @@ corpus
 
     rows.sort();
     process.stdout.write(`${rows.join("\n")}\n\n`);
+
     process.stdout.write(
       [
         `Converted:      ${tally.complete}`,
         `Needs review:   ${tally.review}`,
         `Failed:         ${tally.failed}`,
-        `Green share:    ${((tally.complete / Math.max(1, files.length)) * 100).toFixed(1)}%  ` +
-          "(converted with zero model calls)",
+        `Clean share:    ${((tally.complete / Math.max(1, files.length)) * 100).toFixed(1)}%`,
+        resolver
+          ? `LLM:            ${describeResolverStats({ ...resolver.stats(), ...escalationTotals }, budget)}`
+          : `LLM:            off — ${escalationTotals.consulted} escalation point(s) left as review items`,
         "",
       ].join("\n"),
     );
     process.exitCode = tally.failed > 0 ? 1 : 0;
+  });
+
+// ---------------------------------------------------------------------------
+
+program
+  .command("eval")
+  .description("Score converted output against hand-written reference .bio.md files")
+  .argument("[actualDir]", "directory of produced .bio.md files (defaults to config outDir)")
+  .option("-e, --expected <dir>", "directory of reference .bio.md files", "fixtures/out")
+  .option("-v, --verbose", "list what each document is missing")
+  .option("--json <file>", "also write the full score as JSON")
+  .option("-c, --config <file>", "explicit config file")
+  .action(async (actualArg: string | undefined, options) => {
+    const cfg = settings(options);
+    const actualDir = resolve(actualArg ?? cfg.outDir);
+    const expectedDir = resolve(options.expected as string);
+
+    const files: Array<{ name: string; expected: string; actual: string }> = [];
+    const absent: string[] = [];
+    for (const entry of (await readdir(expectedDir)).sort()) {
+      if (!entry.endsWith(".bio.md")) continue;
+      const actualPath = join(actualDir, entry);
+      let actual: string;
+      try {
+        actual = await readFile(actualPath, "utf8");
+      } catch {
+        absent.push(entry);
+        actual = "";
+      }
+      files.push({ name: entry.replace(/\.bio\.md$/u, ""), expected: await readFile(join(expectedDir, entry), "utf8"), actual });
+    }
+
+    if (files.length === 0) {
+      process.stderr.write(`No reference documents in ${expectedDir}\n`);
+      process.exitCode = 1;
+      return;
+    }
+
+    const { documents, overall } = scoreDocumentSources(files);
+    process.stdout.write(renderReport(documents, overall, options.verbose === true));
+    for (const name of absent) process.stdout.write(`note: no output produced for ${name}\n`);
+    if (options.json) {
+      await writeAtomic(resolve(options.json as string), `${JSON.stringify({ overall, documents }, null, 2)}\n`);
+    }
   });
 
 // ---------------------------------------------------------------------------
@@ -440,10 +599,23 @@ async function loadCorpus(path: string | undefined, warn = false): Promise<Corpu
   }
 }
 
-function corpusFrequencyFor(bytes: Uint8Array, profile: CorpusProfile): Map<string, number> {
-  const decoded = decodeHtml(bytes);
-  const doc = parseHtml(quarantineServerMarkup(decoded.text).text);
-  return frequencyForDocument(doc.root, profile);
+/**
+ * One line per source table: its class and what came out.
+ *
+ * Naming the outcome next to the class is the point — `DATA→flow` is the shape
+ * of a silent structural loss and used to be invisible in every report.
+ */
+function describeTables(result: Awaited<ReturnType<typeof convert>>): string {
+  if (result.tables.length === 0) return "none";
+  return result.tables
+    .map((t) => {
+      if (t.emittedTable) {
+        return `${t.classification}→table[${t.shape?.rows ?? "?"}×${t.shape?.cols ?? "?"}]${t.headerMissing ? "*" : ""}`;
+      }
+      if (t.classification === "SHELL") return "SHELL→removed";
+      return `${t.classification}→flow${t.failure ? `(${t.failure})` : ""}`;
+    })
+    .join(", ");
 }
 
 function printResult(
@@ -467,7 +639,7 @@ function printResult(
     `Complexity:   ${result.complexity.directivesTotal} directives, depth ${result.complexity.maxNestingDepth}, ` +
       `${result.complexity.directiveDensity}/1000 words` +
       `${result.complexity.densityEnforced ? "" : " (density not enforced: document too short)"}`,
-    `Tables:       ${result.classifications.map((c) => c.classification.class).join(", ") || "none"}`,
+    `Tables:       ${describeTables(result)}`,
     `Job:          ${jobRoot}`,
   ];
 

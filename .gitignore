@@ -74,3 +74,4 @@ app/.idea/
 .orca/
 package-lock.json
 my-migration/biomd.config.json
+my-migration/

@@ -3,9 +3,12 @@
 Converts legacy, malformed, mostly-Russian HTML into **BioMD Lite 1.6**
 (`.bio.md`). Implements [`htm-to-md_utility_plan.md`](../htm-to-md_utility_plan.md).
 
-**No API key required.** The converter is deterministic — it repairs, measures,
-classifies and emits without any model involvement. LLM support is optional and
-exists only to resolve cases the rules cannot.
+**No API key required.** The converter is deterministic-first — it repairs,
+measures, classifies and emits without any model involvement. Two decisions
+escalate to a model when one is configured: what an ambiguous table *is*, and
+what to call a column the source never named. Both are counted and reported
+whether or not a gateway exists, so `escalation point(s)` in a run tells you
+exactly how much turning the LLM on would do before you spend anything.
 
 📖 **[Getting started](docs/GETTING-STARTED.md)** · **[Configuration](docs/CONFIGURATION.md)** · **[FAQ](docs/FAQ.md)** · **[Corpus profile](docs/CORPUS-PROFILE.md)**
 
@@ -28,14 +31,25 @@ biomd corpus run       # converts everything
 ```
 
 ```
-ok      llobet.html   recall=100.0%  errors=0
-ok      segovia.html  recall=100.0%  errors=0
+ok      llobet.html   recall=100.0%  errors=0  reviews=0  tables=1/1  llm=0/0
+REVIEW  segovia.html  recall=99.2%   errors=1  reviews=2  tables=2/2  llm=0/2
 
 Converted:      412
 Needs review:   7
 Failed:         0
-Green share:    98.3%  (converted with zero model calls)
+Clean share:    98.3%
+LLM:            off — 19 escalation point(s) left as review items
 ```
+
+`tables=a/b` is the structural conservation audit: `b` regions were classified
+as data, `a` of them became Markdown tables. Text recall cannot see the
+difference between a table and the same words spilled into paragraphs, so
+structure is counted separately — a `0/1` there is a silent loss at 100% recall.
+
+**`corpus scan` is not optional in practice.** Site chrome — the banner, the top
+menu, the counter — is not recognisable from one page; what identifies it is
+that it is identical on every page. Without a profile the converter says so and
+keeps it.
 
 Once configured, no flags are needed. Flags exist for one-off overrides and all
 of them mirror a config setting.
@@ -56,6 +70,7 @@ of them mirror a config setting.
 | `biomd convert <file>` | Convert one page, with a full report |
 | `biomd corpus run [dir]` | Convert a directory, resumable |
 | `biomd validate <file>` | Check an existing `.bio.md` against the target |
+| `biomd eval [dir]` | Score output against hand-written reference `.bio.md` files |
 | `biomd probe` | Five-test gateway conformance probe |
 
 Every command takes `--help`.
@@ -87,8 +102,42 @@ biomd config set-key openrouter    # prompts; stored outside the repo
 biomd config test                  # one real request
 ```
 
+Then run with `--llm assist` (or set `llm.enabled` in the config):
+
+```bash
+biomd corpus run --llm assist
+biomd corpus run --replay          # re-run offline from the decision cache
+```
+
+Every decision is cached on the *resolved* model identity, so a second run over
+the same corpus costs nothing and produces byte-identical output. Budgets are
+reserved before a request is built, and a budget refusal, a dead gateway or a
+malformed reply all degrade to "the deterministic answer stands, and the item
+stays flagged" — a model can never fail a conversion.
+
 Full details, LiteLLM setup, budgets and the R1/R2/R3 transport rules:
 **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**.
+
+## Measuring conversion quality
+
+`biomd eval` scores produced output against hand-written reference documents —
+what a person decided the conversion *should* look like:
+
+```bash
+biomd eval ./out --expected ./fixtures/out -v
+```
+
+```
+file               text   head   link    img   dirs  cells  shape     tables  score
+barrios            73.1   33.3   97.9   88.9   57.1   92.7   81.9        1/1   76.7
+...
+overall similarity to fixtures/out: 82.0
+```
+
+Every axis is an F1 over a multiset, so loss and invention are both penalized,
+and structure (`cells`, `shape`, `dirs`) carries as much weight as prose. That
+split exists because text recall alone stayed near 100% through a defect that
+was deleting whole tables.
 
 ---
 
@@ -115,12 +164,16 @@ Exit codes: `0` converted · `2` converted but needs review · `1` failed.
 |---|---|
 | `src/biomd-ast/` | Output contract: types, validating builders, serializer, reader, validator, target profiles |
 | `src/ladom/` | Input: encoding, server-markup quarantine, parse, S1 sanitize, grid materialization, Chromium measurement, normalize |
-| `src/convert-core/` | Ledger, corpus pass, lexicon, de-hyphenation, link policy, table classification, structure recovery, conservation |
-| `src/llm/` | Hook runtime, gateway transport, decision cache, budget, conformance probe |
+| `src/convert-core/` | Ledger, corpus pass, lexicon, de-hyphenation, link policy, boilerplate removal, table classification, semantic table planning, heading recovery, structure recovery, conservation |
+| `src/llm/` | Hook runtime, gateway transport, decision cache, budget, conformance probe, the resolver that joins them to the compiler |
+| `src/eval/` | Similarity scoring against reference documents |
 | `src/cli/` | Commands, configuration, job artifact store |
 
-Layering is one-directional: `cli → convert-core → {ladom, biomd-ast}`, with
-`llm` called only by `convert-core`.
+Layering is one-directional: `cli → {convert-core, llm, eval} → {ladom,
+biomd-ast}`. `convert-core` does not import `llm`; it declares a
+`DecisionResolver` interface in its own vocabulary, and `llm` implements it. The
+default implementation never escalates, which is what makes a run with no
+gateway behave exactly as it always did.
 
 ## The parts that carry the design
 
@@ -150,10 +203,27 @@ de-hyphenates; patterns serve as a *validity oracle* at rule 6 of a seven-rule
 cascade whose real work is done by the corpus lexicon and measured line
 geometry. Every join is a reversible, audited operation.
 
-**Conservation is mechanical.** Text shingles, link and image multisets, in vs
-out. Content may be absent only where the ledger records a `REMOVED(reason)`.
-This matters because the consuming renderer discards what it does not
-understand *without an error* — nothing downstream would ever notice a loss.
+**Conservation is mechanical, and structural as well as textual.** Text
+shingles, link and image multisets, in vs out; content may be absent only where
+the ledger records a `REMOVED(reason)`. Separately, every region classified as
+data must have produced a table. Both halves are needed: the consuming renderer
+discards what it does not understand *without an error*, so nothing downstream
+notices a loss — and text recall alone cannot tell a table from the same words
+spilled into twenty-seven paragraphs.
+
+**Three table representations, kept apart.** The repaired tree, the *physical*
+occupancy grid (span coverage, origin cells), and the *semantic* record matrix.
+Legacy tables routinely use more physical slots than they have columns — a
+FrontPage discography declares nine slots per row in a stable `7 + 1 + 1`
+pattern and has three columns — so the semantic width is inferred from the
+dominant complete-row partition, and several physical cells inside one band
+become one semantic cell. Requiring the two to be equal is what used to make
+whole tables disappear.
+
+**Emission is transactional.** A region is converted, inspected, and sometimes
+rejected in favour of a different shape; everything a conversion appends to the
+context is undoable. Without that, an abandoned attempt leaves its links behind
+and the conservation gate reports them as invented content.
 
 ## Target profiles
 
@@ -174,7 +244,7 @@ compatibility table cannot quietly go stale.
 ## Tests
 
 ```bash
-npm test          # 144 tests
+npm test          # 209 tests
 npm run typecheck
 ```
 

@@ -79,8 +79,14 @@ Every one has a matching CLI flag for one-off overrides:
 
 **Nothing here is required.** The pipeline is deterministic-first: with
 `"enabled": false` it produces complete, validated output. Configure a gateway
-only to resolve the residual ambiguity — and only after `corpus run` has told
-you your Green share, so you know how much there is to resolve.
+only to resolve the residual ambiguity — and preferably after `corpus run` has
+told you how many escalation points there are, so you know how much there is to
+resolve.
+
+A gateway entry may be assembled from several layers: `biomd config set-key`
+writes the key into your *user* config while the URL usually lives in the
+project config. A partial entry in any one layer is fine; completeness is
+checked when a gateway is actually selected, not when the file is read.
 
 The converter never calls a provider API directly. It speaks the
 OpenAI-compatible `/v1/chat/completions` protocol to a gateway of your choosing.

@@ -9,9 +9,11 @@
  *   2. Measurement runs *before* the head is dropped and before normalization,
  *      because those discard the very evidence being measured.
  *
- * Every stage is deterministic. Nothing here calls a model; the hook points
- * exist (see ../llm) but the default path resolves them with rules, and a run
- * with no gateway configured must produce usable output.
+ * Every stage is deterministic *first*. Two points escalate — an ambiguous table
+ * class, and column labels for a table whose source had no header — and both go
+ * through `DecisionResolver`, which defaults to one that never escalates. A run
+ * with no gateway configured therefore produces exactly the output it always
+ * did, and must still be usable.
  */
 import {
   type Measurer,
@@ -41,8 +43,13 @@ import {
 import { ABC_LINK_PROFILE, type LinkProfile, rewriteTarget } from "./links.js";
 import { Ledger, type LedgerEntry } from "./ledger.js";
 import { Lexicon } from "./lexicon.js";
+import { removeBoilerplate } from "./boilerplate.js";
 import { type Classification, classifyTable } from "./classify.js";
-import { type LayoutFidelity, recoverStructure } from "./structure.js";
+import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
+import { planDataTable } from "./data-table.js";
+import { recoverHeadings } from "./headings.js";
+import { type DecisionResolver, NULL_RESOLVER, type ResolverStats } from "./resolver.js";
+import { type LayoutFidelity, type TableOutcome, recoverStructure } from "./structure.js";
 import { checkConservation, type ConservationReport } from "./conservation.js";
 import {
   type DehyphenateOptions,
@@ -67,8 +74,28 @@ export interface ConvertOptions {
   assetRoot?: string;
   /** Classification overrides, e.g. resolved by a hook. */
   classifications?: Map<string, Classification>;
-  /** Structural fingerprint frequencies from the corpus pass. */
+  /**
+   * The Stage 0 corpus profile.
+   *
+   * Preferred over `corpusFrequency`: the frequency map has to be keyed by node
+   * id, and node ids are only stable within one traversal of one tree. Computing
+   * it from the profile *inside* the pipeline is what makes chrome detection
+   * actually match — a map built by the caller was keyed against a differently
+   * sanitized parse and missed every entry.
+   */
+  corpusProfile?: CorpusProfile;
+  /** Pre-computed fingerprint frequencies. Superseded by `corpusProfile`. */
   corpusFrequency?: Map<string, number>;
+  /**
+   * Recover `##` section headings from typography as well as the title.
+   * Default true; turn it off for a corpus whose section labels are unreliable.
+   */
+  recoverSections?: boolean;
+  /**
+   * Consulted where the deterministic path abstains. Defaults to one that never
+   * escalates, so a run with no gateway behaves exactly as it always did.
+   */
+  resolver?: DecisionResolver;
 }
 
 export interface ConvertResult {
@@ -86,6 +113,17 @@ export interface ConvertResult {
   diagnostics: Diagnostic[];
   complexity: ComplexityReport;
   classifications: Array<{ tableId: string; classification: Classification }>;
+  /**
+   * What became of every source table.
+   *
+   * Text recall cannot see the difference between a table and the same words
+   * spilled into paragraphs, so structure needs its own audit: a region
+   * classified DATA that emitted no Markdown table has lost its rows and
+   * columns, silently, at 100% recall.
+   */
+  tables: TableOutcome[];
+  /** What the escalation boundary did, so autonomy is measurable per file. */
+  resolverStats: ResolverStats;
   warnings: string[];
   /** Terminal state, per the plan's completion-state ladder. */
   state:
@@ -152,6 +190,27 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     });
   }
 
+  // ---- Stage 5: boilerplate removal --------------------------------------
+  // Before normalization, while the chrome is still a table rather than a
+  // paragraph, and after measurement, so nothing that was measured has moved.
+  const boilerplate = removeBoilerplate(doc.root, options.corpusProfile ?? null);
+  warnings.push(...boilerplate.warnings);
+  for (const record of boilerplate.removals) {
+    ledger.record({
+      id: record.id,
+      terminal: { kind: "REMOVED", reason: record.reason },
+      pass: "boilerplate",
+      decidedBy: "classifier",
+      confidence: record.frequency,
+    });
+  }
+  if (!options.corpusProfile) {
+    warnings.push(
+      "No corpus profile: site chrome cannot be identified from a single page and will be kept. " +
+        "Run `biomd corpus scan` first.",
+    );
+  }
+
   // ---- Stage 10: text reconstruction -------------------------------------
   // Runs before normalization, because the evidence a wrap decision rests on is
   // the source newline after the hyphen, and collapsing whitespace destroys it.
@@ -175,6 +234,26 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
 
   const normalized = normalize(doc.root, { useGeometry: measurement.measured });
   warnings.push(...normalized.warnings);
+
+  // ---- Stage 8: document outline ----------------------------------------
+  // After normalization, because `<font size>` has to be folded onto the nodes
+  // that carried it before prominence can be read off them.
+  const headings = recoverHeadings(doc.root, {
+    ...(options.recoverSections === false ? { sections: false } : {}),
+  });
+  for (const heading of headings) {
+    ledger.record({
+      id: heading.id,
+      terminal: { kind: "EMITTED", to: `heading-${heading.depth}` },
+      pass: "headings",
+      decidedBy: "rule",
+      confidence: Math.min(1, heading.score / 2),
+      note: heading.reason,
+    });
+  }
+  if (headings.length === 0) {
+    warnings.push("No heading could be recovered from typography; the document will have no title.");
+  }
   for (const record of normalized.records) {
     ledger.record({
       id: record.id,
@@ -210,12 +289,98 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   // ---- Stage 7: classify tables ------------------------------------------
   const grids: TableGrid[] = materializeAllGrids(doc.root);
   for (const grid of grids) warnings.push(...grid.warnings);
-  const classifications = grids.map((grid) => ({
-    tableId: grid.id,
-    classification:
-      options.classifications?.get(grid.id) ?? classifyTable(grid, options.corpusFrequency?.get(grid.id)),
-  }));
+  // Computed here, against the tree the grids came from, so ids line up.
+  const corpusFrequency = options.corpusProfile
+    ? frequencyForDocument(doc.root, options.corpusProfile)
+    : options.corpusFrequency;
+  const resolver = options.resolver ?? NULL_RESOLVER;
+  const escalations = { consulted: 0, resolved: 0 };
+
+  const classifications: Array<{ tableId: string; classification: Classification }> = [];
+  for (const grid of grids) {
+    const override = options.classifications?.get(grid.id);
+    const frequency = corpusFrequency?.get(grid.id);
+    let classification = override ?? classifyTable(grid, frequency);
+
+    // Escalation point 1. An abstention is not a verdict, and flattening an
+    // ambiguous region to prose is a decision with consequences — so ask,
+    // rather than defaulting quietly.
+    if (!override && classification.class === "UNKNOWN") {
+      escalations.consulted += 1;
+      const resolved = await resolver.classifyTable({
+        grid,
+        deterministic: classification,
+        ...(frequency !== undefined ? { corpusFrequency: frequency } : {}),
+        ...(options.sourceName ? { sourceName: options.sourceName } : {}),
+      });
+      // A model verdict promoting an abstention straight to DATA is the one
+      // upgrade that *fabricates* structure rather than describing it, so it
+      // carries its own evidence bar. Asked "is this a data table?", a model
+      // says yes to a dated news list and to a two-lane album catalog alike,
+      // and the result is two invented headers over something that was never a
+      // matrix. Measured against the reference conversions, the discriminator is
+      // width: a record matrix the deterministic tiers missed has three or more
+      // semantic columns, while "label plus paragraph" — the classic false
+      // positive — has exactly two.
+      const fabricating =
+        resolved?.class === "DATA" && (resolved.confidence < 0.75 || !isWideEnoughForData(grid));
+      if (resolved && !fabricating) {
+        escalations.resolved += 1;
+        classification = resolved;
+        ledger.record({
+          id: grid.id,
+          terminal: { kind: "EMITTED", to: `class:${resolved.class}` },
+          pass: "table.classify",
+          decidedBy: "llm:table.classify",
+          confidence: resolved.confidence,
+          note: resolved.reason,
+        });
+      } else if (fabricating && resolved) {
+        warnings.push(
+          `${grid.id}: model called this DATA at confidence ${resolved.confidence.toFixed(2)}, but the ` +
+            "region does not carry its own evidence for a record matrix. Left as a review item.",
+        );
+      }
+    }
+    classifications.push({ tableId: grid.id, classification });
+  }
   const classificationMap = new Map(classifications.map((c) => [c.tableId, c.classification]));
+
+  // Escalation point 2. The semantic matrix is reconstructed deterministically;
+  // what a rule cannot supply is a *name* for a column the source never named.
+  // §3.8 requires one, §16.3 forbids the converter from inventing it, so a table
+  // with no source header is either labelled here or stays a review item.
+  const tableHeaders = new Map<string, string[]>();
+  for (const { tableId, classification } of classifications) {
+    if (classification.class !== "DATA" && classification.class !== "UNKNOWN") continue;
+    const grid = grids.find((g) => g.id === tableId);
+    if (!grid) continue;
+    // Never ask about a region that would not become a table even with labels;
+    // the answer would be unused, and paying for an unused answer is the whole
+    // failure mode a hook budget exists to prevent.
+    if (classification.class === "UNKNOWN" && !isWideEnoughForData(grid)) continue;
+    const planned = planDataTable(grid);
+    if (!planned.plan || !planned.plan.headerSynthesized) continue;
+
+    escalations.consulted += 1;
+    const headers = await resolver.tableHeaders({
+      grid,
+      plan: planned.plan,
+      classification,
+      ...(options.sourceName ? { sourceName: options.sourceName } : {}),
+    });
+    if (!headers) continue;
+    escalations.resolved += 1;
+    tableHeaders.set(tableId, headers);
+    ledger.record({
+      id: tableId,
+      terminal: { kind: "EMITTED", to: "table-header" },
+      pass: "table.records",
+      decidedBy: "llm:table.records",
+      confidence: 0.8,
+      note: `column labels supplied: ${headers.join(" | ")}`,
+    });
+  }
 
   // ---- Stage 9: structure recovery ---------------------------------------
   const structure = recoverStructure(doc.root, grids, {
@@ -223,6 +388,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     links,
     ...(options.layoutFidelity ? { layoutFidelity: options.layoutFidelity } : {}),
     classifications: classificationMap,
+    tableHeaders,
   });
   warnings.push(...structure.warnings);
   for (const entry of structure.ledger) ledger.record({ ...entry, pass: entry.pass || "structure" });
@@ -249,9 +415,20 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     accounted,
   });
 
+  // Structural conservation: a region the classifier called DATA must have
+  // produced a table. Reported as a warning rather than folded into the
+  // conservation report so the failure names the table, not the corpus.
+  const lostTables = structure.tables.filter((t) => t.classification === "DATA" && !t.emittedTable);
+  for (const lost of lostTables) {
+    warnings.push(
+      `${lost.tableId}: classified DATA but no table was emitted (${lost.failure ?? "unknown"}); ` +
+        "rows and columns are absent from the output even though the words survived.",
+    );
+  }
+
   const hasErrors = diagnostics.some((d) => d.severity === "error");
   const reviews = ledger.reviews().length;
-  const state: ConvertResult["state"] = !conservation.ok || hasErrors
+  const state: ConvertResult["state"] = !conservation.ok || hasErrors || lostTables.length > 0
     ? "conversion-review-required"
     : reviews > 0
       ? "biomd-structurally-valid"
@@ -269,10 +446,26 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     diagnostics,
     complexity: validation.complexity,
     classifications,
+    tables: structure.tables,
+    resolverStats: { ...resolver.stats(), ...escalations },
     warnings,
     state,
     measured: measurement.measured,
   };
+}
+
+/**
+ * Whether a region carries enough of its own evidence to become a table on a
+ * model's say-so.
+ *
+ * A source header row is the author stating the column model outright. Failing
+ * that, three or more inferred semantic columns is the width at which "these are
+ * records" stops being an interpretation.
+ */
+function isWideEnoughForData(grid: TableGrid): boolean {
+  const planned = planDataTable(grid);
+  if (!planned.plan) return false;
+  return !planned.plan.headerSynthesized || planned.plan.bands.length >= 3;
 }
 
 /**

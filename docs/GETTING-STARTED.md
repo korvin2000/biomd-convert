@@ -162,17 +162,26 @@ biomd corpus run
 ```
 
 ```
-ok      llobet.html   recall=100.0%  errors=0
-ok      segovia.html  recall=100.0%  errors=0
+ok      llobet.html   recall=100.0%  errors=0  reviews=0  tables=1/1  llm=0/0
+REVIEW  segovia.html  recall=99.2%   errors=1  reviews=2  tables=2/2  llm=0/2
 
 Converted:      412
 Needs review:   7
 Failed:         0
-Green share:    98.3%  (converted with zero model calls)
+Clean share:    98.3%
+LLM:            off — 19 escalation point(s) left as review items
 ```
 
-`Green share` is the number that matters: the proportion converted correctly
-with no model involvement at all. If it is high, you may not need an LLM.
+Three numbers to read:
+
+- **`Clean share`** — converted with every gate passed and nothing flagged.
+- **`tables=a/b`** — of `b` regions classified as data, `a` became Markdown
+  tables. This is a separate audit from text recall on purpose: a table
+  flattened into paragraphs loses its rows and columns while keeping every word,
+  so recall stays at 100% and nothing else would notice.
+- **`escalation point(s)`** — decisions the rules abstained on. They are counted
+  whether or not a model is configured, so you can see what an LLM would buy
+  before paying for one.
 
 ---
 
@@ -217,8 +226,14 @@ about it is worth a human look, and the report says what.
 
 ## 8. Optional: add a model
 
-Only worth doing once you know your Green share. If it is 98%, an LLM buys you
-seven pages.
+Worth doing once you know your escalation count. The run reports it with the
+LLM off, so the decision is informed rather than hopeful.
+
+The two escalation points are: what an ambiguous table region *is*, and what to
+call a column the source never gave a header. Both are things a rule genuinely
+cannot settle — §3.8 requires a meaningful header for every column, and §16.3
+classes inventing one as an editorial change, which is precisely why the
+converter asks instead of guessing.
 
 See [CONFIGURATION.md](CONFIGURATION.md#llm-gateways) for the full setup. The
 short form, with OpenRouter:
@@ -226,7 +241,14 @@ short form, with OpenRouter:
 ```bash
 biomd config set-key openrouter        # prompts; stored outside your repo
 biomd config test                      # one real request, proves it works
+biomd corpus run --llm assist          # escalate the residual ambiguity
+biomd corpus run --replay              # re-run offline from the decision cache
 ```
+
+Decisions are cached on the resolved model identity, so a second run costs
+nothing and produces byte-identical output. A budget refusal, an unreachable
+gateway or a malformed reply all fall back to the deterministic answer with the
+item still flagged — a model can never fail a conversion.
 
 Then set `"llm": { "enabled": true }` in the config.
 

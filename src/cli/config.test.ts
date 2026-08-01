@@ -91,7 +91,7 @@ describe("loadDotEnv", () => {
 
 describe("loadConfig precedence", () => {
   it("applies defaults when nothing is configured", () => {
-    const { config } = loadConfig({ cwd: dir });
+    const { config } = loadConfig({ userConfigPath: null, cwd: dir });
     expect(config.profile).toBe("renderer-current");
     expect(config.layoutFidelity).toBe("simplified");
     expect(config.llm.enabled).toBe(false);
@@ -99,7 +99,7 @@ describe("loadConfig precedence", () => {
 
   it("reads a project config and records provenance for nested keys", async () => {
     const path = await writeConfig('{ "profile": "spec-1.6", "llm": { "enabled": true } }');
-    const { config, sources } = loadConfig({ configPath: path, cwd: dir });
+    const { config, sources } = loadConfig({ userConfigPath: null, configPath: path, cwd: dir });
     expect(config.profile).toBe("spec-1.6");
     expect(sources["profile"]).toBe("project-config");
     // Nested keys must report their own source, not fall back to "default" —
@@ -109,7 +109,7 @@ describe("loadConfig precedence", () => {
 
   it("lets a flag override the file", async () => {
     const path = await writeConfig('{ "visual": "always" }');
-    const { config, sources } = loadConfig({ configPath: path, cwd: dir, flags: { visual: "never" } });
+    const { config, sources } = loadConfig({ userConfigPath: null, configPath: path, cwd: dir, flags: { visual: "never" } });
     expect(config.visual).toBe("never");
     expect(sources["visual"]).toBe("flag");
   });
@@ -117,8 +117,8 @@ describe("loadConfig precedence", () => {
   it("lets an environment variable override the file but not a flag", async () => {
     const path = await writeConfig('{ "visual": "always" }');
     process.env["BIOMD_VISUAL"] = "auto";
-    expect(loadConfig({ configPath: path, cwd: dir }).config.visual).toBe("auto");
-    expect(loadConfig({ configPath: path, cwd: dir, flags: { visual: "never" } }).config.visual).toBe("never");
+    expect(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config.visual).toBe("auto");
+    expect(loadConfig({ userConfigPath: null, configPath: path, cwd: dir, flags: { visual: "never" } }).config.visual).toBe("never");
   });
 
   it("defines an implicit gateway from environment variables alone", () => {
@@ -126,7 +126,7 @@ describe("loadConfig precedence", () => {
     process.env["BIOMD_GATEWAY_KEY"] = "sk-or-test";
     process.env["BIOMD_MODEL"] = "deepseek/deepseek-v4-flash";
 
-    const { config } = loadConfig({ cwd: dir });
+    const { config } = loadConfig({ userConfigPath: null, cwd: dir });
     expect(config.llm.enabled).toBe(true);
     expect(config.llm.gateway).toBe("env");
 
@@ -143,19 +143,19 @@ describe("loadConfig precedence", () => {
     const path = await writeConfig(
       '{ "llm": { "gateways": { "or": { "baseUrl": "https://openrouter.ai/api/v1/chat/completions", "models": { "fast": "m" } } } } }',
     );
-    const { config, warnings } = loadConfig({ configPath: path, cwd: dir });
+    const { config, warnings } = loadConfig({ userConfigPath: null, configPath: path, cwd: dir });
     expect(config.llm.gateways["or"]?.baseUrl).toBe("https://openrouter.ai/api/v1");
     expect(warnings.join(" ")).toMatch(/should be the API base/u);
   });
 
   it("reports an invalid config with the offending path", async () => {
     const path = await writeConfig('{ "jobs": -4 }');
-    expect(() => loadConfig({ configPath: path, cwd: dir })).toThrow(/jobs/u);
+    expect(() => loadConfig({ userConfigPath: null, configPath: path, cwd: dir })).toThrow(/jobs/u);
   });
 
   it("warns when the selected gateway does not exist", async () => {
     const path = await writeConfig('{ "llm": { "enabled": true, "gateway": "missing" } }');
-    expect(loadConfig({ configPath: path, cwd: dir }).warnings.join(" ")).toMatch(/no such entry/u);
+    expect(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).warnings.join(" ")).toMatch(/no such entry/u);
   });
 
   it("finds a project config by searching upward", async () => {
@@ -173,21 +173,21 @@ describe("resolveGateway", () => {
   it("resolves a key from the named environment variable", async () => {
     process.env["MY_KEY"] = "sk-from-env";
     const path = await writeConfig(base(', "apiKeyEnv": "MY_KEY", "models": { "fast": "m" }'));
-    const gateway = resolveGateway(loadConfig({ configPath: path, cwd: dir }).config);
+    const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config);
     expect(gateway.apiKey).toBe("sk-from-env");
     expect(gateway.apiKeySource).toBe("environment (MY_KEY)");
   });
 
   it("falls every tier back to the one model that is defined", async () => {
     const path = await writeConfig(base(', "models": { "fast": "only-one" }'));
-    const gateway = resolveGateway(loadConfig({ configPath: path, cwd: dir }).config);
+    const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config);
     expect(gateway.models).toEqual({ fast: "only-one", balanced: "only-one", deep: "only-one" });
   });
 
   it("explains itself when no gateway is selected", () => {
-    expect(() => resolveGateway(loadConfig({ cwd: dir }).config)).toThrow(ConfigError);
+    expect(() => resolveGateway(loadConfig({ userConfigPath: null, cwd: dir }).config)).toThrow(ConfigError);
     try {
-      resolveGateway(loadConfig({ cwd: dir }).config);
+      resolveGateway(loadConfig({ userConfigPath: null, cwd: dir }).config);
     } catch (error) {
       // An error message that does not say what to do next is a bug report
       // waiting to happen.
@@ -197,12 +197,12 @@ describe("resolveGateway", () => {
 
   it("explains itself when a gateway defines no models", async () => {
     const path = await writeConfig(base(""));
-    expect(() => resolveGateway(loadConfig({ configPath: path, cwd: dir }).config)).toThrow(/no models/u);
+    expect(() => resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config)).toThrow(/no models/u);
   });
 
   it("defaults structuredOutput to tools and identity enforcement to on", async () => {
     const path = await writeConfig(base(', "models": { "fast": "m" }'));
-    const gateway = resolveGateway(loadConfig({ configPath: path, cwd: dir }).config);
+    const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config);
     expect(gateway.structuredOutput).toBe("tools");
     expect(gateway.enforceModelIdentity).toBe(true);
   });

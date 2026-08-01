@@ -105,6 +105,23 @@ export function normalize(root: LadomNode, options: NormalizeOptions = {}): Norm
     }
   }
 
+  // 2b — demote a `<blockquote>` that is indentation rather than quotation.
+  //
+  // Every WYSIWYG editor of the period offered exactly one indent button, and it
+  // emitted `<blockquote>`. Taking those at face value wraps an entire article
+  // in `>`, which is wrong three times over: it asserts a quotation that does
+  // not exist, it prefixes every line so a `:::` directive inside it is never
+  // parsed as one, and it hides the tables it contains from anything that reads
+  // the output.
+  const documentTextLength = visibleLength(root);
+  for (const el of [...walkElements(root)]) {
+    if (el.tag !== "blockquote" || el.parent === null) continue;
+    const reason = indentationBlockquote(el, documentTextLength);
+    if (!reason) continue;
+    records.push({ id: el.id, tag: el.tag, action: "unwrap", reason, text: "" });
+    unwrap(el);
+  }
+
   // 3 — unwrap wrapper tables. A single-cell, borderless, background-free table
   // is a layout scaffold, not a table; keeping it would create a spurious
   // classification target.
@@ -161,6 +178,40 @@ function isEffectivelyEmpty(el: LadomNode): boolean {
   const text = textOf(el);
   // U+00A0 and friends used purely as indentation are not content.
   return text.replace(/[\s   ]+/gu, "") === "";
+}
+
+function visibleLength(node: LadomNode): number {
+  return textOf(node).replace(/\s+/gu, " ").trim().length;
+}
+
+/**
+ * Why a `<blockquote>` is indentation, or null when it is a genuine quotation.
+ *
+ * A quotation is *bounded*: some prose, attributed, inside a larger document.
+ * The tests below all describe the opposite — a container holding the page's own
+ * structure. Deliberately conservative: an ordinary indented quotation, however
+ * long, trips none of them, so the `>` mapping the spec asks for (§16.1) still
+ * happens where it should.
+ */
+function indentationBlockquote(el: LadomNode, documentTextLength: number): string | null {
+  let headings = 0;
+  let tables = 0;
+  for (const inner of walkElements(el)) {
+    if (inner === el) continue;
+    if (inner.tag === "table") tables += 1;
+    if (/^h[1-6]$/u.test(inner.tag)) headings += 1;
+  }
+  if (tables > 0) return `indentation wrapper: contains ${tables} table(s), not quoted prose`;
+  if (headings > 0) return `indentation wrapper: contains ${headings} heading(s), not quoted prose`;
+
+  const share = documentTextLength > 0 ? visibleLength(el) / documentTextLength : 0;
+  if (share >= 0.35) {
+    return `indentation wrapper: holds ${(share * 100).toFixed(0)}% of the document text`;
+  }
+
+  // An empty or whitespace-only blockquote is a vertical spacer.
+  if (visibleLength(el) === 0 && el.metrics.images === 0) return "empty blockquote used as spacing";
+  return null;
 }
 
 function isWrapperTable(table: LadomNode): boolean {

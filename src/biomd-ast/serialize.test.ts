@@ -201,16 +201,46 @@ describe("serialize", () => {
         ],
       }),
     );
-    // Column padding follows the widest cell, which the library computes with
-    // the correct display width — including for Cyrillic.
+    // Cells are not padded to the column width. A legacy resource table has one
+    // 300-character cell and two dozen short ones, so padding produces lines of
+    // several hundred spaces; the rendered table is identical either way.
     expect(out).toBe(
       [
-        "| Произведение | Табулатура             |",
-        "| ------------ | ---------------------- |",
-        "| La Catedral  | [TAB](music/tab/a.txt) |",
+        "| Произведение | Табулатура |",
+        "| - | - |",
+        "| La Catedral | [TAB](music/tab/a.txt) |",
         "",
       ].join("\n"),
     );
+  });
+
+  it("keeps a very wide cell from padding every other row", () => {
+    const wide = "и".repeat(300);
+    const out = serialize(
+      doc({
+        type: "table",
+        align: [null, null],
+        children: [
+          {
+            type: "tableRow",
+            children: [
+              { type: "tableCell", children: [{ type: "text", value: "Работа" }] },
+              { type: "tableCell", children: [{ type: "text", value: "Ноты" }] },
+            ],
+          },
+          {
+            type: "tableRow",
+            children: [
+              { type: "tableCell", children: [{ type: "text", value: wide }] },
+              { type: "tableCell", children: [{ type: "text", value: "—" }] },
+            ],
+          },
+        ],
+      }),
+    );
+    const lines = out.trimEnd().split("\n");
+    expect(lines[0]).toBe("| Работа | Ноты |");
+    expect(lines[2]).toBe(`| ${wide} | — |`);
   });
 
   it("escapes a literal ::: run in prose so it cannot become a fence", () => {

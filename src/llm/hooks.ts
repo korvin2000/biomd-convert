@@ -137,6 +137,92 @@ export function replyToClassification(reply: TableClassReply, tier: 1 | 2 | 3 | 
   return { class: reply.class, confidence: reply.confidence, tier, reason: reply.rationale };
 }
 
+// ---------------------------------------------------------------------------
+// table.records — column labels for a headerless record matrix
+// ---------------------------------------------------------------------------
+
+export const TableHeaderSchema = z.object({
+  headers: z.array(z.string().min(1).max(60)),
+  confidence: z.number().min(0).max(1),
+  rationale: z.string().max(300),
+});
+export type TableHeaderReply = z.infer<typeof TableHeaderSchema>;
+
+export interface TableHeaderContext {
+  /** Semantic column count the deterministic planner settled on. */
+  columns: number;
+  /** Rendered summary of the planned matrix. */
+  planSummary: string;
+  /** Document language, so the labels match the rest of the page. */
+  lang: string;
+  caption?: string;
+  /** Nearest preceding heading, which usually names the section. */
+  precedingHeading?: string;
+}
+
+/**
+ * `table.records` — the second half of the table fix.
+ *
+ * The physical→semantic reconstruction is deterministic and stays that way; what
+ * a rule cannot supply is a *name* for a column the source never named. §3.8
+ * requires one and §16.3 forbids the converter from inventing it, so this is a
+ * genuine escalation rather than a convenience.
+ *
+ * There is deliberately no `deterministic()`: by the time an item is built, the
+ * emitter has already tried the only honest rule — reuse a label the column
+ * itself repeats — and failed.
+ */
+export const tableHeaderHook: Hook<TableHeaderContext, { rows: string }, TableHeaderReply> = {
+  id: "table.records",
+  version: "1",
+  schema: TableHeaderSchema,
+  models: ["claude-haiku-4-5-20251001", "claude-sonnet-5"],
+  escalateBelow: 0.5,
+  maxOutputTokens: 400,
+
+  system: [
+    "A table from a 1998-2010 encyclopedia page is being migrated to a semantic document format.",
+    "Its rows and columns have already been reconstructed correctly. The source table had no header",
+    "row, and the target format requires a meaningful label for every column.",
+    "",
+    "Return exactly one short label per column, in left-to-right order.",
+    "",
+    "Rules:",
+    "- name what the column CONTAINS, from the values you are shown;",
+    "- write the labels in the language of the surrounding document;",
+    "- 1-3 words each; no numbering, no 'Column 1', no punctuation at the end;",
+    "- a column of resource links is named for the kind of resource, not for the link text;",
+    "- if a column's content is genuinely unclear, still give the most defensible label and",
+    "  lower the confidence, so the result routes to human review.",
+  ].join("\n"),
+
+  buildPayload(ctx, item) {
+    const lines = [
+      `Document language: ${ctx.lang}.`,
+      `Columns to label: ${ctx.columns}.`,
+    ];
+    if (ctx.caption) lines.push(`Table caption: ${JSON.stringify(ctx.caption)}.`);
+    if (ctx.precedingHeading) lines.push(`Nearest heading above the table: ${JSON.stringify(ctx.precedingHeading)}.`);
+    lines.push("", ctx.planSummary, "", "Rows:", item.rows);
+    return { text: lines.join("\n") };
+  },
+
+  validate(out, ctx) {
+    const issues: string[] = [];
+    if (out.headers.length !== ctx.columns) {
+      issues.push(`expected ${ctx.columns} labels, received ${out.headers.length}`);
+    }
+    for (const header of out.headers) {
+      if (/^(?:поле|столбец|колонка|column|field|col)\s*\d*$/iu.test(header.trim())) {
+        issues.push(`${JSON.stringify(header)} is a placeholder, not a meaning (§3.8)`);
+      }
+    }
+    const seen = new Set(out.headers.map((h) => h.trim().toLowerCase()));
+    if (seen.size !== out.headers.length) issues.push("column labels must be distinct");
+    return issues;
+  },
+};
+
 export const BreakKindSchema = z.object({
   kinds: z.array(z.enum(["WRAP", "PARAGRAPH", "LINEATION", "SPACING"])),
   confidence: z.number().min(0).max(1),

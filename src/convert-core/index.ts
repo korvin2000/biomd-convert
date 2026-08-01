@@ -8,3 +8,8 @@ export * from "./classify.js";
 export * from "./structure.js";
 export * from "./pipeline.js";
 export * from "./corpus.js";
+export * from "./data-table.js";
+export * from "./headings.js";
+export * from "./prominence.js";
+export * from "./resolver.js";
+export * from "./boilerplate.js";

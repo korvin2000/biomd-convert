@@ -39,8 +39,15 @@ export const GatewayConfigSchema = z.object({
   /**
    * Base URL **without** `/chat/completions` — the client appends it.
    * For OpenRouter this is `https://openrouter.ai/api/v1`.
+   *
+   * Optional in the schema, required by {@link resolveGateway}. A gateway entry
+   * is assembled from several layers — `biomd config set-key` writes the key
+   * into the *user* config while the URL lives in the *project* config — so any
+   * single layer may legitimately be partial. Demanding completeness here made
+   * a key-only user config abort every run in the corpus, including the ones
+   * that never touch a model.
    */
-  baseUrl: z.string().min(1),
+  baseUrl: z.string().min(1).optional(),
   /** Literal key. Prefer `apiKeyEnv` in a project config. */
   apiKey: z.string().optional(),
   /** Name of an environment variable holding the key. */
@@ -285,6 +292,13 @@ export interface LoadOptions {
   /** CLI flags, already normalized to config shape. */
   flags?: Record<string, unknown>;
   cwd?: string;
+  /**
+   * Override the user-level config location, or `null` to ignore it entirely.
+   *
+   * Exists so a test — or a reproducible batch run — is not silently altered by
+   * whatever happens to sit in `%APPDATA%\biomd`.
+   */
+  userConfigPath?: string | null;
 }
 
 export function loadConfig(options: LoadOptions = {}): LoadedConfig {
@@ -292,12 +306,12 @@ export function loadConfig(options: LoadOptions = {}): LoadedConfig {
   const warnings: string[] = [];
   const sources: Record<string, Source> = {};
 
-  const userPath = userConfigPath();
+  const userPath = options.userConfigPath === undefined ? userConfigPath() : options.userConfigPath;
   const projectPath = options.configPath ? resolve(options.configPath) : findProjectConfig(cwd);
 
   let merged: Record<string, unknown> = {};
 
-  if (existsSync(userPath)) {
+  if (userPath && existsSync(userPath)) {
     merged = merge(merged, readConfigFile(userPath) as Record<string, unknown>, "user-config", sources);
   }
   if (projectPath) {
@@ -329,6 +343,7 @@ export function loadConfig(options: LoadOptions = {}): LoadedConfig {
   // Normalize and sanity-check gateway URLs, which is where mistakes actually
   // happen: pasting the full endpoint instead of the base is the common one.
   for (const [name, gateway] of Object.entries(config.llm.gateways)) {
+    if (gateway.baseUrl === undefined) continue;
     const normalized = normalizeBaseUrl(gateway.baseUrl);
     if (normalized.changed) {
       warnings.push(
@@ -351,7 +366,16 @@ export function loadConfig(options: LoadOptions = {}): LoadedConfig {
     }
   }
 
-  return { config, sources, paths: { user: existsSync(userPath) ? userPath : null, project: projectPath, dotenv: existsSync(dotenvPath) ? dotenvPath : null }, warnings };
+  return {
+    config,
+    sources,
+    paths: {
+      user: userPath && existsSync(userPath) ? userPath : null,
+      project: projectPath,
+      dotenv: existsSync(dotenvPath) ? dotenvPath : null,
+    },
+    warnings,
+  };
 }
 
 /**
@@ -467,6 +491,19 @@ export function resolveGateway(config: Config, override?: string): ResolvedGatew
     throw new ConfigError(
       `Gateway ${JSON.stringify(name)} is not defined.`,
       `Defined gateways: ${Object.keys(config.llm.gateways).join(", ") || "(none)"}`,
+    );
+  }
+
+  if (!gateway.baseUrl) {
+    throw new ConfigError(
+      `Gateway ${JSON.stringify(name)} defines no baseUrl.`,
+      [
+        "Add the API base — not the endpoint; the client appends /chat/completions:",
+        `  { "llm": { "gateways": { ${JSON.stringify(name)}: { "baseUrl": "https://openrouter.ai/api/v1" } } } }`,
+        "",
+        "`biomd config set-key` stores only the key, so the URL has to come from",
+        "the project config or from BIOMD_GATEWAY_URL.",
+      ].join("\n"),
     );
   }
 

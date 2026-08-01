@@ -233,7 +233,11 @@ export function serialize(root: BiomdRoot, options: SerializeOptions = {}): stri
   const profile = options.profile ?? DEFAULT_PROFILE;
 
   const out = toMarkdown(root as unknown as Nodes, {
-    extensions: [gfmTableToMarkdown(), gfmFootnoteToMarkdown()],
+    // `tablePipeAlign` pads every cell to the widest one in its column. A legacy
+    // resource table has one 300-character cell and twenty-five short ones, so
+    // padding turns a readable table into 300-character lines of spaces. The
+    // rendered result is identical either way.
+    extensions: [gfmTableToMarkdown({ tablePipeAlign: false }), gfmFootnoteToMarkdown()],
     handlers: makeHandlers(profile) as unknown as ToMarkdownOptions["handlers"],
     unsafe: BIOMD_UNSAFE,
     bullet: "-",

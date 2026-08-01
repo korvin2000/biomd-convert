@@ -5,12 +5,13 @@
 ### Do I need an API key or an LLM to use this?
 
 No. The pipeline is deterministic-first and produces complete, validated output
-with no model configured. On a corpus with consistent templates most pages
-convert with zero model calls — `corpus run` reports that share as
-**Green share**.
+with no model configured. Two decisions escalate when a gateway exists — what an
+ambiguous table region is, and what to call a column the source never named —
+and `corpus run` counts them either way, reporting `N escalation point(s) left
+as review items`.
 
-Configure a gateway only to resolve what the rules could not, and preferably
-after you know how much that is.
+Configure a gateway to resolve those, preferably after you know how many there
+are.
 
 ### Do I need Chromium?
 
