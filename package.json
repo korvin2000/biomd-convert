@@ -1,0 +1,40 @@
+{
+  "name": "biomd-convert",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Legacy HTML → BioMD Lite 1.6 conversion compiler. Deterministic-first, geometry-aware, gateway-mediated LLM hooks.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "bin": {
+    "biomd": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "biomd": "node --experimental-strip-types src/cli/index.ts"
+  },
+  "dependencies": {
+    "chardet": "2.2.0",
+    "commander": "15.0.0",
+    "iconv-lite": "0.7.3",
+    "mdast-util-gfm-footnote": "2.1.0",
+    "mdast-util-gfm-table": "2.0.0",
+    "mdast-util-to-markdown": "2.1.2",
+    "p-queue": "9.3.3",
+    "parse5": "8.0.1",
+    "zod": "4.4.3"
+  },
+  "optionalDependencies": {
+    "hyphenopoly": "6.1.0",
+    "playwright": "1.62.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
+  }
+}
