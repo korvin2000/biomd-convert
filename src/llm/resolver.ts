@@ -57,8 +57,16 @@ export class GatewayResolver implements DecisionResolver {
     this.#options = options;
   }
 
+  readonly #failures = new Map<string, number>();
+
   stats(): ResolverStats {
-    return { ...this.#stats, byHook: { ...this.#stats.byHook } };
+    return {
+      ...this.#stats,
+      failures: [...this.#failures]
+        .map(([reason, count]) => ({ reason, count }))
+        .sort((a, b) => b.count - a.count),
+      byHook: { ...this.#stats.byHook },
+    };
   }
 
   #runtime() {
@@ -81,6 +89,14 @@ export class GatewayResolver implements DecisionResolver {
         if (event.type === "review") {
           this.#stats.unresolved += 1;
           bucket.unresolved += 1;
+          // Collapse the per-item detail: forty items failing on one dead model
+          // is one problem, and forty lines of it is noise that hides it.
+          const reason = `${event.hook}: ${generalize(event.reason)}`;
+          this.#failures.set(reason, (this.#failures.get(reason) ?? 0) + 1);
+        }
+        if (event.type === "invalid") {
+          const reason = `${event.hook}: reply rejected — ${generalize(event.issues.join("; "))}`;
+          this.#failures.set(reason, (this.#failures.get(reason) ?? 0) + 1);
         }
         this.#options.onEvent?.(event);
       },
@@ -132,6 +148,22 @@ export class GatewayResolver implements DecisionResolver {
     if (outcome.value.headers.length !== request.plan.bands.length) return null;
     return outcome.value.headers.map((h) => h.trim());
   }
+}
+
+/**
+ * Strip the item-specific tail off a failure reason so identical causes group.
+ *
+ * A gateway error body carries the request id and sometimes the payload; keeping
+ * those makes every failure look unique and turns one dead model into forty
+ * distinct "problems".
+ */
+function generalize(reason: string): string {
+  return reason
+    .replace(/\s+/gu, " ")
+    .replace(/"[^"]{40,}"/gu, '"…"')
+    .replace(/\b[0-9a-f]{16,}\b/giu, "…")
+    .trim()
+    .slice(0, 160);
 }
 
 /**

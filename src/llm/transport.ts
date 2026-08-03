@@ -80,13 +80,28 @@ export interface ChatResponse {
   raw: string;
 }
 
+/**
+ * What went wrong, coarsely — enough to decide *how* to retry.
+ *
+ * `structured-output` is the one that matters: it means the request reached a
+ * model and the model answered, but not through the typed channel we asked for.
+ * Retrying that on a different model is pointless; retrying it through a
+ * different channel is exactly right.
+ */
+export type TransportFailure = "network" | "http" | "structured-output" | "identity";
+
 export class TransportError extends Error {
   readonly status?: number;
   readonly retryable: boolean;
-  constructor(message: string, options: { status?: number; retryable?: boolean } = {}) {
+  readonly failure: TransportFailure;
+  constructor(
+    message: string,
+    options: { status?: number; retryable?: boolean; failure?: TransportFailure } = {},
+  ) {
     super(message);
     this.name = "TransportError";
     if (options.status !== undefined) this.status = options.status;
+    this.failure = options.failure ?? "http";
     this.retryable = options.retryable ?? false;
   }
 }
@@ -121,7 +136,61 @@ export class GatewayTransport implements Transport {
     };
   }
 
+  /**
+   * Which typed channel is currently working.
+   *
+   * Sticky: once a channel succeeds, later calls start there rather than paying
+   * for a failing attempt per item. A thousand-file run must not repeat a
+   * discovery it already made.
+   */
+  #activeMode: NonNullable<GatewayConfig["structuredOutput"]> | null = null;
+
+  /**
+   * Ask for typed data, degrading through the channels until one answers.
+   *
+   * §9.2 of the plan specifies `tools` → JSON mode → retry → `REVIEW`, and the
+   * reason is concrete: `response_format: json_schema` is OpenAI-specific and
+   * gateways translate it inconsistently. Routed to a provider that ignores it,
+   * the reply comes back with no content at all — which reads as "the model is
+   * broken" when the request simply used the wrong channel. `tools` is
+   * universally supported and is what the ladder falls back to.
+   *
+   * Only a *structured-output* failure walks the ladder. A network error or a
+   * 5xx is a different problem and propagates for the hook's model-tier retry.
+   */
   async chat(request: ChatRequest): Promise<ChatResponse> {
+    const ladder = this.#ladder();
+    let last: TransportError | null = null;
+
+    for (let i = 0; i < ladder.length; i += 1) {
+      const mode = ladder[i] as NonNullable<GatewayConfig["structuredOutput"]>;
+      try {
+        const reply = await this.#attempt(request, mode);
+        this.#activeMode = mode;
+        return reply;
+      } catch (error) {
+        if (!(error instanceof TransportError) || error.failure !== "structured-output") throw error;
+        last = error;
+      }
+    }
+
+    throw new TransportError(
+      `${last?.message ?? "structured output failed"} — tried ${ladder.join(" → ")}. ` +
+        "The gateway or the model does not return typed data through any channel; check the model id.",
+      { retryable: false, failure: "structured-output" },
+    );
+  }
+
+  /** Configured channel first, then the rest — most portable last. */
+  #ladder(): Array<NonNullable<GatewayConfig["structuredOutput"]>> {
+    const configured = this.#activeMode ?? this.#config.structuredOutput ?? "tools";
+    return [...new Set<NonNullable<GatewayConfig["structuredOutput"]>>([configured, "tools", "json_object"])];
+  }
+
+  async #attempt(
+    request: ChatRequest,
+    mode: NonNullable<GatewayConfig["structuredOutput"]>,
+  ): Promise<ChatResponse> {
     const content: unknown[] = [{ type: "text", text: request.user }];
     for (const image of request.images ?? []) {
       content.push({
@@ -130,7 +199,6 @@ export class GatewayTransport implements Transport {
       });
     }
 
-    const mode = this.#config.structuredOutput ?? "tools";
     const body: Record<string, unknown> = {
       // Anything the gateway needs that is not part of the OpenAI shape —
       // OpenRouter's `provider: { require_parameters: true }`, for instance.
@@ -198,17 +266,27 @@ export class GatewayTransport implements Transport {
         signal: controller.signal,
       });
     } catch (error) {
-      throw new TransportError(`Gateway request failed: ${(error as Error).message}`, { retryable: true });
+      throw new TransportError(`Gateway request failed: ${(error as Error).message}`, {
+        retryable: true,
+        failure: "network",
+      });
     } finally {
       clearTimeout(timer);
     }
 
     if (!response.ok) {
       const text = await response.text().catch(() => "");
+      const channelRejected =
+        response.status >= 400 &&
+        response.status < 500 &&
+        /response_format|json_schema|tool[_ ]?(?:call|choice)|structured/iu.test(text);
       throw new TransportError(`Gateway returned ${response.status}: ${text.slice(0, 500)}`, {
         status: response.status,
-        // 408/429/5xx are worth retrying; a 4xx schema rejection is not.
-        retryable: response.status === 408 || response.status === 429 || response.status >= 500,
+        // 408/429/5xx are worth retrying; a 4xx schema rejection is not — unless
+        // the 4xx is the provider refusing the typed channel itself, which a
+        // different channel may well satisfy.
+        retryable: response.status === 408 || response.status === 429 || response.status >= 500 || channelRejected,
+        ...(channelRejected ? { failure: "structured-output" as const } : {}),
       });
     }
 
@@ -240,6 +318,7 @@ export class GatewayTransport implements Transport {
         `Gateway resolved model ${JSON.stringify(request.model)} to ${JSON.stringify(resolvedModel)}. ` +
           "Cache keys and reproducibility assume these match; fix the gateway routing or set " +
           "enforceModelIdentity:false deliberately.",
+        { failure: "identity" },
       );
     }
 
@@ -249,7 +328,10 @@ export class GatewayTransport implements Transport {
     const raw = typeof rawArguments === "string" && rawArguments !== "" ? rawArguments : rawContent;
 
     if (!raw) {
-      throw new TransportError("Gateway returned neither a tool call nor content.", { retryable: true });
+      throw new TransportError(
+        `Gateway returned neither a tool call nor content (structured output mode ${JSON.stringify(mode)}).`,
+        { retryable: true, failure: "structured-output" },
+      );
     }
 
     let data: unknown;
@@ -260,7 +342,10 @@ export class GatewayTransport implements Transport {
       // silently repairing malformed output would hide a transport problem.
       const fenced = /```(?:json)?\s*([\s\S]*?)```/u.exec(raw);
       if (!fenced?.[1]) {
-        throw new TransportError(`Gateway reply is not valid JSON: ${raw.slice(0, 200)}`, { retryable: true });
+        throw new TransportError(`Gateway reply is not valid JSON: ${raw.slice(0, 200)}`, {
+          retryable: true,
+          failure: "structured-output",
+        });
       }
       data = JSON.parse(fenced[1]);
     }

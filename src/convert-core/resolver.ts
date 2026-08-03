@@ -53,6 +53,14 @@ export interface ResolverStats {
   calls: number;
   /** Decisions the resolver could not make; they stay review items. */
   unresolved: number;
+  /**
+   * Distinct reasons decisions were abandoned, most frequent first.
+   *
+   * Reported because "3 calls, 0 resolved" is not a diagnosis. A mistyped model
+   * id, an expired key and an exhausted budget all produce that line, and only
+   * the reason distinguishes them.
+   */
+  failures: Array<{ reason: string; count: number }>;
   /** Per-hook counts, for the run report. */
   byHook: Record<string, { calls: number; cacheHits: number; unresolved: number }>;
 }
@@ -79,7 +87,43 @@ export interface DecisionResolver {
 }
 
 export function emptyStats(): ResolverStats {
-  return { consulted: 0, resolved: 0, deterministic: 0, cacheHits: 0, calls: 0, unresolved: 0, byHook: {} };
+  return {
+    consulted: 0,
+    resolved: 0,
+    deterministic: 0,
+    cacheHits: 0,
+    calls: 0,
+    unresolved: 0,
+    failures: [],
+    byHook: {},
+  };
+}
+
+/** Merge two stat sets, e.g. per-file totals across a corpus run. */
+export function mergeStats(a: ResolverStats, b: ResolverStats): ResolverStats {
+  const failures = new Map<string, number>();
+  for (const list of [a.failures, b.failures]) {
+    for (const f of list) failures.set(f.reason, (failures.get(f.reason) ?? 0) + f.count);
+  }
+  const byHook: ResolverStats["byHook"] = { ...a.byHook };
+  for (const [hook, counts] of Object.entries(b.byHook)) {
+    const existing = byHook[hook] ?? { calls: 0, cacheHits: 0, unresolved: 0 };
+    byHook[hook] = {
+      calls: existing.calls + counts.calls,
+      cacheHits: existing.cacheHits + counts.cacheHits,
+      unresolved: existing.unresolved + counts.unresolved,
+    };
+  }
+  return {
+    consulted: a.consulted + b.consulted,
+    resolved: a.resolved + b.resolved,
+    deterministic: a.deterministic + b.deterministic,
+    cacheHits: a.cacheHits + b.cacheHits,
+    calls: a.calls + b.calls,
+    unresolved: a.unresolved + b.unresolved,
+    failures: [...failures].map(([reason, count]) => ({ reason, count })).sort((x, y) => y.count - x.count),
+    byHook,
+  };
 }
 
 /** The default: never escalates, so a run with no gateway behaves exactly as before. */

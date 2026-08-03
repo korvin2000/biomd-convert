@@ -35,7 +35,7 @@ import {
   runTransportProbe,
 } from "../llm/index.js";
 import type { DecisionResolver, ResolverStats } from "../convert-core/index.js";
-import { loadConfig, resolveGateway, redactKey, type Config } from "./config.js";
+import { ConfigError, loadConfig, resolveGateway, redactKey, type Config } from "./config.js";
 import { registerConfigCommands } from "./config-cmd.js";
 
 /**
@@ -114,7 +114,29 @@ function describeResolverStats(stats: ResolverStats, budget: Budget | null): str
       usage.estimatedCostUsd > 0 ? `est. $${usage.estimatedCostUsd.toFixed(4)}` : "unpriced",
     );
   }
-  return parts.join("  ");
+
+  const lines = [parts.join("  ")];
+
+  // Calls that resolved nothing are the case that most needs explaining: a
+  // mistyped model id, an expired key and an exhausted budget all look like
+  // "the LLM does nothing" until the reason is on screen.
+  if (stats.failures.length > 0) {
+    lines.push("");
+    if (stats.calls > 0 && stats.resolved === 0) {
+      lines.push(
+        `                ${stats.calls} model call(s) were made and none produced a usable decision:`,
+      );
+    } else {
+      lines.push("                unresolved escalations:");
+    }
+    for (const failure of stats.failures.slice(0, 5)) {
+      lines.push(`                  ${failure.count}× ${failure.reason}`);
+    }
+    if (stats.calls > 0 && stats.resolved === 0) {
+      lines.push("                Check the model id and key with: biomd probe");
+    }
+  }
+  return lines.join("\n");
 }
 
 /**
@@ -402,18 +424,56 @@ program
   .command("eval")
   .description("Score converted output against hand-written reference .bio.md files")
   .argument("[actualDir]", "directory of produced .bio.md files (defaults to config outDir)")
-  .option("-e, --expected <dir>", "directory of reference .bio.md files", "fixtures/out")
+  .option("-e, --expected <dir>", "directory of reference .bio.md files (default: config `expectedDir`)")
   .option("-v, --verbose", "list what each document is missing")
   .option("--json <file>", "also write the full score as JSON")
   .option("-c, --config <file>", "explicit config file")
   .action(async (actualArg: string | undefined, options) => {
     const cfg = settings(options);
     const actualDir = resolve(actualArg ?? cfg.outDir);
-    const expectedDir = resolve(options.expected as string);
+    const expectedArg = (options.expected as string | undefined) ?? cfg.expectedDir;
+
+    // Scoring needs a reference set, and most projects do not have one — it is
+    // hand-written, one document at a time. Saying so is the whole job here; the
+    // previous behaviour defaulted to a path inside this repository and, run
+    // anywhere else, surfaced as a raw ENOENT stack trace from `readdir`.
+    if (!expectedArg) {
+      process.stderr.write(
+        [
+          "biomd eval compares your output against reference .bio.md files that you wrote by hand.",
+          "",
+          "Point it at them:",
+          "  biomd eval --expected ./reference",
+          "",
+          "…or set the directory once, in biomd.config.json:",
+          '  "expectedDir": "./reference"',
+          "",
+          "A reference document is simply the conversion you would have written yourself for one",
+          "page, named after it — `barrios.htm` → `barrios.bio.md`. A handful is enough to measure",
+          "with; they do not need to cover the corpus.",
+          "",
+        ].join("\n"),
+      );
+      process.exitCode = 1;
+      return;
+    }
+
+    const expectedDir = resolve(expectedArg);
+    let entries: string[];
+    try {
+      entries = await readdir(expectedDir);
+    } catch {
+      process.stderr.write(
+        `No reference directory at ${expectedDir}.\n` +
+          "Pass --expected <dir>, or set `expectedDir` in biomd.config.json.\n",
+      );
+      process.exitCode = 1;
+      return;
+    }
 
     const files: Array<{ name: string; expected: string; actual: string }> = [];
     const absent: string[] = [];
-    for (const entry of (await readdir(expectedDir)).sort()) {
+    for (const entry of entries.sort()) {
       if (!entry.endsWith(".bio.md")) continue;
       const actualPath = join(actualDir, entry);
       let actual: string;
@@ -427,7 +487,9 @@ program
     }
 
     if (files.length === 0) {
-      process.stderr.write(`No reference documents in ${expectedDir}\n`);
+      process.stderr.write(
+        `No \`.bio.md\` reference documents in ${expectedDir} (found ${entries.length} other entr${entries.length === 1 ? "y" : "ies"}).\n`,
+      );
       process.exitCode = 1;
       return;
     }
@@ -662,7 +724,23 @@ function printResult(
 
 registerConfigCommands(program);
 
+/**
+ * A stack trace is for a bug in this program, not for a missing directory.
+ *
+ * Filesystem and configuration errors are things the person running the command
+ * can fix, and burying the one line that says which path was wrong under ten
+ * frames of `node:internal/fs/promises` helps nobody.
+ */
 program.parseAsync(process.argv).catch((error: unknown) => {
-  process.stderr.write(`${(error as Error).stack ?? String(error)}\n`);
+  const err = error as NodeJS.ErrnoException;
+  const expected = new Set(["ENOENT", "EACCES", "EISDIR", "ENOTDIR", "EPERM"]);
+  if (err?.code && expected.has(err.code)) {
+    process.stderr.write(`${err.message}\n`);
+    if (err.code === "ENOENT") process.stderr.write("The path above does not exist.\n");
+  } else if (err instanceof ConfigError) {
+    process.stderr.write(`${err.message}\n`);
+  } else {
+    process.stderr.write(`${err?.stack ?? String(error)}\n`);
+  }
   process.exit(1);
 });

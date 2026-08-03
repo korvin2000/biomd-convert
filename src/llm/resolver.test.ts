@@ -97,6 +97,34 @@ describe("the pipeline consults the resolver", () => {
     expect(result.resolverStats.resolved).toBe(0);
   });
 
+  it("says why a call resolved nothing", async () => {
+    // "3 calls, 0 resolved" is not a diagnosis, and a mistyped model id used to
+    // produce exactly that line and nothing else — every abandonment returned
+    // without emitting, so the reason never reached the report.
+    const { resolver } = makeResolver(() => {
+      throw new Error("Gateway returned neither a tool call nor content.");
+    });
+    const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
+
+    expect(result.resolverStats.calls).toBeGreaterThan(0);
+    expect(result.resolverStats.unresolved).toBeGreaterThan(0);
+    expect(result.resolverStats.failures.length).toBeGreaterThan(0);
+    expect(result.resolverStats.failures[0]?.reason).toMatch(/neither a tool call nor content/u);
+  });
+
+  it("collapses identical failures instead of listing every item", async () => {
+    const { resolver } = makeResolver(() => {
+      throw new Error("Gateway returned neither a tool call nor content.");
+    });
+    await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "a.htm" });
+    await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "b.htm" });
+
+    const stats = resolver.stats();
+    // One dead model is one problem, however many items hit it.
+    expect(stats.failures).toHaveLength(1);
+    expect(stats.failures[0]?.count).toBe(stats.unresolved);
+  });
+
   it("rejects a label set of the wrong width rather than emitting a ragged table", async () => {
     const { resolver } = makeResolver(() => ({
       headers: ["Только одна"],

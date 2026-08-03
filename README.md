@@ -109,6 +109,13 @@ biomd corpus run --llm assist
 biomd corpus run --replay          # re-run offline from the decision cache
 ```
 
+If a run reports calls that resolved nothing, it now says why — a mistyped model
+id, an expired key and an exhausted budget all produce the same "0 resolved"
+line and only the reason distinguishes them. The transport also degrades
+`json_schema` → `tools` → `json_object` on its own: `response_format` is
+OpenAI-specific, and a provider that ignores it returns an empty message rather
+than an error.
+
 Every decision is cached on the *resolved* model identity, so a second run over
 the same corpus costs nothing and produces byte-identical output. Budgets are
 reserved before a request is built, and a budget refusal, a dead gateway or a
@@ -121,10 +128,13 @@ Full details, LiteLLM setup, budgets and the R1/R2/R3 transport rules:
 ## Measuring conversion quality
 
 `biomd eval` scores produced output against hand-written reference documents —
-what a person decided the conversion *should* look like:
+what a person decided the conversion *should* look like. It needs a reference
+set, which you write yourself: for a handful of pages, the conversion you would
+have produced by hand, named after the source (`barrios.htm` → `barrios.bio.md`).
+A dozen is plenty; they do not need to cover the corpus.
 
 ```bash
-biomd eval ./out --expected ./fixtures/out -v
+biomd eval --expected ./reference -v      # or set `expectedDir` in the config
 ```
 
 ```

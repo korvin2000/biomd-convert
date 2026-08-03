@@ -245,6 +245,10 @@ biomd corpus run --llm assist          # escalate the residual ambiguity
 biomd corpus run --replay              # re-run offline from the decision cache
 ```
 
+If the run reports model calls that resolved nothing, the reason is printed
+underneath. The commonest cause is a model id the gateway does not recognise —
+`biomd probe` confirms it in one request.
+
 Decisions are cached on the resolved model identity, so a second run costs
 nothing and produces byte-identical output. A budget refusal, an unreachable
 gateway or a malformed reply all fall back to the deterministic answer with the

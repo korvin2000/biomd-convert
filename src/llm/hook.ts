@@ -75,6 +75,20 @@ export async function runHook<TCtx, TItem, TOut>(
 ): Promise<HookOutcome<TOut>> {
   const emit = runtime.onEvent ?? (() => undefined);
 
+  /**
+   * Give up on this item, loudly.
+   *
+   * Every abandonment has to emit, not just the one at the end of the tier loop.
+   * A transport failure and an exhausted budget used to return silently, so a
+   * run could make a paid call per item, have every one of them fail, and report
+   * nothing at all — which is precisely how a mistyped model id looks like
+   * "the LLM does nothing" instead of like an error.
+   */
+  const giveUp = (reason: string, issues?: string[]): HookOutcome<TOut> => {
+    emit({ type: "review", hook: hook.id, item: itemId, reason });
+    return { status: "review", reason, ...(issues && issues.length > 0 ? { issues } : {}) };
+  };
+
   // 1 — the deterministic path. Cheapest, reproducible, and the one that must
   // carry the majority of the corpus.
   const local = hook.deterministic?.(ctx, item) ?? null;
@@ -125,7 +139,7 @@ export async function runHook<TCtx, TItem, TOut>(
     }
 
     if (runtime.replay) {
-      return { status: "review", reason: "replay mode and no cached decision for this item" };
+      return giveUp("replay mode and no cached decision for this item");
     }
 
     // Budget is reserved before the request is built, so concurrent workers
@@ -134,7 +148,7 @@ export async function runHook<TCtx, TItem, TOut>(
       runtime.budget.reserve({ hook: hook.id, model, estimatedInputTokens: estimateTokens(request) });
     } catch (error) {
       if (error instanceof BudgetExceededError) {
-        return { status: "review", reason: `budget exhausted: ${error.message}` };
+        return giveUp(`budget exhausted: ${error.message}`);
       }
       throw error;
     }
@@ -150,7 +164,7 @@ export async function runHook<TCtx, TItem, TOut>(
         emit({ type: "escalate", hook: hook.id, item: itemId, from: model, to: hook.models[tier + 1] as string });
         continue;
       }
-      return { status: "review", reason: `transport failure: ${(error as Error).message}` };
+      return giveUp(`transport failure: ${(error as Error).message}`);
     }
 
     runtime.budget.settle({
@@ -202,9 +216,8 @@ export async function runHook<TCtx, TItem, TOut>(
     return { status: "ok", value: parsed.data, source: "model", model: reply.resolvedModel };
   }
 
-  const reason = lastIssues.length > 0 ? `no tier produced a valid reply` : "no tier produced a reply";
-  emit({ type: "review", hook: hook.id, item: itemId, reason });
-  return { status: "review", reason, ...(lastIssues.length > 0 ? { issues: lastIssues } : {}) };
+  const reason = lastIssues.length > 0 ? "no tier produced a valid reply" : "no tier produced a reply";
+  return giveUp(reason, lastIssues);
 }
 
 function issuesOf(error: z.ZodError): string[] {

@@ -13,10 +13,20 @@ import { rowCells } from "../ladom/grid.js";
 import { type Classification, classifyTier1, classifyTier2, extractFeatures } from "../convert-core/classify.js";
 import type { ChatImage } from "./transport.js";
 
+/**
+ * A rationale is a diagnostic, not content.
+ *
+ * The bound is generous and enforced by truncation at the point of use, not by
+ * rejection: throwing away an otherwise-correct classification because the model
+ * explained itself in 430 characters instead of 400 wastes the call *and* leaves
+ * the item unresolved. Brevity is asked for in the prompt, where asking is free.
+ */
+const RATIONALE_LIMIT = 400;
+
 export const TableClassSchema = z.object({
   class: z.enum(["SHELL", "LAYOUT", "DATA", "HYBRID", "CATALOG"]),
   confidence: z.number().min(0).max(1),
-  rationale: z.string().max(400),
+  rationale: z.string().max(4000),
 });
 export type TableClassReply = z.infer<typeof TableClassSchema>;
 
@@ -34,7 +44,7 @@ export interface TableClassifyContext {
  */
 export const tableClassifyHook: Hook<TableClassifyContext, TableGrid, TableClassReply> = {
   id: "table.classify",
-  version: "1",
+  version: "2",
   schema: TableClassSchema,
   models: ["claude-haiku-4-5-20251001", "claude-sonnet-5"],
   escalateBelow: 0.6,
@@ -55,6 +65,7 @@ export const tableClassifyHook: Hook<TableClassifyContext, TableGrid, TableClass
     "the target format's table cells are inline-only.",
     "Report the confidence you actually have. Low confidence routes to human review, which is the",
     "correct outcome for a genuinely ambiguous table.",
+    "Keep the rationale under 300 characters: name the evidence, do not restate the definitions.",
   ].join("\n"),
 
   // Tiers 1 and 2. Returning null is the escalation signal.
@@ -134,7 +145,12 @@ function toReply(classification: Classification): TableClassReply {
 
 /** Convert a hook reply back into the pipeline's classification shape. */
 export function replyToClassification(reply: TableClassReply, tier: 1 | 2 | 3 | 4): Classification {
-  return { class: reply.class, confidence: reply.confidence, tier, reason: reply.rationale };
+  return {
+    class: reply.class,
+    confidence: reply.confidence,
+    tier,
+    reason: reply.rationale.slice(0, RATIONALE_LIMIT),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -144,7 +160,7 @@ export function replyToClassification(reply: TableClassReply, tier: 1 | 2 | 3 | 
 export const TableHeaderSchema = z.object({
   headers: z.array(z.string().min(1).max(60)),
   confidence: z.number().min(0).max(1),
-  rationale: z.string().max(300),
+  rationale: z.string().max(4000),
 });
 export type TableHeaderReply = z.infer<typeof TableHeaderSchema>;
 
@@ -174,7 +190,7 @@ export interface TableHeaderContext {
  */
 export const tableHeaderHook: Hook<TableHeaderContext, { rows: string }, TableHeaderReply> = {
   id: "table.records",
-  version: "1",
+  version: "2",
   schema: TableHeaderSchema,
   models: ["claude-haiku-4-5-20251001", "claude-sonnet-5"],
   escalateBelow: 0.5,
@@ -193,7 +209,9 @@ export const tableHeaderHook: Hook<TableHeaderContext, { rows: string }, TableHe
     "- 1-3 words each; no numbering, no 'Column 1', no punctuation at the end;",
     "- a column of resource links is named for the kind of resource, not for the link text;",
     "- if a column's content is genuinely unclear, still give the most defensible label and",
-    "  lower the confidence, so the result routes to human review.",
+    "  lower the confidence, so the result routes to human review;",
+    "- the labels must be distinct from one another;",
+    "- keep the rationale under 200 characters.",
   ].join("\n"),
 
   buildPayload(ctx, item) {

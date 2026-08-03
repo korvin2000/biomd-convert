@@ -106,6 +106,14 @@ export const ConfigSchema = z.object({
   inputDir: z.string().optional(),
   assetRoot: z.string().optional(),
   outDir: z.string().default("out"),
+  /**
+   * Hand-written reference `.bio.md` files for `biomd eval`.
+   *
+   * No default: a reference set is written by a person, one document at a time,
+   * so most projects do not have one and guessing a path only produces a
+   * confusing error somewhere else.
+   */
+  expectedDir: z.string().optional(),
   workDir: z.string().default(".biomd-work"),
   corpus: z.string().default("corpus/corpus-profile.json"),
   jobs: z.number().int().positive().default(4),
