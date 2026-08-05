@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\\\work.ai\\\\claude-project\")",
+      "Bash(npm -v)",
+      "Bash(npm run *)"
+    ]
+  }
+}

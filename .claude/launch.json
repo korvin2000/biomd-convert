@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fixtures",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/serve-static.mjs", "biomd-convert/fixtures/html", "8123"],
+      "port": 8123
+    },
+    {
+      "name": "rendered",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/serve-static.mjs", "analyze/rendered", "8124"],
+      "port": 8124
+    }
+  ]
+}

@@ -24,7 +24,16 @@ import { parseHtml } from "../ladom/parse.js";
 import { quarantineServerMarkup } from "../ladom/quarantine.js";
 import { decodeHtml } from "../ladom/encoding.js";
 import { PROFILES, resolveProfile, read as readBiomd, lintText } from "../biomd-ast/index.js";
-import { renderReport, scoreDocumentSources } from "../eval/index.js";
+import {
+  SourceIndex,
+  buildLedger,
+  diffDocuments,
+  renderLedger,
+  renderReport,
+  scoreDocumentSources,
+  triage,
+  type LedgerFinding,
+} from "../eval/index.js";
 import { ENGINE_VERSION, JobStore, hashOf, writeAtomic } from "./store.js";
 import {
   Budget,
@@ -499,6 +508,101 @@ program
     for (const name of absent) process.stdout.write(`note: no output produced for ${name}\n`);
     if (options.json) {
       await writeAtomic(resolve(options.json as string), `${JSON.stringify({ overall, documents }, null, 2)}\n`);
+    }
+  });
+
+// ---------------------------------------------------------------------------
+
+program
+  .command("diff")
+  .description("L2: structural adjudication of produced .bio.md against the reference, as localized findings")
+  .argument("[produced]", "produced .bio.md, or omit for a corpus-wide roll-up over the reference set")
+  .argument("[reference]", "reference .bio.md")
+  .option("-e, --expected <dir>", "directory of reference .bio.md files (default: config `expectedDir`)")
+  .option("-i, --input-dir <dir>", "directory of source .htm files, for source-backing triage")
+  .option("--json <file>", "write the defect ledger here")
+  .option("--class <name>", "only findings whose class starts with this prefix")
+  .option("--doc <name>", "only this document")
+  .option("--backing <kind>", "source-backed | source-unbacked | ambiguous")
+  .option("-l, --limit <n>", "classes to list in the roll-up", "30")
+  .option("-v, --verbose", "list every finding, not just the class roll-up")
+  .option("-c, --config <file>", "explicit config file")
+  .action(async (producedArg: string | undefined, referenceArg: string | undefined, options) => {
+    const cfg = settings(options);
+    const pairs: Array<{ doc: string; produced: string; reference: string; source: string | null }> = [];
+
+    if (producedArg && referenceArg) {
+      pairs.push({
+        doc: basename(producedArg).replace(/\.bio\.md$/u, ""),
+        produced: await readFile(resolve(producedArg), "utf8"),
+        reference: await readFile(resolve(referenceArg), "utf8"),
+        source: null,
+      });
+    } else {
+      const expectedArg = (options.expected as string | undefined) ?? cfg.expectedDir;
+      if (!expectedArg) {
+        process.stderr.write("biomd diff needs reference documents: pass two files, --expected <dir>, or set `expectedDir`.\n");
+        process.exitCode = 1;
+        return;
+      }
+      const expectedDir = resolve(expectedArg);
+      const actualDir = resolve(producedArg ?? cfg.outDir);
+      const inputDir = resolve((options.inputDir as string | undefined) ?? cfg.inputDir ?? expectedDir);
+      for (const entry of (await readdir(expectedDir)).sort()) {
+        if (!entry.endsWith(".bio.md")) continue;
+        const doc = entry.replace(/\.bio\.md$/u, "");
+        let produced = "";
+        try {
+          produced = await readFile(join(actualDir, entry), "utf8");
+        } catch {
+          process.stdout.write(`note: no output produced for ${doc}\n`);
+        }
+        let source: string | null = null;
+        for (const ext of [".htm", ".html"]) {
+          try {
+            source = decodeHtml(await readFile(join(inputDir, `${doc}${ext}`))).text;
+            break;
+          } catch {
+            /* the source is optional; without it every finding stays `ambiguous` */
+          }
+        }
+        pairs.push({ doc, produced, reference: await readFile(join(expectedDir, entry), "utf8"), source });
+      }
+    }
+
+    const all: LedgerFinding[] = [];
+    for (const pair of pairs) {
+      const index = pair.source === null ? null : new SourceIndex(pair.source);
+      for (const f of diffDocuments(pair.doc, pair.produced, pair.reference).findings) {
+        all.push({ ...f, backing: triage(f.reference, f.produced, index, f.class, f.evidence) });
+      }
+    }
+
+    const classPrefix = options.class as string | undefined;
+    const docFilter = options.doc as string | undefined;
+    const backingFilter = options.backing as string | undefined;
+    const filtered = all.filter(
+      (f) =>
+        (!classPrefix || f.class.startsWith(classPrefix)) &&
+        (!docFilter || f.doc === docFilter) &&
+        (!backingFilter || f.backing === backingFilter),
+    );
+
+    const ledger = buildLedger(filtered, pairs.map((p) => p.doc));
+    process.stdout.write(renderLedger(ledger, Number(options.limit ?? 30)));
+
+    if (options.verbose === true || (producedArg && referenceArg)) {
+      process.stdout.write("\n");
+      for (const f of ledger.findings) {
+        const where = `${f.doc}:${f.referenceLine ?? "-"}→${f.producedLine ?? "-"}`;
+        process.stdout.write(`${f.severity[0]!.toUpperCase()} ${f.class}  ${where}  ${f.path}  [${f.backing}]\n`);
+        if (f.reference !== null) process.stdout.write(`    want: ${f.reference}\n`);
+        if (f.produced !== null) process.stdout.write(`    got : ${f.produced}\n`);
+      }
+    }
+
+    if (options.json) {
+      await writeAtomic(resolve(options.json as string), `${JSON.stringify(ledger, null, 2)}\n`);
     }
   });
 
