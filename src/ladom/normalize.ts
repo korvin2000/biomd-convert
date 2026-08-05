@@ -219,6 +219,11 @@ function isWrapperTable(table: LadomNode): boolean {
   if (Number.isFinite(border) && border > 0) return false;
   if (table.attrs["bgcolor"] || table.attrs["background"]) return false;
   if (table.style && (table.style.borderTopWidth > 0 || table.style.backgroundImage !== "none")) return false;
+  // A single cell that draws its own border is a notice the author boxed, not
+  // an indentation wrapper. Unwrapping it discards the only evidence that the
+  // block is set apart (§12) — and the table around it carries `border="0"`,
+  // because the border was put on the cell.
+  if (cellCarriesBorder(table)) return false;
 
   let rows = 0;
   let cells = 0;
@@ -232,6 +237,15 @@ function isWrapperTable(table: LadomNode): boolean {
     if (el.tag === "td" || el.tag === "th") cells += 1;
   }
   return rows === 1 && cells === 1;
+}
+
+function cellCarriesBorder(table: LadomNode): boolean {
+  for (const el of walkElements(table)) {
+    if (el.tag !== "td" && el.tag !== "th") continue;
+    if (el.style && Math.min(el.style.borderTopWidth, el.style.borderLeftWidth) >= 2) return true;
+    if (/(?:^|;)\s*border(?:-width)?\s*:\s*(?![0-1]\D)\d/iu.test(el.attrs["style"] ?? "")) return true;
+  }
+  return false;
 }
 
 function unwrap(el: LadomNode): void {

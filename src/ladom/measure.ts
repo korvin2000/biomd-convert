@@ -81,6 +81,7 @@ const COLLECT_SCRIPT = `() => {
         borderBottomWidth: num(cs.borderBottomWidth),
         borderLeftWidth: num(cs.borderLeftWidth),
         borderStyle: cs.borderTopStyle,
+        borderColor: cs.borderTopColor,
         paddingTop: num(cs.paddingTop),
         paddingLeft: num(cs.paddingLeft),
         marginTop: num(cs.marginTop),
@@ -373,5 +374,19 @@ function contentTypeFor(file: string): string {
 
 export async function createMeasurer(mode: VisualMode): Promise<Measurer> {
   if (mode === "never") return new NullMeasurer();
-  return ChromiumMeasurer.create();
+  const measurer = await ChromiumMeasurer.create();
+
+  // `auto` may degrade; `always` may not. Silently substituting attribute
+  // guesswork for a render contradicts what the operator asked for, and the
+  // difference is not cosmetic — alignment, image size, table lanes and
+  // caption binding all read the computed style. Failing here costs one run;
+  // failing silently costs a thousand files that look converted.
+  if (mode === "always" && !measurer.available) {
+    throw new Error(
+      "visual: always was requested, but Chromium is not available, so the page cannot be rendered.\n" +
+        "Install it with `npx playwright install chromium`, or set visual to \"auto\" to accept " +
+        "attribute-only heuristics and a lower-quality conversion.",
+    );
+  }
+  return measurer;
 }

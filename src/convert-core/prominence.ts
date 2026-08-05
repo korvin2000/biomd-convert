@@ -121,6 +121,17 @@ function isBold(node: LadomNode): boolean {
 }
 
 function isCentered(node: LadomNode): boolean {
+  // When the page was rendered, the computed value is the answer and the
+  // ancestor walk is not merely redundant but wrong. `align="center"` is a
+  // *presentational hint*: it sits below author CSS in the cascade, so
+  // `<p class="t" align="center">` under `.t { text-align: Justify }` renders
+  // justified. Reading the attribute called it centred and promoted every
+  // quoted document on the page to a section heading.
+  if (node.style) {
+    const measured = node.style.textAlign;
+    return measured === "center" || measured === "-webkit-center";
+  }
+
   let cur: LadomNode | null = node;
   let hops = 0;
   while (cur && hops < 4) {

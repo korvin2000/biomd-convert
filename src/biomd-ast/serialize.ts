@@ -250,7 +250,12 @@ export function serialize(root: BiomdRoot, options: SerializeOptions = {}): stri
     fence: "`",
     fences: true,
     incrementListMarker: true,
-    resourceLink: false,
+    // Always `[label](target)`, never the `<https://…>` autolink shorthand.
+    // The autolink is a CommonMark spelling the BioMD renderer does not
+    // recognise, so a link whose label happens to equal its href — the whole
+    // "источники" section of a legacy page — silently stopped being a link.
+    // A `mailto:` autolink is worse: it drops the scheme from the output text.
+    resourceLink: true,
     tightDefinitions: true,
   });
 

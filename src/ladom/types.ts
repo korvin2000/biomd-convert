@@ -43,6 +43,8 @@ export interface ResolvedStyle {
   borderBottomWidth: number;
   borderLeftWidth: number;
   borderStyle: string;
+  /** Top border colour, the palette evidence for a semantic frame (§12). */
+  borderColor: string;
   paddingTop: number;
   paddingLeft: number;
   marginTop: number;

@@ -49,7 +49,7 @@ import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
 import { planDataTable } from "./data-table.js";
 import { recoverHeadings } from "./headings.js";
 import { type DecisionResolver, NULL_RESOLVER, type ResolverStats } from "./resolver.js";
-import { type LayoutFidelity, type TableOutcome, recoverStructure } from "./structure.js";
+import { type LayoutFidelity, type TableOutcome, enforceSingleTitle, recoverStructure } from "./structure.js";
 import { checkConservation, type ConservationReport } from "./conservation.js";
 import {
   type DehyphenateOptions,
@@ -392,6 +392,11 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   });
   warnings.push(...structure.warnings);
   for (const entry of structure.ledger) ledger.record({ ...entry, pass: entry.pass || "structure" });
+
+  // §2 is an invariant of the plan, not a finding of the validator: a file that
+  // is written and then reported as invalid is a file that ships.
+  const title = enforceSingleTitle(structure.root);
+  warnings.push(...title.changes);
 
   // ---- Stage 12: serialize ------------------------------------------------
   const markdown = serialize(structure.root, { profile });

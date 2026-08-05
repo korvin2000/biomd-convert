@@ -18,18 +18,21 @@ import {
   type DowngradeRecord,
   type TargetProfile,
   downgradeNotice,
+  makeAlign,
   makeColumn,
   makeColumns,
   makeGroupedImage,
   makeImage,
+
   makeImages,
   makeLead,
   makeNav,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
 import type { TableGrid } from "../ladom/grid.js";
-import { type LadomNode, textOf } from "../ladom/types.js";
+import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
+import { stripLabelGlyphs } from "./headings.js";
 import {
   type LogicalTablePlan,
   type PlannedCell,
@@ -39,6 +42,26 @@ import {
 } from "./data-table.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
+import {
+  type RunLine,
+  groupIsLineated,
+  groupLines,
+  isWrapBreak,
+  lineText,
+  phrasingText,
+  splitLines,
+} from "./lines.js";
+import { frameEvidenceFor } from "./frames.js";
+import { prominenceOf } from "./prominence.js";
+import {
+  captionFor,
+  contentWidthOf,
+  formsImageRow,
+  groupColumnsFor,
+  imageWidthOf,
+  isDecorative,
+  sizeTokenFor,
+} from "./media.js";
 
 export type LayoutFidelity = "faithful" | "simplified";
 
@@ -102,6 +125,39 @@ interface Ctx {
   counter: { n: number };
   tables: TableOutcome[];
   /**
+   * Width of the article's content box, in CSS px, when measurement ran.
+   *
+   * Image size tokens are a share of *this*, not of the nearest measured
+   * ancestor: the nearest ancestor of a portrait is usually the paragraph the
+   * portrait itself stretched, which made every image `full`.
+   */
+  contentWidth: number | undefined;
+  /** Body-text prominence of this page, for "is this block smaller than prose?". */
+  bodyProminence: number;
+  /** Visible characters in the whole document, so "is this block the article?" is answerable. */
+  documentTextLength: number;
+  /** Emitted mdast image → the source node it came from, for late re-lowering. */
+  imageNodes: Map<object, LadomNode>;
+  /** Paragraphs whose source block reads as a caption: short, centred or small. */
+  captionEligible: WeakSet<object>;
+  /** Headings recovered from typography, so a menu below one can claim its label. */
+  recoveredHeadings: WeakSet<object>;
+  /** Recovered headings that sit in a centred block — the shape of a caption. */
+  captionHeadings: WeakSet<object>;
+  /** Whether the run currently being lowered sits in a caption-shaped block. */
+  inCaptionContext: boolean;
+  /** Whether that block is *centred*, which a caption is and a small note is not. */
+  inCenteredBlock: boolean;
+  /**
+   * How many table regions enclose the node being lowered.
+   *
+   * One is the page shell — every 1998 page is a table, and the article inside
+   * it is still the top level. Two or more is a real nested region: a record
+   * card, a discography block, a resource matrix. A label recovered there is a
+   * sub-section of whatever introduced the region, so it gets `###`.
+   */
+  tableDepth: number;
+  /**
    * Depth inside a bounded container (`column`, `align`, `frame`).
    *
    * §4.1 forbids `nav` there, and the bounded-content filter would drop one
@@ -109,6 +165,8 @@ interface Ctx {
    * shape of that rule.
    */
   boundedDepth: number;
+  /** Depth inside a `frame`, which is already a bounded group of its own. */
+  frameDepth: number;
 }
 
 /**
@@ -169,7 +227,18 @@ export function recoverStructure(
     emittedIds: new Set(),
     counter: { n: 0 },
     tables: [],
+    contentWidth: contentWidthOf(root),
+    bodyProminence: bodyProminenceOf(root),
+    documentTextLength: textOf(root).trim().length,
+    imageNodes: new Map(),
+    captionEligible: new WeakSet(),
+    recoveredHeadings: new WeakSet(),
+    captionHeadings: new WeakSet(),
+    inCaptionContext: false,
+    inCenteredBlock: false,
+    tableDepth: 0,
     boundedDepth: 0,
+    frameDepth: 0,
   };
 
   const children = blocksFrom(root, ctx);
@@ -193,8 +262,18 @@ function nextId(ctx: Ctx, prefix: string): string {
 function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   const out: BiomdContent[] = [];
   let inlineRun: LadomNode[] = [];
+  const outerCaptionContext = ctx.inCaptionContext;
+  const outerCentered = ctx.inCenteredBlock;
+  ctx.inCaptionContext = isCaptionContext(node, ctx);
+  ctx.inCenteredBlock = node.kind === "element" && prominenceOf(node).centered;
 
   const flushInline = (): void => {
+    if (inlineRun.length === 0) return;
+
+    // Furniture first: a spacer, a nav arrow or a rule image is not content,
+    // and leaving it in the run makes every downstream test — "is this run one
+    // image?", "are these two images a row?" — answer the wrong question.
+    inlineRun = dropDecorative(inlineRun, ctx);
     if (inlineRun.length === 0) return;
 
     // A floated image is not inline with the text — the text wraps *around* it.
@@ -231,7 +310,12 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     // paragraph containing an image. Only `::: image` carries position, size,
     // caption and a separate click target; a bare `![]()` gets none of them,
     // so defaulting to the directive is what preserves the meaning.
-    const images = inlineRun.filter((n) => n.kind === "element" && n.tag === "img");
+    // Images *including* the ones a link wraps. `<a href=big><img src=thumb>`
+    // is the single most common standalone figure in this corpus, and looking
+    // only at direct children missed every one of them: the run's one element
+    // is the `<a>`, so the figure degraded to `[![](thumb)](big)` — inline
+    // Markdown that carries no position, size, caption or frame.
+    const images = runImages(inlineRun);
     const otherContent = inlineRun.some(
       (n) =>
         (n.kind === "text" && (n.value ?? "").trim() !== "") ||
@@ -247,9 +331,22 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
       }
     }
 
+    // Two or more images and nothing else is one visual row (§8) — the
+    // `<p align=center><img><img></p>` a legacy page uses for a plate. As
+    // inline Markdown they lose the grouping, their captions and the
+    // responsive collapse order the group defines.
+    if (images.length >= 2 && !otherContent && formsImageRow(images)) {
+      const group = imagesFrom(images, ctx);
+      inlineRun = [];
+      if (group) {
+        out.push(group);
+        return;
+      }
+    }
+
     const phrasing = inlineFrom(inlineRun, ctx);
-    if (phrasing.length > 0) out.push({ type: "paragraph", children: phrasing });
     inlineRun = [];
+    out.push(...blocksFromPhrasing(phrasing, ctx, out[out.length - 1]));
   };
 
   for (const child of node.children) {
@@ -270,7 +367,459 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   }
 
   flushInline();
+  ctx.inCaptionContext = outerCaptionContext;
+  ctx.inCenteredBlock = outerCentered;
+  return bindCaptions(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx);
+}
+
+/**
+ * A dated news entry's date line is that entry's heading.
+ *
+ * `11 декабря 2007 г.` in its own narrow lane, with the entry beside it, is
+ * §2.2's repeated entry label. As a bare paragraph the archive reads as an
+ * undifferentiated column of dates and text with no outline and no anchor to
+ * link an entry by.
+ *
+ * Recurrence is required: one dated line inside a biography is a sentence.
+ */
+/**
+ * A short line immediately after a horizontal rule is a section label.
+ *
+ * The rule *is* the section boundary — it is what a page of this era used
+ * instead of `<h2>`, and the line the author put directly under it names what
+ * follows. `Надя Борислова: ПРОИЗВЕДЕНИЯ ДЛЯ ГИТАРЫ (1989–2002)` carries no
+ * weight, no size and no centring, so no typographic rule can see it; its
+ * position is the whole evidence.
+ */
+function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const out = [...nodes];
+  for (let i = 1; i < out.length - 1; i += 1) {
+    if ((out[i - 1] as BiomdContent).type !== "thematicBreak") continue;
+    const node = out[i] as BiomdContent;
+    if (node.type !== "paragraph") continue;
+    if (node.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) continue;
+    const text = phrasingText(node.children).replace(/\s+/gu, " ").trim();
+    if (text.length < 6 || text.length > 90) continue;
+    if (/[.!?]\s/u.test(text) || /[,;]$/u.test(text)) continue;
+    if (text.split(/\s+/u).filter(Boolean).length > 12) continue;
+
+    // It has to introduce something.
+    const following = out.slice(i + 1).reduce((n, b) => n + blockTextLength(b), 0);
+    if (following < 200) continue;
+
+    const heading: BiomdContent = { type: "heading", depth: 2, children: headingPhrasing(node.children) };
+    ctx.recoveredHeadings.add(heading);
+    out[i] = heading;
+  }
   return out;
+}
+
+function blockTextLength(node: BiomdContent): number {
+  const children = (node as { children?: unknown }).children;
+  if (!Array.isArray(children)) return 0;
+  const phrasing = children.filter((c) => typeof (c as { type?: string }).type === "string");
+  return (
+    phrasingText(phrasing as PhrasingContent[]).length +
+    (phrasing as BiomdContent[]).reduce((n, c) => n + blockTextLength(c), 0)
+  );
+}
+
+/**
+ * A short label sitting directly on top of a list is that list's heading.
+ *
+ * `ДИСКОГРАФИЯ` over a `<ul>` of albums, `См. также:` over a `<ul>` of related
+ * pages. Neither is bold, neither is centred and both are set *smaller* than
+ * the body, so no typographic rule reaches them — the only evidence is that a
+ * list starts on the next line. Recurrence guards it: one label above one list
+ * is a sentence introducing an enumeration, three are a page's section model.
+ */
+function promoteLabelBeforeList(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const candidates: number[] = [];
+  nodes.forEach((node, index) => {
+    if (node.type !== "paragraph") return;
+    const next = nodes[index + 1];
+    if (!next || next.type !== "list") return;
+    if (node.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) return;
+    const text = phrasingText(node.children).replace(/\s+/gu, " ").trim().replace(/[:\s]+$/u, "");
+    if (text.length < 4 || text.length > 60) return;
+    if (text.split(/\s+/u).filter(Boolean).length > 8) return;
+    if (/[.!?]/u.test(text)) return;
+    candidates.push(index);
+  });
+  if (candidates.length < 2) return [...nodes];
+
+  const out = [...nodes];
+  for (const index of candidates) {
+    const paragraph = out[index] as Paragraph;
+    const children = headingPhrasing(paragraph.children);
+    const last = children[children.length - 1];
+    if (last?.type === "text") last.value = last.value.replace(/[:\s]+$/u, "");
+    const heading: BiomdContent = { type: "heading", depth: 3, children };
+    ctx.recoveredHeadings.add(heading);
+    out[index] = heading;
+  }
+  return out;
+}
+
+function promoteEntryDates(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const dated: number[] = [];
+  nodes.forEach((node, index) => {
+    if (node.type !== "paragraph") return;
+    // `[1995–2002](/#/williams_cd1)` is a year *destination* in a discography
+    // menu, not the date of an entry. A heading is not somewhere to click.
+    if (node.children.some((c) => c.type === "link" || c.type === "image")) return;
+    const text = phrasingText(node.children as PhrasingContent[]).replace(/\s+/gu, " ").trim();
+    if (!isDateLabel(text)) return;
+    const next = nodes[index + 1];
+    if (!next || next.type === "thematicBreak") return;
+    dated.push(index);
+  });
+  if (dated.length < 2) return [...nodes];
+
+  const out = [...nodes];
+  for (const index of dated) {
+    const paragraph = out[index] as Paragraph;
+    const heading: BiomdContent = {
+      type: "heading",
+      depth: 3,
+      children: headingPhrasing(paragraph.children),
+    };
+    ctx.recoveredHeadings.add(heading);
+    out[index] = heading;
+  }
+  return out;
+}
+
+/**
+ * Whether text in this block would read as a picture caption.
+ *
+ * The corpus writes captions one way: a centred block, or one set smaller than
+ * the body, sitting directly under the picture. Neither signal alone is
+ * enough — a centred block is also how a section label is written, and a small
+ * block is also how a footnote is — so binding additionally requires an
+ * unlabelled image immediately before it.
+ */
+function isCaptionContext(node: LadomNode, ctx: Ctx): boolean {
+  if (node.kind !== "element") return false;
+  const prominence = prominenceOf(node);
+  if (prominence.centered) return true;
+  return prominence.fontPx !== undefined && prominence.fontPx < ctx.bodyProminence * 0.95;
+}
+
+/** The prominence of ordinary prose on this page, in px. */
+function bodyProminenceOf(root: LadomNode): number {
+  const sizes: number[] = [];
+  for (const el of walkElements(root)) {
+    if (el.tag !== "p" && el.tag !== "div" && el.tag !== "td") continue;
+    if (textOf(el).length < 200) continue;
+    const px = prominenceOf(el).fontPx;
+    if (px !== undefined && px > 0) sizes.push(px);
+  }
+  if (sizes.length === 0) return 16;
+  sizes.sort((a, b) => a - b);
+  return sizes[Math.floor(sizes.length / 2)] ?? 16;
+}
+
+/**
+ * Attach a caption-shaped paragraph to the picture directly above it (§7.1).
+ *
+ * Emitting the two as siblings is not wrong so much as lossy: the renderer has
+ * no way to know the line belongs to the figure, so it wraps at a different
+ * width, survives a layout change the figure does not, and is read out of
+ * order by a screen reader.
+ */
+function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  for (let i = 0; i < nodes.length; i += 1) {
+    const node = nodes[i] as BiomdContent;
+    const next = nodes[i + 1];
+    if (node.type === "biomdImage" && node.standalone && node.caption === undefined && next !== undefined) {
+      // A short line under an uncaptioned picture is its caption — including
+      // when typography made it look like a section label. `А. Сеговия с
+      // учениками В.И.Яшнева` is what the photograph shows, not what the next
+      // three paragraphs are about.
+      const eligible =
+        (next.type === "paragraph" && ctx.captionEligible.has(next)) ||
+        // A *centred* recovered heading under a picture is its caption. A
+        // small-type section label — `ДИСКОГРАФИЯ` above its list — is not,
+        // and swallowing it deleted a real section of the document.
+        (next.type === "heading" && ctx.captionHeadings.has(next));
+      if (eligible) {
+        const caption = phrasingText(next.children as PhrasingContent[]).replace(/\s+/gu, " ").trim();
+        if (caption !== "" && caption.length <= 300) {
+          out.push({ ...node, caption });
+          i += 1;
+          continue;
+        }
+      }
+    }
+
+    // §11: "a prominent side menu … normally moves directly below the title".
+    // The label a page put above its menu is that menu's title, not a section
+    // of its own — as a heading it renders twice the size of the bar it names
+    // and adds an outline entry with no body under it.
+    if (
+      node.type === "heading" &&
+      ctx.recoveredHeadings.has(node) &&
+      next !== undefined &&
+      next.type === "biomdNav" &&
+      next.title === undefined
+    ) {
+      const title = phrasingText(node.children as PhrasingContent[]).replace(/\s+/gu, " ").trim();
+      if (title !== "" && title.length <= 120) {
+        out.push({ ...next, title });
+        i += 1;
+        continue;
+      }
+    }
+
+    out.push(node);
+  }
+  return out;
+}
+
+/**
+ * One inline run → the blocks its `<br>` structure actually described.
+ *
+ * The run is cut into lines, the lines into groups at every blank line, and
+ * each group is lowered as what it is: a figure, a section label, or a
+ * paragraph whose interior breaks have been classified.
+ */
+function blocksFromPhrasing(
+  phrasing: readonly PhrasingContent[],
+  ctx: Ctx,
+  precededBy?: BiomdContent,
+): BiomdContent[] {
+  if (phrasing.length === 0) return [];
+  const out: BiomdContent[] = [];
+
+  const groups = groupLines(splitLines(phrasing));
+  const groupText = groups.map((g) => g.lines.map(lineText).join(" ").trim());
+  let after = groupText.reduce((a, t) => a + t.length, 0);
+
+  groups.forEach((group, index) => {
+    after -= (groupText[index] as string).length;
+    const previous = out[out.length - 1] ?? precededBy;
+    out.push(...blocksFromGroup(group.lines, ctx, after, previous?.type === "biomdImage"));
+  });
+  return out;
+}
+
+/**
+ * @param followingText characters of prose after this group in the same run —
+ * the evidence that a short line at its head introduces something rather than
+ * closing something.
+ */
+function blocksFromGroup(
+  lines: readonly RunLine[],
+  ctx: Ctx,
+  followingText: number,
+  afterFigure: boolean,
+): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  let rest = lines;
+
+  // A figure on its own line is a figure, not a word in a paragraph. This is
+  // what turns `<img><br><br>Рис. 1.` into an image directive followed by a
+  // caption-eligible line, which `bindCaptions` then joins.
+  while (rest.length > 0 && figureOf(rest[0] as RunLine, ctx) !== null) {
+    out.push(figureOf(rest[0] as RunLine, ctx) as BiomdContent);
+    rest = rest.slice(1);
+  }
+  if (rest.length === 0) return out;
+
+  // A short label on its own line, with the group's content following it, is
+  // the section heading this era wrote instead of `<h2>`.
+  // A bold line directly under a picture is its caption, not a section.
+  const heading = afterFigure && out.length === 0 ? null : headingLineOf(rest, ctx, followingText);
+  if (heading) {
+    out.push(heading);
+    rest = rest.slice(1);
+    if (rest.length === 0) return out;
+  }
+
+  const paragraph = paragraphFromLines(rest);
+  if (paragraph) {
+    // Remember, rather than decide: whether this is a caption depends on what
+    // precedes it, which the caller knows and this does not.
+    if (
+      // Centring is what makes a line under a picture read as its caption.
+      // Small type alone is not: `ДИСКОГРАФИЯ` above its album list is set in
+      // `size=2` too, and binding it to the cover above deleted a section.
+      ctx.inCaptionContext &&
+      ctx.inCenteredBlock &&
+      paragraph.children.every((c) => c.type !== "link" && c.type !== "image") &&
+      phrasingText(paragraph.children).trim().length <= 300
+    ) {
+      ctx.captionEligible.add(paragraph);
+    }
+    out.push(paragraph);
+  }
+  return out;
+}
+
+/** A line that shows exactly one picture and no words. */
+function figureOf(line: RunLine, ctx: Ctx): BiomdContent | null {
+  if (phrasingText(line.content).trim() !== "") return null;
+  const images = collectPhrasingImages(line.content);
+  if (images.length === 0) return null;
+
+  const figures: BiomdContent[] = [];
+  for (const { image, link } of images) {
+    const source = ctx.imageNodes.get(image);
+    if (!source) return null;
+    const caption = captionFor(source);
+    figures.push(
+      images.length === 1
+        ? makeImage({
+            src: image.url,
+            position: estimatePosition(source),
+            size: sizeTokenFor(imageWidthOf(source), ctx.contentWidth),
+            ...(caption ? { caption } : {}),
+            ...(link ? { link } : {}),
+          })
+        : makeGroupedImage({ src: image.url, ...(caption ? { caption } : {}), ...(link ? { link } : {}) }),
+    );
+  }
+  if (figures.length === 1) return figures[0] as BiomdContent;
+  const children = figures.filter((f): f is BiomdImageNode => f.type === "biomdImage");
+  if (children.length < 2) return null;
+  return makeImages({ columns: groupColumnsFor(children.length), children });
+}
+
+type BiomdImageNode = Extract<BiomdContent, { type: "biomdImage" }>;
+
+/** Images in a phrasing run, with the link that wraps each, if any. */
+function collectPhrasingImages(
+  nodes: readonly PhrasingContent[],
+  link?: string,
+): Array<{ image: { url: string }; link?: string }> {
+  const out: Array<{ image: { url: string }; link?: string }> = [];
+  for (const node of nodes) {
+    if (node.type === "image") {
+      out.push({ image: node, ...(link ? { link } : {}) });
+      continue;
+    }
+    if (node.type === "link") {
+      out.push(...collectPhrasingImages(node.children, node.url));
+      continue;
+    }
+    if ("children" in node) out.push(...collectPhrasingImages(node.children as PhrasingContent[], link));
+  }
+  return out;
+}
+
+/**
+ * The first line of a group as a section heading, or null.
+ *
+ * Three source spellings, all of which mean the same thing and none of which
+ * is a tag: a bold line above its own body, a line in capitals, and a short
+ * line that the following prose plainly belongs to. The evidence has to
+ * include the *following* content — a bold line at the end of a block is a
+ * signature or a name, not a section.
+ */
+function headingLineOf(lines: readonly RunLine[], ctx: Ctx, followingText: number): BiomdContent | null {
+  // Inside a record region every card opens with a bold line: the album title
+  // above its track list, the date above an obituary. Those are labels of the
+  // record, and §6 maps them to a bounded `align` — not to twenty sections of
+  // the document. Only the article's own flow gets headings from a line.
+  if (ctx.tableDepth >= 2) return null;
+  const first = lines[0] as RunLine | undefined;
+  if (!first) return null;
+  const text = lineText(first);
+  if (text === "" || text.length > 90) return null;
+  if (collectPhrasingImages(first.content).length > 0) return null;
+  if (/[,;:]$/u.test(text)) return null;
+  if (text.split(/\s+/u).filter(Boolean).length > 12) return null;
+
+  // A section needs a section: either the rest of this group, or the groups
+  // after it. A bold line with nothing following is a signature or a name.
+  const body = lines.slice(1).map(lineText).join(" ").trim();
+  if (body.length + followingText < 60) return null;
+
+  const bold = isWhollyStrong(first.content);
+  const letters = text.replace(/[^\p{L}]/gu, "");
+  const shouted = letters.length >= 3 && letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+  if (!bold && !shouted) return null;
+  // A label names a thing; a sentence says something about it. A short label
+  // may still contain a full stop — `Положение рук. Правая рука.` is a
+  // heading — but a long one with sentence punctuation is prose.
+  if (text.length > 60 && /[.!?]\s/u.test(text)) return null;
+  // A link is a destination, not a section label.
+  if (first.content.some((n) => n.type === "link")) return null;
+
+  // A label that is nothing but a year or a date is an entry inside a section
+  // — `### 1989` under `## Произведения для гитары (1989–2002)` — never a
+  // section of the document in its own right.
+  const depth: 2 | 3 = ctx.tableDepth >= 2 || isDateLabel(text) ? 3 : 2;
+  ctx.ledger.push(emitted(`line:${text.slice(0, 40)}`, nextId(ctx, "heading")));
+  const node: BiomdContent = {
+    type: "heading",
+    depth,
+    children: headingPhrasing(first.content as PhrasingContent[]),
+  };
+  ctx.recoveredHeadings.add(node);
+  if (ctx.inCenteredBlock) ctx.captionHeadings.add(node);
+  return node;
+}
+
+/** `1989`, `1990-1993`, `11 декабря 2007 г.` — a date, and nothing else. */
+const DATE_LINE =
+  /^\d{1,2}\s+(?:январ|феврал|март|апрел|ма[йея]|июн|июл|август|сентябр|октябр|ноябр|декабр|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\p{L}*\s+\d{4}(?:\s*(?:г|года|year)\.?)?$/iu;
+
+export function isDateLabel(text: string): boolean {
+  const t = text.trim().replace(/[.,;:]+$/u, "");
+  if (/^\d{4}(\s*[-–—/]\s*\d{2,4})?$/u.test(t)) return true;
+  return DATE_LINE.test(t);
+}
+
+/** True when every paragraph of a group is entirely bold. */
+function isWhollyStrongBlocks(nodes: readonly BiomdContent[]): boolean {
+  const paragraphs = nodes.filter((n): n is Paragraph => n.type === "paragraph");
+  if (paragraphs.length === 0) return false;
+  return paragraphs.every((p) => isWhollyStrong(p.children));
+}
+
+/** True when every word of a run sits inside `**…**`. */
+function isWhollyStrong(nodes: readonly PhrasingContent[]): boolean {
+  let strong = 0;
+  let plain = 0;
+  const visit = (list: readonly PhrasingContent[], inStrong: boolean): void => {
+    for (const node of list) {
+      if (node.type === "text") {
+        const n = node.value.replace(/\s+/gu, "").length;
+        if (inStrong) strong += n;
+        else plain += n;
+        continue;
+      }
+      if ("children" in node) {
+        visit(node.children as PhrasingContent[], inStrong || node.type === "strong");
+      }
+    }
+  };
+  visit(nodes, false);
+  return strong > 0 && strong >= (strong + plain) * 0.9;
+}
+
+/** Lines → one paragraph, with each interior break classified. */
+function paragraphFromLines(lines: readonly RunLine[]): Paragraph | null {
+  const lineated = groupIsLineated(lines);
+  const children: PhrasingContent[] = [];
+
+  lines.forEach((line, index) => {
+    if (index > 0) {
+      const left = lineText(lines[index - 1] as RunLine);
+      const right = lineText(line);
+      // A hand-wrapped sentence means a space; a line the author drew means a
+      // hard break.
+      if (!lineated && isWrapBreak(left, right)) children.push({ type: "text", value: " " });
+      else children.push({ type: "break" });
+    }
+    children.push(...line.content);
+  });
+
+  const cleaned = trimEdgeBreaks(collapseAdjacentText(children));
+  return cleaned.length > 0 ? { type: "paragraph", children: cleaned } : null;
 }
 
 /**
@@ -392,8 +941,24 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   if (Number.isFinite(recovered) && recovered >= 1 && recovered <= 6) {
     const text = headingPhrasing(inlineFrom(flattenBlocks(el.children), ctx));
     if (text.length > 0) {
+      // Typographic prominence is measured page-wide, so a record card's title
+      // scores like a section title. Its *place* says otherwise: inside a
+      // nested region it is a sub-section of whatever introduced the region.
+      const depth = recovered === 2 && ctx.tableDepth >= 2 ? 3 : recovered;
       ctx.ledger.push(emitted(el.id, nextId(ctx, "heading")));
-      return [{ type: "heading", depth: recovered as 1 | 2 | 3 | 4 | 5 | 6, children: text }];
+      const node: BiomdContent = { type: "heading", depth: depth as 1 | 2 | 3 | 4 | 5 | 6, children: text };
+      if (depth > 1) ctx.recoveredHeadings.add(node);
+      return [node];
+    }
+  }
+
+  // §2.1: the second line of a masthead stays a secondary title line, set in
+  // italics directly under the title — not a second `#`, and not prose.
+  if (el.attrs["data-biomd-subtitle"] !== undefined) {
+    const phrasing = trimEdgeBreaks(inlineFrom(flattenBlocks(el.children), ctx));
+    if (phrasing.length > 0) {
+      ctx.ledger.push(emitted(el.id, nextId(ctx, "subtitle")));
+      return [{ type: "paragraph", children: [{ type: "emphasis", children: dropEmphasis(phrasing) }] }];
     }
   }
 
@@ -426,7 +991,7 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
       const inner = blocksFrom(el, ctx);
       if (inner.length > 0) ctx.ledger.push(emitted(el.id, nextId(ctx, "block")));
       else ctx.ledger.push(removed(el.id, "no content after conversion"));
-      return inner;
+      return alignedGroup(el, inner, ctx);
     }
 
     case "ul":
@@ -449,6 +1014,10 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     }
 
     case "img": {
+      if (isDecorative(el)) {
+        ctx.ledger.push(removed(el.id, "decorative image (spacer, icon, rule or nav glyph)"));
+        return [];
+      }
       const image = imageFrom(el, ctx, true);
       return image ? [image] : [];
     }
@@ -500,7 +1069,17 @@ function headingPhrasing(nodes: PhrasingContent[]): PhrasingContent[] {
   // partially bold one — `# **Андрес** Сеговия`, which is what the source
   // markup literally said — is a different label from the same words plain, for
   // anything that matches on it.
-  return collapseAdjacentText(dropEmphasis(flat));
+  const out = collapseAdjacentText(dropEmphasis(flat));
+
+  // A leading bullet was the era's way of marking a list of section labels.
+  // It is typography, not part of the name.
+  const first = out[0];
+  if (first?.type === "text") {
+    const stripped = stripLabelGlyphs(first.value);
+    if (stripped === "" && out.length > 1) out.shift();
+    else if (stripped !== first.value) first.value = stripped;
+  }
+  return out.filter((n) => n.type !== "text" || n.value !== "");
 }
 
 function dropEmphasis(nodes: readonly PhrasingContent[]): PhrasingContent[] {
@@ -600,7 +1179,16 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         if (rewritten.warning) ctx.warnings.push(`${node.id}: ${rewritten.warning}`);
         ctx.targets.push(rewritten.href);
         ctx.ledger.push(emitted(node.id, nextId(ctx, "link")));
-        out.push({ type: "link", url: rewritten.href, children: inlineFrom(node.children, ctx) });
+        const label = inlineFrom(node.children, ctx);
+        // `<a href=x><img src=forward.gif></a>` — the label was a glyph, and
+        // the glyph is gone. An empty `[](x)` is not a link a reader can see
+        // or a screen reader can announce; the destination is the only
+        // source-backed text left, so it becomes the label.
+        out.push({
+          type: "link",
+          url: rewritten.href,
+          children: label.length > 0 ? label : [{ type: "text", value: rewritten.href }],
+        });
         break;
       }
       case "img": {
@@ -612,9 +1200,17 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
           ctx.ledger.push(removed(node.id, "image without a source"));
           break;
         }
+        if (isDecorative(node)) {
+          ctx.ledger.push(removed(node.id, "decorative image (spacer, icon, rule or nav glyph)"));
+          break;
+        }
         ctx.images.push(src);
         ctx.ledger.push(emitted(node.id, nextId(ctx, "img")));
-        out.push({ type: "image", url: src, alt: node.attrs["alt"] ?? "" });
+        const emittedImage = { type: "image" as const, url: src, alt: node.attrs["alt"] ?? "" };
+        // Line segmentation may still promote this to `::: image`; it needs the
+        // source node to answer position, size and caption.
+        ctx.imageNodes.set(emittedImage, node);
+        out.push(emittedImage);
         break;
       }
       default:
@@ -635,6 +1231,15 @@ function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
   const merged: PhrasingContent[] = [];
   for (const node of nodes) {
     const last = merged[merged.length - 1];
+    // §11: "merge adjacent source anchors that form one visual label and share
+    // one target". FrontPage split a single label across two `<a>` elements
+    // whenever an inline tag interrupted it, and the result renders as two
+    // links — `[1995](x)[-2002](x)` — the second of which duplicates the
+    // destination and reads as a separate entry.
+    if (node.type === "link" && last?.type === "link" && last.url === node.url) {
+      last.children.push(...node.children);
+      continue;
+    }
     if (node.type === "text" && last?.type === "text") {
       // Re-collapse after the join: two runs that were each "one space" at their
       // own boundary become two spaces once concatenated, and source indentation
@@ -675,11 +1280,23 @@ function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
   const final = cleaned[cleaned.length - 1];
   if (final?.type === "text") final.value = final.value.replace(/\s+$/u, "");
 
-  const trimmed = cleaned.filter((n) => n.type !== "text" || n.value !== "");
-  // A break at either end has nothing to separate.
-  while (trimmed[0]?.type === "break") trimmed.shift();
-  while (trimmed[trimmed.length - 1]?.type === "break") trimmed.pop();
-  return trimmed;
+  return cleaned.filter((n) => n.type !== "text" || n.value !== "");
+}
+
+/**
+ * Drop breaks at the ends of a run, where they have nothing to separate.
+ *
+ * Deliberately *not* part of `collapseAdjacentText`: that runs on every nested
+ * inline run too, and `<b>1989<br></b>` — a bold year heading its own line —
+ * ends with a break that separates the label from the works below it. Trimming
+ * it there hid the line boundary from the segmenter, and every such label was
+ * absorbed into the following paragraph.
+ */
+function trimEdgeBreaks(nodes: PhrasingContent[]): PhrasingContent[] {
+  const out = [...nodes];
+  while (out[0]?.type === "break") out.shift();
+  while (out[out.length - 1]?.type === "break") out.pop();
+  return out;
 }
 
 /**
@@ -699,25 +1316,79 @@ function imageFrom(el: LadomNode, ctx: Ctx, standalone: boolean): BiomdContent |
   ctx.images.push(src);
   ctx.ledger.push(emitted(el.id, nextId(ctx, "image")));
 
-  const alt = el.attrs["alt"];
+  // §7.1: this corpus's `alt` is the only source-backed comment there is, and
+  // it is the visible label the author wrote under the picture. Copying it to
+  // `caption` is explicitly permitted; keeping *both* would print the same
+  // words twice in every renderer that falls back from one to the other.
+  const caption = captionFor(el);
   const link = enclosingLink(el, ctx);
 
   if (!standalone) {
-    return makeGroupedImage({ src, ...(alt ? { alt } : {}), ...(link ? { link } : {}) });
+    return makeGroupedImage({ src, ...(caption ? { caption } : {}), ...(link ? { link } : {}) });
   }
-
-  const width = el.box?.w ?? Number.parseInt(el.attrs["width"] ?? "", 10);
-  const containerWidth = findContainerWidth(el);
-  const size = estimateSize(width, containerWidth);
-  const position = estimatePosition(el);
 
   return makeImage({
     src,
-    position,
-    size,
-    ...(alt ? { alt } : {}),
+    position: estimatePosition(el),
+    size: sizeTokenFor(imageWidthOf(el), ctx.contentWidth),
+    ...(caption ? { caption } : {}),
     ...(link ? { link } : {}),
   });
+}
+
+/**
+ * Every image an inline run actually shows, in order.
+ *
+ * Descends through wrappers that contribute no text of their own — a link
+ * around a thumbnail, a `<font>` or `<center>` left over from FrontPage — so
+ * that "is this run one picture?" is answered by what renders, not by which
+ * element happens to be the run's direct child.
+ */
+const IMAGE_WRAPPERS = new Set(["a", "font", "span", "center", "b", "strong", "i", "em", "u", "nobr", "small", "big"]);
+
+function runImages(nodes: readonly LadomNode[]): LadomNode[] {
+  const out: LadomNode[] = [];
+  for (const node of nodes) {
+    if (node.kind !== "element") continue;
+    if (node.tag === "img") {
+      out.push(node);
+      continue;
+    }
+    if (IMAGE_WRAPPERS.has(node.tag) && textOf(node).trim() === "") {
+      out.push(...runImages(node.children));
+    }
+  }
+  return out;
+}
+
+/** `::: images` for a run that is nothing but adjacent pictures (§8). */
+function imagesFrom(images: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
+  const children = [];
+  for (const image of images) {
+    const child = imageFrom(image, ctx, false);
+    if (child && child.type === "biomdImage") children.push(child);
+  }
+  if (children.length < 2) return null;
+  return makeImages({ columns: groupColumnsFor(children.length), children });
+}
+
+/**
+ * Drop decorative furniture from an inline run.
+ *
+ * A link whose entire label was a nav arrow would be left with no label at
+ * all, so it keeps its destination as its text — which is what the reference
+ * conversions do, and what a reader can still click.
+ */
+function dropDecorative(nodes: readonly LadomNode[], ctx: Ctx): LadomNode[] {
+  const out: LadomNode[] = [];
+  for (const node of nodes) {
+    if (node.kind === "element" && node.tag === "img" && isDecorative(node)) {
+      ctx.ledger.push(removed(node.id, "decorative image (spacer, icon, rule or nav glyph)"));
+      continue;
+    }
+    out.push(node);
+  }
+  return out;
 }
 
 function enclosingLink(el: LadomNode, ctx: Ctx): string | undefined {
@@ -736,29 +1407,7 @@ function enclosingLink(el: LadomNode, ctx: Ctx): string | undefined {
   return undefined;
 }
 
-function findContainerWidth(el: LadomNode): number | undefined {
-  let cur = el.parent;
-  while (cur) {
-    if (cur.box && cur.box.w > 0) return cur.box.w;
-    cur = cur.parent;
-  }
-  return undefined;
-}
 
-function estimateSize(width: number | undefined, container: number | undefined): "small" | "medium" | "large" | "full" {
-  if (!Number.isFinite(width) || width === undefined) return "medium";
-  if (container && container > 0) {
-    const share = width / container;
-    if (share >= 0.85) return "full";
-    if (share >= 0.45) return "large";
-    if (share >= 0.12) return "medium";
-    return "small";
-  }
-  if (width >= 500) return "full";
-  if (width >= 280) return "large";
-  if (width >= 100) return "medium";
-  return "small";
-}
 
 /**
  * Whether an image floats, from measurement or from the legacy attribute.
@@ -794,6 +1443,15 @@ function estimatePosition(el: LadomNode): "left" | "right" | "center" | "full" {
 // ---------------------------------------------------------------------------
 
 function tableFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
+  ctx.tableDepth += 1;
+  try {
+    return tableRegionFrom(el, ctx);
+  } finally {
+    ctx.tableDepth -= 1;
+  }
+}
+
+function tableRegionFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   const grid = ctx.grids.get(el.id);
   if (!grid) {
     ctx.ledger.push(review(el.id, "table has no materialized grid"));
@@ -947,7 +1605,7 @@ function plannedCellTo(cell: PlannedCell, ctx: Ctx): PhrasingContent[] | null {
     if (nodes.length > 0) nodes.push(spaceNode());
     nodes.push(...flat);
   }
-  const phrasing = inlineFrom(nodes, ctx);
+  const phrasing = trimEdgeBreaks(inlineFrom(nodes, ctx));
   if (phrasing.some((p) => !isPhrasingType(p.type))) return null;
   // An intentionally empty value reads as an em dash (§3.8) rather than a hole.
   if (phrasing.length === 0) return [{ type: "text", value: "—" }];
@@ -1077,6 +1735,11 @@ function layoutFrom(
   classification: Classification,
 ): BiomdContent[] {
   if (ctx.options.layoutFidelity === "faithful" && grid.cols >= 2 && grid.cols <= 3 && grid.rows >= 1) {
+    // Speculative, so it has to be undoable. A lane attempt that turns out not
+    // to produce two usable columns still walked every cell, and its links,
+    // images and ledger entries stayed behind — the conservation gate then
+    // reported the whole region's targets twice as "unexpected".
+    const snapshot = begin(ctx);
     const columns = [];
     for (let c = 0; c < grid.cols; c += 1) {
       const cells = [];
@@ -1102,6 +1765,7 @@ function layoutFrom(
       });
       return [makeColumns({ children: columns, profile: ctx.options.profile })];
     }
+    rollback(ctx, snapshot);
   }
 
   // Simplified: emit each cell's content in visual reading order. A two-lane
@@ -1126,6 +1790,68 @@ function isBounded(node: BiomdContent): node is BoundedContent {
   return node.type !== "biomdColumns" && node.type !== "biomdColumn" && node.type !== "biomdNav";
 }
 
+/**
+ * `::: align` for a short bounded block the author centred or right-set (§6).
+ *
+ * Scoped deliberately to the inside of a `column`. That is where the construct
+ * earns its place: a record card's label sits centred over its cover, and
+ * flattening it to a bold paragraph loses the only thing that says the label
+ * belongs to the picture beside it. Outside a bounded container the same
+ * evidence usually means a section label or a caption, both of which have
+ * better mappings, and §6 forbids wrapping article prose.
+ */
+function alignedGroup(el: LadomNode, inner: BiomdContent[], ctx: Ctx): BiomdContent[] {
+  // A frame is already a bounded group; §6 says not to use `align` to restate
+  // one. Inside an obituary notice every line is centred, and wrapping each in
+  // its own `align` describes the border, not the content.
+  if (ctx.boundedDepth === 0 || ctx.frameDepth > 0 || inner.length === 0) return inner;
+  const align = el.style?.textAlign;
+  const position = align === "center" || align === "-webkit-center" ? "center" : align === "right" ? "right" : null;
+  if (!position) return inner;
+
+  const text = textOf(el).trim();
+  // §6: "do not wrap … long body prose". A label names the record; a paragraph
+  // that happens to be centred is still a paragraph.
+  if (text === "" || text.length > 120) return inner;
+  if (inner.some((n) => n.type === "biomdColumns" || n.type === "biomdColumn" || n.type === "biomdNav")) return inner;
+  // A picture carries its own `position`; §6 says not to duplicate it.
+  if (inner.every((n) => n.type === "biomdImage" || n.type === "biomdImages")) return inner;
+  if (inner.some((n) => n.type === "heading")) return inner;
+  // The label of a record is set apart by weight as well as by position.
+  // Unemphasised centred text in a lane is a caption or a page number, and
+  // `- 2 -` is neither a label nor anything a reader needs aligned.
+  if (!/\p{L}/u.test(text) || !isWhollyStrongBlocks(inner)) return inner;
+
+  ctx.ledger.push(emitted(el.id, nextId(ctx, "align"), { note: `bounded ${position} group` }));
+  return [makeAlign({ position, children: inner as BoundedContent[] })];
+}
+
+/**
+ * One layout cell, wrapped in `::: frame` when the author bordered it (§12).
+ *
+ * A bordered cell in the middle of a news column is an obituary notice or an
+ * announcement — the one thing §12 exists for. Flattening it to prose loses
+ * the only signal that the block is set apart from the entries around it.
+ */
+function framedCell(node: LadomNode, ctx: Ctx): BiomdContent[] {
+  const evidence = frameEvidenceFor(node, ctx.documentTextLength);
+  if (!evidence) return blocksFrom(node, ctx);
+
+  ctx.boundedDepth += 1;
+  ctx.frameDepth += 1;
+  const inner = blocksFrom(node, ctx).filter(isBounded);
+  ctx.frameDepth -= 1;
+  ctx.boundedDepth -= 1;
+  if (inner.length === 0) return [];
+
+  // A target that cannot draw the border gets a blockquote and a recorded
+  // downgrade, not a container that renders as nothing.
+  const lowered = downgradeNotice(ctx.options.profile, { frame: evidence.frame, children: inner });
+  ctx.downgrades.push(...lowered.transforms);
+  ctx.ledger.push(emitted(node.id, nextId(ctx, "frame"), { note: evidence.reason }));
+  return lowered.content;
+}
+
 /** Emit a grid's cells in reading order, row-major, origin cells only. */
 function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered = false): BiomdContent[] {
   const out: BiomdContent[] = [];
@@ -1142,12 +1868,14 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
         if (cell) ctx.ledger.push(removed(cell.id, "empty layout cell"));
         continue;
       }
-      out.push(...blocksFrom(cell.node, ctx));
+      out.push(...framedCell(cell.node, ctx));
     }
   }
 
   if (!alreadyLedgered) ctx.ledger.push(mergedInto(el.id, nextId(ctx, "flow")));
-  return out;
+  // Entry labels only become visible once the lanes are back in reading order,
+  // so the promotion has to run on the flattened region rather than per cell.
+  return bindCaptions(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx);
 }
 
 /**
@@ -1157,6 +1885,63 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
  * Deliberately conservative: a lead is a genuine introductory summary, not
  * merely the first paragraph.
  */
+/**
+ * §2: "Every document MUST have exactly one level-one heading."
+ *
+ * Treated as a planning invariant rather than a validator finding. Waiting for
+ * the validator to report `h1-count` produces a file that is written, looks
+ * plausible, and is invalid — and on a thousand-page batch nobody reads the
+ * report. Typographic recovery cannot guarantee the invariant on its own: a
+ * page whose title is split over two lines nominates neither line, and a page
+ * with two equally large labels nominates both.
+ *
+ * The repair is the smallest one that satisfies the rule: the first heading in
+ * reading order becomes the title, every later `#` becomes `##`, and nothing
+ * is invented. A document with no heading at all is left alone — there is
+ * nothing to promote, and the review item already says so.
+ */
+export function enforceSingleTitle(root: BiomdRoot): { root: BiomdRoot; changes: string[] } {
+  const changes: string[] = [];
+  const headings: Array<{ node: { depth: number; type: string }; index: number }> = [];
+  const visit = (nodes: BiomdContent[]): void => {
+    nodes.forEach((node) => {
+      if (node.type === "heading") headings.push({ node, index: headings.length });
+      const children = (node as { children?: unknown }).children;
+      if (Array.isArray(children)) visit(children as BiomdContent[]);
+    });
+  };
+  visit(root.children as BiomdContent[]);
+  if (headings.length === 0) return { root, changes };
+
+  const titles = headings.filter((h) => h.node.depth === 1);
+  if (titles.length === 0) {
+    const first = headings[0];
+    if (first) {
+      changes.push(`no level-one heading; promoted the first heading (was h${first.node.depth}) to the title`);
+      first.node.depth = 1;
+    }
+  } else if (titles.length > 1) {
+    for (const extra of titles.slice(1)) {
+      changes.push("more than one level-one heading; demoted a later one to h2");
+      extra.node.depth = 2;
+    }
+  }
+
+  // §18 also rejects a jump from `#` to `###`. It happens honestly: a record
+  // label is recovered inside a region whose introducing `##` the source never
+  // wrote. Lifting the orphan to the next legal level keeps the outline
+  // navigable and invents no text.
+  let previous = 1;
+  for (const { node } of headings) {
+    if (node.depth > previous + 1) {
+      changes.push(`heading level jumped from h${previous} to h${node.depth}; lifted to h${previous + 1}`);
+      node.depth = previous + 1;
+    }
+    previous = node.depth;
+  }
+  return { root, changes };
+}
+
 export function promoteLead(root: BiomdRoot, evidence: { hasLeadMarkup: boolean }): BiomdRoot {
   if (!evidence.hasLeadMarkup) return root;
   const index = root.children.findIndex((c) => c.type === "paragraph");
