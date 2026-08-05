@@ -25,7 +25,8 @@ on, `spec-1.6`, `layoutFidelity: faithful`, and **LLM off**. The bench workspace
 | Reference size tokens | — | 0 / 17 / 45 / 33 |
 | Phantom "extra target" conservation reports | several hundred | **0** |
 
-Per document:
+Per document — **stale, does not reproduce; see §6.1 for the measured values.** The
+aggregate above is trustworthy; this breakdown is not. Re-measure before citing it.
 
 | file | before | after | Δ |
 |---|---:|---:|---:|
@@ -246,3 +247,293 @@ detector that fired on a single block's typography. Every detector that held up
 required the *same shape to recur* on the page, with content between the
 occurrences. That is the generalizable lesson from these 13 pages, and it is
 also the cheapest possible stand-in for the assessment's page-archetype model.
+
+---
+
+## 6. Iteration 0 — the evaluation ladder replaces the scalar (2026-08-06)
+
+No converter rule was changed in this phase. Everything below is instrumentation,
+measurement and the defect ledger that now decides what work happens. The
+unchanged L1 number is therefore expected, and is not evidence of quality.
+
+### 6.1 Baseline reproduced, with two reconciliations
+
+`sh bench/run.sh`, LLM off, `spec-1.6`, `layoutFidelity: faithful`, Chromium
+measurement on:
+
+| | documented | measured 2026-08-06 |
+|---|---:|---:|
+| overall similarity | 87.61 % | **87.6 %** |
+| unit tests | 239 | **263** (239 + 24 new L2 contracts) |
+| validation errors | 14 | **14** |
+| FAILED conversions | 0 | **0** |
+
+Two things cost time once and should not cost it again:
+
+- **The 14 errors come from the `corpus run` per-file `errors=` column**, not from
+  `biomd validate`. The standalone `validate` command resolves a different profile
+  and reports 1 error (a `line-too-long` in `williams2`). The two are not
+  comparable; do not treat a disagreement between them as a regression.
+- **§1's per-document table does not reproduce.** Measured now: authors 95.1 ·
+  barrios 80.3 · borislova 70.2 · goya2 85.4 · jovicic 97.7 · kiselev 91.3 ·
+  news 84.8 · news_2007 74.1 · pavlov_azancheev 92.7 · segovia 94.5 ·
+  segovia1 94.6 · tarrega 81.5 · williams2 97.2. Both sets average to 87.6 and two
+  entries (goya2, barrios) agree exactly, so the aggregate is trustworthy and the
+  breakdown is stale. **§1's per-document column is historical — re-measure before
+  citing any number from it.**
+
+### 6.2 Why the scalar score could not be the instrument
+
+Verified from the code, and the reason L2 exists. `src/eval/score.ts` averages seven multiset
+F1 axes; each of the following is invisible to it **by construction**, and each is where the
+remaining defects live:
+
+- `eval/facts.ts:36` — `directives: Map<string, number>`, name → count. **Every directive
+  property is invisible**: an `::: image` with the wrong `size`, `position`, `caption` or
+  `link` scores identically to a correct one.
+- `links` and `images` fold through `foldTarget` — **a correct target under a wrong label
+  scores perfect**.
+- `TableFacts` carries `cols`, `rows`, `header[]`, `cells[]` as flat multisets — **which cell
+  sits in which row and column is invisible**, as is per-column alignment.
+- text is a word-3-gram multiset over `normalizeForCompare`
+  (`convert-core/conservation.ts:102`), which lowercases, strips soft hyphens and folds
+  intra-word hyphens — so **block order, blank-line structure, hard breaks, emphasis, case and
+  typography are invisible**, and de-hyphenation quality is invisible by construction.
+- headings carry level (`facts.ts:132`, `level\tlabel`) but as a multiset — **position, order
+  and nesting are invisible**.
+- nothing measures containment (an image inside vs outside a `::: column`), `---` separators,
+  list nesting, or block ordering.
+
+L2 has one contract test per item above, so a regression that quietly collapses the ladder
+back to a scalar fails the suite.
+
+### 6.3 L2 implemented
+
+| module | role |
+|---|---|
+| `src/eval/blocks.ts` | `.bio.md` → typed, line-numbered block tree; resolves what `biomd-ast/read()` leaves as opaque Markdown runs |
+| `src/eval/structdiff.ts` | Needleman–Wunsch sibling alignment + global reconciliation → typed findings |
+| `src/eval/triage.ts` | three-way source backing against the decoded `.htm` |
+| `src/eval/rollup.ts` | defect ledger, ranked by `instances × severity × generality` |
+| `src/eval/structdiff.test.ts` | 24 contracts: identity, determinism, one test per scalar blind spot, classification, triage |
+
+Surfaced as `biomd diff [produced] [reference]` with `--doc`, `--class`,
+`--backing`, `-v`, `--json`. Diagnostic-only: `convert-core` must never import it.
+Corpus roll-up regenerates `analyze/defects.json`:
+
+```bash
+cd biomd-convert && node dist/cli/index.js diff -c bench/biomd.config.json --json ../analyze/defects.json
+```
+
+Held to two properties, asserted in the test file: **identity** — the same
+document on both sides yields zero findings, over all thirteen references; and
+**determinism** — same inputs, byte-identical findings.
+
+### 6.4 The ledger — `analyze/defects.json`, 707 findings
+
+598 source-backed · 77 ambiguous · 32 ceiling. 97 critical · 325 major · 285 minor.
+80 classes over 13 documents.
+
+| class | inst | docs | rank |
+|---|---:|---:|---:|
+| `paragraph.spurious` | 65 | 12 | 3900 |
+| `paragraph.containment` | 38 | 8 | 912 |
+| `retyped.paragraph-to-align` | 25 | 9 | 675 |
+| `column.missing` | 25 | 5 | 375 |
+| `retyped.paragraph-to-column` | 18 | 6 | 324 |
+| `break.missing` | 63 | 5 | 315 |
+| `align.missing` | 14 | 6 | 252 |
+| `retyped.paragraph-to-columns` | 20 | 3 | 180 |
+| `image.missing` | 14 | 4 | 168 |
+| `paragraph.hyphenation` | 19 | 7 | 98 |
+
+Ceiling, correctly separated and excluded from targets: `table.header.cell` (21, 4
+documents — precisely §5.3's empty-header hook territory),
+`table.cell.typography.dash` (4), `table.cell.content.empty` (2).
+
+### 6.5 Confirmed instrument defects
+
+All three were found by the L2 contract tests, not by inspection. Each is a class
+of bug, not an instance, and each is fixed at the class level.
+
+1. **Alignment traceback reconstructed its path by float equality** against the
+   cost matrix. A one-ulp disagreement fell through every branch, the fallback
+   decremented `j` past zero, and the walk never terminated — an infinite hang on
+   `goya2`. Replaced with stored backpointers; the fill's decision is now recorded
+   rather than re-derived.
+2. **Similarity tokenized without folding intra-word hyphens.** A paragraph scored
+   **zero** against its own de-hyphenated self, so the aligner refused to pair
+   them and the `hyphenation` class the instrument exists to raise could never
+   fire — the blind spot sitting exactly on top of the defect.
+3. **Triage tested structural findings by text attestation.** That put
+   `columns.missing` (43 instances, 5 documents) — the largest deterministically
+   reachable class in the corpus, named as reachable in §5.1 — in the *ceiling*
+   list. `Biography-Markup.md` §16.3 forbids inventing **text**; wrapping text that
+   is already present in a `::: columns`, splitting a lane, drawing a `---` or
+   reading a size off geometry invents nothing. Every finding now carries
+   `evidence: "content" | "structure"`, and structure is never attested.
+
+**Killed hypotheses.** Two readings were falsified during this phase and should not
+be re-derived: that a document's blocks can be adjudicated by *sibling* alignment
+alone — containment defects are invisible to it by construction, and on `goya2` one
+mechanism defect appeared as 42 unrelated `paragraph.spurious` findings until
+reconciliation was made global; and that two paragraphs with no shared vocabulary
+should be reported as one rewritten paragraph — they are a deletion and an
+insertion with different owning rules, and collapsing them hides the deletion.
+
+### 6.6 L5 calibration — L2 against the human record
+
+Agreement is high: every per-page complaint in `analyze/analyze.md` maps onto an
+emitted class.
+
+| human complaint | L2 class |
+|---|---|
+| williams2 `**- 2 -**` centred; segovia1 / pavlov / news / authors alignment | `retyped.paragraph-to-align`, `align.missing` |
+| williams2, news_2007: right-hand menu folds into the flow | `nav.missing`, `nav.title.missing` |
+| williams2 5/6/8, segovia: caption text repeated as a paragraph below the figure | `paragraph.spurious` |
+| williams2 4, tarrega 2: figure earlier than the paragraph it belongs to | `image.containment`, `image.moved` |
+| tarrega 1, segovia, pavlov, news: escaped or drawn rules should be separators | `retyped.paragraph-to-break`, `break.missing` |
+| tarrega 3: multi-block region wrongly wrapped in a blockquote | `retyped.quote-to-*` |
+| tarrega: dotted-leader pseudo-tables should become tables | `retyped.paragraph-to-table` |
+| segovia, pavlov, kiselev, jovicic, barrios, authors, news: de-hyphenation | `paragraph.hyphenation` |
+| segovia, authors: caption truncated or taken from the wrong block | `image.caption.content` |
+| kiselev, jovicic: song lists shown as quotes | `retyped.quote-to-list` |
+| kiselev: table read as 3 columns, should be 2 | `table.geometry.cols` |
+| kiselev, barrios, tarrega, segovia: guessed table headers wrong | `table.header.cell` — triaged as **ceiling** |
+| goya2: one lane per column instead of one pair per album | `columns.missing`, `column.missing`, `break.missing`, `paragraph.containment`, `retyped.paragraph-to-column` |
+| borislova: 2-column table at the end not recognised | `table.missing` |
+| barrios: one table per disc | `table.*`, `columns.*` |
+| news: repeated site masthead must be dropped | `image.spurious`, `paragraph.spurious` |
+| news: frames not recognised | `frame.missing` |
+| authors: separators too sparse; image sizes imprecise | `break.missing`, `image.size.value` |
+
+Confirmed by probe, not by reading: **4 `paragraph.spurious` findings repeat
+verbatim a `caption:` already bound in the same document** (williams2 ×2, segovia,
+news) — exactly the defect `analyze.md` names for williams2 items 5/6/8.
+
+### 6.7 Known instrument weaknesses — what to distrust first
+
+- **The `ambiguous` band is set, not calibrated.** Triage routes a finding to
+  `ambiguous` on a word-coverage corridor of 0.5–0.95. Those bounds were chosen.
+  77 findings sit in that band and none of them has been checked by hand.
+- **Global reconciliation pairs at similarity ≥ 0.65.** The 38
+  `paragraph.containment` findings depend on that constant, and the stability of
+  the class split under 0.55 or 0.75 has not been measured.
+- **L2 cannot answer the project's actual question.** Whether a defensible layout
+  reads as the migrator's intent, and whether the produced layout is visually
+  equal to or better than the source, are L3/L4 questions. L2 silence is not
+  evidence of quality.
+- **Two requests in `analyze.md` are proposals, not reference-attested defects** —
+  replacing a bare URL label with a link glyph, and abstracting guessed table
+  headers. Check `fixtures/out/` before treating either as work.
+
+### 6.8 Holdout
+
+Round 1 development set: goya2, news, borislova, pavlov_azancheev, segovia,
+kiselev, tarrega, williams2, jovicic. **Holdout: barrios, news_2007, segovia1,
+authors.**
+
+Stated honestly: `analyze/analyze.md` is one file covering all thirteen pages and
+has been read in full. This is a **tuning** holdout — no rule is designed against
+holdout output and no holdout measurement is taken until the rule and its tests
+are written — not an *unseen* holdout. Rotate it each round and report both sides.
+
+---
+
+## 7. Phase gate: L3 is not built, and it blocks the rule work
+
+**L3 diagnostic rendering is NOT implemented and NOT calibrated.** There is no
+`tools/render-biomd.ts`; nothing in this repository renders `.bio.md` to HTML.
+`.claude/launch.json` already declares both static servers it will need
+(`fixtures` on 8123, `rendered` on 8124 serving `analyze/rendered`), and that is
+the whole of what exists.
+
+**Consequence, and it is binding: L3 completion is the next action, and no
+converter-rule task may begin before it.** The three ranked classes below are all
+decided by geometry — computed alignment, lane boundaries, containment — and §4.2
+of `CLAUDE.md` records two verified corpus facts that make this non-negotiable:
+presentational attributes lie (`align="center"` computing to `justify` on 17
+`p.t8` nodes in `pavlov_azancheev.htm`), and computed `text-align` is not always
+the keyword expected (Chromium returns `-webkit-center` / `-webkit-left`).
+Choosing a rule for any of these classes without rendered geometry is guesswork,
+and guesswork is what the ladder exists to stop.
+
+L3's own invariant, to build it against: both `.bio.md` sides must render through
+identical code, so the same file given twice produces byte-identical output.
+
+---
+
+## 8. Next phase — three ranked classes, hypotheses pre-registered
+
+All three are **pending**. Prerequisite for #1 and #2: §7 (L3). #3 has no L3
+prerequisite because it does not touch the converter.
+
+### 8.1 Alignment family — `retyped.paragraph-to-align` + `align.missing`
+
+39 source-backed instances across **9 of 13 documents** — the highest generality
+in the ledger. The reference wraps centred and right-aligned blocks in
+`::: align`; the converter emits a bare paragraph.
+
+Hypotheses, to test in falsification-cost order:
+
+- **H1 — the evidence is present but read wrongly.** `prominence.ts:138` and
+  `structure.ts:1437` compare computed `text-align` with `=== "center"`, which
+  under-detects because Chromium returns `-webkit-center` / `-webkit-left` for
+  elements centred by an ancestor's `align` attribute. `prominence.ts:132` and
+  `structure.ts:1809` already handle this; the inconsistency is live.
+  *Cheapest falsifier:* a `getComputedStyle` probe over the 9 affected documents —
+  if few nodes return the `-webkit-` forms, H1 is dead.
+- **H2 — a missing path, not a misreading.** Only centring is treated as
+  evidence; `position: right` is never emitted from geometry.
+  *Cheapest falsifier:* count how many of the 39 want `right` versus `center`.
+- **H3 — the reference is what is wrong.** The migrator aligned blocks the source
+  does not align. *Cheapest falsifier:* the computed style of the corresponding
+  source node is already left or justify.
+
+*Expected closure:* 25 `retyped.paragraph-to-align` + 14 `align.missing`, less
+whatever H3 claims. *Guard:* `align.spurious` (11, one document) must not rise.
+*Rule contract required before code:* invariant expressed as computed alignment
+**relative to the page's own prose alignment**, never an absolute keyword;
+recurrence requirement; false friend = a centred caption, which must not become
+`::: align`; mutation robustness.
+
+### 8.2 Catalog row-pattern segmentation in `layoutFrom()`
+
+The largest instance count in the ledger, and §5.1's first item. The reference
+emits one `::: columns` pair per album (label | cover) and one per track range,
+separated by `---`; `layoutFrom()` still emits one persistent lane per physical
+column.
+
+**Prerequisite beyond L3: determine first whether the six owning classes are one
+mechanism.** They are `column.missing` (25, 5 docs), `break.missing` (63, 5),
+`paragraph.containment` (38, 8), `retyped.paragraph-to-column` (18, 6),
+`columns.containment` (16, 2), `columns.missing` (9, 4). If they are not one
+mechanism, split the task rather than writing one rule for all of them.
+
+Not `goya2`-specific: `analyze.md` names the same shape for `barrios` (one table
+per disc) and `news_2007` (2-column layout not recognised).
+*Rule contract:* invariant = row-boundary evidence in the physical occupancy grid
+(a row whose cells all begin a new record); recurrence = the pattern repeats with
+content between occurrences; false friend = a genuine two-lane prose layout that
+must stay one region.
+
+### 8.3 Refine `paragraph.spurious` into actionable sub-classes
+
+65 instances across **12 of 13 documents** — the largest class, and too coarse to
+own a rule. Per the ladder, a finding a human cannot act on directly is a class
+that is not yet precise enough: refine the class, not the tolerance.
+
+**This is instrument work, not converter work — do not change converter behaviour
+under it, and it needs no L3.** Known sub-families:
+
+- *caption echo* — the line bound as an image `caption:` is also left as a
+  paragraph below the figure. 4 instances confirmed by probe.
+- *site chrome residue* — the repeated masthead `analyze.md` says must be dropped
+  from every page.
+- *rule residue* — a horizontal line drawn from repeated dashes or bullets that
+  should have become a separator (overlaps `retyped.paragraph-to-break`).
+- *layout residue* — prose duplicated because a region was walked twice.
+
+*Deliverable:* sub-classes emitted by `structdiff.ts` with their own detectors, a
+re-baselined ledger, and each sub-family either given an owning task or classified
+as ceiling.
