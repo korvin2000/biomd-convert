@@ -9,8 +9,8 @@ caption: Надя Борислова (Nadia Borislova)
 
 БОРИСЛОВА Надя \[Надежда Бориславовна Борислова] (Nadia Borislova) – гитаристка и композитор. Родилась в 1969 году в Москве в семье пианистов. С 1992 года живет в Мексике, в декабре 1995 года получила мексиканское гражданство. Гитарой начала заниматься в возрасте 8 лет. Профессиональное музыкальное образование получила в московской Вечерней музыкальной школе №48 (1979-1984) и в Государ-ственном музыкальном училище им. Гнесиных (1984-1988) в классе гитары Л.А. Менро. В 1986-1988 годах преподавала гитару в музыкальных школах Москвы.
 
-Надя Борислова:
-> "Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по 9 рублей каждая.
+Надя Борислова:\
+> "Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по 9 рублей каждая.\
 > Никогда не забуду своих первых ощущений от прикосновения к струнам. Зажимая на грифе струны в разных местах, я с удивлением обнаружила, что звук всякий раз меняется и струны звучат по-другому: на каждом ладу по-разному, – это было для меня настоящим открытием. Все зависело от меня! Я не могла поверить, что благодаря мне рождаются новые звуки! Я сразу же показала это брату, но на него мое открытие особого впечатления не произвело... Для меня же это было настоящим чудом и я сказала родителям, что очень хочу научиться играть на гитаре."
 
 В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была гитаристкой московской театральной труппы "Momento". Начиная с 1988 года ведет активную концертную деятель-ность в Европе, Мексике и Коста-Рике.
@@ -46,46 +46,46 @@ caption: Надя Борислова (Nadia Borislova)
 
 ::: column
 
-La guitarra es la luna
-en un lago de oro.
-El piano es un tren
+La guitarra es la luna\
+en un lago de oro.\
+El piano es un tren\
 cargando cascadas
 
-Y la música
-en las manos de Nadia
-el puente marino
+Y la música\
+en las manos de Nadia\
+el puente marino\
 que sostiene un sueño.
 
-Anclado en los astros
-deambula en las notas
-cuando algún sonido
-cae abriendo ondas
-profundas raíces
-que entendemos todos
-pues con los oídos
+Anclado en los astros\
+deambula en las notas\
+cuando algún sonido\
+cae abriendo ondas\
+profundas raíces\
+que entendemos todos\
+pues con los oídos\
 el cosmos bebemos.
 
 :::
 
 ::: column
 
-Гитара - луна
-В золотом озере.
-Рояль - поезд,
+Гитара - луна\
+В золотом озере.\
+Рояль - поезд,\
 несущий водопады.
 
-В музыке
-Нади
-По морскому мосту
+В музыке\
+Нади\
+По морскому мосту\
 В сны провожают.
 
-Бросит якорь на звезды,
-Бродит по нотам,
-Когда звуки падают
-Открывая волны.
-Мы их постигаем,
-слушаем и ощущаем,
-Так вселенную мы
+Бросит якорь на звезды,\
+Бродит по нотам,\
+Когда звуки падают\
+Открывая волны.\
+Мы их постигаем,\
+слушаем и ощущаем,\
+Так вселенную мы\
 постигаем.
 
 :::
@@ -100,71 +100,71 @@ el cosmos bebemos.
 
 ::: column
 
-**Bajo los efectos de la poesía**
+**Bajo los efectos de la poesía**\
 José Luis Vega
 
-Bajo los efectos de la poesía
-es posible viajar a la velocidad del
-pensamiento,
-mirar el mundo entero flamear,
-tocar con la punta de la lengua las
-estrellas,
+Bajo los efectos de la poesía\
+es posible viajar a la velocidad del\
+pensamiento,\
+mirar el mundo entero flamear,\
+tocar con la punta de la lengua las\
+estrellas,\
 soñar con la justicia universal.
 
-Bajo los efectos de la poesía,
-usted no es responsable de sus
-actos:
-hablará en lengua extraña,
-hará cópulas públicas,
+Bajo los efectos de la poesía,\
+usted no es responsable de sus\
+actos:\
+hablará en lengua extraña,\
+hará cópulas públicas,\
 cabalgará centauros.
 
-Bajo los efectos de la poesía,
-se ven blancas galaxias
-expandiéndose
-en el ojo de la cerradura
-y violines viejísimos
+Bajo los efectos de la poesía,\
+se ven blancas galaxias\
+expandiéndose\
+en el ojo de la cerradura\
+y violines viejísimos\
 mudando el polvo de sus plumas.
 
-No importa cuál sea su pasión,
-fe, raza, sexo edad
-o ensoñación política,
-no debe avergonzarse de volar
+No importa cuál sea su pasión,\
+fe, raza, sexo edad\
+o ensoñación política,\
+no debe avergonzarse de volar\
 bajo los efectos de la poesía.
 
 :::
 
 ::: column
 
-**Под воздействием поэзии**
+**Под воздействием поэзии**\
 Хосе Луис Вега
 
-Под воздействием поэзии
-Вы можете познать свет со
-скоростью мысли,
-Увидеть вокруг себя весь
-пылающий мир,
-прикоснуться кончиком языка к
-звездам
-и мечтать о всемирном
+Под воздействием поэзии\
+Вы можете познать свет со\
+скоростью мысли,\
+Увидеть вокруг себя весь\
+пылающий мир,\
+прикоснуться кончиком языка к\
+звездам\
+и мечтать о всемирном\
 правосудии.
 
-Под воздействием поэзии
-Вы не отвечаете за свои поступки:
-на странном языке заговорите
-открыто займетесь любовью,
+Под воздействием поэзии\
+Вы не отвечаете за свои поступки:\
+на странном языке заговорите\
+открыто займетесь любовью,\
 верхом на кентаврах.
 
-Под воздействием поэзии
-увидите белые
-расширяющиеся галактики
-в зрачке замка
-и старые скрипки
+Под воздействием поэзии\
+увидите белые\
+расширяющиеся галактики\
+в зрачке замка\
+и старые скрипки\
 стряхивающие с перьев пыль.
 
-Не важно, какая и кого страсть,
-возраст, вера, пол и раса
-или положение в политике,
-не стыдитесь летать
+Не важно, какая и кого страсть,\
+возраст, вера, пол и раса\
+или положение в политике,\
+не стыдитесь летать\
 под воздействием поэзии..
 
 :::
@@ -199,6 +199,7 @@ Suite "La procesion de las cucarachas por Rusia o La procesion del diablo" (Dedi
 Ciclo de piezas La mariposa / Цикл пьес "Бабочка" \*\
   1\. La mariposa (Dedicada a Iosif Brodskiy) / Бабочка\
   2\. La mariposa en la hierba (Dedicada a Fernando Gallo) / Бабочка\
+на траве\
   3\. La mariposa en el cristal / Бабочка на стекле\
   4\. La mariposa lluviosa / Дождевая бабочка\
   5\. La mariposa bruja / Бабочка колдунья\
@@ -280,7 +281,9 @@ Entre la luz de las circonias / Внутри света циркония (Сер
 
 ::: align
 position: right
-[***ДИСКОГРАФИЯ***](/#/borislova1)\
+
+[\[ДИСКОГРАФИЯ\]](/#/borislova1)
+
 Основные источники:\
 Официальный сайт Нади Борисловой: [www.buap.mx/cultura](http://www.buap.mx/cultura/nadia/)\
 Publications VP MUSIC MEDIA: [www.seicorde.it/Pocci](http://www.seicorde.it/Pocci/borislova.htm)\
