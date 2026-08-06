@@ -6,3 +6,4 @@ export * from "./sanitize.js";
 export * from "./grid.js";
 export * from "./measure.js";
 export * from "./normalize.js";
+export * from "./style.js";

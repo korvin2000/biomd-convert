@@ -16,6 +16,7 @@
  * Everything here is a pure function of a node, so the caller can score
  * candidates without caring which evidence was available.
  */
+import { isCenteredAlign } from "../ladom/style.js";
 import { type LadomNode, textOf } from "../ladom/types.js";
 
 /** Body text is 12pt ≈ 16px; sizes are normalized to px against that. */
@@ -127,15 +128,16 @@ function isCentered(node: LadomNode): boolean {
   // `<p class="t" align="center">` under `.t { text-align: Justify }` renders
   // justified. Reading the attribute called it centred and promoted every
   // quoted document on the page to a section heading.
-  if (node.style) {
-    const measured = node.style.textAlign;
-    return measured === "center" || measured === "-webkit-center";
-  }
+  if (node.style) return isCenteredAlign(node.style.textAlign);
 
   let cur: LadomNode | null = node;
   let hops = 0;
   while (cur && hops < 4) {
-    if (cur.style?.textAlign === "center") return true;
+    // Folded, not compared. This walk runs only on an unmeasured node, but a
+    // partially measured tree reaches it with real computed values on the
+    // ancestors, and `-webkit-center` is exactly what an ancestor that centres
+    // by attribute computes to — the form this branch used to miss.
+    if (isCenteredAlign(cur.style?.textAlign)) return true;
     if ((cur.attrs["align"] ?? "").toLowerCase() === "center") return true;
     if (/text-align\s*:\s*center/iu.test(cur.attrs["style"] ?? "")) return true;
     if (cur.tag === "center" || cur.attrs["data-fold-align"] === "center") return true;

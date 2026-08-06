@@ -30,6 +30,7 @@ import {
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
 import type { TableGrid } from "../ladom/grid.js";
+import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
 import { stripLabelGlyphs } from "./headings.js";
@@ -134,6 +135,22 @@ interface Ctx {
   contentWidth: number | undefined;
   /** Body-text prominence of this page, for "is this block smaller than prose?". */
   bodyProminence: number;
+  /**
+   * Alignment of this page's own prose — the baseline `::: align` is judged against.
+   *
+   * Never compared to an absolute keyword. A page whose body text is centred
+   * throughout has no centred *blocks*; it has a centred page, and wrapping each
+   * paragraph in `align` would recreate the margins §13 forbids recreating.
+   */
+  proseAlign: PhysicalAlign;
+  /**
+   * Emitted block → the computed alignment of the source element it came from.
+   *
+   * A run pass over siblings needs each block's alignment *after* lowering, when
+   * the source node is no longer in hand. Recording it at the point of emission
+   * is the only place both are available at once.
+   */
+  blockAlign: WeakMap<object, PhysicalAlign>;
   /** Visible characters in the whole document, so "is this block the article?" is answerable. */
   documentTextLength: number;
   /** Emitted mdast image → the source node it came from, for late re-lowering. */
@@ -229,6 +246,8 @@ export function recoverStructure(
     tables: [],
     contentWidth: contentWidthOf(root),
     bodyProminence: bodyProminenceOf(root),
+    proseAlign: proseAlignOf(root),
+    blockAlign: new WeakMap(),
     documentTextLength: textOf(root).trim().length,
     imageNodes: new Map(),
     captionEligible: new WeakSet(),
@@ -363,13 +382,184 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     }
 
     flushInline();
-    out.push(...blockFrom(child, ctx));
+    const produced = blockFrom(child, ctx);
+    // Record what the source said about this block's alignment while the source
+    // node is still in hand. Only element children: an inline run's alignment is
+    // its *parent's*, which every sibling shares, so it is a property of the
+    // container and not evidence about the run.
+    const align = foldTextAlign(child.style?.textAlign);
+    if (align !== null) for (const block of produced) ctx.blockAlign.set(block, align);
+    out.push(...produced);
   }
 
   flushInline();
   ctx.inCaptionContext = outerCaptionContext;
   ctx.inCenteredBlock = outerCentered;
-  return bindCaptions(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx);
+  return bindCaptions(
+    groupAlignedRuns(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx),
+    ctx,
+  );
+}
+
+/**
+ * `::: align` for a **run** of consecutive siblings the author set apart (§6).
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A maximal run of adjacent sibling blocks whose *computed*
+ * horizontal alignment is the same, and differs from the alignment of the page's
+ * own prose ({@link proseAlignOf}). Relational, never absolute: the rule cannot
+ * be stated as "centred" because on a centred page that describes everything.
+ * No length, no font size, no tag, no class, no label vocabulary.
+ *
+ * **Recurrence.** Supplied by the baseline rather than by repetition of the
+ * shape. The comparison is against a length-weighted aggregate of every prose
+ * block on the page, so a block only qualifies by differing from a mass of
+ * other blocks. A single-block threshold — the thing `CLAUDE.md` §5 records as
+ * having regressed every time — is exactly what this avoids: nothing here reads
+ * an absolute value at all.
+ *
+ * **False friends.** Three, each tested for non-firing:
+ *   - a **caption** under a figure, which is centred because the figure is, and
+ *     whose mapping is `::: image`'s `caption:` — excluded via `captionEligible`;
+ *   - **article prose** that happens to be set apart, which §6 forbids wrapping
+ *     — excluded by the pre-existing per-block length limit;
+ *   - a block that **already carries a position** of its own — an image, a
+ *     nested `align`, a `columns` region — where a wrapper would restate it.
+ *
+ * ## Why a run and not an element
+ *
+ * The references group: `segovia1` puts three right-set paragraphs in one
+ * directive and `pavlov_azancheev` two. One directive per paragraph produces the
+ * same rendering and a different document, and L2 compares documents. Grouping
+ * also supplies the run's own boundary evidence — the run ends where the
+ * alignment changes, which is the author's own division.
+ *
+ * ## Why `right` and not `center` — measured, not chosen
+ *
+ * The rule reads `center` and `right` identically. Admitting both was tried
+ * first and **rejected by L2**: source-backed findings rose 596 → 602, because
+ * `align.spurious` gained 11 while `align.missing` and
+ * `retyped.paragraph-to-align` together lost only 8. Ten of the eleven spurious
+ * were `center`. Restricted to `right`, the same pass measures 596 → **593**.
+ *
+ * The asymmetry is structural rather than numerical, which is why it is expected
+ * to hold on the other ~987 pages. **Right is deliberate: nothing inherits it.**
+ * In this corpus a right-set block is an attribution, a contact block or a
+ * source citation — the author asked for it, on that block, on purpose. **Centre
+ * is ambient:** it is inherited from centred containers, it is what a caption
+ * under a figure gets for free, and it is how a layout lane is filled. The
+ * computed value is equally trustworthy in both cases; what differs is how many
+ * *other* constructs also produce it.
+ *
+ * **Falsifier.** A page whose centred blocks are neither captions, nor inherited
+ * from a centred container, nor lane content — measurably distinctive, and wrong
+ * to leave plain. `goya2` may already be one: it holds 7 `align.missing`, all
+ * centred. If that shape recurs across the corpus, centre belongs here too and
+ * the missing guard is a caption/lane exclusion, not a position restriction.
+ *
+ * **Known blocker.** Two documents — `borislova` and `jovicic` — put centred
+ * content in the reading flow that the references put in `::: column`. Their
+ * `columns` region fails to lower, so its cells arrive as ordinary siblings with
+ * genuine centring evidence. No guard at this seam can separate them, because by
+ * the time the run pass sees them the region is already gone. That is the
+ * columns family's defect, and centre cannot be reconsidered before it is fixed.
+ */
+function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
+  // A frame is already a bounded group; §6 says not to restate one.
+  if (ctx.frameDepth > 0 || blocks.length === 0) return blocks;
+  // Bounded interiors belong to `alignedGroup`, which is scoped to them. Firing
+  // here as well is not merely redundant: cell interiors are lowered
+  // *speculatively*, and a region detector then inspects the produced shape to
+  // decide whether the region is a columns layout at all. Wrapping a cell's
+  // paragraphs in `align` changed that shape and the detector rejected the
+  // region — `jovicic` and `borislova` lost every `::: columns` and `::: column`
+  // they had. A pass that runs mid-speculation must not alter what is being
+  // speculated about.
+  if (ctx.boundedDepth > 0) return blocks;
+
+  const out: BiomdContent[] = [];
+  let run: BiomdContent[] = [];
+  let runAlign: "right" | null = null;
+
+  const flush = (): void => {
+    // No ledger entry: every member was already recorded as EMITTED by the
+    // element it came from, and `runPass` rejects an id it did not declare —
+    // this pass regroups blocks, it does not consume source nodes.
+    if (runAlign !== null && run.length > 0) {
+      out.push(makeAlign({ position: runAlign, children: run as BoundedContent[] }));
+    } else {
+      out.push(...run);
+    }
+    run = [];
+    runAlign = null;
+  };
+
+  for (const block of blocks) {
+    const align = alignableRunMember(block, ctx);
+    if (align === null) {
+      flush();
+      out.push(block);
+      continue;
+    }
+    if (align !== runAlign) flush();
+    runAlign = align;
+    run.push(block);
+  }
+  flush();
+  return out;
+}
+
+/**
+ * The alignment a block contributes to a run, or null when it cannot join one.
+ *
+ * Every exclusion here is a false friend or a spec rule, never a tuning knob.
+ */
+function alignableRunMember(block: BiomdContent, ctx: Ctx): "right" | null {
+  const align = ctx.blockAlign.get(block);
+  if (align === undefined || align === null) return null;
+  // `left`/`justify` are the reading flow and say nothing. `center` is held back
+  // deliberately — see the position asymmetry in `groupAlignedRuns`'s contract,
+  // which L2 decided and which the columns family has to clear before it can be
+  // revisited. The relational test below is what makes even `right` evidence.
+  if (align !== "right") return null;
+  if (!isDistinctiveAlign(align, ctx.proseAlign)) return null;
+
+  // §4.1: these may not sit inside a bounded container, and the bounded-content
+  // filter would drop them silently — taking their links with them.
+  if (!isBounded(block)) return null;
+  // A picture, a nested align and a frame each carry their own position (§6).
+  if (block.type === "biomdImage" || block.type === "biomdImages") return null;
+  if (block.type === "biomdAlign" || block.type === "biomdFrame") return null;
+  // §3.8 tables and §2 headings are positioned by their own construct.
+  if (block.type === "table" || block.type === "heading") return null;
+  if (block.type === "thematicBreak") return null;
+
+  // False friend: the caption bound to a figure. `::: image`'s `caption:` is
+  // where it belongs — a competing `align` both duplicates the position and
+  // detaches the text from its picture.
+  if (ctx.captionEligible.has(block)) return null;
+
+  // §6: "do not wrap … long body prose". Pre-existing limit, unchanged, applied
+  // per block so one long paragraph cannot drag a run of labels with it.
+  const text = blockTextOf(block);
+  if (text.trim() === "" || text.length > ALIGN_LABEL_MAX_CHARS) return null;
+  if (!isAlignableLabelText(text)) return null;
+
+  return align;
+}
+
+/** Visible text of an emitted block, for the length and label guards. */
+function blockTextOf(block: BiomdContent): string {
+  const parts: string[] = [];
+  const visit = (node: unknown): void => {
+    if (node === null || typeof node !== "object") return;
+    const n = node as { type?: string; value?: string; children?: unknown[] };
+    if (n.type === "text" && typeof n.value === "string") parts.push(n.value);
+    if (Array.isArray(n.children)) for (const child of n.children) visit(child);
+  };
+  visit(block);
+  return parts.join("").replace(/\s+/gu, " ").trim();
 }
 
 /**
@@ -518,6 +708,41 @@ function bodyProminenceOf(root: LadomNode): number {
   if (sizes.length === 0) return 16;
   sizes.sort((a, b) => a - b);
   return sizes[Math.floor(sizes.length / 2)] ?? 16;
+}
+
+/**
+ * The page's own prose alignment, measured once per document.
+ *
+ * Only *measured* nodes contribute. The inline `align` attribute is excluded on
+ * purpose: `CLAUDE.md` §4 records that on `pavlov_azancheev.htm` it appears on
+ * 34 elements that all compute to `justify`, so admitting it here would let the
+ * lie define the baseline and every genuinely centred block would then look
+ * ordinary. An unmeasured run therefore yields `null`, and the callers fall back
+ * to treating `center`/`right` as distinctive on their own.
+ *
+ * Leaf blocks only. A `<td>` wrapping the whole article has the article's text
+ * length and would outweigh every paragraph in it, so a single centred cell
+ * would declare the page centred.
+ */
+function proseAlignOf(root: LadomNode): PhysicalAlign {
+  const samples: Array<{ align: PhysicalAlign; textLength: number }> = [];
+  for (const el of walkElements(root)) {
+    if (el.tag !== "p" && el.tag !== "div" && el.tag !== "td" && el.tag !== "li") continue;
+    if (el.children.some((c) => c.kind === "element" && isBlockTag(c.tag))) continue;
+    const align = foldTextAlign(el.style?.textAlign);
+    if (align === null) continue;
+    samples.push({ align, textLength: textOf(el).trim().length });
+  }
+  return proseAlign(samples);
+}
+
+const BLOCK_TAGS = new Set([
+  "p", "div", "table", "tbody", "thead", "tr", "td", "th", "ul", "ol", "li",
+  "blockquote", "pre", "hr", "h1", "h2", "h3", "h4", "h5", "h6", "center", "dl", "form",
+]);
+
+function isBlockTag(tag: string): boolean {
+  return BLOCK_TAGS.has(tag);
 }
 
 /**
@@ -1433,8 +1658,12 @@ function floatOf(el: LadomNode): "left" | "right" | null {
 function estimatePosition(el: LadomNode): "left" | "right" | "center" | "full" {
   const float = floatOf(el);
   if (float) return float;
-  const align = el.style?.textAlign ?? el.parent?.attrs["align"];
-  if (align === "center") return "center";
+  // Centre is the fallback for a standalone figure with no float evidence, and
+  // it is the *only* outcome here: the `text-align` test that used to sit on
+  // this line compared with `=== "center"` and returned "center" either way, so
+  // it decided nothing while looking like a rule. Removed rather than repaired
+  // — reading alignment for an image position is a separate question from the
+  // `::: align` family, and folding one into the other would confound both.
   return "center";
 }
 
@@ -1791,6 +2020,37 @@ function isBounded(node: BiomdContent): node is BoundedContent {
 }
 
 /**
+ * Whether a centred bounded block's text can be a label at all (§13).
+ *
+ * Exported so the contract can be tested directly: the surrounding rule needs a
+ * real two-lane region to fire, and reproducing one in a unit fixture tests the
+ * lane detector rather than this decision.
+ *
+ * The test used to demand a **letter**, which rejected `- 2 -` on the grounds
+ * that a page number is not a label. `analyze/analyze.md` names that exact block
+ * on `williams2` as one that must be centred, and the reference centres it — so
+ * the human record decides it and the rule was wrong (`CLAUDE.md` §4, L5).
+ *
+ * Relaxed to "carries a letter or a digit", which admits `- 2 -` and every bare
+ * year label while still rejecting the false friend this guard exists for: a
+ * rule the author drew out of punctuation (`* * *`, `— — —`). That is a
+ * separator and belongs to the break family, not here.
+ */
+export function isAlignableLabelText(text: string): boolean {
+  return /[\p{L}\p{N}]/u.test(text);
+}
+
+/**
+ * §6: "do not wrap … long body prose".
+ *
+ * The one absolute number in the alignment family, and it is a *spec* limit
+ * rather than a tuned one: it separates a label from an article, and both
+ * alignment rules read it so the two cannot disagree about where that line is.
+ * Every block the references wrap in `::: align` is comfortably under it.
+ */
+export const ALIGN_LABEL_MAX_CHARS = 120;
+
+/**
  * `::: align` for a short bounded block the author centred or right-set (§6).
  *
  * Scoped deliberately to the inside of a `column`. That is where the construct
@@ -1805,22 +2065,21 @@ function alignedGroup(el: LadomNode, inner: BiomdContent[], ctx: Ctx): BiomdCont
   // one. Inside an obituary notice every line is centred, and wrapping each in
   // its own `align` describes the border, not the content.
   if (ctx.boundedDepth === 0 || ctx.frameDepth > 0 || inner.length === 0) return inner;
-  const align = el.style?.textAlign;
-  const position = align === "center" || align === "-webkit-center" ? "center" : align === "right" ? "right" : null;
+  const folded = foldTextAlign(el.style?.textAlign);
+  const position = folded === "center" || folded === "right" ? folded : null;
   if (!position) return inner;
 
   const text = textOf(el).trim();
   // §6: "do not wrap … long body prose". A label names the record; a paragraph
   // that happens to be centred is still a paragraph.
-  if (text === "" || text.length > 120) return inner;
+  if (text === "" || text.length > ALIGN_LABEL_MAX_CHARS) return inner;
   if (inner.some((n) => n.type === "biomdColumns" || n.type === "biomdColumn" || n.type === "biomdNav")) return inner;
   // A picture carries its own `position`; §6 says not to duplicate it.
   if (inner.every((n) => n.type === "biomdImage" || n.type === "biomdImages")) return inner;
   if (inner.some((n) => n.type === "heading")) return inner;
   // The label of a record is set apart by weight as well as by position.
-  // Unemphasised centred text in a lane is a caption or a page number, and
-  // `- 2 -` is neither a label nor anything a reader needs aligned.
-  if (!/\p{L}/u.test(text) || !isWhollyStrongBlocks(inner)) return inner;
+  // Unemphasised centred text in a lane is a caption, not a label.
+  if (!isAlignableLabelText(text) || !isWhollyStrongBlocks(inner)) return inner;
 
   ctx.ledger.push(emitted(el.id, nextId(ctx, "align"), { note: `bounded ${position} group` }));
   return [makeAlign({ position, children: inner as BoundedContent[] })];

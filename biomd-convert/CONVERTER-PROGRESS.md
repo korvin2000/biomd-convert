@@ -440,26 +440,158 @@ are written — not an *unseen* holdout. Rotate it each round and report both si
 
 ---
 
-## 7. Phase gate: L3 is not built, and it blocks the rule work
+## 7. L3 — built and calibrated (2026-08-06)
 
-**L3 diagnostic rendering is NOT implemented and NOT calibrated.** There is no
-`tools/render-biomd.ts`; nothing in this repository renders `.bio.md` to HTML.
-`.claude/launch.json` already declares both static servers it will need
-(`fixtures` on 8123, `rendered` on 8124 serving `analyze/rendered`), and that is
-the whole of what exists.
+The phase gate is cleared. L3 renders `.bio.md` to HTML, probes the rendered
+geometry in Chromium, and adjudicates three surfaces against each other: source
+`.htm` ↔ produced `.bio.md` ↔ reference `.bio.md`. No converter rule was changed
+building it.
 
-**Consequence, and it is binding: L3 completion is the next action, and no
-converter-rule task may begin before it.** The three ranked classes below are all
-decided by geometry — computed alignment, lane boundaries, containment — and §4.2
-of `CLAUDE.md` records two verified corpus facts that make this non-negotiable:
-presentational attributes lie (`align="center"` computing to `justify` on 17
-`p.t8` nodes in `pavlov_azancheev.htm`), and computed `text-align` is not always
-the keyword expected (Chromium returns `-webkit-center` / `-webkit-left`).
-Choosing a rule for any of these classes without rendered geometry is guesswork,
-and guesswork is what the ladder exists to stop.
+### 7.1 What was implemented
 
-L3's own invariant, to build it against: both `.bio.md` sides must render through
-identical code, so the same file given twice produces byte-identical output.
+| module | role |
+|---|---|
+| `src/l3/render.ts` | `.bio.md` → deterministic HTML, from `Biography-Markup.md` + the target model in `biomd-ast/read.ts`. One entry point, no side parameter. |
+| `src/l3/geometry.ts` | the vocabulary: vendor/logical `text-align` folding, box-derived alignment, the page's own prose baseline, row banding, reading rank, overflow, lanes |
+| `src/l3/probe.ts` | Chromium harness. Same launch flags, viewport, offline routing and asset placeholder as `ladom/measure.ts` |
+| `src/l3/compare.ts` | rendered surfaces → localized findings + the alignment evidence table |
+| `src/l3/render.test.ts` | 38 contracts |
+| `tools/render-biomd.ts` | the runnable entry `CLAUDE.md` §4 names; argument handling only |
+
+Surfaced as two commands:
+
+```bash
+cd biomd-convert && node dist/cli/index.js render -c bench/biomd.config.json
+```
+```bash
+cd biomd-convert && node dist/cli/index.js l3 -c bench/biomd.config.json --json ../analyze/l3.json
+```
+
+`render` writes 26 pages plus a launcher to `analyze/rendered`; with the
+`rendered` server (8124) and `fixtures` server (8123) from `.claude/launch.json`
+the three surfaces of any document are one click apart.
+
+**Implementation note on placement.** `CLAUDE.md` names `tools/render-biomd.ts`.
+The renderer itself lives in `src/l3/` — `tsconfig` has `rootDir: src`, so a
+`tools/` implementation would be neither typechecked, tested, nor built, and L2
+set the precedent by living in `src/eval/`. `tools/render-biomd.ts` is the
+runnable surface and contains no rendering logic, so there is exactly one
+renderer, which is the invariant that matters.
+
+### 7.2 The two properties, verified
+
+- **Identity.** Every reference rendered against itself, all thirteen, through
+  Chromium: **0 findings**. Asserted at unit level too, on synthetic probes.
+- **Determinism.** Two full corpus runs, byte-identical JSON. The renderer is a
+  pure function of its input; the probe rounds to 0.01 px because sub-ulp jitter
+  would break finding-id stability.
+
+### 7.3 Target quirks are modelled, not fixed
+
+`read()` documents where the target diverges from the specification. L3
+reproduces the *consequences*, because rendering the author's intent instead
+would hide the corruption:
+
+- a `divider:` or `columns:` line inside `::: columns` is **not** a property —
+  the target promotes it to a synthetic first column, shifting every real column
+  one track right. Rendered as such, outlined in red, `data-quirk` set. This is
+  the layout consequence of the asymmetry `conformance.test.ts` already asserts,
+  and it is why `divider` must never be emitted;
+- `::: frame`'s `frame:` and `title:` lines likewise arrive as body text; the
+  palette falls back to §11's default and the line renders as the paragraph a
+  reader would actually see.
+
+Three contracts assert the corruption is reproduced. A contributor "fixing" the
+renderer to be more correct will fail them.
+
+### 7.4 Calibration against the human record — L3 finds what `analyze.md` names
+
+| `analyze.md` complaint | L3 finding | localized to |
+|---|---|---|
+| williams2 1 — `**- 2 -**` must be centred | `layout.align.mismatch`, referenceAlign `center` | ref line 9 |
+| williams2 4 — `changes1.jpg` appears too early | `layout.order.mismatch` | ref 30 → produced 13 |
+| williams2 9 — Bach/MP3 line right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 98 |
+| williams2 10 — closing credit right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 104 |
+| tarrega 2 — `tarrega1.jpg` misplaced | `layout.order.mismatch` | ref 21 → produced 117 |
+| tarrega 3 — multi-block region wrongly a blockquote | 7 × `layout.containment.mismatch`, `quote` → `(root)` | ref 45, 46, 48, 51, 54, 65, 82 |
+| goya2 — one lane per column, not one pair per album | 35 × `layout.containment.mismatch`, `(root)` → `columns>column` | per block |
+| kiselev/jovicic — song lists shown as quotes | `quote` ↔ `(root)` containment | per block |
+
+Every geometry-decidable complaint in the sampled pages maps to a finding with a
+line number on both sides.
+
+**Two findings L3 produced that no other rung can.**
+
+1. **A defect in the reference set.** `pavlov_azancheev.bio.md` ended with an
+   `::: align position: right` that was never closed — the file finished on a
+   `---` — so the target would have swallowed the closing credit and the
+   trailing rule into the right-aligned region. Invisible to L2 by construction:
+   both sides go through the same reader, the identical mis-parse happens twice
+   and cancels. Corrected in the reference on 2026-08-06. A regression test now
+   asserts no reference leaves a fence open.
+2. **`williams2` loses half its text measure, and L2 reports nothing.** The
+   produced document wraps the whole article in a `::: columns` with **two**
+   `::: column` children — prose in lane 1, the source's right-hand menu left as
+   loose links in lane 2 — so every paragraph renders at **328 px instead of
+   672 px**. The reference's `::: columns` has one child and renders at full
+   measure. L2's 24 findings for `williams2` contain **zero** `column`/`columns`
+   classes. §9 lists "forcing a narrow text measure" and "recreating page
+   margins" as bad uses by name; only a renderer can see that this is one.
+
+### 7.5 Corpus result, and what it says
+
+`node dist/cli/index.js l3 -c bench/biomd.config.json`, 1024 px, 13 documents:
+
+| class | inst | docs | severity |
+|---|---:|---:|---|
+| `layout.containment.mismatch` | 125 | 12 | major |
+| `layout.align.mismatch` | 61 | 10 | major |
+| `layout.lane.mismatch` | 25 | 7 | major |
+| `layout.order.mismatch` | 24 | 9 | critical |
+
+The containment findings are not noise — they decompose exactly onto the known
+families: 35 `(root)`→`columns>column` (the catalog-row task, §8.2), 49 into an
+`align` wrapper (the alignment task, §8.1), 22 `quote` ↔ `(root)` (the blockquote
+anomaly `analyze.md` names for tarrega, kiselev and jovicic), 6 → `images`,
+6 → `frame`.
+
+### 7.6 One instrument defect found and fixed at the class level
+
+`readingOrder` — a pairwise "same row?" test — is **not transitive**: A shares a
+row with B and B with C while A and C do not overlap. Handed to
+`Array.prototype.sort`, it yields an implementation-defined permutation, and two
+such sorts can disagree for reasons that have nothing to do with the documents.
+It manufactured one finding whose produced and reference ranks were **equal** — a
+block reported as having moved past itself.
+
+Replaced with `rowBands()` + `readingRanks()`: boxes are swept top to bottom and
+each joins the open band when it overlaps that band's **anchor**, giving a total,
+transitive, permutation-invariant order. Comparing against the anchor rather than
+the band's running extent is what stops one tall cell absorbing the page. Three
+contracts, including permutation invariance. Equal-rank findings: 0 of 24.
+
+### 7.7 Stated limitations — what to distrust in L3
+
+- **No asset tree, so picture boxes are token-derived.** Every image 404s by
+  construction. A figure's box comes from its `size` token and a fixed 4:3 aspect
+  ratio, never from an intrinsic size. L3 adjudicates *the layout the tokens
+  produce*, not the layout the real pictures would produce. Aspect-ratio defects
+  are outside its reach.
+- **The renderer is a model of the target, not the target.** It is built from the
+  spec and from `read()`. Where the real renderer differs in a way `read()` does
+  not document, L3 is wrong in the same direction on both sides — the most
+  dangerous error class, because a comparison cannot reveal it.
+- **7 of 151 alignment rows have no source node.** Pairing is by rendered text,
+  then image basename, then containment. A row without a source node carries no
+  backing verdict and is counted separately rather than being silently treated as
+  unbacked.
+- **Pairing is by rendered text, deliberately independent of L2.** L3 must be
+  able to disagree with L2; that is the value of a separate rung. The cost is
+  that a block whose text the migrator rewrote past 0.65 similarity is unpaired,
+  and unpaired blocks yield no L3 finding — presence remains L2's question.
+- **One viewport by default.** 1024 px, the era's design target and what
+  `ladom/measure.ts` uses. `--width` re-runs at any other; nothing yet asserts a
+  finding is stable across widths.
 
 ---
 
@@ -468,34 +600,110 @@ identical code, so the same file given twice produces byte-identical output.
 All three are **pending**. Prerequisite for #1 and #2: §7 (L3). #3 has no L3
 prerequisite because it does not touch the converter.
 
-### 8.1 Alignment family — `retyped.paragraph-to-align` + `align.missing`
+### 8.1 Alignment family — hypotheses now measured, mechanism identified
 
-39 source-backed instances across **9 of 13 documents** — the highest generality
-in the ledger. The reference wraps centred and right-aligned blocks in
-`::: align`; the converter emits a bare paragraph.
+**In progress.** L3's alignment evidence table decides all three pre-registered
+hypotheses by counting. The inventory below is the reference measured against
+itself (so it is the complete reference-side picture, uncontaminated by
+produced-side gaps): `analyze/l3-reference-alignment.json`, **163 blocks the
+reference aligns distinctively** — 128 `center`, 35 `right`.
 
-Hypotheses, to test in falsification-cost order:
+Source computed `text-align`, verbatim, for those 163 blocks:
 
-- **H1 — the evidence is present but read wrongly.** `prominence.ts:138` and
-  `structure.ts:1437` compare computed `text-align` with `=== "center"`, which
-  under-detects because Chromium returns `-webkit-center` / `-webkit-left` for
-  elements centred by an ancestor's `align` attribute. `prominence.ts:132` and
-  `structure.ts:1809` already handle this; the inconsistency is live.
-  *Cheapest falsifier:* a `getComputedStyle` probe over the 9 affected documents —
-  if few nodes return the `-webkit-` forms, H1 is dead.
-- **H2 — a missing path, not a misreading.** Only centring is treated as
-  evidence; `position: right` is never emitted from geometry.
-  *Cheapest falsifier:* count how many of the 39 want `right` versus `center`.
-- **H3 — the reference is what is wrong.** The migrator aligned blocks the source
-  does not align. *Cheapest falsifier:* the computed style of the corresponding
-  source node is already left or justify.
+| value | n |
+|---|---:|
+| `-webkit-center` | **65** |
+| `center` | 50 |
+| `justify` | 16 |
+| `right` | 14 |
+| `start` | 9 |
+| *(no matching source node)* | 9 |
 
-*Expected closure:* 25 `retyped.paragraph-to-align` + 14 `align.missing`, less
-whatever H3 claims. *Guard:* `align.spurious` (11, one document) must not rise.
-*Rule contract required before code:* invariant expressed as computed alignment
-**relative to the page's own prose alignment**, never an absolute keyword;
-recurrence requirement; false friend = a centred caption, which must not become
-`::: align`; mutation robustness.
+Cross-tabulated against what the reference wanted:
+
+| reference wants | source says | n | verdict |
+|---|---|---:|---|
+| center | center, distinctive | 106 | actionable |
+| right | right, distinctive | 14 | actionable |
+| right | center, distinctive | 9 | migrator's choice |
+| right | justify | 9 | ceiling |
+| center | left | 9 | ceiling |
+| center | justify | 7 | ceiling |
+| center / right | unknown | 9 | no verdict |
+
+The prose baseline is `left` on twelve documents and `justify` on `goya2`, so
+"distinctive" is well defined per page and no page is centred throughout.
+
+**H1 — confirmed as evidence, falsified as a code claim.** 65 of 163 source nodes
+compute `-webkit-center`; an `=== "center"` test misses every one, so the vendor
+fold is genuinely load-bearing — 40 % of the family and 57 % of the centre cases.
+But the two sites PROGRESS named were **already folding it**: `prominence.ts`'s
+measured branch and `alignedGroup` both tested `=== "center" || === "-webkit-center"`.
+Of the two sites said to be broken, `prominence.ts`'s ancestor walk was genuinely
+under-detecting (it runs only when unmeasured), and `structure.ts`'s
+`estimatePosition` read `text-align` into a branch that **returned `"center"`
+either way** — a dead comparison that looked like a rule. So H1 did not explain
+the open findings, and PROGRESS §8.1 was pointing at the wrong line.
+
+**H2 — confirmed, and smaller than the headline.** 35 of 163 want `right`; only
+**14** have a source node that computes `right`. A `right` path is real work but
+reaches 14 blocks, not 35.
+
+**H3 — confirmed, and it is 21 % of the family.** 34 of 163 rows are not
+distinctive in the source (or have no source node): the migrator aligned blocks
+the source does not align. Ceiling, excluded from targets.
+
+**H4 — the actual mechanism, found by reading the gate rather than the keyword.**
+`alignedGroup()` reads the evidence correctly and then discards it. `::: align`
+is emitted only when *all* of: inside a `column` (`boundedDepth > 0`), not inside
+a `frame`, text ≤ 120 chars, no `columns`/`column`/`nav` child, not all images,
+no heading child, text carries a letter, **and the whole block is bold**. The
+bold requirement and the `boundedDepth` scope reject most of the 129 actionable
+blocks: `kiselev`'s right-aligned addresses and `williams2`'s closing credit are
+not bold, and most are not inside a column. This is where the remaining work is,
+and it is a *widening on relational evidence*, not a keyword fix.
+
+**Change made (2026-08-06), first increment.**
+
+1. `ladom/style.ts` — `foldTextAlign()` / `isCenteredAlign()`, one definition,
+   in `ladom` because both `convert-core` and `l3` need it and neither may
+   import the other. It folds vendor prefixes, `start`/`end`, and returns `null`
+   for anything that is not evidence rather than defaulting. `prominence.ts` and
+   `structure.ts` now use it; the dead `estimatePosition` comparison was removed
+   rather than repaired, with the reason recorded at the site.
+2. `alignedGroup` no longer requires the label to contain a **letter**.
+   `analyze.md` names `**- 2 -**` on `williams2` as a block that must be centred
+   and the reference centres it, so the human record decides it (L5). Relaxed to
+   "a letter *or a digit*", which admits `- 2 -` and every bare year label and
+   still rejects the false friend the guard exists for — a rule drawn out of
+   punctuation (`* * *`), which belongs to the break family. Extracted as
+   `isAlignableLabelText()` so the contract is testable without reproducing a
+   two-lane region.
+
+Measured effect, all four rungs, LLM off:
+
+| | before | after |
+|---|---:|---:|
+| L0 tests | 301 | **304** |
+| L1 overall | 87.6 % | **87.7 %** |
+| L1 `williams2` directives | 73.7 | **80.0** |
+| L2 findings / source-backed | 707 / 598 | **705 / 596** |
+| L3 findings | 235 | **233** |
+| L3 `layout.align.mismatch` | 61 | **60** |
+
+`williams2` now emits `::: align / position: center / **- 2 -**` — `analyze.md`
+williams2 item 1, closed. `align.spurious` did not rise. Small, but every rung
+moved the same way, which is the property a change has to have before the larger
+gate widening is worth attempting.
+
+*Remaining in this family:* the H4 widening — ~115 centre and 14 right blocks
+whose evidence is present and whose gate rejects them. *Rule contract required
+before that code:* invariant expressed as computed alignment **relative to the
+page's own prose alignment** (`proseAlignment()` / `isDistinctive()` already
+exist in `l3/geometry.ts` and would need production twins in `ladom`), never an
+absolute keyword; recurrence requirement; false friend = a centred caption, which
+must not become `::: align`; mutation robustness. *Guard:* `align.spurious` (11,
+one document) must not rise.
 
 ### 8.2 Catalog row-pattern segmentation in `layoutFrom()`
 

@@ -34,6 +34,7 @@ import {
   triage,
   type LedgerFinding,
 } from "../eval/index.js";
+import { L3Probe, compareRendered, renderBiomd, type L3Result } from "../l3/index.js";
 import { ENGINE_VERSION, JobStore, hashOf, writeAtomic } from "./store.js";
 import {
   Budget,
@@ -689,6 +690,230 @@ program
     }
     process.stdout.write(`\n${report.summary}\n`);
     process.exitCode = report.usable ? 0 : 1;
+  });
+
+// ---------------------------------------------------------------------------
+
+/**
+ * The three surfaces L3 adjudicates, for one document.
+ *
+ * `source` is optional throughout: without it the alignment evidence table
+ * carries no backing verdict, which is a stated limitation rather than a
+ * failure. `produced` missing is a failure, and is reported as one.
+ */
+interface L3Surfaces {
+  doc: string;
+  produced: string | null;
+  reference: string;
+  sourceHtml: string | null;
+  sourcePath: string | null;
+}
+
+async function collectL3Surfaces(cfg: Config, options: Record<string, unknown>): Promise<L3Surfaces[]> {
+  const expectedDir = resolve((options["expected"] as string | undefined) ?? cfg.expectedDir ?? "");
+  const actualDir = resolve((options["produced"] as string | undefined) ?? cfg.outDir);
+  const inputDir = resolve((options["inputDir"] as string | undefined) ?? cfg.inputDir ?? expectedDir);
+  const only = options["doc"] as string | undefined;
+
+  const out: L3Surfaces[] = [];
+  for (const entry of (await readdir(expectedDir)).sort()) {
+    if (!entry.endsWith(".bio.md")) continue;
+    const doc = entry.replace(/\.bio\.md$/u, "");
+    if (only && doc !== only) continue;
+    let produced: string | null = null;
+    try {
+      produced = await readFile(join(actualDir, entry), "utf8");
+    } catch {
+      /* reported by the caller — a missing output is a real state, not an error */
+    }
+    let sourceHtml: string | null = null;
+    let sourcePath: string | null = null;
+    for (const ext of [".htm", ".html"]) {
+      try {
+        const path = join(inputDir, `${doc}${ext}`);
+        sourceHtml = decodeHtml(await readFile(path)).text;
+        sourcePath = path;
+        break;
+      } catch {
+        /* optional */
+      }
+    }
+    out.push({ doc, produced, reference: await readFile(join(expectedDir, entry), "utf8"), sourceHtml, sourcePath });
+  }
+  return out;
+}
+
+program
+  .command("render")
+  .description("L3: render .bio.md documents to diagnostic HTML for side-by-side inspection")
+  .option("-e, --expected <dir>", "directory of reference .bio.md files (default: config `expectedDir`)")
+  .option("-p, --produced <dir>", "directory of produced .bio.md files (default: config `outDir`)")
+  .option("-i, --input-dir <dir>", "directory of source .htm files")
+  .option("-o, --out <dir>", "where to write the rendered pages", "../analyze/rendered")
+  .option("--doc <name>", "only this document")
+  .option("--annotate", "outline every block and label its kind and line")
+  .option("-c, --config <file>", "explicit config file")
+  .action(async (options) => {
+    const cfg = settings(options);
+    const outDir = resolve(options.out as string);
+    const surfaces = await collectL3Surfaces(cfg, options);
+    const annotate = options.annotate === true;
+
+    let written = 0;
+    const rows: string[] = [];
+    for (const s of surfaces) {
+      const reference = renderBiomd(s.reference, { title: `${s.doc} — reference`, annotate });
+      await writeAtomic(join(outDir, `${s.doc}.reference.html`), reference.html);
+      written += 1;
+      let producedNote = "—";
+      if (s.produced !== null) {
+        const produced = renderBiomd(s.produced, { title: `${s.doc} — produced`, annotate });
+        await writeAtomic(join(outDir, `${s.doc}.produced.html`), produced.html);
+        written += 1;
+        producedNote = `<a href="${s.doc}.produced.html">produced</a>`;
+      }
+      const sourceLink = s.sourcePath ? `<a href="http://localhost:8123/${basename(s.sourcePath)}">source</a>` : "—";
+      rows.push(
+        `<tr><td>${s.doc}</td><td>${sourceLink}</td><td>${producedNote}</td>` +
+          `<td><a href="${s.doc}.reference.html">reference</a></td></tr>`,
+      );
+      for (const w of reference.warnings) {
+        process.stdout.write(`note ${s.doc} reference line ${w.line}: ${w.code} — ${w.message}\n`);
+      }
+    }
+
+    // A launcher, so the three surfaces of a document are one click apart. The
+    // source column points at the `fixtures` server declared in launch.json;
+    // the other two are served from this directory by the `rendered` server.
+    await writeAtomic(
+      join(outDir, "index.html"),
+      `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>L3 surfaces</title>` +
+        `<style>body{font:14px/1.5 system-ui,sans-serif;margin:2rem}table{border-collapse:collapse}` +
+        `td,th{border:1px solid #ccc;padding:.3em .6em;text-align:left}</style></head><body>` +
+        `<h1>L3 surfaces</h1><p>source = localhost:8123 · produced/reference = this server.</p>` +
+        `<table><thead><tr><th>document</th><th>source .htm</th><th>produced</th><th>reference</th></tr></thead>` +
+        `<tbody>${rows.join("")}</tbody></table></body></html>\n`,
+    );
+
+    process.stdout.write(`\n${written} page(s) written to ${outDir}\nOpen http://localhost:8124/index.html\n`);
+  });
+
+// ---------------------------------------------------------------------------
+
+program
+  .command("l3")
+  .description("L3: rendered and geometric adjudication of produced against reference, with source backing")
+  .option("-e, --expected <dir>", "directory of reference .bio.md files (default: config `expectedDir`)")
+  .option("-p, --produced <dir>", "directory of produced .bio.md files (default: config `outDir`)")
+  .option("-i, --input-dir <dir>", "directory of source .htm files")
+  .option("--doc <name>", "only this document")
+  .option("--width <px>", "viewport width", "1024")
+  .option("--json <file>", "write findings and the alignment evidence table here")
+  .option("--class <name>", "only findings whose class starts with this prefix")
+  .option("-v, --verbose", "list every finding, not just the class roll-up")
+  .option("-c, --config <file>", "explicit config file")
+  .action(async (options) => {
+    const cfg = settings(options);
+    const surfaces = await collectL3Surfaces(cfg, options);
+    const width = Number(options.width ?? 1024);
+
+    const probe = await L3Probe.create();
+    if (probe === null) {
+      process.stderr.write(
+        "L3 needs Chromium and it is not available. Install it with `npx playwright install chromium`.\n" +
+          "Refusing to report geometry that was not measured.\n",
+      );
+      process.exitCode = 1;
+      return;
+    }
+
+    const assetRoot = cfg.assetRoot ? resolve(cfg.assetRoot) : undefined;
+    const results: L3Result[] = [];
+    const skipped: string[] = [];
+
+    try {
+      for (const s of surfaces) {
+        if (s.produced === null) {
+          skipped.push(s.doc);
+          continue;
+        }
+        const producedPage = await probe.probeRendered(renderBiomd(s.produced).html, { width });
+        const referencePage = await probe.probeRendered(renderBiomd(s.reference).html, { width });
+        const sourcePage =
+          s.sourceHtml === null
+            ? null
+            : await probe.probeSource(s.sourceHtml, { width, ...(assetRoot ? { assetRoot } : {}) });
+        results.push(compareRendered({ doc: s.doc, produced: producedPage, reference: referencePage, source: sourcePage }));
+      }
+    } finally {
+      await probe.close();
+    }
+
+    const classPrefix = options.class as string | undefined;
+    const findings = results.flatMap((r) => r.findings).filter((f) => !classPrefix || f.class.startsWith(classPrefix));
+    const alignment = results.flatMap((r) => r.alignment);
+
+    // Classes and instances, never an average — the reporting convention §8.
+    const byClass = new Map<string, { n: number; docs: Set<string>; severity: string }>();
+    for (const f of findings) {
+      const e = byClass.get(f.class) ?? { n: 0, docs: new Set<string>(), severity: f.severity };
+      e.n += 1;
+      e.docs.add(f.doc);
+      byClass.set(f.class, e);
+    }
+    process.stdout.write(`\nL3 — ${findings.length} finding(s) over ${results.length} document(s) at ${width}px\n`);
+    if (skipped.length > 0) process.stdout.write(`skipped (no produced output): ${skipped.join(", ")}\n`);
+    process.stdout.write(`\n${"class".padEnd(32)}${"inst".padStart(6)}${"docs".padStart(6)}  severity\n`);
+    for (const [cls, e] of [...byClass].sort((a, b) => b[1].n - a[1].n)) {
+      process.stdout.write(`${cls.padEnd(32)}${String(e.n).padStart(6)}${String(e.docs.size).padStart(6)}  ${e.severity}\n`);
+    }
+
+    // The alignment evidence table: the artifact the alignment family is
+    // decided from. Printed as counts here; the rows go to --json.
+    if (alignment.length > 0) {
+      const webkit = alignment.filter((a) => (a.sourceTextAlignRaw ?? "").startsWith("-webkit-")).length;
+      const wantRight = alignment.filter((a) => a.referenceAlignment === "right").length;
+      const wantCenter = alignment.filter((a) => a.referenceAlignment === "center").length;
+      const unbacked = alignment.filter((a) => a.sourcePath !== null && !a.sourceDistinctive).length;
+      const noNode = alignment.filter((a) => a.sourcePath === null).length;
+      process.stdout.write(
+        `\nalignment evidence — ${alignment.length} distinctively-aligned block(s)\n` +
+          `  reference wants center            ${wantCenter}\n` +
+          `  reference wants right             ${wantRight}\n` +
+          `  source computes a -webkit- form   ${webkit}   (H1)\n` +
+          `  source not distinctive            ${unbacked}   (H3)\n` +
+          `  no matching source node           ${noNode}\n`,
+      );
+    }
+
+    if (options.verbose === true) {
+      process.stdout.write("\n");
+      for (const f of findings) {
+        process.stdout.write(
+          `${f.severity[0]!.toUpperCase()} ${f.class}  ${f.doc}:${f.referenceLine ?? "-"}→${f.producedLine ?? "-"}  ${f.path}\n` +
+            `    ${JSON.stringify(f.geometry)}\n` +
+            `    want: ${f.reference ?? "—"}\n    got : ${f.produced ?? "—"}\n`,
+        );
+      }
+    }
+
+    if (options.json) {
+      await writeAtomic(
+        resolve(options.json as string),
+        `${JSON.stringify(
+          {
+            generated: { viewport: width, documents: results.map((r) => r.doc) },
+            totals: { findings: findings.length, alignmentRows: alignment.length },
+            classes: [...byClass].map(([cls, e]) => ({ class: cls, instances: e.n, documents: e.docs.size })),
+            findings,
+            alignment,
+            notes: results.flatMap((r) => r.notes.map((n) => `${r.doc}: ${n}`)),
+          },
+          null,
+          2,
+        )}\n`,
+      );
+    }
   });
 
 // ---------------------------------------------------------------------------

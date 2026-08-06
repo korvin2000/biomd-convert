@@ -8,11 +8,12 @@
  */
 import { describe, expect, it } from "vitest";
 import { convert } from "./pipeline.js";
-import { isDateLabel } from "./structure.js";
+import { ALIGN_LABEL_MAX_CHARS, isAlignableLabelText, isDateLabel } from "./structure.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
 import { groupColumnsFor, isDecorative, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
 import { parseHtml } from "../ladom/parse.js";
+import { foldTextAlign, isCenteredAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { resolveProfile } from "../biomd-ast/index.js";
 import { walkElements } from "../ladom/types.js";
 
@@ -226,6 +227,109 @@ describe("frames", () => {
     );
     expect(out).toContain("::: frame");
     expect(out).toContain("frame: black");
+  });
+});
+
+/**
+ * Alignment — rule contract (`CLAUDE.md` §5).
+ *
+ * **Invariant.** A bounded block becomes `::: align` on its *computed*
+ * alignment, folded through `foldTextAlign`, and never on a presentational
+ * attribute: `align="center"` under `.t { text-align: justify }` renders
+ * justified, and reading the attribute promoted eleven classes on
+ * `pavlov_azancheev.htm` to centred.
+ *
+ * **False friend.** A rule the author drew out of punctuation — `***`, a row of
+ * dashes — is a separator, not a label, and must not become `::: align`.
+ *
+ * **Recurrence.** Supplied by the enclosing container: the construct is scoped
+ * to the inside of a `column`, where a label sits over the record it names.
+ */
+describe("alignment", () => {
+  it("folds the vendor form a browser actually returns", () => {
+    // Chromium computes `-webkit-center` for an element centred by an
+    // ancestor's `align` attribute — the commonest centring idiom in this
+    // corpus, and the form an `=== "center"` comparison misses. Measured on the
+    // 13 references: 65 of 163 distinctively-aligned blocks resolve this way.
+    expect(foldTextAlign("-webkit-center")).toBe("center");
+    expect(foldTextAlign("-webkit-right")).toBe("right");
+    expect(foldTextAlign("start")).toBe("left");
+    expect(foldTextAlign("end")).toBe("right");
+    expect(foldTextAlign("Justify")).toBe("justify");
+    expect(isCenteredAlign("-webkit-center")).toBe(true);
+    expect(isCenteredAlign("justify")).toBe(false);
+    // Not evidence, and deliberately not guessed at.
+    expect(foldTextAlign("match-parent")).toBeNull();
+    expect(foldTextAlign(undefined)).toBeNull();
+  });
+
+  it("admits a bold centred label that carries only digits", () => {
+    // `analyze.md` names `**- 2 -**` on williams2 as a block that must be
+    // centred, and the reference centres it. The rule previously demanded a
+    // letter and rejected it as a page number; the human record decides.
+    // Verified end to end on the corpus: `bench/out/williams2.bio.md` now emits
+    // `::: align / position: center / **- 2 -**` at line 7.
+    expect(isAlignableLabelText("- 2 -")).toBe(true);
+    expect(isAlignableLabelText("1995")).toBe(true);
+    expect(isAlignableLabelText("Альбом")).toBe(true);
+  });
+
+  it("rejects a rule the author drew out of punctuation", () => {
+    // The false friend, named in the rule contract. Pure punctuation is a
+    // separator and belongs to the break family, not to `::: align`.
+    expect(isAlignableLabelText("* * *")).toBe(false);
+    expect(isAlignableLabelText("— — —")).toBe(false);
+    expect(isAlignableLabelText("")).toBe(false);
+  });
+
+  // The relational invariant behind `groupAlignedRuns`. Stated on the shared
+  // primitives rather than through a synthetic page: the run pass needs a
+  // *measured* tree, and a hand-built fixture would exercise the mock rather
+  // than the rule. The end-to-end behaviour is measured on the corpus instead
+  // and recorded in PROGRESS §8.1.
+  it("reads the page's own prose as the baseline, weighted by length", () => {
+    // A page with many short centred captions and a few long justified
+    // paragraphs is a justified page: weight by text, do not count blocks.
+    const page = [
+      { align: "center" as const, textLength: 130 },
+      { align: "center" as const, textLength: 140 },
+      { align: "justify" as const, textLength: 900 },
+      // Below the prose threshold: a label must never define the baseline it is
+      // about to be judged against.
+      { align: "right" as const, textLength: 20 },
+    ];
+    expect(proseAlign(page)).toBe("justify");
+    // Nothing measured is not the same as "left", and must not be guessed at.
+    expect(proseAlign([])).toBeNull();
+    expect(proseAlign([{ align: "center", textLength: 10 }])).toBeNull();
+  });
+
+  it("judges a block against that baseline, never against a keyword", () => {
+    // The whole point of the invariant: on a centred page a centred block says
+    // nothing. A rule stated as `=== "center"` wraps the entire document.
+    expect(isDistinctiveAlign("center", "center")).toBe(false);
+    expect(isDistinctiveAlign("right", "center")).toBe(true);
+    expect(isDistinctiveAlign("center", "justify")).toBe(true);
+    // `left` and `justify` are the same reading flow for this purpose, so a
+    // left block on a justified page is not set apart — it is just text.
+    expect(isDistinctiveAlign("left", "justify")).toBe(false);
+    expect(isDistinctiveAlign("justify", "left")).toBe(false);
+    // Fallback when the page was never measured.
+    expect(isDistinctiveAlign("right", null)).toBe(true);
+    expect(isDistinctiveAlign("left", null)).toBe(false);
+    expect(isDistinctiveAlign(null, "left")).toBe(false);
+  });
+
+  it("keeps `::: align` off blocks a run may not claim", () => {
+    // §6: a picture carries its own `position`, so a wrapper restates it; §6
+    // likewise forbids wrapping long body prose. Both are exclusions in
+    // `alignableRunMember`, expressed here on the one constant they share so a
+    // future edit cannot move the label/prose line in one rule only.
+    expect("Владимир МАРКУШЕВИЧ".length).toBeLessThan(ALIGN_LABEL_MAX_CHARS);
+    // The longest block any reference wraps in `::: align`, measured over all
+    // 13 pairs, sits under the limit — the limit separates a label from an
+    // article, and is not tuned to admit one more fixture.
+    expect(ALIGN_LABEL_MAX_CHARS).toBeGreaterThan("Статья предоставлена автором.".length);
   });
 });
 

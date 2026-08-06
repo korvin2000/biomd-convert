@@ -279,3 +279,16 @@ Stop when all of these hold:
 Then report: the ceiling and its cause; what would be needed to break it; which rules are expected to hold on
 the other ~987 pages and which are expected to break first; and which instrument is trusted least, with the
 evidence for that mistrust.
+
+# Other / general topics
+## Compact Instructions
+
+Preserve:
+- the current phase and active task;
+- accepted changes and measured results;
+- rejected hypotheses and their falsifiers;
+- open defect classes;
+- unresolved risks;
+- the exact next action.
+
+Repository files are authoritative. Do not revive completed work after compaction.

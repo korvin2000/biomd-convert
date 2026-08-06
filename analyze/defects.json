@@ -1,23 +1,23 @@
 {
-  "generated": "2026-08-05T22:32:27.550Z",
+  "generated": "2026-08-06T02:41:18.786Z",
   "totals": {
-    "findings": 707,
-    "sourceBacked": 598,
+    "findings": 703,
+    "sourceBacked": 593,
     "sourceUnbacked": 32,
-    "ambiguous": 77,
+    "ambiguous": 78,
     "bySeverity": {
-      "critical": 97,
-      "major": 325,
-      "minor": 285
+      "critical": 94,
+      "major": 320,
+      "minor": 289
     }
   },
   "perDocument": [
     {
       "doc": "authors",
-      "findings": 11,
-      "sourceBacked": 11,
+      "findings": 10,
+      "sourceBacked": 10,
       "critical": 2,
-      "major": 1,
+      "major": 0,
       "minor": 8
     },
     {
@@ -30,11 +30,11 @@
     },
     {
       "doc": "borislova",
-      "findings": 49,
-      "sourceBacked": 48,
+      "findings": 50,
+      "sourceBacked": 49,
       "critical": 4,
       "major": 24,
-      "minor": 21
+      "minor": 22
     },
     {
       "doc": "goya2",
@@ -54,11 +54,11 @@
     },
     {
       "doc": "kiselev",
-      "findings": 63,
-      "sourceBacked": 24,
-      "critical": 2,
-      "major": 27,
-      "minor": 34
+      "findings": 69,
+      "sourceBacked": 29,
+      "critical": 1,
+      "major": 30,
+      "minor": 38
     },
     {
       "doc": "news",
@@ -78,10 +78,10 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 28,
-      "sourceBacked": 28,
+      "findings": 24,
+      "sourceBacked": 24,
       "critical": 3,
-      "major": 22,
+      "major": 18,
       "minor": 3
     },
     {
@@ -94,11 +94,11 @@
     },
     {
       "doc": "segovia1",
-      "findings": 18,
-      "sourceBacked": 18,
-      "critical": 2,
-      "major": 12,
-      "minor": 4
+      "findings": 14,
+      "sourceBacked": 14,
+      "critical": 0,
+      "major": 11,
+      "minor": 3
     },
     {
       "doc": "tarrega",
@@ -110,10 +110,10 @@
     },
     {
       "doc": "williams2",
-      "findings": 24,
-      "sourceBacked": 24,
+      "findings": 22,
+      "sourceBacked": 22,
       "critical": 10,
-      "major": 8,
+      "major": 6,
       "minor": 6
     }
   ],
@@ -121,7 +121,7 @@
     {
       "class": "paragraph.spurious",
       "severity": "critical",
-      "instances": 65,
+      "instances": 62,
       "documents": [
         "authors",
         "barrios",
@@ -133,15 +133,14 @@
         "news_2007",
         "pavlov_azancheev",
         "segovia",
-        "segovia1",
         "williams2"
       ],
       "backing": {
-        "source-backed": 65,
+        "source-backed": 62,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 3900,
+      "rank": 3410,
       "example": {
         "doc": "authors",
         "path": "/paragraph[5]",
@@ -152,56 +151,76 @@
     {
       "class": "paragraph.containment",
       "severity": "major",
-      "instances": 38,
+      "instances": 35,
       "documents": [
         "borislova",
         "goya2",
         "kiselev",
         "news",
-        "pavlov_azancheev",
         "segovia1",
-        "tarrega",
-        "williams2"
+        "tarrega"
       ],
       "backing": {
-        "source-backed": 38,
+        "source-backed": 35,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 912,
+      "rank": 630,
       "example": {
         "doc": "borislova",
-        "path": "/columns[11]/column[0]/paragraph[0]",
-        "produced": "La guitarra es la luna en un lago de oro. El piano es un tren cargando cascadas",
-        "reference": "La guitarra es la luna en un lago de oro. El piano es un tren cargando cascadas — produced at /paragraph[12]"
+        "path": "/align[43]/paragraph[0]",
+        "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
+        "reference": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл… — produced at /paragraph[43]"
+      }
+    },
+    {
+      "class": "break.missing",
+      "severity": "minor",
+      "instances": 64,
+      "documents": [
+        "authors",
+        "goya2",
+        "kiselev",
+        "news",
+        "pavlov_azancheev",
+        "segovia"
+      ],
+      "backing": {
+        "source-backed": 64,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 384,
+      "example": {
+        "doc": "authors",
+        "path": "/break[4]",
+        "produced": null,
+        "reference": "---"
       }
     },
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 25,
+      "instances": 21,
       "documents": [
-        "authors",
-        "borislova",
         "goya2",
         "kiselev",
         "news",
         "pavlov_azancheev",
         "segovia",
-        "segovia1",
         "williams2"
       ],
       "backing": {
-        "source-backed": 25,
+        "source-backed": 21,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 675,
+      "rank": 378,
       "example": {
-        "doc": "authors",
-        "path": "/align[13]",
-        "produced": "См. также раздел \"О проекте\"",
-        "reference": "align right См. также раздел \"О проекте\" — at /paragraph[14]"
+        "doc": "goya2",
+        "path": "/columns[24]/column[0]/align[0]",
+        "produced": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
+        "reference": "align center The Hi-Fi sound of Latin Guitar II / Francis Goya — at /columns[24]/column[0]/paragraph[1]"
       }
     },
     {
@@ -231,7 +250,7 @@
     {
       "class": "retyped.paragraph-to-column",
       "severity": "major",
-      "instances": 18,
+      "instances": 20,
       "documents": [
         "barrios",
         "borislova",
@@ -241,87 +260,16 @@
         "segovia1"
       ],
       "backing": {
-        "source-backed": 18,
+        "source-backed": 20,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 324,
+      "rank": 360,
       "example": {
         "doc": "barrios",
         "path": "/columns[15]/column[0]",
         "produced": "Barrios: Tango No.2, Don Perez Freire, Pepita, Aire de Zamba [1st rec.], Danza Paraguaya, Cueca, Romanza, Maxixe, Aconquija, Madrigal, Contemplacion, Pericon, …",
         "reference": "column Complete Historical Recordings (1913–1942) Barrios: Tango No. 2, Don Perez Freire, Pepita, Aire de Zamba [1st rec.], Danza Paraguaya, Cueca, Romanza, Ma… — at /columns[16]/column[0]/paragraph[1]"
-      }
-    },
-    {
-      "class": "break.missing",
-      "severity": "minor",
-      "instances": 63,
-      "documents": [
-        "authors",
-        "goya2",
-        "news",
-        "pavlov_azancheev",
-        "segovia"
-      ],
-      "backing": {
-        "source-backed": 63,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 315,
-      "example": {
-        "doc": "authors",
-        "path": "/break[4]",
-        "produced": null,
-        "reference": "---"
-      }
-    },
-    {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 14,
-      "documents": [
-        "goya2",
-        "kiselev",
-        "news",
-        "pavlov_azancheev",
-        "segovia1",
-        "williams2"
-      ],
-      "backing": {
-        "source-backed": 14,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 252,
-      "example": {
-        "doc": "goya2",
-        "path": "/align[1]",
-        "produced": null,
-        "reference": "align center Дискография"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-columns",
-      "severity": "major",
-      "instances": 20,
-      "documents": [
-        "goya2",
-        "kiselev",
-        "news_2007"
-      ],
-      "backing": {
-        "source-backed": 20,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 180,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]",
-        "produced": "01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree 08. Two Guitars…",
-        "reference": "columns column 01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree … — at /columns[70]/column[0]/paragraph[1]"
       }
     },
     {
@@ -345,6 +293,33 @@
         "path": "/columns[15]/column[1]/image[0]",
         "produced": null,
         "reference": "image photo/b/barrios1.jpg center medium Complete Historical Recordings (1913–1942)"
+      }
+    },
+    {
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 20,
+      "documents": [
+        "barrios",
+        "borislova",
+        "goya2",
+        "news",
+        "segovia",
+        "segovia1",
+        "tarrega",
+        "williams2"
+      ],
+      "backing": {
+        "source-backed": 20,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 160,
+      "example": {
+        "doc": "barrios",
+        "path": "/columns[16]/column[0]/paragraph[1]",
+        "produced": "em:Barrios",
+        "reference": "em:Barrios:"
       }
     },
     {
@@ -372,29 +347,47 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 11,
+      "documents": [
+        "goya2",
+        "kiselev",
+        "news",
+        "segovia1"
+      ],
+      "backing": {
+        "source-backed": 11,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 132,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[1]",
+        "produced": null,
+        "reference": "align center Дискография"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-columns",
+      "severity": "major",
       "instances": 19,
       "documents": [
-        "barrios",
         "goya2",
-        "news",
-        "segovia",
-        "segovia1",
-        "tarrega",
-        "williams2"
+        "news_2007"
       ],
       "backing": {
         "source-backed": 19,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 133,
+      "rank": 114,
       "example": {
-        "doc": "barrios",
-        "path": "/columns[16]/column[0]/paragraph[1]",
-        "produced": "em:Barrios",
-        "reference": "em:Barrios:"
+        "doc": "goya2",
+        "path": "/columns[50]",
+        "produced": "01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree 08. Two Guitars…",
+        "reference": "columns column 01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree … — at /columns[70]/column[0]/paragraph[1]"
       }
     },
     {
@@ -468,6 +461,29 @@
       }
     },
     {
+      "class": "hardbreak.spurious",
+      "severity": "minor",
+      "instances": 23,
+      "documents": [
+        "borislova",
+        "goya2",
+        "kiselev",
+        "news"
+      ],
+      "backing": {
+        "source-backed": 23,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 92,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[24]",
+        "produced": "Ciclo de piezas La mariposa / Цикл пьес \"Бабочка\" * 1. La mariposa (Dedicada a Iosif Brodskiy) / Бабочка 2. La mariposa en la hierba (Dedicada a Fernando Gallo…",
+        "reference": "Ciclo de piezas La mariposa / Цикл пьес \"Бабочка\" * 1. La mariposa (Dedicada a Iosif Brodskiy) / Бабочка 2. La mariposa en la hierba (Dedicada a Fernando Gallo… — 8 hard breaks, reference has 7"
+      }
+    },
+    {
       "class": "retyped.paragraph-to-quote",
       "severity": "major",
       "instances": 15,
@@ -489,6 +505,29 @@
       }
     },
     {
+      "class": "columns.position.spurious",
+      "severity": "minor",
+      "instances": 18,
+      "documents": [
+        "barrios",
+        "goya2",
+        "jovicic",
+        "kiselev"
+      ],
+      "backing": {
+        "source-backed": 18,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 72,
+      "example": {
+        "doc": "barrios",
+        "path": "/columns[15]@position",
+        "produced": "position: center",
+        "reference": null
+      }
+    },
+    {
       "class": "heading.spurious",
       "severity": "major",
       "instances": 8,
@@ -505,31 +544,9 @@
       "rank": 72,
       "example": {
         "doc": "kiselev",
-        "path": "/heading[20]",
+        "path": "/heading[18]",
         "produced": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
         "reference": null
-      }
-    },
-    {
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "instances": 22,
-      "documents": [
-        "borislova",
-        "goya2",
-        "news"
-      ],
-      "backing": {
-        "source-backed": 22,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 66,
-      "example": {
-        "doc": "borislova",
-        "path": "/paragraph[24]",
-        "produced": "Ciclo de piezas La mariposa / Цикл пьес \"Бабочка\" * 1. La mariposa (Dedicada a Iosif Brodskiy) / Бабочка 2. La mariposa en la hierba (Dedicada a Fernando Gallo…",
-        "reference": "Ciclo de piezas La mariposa / Цикл пьес \"Бабочка\" * 1. La mariposa (Dedicada a Iosif Brodskiy) / Бабочка 2. La mariposa en la hierba (Dedicada a Fernando Gallo… — 8 hard breaks, reference has 7"
       }
     },
     {
@@ -555,28 +572,6 @@
       }
     },
     {
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "instances": 17,
-      "documents": [
-        "barrios",
-        "goya2",
-        "jovicic"
-      ],
-      "backing": {
-        "source-backed": 17,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 51,
-      "example": {
-        "doc": "barrios",
-        "path": "/columns[15]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
       "class": "image.src.value",
       "severity": "major",
       "instances": 17,
@@ -594,6 +589,33 @@
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+      }
+    },
+    {
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 13,
+      "documents": [
+        "barrios",
+        "borislova",
+        "goya2",
+        "jovicic",
+        "kiselev",
+        "news",
+        "segovia",
+        "tarrega"
+      ],
+      "backing": {
+        "source-backed": 6,
+        "source-unbacked": 0,
+        "ambiguous": 7
+      },
+      "rank": 48,
+      "example": {
+        "doc": "barrios",
+        "path": "/columns[16]/column[0]/paragraph[1]",
+        "produced": "*Barrios*: Tango No.2, Don Perez Freire, Pepita, Aire de Zamba \\[1st rec.], Danza Paraguaya, Cueca, Romanza, Maxixe, Aconquija, Madrigal, Contemplacion, Perico…",
+        "reference": "*Barrios:* Tango No. 2, Don Perez Freire, Pepita, Aire de Zamba [1st rec.], Danza Paraguaya, Cueca, Romanza, Maxixe, Aconquija, Madrigal, Contemplacion, Perico…"
       }
     },
     {
@@ -686,32 +708,6 @@
       }
     },
     {
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "instances": 12,
-      "documents": [
-        "barrios",
-        "borislova",
-        "goya2",
-        "jovicic",
-        "news",
-        "segovia",
-        "tarrega"
-      ],
-      "backing": {
-        "source-backed": 6,
-        "source-unbacked": 0,
-        "ambiguous": 6
-      },
-      "rank": 42,
-      "example": {
-        "doc": "barrios",
-        "path": "/columns[16]/column[0]/paragraph[1]",
-        "produced": "*Barrios*: Tango No.2, Don Perez Freire, Pepita, Aire de Zamba \\[1st rec.], Danza Paraguaya, Cueca, Romanza, Maxixe, Aconquija, Madrigal, Contemplacion, Perico…",
-        "reference": "*Barrios:* Tango No. 2, Don Perez Freire, Pepita, Aire de Zamba [1st rec.], Danza Paraguaya, Cueca, Romanza, Maxixe, Aconquija, Madrigal, Contemplacion, Perico…"
-      }
-    },
-    {
       "class": "image.size.value",
       "severity": "minor",
       "instances": 10,
@@ -732,6 +728,27 @@
         "path": "/image[1]@size",
         "produced": "size: small",
         "reference": "size: medium"
+      }
+    },
+    {
+      "class": "align.spurious",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "kiselev"
+      ],
+      "backing": {
+        "source-backed": 6,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 36,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[70]/column[0]/align[0]",
+        "produced": "align center Vol. 1",
+        "reference": null
       }
     },
     {
@@ -862,6 +879,27 @@
       }
     },
     {
+      "class": "heading.containment",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "kiselev",
+        "tarrega"
+      ],
+      "backing": {
+        "source-backed": 3,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "kiselev",
+        "path": "/align[13]/heading[0]",
+        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
+      }
+    },
+    {
       "class": "list.missing",
       "severity": "major",
       "instances": 3,
@@ -921,7 +959,7 @@
         "doc": "borislova",
         "path": "/table[44]",
         "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-        "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /paragraph[45]"
+        "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[1]"
       }
     },
     {
@@ -963,26 +1001,6 @@
         "path": "/table[18]/cell[3][0]",
         "produced": "Danza Paraguaya No 1",
         "reference": "Danza Paraguaya No. 1"
-      }
-    },
-    {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "goya2"
-      ],
-      "backing": {
-        "source-backed": 4,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[70]/column[0]/align[0]",
-        "produced": "align center Vol. 1",
-        "reference": null
       }
     },
     {
@@ -1046,27 +1064,6 @@
         "path": "/image[9]",
         "produced": "image photo/t/tarrega1.jpg right small Франсиско Таррега",
         "reference": "image photo/t/tarrega1.jpg right small Франсиско Таррега — produced at /image[7]"
-      }
-    },
-    {
-      "class": "retyped.heading2-to-align",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "kiselev",
-        "news_2007"
-      ],
-      "backing": {
-        "source-backed": 2,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "kiselev",
-        "path": "/align[13]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "align center ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — at /heading[14]"
       }
     },
     {
@@ -1150,26 +1147,6 @@
         "path": "/heading[40]",
         "produced": null,
         "reference": "Дискография"
-      }
-    },
-    {
-      "class": "heading.containment",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "tarrega"
-      ],
-      "backing": {
-        "source-backed": 2,
-        "source-unbacked": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "tarrega",
-        "path": "/heading[17]",
-        "produced": "Часть 1 – PDF (2,16 Mb)",
-        "reference": "Часть 1 – PDF (2,16 Mb) — produced at /quote[22]/heading[4]"
       }
     },
     {
@@ -1315,24 +1292,43 @@
       }
     },
     {
-      "class": "link.inline.spurious",
-      "severity": "minor",
-      "instances": 2,
+      "class": "align.position.value",
+      "severity": "major",
+      "instances": 1,
       "documents": [
-        "barrios",
-        "segovia1"
+        "kiselev"
       ],
       "backing": {
-        "source-backed": 2,
+        "source-backed": 1,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 4,
+      "rank": 3,
       "example": {
-        "doc": "barrios",
-        "path": "/paragraph[3]/link[0]",
-        "produced": "[1](#1)",
-        "reference": null
+        "doc": "kiselev",
+        "path": "/align[13]@position",
+        "produced": "position: right",
+        "reference": "position: center"
+      }
+    },
+    {
+      "class": "break.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "pavlov_azancheev"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "pavlov_azancheev",
+        "path": "/break[48]",
+        "produced": "-----------------------------------------------------------------------------------------",
+        "reference": "--- — produced at /break[8]"
       }
     },
     {
@@ -1472,7 +1468,27 @@
         "doc": "segovia1",
         "path": "/align[0]",
         "produced": "Техника Андреса Сеговии",
-        "reference": "align center Техника Андреса Сеговии — at /heading[2]"
+        "reference": "align center Техника Андреса Сеговии — at /heading[1]"
+      }
+    },
+    {
+      "class": "retyped.heading2-to-align",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news_2007"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news_2007",
+        "path": "/align[1]",
+        "produced": "Архив новостей за 2007 год",
+        "reference": "align center Архив новостей за 2007 год — at /heading[2]"
       }
     },
     {
@@ -1737,6 +1753,26 @@
       }
     },
     {
+      "class": "link.inline.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "barrios"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "barrios",
+        "path": "/paragraph[3]/link[0]",
+        "produced": "[1](#1)",
+        "reference": null
+      }
+    },
+    {
       "class": "link.label.content.edited",
       "severity": "minor",
       "instances": 1,
@@ -1771,7 +1807,7 @@
       "rank": 1,
       "example": {
         "doc": "pavlov_azancheev",
-        "path": "/break[4]",
+        "path": "/break[48]",
         "produced": "-----------------------------------------------------------------------------------------",
         "reference": "---"
       }
@@ -1979,20 +2015,6 @@
       "referenceLine": 38,
       "produced": null,
       "reference": "---",
-      "backing": "source-backed"
-    },
-    {
-      "id": "ce2cd4cb",
-      "doc": "authors",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[13]",
-      "producedLine": 51,
-      "referenceLine": 51,
-      "produced": "См. также раздел \"О проекте\"",
-      "reference": "align right См. также раздел \"О проекте\" — at /paragraph[14]",
       "backing": "source-backed"
     },
     {
@@ -3088,14 +3110,14 @@
       "backing": "source-backed"
     },
     {
-      "id": "eb9c3b73",
+      "id": "282578e4",
       "doc": "borislova",
       "class": "paragraph.spurious",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[45]",
-      "producedLine": 261,
+      "path": "/align[43]/paragraph[1]",
+      "producedLine": 265,
       "referenceLine": null,
       "produced": "WMA",
       "reference": null,
@@ -3704,17 +3726,31 @@
       "backing": "source-backed"
     },
     {
-      "id": "64e77b79",
+      "id": "d362e330",
       "doc": "borislova",
-      "class": "retyped.paragraph-to-align",
+      "class": "paragraph.containment",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[43]",
+      "op": "move",
+      "path": "/align[43]/paragraph[0]",
       "producedLine": 253,
-      "referenceLine": 281,
+      "referenceLine": 283,
       "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
-      "reference": "align right ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация… — at /paragraph[45]",
+      "reference": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл… — produced at /paragraph[43]",
+      "backing": "source-backed"
+    },
+    {
+      "id": "785d118c",
+      "doc": "borislova",
+      "class": "emphasis.span",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[43]/paragraph[0]",
+      "producedLine": 253,
+      "referenceLine": 283,
+      "produced": "(none)",
+      "reference": "em:* · em:* · strong:*ДИСКОГРАФИЯ",
       "backing": "source-backed"
     },
     {
@@ -3725,10 +3761,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[44]",
-      "producedLine": 259,
+      "producedLine": 263,
       "referenceLine": 289,
       "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-      "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /paragraph[45]",
+      "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[1]",
       "backing": "source-backed"
     },
     {
@@ -3739,7 +3775,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[45]",
-      "producedLine": 263,
+      "producedLine": 268,
       "referenceLine": 293,
       "produced": "* Запись предоставлена автором и размещается с ее согласия.",
       "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0",
@@ -7302,42 +7338,56 @@
       "backing": "source-backed"
     },
     {
-      "id": "27db5136",
+      "id": "d62e5e25",
+      "doc": "kiselev",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[13]",
+      "producedLine": 137,
+      "referenceLine": null,
+      "produced": "align right Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
+      "reference": null,
+      "backing": "source-backed"
+    },
+    {
+      "id": "700af487",
+      "doc": "kiselev",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[13]",
+      "producedLine": 146,
+      "referenceLine": null,
+      "produced": "align right www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+      "reference": null,
+      "backing": "source-backed"
+    },
+    {
+      "id": "b7c2ed4f",
       "doc": "kiselev",
       "class": "heading.spurious",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
-      "path": "/heading[20]",
-      "producedLine": 184,
+      "path": "/heading[18]",
+      "producedLine": 199,
       "referenceLine": null,
       "produced": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
       "reference": null,
       "backing": "source-backed"
     },
     {
-      "id": "f66d2eaf",
+      "id": "e159f5e4",
       "doc": "kiselev",
       "class": "paragraph.spurious",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[20]",
-      "producedLine": 186,
-      "referenceLine": null,
-      "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-      "reference": null,
-      "backing": "source-backed"
-    },
-    {
-      "id": "bae7294b",
-      "doc": "kiselev",
-      "class": "paragraph.spurious",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/paragraph[20]",
-      "producedLine": 193,
+      "path": "/columns[18]/paragraph[2]",
+      "producedLine": 212,
       "referenceLine": null,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": null,
@@ -7578,7 +7628,7 @@
       "producedLine": 133,
       "referenceLine": 139,
       "produced": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
-      "reference": "column Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm — at /paragraph[14]",
+      "reference": "column Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm — at /paragraph[13]",
       "backing": "source-backed"
     },
     {
@@ -7617,10 +7667,10 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 136,
+      "producedLine": 140,
       "referenceLine": 151,
       "produced": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
-      "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете: — produced at /paragraph[14]",
+      "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете: — produced at /align[13]/paragraph[0]",
       "backing": "source-backed"
     },
     {
@@ -7631,10 +7681,10 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 140,
+      "producedLine": 149,
       "referenceLine": 155,
       "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /paragraph[14]",
+      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[0]",
       "backing": "source-backed"
     },
     {
@@ -7645,24 +7695,38 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 143,
+      "producedLine": 157,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /paragraph[14]",
+      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]",
       "backing": "source-backed"
     },
     {
-      "id": "7d6d1053",
+      "id": "12600fa0",
       "doc": "kiselev",
-      "class": "retyped.heading2-to-align",
+      "class": "align.position.value",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[13]",
-      "producedLine": 146,
+      "path": "/align[13]@position",
+      "producedLine": 154,
       "referenceLine": 167,
+      "produced": "position: right",
+      "reference": "position: center",
+      "backing": "source-backed"
+    },
+    {
+      "id": "7e32fd1f",
+      "doc": "kiselev",
+      "class": "heading.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[13]/heading[0]",
+      "producedLine": 161,
+      "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-      "reference": "align center ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — at /heading[14]",
+      "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]",
       "backing": "source-backed"
     },
     {
@@ -7673,7 +7737,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[14]",
-      "producedLine": 148,
+      "producedLine": 163,
       "referenceLine": 172,
       "produced": "MP3 ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу работу MP3 — • Прогул…",
       "reference": "Название части Формат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP… — 3 columns, reference has 2",
@@ -7687,7 +7751,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/header[0]",
-      "producedLine": 148,
+      "producedLine": 163,
       "referenceLine": 172,
       "produced": "",
       "reference": "Название части — column 0",
@@ -7701,7 +7765,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/header[1]",
-      "producedLine": 148,
+      "producedLine": 163,
       "referenceLine": 172,
       "produced": "MP3",
       "reference": "Формат — column 1",
@@ -7715,7 +7779,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[0][1]",
-      "producedLine": 148,
+      "producedLine": 163,
       "referenceLine": 172,
       "produced": "—",
       "reference": "",
@@ -7729,7 +7793,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[0][2]",
-      "producedLine": 148,
+      "producedLine": 163,
       "referenceLine": 172,
       "produced": "—",
       "reference": "",
@@ -7743,7 +7807,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[1][2]",
-      "producedLine": 149,
+      "producedLine": 164,
       "referenceLine": 173,
       "produced": "—",
       "reference": "",
@@ -7757,7 +7821,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[2][2]",
-      "producedLine": 150,
+      "producedLine": 165,
       "referenceLine": 174,
       "produced": "—",
       "reference": "",
@@ -7771,7 +7835,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[3][2]",
-      "producedLine": 151,
+      "producedLine": 166,
       "referenceLine": 175,
       "produced": "—",
       "reference": "",
@@ -7785,7 +7849,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[4][2]",
-      "producedLine": 152,
+      "producedLine": 167,
       "referenceLine": 176,
       "produced": "—",
       "reference": "",
@@ -7799,7 +7863,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[5][2]",
-      "producedLine": 153,
+      "producedLine": 168,
       "referenceLine": 177,
       "produced": "—",
       "reference": "",
@@ -7813,7 +7877,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[6][1]",
-      "producedLine": 154,
+      "producedLine": 169,
       "referenceLine": 178,
       "produced": "—",
       "reference": "",
@@ -7827,7 +7891,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[6][2]",
-      "producedLine": 154,
+      "producedLine": 169,
       "referenceLine": 178,
       "produced": "—",
       "reference": "",
@@ -7841,7 +7905,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[7][2]",
-      "producedLine": 155,
+      "producedLine": 170,
       "referenceLine": 179,
       "produced": "—",
       "reference": "",
@@ -7855,7 +7919,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[8][2]",
-      "producedLine": 156,
+      "producedLine": 171,
       "referenceLine": 180,
       "produced": "—",
       "reference": "",
@@ -7869,7 +7933,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[9][2]",
-      "producedLine": 157,
+      "producedLine": 172,
       "referenceLine": 181,
       "produced": "—",
       "reference": "",
@@ -7883,7 +7947,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[10][2]",
-      "producedLine": 158,
+      "producedLine": 173,
       "referenceLine": 182,
       "produced": "—",
       "reference": "",
@@ -7897,7 +7961,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[11][1]",
-      "producedLine": 159,
+      "producedLine": 174,
       "referenceLine": 183,
       "produced": "—",
       "reference": "",
@@ -7911,7 +7975,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[11][2]",
-      "producedLine": 159,
+      "producedLine": 174,
       "referenceLine": 183,
       "produced": "—",
       "reference": "",
@@ -7925,7 +7989,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[12][2]",
-      "producedLine": 160,
+      "producedLine": 175,
       "referenceLine": 184,
       "produced": "—",
       "reference": "",
@@ -7939,7 +8003,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[13][2]",
-      "producedLine": 161,
+      "producedLine": 176,
       "referenceLine": 185,
       "produced": "—",
       "reference": "",
@@ -7953,7 +8017,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[14][2]",
-      "producedLine": 162,
+      "producedLine": 177,
       "referenceLine": 186,
       "produced": "—",
       "reference": "",
@@ -7967,7 +8031,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[15][2]",
-      "producedLine": 163,
+      "producedLine": 178,
       "referenceLine": 187,
       "produced": "—",
       "reference": "",
@@ -7981,7 +8045,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[16][1]",
-      "producedLine": 164,
+      "producedLine": 179,
       "referenceLine": 188,
       "produced": "—",
       "reference": "",
@@ -7995,7 +8059,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[16][2]",
-      "producedLine": 164,
+      "producedLine": 179,
       "referenceLine": 188,
       "produced": "—",
       "reference": "",
@@ -8009,7 +8073,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[17][2]",
-      "producedLine": 165,
+      "producedLine": 180,
       "referenceLine": 189,
       "produced": "—",
       "reference": "",
@@ -8023,7 +8087,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[18][2]",
-      "producedLine": 166,
+      "producedLine": 181,
       "referenceLine": 190,
       "produced": "—",
       "reference": "",
@@ -8037,7 +8101,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[19][2]",
-      "producedLine": 167,
+      "producedLine": 182,
       "referenceLine": 191,
       "produced": "—",
       "reference": "",
@@ -8051,7 +8115,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[20][2]",
-      "producedLine": 168,
+      "producedLine": 183,
       "referenceLine": 192,
       "produced": "—",
       "reference": "",
@@ -8065,7 +8129,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[21][1]",
-      "producedLine": 169,
+      "producedLine": 184,
       "referenceLine": 193,
       "produced": "—",
       "reference": "",
@@ -8079,7 +8143,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[21][2]",
-      "producedLine": 169,
+      "producedLine": 184,
       "referenceLine": 193,
       "produced": "—",
       "reference": "",
@@ -8093,7 +8157,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[22][2]",
-      "producedLine": 170,
+      "producedLine": 185,
       "referenceLine": 194,
       "produced": "—",
       "reference": "",
@@ -8107,7 +8171,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[23][2]",
-      "producedLine": 171,
+      "producedLine": 186,
       "referenceLine": 195,
       "produced": "—",
       "reference": "",
@@ -8121,7 +8185,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[24][2]",
-      "producedLine": 172,
+      "producedLine": 187,
       "referenceLine": 196,
       "produced": "—",
       "reference": "",
@@ -8135,7 +8199,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[14]/cell[25][2]",
-      "producedLine": 173,
+      "producedLine": 188,
       "referenceLine": 197,
       "produced": "—",
       "reference": "",
@@ -8149,39 +8213,95 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]",
-      "producedLine": 179,
+      "producedLine": 194,
       "referenceLine": 204,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "align center Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия) — at /paragraph[17]",
       "backing": "source-backed"
     },
     {
-      "id": "2e87d725",
+      "id": "f2a2f429",
       "doc": "kiselev",
-      "class": "retyped.paragraph-to-columns",
-      "severity": "major",
+      "class": "columns.position.spurious",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[18]",
-      "producedLine": 199,
+      "op": "insert",
+      "path": "/columns[18]@position",
+      "producedLine": 209,
       "referenceLine": 211,
-      "produced": "E-mail: andy.waeyaert@advalvas.be",
-      "reference": "columns column Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Ве… — at /paragraph[20]",
+      "produced": "position: right",
+      "reference": null,
       "backing": "source-backed"
     },
     {
-      "id": "083d191f",
+      "id": "0deed47f",
       "doc": "kiselev",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.paragraph-to-column",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[19]",
+      "path": "/columns[18]/column[0]",
       "producedLine": 201,
-      "referenceLine": 244,
-      "produced": "------------------------- Олег Киселев: Oleg.Kiselev@list.ru",
-      "reference": "align right --- Олег Киселев: Oleg.Kiselev@list.ru — at /paragraph[20]",
+      "referenceLine": 213,
+      "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
+      "reference": "column Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя с… — at /paragraph[18]",
       "backing": "source-backed"
+    },
+    {
+      "id": "20eabe98",
+      "doc": "kiselev",
+      "class": "retyped.paragraph-to-column",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[18]/column[1]",
+      "producedLine": 218,
+      "referenceLine": 227,
+      "produced": "E-mail: andy.waeyaert@advalvas.be",
+      "reference": "column align right АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium E-mail: andy.waeyaert@advalvas.be — at /columns[18]/paragraph[2]",
+      "backing": "source-backed"
+    },
+    {
+      "id": "e9846932",
+      "doc": "kiselev",
+      "class": "break.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/align[19]/break[0]",
+      "producedLine": null,
+      "referenceLine": 247,
+      "produced": null,
+      "reference": "---",
+      "backing": "source-backed"
+    },
+    {
+      "id": "6d2cd334",
+      "doc": "kiselev",
+      "class": "hardbreak.spurious",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[19]/paragraph[1]",
+      "producedLine": 225,
+      "referenceLine": 248,
+      "produced": "------------------------- Олег Киселев: Oleg.Kiselev@list.ru",
+      "reference": "Олег Киселев: Oleg.Kiselev@list.ru — 1 hard breaks, reference has 0",
+      "backing": "source-backed"
+    },
+    {
+      "id": "46b01c38",
+      "doc": "kiselev",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/align[19]/paragraph[1]",
+      "producedLine": 225,
+      "referenceLine": 248,
+      "produced": "\\------------------------- Олег Киселев: [Oleg.Kiselev@list.ru](mailto:Oleg.Kiselev@list.ru)",
+      "reference": "Олег Киселев: [Oleg.Kiselev@list.ru](mailto:Oleg.Kiselev@list.ru)",
+      "backing": "ambiguous"
     },
     {
       "id": "8e62f3bd",
@@ -9941,7 +10061,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 88,
+      "producedLine": 93,
       "referenceLine": null,
       "produced": "Адрес первый: г. Краснодар, ул. К.Либкнехта д. № 19 И.Т.К. № 1 - Матвею Степановичу Павлову (именно \"Павлову\", без второй фамилии \"Азанчеев\").",
       "reference": null,
@@ -9955,7 +10075,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 90,
+      "producedLine": 95,
       "referenceLine": null,
       "produced": "Адрес второй: станица Усть-Лабинская Краснодарского края, почт. ящ. № 1, И.Т.К. № 4 - Любовье Петровне Павловой. - Остальные правила отправления посылок укажет…",
       "reference": null,
@@ -9969,7 +10089,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 92,
+      "producedLine": 97,
       "referenceLine": null,
       "produced": "Если приеду в Москву, то лично поделюсь их письмами, описания ими их положения не требует пояснений. Помочь нужно и, если можете, то сделайте это - прошу Вас. …",
       "reference": null,
@@ -9990,45 +10110,17 @@
       "backing": "source-backed"
     },
     {
-      "id": "cb5a5aa3",
+      "id": "50dcec0f",
       "doc": "pavlov_azancheev",
-      "class": "separator.spelling",
-      "severity": "minor",
+      "class": "retyped.paragraph-to-break",
+      "severity": "major",
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[4]",
-      "producedLine": 19,
+      "producedLine": 13,
       "referenceLine": 13,
-      "produced": "-----------------------------------------------------------------------------------------",
-      "reference": "---",
-      "backing": "source-backed"
-    },
-    {
-      "id": "7c15c90c",
-      "doc": "pavlov_azancheev",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[5]",
-      "producedLine": null,
-      "referenceLine": 15,
-      "produced": null,
-      "reference": "align right Владимир МАРКУШЕВИЧ",
-      "backing": "source-backed"
-    },
-    {
-      "id": "4c15ebf5",
-      "doc": "pavlov_azancheev",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[5]/paragraph[0]",
-      "producedLine": 15,
-      "referenceLine": 17,
-      "produced": "Владимир МАРКУШЕВИЧ",
-      "reference": "Владимир МАРКУШЕВИЧ — produced at /paragraph[4]",
+      "produced": "• • •",
+      "reference": "--- — at /paragraph[5]",
       "backing": "source-backed"
     },
     {
@@ -10039,10 +10131,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[6]",
-      "producedLine": 17,
+      "producedLine": 22,
       "referenceLine": 20,
       "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "align center М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[4]",
+      "reference": "align center М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[8]",
       "backing": "source-backed"
     },
     {
@@ -10053,7 +10145,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[7]",
-      "producedLine": 21,
+      "producedLine": 26,
       "referenceLine": 27,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
       "reference": "align right \"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (193… — at /paragraph[8]",
@@ -10067,7 +10159,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[17]",
-      "producedLine": 45,
+      "producedLine": 50,
       "referenceLine": 54,
       "produced": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н…",
       "reference": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н… — at /paragraph[18]",
@@ -10081,7 +10173,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[19]",
-      "producedLine": 49,
+      "producedLine": 54,
       "referenceLine": 58,
       "produced": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича …",
       "reference": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича … — at /paragraph[20]",
@@ -10095,7 +10187,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[21]",
-      "producedLine": 54,
+      "producedLine": 59,
       "referenceLine": 63,
       "produced": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,…",
       "reference": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,… — at /paragraph[25]",
@@ -10109,7 +10201,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[22]",
-      "producedLine": 59,
+      "producedLine": 64,
       "referenceLine": 68,
       "produced": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть,",
       "reference": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть, — at /paragraph[25]",
@@ -10123,7 +10215,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[23]",
-      "producedLine": 64,
+      "producedLine": 69,
       "referenceLine": 73,
       "produced": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\".",
       "reference": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\". — at /paragraph[25]",
@@ -10137,7 +10229,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[24]",
-      "producedLine": 69,
+      "producedLine": 74,
       "referenceLine": 78,
       "produced": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн…",
       "reference": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн… — at /paragraph[25]",
@@ -10151,7 +10243,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[31]",
-      "producedLine": 86,
+      "producedLine": 91,
       "referenceLine": 95,
       "produced": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер…",
       "reference": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер… — at /paragraph[32]",
@@ -10165,7 +10257,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[33]",
-      "producedLine": 96,
+      "producedLine": 101,
       "referenceLine": 102,
       "produced": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо…",
       "reference": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо… — at /paragraph[34]",
@@ -10179,7 +10271,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[35]",
-      "producedLine": 100,
+      "producedLine": 105,
       "referenceLine": 106,
       "produced": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек.",
       "reference": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек. — at /paragraph[36]",
@@ -10193,7 +10285,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[37]",
-      "producedLine": 105,
+      "producedLine": 110,
       "referenceLine": 111,
       "produced": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю…",
       "reference": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю… — at /paragraph[38]",
@@ -10207,7 +10299,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[39]",
-      "producedLine": 109,
+      "producedLine": 114,
       "referenceLine": 115,
       "produced": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо…",
       "reference": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо… — at /paragraph[40]",
@@ -10221,7 +10313,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[41]",
-      "producedLine": 113,
+      "producedLine": 118,
       "referenceLine": 119,
       "produced": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов.",
       "reference": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов. — at /paragraph[42]",
@@ -10235,7 +10327,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[43]",
-      "producedLine": 117,
+      "producedLine": 122,
       "referenceLine": 123,
       "produced": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось…",
       "reference": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось… — at /paragraph[44]",
@@ -10249,78 +10341,50 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[46]",
-      "producedLine": 123,
+      "producedLine": 128,
       "referenceLine": 129,
       "produced": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро…",
       "reference": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро… — at /paragraph[47]",
       "backing": "source-backed"
     },
     {
-      "id": "1b2a3d29",
+      "id": "590ec4c6",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-break",
+      "class": "break.moved",
       "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[48]",
+      "producedLine": 24,
+      "referenceLine": 137,
+      "produced": "-----------------------------------------------------------------------------------------",
+      "reference": "--- — produced at /break[8]",
+      "backing": "source-backed"
+    },
+    {
+      "id": "edfa7de5",
+      "doc": "pavlov_azancheev",
+      "class": "separator.spelling",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[48]",
-      "producedLine": 13,
+      "producedLine": 24,
       "referenceLine": 137,
-      "produced": "• • •",
-      "reference": "--- — at /paragraph[4]",
+      "produced": "-----------------------------------------------------------------------------------------",
+      "reference": "---",
       "backing": "source-backed"
     },
     {
-      "id": "d6c60d28",
-      "doc": "pavlov_azancheev",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[49]",
-      "producedLine": null,
-      "referenceLine": 139,
-      "produced": null,
-      "reference": "align right В.Маркушевич. Статья предоставлена автором. ---",
-      "backing": "source-backed"
-    },
-    {
-      "id": "fc4dbc78",
-      "doc": "pavlov_azancheev",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[49]/paragraph[0]",
-      "producedLine": 131,
-      "referenceLine": 142,
-      "produced": "В.Маркушевич.",
-      "reference": "В.Маркушевич. — produced at /paragraph[50]",
-      "backing": "source-backed"
-    },
-    {
-      "id": "4232a3a8",
-      "doc": "pavlov_azancheev",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[49]/paragraph[1]",
-      "producedLine": 133,
-      "referenceLine": 144,
-      "produced": "Статья предоставлена автором.",
-      "reference": "Статья предоставлена автором. — produced at /paragraph[50]",
-      "backing": "source-backed"
-    },
-    {
-      "id": "d3cf6f06",
+      "id": "4a504cc4",
       "doc": "pavlov_azancheev",
       "class": "break.missing",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
-      "path": "/align[49]/break[2]",
+      "path": "/break[50]",
       "producedLine": null,
-      "referenceLine": 145,
+      "referenceLine": 146,
       "produced": null,
       "reference": "---",
       "backing": "source-backed"
@@ -10816,34 +10880,6 @@
       "backing": "source-unbacked"
     },
     {
-      "id": "a2c5ea57",
-      "doc": "segovia1",
-      "class": "paragraph.spurious",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/paragraph[2]",
-      "producedLine": 7,
-      "referenceLine": null,
-      "produced": "http://authors.nm.ru",
-      "reference": null,
-      "backing": "source-backed"
-    },
-    {
-      "id": "7542852b",
-      "doc": "segovia1",
-      "class": "paragraph.spurious",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/paragraph[58]",
-      "producedLine": 218,
-      "referenceLine": null,
-      "produced": "Copyright © Денис Кольвах. All rights reserved.",
-      "reference": null,
-      "backing": "source-backed"
-    },
-    {
       "id": "983c1f79",
       "doc": "segovia1",
       "class": "image.spurious",
@@ -10851,7 +10887,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/image[60]",
-      "producedLine": 225,
+      "producedLine": 230,
       "referenceLine": null,
       "produced": "image ../main/back.gif center small /#/segovia",
       "reference": null,
@@ -10865,7 +10901,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/image[60]",
-      "producedLine": 236,
+      "producedLine": 241,
       "referenceLine": null,
       "produced": "image ../main/forward.gif center small /#/bobri",
       "reference": null,
@@ -10882,21 +10918,7 @@
       "producedLine": 1,
       "referenceLine": 1,
       "produced": "Техника Андреса Сеговии",
-      "reference": "align center Техника Андреса Сеговии — at /heading[2]",
-      "backing": "source-backed"
-    },
-    {
-      "id": "724e64c1",
-      "doc": "segovia1",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[1]",
-      "producedLine": 5,
-      "referenceLine": 7,
-      "produced": "Данный материал является оригинальной разработкой автора и публикуется с его согласия с сохранением текста оригинала.",
-      "reference": "align right Copyright © Денис Кольвах. All rights reserved. Данный материал является оригинальной разработкой автора и публикуется с его согласия с сохранением… — at /paragraph[2]",
+      "reference": "align center Техника Андреса Сеговии — at /heading[1]",
       "backing": "source-backed"
     },
     {
@@ -10921,7 +10943,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[57]/paragraph[0]",
-      "producedLine": 216,
+      "producedLine": 221,
       "referenceLine": 228,
       "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
       "reference": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре… — produced at /paragraph[58]",
@@ -10935,7 +10957,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[57]/paragraph[0]",
-      "producedLine": 216,
+      "producedLine": 221,
       "referenceLine": 228,
       "produced": "(none)",
       "reference": "strong:ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование стать…",
@@ -10949,10 +10971,10 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[57]/paragraph[1]",
-      "producedLine": 3,
+      "producedLine": 223,
       "referenceLine": 230,
       "produced": "Copyright © Денис Кольвах. All rights reserved.",
-      "reference": "Copyright © Денис Кольвах. All rights reserved. — produced at /paragraph[2]",
+      "reference": "Copyright © Денис Кольвах. All rights reserved. — produced at /paragraph[58]",
       "backing": "source-backed"
     },
     {
@@ -10963,24 +10985,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[57]/paragraph[1]",
-      "producedLine": 3,
+      "producedLine": 223,
       "referenceLine": 230,
       "produced": "(none)",
       "reference": "strong:Copyright © Денис Кольвах. All rights reserved.",
-      "backing": "source-backed"
-    },
-    {
-      "id": "bbd45e13",
-      "doc": "segovia1",
-      "class": "link.inline.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[57]/paragraph[1]/link[0]",
-      "producedLine": 3,
-      "referenceLine": 230,
-      "produced": "[Денис Кольвах](mailto:dendvk@hotbox.ru)",
-      "reference": null,
       "backing": "source-backed"
     },
     {
@@ -10991,7 +10999,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[57]/paragraph[2]",
-      "producedLine": 220,
+      "producedLine": 225,
       "referenceLine": 232,
       "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mailto:dendvk@hotbox.ru?Subject=Техника Анд…",
       "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mailto:dendvk@hotbox.ru?Subject=Техника Анд… — produced at /paragraph[58]",
@@ -11005,7 +11013,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[57]/paragraph[2]",
-      "producedLine": 220,
+      "producedLine": 225,
       "referenceLine": 232,
       "produced": "(none)",
       "reference": "strong:Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mailto:dendvk@hotbox.ru?Subject=Техн…",
@@ -11047,7 +11055,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[59]/columns[0]/column[0]",
-      "producedLine": 231,
+      "producedLine": 236,
       "referenceLine": 241,
       "produced": "Андрес Сеговия",
       "reference": "column ◀ Андрес Сеговия — at /paragraph[60]",
@@ -11061,7 +11069,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[59]/columns[0]/column[1]",
-      "producedLine": 233,
+      "producedLine": 238,
       "referenceLine": 244,
       "produced": "Владимир Бобри",
       "reference": "column Владимир Бобри ▶ — at /paragraph[60]",
@@ -11411,7 +11419,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/paragraph[11]",
-      "producedLine": 35,
+      "producedLine": 40,
       "referenceLine": null,
       "produced": "Джулиан Брим и Джон Вильямс",
       "reference": null,
@@ -11425,7 +11433,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/paragraph[15]",
-      "producedLine": 52,
+      "producedLine": 57,
       "referenceLine": null,
       "produced": "Джон Вильямс в 1971 году.",
       "reference": null,
@@ -11439,7 +11447,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/paragraph[23]",
-      "producedLine": 75,
+      "producedLine": 80,
       "referenceLine": null,
       "produced": "Джон Вильямс и Пако Пенья",
       "reference": null,
@@ -11453,7 +11461,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/paragraph[28]",
-      "producedLine": 88,
+      "producedLine": 93,
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
       "reference": null,
@@ -11467,7 +11475,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 99,
+      "producedLine": 104,
       "referenceLine": null,
       "produced": "Дискография",
       "reference": null,
@@ -11481,7 +11489,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 101,
+      "producedLine": 106,
       "referenceLine": null,
       "produced": "1995-2002",
       "reference": null,
@@ -11495,7 +11503,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 103,
+      "producedLine": 108,
       "referenceLine": null,
       "produced": "1989-1994",
       "reference": null,
@@ -11509,7 +11517,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 105,
+      "producedLine": 110,
       "referenceLine": null,
       "produced": "1979-1988",
       "reference": null,
@@ -11523,7 +11531,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 107,
+      "producedLine": 112,
       "referenceLine": null,
       "produced": "1971-1979",
       "reference": null,
@@ -11537,38 +11545,10 @@
       "evidence": "content",
       "op": "insert",
       "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
-      "producedLine": 109,
+      "producedLine": 114,
       "referenceLine": null,
       "produced": "1958-1970",
       "reference": null,
-      "backing": "source-backed"
-    },
-    {
-      "id": "435398a0",
-      "doc": "williams2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[1]/column[0]/align[0]",
-      "producedLine": null,
-      "referenceLine": 7,
-      "produced": null,
-      "reference": "align center - 2 -",
-      "backing": "source-backed"
-    },
-    {
-      "id": "7a170f60",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 6,
-      "referenceLine": 9,
-      "produced": "- 2 -",
-      "reference": "- 2 - — produced at /columns[1]/column[0]/paragraph[2]",
       "backing": "source-backed"
     },
     {
@@ -11579,7 +11559,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[1]/column[0]/nav[1]",
-      "producedLine": 98,
+      "producedLine": 103,
       "referenceLine": 12,
       "produced": "column Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970",
       "reference": "nav Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]",
@@ -11593,7 +11573,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/columns[1]/column[0]/nav[1]@title",
-      "producedLine": 98,
+      "producedLine": 103,
       "referenceLine": 12,
       "produced": null,
       "reference": "title: Дискография",
@@ -11621,7 +11601,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[1]/column[0]/image[6]",
-      "producedLine": 13,
+      "producedLine": 18,
       "referenceLine": 30,
       "produced": "image photo/w/john_williams/changes1.jpg right small",
       "reference": "image photo/w/john_williams/changes1.jpg right small — produced at /columns[1]/column[0]/image[4]",
@@ -11635,7 +11615,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[12]/item[0]",
-      "producedLine": 39,
+      "producedLine": 44,
       "referenceLine": 50,
       "produced": "strong:Together",
       "reference": "em:Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), · strong:Together",
@@ -11649,7 +11629,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[12]/item[1]",
-      "producedLine": 40,
+      "producedLine": 45,
       "referenceLine": 51,
       "produced": "strong:Together Again",
       "reference": "em:Julian Bream and John Williams [RCA RD 80456], в США – Julian & John II, – 1973/1974, · strong:Together Again",
@@ -11663,7 +11643,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[12]/item[2]",
-      "producedLine": 41,
+      "producedLine": 46,
       "referenceLine": 52,
       "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
       "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…",
@@ -11677,7 +11657,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[12]/item[2]",
-      "producedLine": 41,
+      "producedLine": 46,
       "referenceLine": 52,
       "produced": "strong:Julian Bream & John Williams Live",
       "reference": "em:[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел весной 1979 года. · strong:Julian Br…",
@@ -11691,7 +11671,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[1]/column[0]/image[14]@caption",
-      "producedLine": 46,
+      "producedLine": 51,
       "referenceLine": 57,
       "produced": "caption: Джон Вильямс в 1971 г.",
       "reference": "caption: Джон Вильямс в 1971 году.",
@@ -11705,7 +11685,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/paragraph[16]",
-      "producedLine": 56,
+      "producedLine": 61,
       "referenceLine": 65,
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
@@ -11719,7 +11699,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/align[26]",
-      "producedLine": 90,
+      "producedLine": 95,
       "referenceLine": 96,
       "produced": "MP3",
       "reference": "align right J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /columns[1]/column[0]/paragraph[28]",
@@ -11733,7 +11713,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/align[27]",
-      "producedLine": 92,
+      "producedLine": 97,
       "referenceLine": 102,
       "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
       "reference": "align right В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org) — at /columns[1]/column[0]/paragraph[28]",

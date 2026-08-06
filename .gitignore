@@ -41,7 +41,6 @@ typings/
 
 .scratch/
 .biomd-work/
-out/
 corpus/
 
 
@@ -76,3 +75,4 @@ package-lock.json
 my-migration/biomd.config.json
 my-migration/
 bench/
+analyze/rendered/
