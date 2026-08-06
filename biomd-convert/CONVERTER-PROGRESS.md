@@ -1927,3 +1927,127 @@ mechanism, it is already described in `CLAUDE.md` §5's corpus facts, and it can
 be measured on `new_karta5` without touching the 13.
 
 Outputs preserved before any comparison, for the reference step.
+
+## 17. Blind improvement phase — two hypotheses, both falsified (2026-08-06)
+
+Worked from the 10 unseen sources, the current output, `Biography-Markup.md` and
+the existing rules only. No reference was opened. **No rule shipped**, and the
+reason is the result: both candidate mechanisms were carried to the point where
+the evidence killed them, which is cheaper now than after they were built.
+
+| rung | before | after |
+|---|---|---|
+| L0 / L1 / L2 / L3 | 369 · 93.8 · 188 · 82 | unchanged — no code change survives |
+| the 13 outputs | — | byte-identical |
+| the 10 blind outputs | — | byte-identical to the §16 baseline |
+
+### 17.1 Killed: "a one-row table in a region that writes records is a record row"
+
+§16.3 named the `minRows: 2` guard in `planDataTable` as the single mechanism
+behind the largest defect in the blind set — `new_karta5` emits 4 of 15
+DATA-classified tables, and 12 of its 21 multi-column tables are single-row.
+
+A rule was designed to §5 and measured before being trusted: a one-row table is
+a record when, **in the same region**, at least two multi-row tables were already
+accepted as data, and no cell of the candidate exceeds the largest cell those
+accepted rows contain. Three relations, no literal, no absolute number. The
+firing set was measured first and was tight — `new_karta5` 8, `new_karta` 1,
+`kiselev` 1 — and the false friend separated cleanly:
+
+| document | candidate's widest cell | peers' widest cell | verdict |
+|---|---|---|---|
+| `kiselev` (album header, a layout container) | **1303** | 189 | reject |
+| `new_karta` | 51 | 72 | accept |
+| `new_karta5` | 7–31 | 80 | accept |
+
+Implemented, it fired exactly as measured and the 13 stayed byte-identical. It
+still emitted **no** table, and the reason falsifies the premise rather than the
+implementation: `tableFromPlan` cannot synthesize a header for a one-row table,
+because `dominantLabel` needs a label recurring across three body rows. That is
+correct behaviour, not a bug — and the column counts say why:
+
+```
+new_karta5 accepted tables:  2x2  4x10  7x2  11x7  20x8  4x4  2x2  3x4
+```
+
+**There is no column schema.** Each record is a work title followed by however
+many format links that work happens to have — arity 1 to 9. These are not rows
+of a matrix that the guard is wrongly splitting; they are variable-arity records
+that a table cannot express without inventing a header, which §16.3 forbids. The
+`too-small` rejection is a symptom; the classifier calling them DATA is the
+thing to re-examine, and what they should become instead is a question the
+reference can answer and deduction cannot.
+
+Reverted in full.
+
+### 17.2 Not shipped: the unbacked centring on `new_karta5`
+
+§16.3 also reported 21 blocks carrying `position: center` with no distinctive
+source alignment. Traced, the mechanism is real and general:
+
+`proseAlignOf` samples only leaf blocks of **≥120 characters**, and measured
+across all 23 documents `new_karta5` is the only page with **zero** of them:
+
+| document | leaf samples | ≥120 chars | baseline |
+|---|---|---|---|
+| `new_karta5` | 302 | **0** | **null** |
+| `new_karta` | 198 | 1 | justify |
+| every other document | 35–302 | 5–32 | justify |
+
+With no baseline, `isDistinctiveAlign` falls back to "centre and right are
+distinctive on their own", so on a catalogue page — short entries throughout —
+nearly every block qualifies and `new_karta5` collects 39 `::: align`
+directives, more than any of the 13.
+
+The obvious repair does not work: dropping the length threshold gives
+`left:1383 center:660 justify:259` by weight, so the baseline becomes `left` and
+the centred blocks stay distinctive. The `<center>` wrapper centres block
+*boxes* while the text inside the cells computes `start`, so "the page is
+centred" and "the page's prose is left-aligned" are both true, and the two
+instruments disagree about which one `isDistinctiveAlign` should be asking
+about. That disagreement is worth resolving, but not blind: the fix changes an
+alignment baseline used by every rule in the project, and it is not decidable
+from source geometry alone which reading §13 intends for a page with no prose.
+
+Left open with the measurement recorded.
+
+### 17.3 A stale line in `CLAUDE.md` §4
+
+§4's third corpus fact reads: "`prominence.ts:132` and `structure.ts:1809` handle
+this; **`prominence.ts:138` and `structure.ts:1437` do not** — a live
+inconsistency, not a style preference."
+
+Measured: it is closed. Every comparison now folds through
+`isCenteredAlign`/`foldTextAlign`, and `src/ladom/style.ts:6` records the split
+and exists to prevent its reintroduction. The remaining `=== "center"`
+comparisons are on already-folded values or on raw HTML attributes, where they
+are correct. The line numbers have also drifted.
+
+Flagged rather than edited — `CLAUDE.md` is the constitution and the correction
+is the user's to make.
+
+### 17.4 Killed hypotheses added
+
+- **A rejected DATA table implies a missed table.** `new_karta5`'s records have
+  no shared column schema; a table would need an invented header. When a guard
+  rejects something, check that the accepted alternative is expressible before
+  treating the guard as the defect.
+- **Recurrence among accepted peers licenses a one-row table.** The evidence is
+  sound and the rule fires exactly where measured — and it still cannot produce
+  output, because a one-row table has no recurring label to name its columns. A
+  rule must be checked against what the *emitter* can express, not only against
+  what the detector can justify.
+- **A missing alignment baseline can be repaired by dropping the length
+  threshold.** On the one page where the baseline is null, the unrestricted
+  weighted majority is `left`, not `center`, so the centred blocks remain
+  distinctive and nothing changes.
+
+### 17.5 What the reference step should settle
+
+1. What `new_karta`/`new_karta5`'s variable-arity records should become — table
+   with supplied labels, definition-style flow, or paired lines. This is the
+   single highest-value question in the new set and deduction cannot answer it.
+2. Whether `::: align` belongs around a catalogue entry at all on a page whose
+   blocks are centred but whose cell text is not.
+3. Whether `new_rechin4`'s two over-long lines are under-segmentation or faithful
+   long paragraphs.
