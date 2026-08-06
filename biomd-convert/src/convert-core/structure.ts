@@ -585,7 +585,13 @@ function blockTextOf(block: BiomdContent): string {
 function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
   const out = [...nodes];
   for (let i = 1; i < out.length - 1; i += 1) {
-    if ((out[i - 1] as BiomdContent).type !== "thematicBreak") continue;
+    const rule = out[i - 1] as BiomdContent;
+    if (rule.type !== "thematicBreak") continue;
+    // Only a rule the *author* drew is evidence. A separator this pipeline
+    // derived from a row boundary is our own claim, and letting it feed a
+    // detector that keys on separators is circular: on `news` the entry rules
+    // promoted a paragraph per entry and the heading axis fell 66.7 to 25.0.
+    if (isDerivedRule(rule)) continue;
     const node = out[i] as BiomdContent;
     if (node.type !== "paragraph") continue;
     if (node.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) continue;
@@ -603,6 +609,21 @@ function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): Biom
     out[i] = heading;
   }
   return out;
+}
+
+/**
+ * A separator this pipeline drew, rather than one the source contained.
+ *
+ * Marked at the point of emission so no later pass has to guess. Nothing in the
+ * serialized output carries the mark — it exists only to stop a derived signal
+ * from being read back as evidence.
+ */
+function markDerivedRule(): BiomdContent {
+  return { type: "thematicBreak", data: { biomdDerived: true } } as BiomdContent;
+}
+
+function isDerivedRule(node: BiomdContent): boolean {
+  return (node as { data?: { biomdDerived?: boolean } }).data?.biomdDerived === true;
 }
 
 function blockTextLength(node: BiomdContent): number {
@@ -2059,7 +2080,7 @@ function layoutFrom(
         // альбомов дисков с песнями можно ставить разделитель строки".
         // Layout, not text — §16.3 constrains invented *content*, and drawing a
         // separator invents none.
-        if (lanedRows > 0) regions.push({ type: "thematicBreak" });
+        if (lanedRows > 0) regions.push(markDerivedRule());
         regions.push(makeColumns({ children: columns, profile: ctx.options.profile }));
         lanedRows += 1;
         continue;
@@ -2199,11 +2220,18 @@ function framedCell(node: LadomNode, ctx: Ctx): BiomdContent[] {
 }
 
 /** Emit a grid's cells in reading order, row-major, origin cells only. */
+/** Recurrence floor for treating grid rows as a list of entries (see below). */
+const MIN_SEPARATED_ENTRY_ROWS = 3;
+
 function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered = false): BiomdContent[] {
-  const out: BiomdContent[] = [];
+  const rows: BiomdContent[][] = [];
+  /** Whether the author left one or more empty rows immediately above row `i`. */
+  const spacerAbove: boolean[] = [];
   const seen = new Set<string>();
+  let pendingSpacer = false;
 
   for (let r = 0; r < grid.rows; r += 1) {
+    const row: BiomdContent[] = [];
     for (let c = 0; c < grid.cols; c += 1) {
       const slot = grid.slots[r]?.[c];
       // Only origin slots: a covered slot would duplicate the content.
@@ -2214,9 +2242,54 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
         if (cell) ctx.ledger.push(removed(cell.id, "empty layout cell"));
         continue;
       }
-      out.push(...framedCell(cell.node, ctx));
+      row.push(...framedCell(cell.node, ctx));
     }
+    if (row.length === 0) {
+      // An empty row above the first content row is top padding, not a divider.
+      if (rows.length > 0) pendingSpacer = true;
+      continue;
+    }
+    rows.push(row);
+    spacerAbove.push(pendingSpacer);
+    pendingSpacer = false;
   }
+
+  const out: BiomdContent[] = [];
+  // A `---` where the author divided their own entries. §16.3 constrains
+  // invented *content*; drawing a separator invents none, and without one every
+  // entry in a news archive runs into the next.
+  //
+  // **Where the division is depends on whether the author used spacer rows**, and
+  // the corpus states which outright:
+  //
+  //   `goya2`  35 content rows, 1 empty (trailing)  — no spacer device, so the
+  //            row boundary *is* the entry boundary.
+  //   `news`   36 content rows, 33 empty, interleaved `.X.XX.X.X..X…` — the
+  //            spacer row is the device, and several content rows can belong to
+  //            one entry (`XXXXX` is a single item with a headline, a framed
+  //            notice and a picture).
+  //
+  // Separating every row on `news` over-emits by ten; separating only at spacers
+  // on `goya2` emits none. One rule covers both: **use the spacers when the
+  // author used spacers.**
+  //
+  // **Recurrence, twice over.** A spacer counts as a device only if interior
+  // spacers *recur* — a single trailing empty row is padding, not punctuation.
+  // And the row-boundary fallback needs three content rows: two rows is a layout
+  // split, an article beside its sidebar, where a rule cuts a document that was
+  // never divided.
+  const interiorSpacers = spacerAbove.filter((s, i) => i > 0 && s).length;
+  const separateAt =
+    interiorSpacers >= 2
+      ? (i: number) => (spacerAbove[i] ?? false)
+      : rows.length >= MIN_SEPARATED_ENTRY_ROWS
+        ? () => true
+        : () => false;
+
+  rows.forEach((row, index) => {
+    if (index > 0 && separateAt(index)) out.push(markDerivedRule());
+    out.push(...row);
+  });
 
   if (!alreadyLedgered) ctx.ledger.push(mergedInto(el.id, nextId(ctx, "flow")));
   // Entry labels only become visible once the lanes are back in reading order,

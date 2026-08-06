@@ -18,18 +18,18 @@
     ]
   },
   "totals": {
-    "findings": 275,
-    "alignmentRows": 151
+    "findings": 310,
+    "alignmentRows": 153
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 47,
+      "instances": 49,
       "documents": 9
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 120,
+      "instances": 123,
       "documents": 11
     },
     {
@@ -39,7 +39,7 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 45,
+      "instances": 75,
       "documents": 9
     }
   ],
@@ -803,7 +803,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[0]",
-      "producedLine": 1073,
+      "producedLine": 1075,
       "referenceLine": 903,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -826,7 +826,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[1]",
-      "producedLine": 1080,
+      "producedLine": 1082,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -849,7 +849,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[75]/image[0]",
-      "producedLine": 1087,
+      "producedLine": 1091,
       "referenceLine": 921,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -872,7 +872,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[75]/image[1]",
-      "producedLine": 1094,
+      "producedLine": 1098,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -1099,7 +1099,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[0]",
-      "producedLine": 1073,
+      "producedLine": 1075,
       "referenceLine": 903,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -1116,7 +1116,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1080,
+      "producedLine": 1082,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -1133,7 +1133,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[0]",
-      "producedLine": 1087,
+      "producedLine": 1091,
       "referenceLine": 921,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -1150,7 +1150,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[1]",
-      "producedLine": 1094,
+      "producedLine": 1098,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -1864,7 +1864,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1080,
+      "producedLine": 1082,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -1881,7 +1881,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[1]",
-      "producedLine": 1094,
+      "producedLine": 1098,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -2299,6 +2299,40 @@
       }
     },
     {
+      "id": "c876f3ca",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[61]",
+      "producedLine": 1072,
+      "referenceLine": 741,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 444,
+        "referenceRank": 364
+      }
+    },
+    {
+      "id": "9d7e71b8",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[63]",
+      "producedLine": 1088,
+      "referenceLine": 765,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 447,
+        "referenceRank": 382
+      }
+    },
+    {
       "id": "a7329ddd",
       "doc": "goya2",
       "class": "layout.order.mismatch",
@@ -2312,7 +2346,7 @@
       "reference": "",
       "geometry": {
         "producedRank": 77,
-        "referenceRank": 413
+        "referenceRank": 415
       }
     },
     {
@@ -2431,7 +2465,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[13]/heading[0]",
-      "producedLine": 161,
+      "producedLine": 165,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -2454,7 +2488,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 194,
+      "producedLine": 198,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
@@ -2463,6 +2497,29 @@
         "referenceAlign": "center",
         "producedRaw": "start",
         "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "1531f795",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[19]/break[0]",
+      "producedLine": 196,
+      "referenceLine": 247,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
         "producedProse": "left",
@@ -2528,7 +2585,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 149,
+      "producedLine": 151,
       "referenceLine": 155,
       "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
@@ -2545,7 +2602,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 157,
+      "producedLine": 161,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
@@ -2562,7 +2619,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[13]/heading[0]",
-      "producedLine": 161,
+      "producedLine": 165,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -2579,7 +2636,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 194,
+      "producedLine": 198,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
@@ -2596,7 +2653,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[0]/paragraph[0]",
-      "producedLine": 199,
+      "producedLine": 203,
       "referenceLine": 214,
       "produced": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
       "reference": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
@@ -2613,7 +2670,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[0]/paragraph[2]",
-      "producedLine": 201,
+      "producedLine": 205,
       "referenceLine": 218,
       "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюи…",
       "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
@@ -2630,7 +2687,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 212,
+      "producedLine": 216,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
@@ -2647,13 +2704,30 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 218,
+      "producedLine": 222,
       "referenceLine": 237,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
       "reference": "E-mail: andy.waeyaert@advalvas.be",
       "geometry": {
         "producedContainer": "align",
         "referenceContainer": "columns>column>align"
+      }
+    },
+    {
+      "id": "b0b6bda0",
+      "doc": "kiselev",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[19]/break[0]",
+      "producedLine": 196,
+      "referenceLine": 247,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
       }
     },
     {
@@ -2681,7 +2755,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 212,
+      "producedLine": 216,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
@@ -2698,13 +2772,47 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 218,
+      "producedLine": 222,
       "referenceLine": 237,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
       "reference": "E-mail: andy.waeyaert@advalvas.be",
       "geometry": {
         "producedLane": 0,
         "referenceLane": 1
+      }
+    },
+    {
+      "id": "720a8cc8",
+      "doc": "kiselev",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[15]",
+      "producedLine": 145,
+      "referenceLine": 201,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 21,
+        "referenceRank": 25
+      }
+    },
+    {
+      "id": "9da2729a",
+      "doc": "kiselev",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[17]",
+      "producedLine": 155,
+      "referenceLine": 208,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 23,
+        "referenceRank": 27
       }
     },
     {
@@ -2715,13 +2823,30 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 212,
+      "producedLine": 216,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "geometry": {
-        "producedRank": 30,
+        "producedRank": 31,
         "referenceRank": 29
+      }
+    },
+    {
+      "id": "4a99194c",
+      "doc": "kiselev",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[19]/break[0]",
+      "producedLine": 196,
+      "referenceLine": 247,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 27,
+        "referenceRank": 32
       }
     },
     {
@@ -2732,7 +2857,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[10]/paragraph[0]",
-      "producedLine": 46,
+      "producedLine": 48,
       "referenceLine": 43,
       "produced": "С НОВЫМ 2022 ГОДОМ!",
       "reference": "С НОВЫМ 2022 ГОДОМ!",
@@ -2755,7 +2880,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[12]/align[1]/paragraph[0]",
-      "producedLine": 48,
+      "producedLine": 52,
       "referenceLine": 53,
       "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматическо…",
       "reference": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматическо…",
@@ -2778,7 +2903,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[12]/align[1]/paragraph[1]",
-      "producedLine": 51,
+      "producedLine": 55,
       "referenceLine": 56,
       "produced": "Юрий Алексеевич СМИРНОВ",
       "reference": "Юрий Алексеевич СМИРНОВ",
@@ -2801,7 +2926,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[14]/align[2]/paragraph[0]",
-      "producedLine": 62,
+      "producedLine": 68,
       "referenceLine": 77,
       "produced": "Джулиан БРИМ",
       "reference": "Джулиан БРИМ",
@@ -2824,7 +2949,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[42]/align[1]/paragraph[0]",
-      "producedLine": 169,
+      "producedLine": 188,
       "referenceLine": 197,
       "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ",
@@ -2847,7 +2972,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[46]/align[1]/paragraph[0]",
-      "producedLine": 196,
+      "producedLine": 217,
       "referenceLine": 227,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
@@ -2870,7 +2995,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[46]/align[1]/paragraph[1]",
-      "producedLine": 198,
+      "producedLine": 219,
       "referenceLine": 229,
       "produced": "Михаил Владимирович КОРНИШИН",
       "reference": "Михаил Владимирович КОРНИШИН",
@@ -2893,7 +3018,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[54]/align[1]/paragraph[0]",
-      "producedLine": 236,
+      "producedLine": 263,
       "referenceLine": 272,
       "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
@@ -2916,7 +3041,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[54]/align[1]/paragraph[1]",
-      "producedLine": 239,
+      "producedLine": 266,
       "referenceLine": 275,
       "produced": "с успешной защитой диссертации на тему:",
       "reference": "с успешной защитой диссертации на тему:",
@@ -2939,10 +3064,33 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[54]/align[1]/paragraph[2]",
-      "producedLine": 241,
+      "producedLine": 268,
       "referenceLine": 277,
       "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
       "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и пр…",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "285dcf7a",
+      "doc": "news",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[54]/align[1]/break[3]",
+      "producedLine": 211,
+      "referenceLine": 281,
+      "produced": "",
+      "reference": "",
       "geometry": {
         "producedAlign": "left",
         "referenceAlign": "center",
@@ -2962,7 +3110,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[54]/align[1]/paragraph[4]",
-      "producedLine": 248,
+      "producedLine": 275,
       "referenceLine": 283,
       "produced": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература …",
       "reference": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература …",
@@ -2985,7 +3133,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[56]/align[1]/paragraph[0]",
-      "producedLine": 254,
+      "producedLine": 283,
       "referenceLine": 298,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
@@ -3008,7 +3156,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 285,
+      "producedLine": 320,
       "referenceLine": 338,
       "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филарм…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -3031,7 +3179,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[65]/align[1]/paragraph[0]",
-      "producedLine": 290,
+      "producedLine": 327,
       "referenceLine": 352,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -3054,7 +3202,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[71]/paragraph[0]",
-      "producedLine": 310,
+      "producedLine": 353,
       "referenceLine": 380,
       "produced": "С НОВЫМ 2014 ГОДОМ!",
       "reference": "С НОВЫМ 2014 ГОДОМ!",
@@ -3111,7 +3259,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[10]/paragraph[0]",
-      "producedLine": 46,
+      "producedLine": 48,
       "referenceLine": 43,
       "produced": "С НОВЫМ 2022 ГОДОМ!",
       "reference": "С НОВЫМ 2022 ГОДОМ!",
@@ -3128,7 +3276,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[12]/align[1]/paragraph[0]",
-      "producedLine": 48,
+      "producedLine": 52,
       "referenceLine": 53,
       "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматическо…",
       "reference": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматическо…",
@@ -3145,7 +3293,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[12]/align[1]/paragraph[1]",
-      "producedLine": 51,
+      "producedLine": 55,
       "referenceLine": 56,
       "produced": "Юрий Алексеевич СМИРНОВ",
       "reference": "Юрий Алексеевич СМИРНОВ",
@@ -3162,7 +3310,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[12]/image[2]",
-      "producedLine": 54,
+      "producedLine": 58,
       "referenceLine": 59,
       "produced": "Юрий Алексеевич Смирнов",
       "reference": "Юрий Алексеевич Смирнов",
@@ -3179,7 +3327,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[14]/paragraph[1]",
-      "producedLine": 60,
+      "producedLine": 66,
       "referenceLine": 73,
       "produced": "14 августа 2020 года в Англии возрасте 87 лет умер выдаю­щийся британский гитарист и лютнист",
       "reference": "14 августа 2020 года в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист",
@@ -3196,13 +3344,30 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[14]/align[2]/paragraph[0]",
-      "producedLine": 62,
+      "producedLine": 68,
       "referenceLine": 77,
       "produced": "Джулиан БРИМ",
       "reference": "Джулиан БРИМ",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "frame>align"
+      }
+    },
+    {
+      "id": "b320f1e2",
+      "doc": "news",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[30]/paragraph[1]",
+      "producedLine": 131,
+      "referenceLine": 138,
+      "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
+      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "frame"
       }
     },
     {
@@ -3213,7 +3378,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[30]/paragraph[2]",
-      "producedLine": 116,
+      "producedLine": 133,
       "referenceLine": 140,
       "produced": "Виктор Михайлович ЕФРЕМОВ",
       "reference": "Виктор Михайлович ЕФРЕМОВ",
@@ -3230,7 +3395,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[30]/image[3]",
-      "producedLine": 120,
+      "producedLine": 123,
       "referenceLine": 142,
       "produced": "",
       "reference": "",
@@ -3247,7 +3412,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[42]/align[1]/paragraph[0]",
-      "producedLine": 169,
+      "producedLine": 188,
       "referenceLine": 197,
       "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ",
@@ -3264,7 +3429,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[46]/align[1]/paragraph[0]",
-      "producedLine": 196,
+      "producedLine": 217,
       "referenceLine": 227,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
@@ -3281,7 +3446,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[46]/align[1]/paragraph[1]",
-      "producedLine": 198,
+      "producedLine": 219,
       "referenceLine": 229,
       "produced": "Михаил Владимирович КОРНИШИН",
       "reference": "Михаил Владимирович КОРНИШИН",
@@ -3298,7 +3463,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[54]/align[1]/paragraph[0]",
-      "producedLine": 236,
+      "producedLine": 263,
       "referenceLine": 272,
       "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
@@ -3315,7 +3480,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[54]/align[1]/paragraph[1]",
-      "producedLine": 239,
+      "producedLine": 266,
       "referenceLine": 275,
       "produced": "с успешной защитой диссертации на тему:",
       "reference": "с успешной защитой диссертации на тему:",
@@ -3332,12 +3497,29 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[54]/align[1]/paragraph[2]",
-      "producedLine": 241,
+      "producedLine": 268,
       "referenceLine": 277,
       "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
       "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и пр…",
       "geometry": {
         "producedContainer": "frame",
+        "referenceContainer": "frame>align"
+      }
+    },
+    {
+      "id": "12171c69",
+      "doc": "news",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[54]/align[1]/break[3]",
+      "producedLine": 211,
+      "referenceLine": 281,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedContainer": "(root)",
         "referenceContainer": "frame>align"
       }
     },
@@ -3349,7 +3531,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[54]/align[1]/paragraph[4]",
-      "producedLine": 248,
+      "producedLine": 275,
       "referenceLine": 283,
       "produced": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература …",
       "reference": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература …",
@@ -3366,7 +3548,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[56]/align[1]/paragraph[0]",
-      "producedLine": 254,
+      "producedLine": 283,
       "referenceLine": 298,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
@@ -3383,7 +3565,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[56]/image[2]",
-      "producedLine": 260,
+      "producedLine": 145,
       "referenceLine": 301,
       "produced": "",
       "reference": "",
@@ -3400,7 +3582,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 285,
+      "producedLine": 320,
       "referenceLine": 338,
       "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филарм…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -3417,7 +3599,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[65]/align[1]/paragraph[0]",
-      "producedLine": 290,
+      "producedLine": 327,
       "referenceLine": 352,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -3434,7 +3616,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[65]/image[2]",
-      "producedLine": 293,
+      "producedLine": 289,
       "referenceLine": 355,
       "produced": "",
       "reference": "",
@@ -3451,7 +3633,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[71]/paragraph[0]",
-      "producedLine": 310,
+      "producedLine": 353,
       "referenceLine": 380,
       "produced": "С НОВЫМ 2014 ГОДОМ!",
       "reference": "С НОВЫМ 2014 ГОДОМ!",
@@ -3468,13 +3650,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[12]/paragraph[0]",
-      "producedLine": 167,
+      "producedLine": 186,
       "referenceLine": 49,
       "produced": "frame: black",
       "reference": "frame: black",
       "geometry": {
-        "producedRank": 41,
-        "referenceRank": 11
+        "producedRank": 52,
+        "referenceRank": 13
       }
     },
     {
@@ -3485,13 +3667,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[14]/paragraph[0]",
-      "producedLine": 194,
+      "producedLine": 215,
       "referenceLine": 71,
       "produced": "frame: black",
       "reference": "frame: black",
       "geometry": {
-        "producedRank": 46,
-        "referenceRank": 15
+        "producedRank": 58,
+        "referenceRank": 18
       }
     },
     {
@@ -3508,7 +3690,7 @@
       "reference": "",
       "geometry": {
         "producedRank": 0,
-        "referenceRank": 22
+        "referenceRank": 26
       }
     },
     {
@@ -3519,13 +3701,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/image[23]",
-      "producedLine": 73,
+      "producedLine": 81,
       "referenceLine": 102,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 21,
-        "referenceRank": 25
+        "producedRank": 25,
+        "referenceRank": 29
       }
     },
     {
@@ -3536,13 +3718,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/paragraph[24]",
-      "producedLine": 88,
+      "producedLine": 98,
       "referenceLine": 107,
       "produced": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
       "reference": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
       "geometry": {
-        "producedRank": 25,
-        "referenceRank": 26
+        "producedRank": 30,
+        "referenceRank": 30
       }
     },
     {
@@ -3553,13 +3735,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/paragraph[26]",
-      "producedLine": 97,
+      "producedLine": 109,
       "referenceLine": 116,
       "produced": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
       "reference": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
       "geometry": {
-        "producedRank": 27,
-        "referenceRank": 28
+        "producedRank": 33,
+        "referenceRank": 32
       }
     },
     {
@@ -3570,13 +3752,438 @@
       "evidence": "structure",
       "op": "move",
       "path": "/paragraph[28]",
-      "producedLine": 106,
+      "producedLine": 120,
       "referenceLine": 125,
       "produced": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
       "reference": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
       "geometry": {
+        "producedRank": 36,
+        "referenceRank": 34
+      }
+    },
+    {
+      "id": "e2fd2a32",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[30]/image[3]",
+      "producedLine": 123,
+      "referenceLine": 142,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 37,
+        "referenceRank": 38
+      }
+    },
+    {
+      "id": "75c4c18f",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/paragraph[31]",
+      "producedLine": 142,
+      "referenceLine": 149,
+      "produced": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
+      "reference": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
+      "geometry": {
+        "producedRank": 42,
+        "referenceRank": 39
+      }
+    },
+    {
+      "id": "1e308cb5",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[36]",
+      "producedLine": 96,
+      "referenceLine": 169,
+      "produced": "",
+      "reference": "",
+      "geometry": {
         "producedRank": 29,
-        "referenceRank": 30
+        "referenceRank": 44
+      }
+    },
+    {
+      "id": "430db560",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[39]",
+      "producedLine": 107,
+      "referenceLine": 180,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 32,
+        "referenceRank": 47
+      }
+    },
+    {
+      "id": "937cdc69",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[43]",
+      "producedLine": 118,
+      "referenceLine": 210,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 35,
+        "referenceRank": 52
+      }
+    },
+    {
+      "id": "4819d595",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[47]",
+      "producedLine": 129,
+      "referenceLine": 241,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 38,
+        "referenceRank": 58
+      }
+    },
+    {
+      "id": "8a0912c8",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[53]",
+      "producedLine": 182,
+      "referenceLine": 263,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 51,
+        "referenceRank": 64
+      }
+    },
+    {
+      "id": "f504e15d",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[54]/align[1]/break[3]",
+      "producedLine": 211,
+      "referenceLine": 281,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 57,
+        "referenceRank": 68
+      }
+    },
+    {
+      "id": "67c388c6",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[55]",
+      "producedLine": 230,
+      "referenceLine": 290,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 62,
+        "referenceRank": 70
+      }
+    },
+    {
+      "id": "ac0a03ed",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[56]/image[2]",
+      "producedLine": 145,
+      "referenceLine": 301,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 43,
+        "referenceRank": 72
+      }
+    },
+    {
+      "id": "3ea60bf4",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[57]",
+      "producedLine": 242,
+      "referenceLine": 308,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 65,
+        "referenceRank": 73
+      }
+    },
+    {
+      "id": "4b802670",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[62]",
+      "producedLine": 255,
+      "referenceLine": 330,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 69,
+        "referenceRank": 78
+      }
+    },
+    {
+      "id": "2a763dee",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[64]",
+      "producedLine": 281,
+      "referenceLine": 344,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 74,
+        "referenceRank": 80
+      }
+    },
+    {
+      "id": "ffebc89b",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[65]/image[2]",
+      "producedLine": 289,
+      "referenceLine": 355,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 76,
+        "referenceRank": 82
+      }
+    },
+    {
+      "id": "ff7dbbdc",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[66]",
+      "producedLine": 294,
+      "referenceLine": 362,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 77,
+        "referenceRank": 83
+      }
+    },
+    {
+      "id": "f4c44c0b",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[70]",
+      "producedLine": 306,
+      "referenceLine": 375,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 80,
+        "referenceRank": 87
+      }
+    },
+    {
+      "id": "1f0b75a5",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[72]",
+      "producedLine": 318,
+      "referenceLine": 382,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 83,
+        "referenceRank": 89
+      }
+    },
+    {
+      "id": "3f89821f",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[74]",
+      "producedLine": 325,
+      "referenceLine": 385,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 85,
+        "referenceRank": 91
+      }
+    },
+    {
+      "id": "6b0c4d39",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[76]",
+      "producedLine": 335,
+      "referenceLine": 388,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 87,
+        "referenceRank": 93
+      }
+    },
+    {
+      "id": "8d66f1f3",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[78]",
+      "producedLine": 347,
+      "referenceLine": 391,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 90,
+        "referenceRank": 95
+      }
+    },
+    {
+      "id": "1495fcb4",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[80]",
+      "producedLine": 351,
+      "referenceLine": 394,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 92,
+        "referenceRank": 97
+      }
+    },
+    {
+      "id": "402c4f86",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[82]",
+      "producedLine": 355,
+      "referenceLine": 398,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 94,
+        "referenceRank": 99
+      }
+    },
+    {
+      "id": "f619257f",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[85]",
+      "producedLine": 359,
+      "referenceLine": 406,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 96,
+        "referenceRank": 100
+      }
+    },
+    {
+      "id": "add6735c",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[88]",
+      "producedLine": 363,
+      "referenceLine": 414,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 98,
+        "referenceRank": 101
+      }
+    },
+    {
+      "id": "fd6c4475",
+      "doc": "news",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[90]",
+      "producedLine": 367,
+      "referenceLine": 418,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 100,
+        "referenceRank": 103
       }
     },
     {
@@ -3610,7 +4217,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/quote[0]/paragraph[0]",
-      "producedLine": 25,
+      "producedLine": 31,
       "referenceLine": 55,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
@@ -3633,7 +4240,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[1]",
-      "producedLine": 28,
+      "producedLine": 34,
       "referenceLine": 58,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
@@ -3656,7 +4263,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 32,
+      "producedLine": 38,
       "referenceLine": 62,
       "produced": "[ сайт фестиваля ]",
       "reference": "[ сайт фестиваля ]",
@@ -3730,7 +4337,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[4]/column[0]/paragraph[0]",
-      "producedLine": 11,
+      "producedLine": 13,
       "referenceLine": 22,
       "produced": "9 декабря 2007 г.",
       "reference": "9 декабря 2007 г.",
@@ -3747,7 +4354,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[4]/column[1]/paragraph[0]",
-      "producedLine": 13,
+      "producedLine": 15,
       "referenceLine": 26,
       "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шум…",
       "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумее…",
@@ -3764,7 +4371,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[5]/column[0]/paragraph[0]",
-      "producedLine": 15,
+      "producedLine": 19,
       "referenceLine": 33,
       "produced": "25 ноября 2007 г.",
       "reference": "25 ноября 2007 г.",
@@ -3781,7 +4388,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[5]/column[1]/paragraph[0]",
-      "producedLine": 17,
+      "producedLine": 21,
       "referenceLine": 37,
       "produced": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
       "reference": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
@@ -3798,7 +4405,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[5]/column[1]/paragraph[1]",
-      "producedLine": 19,
+      "producedLine": 23,
       "referenceLine": 39,
       "produced": "В преддверии Нового года стала вновь доступна новогодняя страничка!",
       "reference": "В преддверии Нового года стала вновь доступна новогодняя страничка!",
@@ -3815,7 +4422,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[0]/paragraph[0]",
-      "producedLine": 21,
+      "producedLine": 27,
       "referenceLine": 45,
       "produced": "22 апреля 2007 г.",
       "reference": "22 апреля 2007 г.",
@@ -3832,7 +4439,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/paragraph[0]",
-      "producedLine": 23,
+      "producedLine": 29,
       "referenceLine": 48,
       "produced": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
       "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слух…",
@@ -3849,7 +4456,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/quote[0]/paragraph[0]",
-      "producedLine": 25,
+      "producedLine": 31,
       "referenceLine": 55,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
@@ -3866,7 +4473,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[1]",
-      "producedLine": 28,
+      "producedLine": 34,
       "referenceLine": 58,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
@@ -3883,7 +4490,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 32,
+      "producedLine": 38,
       "referenceLine": 62,
       "produced": "[ сайт фестиваля ]",
       "reference": "[ сайт фестиваля ]",
@@ -3900,7 +4507,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[7]/column[0]/paragraph[0]",
-      "producedLine": 34,
+      "producedLine": 42,
       "referenceLine": 71,
       "produced": "10 апреля 2007 г.",
       "reference": "10 апреля 2007 г.",
@@ -3917,7 +4524,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 36,
+      "producedLine": 44,
       "referenceLine": 75,
       "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
       "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
@@ -3934,7 +4541,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[8]/column[0]/paragraph[0]",
-      "producedLine": 38,
+      "producedLine": 46,
       "referenceLine": 81,
       "produced": "4 марта 2007 г.",
       "reference": "4 марта 2007 г.",
@@ -3951,7 +4558,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[8]/column[1]/paragraph[0]",
-      "producedLine": 40,
+      "producedLine": 48,
       "referenceLine": 85,
       "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
       "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
@@ -3985,7 +4592,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[4]/column[1]/paragraph[0]",
-      "producedLine": 13,
+      "producedLine": 15,
       "referenceLine": 26,
       "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шум…",
       "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумее…",
@@ -4002,7 +4609,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[5]/column[1]/paragraph[0]",
-      "producedLine": 17,
+      "producedLine": 21,
       "referenceLine": 37,
       "produced": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
       "reference": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
@@ -4019,7 +4626,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/paragraph[0]",
-      "producedLine": 23,
+      "producedLine": 29,
       "referenceLine": 48,
       "produced": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
       "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слух…",
@@ -4036,7 +4643,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 36,
+      "producedLine": 44,
       "referenceLine": 75,
       "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
       "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
@@ -4053,7 +4660,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[8]/column[1]/paragraph[0]",
-      "producedLine": 40,
+      "producedLine": 48,
       "referenceLine": 85,
       "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
       "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
@@ -5499,7 +6106,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1073,
+      "producedLine": 1075,
       "referenceLine": 903,
       "text": "Festival Latino / Goya & Carmina 1994",
       "producedAlignment": "center",
@@ -5512,7 +6119,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1080,
+      "producedLine": 1082,
       "referenceLine": 910,
       "text": "Francis Goya",
       "producedAlignment": "center",
@@ -5525,7 +6132,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1087,
+      "producedLine": 1091,
       "referenceLine": 921,
       "text": "Together / Richard Clayderman & Francis Goya",
       "producedAlignment": "center",
@@ -5538,7 +6145,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1094,
+      "producedLine": 1098,
       "referenceLine": 928,
       "text": "Maria Padilha",
       "producedAlignment": "center",
@@ -5642,7 +6249,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 149,
+      "producedLine": 151,
       "referenceLine": 155,
       "text": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "producedAlignment": "right",
@@ -5655,7 +6262,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 157,
+      "producedLine": 161,
       "referenceLine": 158,
       "text": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "producedAlignment": "right",
@@ -5668,7 +6275,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 161,
+      "producedLine": 165,
       "referenceLine": 170,
       "text": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "producedAlignment": "left",
@@ -5681,7 +6288,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 194,
+      "producedLine": 198,
       "referenceLine": 206,
       "text": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "producedAlignment": "left",
@@ -5694,7 +6301,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 212,
+      "producedLine": 216,
       "referenceLine": 231,
       "text": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 I…",
       "producedAlignment": "right",
@@ -5707,7 +6314,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 218,
+      "producedLine": 222,
       "referenceLine": 237,
       "text": "E-mail: andy.waeyaert@advalvas.be",
       "producedAlignment": "right",
@@ -5720,7 +6327,20 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 225,
+      "producedLine": 196,
+      "referenceLine": 247,
+      "text": "",
+      "producedAlignment": "left",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "kiselev",
+      "producedLine": 229,
       "referenceLine": 248,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
       "producedAlignment": "right",
@@ -5759,7 +6379,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 46,
+      "producedLine": 48,
       "referenceLine": 43,
       "text": "С НОВЫМ 2022 ГОДОМ!",
       "producedAlignment": "left",
@@ -5772,7 +6392,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 48,
+      "producedLine": 52,
       "referenceLine": 53,
       "text": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант …",
       "producedAlignment": "left",
@@ -5785,7 +6405,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 51,
+      "producedLine": 55,
       "referenceLine": 56,
       "text": "Юрий Алексеевич СМИРНОВ",
       "producedAlignment": "left",
@@ -5798,7 +6418,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 54,
+      "producedLine": 58,
       "referenceLine": 59,
       "text": "Юрий Алексеевич Смирнов",
       "producedAlignment": "center",
@@ -5811,7 +6431,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 62,
+      "producedLine": 68,
       "referenceLine": 77,
       "text": "Джулиан БРИМ",
       "producedAlignment": "left",
@@ -5837,7 +6457,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 73,
+      "producedLine": 81,
       "referenceLine": 102,
       "text": "",
       "producedAlignment": "center",
@@ -5850,7 +6470,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 83,
+      "producedLine": 91,
       "referenceLine": 110,
       "text": "",
       "producedAlignment": "center",
@@ -5863,7 +6483,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 91,
+      "producedLine": 101,
       "referenceLine": 119,
       "text": "",
       "producedAlignment": "center",
@@ -5876,7 +6496,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 100,
+      "producedLine": 112,
       "referenceLine": 128,
       "text": "",
       "producedAlignment": "center",
@@ -5889,7 +6509,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 120,
+      "producedLine": 123,
       "referenceLine": 142,
       "text": "",
       "producedAlignment": "center",
@@ -5902,7 +6522,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 128,
+      "producedLine": 137,
       "referenceLine": 152,
       "text": "",
       "producedAlignment": "center",
@@ -5915,7 +6535,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 139,
+      "producedLine": 156,
       "referenceLine": 163,
       "text": "Зайцева Л., Тавровский В. Музей гитары на письменном столе. 2016",
       "producedAlignment": "center",
@@ -5928,7 +6548,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 148,
+      "producedLine": 165,
       "referenceLine": 173,
       "text": "Журнал \"История гитары в лицах\", №2, 2016",
       "producedAlignment": "center",
@@ -5941,7 +6561,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 158,
+      "producedLine": 175,
       "referenceLine": 184,
       "text": "Журнал \"История гитары в лицах\", №1, 2016",
       "producedAlignment": "center",
@@ -5954,7 +6574,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 169,
+      "producedLine": 188,
       "referenceLine": 197,
       "text": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Яд…",
       "producedAlignment": "left",
@@ -5967,7 +6587,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 174,
+      "producedLine": 193,
       "referenceLine": 202,
       "text": "Я. Р. Ковалевская (1922-2016)",
       "producedAlignment": "center",
@@ -5980,7 +6600,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 185,
+      "producedLine": 204,
       "referenceLine": 214,
       "text": "Журнал \"История гитары в лицах\", №2, 2015",
       "producedAlignment": "center",
@@ -5993,7 +6613,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 196,
+      "producedLine": 217,
       "referenceLine": 227,
       "text": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "producedAlignment": "left",
@@ -6006,7 +6626,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 198,
+      "producedLine": 219,
       "referenceLine": 229,
       "text": "Михаил Владимирович КОРНИШИН",
       "producedAlignment": "left",
@@ -6019,7 +6639,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 201,
+      "producedLine": 222,
       "referenceLine": 233,
       "text": "М. В. Корнишин (1978-2015)",
       "producedAlignment": "center",
@@ -6032,7 +6652,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 212,
+      "producedLine": 235,
       "referenceLine": 245,
       "text": "Журнал \"История гитары в лицах\", №1, 2015",
       "producedAlignment": "center",
@@ -6045,7 +6665,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 222,
+      "producedLine": 247,
       "referenceLine": 255,
       "text": "III Региональный конкурс гитаристов «Гранд соло» им. М. М. Елютина",
       "producedAlignment": "center",
@@ -6058,7 +6678,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 236,
+      "producedLine": 263,
       "referenceLine": 272,
       "text": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "producedAlignment": "left",
@@ -6071,7 +6691,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 239,
+      "producedLine": 266,
       "referenceLine": 275,
       "text": "с успешной защитой диссертации на тему:",
       "producedAlignment": "left",
@@ -6084,7 +6704,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 241,
+      "producedLine": 268,
       "referenceLine": 277,
       "text": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И…",
       "producedAlignment": "left",
@@ -6097,7 +6717,20 @@
     },
     {
       "doc": "news",
-      "producedLine": 248,
+      "producedLine": 211,
+      "referenceLine": 281,
+      "text": "",
+      "producedAlignment": "left",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "news",
+      "producedLine": 275,
       "referenceLine": 283,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "left",
@@ -6110,7 +6743,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 254,
+      "producedLine": 283,
       "referenceLine": 298,
       "text": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, комп…",
       "producedAlignment": "left",
@@ -6123,7 +6756,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 260,
+      "producedLine": 145,
       "referenceLine": 301,
       "text": "",
       "producedAlignment": "center",
@@ -6136,7 +6769,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 268,
+      "producedLine": 299,
       "referenceLine": 313,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
@@ -6149,7 +6782,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 278,
+      "producedLine": 311,
       "referenceLine": 323,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
@@ -6162,7 +6795,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 285,
+      "producedLine": 320,
       "referenceLine": 338,
       "text": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Моско…",
       "producedAlignment": "left",
@@ -6175,7 +6808,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 290,
+      "producedLine": 327,
       "referenceLine": 352,
       "text": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легенда…",
       "producedAlignment": "left",
@@ -6188,7 +6821,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 293,
+      "producedLine": 289,
       "referenceLine": 355,
       "text": "",
       "producedAlignment": "center",
@@ -6201,7 +6834,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 301,
+      "producedLine": 340,
       "referenceLine": 366,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
@@ -6214,7 +6847,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 310,
+      "producedLine": 353,
       "referenceLine": 380,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "left",
@@ -6240,7 +6873,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 25,
+      "producedLine": 31,
       "referenceLine": 55,
       "text": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "producedAlignment": "left",
@@ -6253,7 +6886,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 28,
+      "producedLine": 34,
       "referenceLine": 58,
       "text": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "producedAlignment": "left",
@@ -6266,7 +6899,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 32,
+      "producedLine": 38,
       "referenceLine": 62,
       "text": "[ сайт фестиваля ]",
       "producedAlignment": "left",
