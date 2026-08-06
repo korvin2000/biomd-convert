@@ -597,8 +597,16 @@ contracts, including permutation invariance. Equal-rank findings: 0 of 24.
 
 ## 8. Next phase — three ranked classes, hypotheses pre-registered
 
-All three are **pending**. Prerequisite for #1 and #2: §7 (L3). #3 has no L3
-prerequisite because it does not touch the converter.
+#1 is closed for `right` and deferred for `center` (§8.1); #2 is closed, and
+exposed one further mechanism that is recorded and reverted (§8.2, §8.2a); #3 is
+**pending** and needs no L3 because it does not touch the converter.
+
+Measured effect of the phase, all four rungs, from the Iteration 0 checkpoint:
+
+| | L0 | L1 | L2 source-backed | L3 |
+|---|---|---|---|---|
+| checkpoint | 263 tests | 87.6 | 598 | not built |
+| now | **307 tests** | **89.1** | **501** | **230**, identity 0 |
 
 ### 8.1 Alignment family — hypotheses now measured, mechanism identified
 
@@ -697,33 +705,119 @@ moved the same way, which is the property a change has to have before the larger
 gate widening is worth attempting.
 
 *Remaining in this family:* the H4 widening — ~115 centre and 14 right blocks
-whose evidence is present and whose gate rejects them. *Rule contract required
-before that code:* invariant expressed as computed alignment **relative to the
-page's own prose alignment** (`proseAlignment()` / `isDistinctive()` already
-exist in `l3/geometry.ts` and would need production twins in `ladom`), never an
-absolute keyword; recurrence requirement; false friend = a centred caption, which
-must not become `::: align`; mutation robustness. *Guard:* `align.spurious` (11,
-one document) must not rise.
+whose evidence is present and whose gate rejects them.
 
-### 8.2 Catalog row-pattern segmentation in `layoutFrom()`
+**Closed for `right`; `center` deferred with a stated falsifier.**
 
-The largest instance count in the ledger, and §5.1's first item. The reference
-emits one `::: columns` pair per album (label | cover) and one per track range,
-separated by `---`; `layoutFrom()` still emits one persistent lane per physical
-column.
+The count above was wrong and the measurement corrected it: the actionable set is
+**39**, not ~129 — the larger figure was the whole reference inventory rather than
+the produced/reference *mismatches*. All 39 are under the §6 length limit, only 9
+are bold, and 31 sit in the main content column at top level — so both halves of
+`alignedGroup()`'s gate (the `isWhollyStrongBlocks` bold requirement and the
+`boundedDepth > 0` scope) reject them.
 
-**Prerequisite beyond L3: determine first whether the six owning classes are one
-mechanism.** They are `column.missing` (25, 5 docs), `break.missing` (63, 5),
-`paragraph.containment` (38, 8), `retyped.paragraph-to-column` (18, 6),
-`columns.containment` (16, 2), `columns.missing` (9, 4). If they are not one
-mechanism, split the task rather than writing one rule for all of them.
+The seam was also wrong. The references **group**: `segovia1` puts three right-set
+paragraphs in one directive and `pavlov_azancheev` two. One directive per element
+renders the same and is a different document, and L2 compares documents. So the
+rule is a run over siblings — `groupAlignedRuns()` — carrying its contract in the
+source: invariant relational against `proseAlignOf()`, recurrence supplied by the
+length-weighted baseline rather than by repetition, three named false friends.
 
-Not `goya2`-specific: `analyze.md` names the same shape for `barrios` (one table
-per disc) and `news_2007` (2-column layout not recognised).
-*Rule contract:* invariant = row-boundary evidence in the physical occupancy grid
-(a row whose cells all begin a new record); recurrence = the pattern repeats with
-content between occurrences; false friend = a genuine two-lane prose layout that
-must stay one region.
+`proseAlign()` and `isDistinctiveAlign()` live in `ladom/style.ts` and
+`l3/geometry.ts` **delegates** to them rather than keeping a twin. If the
+instrument computed its own baseline the two could drift and L3 would grade the
+converter against a rule the converter never applied.
+
+**The position asymmetry is measured, not chosen.** Admitting `center` as well
+was tried first and rejected by L2: source-backed 596 -> 602, `align.spurious`
++11 (ten of them centred) against 8 closed. Restricted to `right`: 596 -> **593**,
+L1 87.7 -> 88.4, L3 233 -> 212 with `layout.align.mismatch` 60 -> 47. The
+asymmetry is structural, which is why it should hold beyond the 13: **right is
+deliberate — nothing inherits it**; centre is ambient — inherited from centred
+containers, free on a caption, and how a layout lane is filled.
+
+*Falsifier:* a page whose centred blocks are neither captions, nor inherited, nor
+lane content. `goya2` may be one — it holds 7 `align.missing`, all centred.
+
+*Blocker for centre:* `borislova` and `jovicic` put centred content in the
+reading flow that the references put in `::: column`. Four guards were tried
+against this and all measured worse than no guard — `tableDepth <= 1` (L1 88.2),
+a multi-lane-region flag (88.3), a link-only-run guard (removes correct aligns on
+`kiselev`/`segovia1`), and container-relative distinctiveness (L2 601). None can
+work at that seam: by the time the run pass sees the cells, the region is gone.
+§8.2 fixed the region for `goya2`; `borislova` and `jovicic` still fail it, so
+centre stays deferred.
+
+### 8.2 Catalog row-pattern segmentation — **closed**
+
+`layoutFrom()` built one `::: column` per *grid column*, concatenating every
+row's cell into it. That preserves the two-lane look and destroys every
+horizontal pairing: `goya2`'s 36x2 discography became two 34-entry lanes, so the
+first album's title sat 33 entries above its own cover. The references split the
+other way — **34 `::: columns` regions and 68 lanes on `goya2`; the converter
+emitted 1 and 2.**
+
+The six classes named as candidates *were* one mechanism, and it was this one.
+`analyze.md` states it directly and decided the design (L5): *"это не должна быть
+1 большая левая колонка и 1 большая правая колонка"*, and for `barrios`,
+*"Таблица должна быть разбита на 2 таблицы. На каждый диск по 1 таблице"*.
+`CLAUDE.md` §5 already sanctioned the split as legitimate.
+
+Two changes, each measured separately:
+
+| | L1 | L2 source-backed | L3 |
+|---|---|---|---|
+| after §8.1 | 88.4 | 593 | 212 |
+| row-wise regions | **89.0** | **528** | 214 |
+| + rule between rows | **89.1** | **501** | 230 |
+
+Row-wise segmentation, per class: `column.missing` 25 -> 8 · `columns.containment`
+16 -> 3 · `retyped.paragraph-to-column` 20 -> 7 · `retyped.paragraph-to-columns`
+19 -> 8 · `columns.position.spurious` 18 -> 5 · `paragraph.spurious` 62 -> 48 ·
+`column.containment` 9 -> 3 · `columns.missing` 9 -> 4. Only `goya2` (85.4 ->
+91.4, directives 43.9 -> 92.3) and `barrios` (80.3 -> 82.0) moved on L1 — with
+`rows === 1` the new construction is identical to the old, so a genuine
+article-beside-sidebar layout is untouched. That is the generalization argument,
+and it is structural rather than empirical.
+
+The separator closed `break.missing` 64 -> 36 (`goya2` 35 -> 7). L3 rose 214 ->
+230, entirely `layout.order.mismatch`: produced draws 33 rules where the
+reference draws 35, so every later block sits two ranks early. That is the same
+residue L2 reports as the remaining `break.missing`, counted a second way — not
+a new class.
+
+**Remaining in this family:** 7 separators on `goya2`, and `break.missing` 24 on
+`news`, which is a dated-entry list rather than a catalog grid and so is a
+different mechanism that has not been examined.
+
+### 8.2a Enumerated break-runs -> lists — mechanism found, **change reverted**
+
+Exposed by 8.2: with the lanes correct, `retyped.paragraph-to-list` went 5 -> 32
+(`goya2` 29, `kiselev` 2, `segovia` 1). Each lane holds a `<br>`-separated track
+run that the reference writes as a bullet list — unordered on purpose, since an
+ordered list renumbers and `01.` is content.
+
+A detector was written (`enumeratedItems()` in `lines.ts`: ordinals must ascend,
+three items minimum, the run must *open* with one, unnumbered lines attach to the
+item above) and it worked — 178 list items emitted, `retyped.paragraph-to-list`
+32 -> 3.
+
+**Reverted anyway: L2 source-backed 528 -> 600.** The cost is not new
+differences, it is new *findings* for differences that already existed inside one
+large paragraph — chiefly `list.item.content.edited` (+48) and `emphasis.span`
+(+37), which are one reference editorial repeated 25 times: the source writes
+`<i>4.07</i>` at the end of a track line and the reference writes `— 4.07`.
+Reproducing that is a fixture-specific typographic rewrite; not reproducing it
+costs a finding per track.
+
+**What blocks it is a triage question, not converter work.** Those findings are
+`evidence: "structure"`, and `triage.ts:76` returns `source-backed` for every
+structural finding unconditionally. That rule is right for layout — it is what
+stopped the first ledger burying `columns.missing` in the ceiling — but an
+emphasis span deleted by the reference is not layout. Settling it means changing
+an instrument, which invariant 2 permits only as an isolated declared step with
+both sides re-baselined, never as a side effect of a converter change. Land the
+detector after that, not before.
 
 ### 8.3 Refine `paragraph.spurious` into actionable sub-classes
 
