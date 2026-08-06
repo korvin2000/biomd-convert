@@ -465,8 +465,51 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
  * `segovia1`. "Link-only" cannot be the guard: `kiselev`'s right-set contact
  * block is link-only too and the reference wraps it.
  */
+/**
+ * The same pass, over a bounded container's *committed* children.
+ *
+ * `groupAlignedRuns` declines to fire while a bounded interior is still being
+ * speculated about, and that guard has to stay — a region detector inspects the
+ * produced shape to decide whether the region is a layout at all, and wrapping
+ * a cell's paragraphs changed the shape it inspects. But declining forever was
+ * never right: §13 says an `align` block MAY appear inside `lead`, `column` or
+ * `frame`, and the references use all three — `news` alone puts eight inside
+ * frames, one per obituary notice.
+ *
+ * So the pass runs once more when the container is decided and its children are
+ * final. Nothing is being speculated about any more, and the evidence is the
+ * same evidence.
+ */
+function groupAlignedRunsCommitted(children: BiomdContent[], ctx: Ctx, container: LadomNode): BiomdContent[] {
+  // Inside a bounded container the *container's* alignment is the evidence.
+  //
+  // `blocksFrom` records alignment only for element children, on the stated
+  // grounds that an inline run's alignment is its parent's and therefore says
+  // nothing about the run. That holds in the page flow, where every sibling
+  // shares the container. It stops holding at a boundary: a framed notice is
+  // one `<p>` of `<br>`-separated lines, so every block in it arrives with no
+  // alignment recorded at all, and the one fact that matters — this whole
+  // notice is centred and the page around it is not — was the only thing not
+  // written down. The references wrap exactly that: one `align` over the text,
+  // ending at the image, which carries its own position.
+  const inherited = foldTextAlign(container.style?.textAlign);
+  if (inherited !== null) {
+    for (const block of children) if (ctx.blockAlign.get(block) === undefined) ctx.blockAlign.set(block, inherited);
+  }
+
+  const frameDepth = ctx.frameDepth;
+  const boundedDepth = ctx.boundedDepth;
+  ctx.frameDepth = 0;
+  ctx.boundedDepth = 0;
+  try {
+    return groupAlignedRuns(children, ctx);
+  } finally {
+    ctx.frameDepth = frameDepth;
+    ctx.boundedDepth = boundedDepth;
+  }
+}
+
 function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
-  // A frame is already a bounded group; §6 says not to restate one.
   if (ctx.frameDepth > 0 || blocks.length === 0) return blocks;
   // Bounded interiors belong to `alignedGroup`, which is scoped to them. Firing
   // here as well is not merely redundant: cell interiors are lowered
@@ -495,8 +538,15 @@ function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
     runAlign = null;
   };
 
+  // Whether the blocks arriving now are standing under a figure, and are
+  // therefore its caption rather than an aligned run of their own. See the
+  // `captionEligible` note in `alignableRunMember`.
+  let underFigure: boolean = false;
+
   for (const block of blocks) {
-    const align = alignableRunMember(block, ctx);
+    const caption: boolean = underFigure && ctx.captionEligible.has(block);
+    const align = caption ? null : alignableRunMember(block, ctx);
+    underFigure = caption || (block.type === "biomdImage" && block.standalone);
     if (align === null) {
       flush();
       out.push(block);
@@ -537,7 +587,14 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   // False friend: the caption bound to a figure. `::: image`'s `caption:` is
   // where it belongs — a competing `align` both duplicates the position and
   // detaches the text from its picture.
-  if (ctx.captionEligible.has(block)) return null;
+  //
+  // The test is *positional* and lives in the caller: `captionEligible` marks a
+  // block whose typography would let it be a caption, which is a candidacy and
+  // not a fact. Reading it as a fact here vetoed every centred line in every
+  // framed notice on `news` — an obituary's opening sentence carries exactly
+  // the typography of a caption and stands *above* the photograph, so it never
+  // becomes one, and the veto only stopped it from being recognised as what it
+  // is. A caption follows its figure; nothing else does.
 
   // §6: "do not wrap … long body prose". Pre-existing limit, unchanged, applied
   // per block so one long paragraph cannot drag a run of labels with it.
@@ -818,21 +875,51 @@ function captionLinesOf(nodes: readonly PhrasingContent[]): CaptionLine[] {
 /** The two block kinds a visible caption can arrive as. */
 type CaptionBlock = Extract<BiomdContent, { type: "paragraph" } | { type: "heading" }>;
 
-/** Longest run of caption-eligible blocks starting at `from`. */
-function captionRunAt(nodes: readonly BiomdContent[], from: number, ctx: Ctx): CaptionBlock[] {
-  const run: CaptionBlock[] = [];
-  for (let i = from; i < nodes.length; i += 1) {
+/** Whether a block is a caption candidate on its own typography. */
+function isCaptionCandidate(block: BiomdContent, ctx: Ctx): boolean {
+  return (
+    (block.type === "paragraph" && ctx.captionEligible.has(block)) ||
+    // A *centred* recovered heading under a picture is its caption. A
+    // small-type section label — `ДИСКОГРАФИЯ` above its list — is not, and
+    // swallowing it deleted a real section of the document.
+    (block.type === "heading" && ctx.captionHeadings.has(block))
+  );
+}
+
+/**
+ * Longest run of caption-eligible blocks starting at `from`.
+ *
+ * An `::: align` counts when everything inside it is a candidate. A figure and
+ * its caption are often two rows of a one-column table, so the caption is
+ * lowered in a container of its own where no figure is in sight, and the
+ * alignment pass — running bottom-up, correctly, on the evidence it has —
+ * wraps it. Only here is the picture next to it. Unwrapping is the whole of
+ * the fix: the alignment was never wrong, it was premature, and §7 gives the
+ * caption a better home than `position:` restated on a directive.
+ */
+function captionRunAt(
+  nodes: readonly BiomdContent[],
+  from: number,
+  ctx: Ctx,
+): { blocks: CaptionBlock[]; consumed: number } {
+  const blocks: CaptionBlock[] = [];
+  let i = from;
+  for (; i < nodes.length; i += 1) {
     const block = nodes[i] as BiomdContent;
-    const eligible =
-      (block.type === "paragraph" && ctx.captionEligible.has(block)) ||
-      // A *centred* recovered heading under a picture is its caption. A
-      // small-type section label — `ДИСКОГРАФИЯ` above its list — is not,
-      // and swallowing it deleted a real section of the document.
-      (block.type === "heading" && ctx.captionHeadings.has(block));
-    if (!eligible) break;
-    run.push(block as CaptionBlock);
+    if (isCaptionCandidate(block, ctx)) {
+      blocks.push(block as CaptionBlock);
+      continue;
+    }
+    if (block.type === "biomdAlign") {
+      const children = block.children as BiomdContent[];
+      if (children.length > 0 && children.every((child) => isCaptionCandidate(child, ctx))) {
+        blocks.push(...(children as CaptionBlock[]));
+        continue;
+      }
+    }
+    break;
   }
-  return run;
+  return { blocks, consumed: i - from };
 }
 
 /**
@@ -908,7 +995,7 @@ function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] 
     const next = nodes[i + 1];
     if (node.type === "biomdImage" && node.standalone && next !== undefined) {
       const run = captionRunAt(nodes, i + 1, ctx);
-      const caption = captionTextOf(run);
+      const caption = captionTextOf(run.blocks);
       if (caption !== "" && caption.length <= 300) {
         if (node.caption !== undefined && caption !== node.caption) {
           ctx.ledger.push(
@@ -916,7 +1003,7 @@ function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] 
           );
         }
         out.push({ ...node, caption });
-        i += run.length;
+        i += run.consumed;
         continue;
       }
     }
@@ -2204,7 +2291,10 @@ function layoutFrom(
         ctx.boundedDepth += 1;
         const inner = blocksFrom(cell.node, ctx);
         ctx.boundedDepth -= 1;
-        const cells = inner.filter(isBounded);
+        // The cell is decided now, so the align-run pass may look at it (§13
+        // permits `align` inside `column`). During `blocksFrom` above it must
+        // not: the region detector reads the produced shape back.
+        const cells = groupAlignedRunsCommitted(inner.filter(isBounded), ctx, cell.node).filter(isBounded);
         if (cells.length > 0) columns.push(makeColumn(cells));
         // An established lane keeps its place even in a row that has nothing to
         // put there. Five `goya2` albums have no cover art, and dropping the
@@ -2389,10 +2479,13 @@ function framedCell(node: LadomNode, ctx: Ctx): BiomdContent[] {
 
   ctx.boundedDepth += 1;
   ctx.frameDepth += 1;
-  const inner = blocksFrom(node, ctx).filter(isBounded);
+  const lowered0 = blocksFrom(node, ctx).filter(isBounded);
   ctx.frameDepth -= 1;
   ctx.boundedDepth -= 1;
-  if (inner.length === 0) return [];
+  if (lowered0.length === 0) return [];
+  // §13 permits `align` inside `frame`, and the notices use it: the announcement
+  // is centred and the paragraphs of the surrounding page are not.
+  const inner = groupAlignedRunsCommitted(lowered0, ctx, node).filter(isBounded);
 
   // A target that cannot draw the border gets a blockquote and a recorded
   // downgrade, not a container that renders as nothing.

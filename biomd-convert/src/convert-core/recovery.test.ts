@@ -14,6 +14,8 @@ import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js
 import { groupColumnsFor, isDecorative, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
 import { parseHtml } from "../ladom/parse.js";
+import type { Measurer, MeasureResult } from "../ladom/measure.js";
+import type { LadomDocument, ResolvedStyle } from "../ladom/types.js";
 import { foldTextAlign, isCenteredAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { resolveProfile } from "../biomd-ast/index.js";
 import { walkElements } from "../ladom/types.js";
@@ -38,6 +40,75 @@ const SPEC = resolveProfile("spec-1.6");
 
 async function md(body: string): Promise<string> {
   const result = await convert(Buffer.from(page(body), "utf8"), { profile: SPEC });
+  return result.markdown;
+}
+
+/**
+ * A measurement stand-in that reads the inline `style` attribute.
+ *
+ * The alignment family keys on *computed* alignment, and `NullMeasurer` — what
+ * `convert` falls back to — deliberately leaves `style` undefined rather than
+ * inventing plausible numbers. Without a stand-in no alignment rule can be
+ * exercised end to end here at all, which is why every other contract in this
+ * family is stated against the helpers instead.
+ *
+ * It resolves nothing: it copies `text-align` off the attribute and fills the
+ * rest of `ResolvedStyle` with neutral values. That is enough for a rule whose
+ * evidence is alignment, and it stays honest by not pretending to cascade.
+ */
+class InlineAlignMeasurer implements Measurer {
+  readonly available = true;
+
+  async measure(_html: string, doc: LadomDocument): Promise<MeasureResult> {
+    for (const el of walkElements(doc.root)) {
+      el.visible = !/display:\s*none|visibility:\s*hidden/iu.test(el.attrs["style"] ?? "");
+      // Only where the element says so. Filling in a value everywhere would
+      // overwrite the attribute heuristics the rest of the pipeline still runs
+      // on here, and a stand-in that changes unrelated decisions is not a
+      // stand-in for measurement — it is a second, worse cascade.
+      const declared = /text-align:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
+      if (declared) el.style = { ...NEUTRAL_STYLE, textAlign: (declared[1] as string).toLowerCase() };
+    }
+    doc.measured = false;
+    return { measured: false, warnings: [] };
+  }
+
+  async close(): Promise<void> {
+    /* nothing to release */
+  }
+}
+
+const NEUTRAL_STYLE: ResolvedStyle = {
+  display: "block",
+  position: "static",
+  float: "none",
+  textAlign: "start",
+  verticalAlign: "baseline",
+  fontSize: 16,
+  fontWeight: 400,
+  fontStyle: "normal",
+  color: "rgb(0, 0, 0)",
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  backgroundImage: "none",
+  borderTopWidth: 0,
+  borderRightWidth: 0,
+  borderBottomWidth: 0,
+  borderLeftWidth: 0,
+  borderStyle: "none",
+  borderColor: "rgb(0, 0, 0)",
+  paddingTop: 0,
+  paddingLeft: 0,
+  marginTop: 0,
+  marginBottom: 0,
+  marginLeft: 0,
+  marginRight: 0,
+};
+
+async function mdMeasured(body: string): Promise<string> {
+  const result = await convert(Buffer.from(page(body), "utf8"), {
+    profile: SPEC,
+    measurer: new InlineAlignMeasurer(),
+  });
   return result.markdown;
 }
 
@@ -246,6 +317,42 @@ describe("frames", () => {
  * **Recurrence.** Supplied by the enclosing container: the construct is scoped
  * to the inside of a `column`, where a label sits over the record it names.
  */
+describe("alignment inside a bounded container", () => {
+  it("wraps a centred run inside a frame — §13 permits align in a frame", async () => {
+    // A framed notice sets its announcement apart from the page around it, and
+    // `news` does exactly this eight times, once per obituary. The pass stands
+    // down while a bounded interior is still being speculated about, because a
+    // region detector reads the produced shape back — but standing down forever
+    // contradicted §13, which names `frame` as a place `align` may appear.
+    const out = await mdMeasured(
+      PROSE +
+        '<table border="0" width="85%"><tr><td width="94%" style="border: 4px solid #000000">' +
+        '<p style="text-align: center">10 декабря 2018 года ушел из жизни гитарист</p>' +
+        '<p style="text-align: center">Виктор Михайлович Ефремов, 1937 года рождения</p>' +
+        "</td></tr></table>" +
+        PROSE,
+    );
+    expect(out).toContain("::: frame");
+    expect(out).toContain("::: align");
+    expect(out.indexOf("::: frame")).toBeLessThan(out.indexOf("::: align"));
+  });
+
+  it("still leaves a real caption to its figure", () => {
+    // The veto that used to block the case above is a *position*, not a flag:
+    // a caption stands under its picture. Both facts have to hold at once, so
+    // this is asserted beside it rather than in the caption suite.
+    return mdMeasured(
+      PROSE +
+        '<p style="text-align: center"><img src="f.jpg" width="400" height="250"></p>' +
+        '<p class="st" style="text-align: center; font-size: 9pt">Андрес Сеговия в 1936 году</p>' +
+        PROSE,
+    ).then((out) => {
+      expect(out).toContain("caption: Андрес Сеговия в 1936 году");
+      expect(out).not.toContain("::: align");
+    });
+  });
+});
+
 describe("alignment", () => {
   it("folds the vendor form a browser actually returns", () => {
     // Chromium computes `-webkit-center` for an element centred by an
