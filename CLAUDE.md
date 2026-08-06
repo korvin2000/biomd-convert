@@ -228,6 +228,18 @@ Every rule added or changed carries a **rule contract**, stated in the test file
   onto a known shape or announce themselves as unmapped.
 - **Many small passes over one universal rule.** Small passes compose, are individually testable, and fail
   locally. New passes run through `runPass`/`Ledger` so provenance and conservation stay auditable.
+- **Read the neighbourhood before writing an element-level rule.** Decide from containment, sequence,
+  recurrence, geometry and semantic role — the relations between a block and the ones around it — not from
+  the block in isolation. And when a local mismatch appears, check the routing and grouping stages *above*
+  it first: a false friend that exists only because an earlier stage failed is a symptom, and guarding
+  against it downstream cements the upstream defect and hides it from every instrument.
+
+**Captions: the visible line outranks `alt`.** A caption the reader can see, structurally associated with
+its image, is the caption; `alt` is the fallback used only when no reliable visible caption exists. Bind the
+two through containment, immediate sibling order, proximity, repetition and shared layout region — never
+through a filename or any fixture-specific text. When `alt` and a visible line express the same thing with
+minor wording differences, keep the **visible source text** and emit it once, not twice. Arbitrary nearby
+prose is not a caption: require clear structural or repeated evidence before binding.
 
 **Corpus facts a rule may assume**, because geometry confirms them corpus-wide: content is the centre column
 (~½ viewport); page chrome and footer drop; right-hand menus fold into the main flow; most images are

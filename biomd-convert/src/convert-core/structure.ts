@@ -773,92 +773,152 @@ function isBlockTag(tag: string): boolean {
  * width, survives a layout change the figure does not, and is read out of
  * order by a screen reader.
  */
-/**
- * Whether two strings are the same caption, written twice.
- *
- * Folds only what a 1998 author would vary between an attribute and a visible
- * line: case, spacing, and the trailing period one of the two usually carries.
- * Deliberately *not* a similarity score — near-equality would start absorbing
- * paragraphs that merely mention what the picture shows, and the whole point of
- * this rule is that the text is repeated rather than related.
- */
-function sameCaptionText(a: string, b: string): boolean {
-  const fold = (t: string) =>
-    t
-      .replace(/\s+/gu, " ")
-      .trim()
-      .replace(/^["«“‘]+|["»”’]+$/gu, "")
-      .replace(/[.,;:!?…]+$/u, "")
-      .toLowerCase();
-  const x = fold(a);
-  const y = fold(b);
-  if (x === "" || y === "") return false;
-  if (x === y) return true;
 
-  // One of the two abbreviates its last word: `в 1971 г.` under
-  // `в 1971 году.`. Still equality rather than similarity — every word but the
-  // last must match exactly, and the last pair must stand in a prefix relation,
-  // which `1971`/`1972` and `ученики`/`учитель` both fail. That keeps the rule
-  // on "the same text written twice" and off "a sentence about the picture".
-  const xs = x.split(" ");
-  const ys = y.split(" ");
-  if (xs.length !== ys.length || xs.length === 0) return false;
-  for (let i = 0; i < xs.length - 1; i += 1) if (xs[i] !== ys[i]) return false;
-  const lastX = xs[xs.length - 1] as string;
-  const lastY = ys[ys.length - 1] as string;
-  return lastX.startsWith(lastY) || lastY.startsWith(lastX);
+/** One visible line of a caption, and whether the author set it apart in bold. */
+type CaptionLine = { text: string; emphasized: boolean };
+
+/**
+ * Cut one caption block into the lines the reader sees.
+ *
+ * A `<br>` inside the block is the same line boundary as a `<br>` between two
+ * of them, so it has to survive: `phrasingText` drops break nodes outright,
+ * which welded `…# 52 1983` onto `Special Segovia Issue`.
+ *
+ * Each line also records whether *all* of its text came from inside emphasis,
+ * which is how the era wrote a caption's title line.
+ */
+function captionLinesOf(nodes: readonly PhrasingContent[]): CaptionLine[] {
+  const lines: CaptionLine[] = [];
+  let text = "";
+  let plain = false;
+  const push = (): void => {
+    const trimmed = text.replace(/\s+/gu, " ").trim();
+    if (trimmed !== "") lines.push({ text: trimmed, emphasized: !plain });
+    text = "";
+    plain = false;
+  };
+  const walk = (list: readonly PhrasingContent[], strong: boolean): void => {
+    for (const node of list) {
+      if (node.type === "break") push();
+      else if (node.type === "text" || node.type === "inlineCode") {
+        text += node.value;
+        if (!strong && node.value.trim() !== "") plain = true;
+      } else if (node.type === "image") continue;
+      else if ("children" in node) {
+        const inside = strong || node.type === "strong" || node.type === "emphasis";
+        walk(node.children as PhrasingContent[], inside);
+      }
+    }
+  };
+  walk(nodes, false);
+  push();
+  return lines;
 }
 
+/** The two block kinds a visible caption can arrive as. */
+type CaptionBlock = Extract<BiomdContent, { type: "paragraph" } | { type: "heading" }>;
+
+/** Longest run of caption-eligible blocks starting at `from`. */
+function captionRunAt(nodes: readonly BiomdContent[], from: number, ctx: Ctx): CaptionBlock[] {
+  const run: CaptionBlock[] = [];
+  for (let i = from; i < nodes.length; i += 1) {
+    const block = nodes[i] as BiomdContent;
+    const eligible =
+      (block.type === "paragraph" && ctx.captionEligible.has(block)) ||
+      // A *centred* recovered heading under a picture is its caption. A
+      // small-type section label — `ДИСКОГРАФИЯ` above its list — is not,
+      // and swallowing it deleted a real section of the document.
+      (block.type === "heading" && ctx.captionHeadings.has(block));
+    if (!eligible) break;
+    run.push(block as CaptionBlock);
+  }
+  return run;
+}
+
+/**
+ * The visible caption region, as one line.
+ *
+ * Lines join with a space, because that is what a `<br>` becomes when it has to
+ * collapse into a single-line property. The one exception is a **typographic
+ * title line** — a first line the author set wholly in bold, with detail lines
+ * under it — which takes an em dash, since welding a title straight onto the
+ * sentence that explains it (`А. Сеговия с учениками В.И. Яшнева В нижнем ряду
+ * второй справа…`) reads as one broken sentence.
+ *
+ * The discriminator is the source's own typographic role, read off the inline
+ * tree. It deliberately does *not* ask whether the pipeline happened to lift
+ * that line to a heading: whether it did depends on surrounding context, so the
+ * same caption would join two different ways on two pages.
+ */
+function captionTextOf(run: readonly CaptionBlock[]): string {
+  const lines = run.flatMap((block) =>
+    block.type === "heading"
+      ? captionLinesOf(block.children as PhrasingContent[]).map((line) => ({ ...line, emphasized: true }))
+      : captionLinesOf(block.children as PhrasingContent[]),
+  );
+  if (lines.length === 0) return "";
+  const [first, ...rest] = lines as [CaptionLine, ...CaptionLine[]];
+  const titled = first.emphasized && rest.length > 0 && !rest[0]?.emphasized;
+  return titled
+    ? `${first.text} — ${rest.map((line) => line.text).join(" ")}`
+    : lines.map((line) => line.text).join(" ");
+}
+
+/**
+ * Bind a figure to the caption the reader can actually see.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A standalone image immediately followed by a run of
+ * caption-eligible blocks — centred, set in type smaller than the page's prose,
+ * free of links and pictures, and short. Containment and sibling order decide
+ * the binding; no filename, class or label vocabulary is consulted.
+ *
+ * **The visible line outranks `alt`.** `alt` describes the picture for a reader
+ * who cannot see it; a caption is visible editorial text, and the two are
+ * different properties in §6.1. When a page states both, the visible one is the
+ * caption and `alt` is only the fallback for a figure that has no visible line
+ * at all. Before this rule the first writer won, which was `alt`, so `authors`
+ * captioned a scan `Заметка о проекте…` while printing the three lines the
+ * author actually wrote as a loose paragraph underneath — the caption wrong and
+ * the text duplicated at once.
+ *
+ * **A run, not a line.** `segovia`'s 1936 photographs caption in three lines:
+ * a bold title, who is in the picture, and where it was taken. Taking only the
+ * first left the other two orphaned below the figure. The run ends where
+ * eligibility ends, which is the author's own boundary.
+ *
+ * **False friend.** Prose that merely follows a figure — excluded because
+ * `captionEligible` requires centring *and* small type together: `ДИСКОГРАФИЯ`
+ * above its album list is small but not centred, and binding it to the cover
+ * above it deleted a section of the document. A block *preceding* an image is
+ * never a caption: `news` sets an obituary's subject in bold above the
+ * photograph, and the reference keeps it as prose.
+ *
+ * **Subsumes "the same caption twice".** A page that puts the caption in `alt`
+ * and repeats it on a visible line no longer needs a separate absorb rule: the
+ * visible line replaces the property and is consumed. It also fixes what that
+ * rule got wrong — it kept `alt`'s wording, so `williams2` read `Джон Вильямс в
+ * 1971 г.` where the visible line, and the reference, say `в 1971 году.`
+ */
 function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
   const out: BiomdContent[] = [];
   for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i] as BiomdContent;
     const next = nodes[i + 1];
-    if (node.type === "biomdImage" && node.standalone && node.caption === undefined && next !== undefined) {
-      // A short line under an uncaptioned picture is its caption — including
-      // when typography made it look like a section label. `А. Сеговия с
-      // учениками В.И.Яшнева` is what the photograph shows, not what the next
-      // three paragraphs are about.
-      const eligible =
-        (next.type === "paragraph" && ctx.captionEligible.has(next)) ||
-        // A *centred* recovered heading under a picture is its caption. A
-        // small-type section label — `ДИСКОГРАФИЯ` above its list — is not,
-        // and swallowing it deleted a real section of the document.
-        (next.type === "heading" && ctx.captionHeadings.has(next));
-      if (eligible) {
-        const caption = phrasingText(next.children as PhrasingContent[]).replace(/\s+/gu, " ").trim();
-        if (caption !== "" && caption.length <= 300) {
-          out.push({ ...node, caption });
-          i += 1;
-          continue;
+    if (node.type === "biomdImage" && node.standalone && next !== undefined) {
+      const run = captionRunAt(nodes, i + 1, ctx);
+      const caption = captionTextOf(run);
+      if (caption !== "" && caption.length <= 300) {
+        if (node.caption !== undefined && caption !== node.caption) {
+          ctx.ledger.push(
+            mergedInto(nextId(ctx, "caption-echo"), nextId(ctx, "image"), { note: "visible caption replaces alt" }),
+          );
         }
+        out.push({ ...node, caption });
+        i += run.length;
+        continue;
       }
-    }
-
-    // The same caption, stated twice.
-    //
-    // A 1998 page routinely puts the caption in the picture's `alt` *and* on a
-    // visible line beneath it — `alt="Джулиан Брим и Джон Вильямс."` over a
-    // paragraph reading `Джулиан Брим и Джон Вильямс`. Both are the caption, and
-    // §7 gives an image exactly one, so keeping the line as a paragraph prints
-    // it twice: once inside the figure and once under it.
-    //
-    // The evidence is the *repetition*, not a length or a position: only a
-    // block saying what the caption already says is absorbed, so a real
-    // paragraph that happens to follow a captioned figure is untouched.
-    if (
-      node.type === "biomdImage" &&
-      node.standalone &&
-      node.caption !== undefined &&
-      next !== undefined &&
-      next.type === "paragraph" &&
-      ctx.captionEligible.has(next) &&
-      sameCaptionText(node.caption, phrasingText(next.children as PhrasingContent[]))
-    ) {
-      ctx.ledger.push(mergedInto(nextId(ctx, "caption-echo"), nextId(ctx, "image"), { note: "caption stated twice" }));
-      out.push(node);
-      i += 1;
-      continue;
     }
 
     // §11: "a prominent side menu … normally moves directly below the title".

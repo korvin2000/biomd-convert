@@ -413,27 +413,74 @@ describe("inconclusive table classification", () => {
  * **False friend.** A real paragraph that follows a captioned figure and merely
  * mentions what the picture shows. Tested for non-firing below.
  */
-describe("caption echo", () => {
+describe("captions bind to the visible line", () => {
+  /** A centred figure over a centred small-type line — the era's figure idiom. */
   const fig = (alt: string, line: string) =>
-    PROSE + '<p align="center"><img src="f.jpg" width="400" height="250" alt="' + alt + '"></p><p align="center">' + line + '</p>' + PROSE;
+    PROSE +
+    '<p align="center"><img src="f.jpg" width="400" height="250"' +
+    (alt === "" ? "" : ' alt="' + alt + '"') +
+    '></p><p class="st" style="text-align: center; font-size: 9pt">' +
+    line +
+    "</p>" +
+    PROSE;
 
-  it("absorbs a visible line that repeats the alt caption", async () => {
-    const out = await md(fig("Джулиан Брим и Джон Вильямс.", "Джулиан Брим и Джон Вильямс"));
-    expect(out).toContain("caption: Джулиан Брим и Джон Вильямс.");
-    // Once inside the figure, never again beneath it.
-    expect(out.match(/Джулиан Брим и Джон Вильямс/gu) ?? []).toHaveLength(1);
-  });
-
-  it("absorbs an abbreviated repetition", async () => {
-    //  under  — every word but the last matches and the
-    // last pair stands in a prefix relation.
+  it("prefers the visible caption over the alt text", async () => {
     const out = await md(fig("Джон Вильямс в 1971 г.", "Джон Вильямс в 1971 году."));
+    expect(out).toContain("caption: Джон Вильямс в 1971 году.");
+    expect(out).not.toContain("в 1971 г.");
+    // Once inside the figure, never again beneath it.
     expect(out.match(/Джон Вильямс в 1971/gu) ?? []).toHaveLength(1);
   });
 
-  it("leaves a paragraph that only mentions the picture", async () => {
-    const out = await md(fig("Джон Вильямс в 1971 г.", "Джон Вильямс в 1972 г."));
-    expect(out).toContain("Джон Вильямс в 1972 г.");
+  it("keeps the visible wording even when alt says the same thing", async () => {
+    const out = await md(fig("Джулиан Брим и Джон Вильямс.", "Джулиан Брим и Джон Вильямс"));
+    expect(out).toContain("caption: Джулиан Брим и Джон Вильямс\n");
+    expect(out.match(/Джулиан Брим и Джон Вильямс/gu) ?? []).toHaveLength(1);
+  });
+
+  it("falls back to alt when there is no visible caption", async () => {
+    const out = await md(
+      PROSE + '<p align="center"><img src="f.jpg" width="400" height="250" alt="Андрес Сеговия"></p>' + PROSE,
+    );
+    expect(out).toContain("caption: Андрес Сеговия");
+  });
+
+  it("binds every line of a multi-line caption, not just the first", async () => {
+    const out = await md(fig("", "Гостиница «Европейская»<br>Ленинград, 1936 г."));
+    // A `<br>` is a line boundary, so it becomes a space rather than vanishing.
+    expect(out).toContain("caption: Гостиница «Европейская» Ленинград, 1936 г.");
+    expect(out).not.toContain("»Ленинград");
+  });
+
+  it("sets a bold title line off from the detail it introduces", async () => {
+    const out = await md(fig("", "<b>А. Сеговия с учениками</b><br>В нижнем ряду второй справа Виль Белильников."));
+    expect(out).toContain("caption: А. Сеговия с учениками — В нижнем ряду второй справа Виль Белильников.");
+  });
+
+  it("does not read a line above the picture as its caption", async () => {
+    // `news` sets an obituary's subject in bold *above* the photograph, and the
+    // reference keeps it as prose. Sibling order is the evidence.
+    const out = await md(
+      PROSE +
+        '<p class="st" style="text-align: center; font-size: 9pt"><b>Юрий Алексеевич СМИРНОВ</b></p>' +
+        '<p align="center"><img src="f.jpg" width="400" height="250" alt="Юрий Смирнов"></p>' +
+        PROSE,
+    );
+    expect(out).toContain("Юрий Алексеевич СМИРНОВ");
+    expect(out).toContain("caption: Юрий Смирнов");
+  });
+
+  it("does not swallow a section label that is small but not centred", async () => {
+    // `ДИСКОГРАФИЯ` above its album list is set in small type like a caption and
+    // is not centred like one. Binding it to the cover above deleted a section.
+    const out = await md(
+      PROSE +
+        '<p align="center"><img src="f.jpg" width="400" height="250" alt="Обложка"></p>' +
+        '<p class="st" style="font-size: 9pt; text-align: left"><b>ДИСКОГРАФИЯ</b></p>' +
+        PROSE,
+    );
+    expect(out).toContain("ДИСКОГРАФИЯ");
+    expect(out).toContain("caption: Обложка");
   });
 });
 
