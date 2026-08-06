@@ -66,13 +66,16 @@ class InlineAlignMeasurer implements Measurer {
       // overwrite the attribute heuristics the rest of the pipeline still runs
       // on here, and a stand-in that changes unrelated decisions is not a
       // stand-in for measurement — it is a second, worse cascade.
-      const align = /text-align:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
-      const style = /font-style:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
-      if (align || style) {
+      const declared = el.attrs["style"] ?? "";
+      const align = /text-align:\s*([a-z-]+)/iu.exec(declared);
+      const style = /font-style:\s*([a-z-]+)/iu.exec(declared);
+      const border = borderOf(declared);
+      if (align || style || border) {
         el.style = {
           ...NEUTRAL_STYLE,
           ...(align ? { textAlign: (align[1] as string).toLowerCase() } : {}),
           ...(style ? { fontStyle: (style[1] as string).toLowerCase() } : {}),
+          ...(border ?? {}),
         };
       }
     }
@@ -83,6 +86,46 @@ class InlineAlignMeasurer implements Measurer {
   async close(): Promise<void> {
     /* nothing to release */
   }
+}
+
+/**
+ * The border half of the stand-in, resolved the way a browser would.
+ *
+ * Frames are measurement-driven exactly as alignment is: the fallback parser in
+ * `frames.ts` reads only a `border:` shorthand, so a test written against
+ * `border-style: solid` would silently exercise the degraded path and prove
+ * nothing about the rule. It resolves the shorthand and the longhands, and
+ * mirrors the one browser behaviour that matters here — an omitted border
+ * colour inherits from `color`, and an unrecognised width falls back to
+ * `medium` (3 px), which is what makes a unitless `border-width: 1` render.
+ */
+function borderOf(declared: string): Partial<ResolvedStyle> | null {
+  const color = /(?:^|;)\s*color\s*:\s*([^;]+)/iu.exec(declared)?.[1]?.trim();
+  const shorthand = /(?:^|;)\s*border\s*:\s*([^;]+)/iu.exec(declared)?.[1]?.trim();
+  const tokens = shorthand ? shorthand.split(/\s+/u) : [];
+  const width =
+    /(?:^|;)\s*border-width\s*:\s*([^;]+)/iu.exec(declared)?.[1]?.trim() ??
+    tokens.find((t) => /^[\d.]/u.test(t));
+  const lineStyle =
+    /(?:^|;)\s*border-style\s*:\s*([a-z]+)/iu.exec(declared)?.[1] ??
+    tokens.find((t) => /^(solid|dashed|dotted|double|groove|ridge|inset|outset|none|hidden)$/iu.test(t));
+  const borderColor =
+    /(?:^|;)\s*border-color\s*:\s*([^;]+)/iu.exec(declared)?.[1]?.trim() ??
+    tokens.find((t) => t.startsWith("#") || t.startsWith("rgb"));
+  if (lineStyle === undefined && width === undefined) return null;
+
+  const px = width !== undefined && /^[\d.]+px$/u.test(width) ? Number.parseFloat(width) : 3;
+  const resolved = lineStyle === undefined ? "none" : lineStyle.toLowerCase();
+  const effective = resolved === "none" || resolved === "hidden" ? 0 : px;
+  return {
+    borderStyle: resolved,
+    borderTopWidth: effective,
+    borderRightWidth: effective,
+    borderBottomWidth: effective,
+    borderLeftWidth: effective,
+    borderColor: borderColor ?? color ?? "rgb(0, 0, 0)",
+    ...(color ? { color } : {}),
+  };
 }
 
 const NEUTRAL_STYLE: ResolvedStyle = {
@@ -310,8 +353,8 @@ describe("frames", () => {
 
   it("keeps a black border the author wrote on black text", async () => {
     // The computed value cannot tell `border: 4px solid #000000` on a cell
-    // whose text is also black from a colourless `border-style: solid`, and the
-    // guard against the second was rejecting the first. Six of `news`'s nine
+    // whose text is also black from a colourless `border-style: solid`. A guard
+    // against the second was rejecting the first, and six of `news`'s nine
     // obituary notices are written this way; the reference frames all nine.
     const out = await mdMeasured(
       PROSE +
@@ -323,14 +366,27 @@ describe("frames", () => {
     expect(out).toContain("frame: black");
   });
 
-  it("still declines a border whose colour the author never named", async () => {
-    // The false friend the guard exists for: with no colour declared, the
-    // border computes to the text colour, and reading a palette out of that
-    // turned a festival announcement the reference set as a quotation into a
-    // black callout. Nothing is declared here, so nothing is chosen.
+  it("frames a border whose colour the author left to inherit", async () => {
+    // The palette is the only question a colour answers, and a border left to
+    // inherit black *is* black. `news_2007`'s festival announcement is written
+    // this way and the reference writes `frame: black` for it.
     const out = await mdMeasured(
       PROSE +
         '<table border="0" width="85%"><tr><td style="border-style: solid; border-width: 4px">' +
+        "<p>Десятый юбилейный Международный музыкальный фестиваль в городе Калуге.</p>" +
+        "</td></tr></table>" +
+        PROSE,
+    );
+    expect(out).toContain("frame: black");
+  });
+
+  it("leaves a hairline alone — that is a cell grid, not a notice", async () => {
+    // What actually separates a notice from table furniture is the width. A
+    // 1 px rule is how this era drew a table, and framing it would put a
+    // callout around every cell on the page.
+    const out = await mdMeasured(
+      PROSE +
+        '<table border="0" width="85%"><tr><td style="border: 1px solid #000000">' +
         "<p>Десятый юбилейный Международный музыкальный фестиваль в городе Калуге.</p>" +
         "</td></tr></table>" +
         PROSE,

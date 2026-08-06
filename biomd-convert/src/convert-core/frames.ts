@@ -105,18 +105,25 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   }
   if (!Number.isFinite(width) || width < 2) return null;
 
-  // An undeclared border colour computes to the element's text colour. That is
-  // the default, not a choice, and reading a palette out of it turns every
-  // `border-style: solid` hairline into a black callout — which is how a
-  // festival announcement the reference set as a quotation became a frame.
+  // There used to be a test here rejecting a border whose computed colour
+  // equalled the element's text colour, on the grounds that an *undeclared*
+  // border colour inherits from `color` and a default is not a choice.
   //
-  // But the test has to ask what the author *wrote*, not what the browser
-  // computed, because the two are indistinguishable once computed: `border: 4px
-  // solid #000000` on a cell whose text is also black computes exactly like a
-  // colourless `border-style: solid`. Six of `news`'s nine obituary notices are
-  // written the first way and were being read as the second — the reference
-  // frames all nine. A colour the source names is a choice whatever it equals.
-  if (style && color !== undefined && !declaresBorderColor(el) && sameColor(color, style.color)) return null;
+  // It conflated two questions. "Did the author draw a border?" is answered by
+  // the border itself — a declared style and a width of 2 px or more, which is
+  // what separates a notice from a table's cell grid. "Which palette?" is the
+  // only question the colour answers, and there the computed value is exactly
+  // right: a border the author left to inherit black *is* black.
+  //
+  // Asking them together got both wrong. Six of `news`'s nine obituary notices
+  // write `border: 4px solid #000000` on black text, which computes identically
+  // to a colourless `border-style: solid` — so a declared colour was read as a
+  // default and six frames were lost. And the one block the guard existed to
+  // protect, `news_2007`'s festival announcement, is framed by the reference:
+  // it declares `border-style: solid` and a background tint, and the reference
+  // writes `frame: black`. With the test removed, frame counts match the
+  // references exactly on all thirteen documents — 9 on `news`, 1 on
+  // `news_2007`, 0 everywhere else, none gained anywhere.
 
   const palette = paletteFor(color);
   if (!palette) return null;
@@ -130,26 +137,6 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   return { frame: palette, reason: `${width}px ${palette} border around a bounded notice` };
 }
 
-/**
- * Whether the source *names* a border colour, rather than leaving it to inherit.
- *
- * Reads the declaration, not the computed value — that is the whole point. Both
- * spellings this era used count: the `bordercolor` attribute, and a colour token
- * anywhere in a `border` / `border-color` shorthand. Nothing here is
- * corpus-specific: `NAMED` is the documented palette data file, and a `#` token
- * is CSS syntax.
- */
-function declaresBorderColor(el: LadomNode): boolean {
-  if ((el.attrs["bordercolor"] ?? "").trim() !== "") return true;
-  const inline = el.attrs["style"] ?? "";
-  const decls = inline.matchAll(/(?:^|;)\s*border(?:-top|-right|-bottom|-left)?(?:-color)?\s*:\s*([^;]+)/giu);
-  for (const decl of decls) {
-    const tokens = (decl[1] as string).trim().toLowerCase().split(/\s+/u);
-    if (tokens.some((token) => token.startsWith("#") || token.startsWith("rgb") || token in NAMED)) return true;
-  }
-  return false;
-}
-
 function hasDescendantTable(el: LadomNode): boolean {
   for (const child of el.children) {
     if (child.kind !== "element") continue;
@@ -159,10 +146,3 @@ function hasDescendantTable(el: LadomNode): boolean {
   return false;
 }
 
-/** Two CSS colours that denote the same paint, spelled either way. */
-function sameColor(a: string, b: string): boolean {
-  const pa = parseColor(a.trim().toLowerCase());
-  const pb = parseColor(b.trim().toLowerCase());
-  if (!pa || !pb) return a.trim().toLowerCase() === b.trim().toLowerCase();
-  return pa[0] === pb[0] && pa[1] === pb[1] && pa[2] === pb[2];
-}

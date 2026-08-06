@@ -2624,11 +2624,17 @@ function layoutFrom(
         const cell = grid.cells.find((x) => x.id === slot.originId);
         if (!cell) continue;
         ctx.boundedDepth += 1;
-        const inner = blocksFrom(cell.node, ctx);
+        // `framedCell`, not `blocksFrom`: a bordered notice is a notice in
+        // whichever path reaches it, and only the catalog path was asking. So
+        // `news_2007`'s festival announcement — the same 1998 idiom as `news`'s
+        // obituaries, but sitting in a layout grid rather than an entry list —
+        // came out as loose prose while the obituaries came out framed. It
+        // falls back to `blocksFrom` when there is no border evidence.
+        const inner = framedCell(cell.node, ctx);
         ctx.boundedDepth -= 1;
         // The cell is decided now, so the align-run pass may look at it (§13
-        // permits `align` inside `column`). During `blocksFrom` above it must
-        // not: the region detector reads the produced shape back.
+        // permits `align` inside `column`). During lowering above it must not:
+        // the region detector reads the produced shape back.
         const lowered = inner.filter((block) => block.type !== "biomdNav");
         folded.push(...inner.filter((block) => block.type === "biomdNav"));
         const cells = groupAlignedRunsCommitted(lowered.filter(isBounded), ctx, cell.node).filter(isBounded);

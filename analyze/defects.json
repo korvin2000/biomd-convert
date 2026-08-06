@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T10:25:59.470Z",
+  "generated": "2026-08-06T10:36:08.383Z",
   "totals": {
-    "findings": 331,
-    "converterDefects": 204,
+    "findings": 326,
+    "converterDefects": 200,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 51,
+    "referenceInconsistencies": 50,
     "ambiguous": 76,
     "bySeverity": {
-      "critical": 40,
-      "major": 133,
-      "minor": 158
+      "critical": 37,
+      "major": 132,
+      "minor": 157
     }
   },
   "perDocument": [
@@ -71,11 +71,11 @@
     },
     {
       "doc": "news_2007",
-      "findings": 23,
-      "converterDefects": 15,
-      "critical": 5,
-      "major": 6,
-      "minor": 12
+      "findings": 18,
+      "converterDefects": 11,
+      "critical": 2,
+      "major": 5,
+      "minor": 11
     },
     {
       "doc": "pavlov_azancheev",
@@ -122,7 +122,7 @@
     {
       "class": "paragraph.missing",
       "severity": "critical",
-      "instances": 11,
+      "instances": 10,
       "documents": [
         "borislova",
         "jovicic",
@@ -134,7 +134,7 @@
       "verdicts": {
         "converter-defect": 10,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
+        "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 300,
@@ -199,31 +199,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "news",
-        "path": "/frame[73]/align[1]",
-        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-        "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[73]/paragraph[2]"
-      }
-    },
-    {
       "class": "image.size.value",
       "severity": "minor",
       "instances": 21,
@@ -270,6 +245,30 @@
         "path": "/align[45]",
         "produced": "WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 5,
+      "documents": [
+        "news",
+        "pavlov_azancheev",
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 60,
+      "example": {
+        "doc": "news",
+        "path": "/frame[73]/align[1]",
+        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
+        "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[73]/paragraph[2]"
       }
     },
     {
@@ -435,28 +434,6 @@
         "path": "/align[43]/paragraph[1]/link[0]",
         "produced": "ДИСКОГРАФИЯ",
         "reference": "www.buap.mx/cultura"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "instances": 3,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 30,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[2]",
-        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
-        "reference": null
       }
     },
     {
@@ -851,6 +828,27 @@
         "path": "/align[59]/columns[0]/column[0]",
         "produced": "Андрес Сеговия",
         "reference": "◀ Андрес Сеговия — at /align[59]/paragraph[0]"
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[2]",
+        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
+        "reference": null
       }
     },
     {
@@ -1295,27 +1293,6 @@
         "path": "/columns[1]/column[0]/list[11]/item[2]",
         "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
         "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "news_2007",
-        "path": "/columns[9]/column[1]/frame[1]@position",
-        "produced": "position: center",
-        "reference": null
       }
     },
     {
@@ -4823,37 +4800,9 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[14]",
-      "producedLine": 140,
+      "producedLine": 145,
       "referenceLine": null,
       "produced": "• Архив новостей •",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "65499e32",
-      "doc": "news_2007",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/columns[9]/column[1]/frame[1]/paragraph[2]",
-      "producedLine": 89,
-      "referenceLine": null,
-      "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2e08fef1",
-      "doc": "news_2007",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/columns[9]/column[1]/frame[1]/paragraph[2]",
-      "producedLine": 92,
-      "referenceLine": null,
-      "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -4865,7 +4814,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[14]/paragraph[0]",
-      "producedLine": 143,
+      "producedLine": 148,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -4984,48 +4933,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "44bf6eb3",
-      "doc": "news_2007",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[9]/column[1]/frame[1]@position",
-      "producedLine": 86,
-      "referenceLine": 56,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "244e3583",
-      "doc": "news_2007",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[9]/column[1]/frame[1]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 57,
-      "produced": null,
-      "reference": "frame: black",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "467a08a1",
-      "doc": "news_2007",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[9]/column[1]/frame[1]/align[1]",
-      "producedLine": 96,
-      "referenceLine": 59,
-      "produced": "[ сайт фестиваля ]",
-      "reference": "Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — at /columns[9]/column[1]/frame[1]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "499328a3",
       "doc": "news_2007",
       "class": "emphasis.span",
@@ -5033,7 +4940,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[11]/column[0]/paragraph[0]",
-      "producedLine": 109,
+      "producedLine": 114,
       "referenceLine": 79,
       "produced": "(none)",
       "reference": "em:* · strong:*10 апреля 2007 г.",
@@ -5047,7 +4954,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 115,
+      "producedLine": 120,
       "referenceLine": 83,
       "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
       "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
@@ -5061,7 +4968,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[13]/column[0]/paragraph[0]",
-      "producedLine": 127,
+      "producedLine": 132,
       "referenceLine": 90,
       "produced": "(none)",
       "reference": "em:* · strong:*4 марта 2007 г.",
@@ -5075,7 +4982,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[13]/column[1]/paragraph[0]",
-      "producedLine": 133,
+      "producedLine": 138,
       "referenceLine": 94,
       "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
       "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
@@ -5089,7 +4996,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[14]@active",
-      "producedLine": 147,
+      "producedLine": 152,
       "referenceLine": 98,
       "produced": null,
       "reference": "active: 2007",
@@ -5103,7 +5010,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/nav[14]@position",
-      "producedLine": 147,
+      "producedLine": 152,
       "referenceLine": 98,
       "produced": "position: center",
       "reference": null,
@@ -5117,7 +5024,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[14]@title",
-      "producedLine": 147,
+      "producedLine": 152,
       "referenceLine": 98,
       "produced": null,
       "reference": "title: Архив новостей",
@@ -5131,7 +5038,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/nav[14]/list[0]",
-      "producedLine": 150,
+      "producedLine": 155,
       "referenceLine": 102,
       "produced": "[Последние ] [2008–2010 ] [ 2007 ] [2006 ] [2005 ] [2004 ] [2003 ] [2-е полугодие 2002 ] [1-е полугодие 2002 ] [2001 ]",
       "reference": "Последние 2008–2010 2007 2006 2005 2004 2003 2-е полугодие 2002 1-е полугодие 2002 2001 — at /nav[14]/paragraph[1]",
