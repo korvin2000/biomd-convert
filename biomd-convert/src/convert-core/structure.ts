@@ -436,35 +436,34 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
  * also supplies the run's own boundary evidence — the run ends where the
  * alignment changes, which is the author's own division.
  *
- * ## Why `right` and not `center` — measured, not chosen
+ * ## `right` first, then `center` — measured, not chosen
  *
- * The rule reads `center` and `right` identically. Admitting both was tried
- * first and **rejected by L2**: source-backed findings rose 596 → 602, because
- * `align.spurious` gained 11 while `align.missing` and
- * `retyped.paragraph-to-align` together lost only 8. Ten of the eleven spurious
- * were `center`. Restricted to `right`, the same pass measures 596 → **593**.
+ * The rule reads `center` and `right` identically, but they were admitted in two
+ * steps, because taking both at once was **rejected by L2**: converter defects
+ * rose 596 → 602, `align.spurious` gaining 11, ten of them centred. Restricted
+ * to `right` the same pass measured 596 → 593.
  *
- * The asymmetry is structural rather than numerical, which is why it is expected
- * to hold on the other ~987 pages. **Right is deliberate: nothing inherits it.**
- * In this corpus a right-set block is an attribution, a contact block or a
- * source citation — the author asked for it, on that block, on purpose. **Centre
- * is ambient:** it is inherited from centred containers, it is what a caption
- * under a figure gets for free, and it is how a layout lane is filled. The
- * computed value is equally trustworthy in both cases; what differs is how many
- * *other* constructs also produce it.
+ * The asymmetry was real but it was never about position. **Right is deliberate
+ * — nothing inherits it.** Centre is ambient: inherited from a centred
+ * container, free on a caption, and how a layout lane is filled. So on a page
+ * whose lanes had collapsed to flow, every lane cell looked like a centred
+ * block. `borislova` and `jovicic` were exactly that, and no guard at this seam
+ * could separate them — by the time this pass sees the cells, the region is
+ * already gone.
  *
- * **Falsifier.** A page whose centred blocks are neither captions, nor inherited
- * from a centred container, nor lane content — measurably distinctive, and wrong
- * to leave plain. `goya2` may already be one: it holds 7 `align.missing`, all
- * centred. If that shape recurs across the corpus, centre belongs here too and
- * the missing guard is a caption/lane exclusion, not a position restriction.
+ * Once inconclusive regions stopped falling through to flow and those two
+ * documents got their `::: columns` back, the ambiguity went with them: spurious
+ * aligns dropped 15 → 4 and `center` was admitted. L1 90.9 → 91.0 and L3 204 →
+ * 199 with `layout.align.mismatch` 52 → 48 — the *rendered* alignment moved
+ * closer, which is the question this family exists to answer.
  *
- * **Known blocker.** Two documents — `borislova` and `jovicic` — put centred
- * content in the reading flow that the references put in `::: column`. Their
- * `columns` region fails to lower, so its cells arrive as ordinary siblings with
- * genuine centring evidence. No guard at this seam can separate them, because by
- * the time the run pass sees them the region is already gone. That is the
- * columns family's defect, and centre cannot be reconsidered before it is fixed.
+ * **The general lesson.** A false friend that exists only because an earlier
+ * stage failed is not a false friend, it is a symptom. Guarding against it here
+ * would have cemented the upstream defect and hidden it from every instrument.
+ *
+ * **Residue, deliberately unguarded.** One link-only centred back-link on
+ * `segovia1`. "Link-only" cannot be the guard: `kiselev`'s right-set contact
+ * block is link-only too and the reference wraps it.
  */
 function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
   // A frame is already a bounded group; §6 says not to restate one.
@@ -481,7 +480,7 @@ function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
 
   const out: BiomdContent[] = [];
   let run: BiomdContent[] = [];
-  let runAlign: "right" | null = null;
+  let runAlign: "center" | "right" | null = null;
 
   const flush = (): void => {
     // No ledger entry: every member was already recorded as EMITTED by the
@@ -516,14 +515,13 @@ function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
  *
  * Every exclusion here is a false friend or a spec rule, never a tuning knob.
  */
-function alignableRunMember(block: BiomdContent, ctx: Ctx): "right" | null {
+function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" | null {
   const align = ctx.blockAlign.get(block);
   if (align === undefined || align === null) return null;
-  // `left`/`justify` are the reading flow and say nothing. `center` is held back
-  // deliberately — see the position asymmetry in `groupAlignedRuns`'s contract,
-  // which L2 decided and which the columns family has to clear before it can be
-  // revisited. The relational test below is what makes even `right` evidence.
-  if (align !== "right") return null;
+  // `left`/`justify` are the reading flow and say nothing; `center` and `right`
+  // say something only if the page does not already. The relational test on the
+  // next line is what turns either into evidence — not the keyword itself.
+  if (align !== "center" && align !== "right") return null;
   if (!isDistinctiveAlign(align, ctx.proseAlign)) return null;
 
   // §4.1: these may not sit inside a bounded container, and the bounded-content

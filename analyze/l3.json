@@ -18,18 +18,18 @@
     ]
   },
   "totals": {
-    "findings": 204,
+    "findings": 199,
     "alignmentRows": 151
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 52,
+      "instances": 48,
       "documents": 9
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 86,
+      "instances": 85,
       "documents": 10
     },
     {
@@ -1536,14 +1536,14 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 152,
+      "producedLine": 156,
       "referenceLine": 155,
       "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "geometry": {
-        "producedAlign": "left",
+        "producedAlign": "center",
         "referenceAlign": "right",
-        "producedRaw": "start",
+        "producedRaw": "center",
         "referenceRaw": "right",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
@@ -1559,14 +1559,14 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 155,
+      "producedLine": 159,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "geometry": {
-        "producedAlign": "left",
+        "producedAlign": "center",
         "referenceAlign": "right",
-        "producedRaw": "start",
+        "producedRaw": "center",
         "referenceRaw": "right",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
@@ -1582,7 +1582,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[13]/heading[0]",
-      "producedLine": 158,
+      "producedLine": 163,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -1605,7 +1605,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 191,
+      "producedLine": 196,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
@@ -1628,7 +1628,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 213,
+      "producedLine": 218,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
@@ -1651,7 +1651,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 219,
+      "producedLine": 224,
       "referenceLine": 237,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
       "reference": "E-mail: andy.waeyaert@advalvas.be",
@@ -1708,12 +1708,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 152,
+      "producedLine": 156,
       "referenceLine": 155,
       "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "geometry": {
-        "producedContainer": "(root)",
+        "producedContainer": "align",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -1725,12 +1725,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 155,
+      "producedLine": 159,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "geometry": {
-        "producedContainer": "(root)",
+        "producedContainer": "align",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -1742,7 +1742,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[13]/heading[0]",
-      "producedLine": 158,
+      "producedLine": 163,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -1759,7 +1759,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 191,
+      "producedLine": 196,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
@@ -1776,7 +1776,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 213,
+      "producedLine": 218,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
@@ -1793,7 +1793,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 219,
+      "producedLine": 224,
       "referenceLine": 237,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
       "reference": "E-mail: andy.waeyaert@advalvas.be",
@@ -2829,29 +2829,6 @@
       }
     },
     {
-      "id": "5aabe6e6",
-      "doc": "news_2007",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 85,
-      "referenceLine": 62,
-      "produced": "[ сайт фестиваля ]",
-      "reference": "[ сайт фестиваля ]",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "0ec70fd0",
       "doc": "news_2007",
       "class": "layout.containment.mismatch",
@@ -2910,12 +2887,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 85,
+      "producedLine": 89,
       "referenceLine": 62,
       "produced": "[ сайт фестиваля ]",
       "reference": "[ сайт фестиваля ]",
       "geometry": {
-        "producedContainer": "(root)",
+        "producedContainer": "align",
         "referenceContainer": "columns>column>frame>align"
       }
     },
@@ -3404,75 +3381,6 @@
       }
     },
     {
-      "id": "6d867aa5",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[57]/paragraph[2]",
-      "producedLine": 225,
-      "referenceLine": 232,
-      "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "cb317ce8",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[59]/columns[0]/column[0]/paragraph[0]",
-      "producedLine": 236,
-      "referenceLine": 242,
-      "produced": "Андрес Сеговия",
-      "reference": "◀ Андрес Сеговия",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "118f58e1",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[59]/columns[0]/column[1]/paragraph[0]",
-      "producedLine": 238,
-      "referenceLine": 245,
-      "produced": "Владимир Бобри",
-      "reference": "Владимир Бобри ▶",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "2bcb1c00",
       "doc": "segovia1",
       "class": "layout.containment.mismatch",
@@ -3524,23 +3432,6 @@
       }
     },
     {
-      "id": "d3272040",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[57]/paragraph[2]",
-      "producedLine": 225,
-      "referenceLine": 232,
-      "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
       "id": "c5b99ba7",
       "doc": "segovia1",
       "class": "layout.containment.mismatch",
@@ -3548,12 +3439,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[59]/columns[0]/column[0]/paragraph[0]",
-      "producedLine": 236,
+      "producedLine": 245,
       "referenceLine": 242,
       "produced": "Андрес Сеговия",
       "reference": "◀ Андрес Сеговия",
       "geometry": {
-        "producedContainer": "(root)",
+        "producedContainer": "align",
         "referenceContainer": "align>columns>column"
       }
     },
@@ -3565,12 +3456,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[59]/columns[0]/column[1]/paragraph[0]",
-      "producedLine": 238,
+      "producedLine": 252,
       "referenceLine": 245,
       "produced": "Владимир Бобри",
       "reference": "Владимир Бобри ▶",
       "geometry": {
-        "producedContainer": "(root)",
+        "producedContainer": "align",
         "referenceContainer": "align>columns>column"
       }
     },
@@ -3582,7 +3473,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[59]/columns[0]/column[1]/paragraph[0]",
-      "producedLine": 238,
+      "producedLine": 252,
       "referenceLine": 245,
       "produced": "Владимир Бобри",
       "reference": "Владимир Бобри ▶",
@@ -4465,10 +4356,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 152,
+      "producedLine": 156,
       "referenceLine": 155,
       "text": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -4478,10 +4369,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 155,
+      "producedLine": 159,
       "referenceLine": 158,
       "text": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -4491,7 +4382,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 158,
+      "producedLine": 163,
       "referenceLine": 170,
       "text": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "producedAlignment": "left",
@@ -4504,7 +4395,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 191,
+      "producedLine": 196,
       "referenceLine": 206,
       "text": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "producedAlignment": "left",
@@ -4517,7 +4408,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 213,
+      "producedLine": 218,
       "referenceLine": 231,
       "text": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 I…",
       "producedAlignment": "left",
@@ -4530,7 +4421,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 219,
+      "producedLine": 224,
       "referenceLine": 237,
       "text": "E-mail: andy.waeyaert@advalvas.be",
       "producedAlignment": "left",
@@ -4543,7 +4434,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 229,
+      "producedLine": 234,
       "referenceLine": 248,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
       "producedAlignment": "right",
@@ -5089,10 +4980,10 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 85,
+      "producedLine": 89,
       "referenceLine": 62,
       "text": "[ сайт фестиваля ]",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
@@ -5596,10 +5487,10 @@
     },
     {
       "doc": "segovia1",
-      "producedLine": 225,
+      "producedLine": 229,
       "referenceLine": 232,
       "text": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=…",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -5609,10 +5500,10 @@
     },
     {
       "doc": "segovia1",
-      "producedLine": 236,
+      "producedLine": 245,
       "referenceLine": 242,
       "text": "◀ Андрес Сеговия",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -5622,10 +5513,10 @@
     },
     {
       "doc": "segovia1",
-      "producedLine": 238,
+      "producedLine": 252,
       "referenceLine": 245,
       "text": "Владимир Бобри ▶",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
