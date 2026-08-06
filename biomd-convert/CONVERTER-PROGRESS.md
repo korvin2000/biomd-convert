@@ -1348,3 +1348,156 @@ the source soft-hyphenates across line breaks (`ак-тивно`, `испан-с
 the region and menu work has settled they should be re-read together.
 (d) `image.size.value` (21, 4 docs) is a threshold question in `media.ts`.
 (e) The 0.5–0.95 ambiguous corridor, still uncalibrated, at 72 findings.
+
+## 13. Frames, and a module that had nothing to do (2026-08-06)
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| §12 close | 349 | 93.2 | 220 | 99 |
+| a named colour is a choice | 351 | **93.3** | 204 | 92 |
+| a notice in whichever path | 352 | 93.3 | **200** | **89** |
+| de-hyphenation | 356 | 93.3 | **191** | 89 |
+
+### 13.1 `paragraph.missing` was mostly one absent frame
+
+Following the top class down: four of its fourteen instances were `frame:
+black` property lines reported as missing prose, which is what an absent frame
+looks like from L2. `news` carries nine bordered obituary notices and the
+reference frames all nine; the converter framed three.
+
+**The colour test asked two questions at once.** It rejected a border whose
+*computed* colour equalled the element's text colour, reasoning that an
+undeclared border colour inherits from `color` and a default is not a choice.
+But "did the author draw a border?" is answered by the border — a declared
+style and a width of 2 px or more, which is what separates a notice from a
+table's cell grid. "Which palette?" is the only question the colour answers,
+and there the computed value is exactly right: a border left to inherit black
+*is* black.
+
+Asked together it got both wrong. Six of the nine notices write `border: 4px
+solid #000000` on black text, which computes identically to a colourless
+`border-style: solid`, so a declared colour was read as a default. The three
+that survived did so only because `class="t2"` tints their text `#333328` — a
+stylesheet accident, not a fact about frames.
+
+**And the false friend had moved.** The one block the test existed to protect,
+`news_2007`'s festival announcement, is framed by the revised reference: it
+declares `border-style: solid` and a background tint, and the reference writes
+`frame: black` where it once wrote `>`. With the test removed, frame counts
+match the references **exactly on all thirteen documents** — 9 on `news`, 1 on
+`news_2007`, 0 elsewhere, none gained anywhere.
+
+**Only the catalog path asked about frames.** `layoutFrom` lowered its cells
+with `blocksFrom` and never offered them to the detector, so the same bordered
+idiom was a notice in an entry list and loose prose in a layout grid.
+`framedCell` falls back to `blocksFrom` when there is no border evidence, so
+routing through it is the whole fix.
+
+### 13.2 The de-hyphenation module had been running on nothing
+
+`dehyphenate.ts` — seven-rule cascade, lexicon, oracle interface, audited
+reversible operations — has been wired into the pipeline since it was written
+and had almost nothing to do. Its candidate pattern, and decisively the cheap
+pre-filter in `dehyphenateDocument` that gates it, required a **newline after
+the hyphen**.
+
+That is what a wrap leaves behind when the author lets the editor wrap. This
+corpus was typed the other way: the hyphen was inserted to break the word in
+*the author's* browser at *their* window width, and the text then kept flowing.
+`Укра-ина` and `Владимиро-вич` sit mid-line in the source with the newline
+somewhere else entirely. Widening the pattern alone changed nothing at all,
+because the pre-filter had already skipped the node — two hours of measurement
+that a single instrumented run would have found in ten minutes.
+
+Dropping the requirement sends every hyphenated word in the corpus through the
+cascade, genuine compounds included. Safe, because the cascade defaults to
+PRESERVE and asks about compounds first: rule 3 settles `Римский-Корсаков` and
+`Переяслав-Хмельницкий` before any frequency evidence is consulted.
+
+**Rule 5 needed a recurrence requirement.** It preserves when the hyphenated
+form is attested and the joined one is not — but the lexicon is built by
+scanning the same corpus, so a wrap artifact is indexed as a hyphenated word
+like any other and one attestation is the defect vouching for itself.
+`Борис-лавовна` and `монас-тырь` are attested once each and are both wraps;
+`из-за` is attested twice and is a word.
+
+### 13.3 The references are inconsistent about hyphenation, and the instrument could not see it
+
+Measured word by word across the 13 pairs:
+
+| direction | count | examples |
+|---|---|---|
+| reference joins, converter keeps | 11 | `маркетолог`, `Бориславовна`, `компьютерных` |
+| converter joins, reference keeps | 14 | `государственном`, `классической`, `фортепиано` |
+
+Every one of the 14 is a correct Russian word the reference failed to join. The
+references join some wraps and keep others; there is no rule behind which.
+
+**Source attestation cannot adjudicate this class.** The source contains the
+hyphen either way — that *is* the artifact being reported — so the hyphenated
+side is attested by construction and the joined side never is, whichever side
+did the joining. The undivided class therefore reported "the reference is
+right" 24 times out of 24, on evidence that says nothing.
+
+The class now names the direction, word by word rather than block by block
+(a paragraph long enough to carry one wrap usually carries several, and asking
+"does this block contain a hyphen" answered yes on both sides for 14 of 16):
+
+- `.unjoined` — the reference joined and this did not. **Work.**
+- `.joined` — this joined and the reference did not. Needs a dictionary the
+  project has not installed; every instance in the corpus is correct, and the
+  instrument cannot know that. **`ambiguous`** — which is what verdict 4 is for.
+- `.mixed` — both directions in one block, so at least one real under-join.
+  **Work.** Calling it ambiguous would let a defect hide behind a correct join
+  that happens to share a paragraph.
+
+Reported split, because the two halves are not the same claim: the **converter**
+change closed 8 findings (24 → 16); the **class refinement** moved 9 of the
+remaining 16 off the defect count, and those 9 are cases where this output is
+better than the reference.
+
+### 13.4 Killed hypotheses added
+
+- **A computed colour cannot testify to authorial intent.** `#000000` declared
+  and `#000000` inherited are the same value. Any rule that needs to know which
+  one the author wrote must read the declaration.
+- **A pre-filter is part of the rule.** Widening `dehyphenateText`'s pattern
+  while `dehyphenateDocument`'s gate stayed narrow produced a null result that
+  looked like the rule being wrong.
+- **A same-corpus lexicon cannot vouch for a single occurrence.** Whatever the
+  defect is, the scan indexed it too. Require recurrence or require an outside
+  dictionary.
+
+### 13.5 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 356 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 93.3 |
+| L2 | 321 findings — **191 converter-defect** · 80 ambiguous · 50 reference-inconsistency |
+| L3 | 89 findings, identity 0, deterministic |
+
+Per document, converter defects: `news` 46 · `goya2` 43 · `kiselev` 17 ·
+`borislova` 16 · `segovia` 14 · `tarrega` 12 · `pavlov_azancheev` 10 ·
+`news_2007` 9 · `authors` 7 · `segovia1` 7 · `jovicic` 6 · `williams2` 4 ·
+**`barrios` 0**.
+
+Top classes: `paragraph.missing` (10, 6 docs, critical) · `paragraph.containment`
+(9, 4) · `image.size.value` (21, 4) · `align.spurious.unattested` (5, 5) ·
+`retyped.paragraph-to-align` (5, 4) · `image.src.value` (19, 1) ·
+`retyped.align-to-paragraph` (6, 3).
+
+**Open, in order.** (a) `paragraph.missing`, still top at 10 over 6 documents
+and still content loss, but no longer one mechanism — the survivors are an
+attribution line merged into its quote (`borislova`), a label above a list
+(`kiselev`), a date in a column (`news_2007`) and two on `segovia`. Each wants
+its own look. (b) `image.size.value` (21) and `image.src.value` (19, all
+`goya2`) are the largest remaining blocks and both mechanical — `src` is one
+path-resolution rule, `size` a threshold in `media.ts`. (c) The alignment
+residue, `align.spurious` and the two `retyped.*-align` classes, 16 between
+them across 5 documents, now that the region, menu and frame work has settled.
+(d) `frame`'s `title:` property is unused: `news` puts `ПОЗДРАВЛЯЕМ` in it and
+the converter emits a heading inside the frame instead — one instance corpus-
+wide, so recorded rather than acted on. (e) The 0.5–0.95 ambiguous corridor,
+still uncalibrated, now at 80 findings and growing as classes are refined into
+it — the single largest piece of unexamined instrument behaviour left.
