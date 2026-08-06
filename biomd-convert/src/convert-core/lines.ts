@@ -174,3 +174,69 @@ export function groupIsLineated(lines: readonly RunLine[]): boolean {
   }
   return wraps < (texts.length - 1) / 2;
 }
+
+/**
+ * An enumerated list the author drew with `<br>`, grouped into its items.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Every item opens with an ordinal token followed by content on
+ * the same line, and the ordinals **ascend**. Ascent is what makes this evidence
+ * rather than a pattern match: any run of lines can start with a digit, but only
+ * a list counts upward. Nothing here reads a class, a tag, a length or a word.
+ *
+ * **Recurrence.** Three *items* minimum, and the ascent is itself a recurrence
+ * test — it must hold across every adjacent pair, so a single stray numeral
+ * cannot carry the group.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - **verse.** `borislova`'s poem is lineated the same way and has no
+ *     ordinals; the ordinal requirement is what separates them.
+ *   - **a year list.** `1989 Во поле` opens with a number too. Years are four
+ *     digits and carry no `.`/`)` separator, and a dated entry label belongs to
+ *     the heading family — so the ordinal is capped at three digits and the
+ *     separator is required.
+ *   - **a dotted date.** `01.02.2003` opens with `01.`; a digit may not follow
+ *     the separator.
+ *   - **prose containing numbers.** A paragraph whose fourth line happens to
+ *     read `1. …` is not a list: the run must *open* with an ordinal, so an
+ *     unnumbered leading line disqualifies the group outright.
+ *
+ * Lines without an ordinal attach to the item above them — the era's line
+ * fitting broke long titles across two lines, and `goya2` has several
+ * (`02. I just called to say I love you` / `(S Wonder)`).
+ *
+ * Returns the grouped items, so the caller builds from the same evidence the
+ * rule fired on, or null when the group is not a list.
+ */
+export function enumeratedItems(lines: readonly RunLine[]): RunLine[][] | null {
+  const items: RunLine[][] = [];
+  const ordinals: number[] = [];
+  for (const line of lines) {
+    const ordinal = leadingOrdinal(lineText(line));
+    if (ordinal === null) {
+      if (items.length === 0) return null;
+      (items[items.length - 1] as RunLine[]).push(line);
+      continue;
+    }
+    items.push([line]);
+    ordinals.push(ordinal);
+  }
+  if (items.length < 3) return null;
+  for (let i = 0; i + 1 < ordinals.length; i += 1) {
+    if ((ordinals[i + 1] as number) <= (ordinals[i] as number)) return null;
+  }
+  return items;
+}
+
+/** `NN.` / `NN)` at the head of a line, followed by content. Null when absent. */
+function leadingOrdinal(text: string): number | null {
+  const t = text.trim();
+  // Capped at three digits: a four-digit leader is a year, and a year line is a
+  // dated entry label, not a list item.
+  const match = /^(\d{1,3})\s*[.)]\s+(\S.*)$/su.exec(t);
+  if (!match) return null;
+  // `01.02.2003` — a date, not an ordinal followed by a title.
+  if (/^\d/u.test(match[2] as string)) return null;
+  return Number.parseInt(match[1] as string, 10);
+}

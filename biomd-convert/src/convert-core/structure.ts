@@ -45,6 +45,7 @@ import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
   type RunLine,
+  enumeratedItems,
   groupIsLineated,
   groupLines,
   isWrapBreak,
@@ -863,6 +864,15 @@ function blocksFromGroup(
     if (rest.length === 0) return out;
   }
 
+  // An enumerated run is a list the author had no <ul> for. As a paragraph of
+  // hard breaks it renders as one block and reads as one sentence; as a list
+  // each track, movement or volume is an item, which is what it is.
+  const enumerated = listFromEnumeratedLines(rest, ctx);
+  if (enumerated) {
+    out.push(enumerated);
+    return out;
+  }
+
   const paragraph = paragraphFromLines(rest);
   if (paragraph) {
     // Remember, rather than decide: whether this is a caption depends on what
@@ -1024,6 +1034,48 @@ function isWhollyStrong(nodes: readonly PhrasingContent[]): boolean {
   };
   visit(nodes, false);
   return strong > 0 && strong >= (strong + plain) * 0.9;
+}
+
+/**
+ * An enumerated line run → a bullet list whose items keep their own numbers.
+ *
+ * **Unordered on purpose.** An `ordered` list renumbers from its own counter, so
+ * `01.` would render as `1.` and a run starting at `26.` would restart at 1 —
+ * the source's numbering is content, and a renumbering list silently rewrites
+ * it. A bullet list keeps every character the author typed and adds only the
+ * marker, which is the layout claim §16.3 permits.
+ */
+function listFromEnumeratedLines(lines: readonly RunLine[], ctx: Ctx): List | null {
+  const grouped = enumeratedItems(lines);
+  if (grouped === null) return null;
+  void ctx;
+  return {
+    type: "list",
+    ordered: false,
+    spread: false,
+    children: grouped.map((item) => ({
+      type: "listItem",
+      spread: false,
+      children: [{ type: "paragraph", children: joinItemLines(item) }],
+    })),
+  };
+}
+
+/**
+ * One item's lines → phrasing.
+ *
+ * Continuation lines join with a space, not a hard break: they exist because a
+ * fixed-width layout could not fit the title, which is line *fitting* and not a
+ * line the author drew. `02. I just called to say I love you` / `(S Wonder)` is
+ * one title, and the reference writes it as one.
+ */
+function joinItemLines(item: readonly RunLine[]): PhrasingContent[] {
+  const children: PhrasingContent[] = [];
+  item.forEach((line, index) => {
+    if (index > 0) children.push({ type: "text", value: " " });
+    children.push(...line.content);
+  });
+  return trimEdgeBreaks(collapseAdjacentText(children));
 }
 
 /** Lines → one paragraph, with each interior break classified. */
