@@ -2071,6 +2071,7 @@ function layoutFrom(
     //
     // With `rows === 1` this is identical to the column-wise construction, so a
     // genuine two-lane page layout — article beside sidebar — is unaffected.
+    const lanes = laneColumnsOf(grid);
     for (let r = 0; r < grid.rows; r += 1) {
       const columns = [];
       for (let c = 0; c < grid.cols; c += 1) {
@@ -2083,7 +2084,15 @@ function layoutFrom(
         ctx.boundedDepth -= 1;
         const cells = inner.filter(isBounded);
         if (cells.length > 0) columns.push(makeColumn(cells));
+        // An established lane keeps its place even in a row that has nothing to
+        // put there. Five `goya2` albums have no cover art, and dropping the
+        // empty lane dropped the whole row out of the two-lane region — so five
+        // titles stopped lining up with the thirty that do, and every index
+        // after them shifted. The references emit the empty `::: column`.
+        else if (lanes.has(c)) columns.push(makeColumn([]));
       }
+      // A row of nothing but empty lanes is an empty row, not a region.
+      if (columns.every((col) => col.children.length === 0)) columns.length = 0;
       if (columns.length >= 2) {
         // The row boundary is the author's own division between catalog
         // entries, and `---` is its Markdown-native rendering. Without it the
@@ -2133,6 +2142,46 @@ function layoutFrom(
     failure: "flattened-to-flow",
   });
   return decomposeFrom(grid, ctx, el, /* alreadyLedgered */ true);
+}
+
+/**
+ * Which grid columns are real lanes, as opposed to spacer columns.
+ *
+ * **Invariant.** A lane carries content in a substantial share of the grid's
+ * content rows; a spacer carries content in almost none. Stated *relative to the
+ * busiest column* rather than as a fraction of the grid, so it holds for a
+ * two-lane catalog and a nine-column resource matrix alike and needs no tuning
+ * when a grid is mostly empty.
+ *
+ * **Why it is needed.** An occasionally-empty lane and a permanently-empty
+ * spacer look identical in any single row, and the two want opposite treatment:
+ * the lane must keep its place so the rows stay aligned, the spacer must never
+ * become a column at all. Occupancy across the whole grid is the only evidence
+ * that separates them, and the corpus separates cleanly on it —  measures
+ * [34, 30] and is a genuine two-lane catalog,  measures [36, 0] and is a
+ * one-lane archive with a spacer beside it.
+ *
+ * **False friend.** A sparse column that carries content once or twice — the
+ * four such columns in 's nine-column grid — which is a stray cell, not
+ * a lane, and would otherwise pull empty columns into every row.
+ */
+export function laneColumnsOf(grid: TableGrid): Set<number> {
+  const occupancy = new Array<number>(grid.cols).fill(0);
+  for (let r = 0; r < grid.rows; r += 1) {
+    for (let c = 0; c < grid.cols; c += 1) {
+      const slot = grid.slots[r]?.[c];
+      if (!slot?.isOrigin) continue;
+      const cell = grid.cells.find((x) => x.id === slot.originId);
+      if (cell && !cell.isEmpty) occupancy[c] = (occupancy[c] ?? 0) + 1;
+    }
+  }
+  const busiest = Math.max(0, ...occupancy);
+  const lanes = new Set<number>();
+  // Half the busiest column. The corpus margin is far wider than the cut —
+  //  sits at 30 of 34 and  at 0 of 36 — so the constant is
+  // separating populations, not trimming one.
+  for (let c = 0; c < grid.cols; c += 1) if ((occupancy[c] ?? 0) * 2 >= busiest && busiest > 0) lanes.add(c);
+  return lanes;
 }
 
 function isBounded(node: BiomdContent): node is BoundedContent {

@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T04:14:29.509Z",
+  "generated": "2026-08-06T04:26:09.891Z",
   "totals": {
-    "findings": 649,
-    "converterDefects": 360,
+    "findings": 587,
+    "converterDefects": 301,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 122,
-    "ambiguous": 167,
+    "referenceInconsistencies": 121,
+    "ambiguous": 165,
     "bySeverity": {
       "critical": 77,
-      "major": 244,
-      "minor": 328
+      "major": 189,
+      "minor": 321
     }
   },
   "perDocument": [
@@ -39,11 +39,11 @@
     },
     {
       "doc": "goya2",
-      "findings": 220,
-      "converterDefects": 127,
+      "findings": 153,
+      "converterDefects": 61,
       "critical": 7,
-      "major": 86,
-      "minor": 127
+      "major": 25,
+      "minor": 121
     },
     {
       "doc": "jovicic",
@@ -71,11 +71,11 @@
     },
     {
       "doc": "news_2007",
-      "findings": 28,
-      "converterDefects": 17,
+      "findings": 33,
+      "converterDefects": 24,
       "critical": 4,
-      "major": 5,
-      "minor": 19
+      "major": 11,
+      "minor": 18
     },
     {
       "doc": "pavlov_azancheev",
@@ -120,56 +120,56 @@
   ],
   "classes": [
     {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 19,
-      "documents": [
-        "goya2",
-        "kiselev",
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 19,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 399,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[24]/column[0]/align[0]",
-        "produced": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
-        "reference": "align center The Hi-Fi sound of Latin Guitar II / Francis Goya — at /columns[32]/column[0]/align[0]/paragraph[1]"
-      }
-    },
-    {
       "class": "paragraph.containment",
       "severity": "major",
-      "instances": 19,
+      "instances": 25,
       "documents": [
         "borislova",
         "goya2",
         "kiselev",
         "news",
+        "news_2007",
         "segovia1",
         "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 19,
+        "converter-defect": 25,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 342,
+      "rank": 525,
       "example": {
         "doc": "borislova",
         "path": "/align[43]/paragraph[0]",
         "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
         "reference": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл… — produced at /paragraph[43]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 14,
+      "documents": [
+        "goya2",
+        "kiselev",
+        "news",
+        "pavlov_azancheev",
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 14,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 252,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[52]/column[0]/align[0]",
+        "produced": "Francis Goya in Moscow",
+        "reference": "align center Francis Goya in Moscow — at /columns[52]/column[0]/paragraph[1]"
       }
     },
     {
@@ -186,12 +186,12 @@
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 6,
+        "converter-defect": 7,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 7,
+        "reference-inconsistency": 6,
         "ambiguous": 0
       },
-      "rank": 210,
+      "rank": 245,
       "example": {
         "doc": "barrios",
         "path": "/paragraph[4]",
@@ -226,7 +226,7 @@
     {
       "class": "paragraph.hyphenation",
       "severity": "minor",
-      "instances": 22,
+      "instances": 21,
       "documents": [
         "authors",
         "borislova",
@@ -238,12 +238,12 @@
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 17,
+        "converter-defect": 16,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 5
       },
-      "rank": 136,
+      "rank": 128,
       "example": {
         "doc": "authors",
         "path": "/paragraph[2]",
@@ -252,25 +252,28 @@
       }
     },
     {
-      "class": "image.src.value",
-      "severity": "major",
-      "instances": 19,
+      "class": "image.size.value",
+      "severity": "minor",
+      "instances": 23,
       "documents": [
+        "authors",
+        "barrios",
         "goya2",
-        "news"
+        "jovicic",
+        "segovia"
       ],
       "verdicts": {
-        "converter-defect": 19,
+        "converter-defect": 23,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 114,
+      "rank": 115,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[32]/column[1]/image[0]@src",
-        "produced": "src: photo/g/goya/goya_hifisound.jpg",
-        "reference": "src: photo/g/goya/goya_2000a.jpg"
+        "doc": "authors",
+        "path": "/image[1]@size",
+        "produced": "size: small",
+        "reference": "size: medium"
       }
     },
     {
@@ -289,42 +292,17 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 10,
+        "converter-defect": 11,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 57,
+        "reference-inconsistency": 56,
         "ambiguous": 0
       },
-      "rank": 90,
+      "rank": 99,
       "example": {
         "doc": "barrios",
         "path": "/columns[15]/column[0]/paragraph[1]",
         "produced": "em:Barrios",
         "reference": "em:Barrios:"
-      }
-    },
-    {
-      "class": "image.size.value",
-      "severity": "minor",
-      "instances": 18,
-      "documents": [
-        "authors",
-        "barrios",
-        "goya2",
-        "jovicic",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 18,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "authors",
-        "path": "/image[1]@size",
-        "produced": "size: small",
-        "reference": "size: medium"
       }
     },
     {
@@ -378,46 +356,26 @@
       }
     },
     {
-      "class": "list.containment",
-      "severity": "major",
-      "instances": 23,
+      "class": "break.spurious.unattested",
+      "severity": "minor",
+      "instances": 15,
       "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 23,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 69,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[14]/column[0]/list[0]",
-        "produced": "01. Song Song Blue 02. El Condor Pasa 03. September Morn' 04. Yo Te Amo (And I Love Her) 05. Blue Eyes 06. Setembro 07. Scarborough Fair 08. Bagdad Cafe",
-        "reference": "01. Song Song Blue 02. El Condor Pasa 03. September Morn' 04. Yo Te Amo (And I Love Her) 05. Blue Eyes 06. Setembro 07. Scarborough Fair 08. Bagdad Cafe — produced at /columns[24]/column[0]/list[1]"
-      }
-    },
-    {
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "goya2",
+        "barrios",
         "news",
-        "segovia1"
+        "news_2007",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 7,
+        "converter-defect": 15,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 63,
+      "rank": 60,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[38]/column[1]/image[1]",
-        "produced": "image photo/g/goya/goya_2000a.jpg center medium",
+        "doc": "barrios",
+        "path": "/break[16]",
+        "produced": "---",
         "reference": null
       }
     },
@@ -446,30 +404,6 @@
       }
     },
     {
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "instances": 14,
-      "documents": [
-        "barrios",
-        "news",
-        "news_2007",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 14,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 56,
-      "example": {
-        "doc": "barrios",
-        "path": "/break[16]",
-        "produced": "---",
-        "reference": null
-      }
-    },
-    {
       "class": "align.missing",
       "severity": "major",
       "instances": 6,
@@ -493,50 +427,24 @@
       }
     },
     {
-      "class": "break.missing",
-      "severity": "minor",
-      "instances": 10,
-      "documents": [
-        "authors",
-        "goya2",
-        "kiselev",
-        "pavlov_azancheev",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 10,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 50,
-      "example": {
-        "doc": "authors",
-        "path": "/break[4]",
-        "produced": null,
-        "reference": "---"
-      }
-    },
-    {
-      "class": "image.missing",
+      "class": "image.src.value",
       "severity": "major",
-      "instances": 8,
+      "instances": 17,
       "documents": [
-        "goya2",
         "news"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 17,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 48,
+      "rank": 51,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[24]/column[1]/image[0]",
-        "produced": null,
-        "reference": "image photo/g/goya/goya_hifisound.jpg center small The Hi-Fi sound of Latin Guitar II / Francis Goya"
+        "doc": "news",
+        "path": "/image[7]@src",
+        "produced": "src: main/magazines/IGvL_2020_2021.jpg",
+        "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
       }
     },
     {
@@ -586,47 +494,47 @@
       }
     },
     {
-      "class": "align.spurious.unattested",
+      "class": "image.spurious.unattested",
       "severity": "major",
-      "instances": 4,
+      "instances": 5,
       "documents": [
-        "borislova",
-        "goya2",
+        "news",
         "segovia1"
       ],
       "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 36,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "align center WMA",
-        "reference": null
-      }
-    },
-    {
-      "class": "align.containment",
-      "severity": "major",
-      "instances": 10,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 10,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 30,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[16]/column[0]/align[0]",
-        "produced": "align center Best of Francis Goya",
-        "reference": "align center Best of Francis Goya — produced at /columns[26]/column[0]/align[1]"
+        "doc": "news",
+        "path": "/image[0]",
+        "produced": "image pages/use/album.gif center small /#/menu",
+        "reference": null
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-frame",
+      "severity": "major",
+      "instances": 5,
+      "documents": [
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 30,
+      "example": {
+        "doc": "news",
+        "path": "/frame[65]",
+        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
+        "reference": "frame frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санче… — at /paragraph[66]"
       }
     },
     {
@@ -646,9 +554,38 @@
       "rank": 30,
       "example": {
         "doc": "goya2",
-        "path": "/columns[20]/column[0]/paragraph[1]",
+        "path": "/columns[10]/column[0]/paragraph[1]",
         "produced": "09. Promise Me",
         "reference": null
+      }
+    },
+    {
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 20,
+      "documents": [
+        "barrios",
+        "borislova",
+        "goya2",
+        "jovicic",
+        "kiselev",
+        "news",
+        "news_2007",
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 3,
+        "ambiguous": 14
+      },
+      "rank": 27,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[18]/column[0]/paragraph[2]",
+        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
+        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
       }
     },
     {
@@ -719,27 +656,6 @@
       }
     },
     {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 8,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 8,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[16]/column[1]/image[0]",
-        "produced": "image photo/g/goya/goya_hits1b.jpg center medium",
-        "reference": "image photo/g/goya/goya_hits1b.jpg center small Best of Francis Goya — produced at /columns[26]/column[1]/image[1]"
-      }
-    },
-    {
       "class": "break.moved",
       "severity": "major",
       "instances": 4,
@@ -762,32 +678,48 @@
       }
     },
     {
-      "class": "paragraph.content.edited",
+      "class": "break.missing",
       "severity": "minor",
-      "instances": 19,
+      "instances": 5,
       "documents": [
-        "barrios",
-        "borislova",
-        "goya2",
-        "jovicic",
+        "authors",
         "kiselev",
-        "news",
-        "news_2007",
-        "segovia",
-        "tarrega"
+        "pavlov_azancheev",
+        "segovia"
       ],
       "verdicts": {
-        "converter-defect": 2,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 3,
-        "ambiguous": 14
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 20,
+      "example": {
+        "doc": "authors",
+        "path": "/break[4]",
+        "produced": null,
+        "reference": "---"
+      }
+    },
+    {
+      "class": "image.containment",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
       },
       "rank": 18,
       "example": {
-        "doc": "kiselev",
-        "path": "/columns[18]/column[0]/paragraph[2]",
-        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "image photo/g/goya/goya_moscow3a.jpg center medium",
+        "reference": "image photo/g/goya/goya_moscow3a.jpg center small — produced at /image[51]"
       }
     },
     {
@@ -831,6 +763,28 @@
         "path": "/align[13]/heading[0]",
         "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
         "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
+      }
+    },
+    {
+      "class": "image.missing",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "goya2",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[75]/image[0]",
+        "produced": null,
+        "reference": "image photo/g/goya/goya_cleiderman.jpg center Together / Richard Clayderman & Francis Goya small"
       }
     },
     {
@@ -901,24 +855,25 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-frame",
+      "class": "align.spurious.unattested",
       "severity": "major",
-      "instances": 4,
+      "instances": 2,
       "documents": [
-        "news"
+        "borislova",
+        "segovia1"
       ],
       "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 12,
       "example": {
-        "doc": "news",
-        "path": "/frame[65]",
-        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-        "reference": "frame frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санче… — at /paragraph[66]"
+        "doc": "borislova",
+        "path": "/align[45]",
+        "produced": "align center WMA",
+        "reference": null
       }
     },
     {
@@ -988,88 +943,24 @@
       }
     },
     {
-      "class": "column.containment",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]/column[0]",
-        "produced": "align center 1.000.000 Platinum",
-        "reference": "column align center 1.000.000 Platinum — produced at /columns[14]/column[0]/align[1]"
-      }
-    },
-    {
-      "class": "column.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]/column[1]",
-        "produced": null,
-        "reference": "column image photo/g/goya/goya_1000000a.jpg center small 1.000.000 Platinum"
-      }
-    },
-    {
-      "class": "columns.containment",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]",
-        "produced": "image photo/g/goya/goya_1000000a.jpg center medium",
-        "reference": "columns column align center 1.000.000 Platinum column image photo/g/goya/goya_1000000a.jpg center small 1.000.000 Platinum — produced at /columns[14]/column[1]/image[1]"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
+      "class": "image.caption.missing",
       "severity": "minor",
-      "instances": 3,
+      "instances": 8,
       "documents": [
-        "news",
-        "news_2007"
+        "goya2"
       ],
       "verdicts": {
-        "converter-defect": 3,
+        "converter-defect": 8,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 6,
+      "rank": 8,
       "example": {
-        "doc": "news",
-        "path": "/frame[30]@position",
-        "produced": "position: center",
-        "reference": null
+        "doc": "goya2",
+        "path": "/columns[4]/column[1]/image[0]@caption",
+        "produced": null,
+        "reference": "caption: 1.000.000 Platinum"
       }
     },
     {
@@ -1137,7 +1028,7 @@
       }
     },
     {
-      "class": "retyped.list-to-columns",
+      "class": "list.item.missing",
       "severity": "major",
       "instances": 2,
       "documents": [
@@ -1152,9 +1043,30 @@
       "rank": 6,
       "example": {
         "doc": "goya2",
-        "path": "/columns[6]",
-        "produced": "26. Woman In Love 27. Ballade Pour Adeline 28. Unchained Melody 29. Once Upon A Time In The West 30. Concerto Pour Une Voix 31. Are You Lonesome Toniht 32. Hel…",
-        "reference": "columns column 01. Love Story 02. Concerto D`Aranjues 03. Elvira Madigan 04. Nostalgia 05. If I Only Had Time 06. Ballade Pour Adeline 07. Jeux Interdits 08. S… — at /columns[16]/column[1]/list[1]"
+        "path": "/columns[10]/column[0]/list[0]/item[8]",
+        "produced": null,
+        "reference": "09. Promise Me"
+      }
+    },
+    {
+      "class": "retyped.align-to-paragraph",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 6,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[8]/column[0]/align[0]/paragraph[0]",
+        "produced": "align center Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits vol. 1 — at /columns[8]/column[0]/align[0]"
       }
     },
     {
@@ -1278,7 +1190,7 @@
       "rank": 5,
       "example": {
         "doc": "news_2007",
-        "path": "/paragraph[7]",
+        "path": "/columns[6]/column[1]/paragraph[2]",
         "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
         "reference": null
       }
@@ -1326,27 +1238,6 @@
       }
     },
     {
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 4,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[32]/column[1]/image[0]@caption",
-        "produced": null,
-        "reference": "caption: Collection 2000 / Francis Goya"
-      }
-    },
-    {
       "class": "separator.spelling",
       "severity": "minor",
       "instances": 2,
@@ -1366,90 +1257,6 @@
         "path": "/frame[54]/align[1]/break[3]",
         "produced": "---",
         "reference": "***"
-      }
-    },
-    {
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]/column[0]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]@size",
-        "produced": "size: medium",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]@src",
-        "produced": "src: photo/g/goya/goya_1000000a.jpg",
-        "reference": null
       }
     },
     {
@@ -1492,27 +1299,6 @@
         "path": "/align[59]/columns[0]",
         "produced": null,
         "reference": "columns column ◀ Андрес Сеговия column Владимир Бобри ▶"
-      }
-    },
-    {
-      "class": "frame.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news_2007",
-        "path": "/columns[6]/column[1]/frame[1]",
-        "produced": "align center [ сайт фестиваля ]",
-        "reference": "frame frame: black align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — produced at /align[7]"
       }
     },
     {
@@ -1600,27 +1386,6 @@
       }
     },
     {
-      "class": "list.item.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[58]/column[0]/list[0]/item[0]",
-        "produced": null,
-        "reference": "01. Nothing's Gonna Change My Love"
-      }
-    },
-    {
       "class": "nav.containment",
       "severity": "major",
       "instances": 1,
@@ -1642,11 +1407,11 @@
       }
     },
     {
-      "class": "retyped.align-to-paragraph",
+      "class": "retyped.columns-to-paragraph",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "goya2"
+        "news_2007"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1656,10 +1421,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[32]/column[0]/align[0]/paragraph[0]",
-        "produced": "align center Collection 2000 / Francis Goya",
-        "reference": "Collection 2000 / Francis Goya — at /columns[38]/column[0]/align[1]"
+        "doc": "news_2007",
+        "path": "/columns[3]/column[1]/paragraph[0]",
+        "produced": "columns column 11 декабря 2007 г. column Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Кар…",
+        "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпера (1932-1991). — at /columns[2]"
       }
     },
     {
@@ -1787,6 +1552,27 @@
         "path": "/columns[1]/column[0]/list[12]/item[2]",
         "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
         "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…"
+      }
+    },
+    {
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 2,
+      "example": {
+        "doc": "news",
+        "path": "/frame[30]@position",
+        "produced": "position: center",
+        "reference": null
       }
     },
     {
@@ -2066,7 +1852,7 @@
     {
       "class": "hardbreak.spurious",
       "severity": "minor",
-      "instances": 28,
+      "instances": 29,
       "documents": [
         "borislova",
         "goya2",
@@ -2076,7 +1862,7 @@
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 20,
+        "reference-inconsistency": 21,
         "ambiguous": 8
       },
       "rank": 0,
@@ -2151,27 +1937,6 @@
         "doc": "barrios",
         "path": "/table[18]/row[10]",
         "produced": "Ноты [ 1 ] [ 2 ] | ZIP | —",
-        "reference": null
-      }
-    },
-    {
-      "class": "list.spurious.unattested",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 2
-      },
-      "rank": 0,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[16]/column[0]/list[1]",
-        "produced": "01. Love Story 02. Concerto D`Aranjues 03. Elvira Madigan 04. Nostalgia 05. If I Only Had Time 06. Ballade Pour Adeline 07. Jeux Interdits 08. Sleepy Shores 09…",
         "reference": null
       }
     },
@@ -3963,69 +3728,27 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "0c4ceb1a",
+      "id": "4e5b2a61",
       "doc": "goya2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[18]/column[0]/align[1]",
-      "producedLine": 145,
-      "referenceLine": null,
-      "produced": "align center Vol. 1",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f20592b2",
-      "doc": "goya2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[22]/column[0]/align[1]",
-      "producedLine": 212,
-      "referenceLine": null,
-      "produced": "align center Vol. 2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bd2fe895",
-      "doc": "goya2",
-      "class": "list.spurious.unattested",
-      "severity": "major",
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/columns[16]/column[0]/list[1]",
-      "producedLine": 74,
+      "path": "/columns[8]/column[0]/align[0]/paragraph[1]",
+      "producedLine": 148,
       "referenceLine": null,
-      "produced": "01. Love Story 02. Concerto D`Aranjues 03. Elvira Madigan 04. Nostalgia 05. If I Only Had Time 06. Ballade Pour Adeline 07. Jeux Interdits 08. Sleepy Shores 09…",
+      "produced": "Vol. 1",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "2f4ab078",
-      "doc": "goya2",
-      "class": "list.spurious.unattested",
-      "severity": "major",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/columns[20]/column[0]/list[1]",
-      "producedLine": 171,
-      "referenceLine": null,
-      "produced": "01. (Everything I Do) I Do It For You 02. Melodia 03. Sacrifice 04. Be 05. Cry For Help 06. Send Me An Angel 07. Natacha 08. Sound Of Silence",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "fda36838",
+      "id": "481dd861",
       "doc": "goya2",
       "class": "paragraph.spurious.in-list",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/columns[20]/column[0]/paragraph[1]",
+      "path": "/columns[10]/column[0]/paragraph[1]",
       "producedLine": 180,
       "referenceLine": null,
       "produced": "09. Promise Me",
@@ -4033,70 +3756,56 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e395dcd0",
+      "id": "3a6ec9d5",
       "doc": "goya2",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[29]",
-      "producedLine": 334,
+      "path": "/columns[12]/column[0]/align[0]/paragraph[1]",
+      "producedLine": 215,
+      "referenceLine": null,
+      "produced": "Vol. 2",
+      "reference": null,
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "a00155db",
+      "doc": "goya2",
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "insert",
+      "path": "/columns[20]/column[0]/paragraph[1]",
+      "producedLine": 340,
       "referenceLine": null,
       "produced": "1988",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "7c5ee8f5",
-      "doc": "goya2",
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[38]/column[1]/image[1]",
-      "producedLine": 487,
-      "referenceLine": null,
-      "produced": "image photo/g/goya/goya_2000a.jpg center medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c2bb89f5",
+      "id": "43f71a3b",
       "doc": "goya2",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/columns[46]/column[0]/paragraph[1]",
-      "producedLine": 622,
+      "path": "/columns[40]/column[0]/paragraph[1]",
+      "producedLine": 648,
       "referenceLine": null,
       "produced": "1999",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "3096e3f4",
-      "doc": "goya2",
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[54]/column[1]/image[1]",
-      "producedLine": 771,
-      "referenceLine": null,
-      "produced": "image photo/g/goya/goya_inmoscow1.jpg center medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1f023231",
+      "id": "aae68f5b",
       "doc": "goya2",
       "class": "paragraph.spurious.in-list",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/columns[60]/column[0]/paragraph[1]",
-      "producedLine": 843,
+      "path": "/columns[58]/column[0]/paragraph[0]",
+      "producedLine": 895,
       "referenceLine": null,
       "produced": "01. Nothing's Gonna Change My Love",
       "reference": null,
@@ -4110,37 +3819,9 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[71]",
-      "producedLine": 1063,
+      "producedLine": 1128,
       "referenceLine": null,
       "produced": "1990",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "4ae388f0",
-      "doc": "goya2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/columns[18]/column[0]/align[1]/paragraph[0]",
-      "producedLine": 148,
-      "referenceLine": null,
-      "produced": "Vol. 1",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "a1403a6c",
-      "doc": "goya2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/columns[22]/column[0]/align[1]/paragraph[0]",
-      "producedLine": 215,
-      "referenceLine": null,
-      "produced": "Vol. 2",
       "reference": null,
       "verdict": "ambiguous"
     },
@@ -4201,535 +3882,129 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "f4b1cc5a",
+      "id": "4898e2dd",
       "doc": "goya2",
-      "class": "columns.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]",
-      "producedLine": 59,
-      "referenceLine": 42,
-      "produced": "image photo/g/goya/goya_1000000a.jpg center medium",
-      "reference": "columns column align center 1.000.000 Platinum column image photo/g/goya/goya_1000000a.jpg center small 1.000.000 Platinum — produced at /columns[14]/column[1]/image[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8fe2ebd0",
-      "doc": "goya2",
-      "class": "columns.position.spurious",
+      "class": "image.caption.missing",
       "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[4]@position",
-      "producedLine": 59,
-      "referenceLine": 42,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "86ff7478",
-      "doc": "goya2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[4]@size",
-      "producedLine": 59,
-      "referenceLine": 42,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7307df96",
-      "doc": "goya2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[4]@src",
-      "producedLine": 59,
-      "referenceLine": 42,
-      "produced": "src: photo/g/goya/goya_1000000a.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "209a36b3",
-      "doc": "goya2",
-      "class": "column.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]/column[0]",
-      "producedLine": 48,
-      "referenceLine": 43,
-      "produced": "align center 1.000.000 Platinum",
-      "reference": "column align center 1.000.000 Platinum — produced at /columns[14]/column[0]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "037ec1ac",
-      "doc": "goya2",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[4]/column[0]@position",
-      "producedLine": 48,
-      "referenceLine": 43,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "079f9d14",
-      "doc": "goya2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[4]/column[0]/align[0]",
-      "producedLine": 51,
-      "referenceLine": 45,
-      "produced": "1.000.000 Platinum",
-      "reference": "align center 1.000.000 Platinum — at /columns[4]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e692a703",
-      "doc": "goya2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "delete",
-      "path": "/columns[4]/column[1]",
-      "producedLine": null,
-      "referenceLine": 51,
-      "produced": null,
-      "reference": "column image photo/g/goya/goya_1000000a.jpg center small 1.000.000 Platinum",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bef8d1e8",
-      "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[4]/column[1]/image[0]",
-      "producedLine": null,
+      "path": "/columns[4]/column[1]/image[0]@caption",
+      "producedLine": 59,
       "referenceLine": 53,
       "produced": null,
-      "reference": "image photo/g/goya/goya_1000000a.jpg center small 1.000.000 Platinum",
+      "reference": "caption: 1.000.000 Platinum",
       "verdict": "converter-defect"
     },
     {
-      "id": "622cf39a",
+      "id": "9135a583",
       "doc": "goya2",
-      "class": "break.missing",
+      "class": "image.size.value",
       "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[5]",
-      "producedLine": null,
-      "referenceLine": 62,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b32ef3ea",
-      "doc": "goya2",
-      "class": "retyped.list-to-columns",
-      "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[6]",
-      "producedLine": 104,
-      "referenceLine": 63,
-      "produced": "26. Woman In Love 27. Ballade Pour Adeline 28. Unchained Melody 29. Once Upon A Time In The West 30. Concerto Pour Une Voix 31. Are You Lonesome Toniht 32. Hel…",
-      "reference": "columns column 01. Love Story 02. Concerto D`Aranjues 03. Elvira Madigan 04. Nostalgia 05. If I Only Had Time 06. Ballade Pour Adeline 07. Jeux Interdits 08. S… — at /columns[16]/column[1]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "40264ef4",
-      "doc": "goya2",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[7]",
-      "producedLine": null,
-      "referenceLine": 117,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e6771cb9",
-      "doc": "goya2",
-      "class": "columns.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]",
-      "producedLine": 156,
-      "referenceLine": 118,
-      "produced": "image photo/g/goya/goya_hits1a.jpg center medium",
-      "reference": "columns column align center Francis Goya Plays His Favourite Hits vol. 1 column image photo/g/goya/goya_hits1a.jpg center small Francis Goya Plays His Favourit… — produced at /columns[18]/column[1]/image[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a84f2a94",
-      "doc": "goya2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@position",
-      "producedLine": 156,
-      "referenceLine": 118,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d2987d54",
-      "doc": "goya2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@size",
-      "producedLine": 156,
-      "referenceLine": 118,
+      "path": "/columns[4]/column[1]/image[0]@size",
+      "producedLine": 59,
+      "referenceLine": 53,
       "produced": "size: medium",
-      "reference": null,
+      "reference": "size: small",
       "verdict": "converter-defect"
     },
     {
-      "id": "fa3f2c34",
+      "id": "444b1f42",
       "doc": "goya2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@src",
-      "producedLine": 156,
-      "referenceLine": 118,
-      "produced": "src: photo/g/goya/goya_hits1a.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "062bfe9e",
-      "doc": "goya2",
-      "class": "column.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]/column[0]",
-      "producedLine": 138,
-      "referenceLine": 119,
-      "produced": "align center Francis Goya Plays His Favourite Hits",
-      "reference": "column align center Francis Goya Plays His Favourite Hits vol. 1 — produced at /columns[18]/column[0]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c1109ca0",
-      "doc": "goya2",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]/column[0]@position",
-      "producedLine": 138,
-      "referenceLine": 119,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "08fd2689",
-      "doc": "goya2",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[8]/column[0]/align[0]",
-      "producedLine": 141,
-      "referenceLine": 121,
-      "produced": "Francis Goya Plays His Favourite Hits",
-      "reference": "align center Francis Goya Plays His Favourite Hits vol. 1 — at /columns[8]/column[0]/paragraph[1]",
+      "path": "/columns[8]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 138,
+      "referenceLine": 123,
+      "produced": "align center Francis Goya Plays His Favourite Hits",
+      "reference": "Francis Goya Plays His Favourite Hits vol. 1 — at /columns[8]/column[0]/align[0]",
       "verdict": "converter-defect"
     },
     {
-      "id": "7dc63f58",
+      "id": "b65a4200",
       "doc": "goya2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "image.caption.missing",
+      "severity": "minor",
+      "evidence": "content",
       "op": "delete",
-      "path": "/columns[8]/column[1]",
-      "producedLine": null,
-      "referenceLine": 127,
-      "produced": null,
-      "reference": "column image photo/g/goya/goya_hits1a.jpg center small Francis Goya Plays His Favourite Hits vol. 1",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8ca27b87",
-      "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[8]/column[1]/image[0]",
-      "producedLine": null,
+      "path": "/columns[8]/column[1]/image[0]@caption",
+      "producedLine": 156,
       "referenceLine": 129,
       "produced": null,
-      "reference": "image photo/g/goya/goya_hits1a.jpg center small Francis Goya Plays His Favourite Hits vol. 1",
+      "reference": "caption: Francis Goya Plays His Favourite Hits vol. 1",
       "verdict": "converter-defect"
     },
     {
-      "id": "d5c5051e",
+      "id": "e19a8067",
       "doc": "goya2",
-      "class": "break.missing",
+      "class": "image.size.value",
       "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[9]",
-      "producedLine": null,
-      "referenceLine": 138,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f27b6d44",
-      "doc": "goya2",
-      "class": "retyped.list-to-columns",
-      "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[10]",
-      "producedLine": 186,
-      "referenceLine": 139,
-      "produced": "10. Hello Again 11. Secret Love 12. When You Tell Me That You Love Me 13. Winds Of Time 14. Bridge Over Troubled Water 15. Sorry Seems To Be The Hardest 16. Lo…",
-      "reference": "columns column 01. (Everything I Do) I Do It For You 02. Melodia 03. Sacrifice 04. Be 05. Cry For Help 06. Send Me An Angel 07. Natacha 08. Sound Of Silence 09… — at /columns[20]/column[1]/list[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "463d46a3",
-      "doc": "goya2",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[11]",
-      "producedLine": null,
-      "referenceLine": 163,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "12a6ba66",
-      "doc": "goya2",
-      "class": "columns.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]",
-      "producedLine": 223,
-      "referenceLine": 164,
-      "produced": "image photo/g/goya/goya_hits2a.jpg center medium",
-      "reference": "columns column align center Francis Goya Plays His Favourite Hits vol. 2 column image photo/g/goya/goya_hits2a.jpg center small Francis Goya Plays His Favourit… — produced at /columns[22]/column[1]/image[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8d0910d5",
-      "doc": "goya2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]@position",
-      "producedLine": 223,
-      "referenceLine": 164,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ad036881",
-      "doc": "goya2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]@size",
-      "producedLine": 223,
-      "referenceLine": 164,
+      "path": "/columns[8]/column[1]/image[0]@size",
+      "producedLine": 156,
+      "referenceLine": 129,
       "produced": "size: medium",
-      "reference": null,
+      "reference": "size: small",
       "verdict": "converter-defect"
     },
     {
-      "id": "d4cb812c",
+      "id": "ef148075",
       "doc": "goya2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]@src",
-      "producedLine": 223,
-      "referenceLine": 164,
-      "produced": "src: photo/g/goya/goya_hits2a.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "09e12364",
-      "doc": "goya2",
-      "class": "column.containment",
+      "class": "list.item.missing",
       "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[0]",
-      "producedLine": 205,
-      "referenceLine": 165,
-      "produced": "align center Francis Goya Plays His Favourite Hits",
-      "reference": "column align center Francis Goya Plays His Favourite Hits vol. 2 — produced at /columns[22]/column[0]/align[1]",
+      "evidence": "content",
+      "op": "delete",
+      "path": "/columns[10]/column[0]/list[0]/item[8]",
+      "producedLine": null,
+      "referenceLine": 150,
+      "produced": null,
+      "reference": "09. Promise Me",
       "verdict": "converter-defect"
     },
     {
-      "id": "93a8afdf",
+      "id": "b8a176e6",
       "doc": "goya2",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[0]@position",
-      "producedLine": 205,
-      "referenceLine": 165,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19a08b75",
-      "doc": "goya2",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[12]/column[0]/align[0]",
-      "producedLine": 208,
-      "referenceLine": 167,
-      "produced": "Francis Goya Plays His Favourite Hits",
-      "reference": "align center Francis Goya Plays His Favourite Hits vol. 2 — at /columns[12]/column[0]/paragraph[1]",
+      "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 205,
+      "referenceLine": 169,
+      "produced": "align center Francis Goya Plays His Favourite Hits",
+      "reference": "Francis Goya Plays His Favourite Hits vol. 2 — at /columns[12]/column[0]/align[0]",
       "verdict": "converter-defect"
     },
     {
-      "id": "1fe59e6f",
+      "id": "b5668890",
       "doc": "goya2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "image.caption.missing",
+      "severity": "minor",
+      "evidence": "content",
       "op": "delete",
-      "path": "/columns[12]/column[1]",
-      "producedLine": null,
-      "referenceLine": 173,
-      "produced": null,
-      "reference": "column image photo/g/goya/goya_hits2a.jpg center small Francis Goya Plays His Favourite Hits vol. 2",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "24b7c8da",
-      "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[12]/column[1]/image[0]",
-      "producedLine": null,
+      "path": "/columns[12]/column[1]/image[0]@caption",
+      "producedLine": 223,
       "referenceLine": 175,
       "produced": null,
-      "reference": "image photo/g/goya/goya_hits2a.jpg center small Francis Goya Plays His Favourite Hits vol. 2",
+      "reference": "caption: Francis Goya Plays His Favourite Hits vol. 2",
       "verdict": "converter-defect"
     },
     {
-      "id": "22cb1105",
+      "id": "ba35f9e4",
       "doc": "goya2",
-      "class": "break.missing",
+      "class": "image.size.value",
       "severity": "minor",
       "evidence": "structure",
-      "op": "delete",
-      "path": "/break[13]",
-      "producedLine": null,
-      "referenceLine": 184,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2cc2eadb",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/list[0]",
-      "producedLine": 238,
-      "referenceLine": 188,
-      "produced": "01. Song Song Blue 02. El Condor Pasa 03. September Morn' 04. Yo Te Amo (And I Love Her) 05. Blue Eyes 06. Setembro 07. Scarborough Fair 08. Bagdad Cafe",
-      "reference": "01. Song Song Blue 02. El Condor Pasa 03. September Morn' 04. Yo Te Amo (And I Love Her) 05. Blue Eyes 06. Setembro 07. Scarborough Fair 08. Bagdad Cafe — produced at /columns[24]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2d6f8e25",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/list[0]",
-      "producedLine": 251,
-      "referenceLine": 198,
-      "produced": "09. If You Don't Know Me By Now 10. One Sunday Morning 11. All The Man That You Need 12. Moonlight Rhapsody 13. Rush Rush 14. Twinklin' Twilight 15. How Am I S…",
-      "reference": "09. If You Don't Know Me By Now 10. One Sunday Morning 11. All The Man That You Need 12. Moonlight Rhapsody 13. Rush Rush 14. Twinklin' Twilight 15. How Am I S… — produced at /columns[24]/column[1]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f5f5ceff",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[16]/column[0]/align[0]",
-      "producedLine": 271,
-      "referenceLine": 213,
-      "produced": "align center Best of Francis Goya",
-      "reference": "align center Best of Francis Goya — produced at /columns[26]/column[0]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fb8308f4",
-      "doc": "goya2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[16]/column[1]/image[0]",
-      "producedLine": 282,
-      "referenceLine": 221,
-      "produced": "image photo/g/goya/goya_hits1b.jpg center medium",
-      "reference": "image photo/g/goya/goya_hits1b.jpg center small Best of Francis Goya — produced at /columns[26]/column[1]/image[1]",
+      "op": "substitute",
+      "path": "/columns[12]/column[1]/image[0]@size",
+      "producedLine": 223,
+      "referenceLine": 175,
+      "produced": "size: medium",
+      "reference": "size: small",
       "verdict": "converter-defect"
     },
     {
@@ -4761,62 +4036,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "05185508",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[0]/list[0]",
-      "producedLine": 297,
-      "referenceLine": 234,
-      "produced": "01. (Everything I Do) I Do It For You 02. Sacrifice 03. Cry For Help 04. Natacha 05. Sound Of Silence 06. Promise Me 07. When You Tell Me That You Love Me 08. …",
-      "reference": "01. (Everything I Do) I Do It For You 02. Sacrifice 03. Cry For Help 04. Natacha 05. Sound Of Silence 06. Promise Me 07. When You Tell Me That You Love Me 08. … — produced at /columns[28]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7016c370",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[1]/list[0]",
-      "producedLine": 311,
-      "referenceLine": 245,
-      "produced": "10. Song Sung Blue 11. El Condor Pasa 12. Yo Te Amo (And I Love Her) 13. Blue Eyes 14. Scarborough Fair 15. All The Man That You Need 16. How Am I Suppose To L…",
-      "reference": "10. Song Sung Blue 11. El Condor Pasa 12. Yo Te Amo (And I Love Her) 13. Blue Eyes 14. Scarborough Fair 15. All The Man That You Need 16. How Am I Suppose To L… — produced at /columns[28]/column[1]/list[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f96aabcf",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[20]/column[0]/align[0]",
-      "producedLine": 328,
-      "referenceLine": 263,
-      "produced": "align center This Is Francis Goya",
-      "reference": "align center This Is Francis Goya — produced at /align[29]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ce85670e",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[22]/column[0]/list[0]",
-      "producedLine": 342,
-      "referenceLine": 276,
-      "produced": "01. Woman in love (B\\&R Gibb) 02. I just called to say I love you (S Wonder) 03. Maggy M (F Weyner/ P Marchese) 04. Hello (L. Richie) 05. Nostalgia (F.Weyer /R…",
-      "reference": "01. Woman in love (B&R Gibb) 02. I just called to say I love you (S Wonder) 03. Maggy M (F Weyner/ P Marchese) 04. Hello (L. Richie) 05. Nostalgia (F.Weyer /Ro… — produced at /columns[30]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "9437286d",
       "doc": "goya2",
       "class": "list.item.content.edited",
@@ -4824,7 +4043,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[22]/column[0]/list[0]/item[0]",
-      "producedLine": 342,
+      "producedLine": 355,
       "referenceLine": 276,
       "produced": "01\\. Woman in love (B\\&R Gibb)",
       "reference": "01. Woman in love (B&R Gibb)",
@@ -4838,136 +4057,66 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[22]/column[0]/list[0]/item[6]",
-      "producedLine": 348,
+      "producedLine": 361,
       "referenceLine": 282,
       "produced": "07\\. A view to kill (S Lebon / J Barry / N Rhodes/ JR\\&A Taylor)",
       "reference": "07. A view to kill (S Lebon / J Barry / N Rhodes/ JR&A Taylor)",
       "verdict": "ambiguous"
     },
     {
-      "id": "47da09fa",
+      "id": "38148aa2",
       "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
+      "class": "hardbreak.spurious",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "move",
-      "path": "/columns[22]/column[1]/list[0]",
-      "producedLine": 356,
-      "referenceLine": 287,
-      "produced": "10. One day I'll fly away (J. Sample/ W Jennings) 11. L'Amour in Heritage (V Cosma) 12. One night in Taormina ( Weyer / Marchese) 13. Careless whisper (G.Micha…",
-      "reference": "10. One day I'll fly away (J. Sample/ W Jennings) 11. L'Amour in Heritage (V Cosma) 12. One night in Taormina ( Weyer / Marchese) 13. Careless whisper (G.Micha… — produced at /columns[30]/column[1]/list[1]",
-      "verdict": "converter-defect"
+      "op": "insert",
+      "path": "/columns[24]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 393,
+      "referenceLine": 305,
+      "produced": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
+      "reference": "The Hi-Fi sound of Latin Guitar II / Francis Goya — 1 hard breaks, reference has 0",
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "71b9b466",
+      "id": "5895688d",
       "doc": "goya2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
+      "class": "emphasis.span",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[24]/column[0]/align[0]",
-      "producedLine": 380,
-      "referenceLine": 303,
-      "produced": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
-      "reference": "align center The Hi-Fi sound of Latin Guitar II / Francis Goya — at /columns[32]/column[0]/align[0]/paragraph[1]",
+      "path": "/columns[24]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 393,
+      "referenceLine": 305,
+      "produced": "strong:Latin Guitar II / Francis Goya · strong:The Hi-Fi sound of",
+      "reference": "strong:The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "verdict": "converter-defect"
     },
     {
-      "id": "44fa72ef",
+      "id": "2f5e09f5",
       "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "image.caption.missing",
+      "severity": "minor",
+      "evidence": "content",
       "op": "delete",
-      "path": "/columns[24]/column[1]/image[0]",
-      "producedLine": null,
+      "path": "/columns[24]/column[1]/image[0]@caption",
+      "producedLine": 402,
       "referenceLine": 311,
       "produced": null,
-      "reference": "image photo/g/goya/goya_hifisound.jpg center small The Hi-Fi sound of Latin Guitar II / Francis Goya",
+      "reference": "caption: The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "verdict": "converter-defect"
     },
     {
-      "id": "443e8d97",
+      "id": "f9ab7123",
       "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[26]/column[0]/list[0]",
-      "producedLine": 404,
-      "referenceLine": 324,
-      "produced": "01. Nostalgia 02. Historia De Un Amor 03. Solamente Una Vez 04. La Playa 05. Ave Maria No Morro 06. Quando, Quando, Quando 07. Mona Lisa 08. Blame It On The Bo…",
-      "reference": "01. Nostalgia 02. Historia De Un Amor 03. Solamente Una Vez 04. La Playa 05. Ave Maria No Morro 06. Quando, Quando, Quando 07. Mona Lisa 08. Blame It On The Bo… — produced at /columns[34]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "71a2d3f8",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[26]/column[1]/list[0]",
-      "producedLine": 417,
-      "referenceLine": 334,
-      "produced": "09. Aquella Ojos Verdes 10. Quando Sali De Cuba 11. Verde 12. Besame Mucho 13. Perfidia 14. Vaya Con Dios 15. Amor De Mis Amores 16. O'Cangaceiro",
-      "reference": "09. Aquella Ojos Verdes 10. Quando Sali De Cuba 11. Verde 12. Besame Mucho 13. Perfidia 14. Vaya Con Dios 15. Amor De Mis Amores 16. O'Cangaceiro — produced at /columns[34]/column[1]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "03eb604c",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[28]/column[0]/align[0]",
-      "producedLine": 431,
-      "referenceLine": 349,
-      "produced": "align center The Very Best of Francis Goya (Diamond Star Collection)",
-      "reference": "align center The Very Best of Francis Goya (Diamond Star Collection) — produced at /align[35]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dc2972ce",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[30]/column[0]/list[0]",
-      "producedLine": 443,
-      "referenceLine": 362,
-      "produced": "01. Nostalgia 02. Theme From 'The Deerhunter' (Cavatina) 03. Concierto D`Aranjuez 04. Bilitis 05. Ballade pour Adeline 06. Who Pays The Ferryman 07. Unchained …",
-      "reference": "01. Nostalgia 02. Theme From 'The Deerhunter' (Cavatina) 03. Concierto D`Aranjuez 04. Bilitis 05. Ballade pour Adeline 06. Who Pays The Ferryman 07. Unchained … — produced at /columns[36]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6a10aeb3",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[30]/column[1]/list[0]",
-      "producedLine": 456,
-      "referenceLine": 372,
-      "produced": "09. Once Upon A Time In The West 10. Concierto Pour Une Voix 11. Zorba`s dance 12. Elvira Madigan 13. Sleepy Shores 14. Greensleeves 15. Are You Lonesome Tonig…",
-      "reference": "09. Once Upon A Time In The West 10. Concierto Pour Une Voix 11. Zorba`s dance 12. Elvira Madigan 13. Sleepy Shores 14. Greensleeves 15. Are You Lonesome Tonig… — produced at /columns[36]/column[1]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e6115bd0",
-      "doc": "goya2",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
+      "class": "image.size.value",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[32]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 476,
-      "referenceLine": 389,
-      "produced": "align center Collection 2000 / Francis Goya",
-      "reference": "Collection 2000 / Francis Goya — at /columns[38]/column[0]/align[1]",
+      "path": "/columns[24]/column[1]/image[0]@size",
+      "producedLine": 402,
+      "referenceLine": 311,
+      "produced": "size: medium",
+      "reference": "size: small",
       "verdict": "converter-defect"
     },
     {
@@ -4978,7 +4127,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/columns[32]/column[1]/image[0]@caption",
-      "producedLine": 389,
+      "producedLine": 513,
       "referenceLine": 395,
       "produced": null,
       "reference": "caption: Collection 2000 / Francis Goya",
@@ -4992,38 +4141,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[32]/column[1]/image[0]@size",
-      "producedLine": 389,
+      "producedLine": 513,
       "referenceLine": 395,
       "produced": "size: medium",
       "reference": "size: small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a42e7185",
-      "doc": "goya2",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[32]/column[1]/image[0]@src",
-      "producedLine": 389,
-      "referenceLine": 395,
-      "produced": "src: photo/g/goya/goya_hifisound.jpg",
-      "reference": "src: photo/g/goya/goya_2000a.jpg",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c362f44b",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[34]/column[0]/list[0]",
-      "producedLine": 502,
-      "referenceLine": 408,
-      "produced": "01. I Do It For You 4.07 02. Sacrifice 3.43 03. Cry For Help 4.15 04. Natacha 2.47 05. Promise Me 3.30 06. Secret Love 4.09 07. Winds Of Time 4.09 08. Sorry Se…",
-      "reference": "01. I Do It For You — 4.07 02. Sacrifice — 3.43 03. Cry For Help — 4.15 04. Natacha — 2.47 05. Promise Me — 3.30 06. Secret Love — 4.09 07. Winds Of Time — 4.0… — produced at /columns[40]/column[0]/list[1]",
       "verdict": "converter-defect"
     },
     {
@@ -5034,7 +4155,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[0]",
-      "producedLine": 502,
+      "producedLine": 528,
       "referenceLine": 408,
       "produced": "01\\. I Do It For You *4.07*",
       "reference": "01. I Do It For You — 4.07",
@@ -5048,7 +4169,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[0]",
-      "producedLine": 502,
+      "producedLine": 528,
       "referenceLine": 408,
       "produced": "em:4.07",
       "reference": "(none)",
@@ -5062,7 +4183,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[1]",
-      "producedLine": 503,
+      "producedLine": 529,
       "referenceLine": 409,
       "produced": "02\\. Sacrifice *3.43*",
       "reference": "02. Sacrifice — 3.43",
@@ -5076,7 +4197,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[1]",
-      "producedLine": 503,
+      "producedLine": 529,
       "referenceLine": 409,
       "produced": "em:3.43",
       "reference": "(none)",
@@ -5090,7 +4211,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[2]",
-      "producedLine": 504,
+      "producedLine": 530,
       "referenceLine": 410,
       "produced": "03\\. Cry For Help *4.15*",
       "reference": "03. Cry For Help — 4.15",
@@ -5104,7 +4225,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[2]",
-      "producedLine": 504,
+      "producedLine": 530,
       "referenceLine": 410,
       "produced": "em:4.15",
       "reference": "(none)",
@@ -5118,7 +4239,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[3]",
-      "producedLine": 505,
+      "producedLine": 531,
       "referenceLine": 411,
       "produced": "04\\. Natacha *2.47*",
       "reference": "04. Natacha — 2.47",
@@ -5132,7 +4253,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[3]",
-      "producedLine": 505,
+      "producedLine": 531,
       "referenceLine": 411,
       "produced": "em:2.47",
       "reference": "(none)",
@@ -5146,7 +4267,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[4]",
-      "producedLine": 506,
+      "producedLine": 532,
       "referenceLine": 412,
       "produced": "05\\. Promise Me *3.30*",
       "reference": "05. Promise Me — 3.30",
@@ -5160,7 +4281,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[4]",
-      "producedLine": 506,
+      "producedLine": 532,
       "referenceLine": 412,
       "produced": "em:3.30",
       "reference": "(none)",
@@ -5174,7 +4295,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[5]",
-      "producedLine": 507,
+      "producedLine": 533,
       "referenceLine": 413,
       "produced": "06\\. Secret Love *4.09*",
       "reference": "06. Secret Love — 4.09",
@@ -5188,7 +4309,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[5]",
-      "producedLine": 507,
+      "producedLine": 533,
       "referenceLine": 413,
       "produced": "em:4.09",
       "reference": "(none)",
@@ -5202,7 +4323,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[6]",
-      "producedLine": 508,
+      "producedLine": 534,
       "referenceLine": 414,
       "produced": "07\\. Winds Of Time *4.09*",
       "reference": "07. Winds Of Time — 4.09",
@@ -5216,7 +4337,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[6]",
-      "producedLine": 508,
+      "producedLine": 534,
       "referenceLine": 414,
       "produced": "em:4.09",
       "reference": "(none)",
@@ -5230,7 +4351,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[7]",
-      "producedLine": 509,
+      "producedLine": 535,
       "referenceLine": 415,
       "produced": "08\\. Sorry Seems To Be The Hardest Word *3.45*",
       "reference": "08. Sorry Seems To Be The Hardest Word — 3.45",
@@ -5244,7 +4365,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[7]",
-      "producedLine": 509,
+      "producedLine": 535,
       "referenceLine": 415,
       "produced": "em:3.45",
       "reference": "(none)",
@@ -5258,7 +4379,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[8]",
-      "producedLine": 510,
+      "producedLine": 536,
       "referenceLine": 416,
       "produced": "09\\. Classical Dream *3.45*",
       "reference": "09. Classical Dream — 3.45",
@@ -5272,7 +4393,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[8]",
-      "producedLine": 510,
+      "producedLine": 536,
       "referenceLine": 416,
       "produced": "em:3.45",
       "reference": "(none)",
@@ -5286,7 +4407,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[9]",
-      "producedLine": 511,
+      "producedLine": 537,
       "referenceLine": 417,
       "produced": "10\\. Love On The Rocks *3.39*",
       "reference": "10. Love On The Rocks — 3.39",
@@ -5300,25 +4421,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[0]/list[0]/item[9]",
-      "producedLine": 511,
+      "producedLine": 537,
       "referenceLine": 417,
       "produced": "em:3.39",
       "reference": "(none)",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "95b1719d",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[34]/column[1]/list[0]",
-      "producedLine": 517,
-      "referenceLine": 420,
-      "produced": "11. Bridge Over Troubled Water 3.27 12. When You Tell Me 4.03 13. Hello Again 4.00 14. Sounds Of Silence 3.00 15. Send Me An Angel 4.17 16. Be 3.57 17. Melodia…",
-      "reference": "11. Bridge Over Troubled Water — 3.27 12. When You Tell Me — 4.03 13. Hello Again — 4.00 14. Sounds Of Silence — 3.00 15. Send Me An Angel — 4.17 16. Be — 3.57… — produced at /columns[40]/column[1]/list[1]",
-      "verdict": "converter-defect"
     },
     {
       "id": "66879391",
@@ -5328,7 +4435,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[0]",
-      "producedLine": 517,
+      "producedLine": 543,
       "referenceLine": 420,
       "produced": "11\\. Bridge Over Troubled Water *3.27*",
       "reference": "11. Bridge Over Troubled Water — 3.27",
@@ -5342,7 +4449,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[0]",
-      "producedLine": 517,
+      "producedLine": 543,
       "referenceLine": 420,
       "produced": "em:3.27",
       "reference": "(none)",
@@ -5356,7 +4463,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[1]",
-      "producedLine": 518,
+      "producedLine": 544,
       "referenceLine": 421,
       "produced": "12\\. When You Tell Me *4.03*",
       "reference": "12. When You Tell Me — 4.03",
@@ -5370,7 +4477,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[1]",
-      "producedLine": 518,
+      "producedLine": 544,
       "referenceLine": 421,
       "produced": "em:4.03",
       "reference": "(none)",
@@ -5384,7 +4491,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[2]",
-      "producedLine": 519,
+      "producedLine": 545,
       "referenceLine": 422,
       "produced": "13\\. Hello Again *4.00*",
       "reference": "13. Hello Again — 4.00",
@@ -5398,7 +4505,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[2]",
-      "producedLine": 519,
+      "producedLine": 545,
       "referenceLine": 422,
       "produced": "em:4.00",
       "reference": "(none)",
@@ -5412,7 +4519,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[3]",
-      "producedLine": 520,
+      "producedLine": 546,
       "referenceLine": 423,
       "produced": "14\\. Sounds Of Silence *3.00*",
       "reference": "14. Sounds Of Silence — 3.00",
@@ -5426,7 +4533,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[3]",
-      "producedLine": 520,
+      "producedLine": 546,
       "referenceLine": 423,
       "produced": "em:3.00",
       "reference": "(none)",
@@ -5440,7 +4547,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[4]",
-      "producedLine": 521,
+      "producedLine": 547,
       "referenceLine": 424,
       "produced": "15\\. Send Me An Angel *4.17*",
       "reference": "15. Send Me An Angel — 4.17",
@@ -5454,7 +4561,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[4]",
-      "producedLine": 521,
+      "producedLine": 547,
       "referenceLine": 424,
       "produced": "em:4.17",
       "reference": "(none)",
@@ -5468,7 +4575,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[5]",
-      "producedLine": 522,
+      "producedLine": 548,
       "referenceLine": 425,
       "produced": "16\\. Be *3.57*",
       "reference": "16. Be — 3.57",
@@ -5482,7 +4589,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[5]",
-      "producedLine": 522,
+      "producedLine": 548,
       "referenceLine": 425,
       "produced": "em:3.57",
       "reference": "(none)",
@@ -5496,7 +4603,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[6]",
-      "producedLine": 523,
+      "producedLine": 549,
       "referenceLine": 426,
       "produced": "17\\. Melodia *3.13*",
       "reference": "17. Melodia — 3.13",
@@ -5510,7 +4617,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[6]",
-      "producedLine": 523,
+      "producedLine": 549,
       "referenceLine": 426,
       "produced": "em:3.13",
       "reference": "(none)",
@@ -5524,7 +4631,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[7]",
-      "producedLine": 524,
+      "producedLine": 550,
       "referenceLine": 427,
       "produced": "18\\. Nostalgia *3.52*",
       "reference": "18. Nostalgia — 3.52",
@@ -5538,7 +4645,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[7]",
-      "producedLine": 524,
+      "producedLine": 550,
       "referenceLine": 427,
       "produced": "em:3.52",
       "reference": "(none)",
@@ -5552,7 +4659,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[8]",
-      "producedLine": 525,
+      "producedLine": 551,
       "referenceLine": 428,
       "produced": "19\\. Hello *4.00*",
       "reference": "19. Hello — 4.00",
@@ -5566,7 +4673,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[8]",
-      "producedLine": 525,
+      "producedLine": 551,
       "referenceLine": 428,
       "produced": "em:4.00",
       "reference": "(none)",
@@ -5580,7 +4687,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[9]",
-      "producedLine": 526,
+      "producedLine": 552,
       "referenceLine": 429,
       "produced": "20\\. A View *2.31*",
       "reference": "20. A View — 2.31",
@@ -5594,7 +4701,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[9]",
-      "producedLine": 526,
+      "producedLine": 552,
       "referenceLine": 429,
       "produced": "em:2.31",
       "reference": "(none)",
@@ -5608,7 +4715,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[10]",
-      "producedLine": 527,
+      "producedLine": 553,
       "referenceLine": 430,
       "produced": "21\\. Woman In Love *3.58*",
       "reference": "21. Woman In Love — 3.58",
@@ -5622,81 +4729,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[34]/column[1]/list[0]/item[10]",
-      "producedLine": 527,
+      "producedLine": 553,
       "referenceLine": 430,
       "produced": "em:3.58",
       "reference": "(none)",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "6a938a0a",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[36]/column[0]/align[0]",
-      "producedLine": 540,
-      "referenceLine": 438,
-      "produced": "align center Magic Moments",
-      "reference": "align center Magic Moments — produced at /columns[42]/column[0]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "36a57396",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[36]/column[1]/align[0]",
-      "producedLine": 551,
-      "referenceLine": 446,
-      "produced": "align center Latin Romance",
-      "reference": "align center Latin Romance — produced at /columns[42]/column[1]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "672d3db3",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[38]/column[0]/list[0]",
-      "producedLine": 567,
-      "referenceLine": 457,
-      "produced": "01. Magic Moments 02. Try a Little Tenderness 03. On This Night of a 1000 Stars 04. Non Domenticar 05. Memories of Wintertime 06. It Never Entered My Mind 07. …",
-      "reference": "01. Magic Moments 02. Try a Little Tenderness 03. On This Night of a 1000 Stars 04. Non Domenticar 05. Memories of Wintertime 06. It Never Entered My Mind 07. … — produced at /columns[44]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "aa7bcb3f",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[38]/column[1]/list[0]",
-      "producedLine": 588,
-      "referenceLine": 475,
-      "produced": "01. Nostalgia 02. Solamente Una Vez 03. La Playa 04. Quando, Quando, Quando 05. Besame Mucho 06. O'Cangaciero 07. Perfidia 08. Blame It On The Bosssa Nova 09. …",
-      "reference": "01. Nostalgia 02. Solamente Una Vez 03. La Playa 04. Quando, Quando, Quando 05. Besame Mucho 06. O'Cangaciero 07. Perfidia 08. Blame It On The Bosssa Nova 09. … — produced at /columns[44]/column[1]/list[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c0a71a07",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[40]/column[0]/align[0]",
-      "producedLine": 616,
-      "referenceLine": 498,
-      "produced": "align center Historia de un Amor",
-      "reference": "align center Historia De Un Amor — produced at /columns[46]/column[0]/align[1]",
-      "verdict": "converter-defect"
     },
     {
       "id": "ec6afcaf",
@@ -5706,7 +4743,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[40]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 619,
+      "producedLine": 645,
       "referenceLine": 500,
       "produced": "**Historia de un Amor**",
       "reference": "**Historia De Un Amor**",
@@ -5720,24 +4757,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[40]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 619,
+      "producedLine": 645,
       "referenceLine": 500,
       "produced": "strong:Historia de un Amor",
       "reference": "strong:Historia De Un Amor",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2345c48d",
-      "doc": "goya2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[40]/column[1]/image[0]",
-      "producedLine": 629,
-      "referenceLine": 506,
-      "produced": "image photo/g/goya/goya_historia1.jpg center medium",
-      "reference": "image photo/g/goya/goya_historia1.jpg center small Historia De Un Amor — produced at /columns[46]/column[1]/image[1]",
       "verdict": "converter-defect"
     },
     {
@@ -5748,7 +4771,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/columns[40]/column[1]/image[0]@caption",
-      "producedLine": 629,
+      "producedLine": 655,
       "referenceLine": 506,
       "produced": null,
       "reference": "caption: Historia De Un Amor",
@@ -5762,24 +4785,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[40]/column[1]/image[0]@size",
-      "producedLine": 629,
+      "producedLine": 655,
       "referenceLine": 506,
       "produced": "size: medium",
       "reference": "size: small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2a96985c",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[42]/column[0]/list[0]",
-      "producedLine": 644,
-      "referenceLine": 519,
-      "produced": "01. La Playa 4:04 02. Perfidia 2:33 03. Historia De Un Amor 2:31 04. Vaya Con Dios 4:03 05. Ave Maria No Moro 3:03 06. Verde 2:57 07. Solamente Una Vez 3:05 08…",
-      "reference": "01. La Playa — 4:04 02. Perfidia — 2:33 03. Historia De Un Amor — 2:31 04. Vaya Con Dios — 4:03 05. Ave Maria No Moro — 3:03 06. Verde — 2:57 07. Solamente Una… — produced at /columns[48]/column[0]/list[1]",
       "verdict": "converter-defect"
     },
     {
@@ -5790,7 +4799,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[0]",
-      "producedLine": 644,
+      "producedLine": 670,
       "referenceLine": 519,
       "produced": "01\\. La Playa *4:04*",
       "reference": "01. La Playa — 4:04",
@@ -5804,7 +4813,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[0]",
-      "producedLine": 644,
+      "producedLine": 670,
       "referenceLine": 519,
       "produced": "em:4:04",
       "reference": "(none)",
@@ -5818,7 +4827,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[1]",
-      "producedLine": 645,
+      "producedLine": 671,
       "referenceLine": 520,
       "produced": "02\\. Perfidia *2:33*",
       "reference": "02. Perfidia — 2:33",
@@ -5832,7 +4841,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[1]",
-      "producedLine": 645,
+      "producedLine": 671,
       "referenceLine": 520,
       "produced": "em:2:33",
       "reference": "(none)",
@@ -5846,7 +4855,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[2]",
-      "producedLine": 646,
+      "producedLine": 672,
       "referenceLine": 521,
       "produced": "03\\. Historia De Un Amor *2:31*",
       "reference": "03. Historia De Un Amor — 2:31",
@@ -5860,7 +4869,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[2]",
-      "producedLine": 646,
+      "producedLine": 672,
       "referenceLine": 521,
       "produced": "em:2:31",
       "reference": "(none)",
@@ -5874,7 +4883,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[3]",
-      "producedLine": 647,
+      "producedLine": 673,
       "referenceLine": 522,
       "produced": "04\\. Vaya Con Dios *4:03*",
       "reference": "04. Vaya Con Dios — 4:03",
@@ -5888,7 +4897,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[3]",
-      "producedLine": 647,
+      "producedLine": 673,
       "referenceLine": 522,
       "produced": "em:4:03",
       "reference": "(none)",
@@ -5902,7 +4911,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[4]",
-      "producedLine": 648,
+      "producedLine": 674,
       "referenceLine": 523,
       "produced": "05\\. Ave Maria No Moro *3:03*",
       "reference": "05. Ave Maria No Moro — 3:03",
@@ -5916,7 +4925,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[4]",
-      "producedLine": 648,
+      "producedLine": 674,
       "referenceLine": 523,
       "produced": "em:3:03",
       "reference": "(none)",
@@ -5930,7 +4939,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[5]",
-      "producedLine": 649,
+      "producedLine": 675,
       "referenceLine": 524,
       "produced": "06\\. Verde *2:57*",
       "reference": "06. Verde — 2:57",
@@ -5944,7 +4953,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[5]",
-      "producedLine": 649,
+      "producedLine": 675,
       "referenceLine": 524,
       "produced": "em:2:57",
       "reference": "(none)",
@@ -5958,7 +4967,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[6]",
-      "producedLine": 650,
+      "producedLine": 676,
       "referenceLine": 525,
       "produced": "07\\. Solamente Una Vez *3:05*",
       "reference": "07. Solamente Una Vez — 3:05",
@@ -5972,7 +4981,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[6]",
-      "producedLine": 650,
+      "producedLine": 676,
       "referenceLine": 525,
       "produced": "em:3:05",
       "reference": "(none)",
@@ -5986,7 +4995,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[7]",
-      "producedLine": 651,
+      "producedLine": 677,
       "referenceLine": 526,
       "produced": "08\\. Quanto Sali De Cuba *2:31*",
       "reference": "08. Quanto Sali De Cuba — 2:31",
@@ -6000,7 +5009,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[7]",
-      "producedLine": 651,
+      "producedLine": 677,
       "referenceLine": 526,
       "produced": "em:2:31",
       "reference": "(none)",
@@ -6014,7 +5023,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[8]",
-      "producedLine": 652,
+      "producedLine": 678,
       "referenceLine": 527,
       "produced": "09\\. Besame Mucho *5:05*",
       "reference": "09. Besame Mucho — 5:05",
@@ -6028,25 +5037,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[0]/list[0]/item[8]",
-      "producedLine": 652,
+      "producedLine": 678,
       "referenceLine": 527,
       "produced": "em:5:05",
       "reference": "(none)",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "5bb04416",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[42]/column[1]/list[0]",
-      "producedLine": 658,
-      "referenceLine": 530,
-      "produced": "10. Mona Lisa 3:07 11. Nostalgia 2:44 12. Aquellos Osos Verdes 3:50 13. Quando Quando Quando 2:30 14. Blame It On The Bossa Nova 3:31 15. O`Cangacciro 2:44 16.…",
-      "reference": "10. Mona Lisa — 3:07 11. Nostalgia — 2:44 12. Aquellos Osos Verdes — 3:50 13. Quando Quando Quando — 2:30 14. Blame It On The Bossa Nova — 3:31 15. O`Cangaccir… — produced at /columns[48]/column[1]/list[0]",
-      "verdict": "converter-defect"
     },
     {
       "id": "1e18a6a6",
@@ -6056,7 +5051,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[0]",
-      "producedLine": 658,
+      "producedLine": 684,
       "referenceLine": 530,
       "produced": "10\\. Mona Lisa *3:07*",
       "reference": "10. Mona Lisa — 3:07",
@@ -6070,7 +5065,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[0]",
-      "producedLine": 658,
+      "producedLine": 684,
       "referenceLine": 530,
       "produced": "em:3:07",
       "reference": "(none)",
@@ -6084,7 +5079,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[1]",
-      "producedLine": 659,
+      "producedLine": 685,
       "referenceLine": 531,
       "produced": "11\\. Nostalgia *2:44*",
       "reference": "11. Nostalgia — 2:44",
@@ -6098,7 +5093,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[1]",
-      "producedLine": 659,
+      "producedLine": 685,
       "referenceLine": 531,
       "produced": "em:2:44",
       "reference": "(none)",
@@ -6112,7 +5107,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[2]",
-      "producedLine": 660,
+      "producedLine": 686,
       "referenceLine": 532,
       "produced": "12\\. Aquellos Osos Verdes *3:50*",
       "reference": "12. Aquellos Osos Verdes — 3:50",
@@ -6126,7 +5121,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[2]",
-      "producedLine": 660,
+      "producedLine": 686,
       "referenceLine": 532,
       "produced": "em:3:50",
       "reference": "(none)",
@@ -6140,7 +5135,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[3]",
-      "producedLine": 661,
+      "producedLine": 687,
       "referenceLine": 533,
       "produced": "13\\. Quando Quando Quando *2:30*",
       "reference": "13. Quando Quando Quando — 2:30",
@@ -6154,7 +5149,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[3]",
-      "producedLine": 661,
+      "producedLine": 687,
       "referenceLine": 533,
       "produced": "em:2:30",
       "reference": "(none)",
@@ -6168,7 +5163,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[4]",
-      "producedLine": 662,
+      "producedLine": 688,
       "referenceLine": 534,
       "produced": "14\\. Blame It On The Bossa Nova *3:31*",
       "reference": "14. Blame It On The Bossa Nova — 3:31",
@@ -6182,7 +5177,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[4]",
-      "producedLine": 662,
+      "producedLine": 688,
       "referenceLine": 534,
       "produced": "em:3:31",
       "reference": "(none)",
@@ -6196,7 +5191,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[5]",
-      "producedLine": 663,
+      "producedLine": 689,
       "referenceLine": 535,
       "produced": "15\\. O\\`Cangacciro *2:44*",
       "reference": "15. O`Cangacciro — 2:44",
@@ -6210,7 +5205,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[5]",
-      "producedLine": 663,
+      "producedLine": 689,
       "referenceLine": 535,
       "produced": "em:2:44",
       "reference": "(none)",
@@ -6224,7 +5219,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[6]",
-      "producedLine": 664,
+      "producedLine": 690,
       "referenceLine": 536,
       "produced": "16\\. Amor De Mis Amores *4:14*",
       "reference": "16. Amor De Mis Amores — 4:14",
@@ -6238,94 +5233,24 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[42]/column[1]/list[0]/item[6]",
-      "producedLine": 664,
+      "producedLine": 690,
       "referenceLine": 536,
       "produced": "em:4:14",
       "reference": "(none)",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "af503afc",
+      "id": "18ee566e",
       "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
+      "class": "image.size.value",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "move",
-      "path": "/columns[44]/column[0]/align[0]",
-      "producedLine": 671,
-      "referenceLine": 545,
-      "produced": "align center The Romantic Guitar of Francis Goya",
-      "reference": "align center The Romantic Guitar of Francis Goya — produced at /align[49]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7508715c",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[46]/column[0]/list[0]",
-      "producedLine": 683,
-      "referenceLine": 558,
-      "produced": "01. Bright Eyes 02. Just When I Needed You Most 03. I'm Not In Love 04. Mahogany 05. If You Leave Me Now 06. Moon Shadow 07. Your Song 08. Bridge Over Troubled…",
-      "reference": "01. Bright Eyes 02. Just When I Needed You Most 03. I'm Not In Love 04. Mahogany 05. If You Leave Me Now 06. Moon Shadow 07. Your Song 08. Bridge Over Troubled… — produced at /columns[50]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19875b0c",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[46]/column[1]/list[0]",
-      "producedLine": 697,
-      "referenceLine": 569,
-      "produced": "10. Nights In White Satin 11. If... 12. Let It Be Me 13. The Shadow Of Your Smile 14. Blue Bayou 15. If I Feel 16. I Started A Joke 17. Lost Without Your Love …",
-      "reference": "10. Nights In White Satin 11. If... 12. Let It Be Me 13. The Shadow Of Your Smile 14. Blue Bayou 15. If I Feel 16. I Started A Joke 17. Lost Without Your Love … — produced at /columns[50]/column[1]/list[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "316f5fe4",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[48]/column[0]/align[0]",
-      "producedLine": 712,
-      "referenceLine": 585,
-      "produced": "align center Moscow Nights",
-      "reference": "align center Moscow Nights — produced at /align[51]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e128da5f",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[50]/column[0]/list[0]",
-      "producedLine": 724,
-      "referenceLine": 598,
-      "produced": "01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree 08. Two Guitars…",
-      "reference": "01. Song of the Dnepr 02. Cossack Patrol 03. Annushka 04. Song of the Volga Boatman 05. Stenka Rasin 06. Lights of Moscow 07. The Old Rowantree 08. Two Guitars… — produced at /columns[52]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5a989fa1",
-      "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/columns[50]/column[1]/image[0]@size",
+      "producedLine": 795,
       "referenceLine": 614,
-      "produced": null,
-      "reference": "image photo/g/goya/goya_moscow1.jpg center small",
+      "produced": "size: medium",
+      "reference": "size: small",
       "verdict": "converter-defect"
     },
     {
@@ -6336,10 +5261,10 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 753,
+      "producedLine": 805,
       "referenceLine": 620,
       "produced": "image photo/g/goya/goya_moscow3a.jpg center medium",
-      "reference": "image photo/g/goya/goya_moscow3a.jpg center small — produced at /image[53]",
+      "reference": "image photo/g/goya/goya_moscow3a.jpg center small — produced at /image[51]",
       "verdict": "converter-defect"
     },
     {
@@ -6350,7 +5275,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[50]/column[1]/image[1]@size",
-      "producedLine": 753,
+      "producedLine": 805,
       "referenceLine": 620,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6364,10 +5289,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[52]/column[0]/align[0]",
-      "producedLine": 764,
+      "producedLine": 816,
       "referenceLine": 632,
       "produced": "Francis Goya in Moscow",
-      "reference": "align center Francis Goya in Moscow — at /columns[54]/column[0]/paragraph[1]",
+      "reference": "align center Francis Goya in Moscow — at /columns[52]/column[0]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6378,7 +5303,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/columns[52]/column[1]/image[0]@caption",
-      "producedLine": 743,
+      "producedLine": 823,
       "referenceLine": 640,
       "produced": null,
       "reference": "caption: Francis Goya in Moscow",
@@ -6392,80 +5317,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[52]/column[1]/image[0]@size",
-      "producedLine": 743,
+      "producedLine": 823,
       "referenceLine": 640,
       "produced": "size: medium",
       "reference": "size: small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ee91b0fc",
-      "doc": "goya2",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[52]/column[1]/image[0]@src",
-      "producedLine": 743,
-      "referenceLine": 640,
-      "produced": "src: photo/g/goya/goya_moscow1.jpg",
-      "reference": "src: photo/g/goya/goya_inmoscow1.jpg",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fd9007dd",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[54]/column[0]/list[0]",
-      "producedLine": 786,
-      "referenceLine": 653,
-      "produced": "01. Kalinka 02. Stenka Razin 03. Song Of The Volga 04. A Single Bell Is Ringing 05. The Field 06. On The Long Road",
-      "reference": "01. Kalinka 02. Stenka Razin 03. Song Of The Volga 04. A Single Bell Is Ringing 05. The Field 06. On The Long Road — produced at /columns[56]/column[0]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0d85ed79",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[54]/column[1]/list[0]",
-      "producedLine": 797,
-      "referenceLine": 661,
-      "produced": "07. Moscow Nights 08. The Wide Dnieper River Is Roaring 09. Dark Eyes 10. Oh, Forget It 11. A Gypsy Girl 12. Gypsy Songs",
-      "reference": "07. Moscow Nights 08. The Wide Dnieper River Is Roaring 09. Dark Eyes 10. Oh, Forget It 11. A Gypsy Girl 12. Gypsy Songs — produced at /columns[56]/column[1]/list[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9c7b3dcb",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[56]/column[0]/align[0]",
-      "producedLine": 815,
-      "referenceLine": 675,
-      "produced": "align center Francis Goya / Rendez-vous",
-      "reference": "align center Francis Goya / Rendez-vous — produced at /columns[58]/column[0]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "43720537",
-      "doc": "goya2",
-      "class": "align.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[56]/column[1]/align[0]",
-      "producedLine": 826,
-      "referenceLine": 683,
-      "produced": "align center Golden Collection 8 Francis Goya",
-      "reference": "align center Golden Collection 8 / Francis Goya — produced at /columns[58]/column[1]/align[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6476,7 +5331,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[56]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 829,
+      "producedLine": 881,
       "referenceLine": 685,
       "produced": "Golden Collection 8 Francis Goya",
       "reference": "Golden Collection 8 / Francis Goya — 1 hard breaks, reference has 0",
@@ -6490,7 +5345,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[56]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 829,
+      "producedLine": 881,
       "referenceLine": 685,
       "produced": "**Golden Collection 8** **Francis Goya**",
       "reference": "**Golden Collection 8 / Francis Goya**",
@@ -6504,24 +5359,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[56]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 829,
+      "producedLine": 881,
       "referenceLine": 685,
       "produced": "strong:Francis Goya · strong:Golden Collection 8",
       "reference": "strong:Golden Collection 8 / Francis Goya",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0f87dfbc",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[58]/column[0]/list[0]",
-      "producedLine": 845,
-      "referenceLine": 694,
-      "produced": "02. For You 03. Against All Odds 04. The Lady In Red 05. All At Once 06. Rendez-vous At The Rio Negro 07. That's What Friends Are For 08. Say You Say Me 09. Mo…",
-      "reference": "01. Nothing's Gonna Change My Love 02. For You 03. Against All Odds 04. The Lady In Red 05. All At Once 06. Rendez-vous At The Rio Negro 07. That's What Friend… — produced at /columns[60]/column[0]/list[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6536,20 +5377,6 @@
       "referenceLine": 694,
       "produced": null,
       "reference": "01. Nothing's Gonna Change My Love",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bc83df92",
-      "doc": "goya2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[58]/column[1]/list[0]",
-      "producedLine": 864,
-      "referenceLine": 711,
-      "produced": "01. Moscow Serenade 02. Those Were The Days 03. Nos Amours 04. The Old Romantree 05. Orfeo Nergo 06. Natalia 07. Gypsy Love 08. Impolale 09. Norvalsa 10. La Ma…",
-      "reference": "01. Moscow Serenade 02. Those Were The Days 03. Nos Amours 04. The Old Romantree 05. Orfeo Nergo 06. Natalia 07. Gypsy Love 08. Impolale 09. Norvalsa 10. La Ma… — produced at /columns[60]/column[1]/list[0]",
       "verdict": "converter-defect"
     },
     {
@@ -6574,10 +5401,10 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 883,
+      "producedLine": 941,
       "referenceLine": 734,
       "produced": "Noche Latina / Francis Goya & Carmina 1993",
-      "reference": "Noche Latina / Goya & Carmina 1993 — produced at /paragraph[61]",
+      "reference": "Noche Latina / Goya & Carmina 1993 — produced at /columns[60]/column[0]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6588,7 +5415,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 883,
+      "producedLine": 941,
       "referenceLine": 734,
       "produced": "Noche Latina / Francis Goya & Carmina 1993",
       "reference": "Noche Latina / Goya & Carmina 1993 — 2 hard breaks, reference has 0",
@@ -6602,7 +5429,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 883,
+      "producedLine": 941,
       "referenceLine": 734,
       "produced": "**Noche Latina /** **Francis Goya & Carmina** 1993",
       "reference": "**Noche Latina / Goya & Carmina 1993**",
@@ -6616,7 +5443,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 883,
+      "producedLine": 941,
       "referenceLine": 734,
       "produced": "strong:Francis Goya & Carmina · strong:Noche Latina /",
       "reference": "strong:Noche Latina / Goya & Carmina 1993",
@@ -6644,7 +5471,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 995,
+      "producedLine": 1060,
       "referenceLine": 826,
       "produced": "Галерея инструментальной музыки. Francis Goya",
       "reference": "Галерея инструментальной музыки. Francis Goya — produced at /columns[68]/column[0]/paragraph[1]",
@@ -6658,7 +5485,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[68]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 995,
+      "producedLine": 1060,
       "referenceLine": 826,
       "produced": "Галерея инструментальной музыки. Francis Goya",
       "reference": "Галерея инструментальной музыки. Francis Goya — 1 hard breaks, reference has 0",
@@ -6672,7 +5499,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[68]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 995,
+      "producedLine": 1060,
       "referenceLine": 826,
       "produced": "strong:Francis Goya · strong:Галерея инструментальной музыки.",
       "reference": "strong:Галерея инструментальной музыки. Francis Goya",
@@ -6686,7 +5513,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[0]/align[0]/paragraph[1]",
-      "producedLine": 998,
+      "producedLine": 1063,
       "referenceLine": 828,
       "produced": "Grand Records, 2001",
       "reference": "Grand Records, 2001 — produced at /columns[68]/column[0]/paragraph[1]",
@@ -6700,7 +5527,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[68]/column[1]/image[0]@size",
-      "producedLine": 1005,
+      "producedLine": 1070,
       "referenceLine": 834,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6714,7 +5541,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[70]/column[0]/list[0]/item[2]",
-      "producedLine": 1022,
+      "producedLine": 1087,
       "referenceLine": 848,
       "produced": "03\\. Theme From \\`The Deer Hunter\\`",
       "reference": "03. Theme From 'The Deer Hunter'",
@@ -6742,7 +5569,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[72]/heading[0]",
-      "producedLine": 1054,
+      "producedLine": 1119,
       "referenceLine": 879,
       "produced": "ДРУГИЕ АЛЬБОМЫ",
       "reference": "Другие альбомы — at /paragraph[71]",
@@ -6770,7 +5597,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[73]/image[0]",
-      "producedLine": 1057,
+      "producedLine": 1122,
       "referenceLine": 885,
       "produced": "image photo/g/goya/goya_carmina2a.jpg center medium Bahia Lady / Goya & Carmina",
       "reference": "image photo/g/goya/goya_carmina2a.jpg center Bahia Lady / Goya & Carmina 1990 small — produced at /image[71]",
@@ -6784,7 +5611,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/images[73]/image[0]@caption",
-      "producedLine": 1057,
+      "producedLine": 1122,
       "referenceLine": 885,
       "produced": "caption: Bahia Lady / Goya & Carmina",
       "reference": "caption: Bahia Lady / Goya & Carmina 1990",
@@ -6798,7 +5625,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[73]/image[0]@size",
-      "producedLine": 1057,
+      "producedLine": 1122,
       "referenceLine": 885,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6812,7 +5639,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[73]/image[1]",
-      "producedLine": 1066,
+      "producedLine": 1131,
       "referenceLine": 892,
       "produced": "image photo/g/goya/fr_goya1.jpg center medium Francis Goya",
       "reference": "image photo/g/goya/fr_goya1.jpg center small Francis Goya — produced at /image[71]",
@@ -6826,7 +5653,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[73]/image[1]@size",
-      "producedLine": 1066,
+      "producedLine": 1131,
       "referenceLine": 892,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6854,7 +5681,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[0]",
-      "producedLine": 1075,
+      "producedLine": 1140,
       "referenceLine": 903,
       "produced": "image photo/g/goya/goya_carmina4a.jpg center medium Festival Latino / Goya & Carmina 1994",
       "reference": "image photo/g/goya/goya_carmina4a.jpg center Festival Latino / Goya & Carmina 1994 small — produced at /image[76]",
@@ -6868,7 +5695,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[0]@size",
-      "producedLine": 1075,
+      "producedLine": 1140,
       "referenceLine": 903,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6882,7 +5709,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1082,
+      "producedLine": 1147,
       "referenceLine": 910,
       "produced": "image photo/g/goya/goya_gondwana1.jpg center medium Francis Goya / Gondwana",
       "reference": "image photo/g/goya/goya_gondwana1.jpg center small Francis Goya — produced at /image[76]",
@@ -6896,7 +5723,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/images[74]/image[1]@caption",
-      "producedLine": 1082,
+      "producedLine": 1147,
       "referenceLine": 910,
       "produced": "caption: Francis Goya / Gondwana",
       "reference": "caption: Francis Goya",
@@ -6910,7 +5737,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[1]@size",
-      "producedLine": 1082,
+      "producedLine": 1147,
       "referenceLine": 910,
       "produced": "size: medium",
       "reference": "size: small",
@@ -6924,7 +5751,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": "image photo/g/goya/goya_cleiderman.jpg center medium Together / Richard Clayderman & Francis Goya",
       "reference": "images 2 image photo/g/goya/goya_cleiderman.jpg center Together / Richard Clayderman & Francis Goya small image photo/g/goya/goya_.jpg center small Maria Padil… — produced at /image[77]",
@@ -6938,7 +5765,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/images[75]@caption",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": "caption: Together / Richard Clayderman & Francis Goya",
       "reference": null,
@@ -6952,7 +5779,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[75]@columns",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": null,
       "reference": "columns: 2",
@@ -6966,7 +5793,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[75]@position",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": "position: center",
       "reference": null,
@@ -6980,7 +5807,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[75]@size",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": "size: medium",
       "reference": null,
@@ -6994,7 +5821,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[75]@src",
-      "producedLine": 1091,
+      "producedLine": 1156,
       "referenceLine": 918,
       "produced": "src: photo/g/goya/goya_cleiderman.jpg",
       "reference": null,
@@ -7022,7 +5849,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[1]",
-      "producedLine": 1098,
+      "producedLine": 1163,
       "referenceLine": 928,
       "produced": "image photo/g/goya/goya_.jpg center medium Maria Padilha",
       "reference": "image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]",
@@ -7036,7 +5863,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[75]/image[1]@size",
-      "producedLine": 1098,
+      "producedLine": 1163,
       "referenceLine": 928,
       "produced": "size: medium",
       "reference": "size: small",
@@ -9311,6 +8138,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "4c3826c5",
+      "doc": "news_2007",
+      "class": "break.spurious.unattested",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/break[2]",
+      "producedLine": 5,
+      "referenceLine": null,
+      "produced": "---",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
       "id": "7e0af847",
       "doc": "news_2007",
       "class": "break.spurious.unattested",
@@ -9318,7 +8159,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/break[4]",
-      "producedLine": 22,
+      "producedLine": 40,
       "referenceLine": null,
       "produced": "---",
       "reference": null,
@@ -9332,20 +8173,6 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/break[5]",
-      "producedLine": 40,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2e012149",
-      "doc": "news_2007",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[6]",
       "producedLine": 60,
       "referenceLine": null,
       "produced": "---",
@@ -9353,32 +8180,46 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "c9bfacad",
+      "id": "7e0b3e68",
       "doc": "news_2007",
       "class": "paragraph.spurious.in-quote",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[7]",
-      "producedLine": 78,
+      "path": "/columns[6]/column[1]/paragraph[2]",
+      "producedLine": 85,
       "referenceLine": null,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "373913ad",
+      "id": "2937ca4e",
       "doc": "news_2007",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[7]",
-      "producedLine": 81,
+      "path": "/columns[6]/column[1]/paragraph[2]",
+      "producedLine": 88,
       "referenceLine": null,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": null,
       "verdict": "ambiguous"
+    },
+    {
+      "id": "e03cb82c",
+      "doc": "news_2007",
+      "class": "break.spurious.unattested",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/break[7]",
+      "producedLine": 98,
+      "referenceLine": null,
+      "produced": "---",
+      "reference": null,
+      "verdict": "converter-defect"
     },
     {
       "id": "d0d464db",
@@ -9388,7 +8229,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/break[8]",
-      "producedLine": 108,
+      "producedLine": 116,
       "referenceLine": null,
       "produced": "---",
       "reference": null,
@@ -9402,7 +8243,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[9]",
-      "producedLine": 126,
+      "producedLine": 134,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -9423,6 +8264,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "9614905c",
+      "doc": "news_2007",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/columns[3]/column[0]/paragraph[0]",
+      "producedLine": 28,
+      "referenceLine": 12,
+      "produced": "9 декабря 2007 г.",
+      "reference": "***11 декабря 2007 г.***",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "25232086",
       "doc": "news_2007",
       "class": "emphasis.span",
@@ -9430,39 +8285,53 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[3]/column[0]/paragraph[0]",
-      "producedLine": 10,
+      "producedLine": 28,
       "referenceLine": 12,
       "produced": "(none)",
       "reference": "em:* · strong:*11 декабря 2007 г.",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "34cbf829",
+      "id": "1f2ffa6f",
       "doc": "news_2007",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
+      "class": "retyped.columns-to-paragraph",
+      "severity": "major",
+      "evidence": "structure",
       "op": "substitute",
       "path": "/columns[3]/column[1]/paragraph[0]",
-      "producedLine": 16,
+      "producedLine": 7,
       "referenceLine": 15,
-      "produced": "Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Карпера (1932-1991).",
-      "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпера (1932-1991).",
+      "produced": "columns column 11 декабря 2007 г. column Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Кар…",
+      "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпера (1932-1991). — at /columns[2]",
       "verdict": "converter-defect"
     },
     {
-      "id": "711bff2a",
+      "id": "87294078",
       "doc": "news_2007",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
+      "class": "paragraph.missing",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "delete",
       "path": "/columns[4]/column[0]/paragraph[0]",
-      "producedLine": 28,
+      "producedLine": null,
       "referenceLine": 22,
-      "produced": "(none)",
-      "reference": "em:* · strong:*9 декабря 2007 г.",
-      "verdict": "reference-inconsistency"
+      "produced": null,
+      "reference": "9 декабря 2007 г.",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9583880f",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[4]/column[1]/paragraph[0]",
+      "producedLine": 34,
+      "referenceLine": 26,
+      "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге…",
+      "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге и… — produced at /columns[3]/column[1]/paragraph[1]",
+      "verdict": "converter-defect"
     },
     {
       "id": "75c0e5de",
@@ -9476,6 +8345,20 @@
       "referenceLine": 26,
       "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге…",
       "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге и…",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9d100d0c",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[5]/column[0]/paragraph[0]",
+      "producedLine": 46,
+      "referenceLine": 33,
+      "produced": "25 ноября 2007 г.",
+      "reference": "25 ноября 2007 г. — produced at /columns[4]/column[0]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -9493,6 +8376,48 @@
       "verdict": "reference-inconsistency"
     },
     {
+      "id": "20a8ad6d",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[5]/column[1]/paragraph[0]",
+      "producedLine": 52,
+      "referenceLine": 37,
+      "produced": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд поправок и дополнений в ранее размещенные…",
+      "reference": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд поправок и дополнений в ранее размещенные… — produced at /columns[4]/column[1]/paragraph[1]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "5cea924b",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[5]/column[1]/paragraph[1]",
+      "producedLine": 54,
+      "referenceLine": 39,
+      "produced": "В преддверии Нового года стала вновь доступна новогодняя страничка!",
+      "reference": "В преддверии Нового года стала вновь доступна новогодняя страничка! — produced at /columns[4]/column[1]/paragraph[1]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9e73bec8",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[6]/column[0]/paragraph[0]",
+      "producedLine": 66,
+      "referenceLine": 45,
+      "produced": "22 апреля 2007 г.",
+      "reference": "22 апреля 2007 г. — produced at /columns[5]/column[0]/paragraph[1]",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "f3b11eae",
       "doc": "news_2007",
       "class": "emphasis.span",
@@ -9505,6 +8430,20 @@
       "produced": "(none)",
       "reference": "em:* · strong:*22 апреля 2007 г.",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "9a7c4bf8",
+      "doc": "news_2007",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[6]/column[1]/paragraph[0]",
+      "producedLine": 72,
+      "referenceLine": 48,
+      "produced": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слухи о смерти проекта сильно преувеличены\"…",
+      "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — produced at /columns[5]/column[1]/paragraph[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "7ed35ab0",
@@ -9535,59 +8474,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "35105764",
+      "id": "671005bc",
       "doc": "news_2007",
-      "class": "frame.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[6]/column[1]/frame[1]",
-      "producedLine": 86,
-      "referenceLine": 50,
-      "produced": "align center [ сайт фестиваля ]",
-      "reference": "frame frame: black align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — produced at /align[7]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "80a70b6a",
-      "doc": "news_2007",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[6]/column[1]/frame[1]@position",
-      "producedLine": 86,
-      "referenceLine": 50,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "90b4913a",
-      "doc": "news_2007",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[6]/column[1]/frame[1]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 51,
-      "produced": null,
-      "reference": "frame: black",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b8fc8fc0",
-      "doc": "news_2007",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.paragraph-to-frame",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[6]/column[1]/frame[1]/align[1]",
-      "producedLine": 89,
-      "referenceLine": 53,
+      "path": "/columns[6]/column[1]/frame[1]",
+      "producedLine": 92,
+      "referenceLine": 50,
       "produced": "[ сайт фестиваля ]",
-      "reference": "align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — at /columns[6]/column[1]/frame[1]/paragraph[2]",
+      "reference": "frame frame: black align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — at /columns[6]/column[1]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -9598,7 +8495,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[7]/column[0]/paragraph[0]",
-      "producedLine": 96,
+      "producedLine": 104,
       "referenceLine": 71,
       "produced": "(none)",
       "reference": "em:* · strong:*10 апреля 2007 г.",
@@ -9612,7 +8509,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 102,
+      "producedLine": 110,
       "referenceLine": 75,
       "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
       "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
@@ -9626,7 +8523,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[8]/column[0]/paragraph[0]",
-      "producedLine": 114,
+      "producedLine": 122,
       "referenceLine": 81,
       "produced": "(none)",
       "reference": "em:* · strong:*4 марта 2007 г.",
@@ -9640,7 +8537,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[8]/column[1]/paragraph[0]",
-      "producedLine": 120,
+      "producedLine": 128,
       "referenceLine": 85,
       "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
       "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
@@ -9654,7 +8551,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[9]@active",
-      "producedLine": 129,
+      "producedLine": 137,
       "referenceLine": 89,
       "produced": null,
       "reference": "active: 2007",
@@ -9668,7 +8565,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/nav[9]@position",
-      "producedLine": 129,
+      "producedLine": 137,
       "referenceLine": 89,
       "produced": "position: center",
       "reference": null,
@@ -9682,7 +8579,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[9]@title",
-      "producedLine": 129,
+      "producedLine": 137,
       "referenceLine": 89,
       "produced": null,
       "reference": "title: Архив новостей",
@@ -9696,7 +8593,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/nav[9]/list[0]",
-      "producedLine": 132,
+      "producedLine": 140,
       "referenceLine": 93,
       "produced": "[Последние ] [2008–2010 ] [ 2007 ] [2006 ] [2005 ] [2004 ] [2003 ] [2-е полугодие 2002 ] [1-е полугодие 2002 ] [2001 ]",
       "reference": "Последние 2008–2010 2007 2006 2005 2004 2003 2-е полугодие 2002 1-е полугодие 2002 2001 — at /nav[9]/paragraph[1]",

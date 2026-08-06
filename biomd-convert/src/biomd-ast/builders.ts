@@ -260,8 +260,24 @@ export function makeDocument(init: DocumentInit): BiomdDocument {
 // columns / column
 // ---------------------------------------------------------------------------
 
+/**
+ * A `column` may be empty; every other bounded directive may not.
+ *
+ * A column is the one construct whose emptiness carries meaning. It is a *track
+ * position*, and in a grid where thirty rows pair a title with its cover art,
+ * the five rows that have no cover still need their title in the left track —
+ * otherwise those five titles run full-width and stop lining up with the rest.
+ * The empty right column is what holds the place.
+ *
+ * §9.1's "leave a trailing incomplete row ragged; do not pad it with empty
+ * columns" is a different case: it governs a *trailing* row of a multi-child
+ * grid, where padding invents a track the source never had. Here the source
+ * itself has an empty cell, so the empty column reports the grid rather than
+ * padding it. The references settle it — `goya2` emits five of them and
+ * validates with zero errors — and `validate` accepts them, so only this builder
+ * was stricter than both the spec and the target.
+ */
 export function makeColumn(children: BoundedContent[]): BiomdColumn {
-  requireNonEmptyChildren("column", children);
   rejectNested("column", children, ["biomdColumns", "biomdColumn"]);
   return { type: "biomdColumn", children };
 }
