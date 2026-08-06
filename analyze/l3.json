@@ -18,7 +18,7 @@
     ]
   },
   "totals": {
-    "findings": 212,
+    "findings": 214,
     "alignmentRows": 151
   },
   "classes": [
@@ -29,17 +29,17 @@
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 116,
+      "instances": 120,
       "documents": 11
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 25,
+      "instances": 24,
       "documents": 7
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 24,
+      "instances": 23,
       "documents": 9
     }
   ],
@@ -642,7 +642,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[52]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 301,
+      "producedLine": 734,
       "referenceLine": 634,
       "produced": "Francis Goya in Moscow",
       "reference": "Francis Goya in Moscow",
@@ -665,7 +665,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 334,
+      "producedLine": 847,
       "referenceLine": 734,
       "produced": "Noche Latina / Francis Goya & Carmina 1993",
       "reference": "Noche Latina / Goya & Carmina 1993",
@@ -688,7 +688,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[68]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 367,
+      "producedLine": 951,
       "referenceLine": 826,
       "produced": "Галерея инструментальной музыки. Francis Goya",
       "reference": "Галерея инструментальной музыки. Francis Goya",
@@ -711,7 +711,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[68]/column[0]/align[0]/paragraph[1]",
-      "producedLine": 370,
+      "producedLine": 954,
       "referenceLine": 828,
       "produced": "Grand Records, 2001",
       "reference": "Grand Records, 2001",
@@ -734,7 +734,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[72]/heading[0]",
-      "producedLine": 672,
+      "producedLine": 1008,
       "referenceLine": 879,
       "produced": "ДРУГИЕ АЛЬБОМЫ",
       "reference": "Другие альбомы",
@@ -757,7 +757,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[73]/image[0]",
-      "producedLine": 675,
+      "producedLine": 1011,
       "referenceLine": 885,
       "produced": "Bahia Lady / Goya & Carmina",
       "reference": "Bahia Lady / Goya & Carmina 1990",
@@ -780,7 +780,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[73]/image[1]",
-      "producedLine": 684,
+      "producedLine": 1020,
       "referenceLine": 892,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -803,7 +803,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[0]",
-      "producedLine": 691,
+      "producedLine": 1027,
       "referenceLine": 903,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -826,7 +826,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[1]",
-      "producedLine": 698,
+      "producedLine": 1034,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -849,7 +849,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[75]/image[0]",
-      "producedLine": 705,
+      "producedLine": 1041,
       "referenceLine": 921,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -872,7 +872,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[75]/image[1]",
-      "producedLine": 712,
+      "producedLine": 1048,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -905,6 +905,74 @@
       }
     },
     {
+      "id": "7846025f",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[20]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 317,
+      "referenceLine": 265,
+      "produced": "This Is Francis Goya",
+      "reference": "This Is Francis Goya",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "columns>column>align"
+      }
+    },
+    {
+      "id": "ec266f7c",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[28]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 422,
+      "referenceLine": 351,
+      "produced": "The Very Best of Francis Goya (Diamond Star Collection)",
+      "reference": "The Very Best of Francis Goya (Diamond Star Collection)",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "columns>column>align"
+      }
+    },
+    {
+      "id": "014a9fb4",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[44]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 650,
+      "referenceLine": 547,
+      "produced": "The Romantic Guitar of Francis Goya",
+      "reference": "The Romantic Guitar of Francis Goya",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "columns>column>align"
+      }
+    },
+    {
+      "id": "32be86e4",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[48]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 689,
+      "referenceLine": 587,
+      "produced": "Moscow Nights",
+      "reference": "Moscow Nights",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "columns>column>align"
+      }
+    },
+    {
       "id": "91ba47df",
       "doc": "goya2",
       "class": "layout.containment.mismatch",
@@ -912,7 +980,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[52]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 301,
+      "producedLine": 734,
       "referenceLine": 634,
       "produced": "Francis Goya in Moscow",
       "reference": "Francis Goya in Moscow",
@@ -929,12 +997,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[60]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 334,
+      "producedLine": 847,
       "referenceLine": 734,
       "produced": "Noche Latina / Francis Goya & Carmina 1993",
       "reference": "Noche Latina / Goya & Carmina 1993",
       "geometry": {
-        "producedContainer": "columns>column",
+        "producedContainer": "(root)",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -946,7 +1014,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 367,
+      "producedLine": 951,
       "referenceLine": 826,
       "produced": "Галерея инструментальной музыки. Francis Goya",
       "reference": "Галерея инструментальной музыки. Francis Goya",
@@ -963,7 +1031,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[0]/align[0]/paragraph[1]",
-      "producedLine": 370,
+      "producedLine": 954,
       "referenceLine": 828,
       "produced": "Grand Records, 2001",
       "reference": "Grand Records, 2001",
@@ -980,7 +1048,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[72]/heading[0]",
-      "producedLine": 672,
+      "producedLine": 1008,
       "referenceLine": 879,
       "produced": "ДРУГИЕ АЛЬБОМЫ",
       "reference": "Другие альбомы",
@@ -997,7 +1065,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[73]/image[0]",
-      "producedLine": 675,
+      "producedLine": 1011,
       "referenceLine": 885,
       "produced": "Bahia Lady / Goya & Carmina",
       "reference": "Bahia Lady / Goya & Carmina 1990",
@@ -1014,7 +1082,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[73]/image[1]",
-      "producedLine": 684,
+      "producedLine": 1020,
       "referenceLine": 892,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -1031,7 +1099,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[0]",
-      "producedLine": 691,
+      "producedLine": 1027,
       "referenceLine": 903,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -1048,7 +1116,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 698,
+      "producedLine": 1034,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -1065,7 +1133,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[0]",
-      "producedLine": 705,
+      "producedLine": 1041,
       "referenceLine": 921,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -1082,7 +1150,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[1]",
-      "producedLine": 712,
+      "producedLine": 1048,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -1099,30 +1167,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 390,
+      "producedLine": 59,
       "referenceLine": 614,
       "produced": "",
       "reference": "",
       "geometry": {
         "producedLane": 1,
         "referenceLane": 3
-      }
-    },
-    {
-      "id": "9e2645a5",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": 433,
-      "referenceLine": 834,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedLane": 2,
-        "referenceLane": 1
       }
     },
     {
@@ -1133,7 +1184,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[73]/image[1]",
-      "producedLine": 684,
+      "producedLine": 1020,
       "referenceLine": 892,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -1150,7 +1201,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 698,
+      "producedLine": 1034,
       "referenceLine": 910,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya",
@@ -1167,7 +1218,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[75]/image[1]",
-      "producedLine": 712,
+      "producedLine": 1048,
       "referenceLine": 928,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -1184,7 +1235,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 390,
+      "producedLine": 59,
       "referenceLine": 614,
       "produced": "",
       "reference": "",
@@ -1201,30 +1252,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 419,
+      "producedLine": 152,
       "referenceLine": 620,
       "produced": "",
       "reference": "",
       "geometry": {
         "producedRank": 5,
         "referenceRank": 16
-      }
-    },
-    {
-      "id": "5a2ea50d",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[64]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 351,
-      "referenceLine": 771,
-      "produced": "Symphony of Love",
-      "reference": "Symphony of Love",
-      "geometry": {
-        "producedRank": 23,
-        "referenceRank": 21
       }
     },
     {
@@ -1235,7 +1269,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": 433,
+      "producedLine": 215,
       "referenceLine": 834,
       "produced": "",
       "reference": "",
@@ -4090,7 +4124,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 84,
+      "producedLine": 137,
       "referenceLine": 123,
       "text": "Francis Goya Plays His Favourite Hits vol. 1",
       "producedAlignment": "center",
@@ -4103,7 +4137,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 109,
+      "producedLine": 200,
       "referenceLine": 169,
       "text": "Francis Goya Plays His Favourite Hits vol. 2",
       "producedAlignment": "center",
@@ -4116,7 +4150,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 132,
+      "producedLine": 262,
       "referenceLine": 215,
       "text": "Best of Francis Goya",
       "producedAlignment": "center",
@@ -4129,7 +4163,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 149,
+      "producedLine": 317,
       "referenceLine": 265,
       "text": "This Is Francis Goya",
       "producedAlignment": "center",
@@ -4142,7 +4176,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 171,
+      "producedLine": 370,
       "referenceLine": 305,
       "text": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "producedAlignment": "center",
@@ -4155,7 +4189,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 188,
+      "producedLine": 422,
       "referenceLine": 351,
       "text": "The Very Best of Francis Goya (Diamond Star Collection)",
       "producedAlignment": "center",
@@ -4168,7 +4202,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 205,
+      "producedLine": 464,
       "referenceLine": 389,
       "text": "Collection 2000 / Francis Goya",
       "producedAlignment": "center",
@@ -4181,7 +4215,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 224,
+      "producedLine": 525,
       "referenceLine": 440,
       "text": "Magic Moments",
       "producedAlignment": "center",
@@ -4194,7 +4228,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 526,
+      "producedLine": 536,
       "referenceLine": 448,
       "text": "Latin Romance",
       "producedAlignment": "center",
@@ -4207,7 +4241,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 248,
+      "producedLine": 597,
       "referenceLine": 500,
       "text": "Historia De Un Amor",
       "producedAlignment": "center",
@@ -4220,7 +4254,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 267,
+      "producedLine": 650,
       "referenceLine": 547,
       "text": "The Romantic Guitar of Francis Goya",
       "producedAlignment": "center",
@@ -4233,7 +4267,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 284,
+      "producedLine": 689,
       "referenceLine": 587,
       "text": "Moscow Nights",
       "producedAlignment": "center",
@@ -4246,7 +4280,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 390,
+      "producedLine": 59,
       "referenceLine": 614,
       "text": "",
       "producedAlignment": "center",
@@ -4259,7 +4293,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 419,
+      "producedLine": 152,
       "referenceLine": 620,
       "text": "",
       "producedAlignment": "center",
@@ -4272,7 +4306,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 301,
+      "producedLine": 734,
       "referenceLine": 634,
       "text": "Francis Goya in Moscow",
       "producedAlignment": "left",
@@ -4285,7 +4319,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 314,
+      "producedLine": 784,
       "referenceLine": 677,
       "text": "Francis Goya / Rendez-vous",
       "producedAlignment": "center",
@@ -4298,7 +4332,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 599,
+      "producedLine": 795,
       "referenceLine": 685,
       "text": "Golden Collection 8 / Francis Goya",
       "producedAlignment": "center",
@@ -4311,7 +4345,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 334,
+      "producedLine": 847,
       "referenceLine": 734,
       "text": "Noche Latina / Goya & Carmina 1993",
       "producedAlignment": "left",
@@ -4324,7 +4358,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 351,
+      "producedLine": 888,
       "referenceLine": 771,
       "text": "Symphony of Love",
       "producedAlignment": "center",
@@ -4337,7 +4371,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 630,
+      "producedLine": 899,
       "referenceLine": 779,
       "text": "Together / Peter Weekers & Francis Goya",
       "producedAlignment": "center",
@@ -4350,7 +4384,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 367,
+      "producedLine": 951,
       "referenceLine": 826,
       "text": "Галерея инструментальной музыки. Francis Goya",
       "producedAlignment": "left",
@@ -4363,7 +4397,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 370,
+      "producedLine": 954,
       "referenceLine": 828,
       "text": "Grand Records, 2001",
       "producedAlignment": "left",
@@ -4376,7 +4410,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 433,
+      "producedLine": 215,
       "referenceLine": 834,
       "text": "",
       "producedAlignment": "center",
@@ -4389,7 +4423,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 672,
+      "producedLine": 1008,
       "referenceLine": 879,
       "text": "Другие альбомы",
       "producedAlignment": "left",
@@ -4402,7 +4436,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 675,
+      "producedLine": 1011,
       "referenceLine": 885,
       "text": "Bahia Lady / Goya & Carmina 1990",
       "producedAlignment": "center",
@@ -4415,7 +4449,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 684,
+      "producedLine": 1020,
       "referenceLine": 892,
       "text": "Francis Goya",
       "producedAlignment": "center",
@@ -4428,7 +4462,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 691,
+      "producedLine": 1027,
       "referenceLine": 903,
       "text": "Festival Latino / Goya & Carmina 1994",
       "producedAlignment": "center",
@@ -4441,7 +4475,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 698,
+      "producedLine": 1034,
       "referenceLine": 910,
       "text": "Francis Goya",
       "producedAlignment": "center",
@@ -4454,7 +4488,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 705,
+      "producedLine": 1041,
       "referenceLine": 921,
       "text": "Together / Richard Clayderman & Francis Goya",
       "producedAlignment": "center",
@@ -4467,7 +4501,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 712,
+      "producedLine": 1048,
       "referenceLine": 928,
       "text": "Maria Padilha",
       "producedAlignment": "center",

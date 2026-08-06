@@ -1969,10 +1969,26 @@ function layoutFrom(
     // images and ledger entries stayed behind — the conservation gate then
     // reported the whole region's targets twice as "unexpected".
     const snapshot = begin(ctx);
-    const columns = [];
-    for (let c = 0; c < grid.cols; c += 1) {
-      const cells = [];
-      for (let r = 0; r < grid.rows; r += 1) {
+    const regions: BiomdContent[] = [];
+    let lanedRows = 0;
+
+    // One region per **row**, not one region spanning the table.
+    //
+    // A multi-row layout grid pairs its cells horizontally: row 4 column 1 is
+    // the album title whose cover is row 4 column 2. Concatenating each grid
+    // column into a single lane preserves the two-lane *look* and destroys
+    // every one of those pairings — on `goya2` it turned 34 catalog rows into
+    // two 34-entry lanes, so the first album's title sat 33 entries above its
+    // own cover. `CLAUDE.md` §5 names the fix as legitimate: splitting a
+    // multi-column region into several small regions to preserve the pairing is
+    // the intended reading, and the references do exactly that (34 `::: columns`
+    // on `goya2`, one per row).
+    //
+    // With `rows === 1` this is identical to the column-wise construction, so a
+    // genuine two-lane page layout — article beside sidebar — is unaffected.
+    for (let r = 0; r < grid.rows; r += 1) {
+      const columns = [];
+      for (let c = 0; c < grid.cols; c += 1) {
         const slot = grid.slots[r]?.[c];
         if (!slot?.isOrigin) continue;
         const cell = grid.cells.find((x) => x.id === slot.originId);
@@ -1980,11 +1996,22 @@ function layoutFrom(
         ctx.boundedDepth += 1;
         const inner = blocksFrom(cell.node, ctx);
         ctx.boundedDepth -= 1;
-        cells.push(...inner.filter(isBounded));
+        const cells = inner.filter(isBounded);
+        if (cells.length > 0) columns.push(makeColumn(cells));
       }
-      if (cells.length > 0) columns.push(makeColumn(cells));
+      if (columns.length >= 2) {
+        regions.push(makeColumns({ children: columns, profile: ctx.options.profile }));
+        lanedRows += 1;
+        continue;
+      }
+      // A row with one populated cell is not a two-lane region — a spanning
+      // heading, a spacer row, a footnote under the grid. Its content belongs in
+      // the flow, and wrapping it in a one-lane `columns` would claim a layout
+      // the author did not draw.
+      for (const column of columns) regions.push(...(column.children as BiomdContent[]));
     }
-    if (columns.length >= 2 && columns.length <= 3) {
+
+    if (lanedRows > 0) {
       ctx.ledger.push(emitted(el.id, nextId(ctx, "columns"), { confidence: classification.confidence }));
       ctx.tables.push({
         tableId: el.id,
@@ -1992,7 +2019,7 @@ function layoutFrom(
         emittedTable: false,
         failure: "emitted-as-columns",
       });
-      return [makeColumns({ children: columns, profile: ctx.options.profile })];
+      return regions;
     }
     rollback(ctx, snapshot);
   }
