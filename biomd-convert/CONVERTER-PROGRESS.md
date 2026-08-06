@@ -1798,3 +1798,132 @@ findings, still uncalibrated.
 **Development corpus frozen here.** The thirteen pairs are the regression corpus
 from this point; the next work is generalization measured on unseen pages, not
 further tuning against these.
+
+## 16. Blind generalization check — 10 unseen pages (2026-08-06)
+
+Ten new sources landed in `fixtures/html/` with no references. Converted with the
+frozen rule set, no reference read, **no `corpus scan`** — rebuilding the lexicon
+from 23 files would have changed behaviour on the 13 and destroyed the test.
+
+**Regression first: the 13 outputs are byte-identical with the 10 new inputs
+present.** No cross-contamination through the shared corpus profile.
+
+### 16.1 The gates all held
+
+| gate | result |
+|---|---|
+| crashes / `FAILED` conversions | **0 of 10** |
+| `biomd-ast/read()` warnings on output | **0 on all 10** |
+| `biomd validate` (spec profile, standalone) | 9 of 10 clean; `new_rechin4` 2 × `line-too-long` |
+| links lost (`conservation.targets.missing`) | **0 on all 10** |
+| images lost (`conservation.images.missing`) | **0 on all 10** |
+| words lost | **0 on all 10** |
+| diagnostic error *codes* | only `table-header-empty`, `complexity-budget`, `line-too-long` — the same three the 13 produce |
+| review escalation *kinds* | same categories as the 13; "no decisive evidence either way" dominates both |
+
+Every one of the ten got exactly **one `# ` masthead**. Encoding detection, chrome
+removal, link and image conservation and emitter conformance generalize without
+qualification. Nothing in the new set produced a failure mode the 13 had not
+already produced.
+
+### 16.2 `conservation.text.recall` is not a content-loss measure
+
+`new_lagq2` reported **45.3 %** recall — worse than anything in the 13 — with
+**zero** words, links or images missing. The metric is built on word shingles,
+and every shingle straddling a block boundary breaks when the converter splits a
+run. `lagq2`'s source writes each track as its own unclosed `<p class="t">`, the
+converter emits each as its own paragraph — faithfully — and the shingles
+spanning title into track list all miss.
+
+The number therefore measures *how similar the block structure stayed*, not how
+much content survived. On the 13 it never fell below 94 % because their block
+structure happens to sit close to the shingling's assumption. **Read
+`targets.missing`, `images.missing` and a word-level check before believing a
+recall figure**; a low recall with those three at zero is a restructuring, not a
+loss.
+
+### 16.3 One genuinely new archetype: the per-composer media catalogue
+
+`new_karta` and `new_karta5` are a combined audio/score catalogue — "сводный
+каталог аудио, нот и табулатур" — and they are the **multi-column media/score
+table** archetype at a scale the 13 never showed. Measured in the browser at
+1024 px, `new_karta5` renders 21 multi-column tables:
+
+| rows per table | 1 | 2 | 3 | 4 | 7 | 11 | 20 |
+|---|---|---|---|---|---|---|---|
+| tables | **12** | 2 | 2 | 2 | 1 | 1 | 1 |
+
+Twelve of the twenty-one are **single-row** — one composer, one work, one format
+link (title cell 405 px left-aligned, link cell 45 px centred). The table path
+classifies them DATA and then refuses them: 7 × "classified DATA but not
+representable as a table (too-small)", 3 × "unrepresentable", 1 × "too-many".
+Corpus-wide the new set emits **8 of 28** DATA-classified tables as tables, and
+the shortfall is concentrated here — `new_karta5` 4/15, `new_karta` 3/6.
+
+What the rows become instead is `::: align position: center` around the title and
+the link as separate paragraphs. `new_karta5` carries **39 `::: align`**
+directives, more than any of the 13 (`goya2` has 26), and L3's source-backing
+column reports **21 of them with no distinctive source alignment at all** — the
+title cell computes `start`, not centre.
+
+The fix direction is already sanctioned: §5's corpus facts say "vertically
+aligned blocks in a multi-column region are semantically paired, and splitting
+such a region into several small tables to preserve that pairing is legitimate".
+The guard rejecting a one-row media table is the thing to revisit, not the
+pairing.
+
+### 16.4 A false friend for §12.2, and it is a symptom
+
+`new_dyens` emits three block quotes — `Tango En Skaï`, `Valse En Skaï`,
+`Libra Sonatine`. All three are **work titles in a media table**, and §3.5
+excludes them by name: "do not turn titles … into a block quote".
+
+The page has exactly one `<blockquote>` in the source — the biography paragraph —
+and §14.2's rule correctly declined it. These three came from §12.2's
+italic-recurrence rule: the title column is `<p class="l">`, the stylesheet sets
+that italic, three of them recur, and `groupSubordinatedRuns` wraps each.
+
+**The root cause is upstream.** The media table was not emitted as a table
+(`tables=0/1`), so its title cell was lowered as loose prose and only then met a
+rule that reads computed italic. §5's own instruction applies — "check the
+routing and grouping stages above it first: a false friend that exists only
+because an earlier stage failed is a symptom" — so this is the same defect as
+§16.3, seen one stage later. Guarding the quote rule against italic titles would
+cement the table failure and hide it.
+
+### 16.5 Two smaller findings
+
+- **`new_rechin4`** — 2 × `line-too-long` (4156 and 2850 characters against a
+  2200 ceiling) and only 11 paragraphs for a 33 KB source. Under-segmentation:
+  whole sections are landing in single paragraphs. The only validation *error*
+  class the new set raises that the 13 raise just once.
+- **`new_geyzel04`** — nesting depth 4 against a budget of 3, and 48 review items
+  ("no decisive evidence either way"), three times the highest in the 13
+  (`segovia` 19). Volume, not kind.
+
+### 16.6 Archetype mapping
+
+| page | archetype | new? |
+|---|---|---|
+| `new_bach`, `new_blackmore`, `new_kolpakov`, `new_lendle2` | masthead + prose with bound figures | known |
+| `new_dyens`, `new_lagq2` | prose + multi-column media/score table | known shape, table path declines |
+| `new_geyzel04`, `new_rechin4` | long-form prose, deep nesting | known, at new depth/length |
+| `new_karta`, `new_karta5` | **per-composer media catalogue** — many one-row tables | **new scale of a known archetype** |
+
+None announced itself as wholly unmapped. The one that stresses the catalog is
+the catalogue page, and it stresses a *guard* rather than a missing detector.
+
+### 16.7 What this says about generalization
+
+The deterministic front half — encoding, chrome, masthead, figures, links,
+conservation — generalizes. The emitter generalizes absolutely: 10/10 with zero
+`read()` warnings and zero validation warnings.
+
+What does not generalize is **one guard and one threshold**: the minimum size a
+DATA table must reach to be emitted as a table. Every high-value defect in this
+blind set traces to it, including the §12.2 false friend, which exists only
+downstream of it. That is a better outcome than a scattered failure — it is one
+mechanism, it is already described in `CLAUDE.md` §5's corpus facts, and it can
+be measured on `new_karta5` without touching the 13.
+
+Outputs preserved before any comparison, for the reference step.
