@@ -445,6 +445,33 @@ describe("L3 comparator", () => {
     expect(result.findings.filter((f) => f.class === "layout.align.mismatch")).toEqual([]);
   });
 
+  it("anchors a rule to its neighbours instead of pairing rules by ordinal", () => {
+    // A `---` carries no text, so every rule on a page has the same pair key.
+    // Pairing them in document order makes one extra rule near the top shift
+    // every rule after it, and each shift is reported as a move. On `news` that
+    // manufactured 26 order findings out of a five-rule difference; the same
+    // offset then reappeared as rank drift on the text blocks between them.
+    const withRules = (extra: boolean) => {
+      const blocks: BlockGeometry[] = [];
+      let y = 0;
+      const add = (text: string, kind = "paragraph") => {
+        blocks.push(block({ path: `/${kind}[${blocks.length}]`, kind, text, textLength: text.length, box: { x: 0, y, w: 700, h: 20 } }));
+        y += 40;
+      };
+      if (extra) add("", "break");
+      add("первая запись");
+      add("", "break");
+      add("вторая запись");
+      add("", "break");
+      add("третья запись");
+      return page(blocks);
+    };
+    const result = compareRendered({ doc: "d", produced: withRules(true), reference: withRules(false), source: null });
+    // The three text blocks pair on their own evidence and sit in the same
+    // relative order on both sides, so nothing has moved past anything.
+    expect(result.findings.filter((f) => f.class === "layout.order.mismatch")).toEqual([]);
+  });
+
   it("reports containment by the chain of block kinds, not by path index", () => {
     const wrapped = surface();
     wrapped.blocks.push(block({ path: "/columns[2]", kind: "columns", text: "" }));

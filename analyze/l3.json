@@ -18,18 +18,18 @@
     ]
   },
   "totals": {
-    "findings": 310,
-    "alignmentRows": 153
+    "findings": 260,
+    "alignmentRows": 151
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 49,
+      "instances": 47,
       "documents": 9
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 123,
+      "instances": 121,
       "documents": 11
     },
     {
@@ -39,8 +39,8 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 75,
-      "documents": 9
+      "instances": 29,
+      "documents": 8
     }
   ],
   "findings": [
@@ -1891,278 +1891,6 @@
       }
     },
     {
-      "id": "a09acddd",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[19]",
-      "producedLine": 336,
-      "referenceLine": 259,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 123,
-        "referenceRank": 119
-      }
-    },
-    {
-      "id": "1300a4ae",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[21]",
-      "producedLine": 370,
-      "referenceLine": 272,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 144,
-        "referenceRank": 121
-      }
-    },
-    {
-      "id": "ea828b9c",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[23]",
-      "producedLine": 398,
-      "referenceLine": 299,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 146,
-        "referenceRank": 142
-      }
-    },
-    {
-      "id": "60de1482",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[25]",
-      "producedLine": 437,
-      "referenceLine": 320,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 166,
-        "referenceRank": 144
-      }
-    },
-    {
-      "id": "36836330",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[27]",
-      "producedLine": 469,
-      "referenceLine": 345,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 185,
-        "referenceRank": 163
-      }
-    },
-    {
-      "id": "7a5dfec6",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[29]",
-      "producedLine": 496,
-      "referenceLine": 358,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 187,
-        "referenceRank": 165
-      }
-    },
-    {
-      "id": "c871f723",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[31]",
-      "producedLine": 533,
-      "referenceLine": 383,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 211,
-        "referenceRank": 184
-      }
-    },
-    {
-      "id": "f356f17d",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[33]",
-      "producedLine": 561,
-      "referenceLine": 404,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 214,
-        "referenceRank": 186
-      }
-    },
-    {
-      "id": "147461b7",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[35]",
-      "producedLine": 609,
-      "referenceLine": 434,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 249,
-        "referenceRank": 210
-      }
-    },
-    {
-      "id": "3eb9f851",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[37]",
-      "producedLine": 638,
-      "referenceLine": 453,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 251,
-        "referenceRank": 213
-      }
-    },
-    {
-      "id": "2f31807b",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[39]",
-      "producedLine": 677,
-      "referenceLine": 494,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 271,
-        "referenceRank": 248
-      }
-    },
-    {
-      "id": "72b759c4",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[41]",
-      "producedLine": 718,
-      "referenceLine": 515,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 293,
-        "referenceRank": 250
-      }
-    },
-    {
-      "id": "9d120b16",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[43]",
-      "producedLine": 758,
-      "referenceLine": 541,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 308,
-        "referenceRank": 269
-      }
-    },
-    {
-      "id": "be1a6098",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[45]",
-      "producedLine": 780,
-      "referenceLine": 554,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 310,
-        "referenceRank": 271
-      }
-    },
-    {
-      "id": "e91475aa",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[47]",
-      "producedLine": 808,
-      "referenceLine": 581,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 325,
-        "referenceRank": 292
-      }
-    },
-    {
-      "id": "0b59ffac",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[49]",
-      "producedLine": 837,
-      "referenceLine": 594,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 328,
-        "referenceRank": 294
-      }
-    },
-    {
       "id": "66ae10d4",
       "doc": "goya2",
       "class": "layout.order.mismatch",
@@ -2176,7 +1904,7 @@
       "reference": "",
       "geometry": {
         "producedRank": 3,
-        "referenceRank": 298
+        "referenceRank": 291
       }
     },
     {
@@ -2192,8 +1920,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 56,
-        "referenceRank": 301
+        "producedRank": 55,
+        "referenceRank": 294
       }
     },
     {
@@ -2204,64 +1932,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[51]",
-      "producedLine": 887,
+      "producedLine": 165,
       "referenceLine": 628,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 360,
-        "referenceRank": 311
-      }
-    },
-    {
-      "id": "f3d6dfd7",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[53]",
-      "producedLine": 918,
-      "referenceLine": 649,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 378,
-        "referenceRank": 313
-      }
-    },
-    {
-      "id": "d17c3b1d",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[55]",
-      "producedLine": 946,
-      "referenceLine": 671,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 381,
-        "referenceRank": 328
-      }
-    },
-    {
-      "id": "a911a9c3",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[57]",
-      "producedLine": 989,
-      "referenceLine": 690,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 411,
-        "referenceRank": 331
+        "producedRank": 56,
+        "referenceRank": 304
       }
     },
     {
@@ -2277,59 +1954,8 @@
       "produced": "15. Ne Me Quite Pas",
       "reference": "15. Ne Me Quite Pas",
       "geometry": {
-        "producedRank": 358,
-        "referenceRank": 346
-      }
-    },
-    {
-      "id": "857b6389",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[59]",
-      "producedLine": 1014,
-      "referenceLine": 728,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 414,
-        "referenceRank": 362
-      }
-    },
-    {
-      "id": "c876f3ca",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[61]",
-      "producedLine": 1072,
-      "referenceLine": 741,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 444,
-        "referenceRank": 364
-      }
-    },
-    {
-      "id": "9d7e71b8",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[63]",
-      "producedLine": 1088,
-      "referenceLine": 765,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 447,
-        "referenceRank": 382
+        "producedRank": 356,
+        "referenceRank": 339
       }
     },
     {
@@ -2345,8 +1971,25 @@
       "produced": "",
       "reference": "",
       "geometry": {
+        "producedRank": 76,
+        "referenceRank": 409
+      }
+    },
+    {
+      "id": "61b76a72",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[69]",
+      "producedLine": 232,
+      "referenceLine": 842,
+      "produced": "",
+      "reference": "",
+      "geometry": {
         "producedRank": 77,
-        "referenceRank": 415
+        "referenceRank": 411
       }
     },
     {
@@ -2497,29 +2140,6 @@
         "referenceAlign": "center",
         "producedRaw": "start",
         "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "1531f795",
-      "doc": "kiselev",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[19]/break[0]",
-      "producedLine": 196,
-      "referenceLine": 247,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "right",
-        "producedRaw": "start",
-        "referenceRaw": "right",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
         "producedProse": "left",
@@ -2714,23 +2334,6 @@
       }
     },
     {
-      "id": "b0b6bda0",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[19]/break[0]",
-      "producedLine": 196,
-      "referenceLine": 247,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
       "id": "c87acaa9",
       "doc": "kiselev",
       "class": "layout.lane.mismatch",
@@ -2782,40 +2385,6 @@
       }
     },
     {
-      "id": "720a8cc8",
-      "doc": "kiselev",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[15]",
-      "producedLine": 145,
-      "referenceLine": 201,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 21,
-        "referenceRank": 25
-      }
-    },
-    {
-      "id": "9da2729a",
-      "doc": "kiselev",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[17]",
-      "producedLine": 155,
-      "referenceLine": 208,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 23,
-        "referenceRank": 27
-      }
-    },
-    {
       "id": "c6686268",
       "doc": "kiselev",
       "class": "layout.order.mismatch",
@@ -2828,25 +2397,8 @@
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "geometry": {
-        "producedRank": 31,
+        "producedRank": 30,
         "referenceRank": 29
-      }
-    },
-    {
-      "id": "4a99194c",
-      "doc": "kiselev",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[19]/break[0]",
-      "producedLine": 196,
-      "referenceLine": 247,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 27,
-        "referenceRank": 32
       }
     },
     {
@@ -3068,29 +2620,6 @@
       "referenceLine": 277,
       "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
       "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и пр…",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "285dcf7a",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[54]/align[1]/break[3]",
-      "producedLine": 211,
-      "referenceLine": 281,
-      "produced": "",
-      "reference": "",
       "geometry": {
         "producedAlign": "left",
         "referenceAlign": "center",
@@ -3507,23 +3036,6 @@
       }
     },
     {
-      "id": "12171c69",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[54]/align[1]/break[3]",
-      "producedLine": 211,
-      "referenceLine": 281,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
       "id": "461e7afd",
       "doc": "news",
       "class": "layout.containment.mismatch",
@@ -3655,7 +3167,7 @@
       "produced": "frame: black",
       "reference": "frame: black",
       "geometry": {
-        "producedRank": 52,
+        "producedRank": 47,
         "referenceRank": 13
       }
     },
@@ -3672,7 +3184,7 @@
       "produced": "frame: black",
       "reference": "frame: black",
       "geometry": {
-        "producedRank": 58,
+        "producedRank": 52,
         "referenceRank": 18
       }
     },
@@ -3723,7 +3235,7 @@
       "produced": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
       "reference": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
       "geometry": {
-        "producedRank": 30,
+        "producedRank": 29,
         "referenceRank": 30
       }
     },
@@ -3740,7 +3252,7 @@
       "produced": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
       "reference": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
       "geometry": {
-        "producedRank": 33,
+        "producedRank": 31,
         "referenceRank": 32
       }
     },
@@ -3757,7 +3269,7 @@
       "produced": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
       "reference": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
       "geometry": {
-        "producedRank": 36,
+        "producedRank": 33,
         "referenceRank": 34
       }
     },
@@ -3774,7 +3286,7 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 37,
+        "producedRank": 34,
         "referenceRank": 38
       }
     },
@@ -3791,127 +3303,8 @@
       "produced": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
       "reference": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
       "geometry": {
-        "producedRank": 42,
-        "referenceRank": 39
-      }
-    },
-    {
-      "id": "1e308cb5",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[36]",
-      "producedLine": 96,
-      "referenceLine": 169,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 29,
-        "referenceRank": 44
-      }
-    },
-    {
-      "id": "430db560",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[39]",
-      "producedLine": 107,
-      "referenceLine": 180,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 32,
-        "referenceRank": 47
-      }
-    },
-    {
-      "id": "937cdc69",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[43]",
-      "producedLine": 118,
-      "referenceLine": 210,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 35,
-        "referenceRank": 52
-      }
-    },
-    {
-      "id": "4819d595",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[47]",
-      "producedLine": 129,
-      "referenceLine": 241,
-      "produced": "",
-      "reference": "",
-      "geometry": {
         "producedRank": 38,
-        "referenceRank": 58
-      }
-    },
-    {
-      "id": "8a0912c8",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[53]",
-      "producedLine": 182,
-      "referenceLine": 263,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 51,
-        "referenceRank": 64
-      }
-    },
-    {
-      "id": "f504e15d",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[54]/align[1]/break[3]",
-      "producedLine": 211,
-      "referenceLine": 281,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 57,
-        "referenceRank": 68
-      }
-    },
-    {
-      "id": "67c388c6",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[55]",
-      "producedLine": 230,
-      "referenceLine": 290,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 62,
-        "referenceRank": 70
+        "referenceRank": 39
       }
     },
     {
@@ -3927,59 +3320,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 43,
-        "referenceRank": 72
-      }
-    },
-    {
-      "id": "3ea60bf4",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[57]",
-      "producedLine": 242,
-      "referenceLine": 308,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 65,
-        "referenceRank": 73
-      }
-    },
-    {
-      "id": "4b802670",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[62]",
-      "producedLine": 255,
-      "referenceLine": 330,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 69,
-        "referenceRank": 78
-      }
-    },
-    {
-      "id": "2a763dee",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[64]",
-      "producedLine": 281,
-      "referenceLine": 344,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 74,
-        "referenceRank": 80
+        "producedRank": 39,
+        "referenceRank": 68
       }
     },
     {
@@ -3995,8 +3337,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 76,
-        "referenceRank": 82
+        "producedRank": 69,
+        "referenceRank": 77
       }
     },
     {
@@ -4012,178 +3354,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 77,
-        "referenceRank": 83
-      }
-    },
-    {
-      "id": "f4c44c0b",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[70]",
-      "producedLine": 306,
-      "referenceLine": 375,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 80,
-        "referenceRank": 87
-      }
-    },
-    {
-      "id": "1f0b75a5",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[72]",
-      "producedLine": 318,
-      "referenceLine": 382,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 83,
-        "referenceRank": 89
-      }
-    },
-    {
-      "id": "3f89821f",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[74]",
-      "producedLine": 325,
-      "referenceLine": 385,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 85,
-        "referenceRank": 91
-      }
-    },
-    {
-      "id": "6b0c4d39",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[76]",
-      "producedLine": 335,
-      "referenceLine": 388,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 87,
-        "referenceRank": 93
-      }
-    },
-    {
-      "id": "8d66f1f3",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[78]",
-      "producedLine": 347,
-      "referenceLine": 391,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 90,
-        "referenceRank": 95
-      }
-    },
-    {
-      "id": "1495fcb4",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[80]",
-      "producedLine": 351,
-      "referenceLine": 394,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 92,
-        "referenceRank": 97
-      }
-    },
-    {
-      "id": "402c4f86",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[82]",
-      "producedLine": 355,
-      "referenceLine": 398,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 94,
-        "referenceRank": 99
-      }
-    },
-    {
-      "id": "f619257f",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[85]",
-      "producedLine": 359,
-      "referenceLine": 406,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 96,
-        "referenceRank": 100
-      }
-    },
-    {
-      "id": "add6735c",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[88]",
-      "producedLine": 363,
-      "referenceLine": 414,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 98,
-        "referenceRank": 101
-      }
-    },
-    {
-      "id": "fd6c4475",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[90]",
-      "producedLine": 367,
-      "referenceLine": 418,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 100,
-        "referenceRank": 103
+        "producedRank": 70,
+        "referenceRank": 78
       }
     },
     {
@@ -4988,23 +4160,6 @@
       }
     },
     {
-      "id": "2301c219",
-      "doc": "pavlov_azancheev",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[4]",
-      "producedLine": 24,
-      "referenceLine": 13,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 6,
-        "referenceRank": 4
-      }
-    },
-    {
       "id": "66e0de22",
       "doc": "segovia",
       "class": "layout.align.mismatch",
@@ -5478,23 +4633,6 @@
       }
     },
     {
-      "id": "6e2101a1",
-      "doc": "tarrega",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[6]",
-      "producedLine": 116,
-      "referenceLine": 21,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 21,
-        "referenceRank": 6
-      }
-    },
-    {
       "id": "c1c930dd",
       "doc": "tarrega",
       "class": "layout.order.mismatch",
@@ -5508,7 +4646,7 @@
       "reference": "Франсиско Таррега",
       "geometry": {
         "producedRank": 7,
-        "referenceRank": 10
+        "referenceRank": 9
       }
     },
     {
@@ -6327,19 +5465,6 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 196,
-      "referenceLine": 247,
-      "text": "",
-      "producedAlignment": "left",
-      "referenceAlignment": "right",
-      "sourceTextAlignRaw": null,
-      "sourceAlignment": "unknown",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": null
-    },
-    {
-      "doc": "kiselev",
       "producedLine": 229,
       "referenceLine": 248,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
@@ -6714,19 +5839,6 @@
       "sourceProse": "left",
       "sourceDistinctive": false,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[35]/td[1]"
-    },
-    {
-      "doc": "news",
-      "producedLine": 211,
-      "referenceLine": 281,
-      "text": "",
-      "producedAlignment": "left",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": null,
-      "sourceAlignment": "unknown",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": null
     },
     {
       "doc": "news",

@@ -862,3 +862,89 @@ ledger burying `columns.missing` in the ceiling — but an emphasis span the
 reference deleted is not layout, and until it is settled the enumerated-list rule
 cannot be landed.
 
+## 9. Evaluation policy corrected (2026-08-06)
+
+`CLAUDE.md` §4 now defines four verdicts and this section records what changed
+under them. Only `converter-defect` is work.
+
+### 9.1 Three corrections to `triage()`
+
+1. **`evidence: "structure"` returned actionable unconditionally.** Right for
+   layout — wrapping, splitting and separating invent no text — and wrong for
+   *presentation*. An emphasis span and a hard break are claims about how content
+   is spelled, and go through attestation.
+2. **Only the reference side was tested.** When the produced side is attested and
+   the reference side is not, the reference is what moved.
+3. **`emphasis.span` folds to identical words on both sides**, so no prose test
+   can decide it. `SourceIndex` now indexes the source's own `<i>`/`<b>` runs —
+   the one piece of presentation the source states outright.
+
+A fourth followed from re-baselining: when **both sides fold to the same
+content**, no content class may call it a defect. Excluded are the classes that
+are *about* a folded feature (hyphenation, typography, whitespace, case), since
+fold-equality is the very thing they report.
+
+Two of my own verdicts were wrong and the re-baseline caught them, both now with
+contracts: a *thematic* break is layout, not presentation (matching `break`
+alongside `hardbreak` put all 36 `break.missing` on the ceiling, the opposite of
+what `analyze.md` asks for); and a `.caption-echo` sub-class already names where
+the reference keeps the text, so emitting it twice is duplication, not a question.
+
+| | findings | converter-defect | ambiguous | reference-inconsistency |
+|---|---:|---:|---:|---:|
+| before | 613 | 501 | 80 | 32 |
+| after | 613 | 400 | 139 | 74 |
+
+Findings unchanged — the instrument re-verdicts, it does not add or remove.
+
+`acceptable-alternative` is **never** returned by `triage()`, by design: it means
+visually equal or better, and a text test cannot see a rendering. It is reachable
+only from L3 geometry or an L4 judgement.
+
+### 9.2 Two decisions the user made authoritative
+
+Both were put as side-by-side comparisons; both resolved in favour of the source
+over the reference, and **neither requires converter work**.
+
+- **Track durations.** Source `<i>4.07</i>`, reference `— 4.07`, produced
+  `*4.07*`. **The source's emphasis is authoritative.** The author marked it up;
+  converting it to a dash is a typographic rewrite of source markup. The
+  reference's em-dash is `reference-inconsistency` and excluded from targets.
+  25 instances on `goya2`, and the same shape recurs on other discography pages.
+- **List item numbering.** Reference `- 01. Love Story`, produced
+  `- 01\. Love Story`. **The escape stays.** The reference's form is ambiguous
+  CommonMark — a reader may take `01.` as opening a nested ordered list — and the
+  two parse to identical text. ~380 items on `goya2` alone.
+
+### 9.3 L3 rule pairing — the instrument debt, cleared
+
+L3 rose 230 → 310 across three accepted converter changes while L2 fell. The
+cause was the instrument, not the converter: a `---` carries no text, so every
+rule on a page has the same pair key, and both pairing passes fell back to
+**ordinal** order — produced rule 12 against reference rule 12. One extra rule
+near the top shifted every rule after it, and each shift was reported as a move.
+On `news`, 26 of 32 order findings *were the rules*.
+
+Textless blocks are now held out of both passes and paired in a third, by their
+**anchors**: two rules correspond when the nearest already-paired block above
+each is the same pair. That is the only claim a rule can make, and it is the one
+a reader checks — is there a line between this entry and the next.
+
+L3 **310 → 260**, `layout.order.mismatch` **75 → 29**. Identity still 0 over all
+13, output still byte-identical across runs.
+
+### 9.4 State
+
+| rung | value |
+|---|---|
+| L0 | 317 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 89.1 |
+| L2 | 679 findings — **390 converter-defect** · 178 ambiguous · 111 reference-inconsistency |
+| L3 | 260 findings, identity 0, deterministic |
+
+**Next, in order.** (a) `borislova` and `jovicic` emit 0 `::: columns` where the
+references have 2 and 1 — traced to their inner 1×2 record-card grids never
+reaching `layoutFrom`, and this is also the blocker for centre alignment.
+(b) Centre alignment, once (a) lands. (c) `news` still draws 30 rules to the
+reference's 25. (d) The 0.5–0.95 ambiguous corridor and the 0.65 reconciliation
+constant remain uncalibrated, now over 178 ambiguous findings.

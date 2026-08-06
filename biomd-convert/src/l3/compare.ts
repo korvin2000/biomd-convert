@@ -259,14 +259,23 @@ function pairBlocks(produced: readonly BlockGeometry[], reference: readonly Bloc
   const pairs: Pair[] = [];
 
   // Pass 1 — exact normalized text within the same kind family, in order.
+  //
+  // Textless blocks are held back. A `---` has no identity of its own: every
+  // rule on the page carries the same key, so pairing them here pairs them by
+  // *ordinal* — produced rule 12 against reference rule 12 — and one extra rule
+  // near the top shifts every rule after it. On `news` that manufactured 26
+  // order findings out of a five-rule count difference, and the same offset then
+  // showed up again as rank drift on the text blocks between them.
   const byKey = new Map<string, number[]>();
   produced.forEach((b, i) => {
+    if (isAnchorless(b)) return;
     const key = pairKey(b);
     const list = byKey.get(key);
     if (list) list.push(i);
     else byKey.set(key, [i]);
   });
   reference.forEach((r, j) => {
+    if (isAnchorless(r)) return;
     const list = byKey.get(pairKey(r));
     if (!list) return;
     const i = list.find((idx) => !takenP.has(idx));
@@ -278,8 +287,11 @@ function pairBlocks(produced: readonly BlockGeometry[], reference: readonly Bloc
 
   // Pass 2 — copyedited text: the same block under a rewritten label. Greedy on
   // the best score, which is stable because ties break on index.
-  const restP = produced.map((b, i) => ({ b, i })).filter(({ i }) => !takenP.has(i));
-  const restR = reference.map((b, j) => ({ b, j })).filter(({ j }) => !takenR.has(j));
+  // Textless blocks are held back here too: `similarity("", "")` is 1.0, so a
+  // greedy best-score pass pairs every rule with every other rule and falls
+  // straight back to ordinal order — the very thing pass 3 exists to avoid.
+  const restP = produced.map((b, i) => ({ b, i })).filter(({ b, i }) => !takenP.has(i) && !isAnchorless(b));
+  const restR = reference.map((b, j) => ({ b, j })).filter(({ b, j }) => !takenR.has(j) && !isAnchorless(b));
   const cands: Array<{ i: number; j: number; s: number }> = [];
   for (const { b: rb, j } of restR) {
     for (const { b: pb, i } of restP) {
@@ -296,6 +308,45 @@ function pairBlocks(produced: readonly BlockGeometry[], reference: readonly Bloc
     pairs.push({ produced: produced[c.i]!, reference: reference[c.j]! });
   }
 
+  // Pass 3 — textless blocks, anchored to their neighbours.
+  //
+  // A separator's identity is *what it sits between*, so two rules correspond
+  // when the nearest already-paired block above each is the same pair. That is
+  // the only claim a rule can make, and it is exactly the claim a reader checks:
+  // "is there a line between this entry and the next one". Rules with no
+  // matching anchor stay unpaired and become L2's question, which is where
+  // presence belongs.
+  const anchorP = anchorsBefore(produced, takenP);
+  const anchorR = anchorsBefore(reference, takenR);
+  const pairedAnchor = new Map<number, number>();
+  {
+    // Reference-side anchor index → produced-side anchor index, via the pairs
+    // already established. Both sides walk their own arrays, so the two index
+    // spaces have to be bridged before anchors can be compared.
+    const producedIndexOf = new Map<BlockGeometry, number>();
+    produced.forEach((b, i) => producedIndexOf.set(b, i));
+    const referenceIndexOf = new Map<BlockGeometry, number>();
+    reference.forEach((b, j) => referenceIndexOf.set(b, j));
+    for (const p of pairs) {
+      if (!p.produced || !p.reference) continue;
+      pairedAnchor.set(referenceIndexOf.get(p.reference)!, producedIndexOf.get(p.produced)!);
+    }
+  }
+
+  const freeTextlessP = produced.map((b, i) => ({ b, i })).filter(({ b, i }) => isAnchorless(b) && !takenP.has(i));
+  reference.forEach((r, j) => {
+    if (!isAnchorless(r) || takenR.has(j)) return;
+    const wantAnchor = anchorR[j];
+    if (wantAnchor === undefined) return;
+    const mapped = pairedAnchor.get(wantAnchor);
+    if (mapped === undefined) return;
+    const hit = freeTextlessP.find(({ i }) => !takenP.has(i) && anchorP[i] === mapped);
+    if (!hit) return;
+    takenP.add(hit.i);
+    takenR.add(j);
+    pairs.push({ produced: hit.b, reference: r });
+  });
+
   // Unpaired blocks are recorded so lane and order indices stay aligned with the
   // pair list, but they never become findings here: presence is L2's question.
   produced.forEach((b, i) => {
@@ -311,6 +362,33 @@ function pairBlocks(produced: readonly BlockGeometry[], reference: readonly Bloc
     return ay - by || (a.reference?.box.x ?? 0) - (b.reference?.box.x ?? 0);
   });
   return pairs;
+}
+
+/**
+ * A block that carries nothing to be identified by.
+ *
+ * A rule is the only one in this corpus: an image has its `src` basename and
+ * every other kind has text. Such a block cannot be paired on its own evidence,
+ * only relative to something that can.
+ */
+function isAnchorless(b: BlockGeometry): boolean {
+  return b.kind === "break";
+}
+
+/**
+ * For each block, the index of the nearest **paired** block above it.
+ *
+ * `-1` for a block with nothing paired above, which is a real anchor — "the
+ * first rule on the page" — and not a missing value.
+ */
+function anchorsBefore(blocks: readonly BlockGeometry[], paired: ReadonlySet<number>): number[] {
+  const out = new Array<number>(blocks.length).fill(-1);
+  let last = -1;
+  for (let i = 0; i < blocks.length; i += 1) {
+    out[i] = last;
+    if (paired.has(i)) last = i;
+  }
+  return out;
 }
 
 function pairKey(b: BlockGeometry): string {
