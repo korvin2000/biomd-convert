@@ -105,6 +105,15 @@ export class SourceIndex {
 const PRESENTATIONAL = /^(?:emphasis|hardbreak)\b|\.(?:typography|whitespace|case)$/u;
 
 /**
+ * Classes that are *about* a feature {@link fold} erases.
+ *
+ * For these, fold-equality proves nothing — it is the very thing they report.
+ * Everything else that folds equal on both sides has no content difference at
+ * all, whatever the class name claims.
+ */
+const SPELLING = /\.(?:hyphenation|typography(?:\.[a-z]+)?|whitespace|case)$/u;
+
+/**
  * Classify one finding. See `CLAUDE.md` §4 for the four verdicts.
  *
  * Everything turns on which side the source attests. Both are tested, because a
@@ -166,10 +175,15 @@ export function triage(
   // words, and `fold()` erases the only characters that differ.
   if (cls === "emphasis.span") return triageEmphasis(wanted, got, source);
 
-  // Any other presentational difference over the same content — a hard break, a
-  // rule spelling — has no evidence in the source at all. 1998 HTML says nothing
-  // about it, so the honest answer is that we cannot tell.
-  if (PRESENTATIONAL.test(cls) && fold(wanted) === fold(got)) return "ambiguous";
+  // **Both sides carry the same content.** Whatever differs is how it is set,
+  // not what it is, so no *content* class may call it a defect: a produced
+  // `*4.07*` against a reference `— 4.07` is one editorial choice, not forty.
+  //
+  // Excluded are the classes that are *about* a feature `fold()` erases. A
+  // hyphenation finding exists precisely because `классиче-ской` and
+  // `классической` fold together, and swallowing it here would retire a defect
+  // family `analyze.md` names by name on `barrios`.
+  if (!SPELLING.test(cls) && fold(wanted) === fold(got)) return "ambiguous";
 
   // The two-sided question, and the reason this function was rewritten.
   // Whichever side the source supports is the side that is right.
