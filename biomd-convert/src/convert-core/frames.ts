@@ -109,7 +109,14 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   // the default, not a choice, and reading a palette out of it turns every
   // `border-style: solid` hairline into a black callout — which is how a
   // festival announcement the reference set as a quotation became a frame.
-  if (style && color !== undefined && sameColor(color, style.color)) return null;
+  //
+  // But the test has to ask what the author *wrote*, not what the browser
+  // computed, because the two are indistinguishable once computed: `border: 4px
+  // solid #000000` on a cell whose text is also black computes exactly like a
+  // colourless `border-style: solid`. Six of `news`'s nine obituary notices are
+  // written the first way and were being read as the second — the reference
+  // frames all nine. A colour the source names is a choice whatever it equals.
+  if (style && color !== undefined && !declaresBorderColor(el) && sameColor(color, style.color)) return null;
 
   const palette = paletteFor(color);
   if (!palette) return null;
@@ -121,6 +128,26 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   if (hasDescendantTable(el)) return null;
 
   return { frame: palette, reason: `${width}px ${palette} border around a bounded notice` };
+}
+
+/**
+ * Whether the source *names* a border colour, rather than leaving it to inherit.
+ *
+ * Reads the declaration, not the computed value — that is the whole point. Both
+ * spellings this era used count: the `bordercolor` attribute, and a colour token
+ * anywhere in a `border` / `border-color` shorthand. Nothing here is
+ * corpus-specific: `NAMED` is the documented palette data file, and a `#` token
+ * is CSS syntax.
+ */
+function declaresBorderColor(el: LadomNode): boolean {
+  if ((el.attrs["bordercolor"] ?? "").trim() !== "") return true;
+  const inline = el.attrs["style"] ?? "";
+  const decls = inline.matchAll(/(?:^|;)\s*border(?:-top|-right|-bottom|-left)?(?:-color)?\s*:\s*([^;]+)/giu);
+  for (const decl of decls) {
+    const tokens = (decl[1] as string).trim().toLowerCase().split(/\s+/u);
+    if (tokens.some((token) => token.startsWith("#") || token.startsWith("rgb") || token in NAMED)) return true;
+  }
+  return false;
 }
 
 function hasDescendantTable(el: LadomNode): boolean {

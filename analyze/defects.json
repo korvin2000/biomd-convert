@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T08:58:21.037Z",
+  "generated": "2026-08-06T10:25:59.470Z",
   "totals": {
-    "findings": 346,
-    "converterDefects": 220,
+    "findings": 331,
+    "converterDefects": 204,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 54,
-    "ambiguous": 72,
+    "referenceInconsistencies": 51,
+    "ambiguous": 76,
     "bySeverity": {
-      "critical": 45,
-      "major": 141,
-      "minor": 160
+      "critical": 40,
+      "major": 133,
+      "minor": 158
     }
   },
   "perDocument": [
@@ -63,11 +63,11 @@
     },
     {
       "doc": "news",
-      "findings": 83,
-      "converterDefects": 65,
-      "critical": 17,
-      "major": 43,
-      "minor": 23
+      "findings": 68,
+      "converterDefects": 49,
+      "critical": 12,
+      "major": 35,
+      "minor": 21
     },
     {
       "doc": "news_2007",
@@ -122,7 +122,7 @@
     {
       "class": "paragraph.missing",
       "severity": "critical",
-      "instances": 14,
+      "instances": 11,
       "documents": [
         "borislova",
         "jovicic",
@@ -134,7 +134,7 @@
       "verdicts": {
         "converter-defect": 10,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 4,
+        "reference-inconsistency": 1,
         "ambiguous": 0
       },
       "rank": 300,
@@ -148,7 +148,7 @@
     {
       "class": "paragraph.hyphenation",
       "severity": "minor",
-      "instances": 23,
+      "instances": 24,
       "documents": [
         "authors",
         "barrios",
@@ -164,7 +164,7 @@
         "converter-defect": 17,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 6
+        "ambiguous": 7
       },
       "rank": 153,
       "example": {
@@ -175,34 +175,33 @@
       }
     },
     {
-      "class": "align.spurious.unattested",
+      "class": "paragraph.containment",
       "severity": "major",
-      "instances": 8,
+      "instances": 9,
       "documents": [
-        "borislova",
+        "kiselev",
         "news",
-        "news_2007",
         "pavlov_azancheev",
-        "segovia1"
+        "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 9,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 120,
+      "rank": 108,
       "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
-        "reference": null
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
       }
     },
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 7,
+      "instances": 6,
       "documents": [
         "news",
         "news_2007",
@@ -211,17 +210,17 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 7,
+        "converter-defect": 6,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 105,
+      "rank": 90,
       "example": {
         "doc": "news",
-        "path": "/frame[63]/align[1]",
-        "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-        "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]"
+        "path": "/frame[73]/align[1]",
+        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
+        "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[73]/paragraph[2]"
       }
     },
     {
@@ -249,43 +248,44 @@
       }
     },
     {
-      "class": "paragraph.containment",
+      "class": "align.spurious.unattested",
       "severity": "major",
-      "instances": 7,
+      "instances": 5,
       "documents": [
-        "kiselev",
+        "borislova",
         "news",
+        "news_2007",
         "pavlov_azancheev",
-        "tarrega"
+        "segovia1"
       ],
       "verdicts": {
-        "converter-defect": 7,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 84,
+      "rank": 75,
       "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
+        "doc": "borislova",
+        "path": "/align[45]",
+        "produced": "WMA",
+        "reference": null
       }
     },
     {
       "class": "image.src.value",
       "severity": "major",
-      "instances": 18,
+      "instances": 19,
       "documents": [
         "news"
       ],
       "verdicts": {
-        "converter-defect": 18,
+        "converter-defect": 19,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 54,
+      "rank": 57,
       "example": {
         "doc": "news",
         "path": "/image[7]@src",
@@ -314,28 +314,6 @@
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
         "produced": "Francis Goya Plays His Favourite Hits",
         "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "instances": 5,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 50,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[2]",
-        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
-        "reference": null
       }
     },
     {
@@ -387,25 +365,29 @@
       }
     },
     {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 7,
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 22,
       "documents": [
-        "goya2",
-        "news"
+        "news",
+        "news_2007",
+        "segovia",
+        "segovia1",
+        "tarrega",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 7,
+        "converter-defect": 6,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
+        "reference-inconsistency": 16,
         "ambiguous": 0
       },
-      "rank": 42,
+      "rank": 36,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
+        "doc": "news",
+        "path": "/paragraph[44]",
+        "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
+        "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016"
       }
     },
     {
@@ -456,50 +438,24 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 20,
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "critical",
+      "instances": 3,
       "documents": [
         "news",
-        "news_2007",
-        "segovia",
-        "segovia1",
-        "tarrega",
-        "williams2"
+        "news_2007"
       ],
       "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 16,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[44]",
-        "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
-        "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016"
-      }
-    },
-    {
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "news",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 3,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 24,
+      "rank": 30,
       "example": {
         "doc": "news",
-        "path": "/image[0]",
-        "produced": "",
+        "path": "/paragraph[2]",
+        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
         "reference": null
       }
     },
@@ -572,7 +528,7 @@
     {
       "class": "paragraph.content.edited",
       "severity": "minor",
-      "instances": 13,
+      "instances": 15,
       "documents": [
         "barrios",
         "borislova",
@@ -588,7 +544,7 @@
         "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 11
+        "ambiguous": 13
       },
       "rank": 18,
       "example": {
@@ -596,6 +552,27 @@
         "path": "/columns[18]/column[0]/paragraph[2]",
         "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
         "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
+      }
+    },
+    {
+      "class": "image.containment",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -642,12 +619,12 @@
       }
     },
     {
-      "class": "image.missing",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "instances": 3,
       "documents": [
-        "goya2",
-        "news"
+        "news",
+        "segovia1"
       ],
       "verdicts": {
         "converter-defect": 3,
@@ -657,10 +634,10 @@
       },
       "rank": 18,
       "example": {
-        "doc": "goya2",
-        "path": "/images[76]/image[0]",
-        "produced": null,
-        "reference": "Together / Richard Clayderman & Francis Goya"
+        "doc": "news",
+        "path": "/image[0]",
+        "produced": "",
+        "reference": null
       }
     },
     {
@@ -727,49 +704,6 @@
         "path": "/align[71]/heading[0]",
         "produced": "ДРУГИЕ АЛЬБОМЫ",
         "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-frame",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "news",
-        "path": "/frame[73]",
-        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-        "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 8,
-      "example": {
-        "doc": "news",
-        "path": "/frame[34]@position",
-        "produced": "position: center",
-        "reference": null
       }
     },
     {
@@ -1048,27 +982,6 @@
       }
     },
     {
-      "class": "frame.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news",
-        "path": "/frame[12]",
-        "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
-        "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — produced at /align[13]"
-      }
-    },
-    {
       "class": "heading.missing",
       "severity": "major",
       "instances": 1,
@@ -1087,6 +1000,27 @@
         "path": "/heading[40]",
         "produced": null,
         "reference": "Дискография"
+      }
+    },
+    {
+      "class": "image.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[76]/image[0]",
+        "produced": null,
+        "reference": "Together / Richard Clayderman & Francis Goya"
       }
     },
     {
@@ -1321,48 +1255,6 @@
       }
     },
     {
-      "class": "frame.size.spurious",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 2,
-      "example": {
-        "doc": "news",
-        "path": "/frame[34]@size",
-        "produced": "size: medium",
-        "reference": null
-      }
-    },
-    {
-      "class": "frame.src.spurious",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 2,
-      "example": {
-        "doc": "news",
-        "path": "/frame[34]@src",
-        "produced": "src: pages/photo/e/efremov.jpg",
-        "reference": null
-      }
-    },
-    {
       "class": "image.size.missing",
       "severity": "minor",
       "instances": 2,
@@ -1403,6 +1295,27 @@
         "path": "/columns[1]/column[0]/list[11]/item[2]",
         "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
         "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…"
+      }
+    },
+    {
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "news_2007",
+        "path": "/columns[9]/column[1]/frame[1]@position",
+        "produced": "position: center",
+        "reference": null
       }
     },
     {
@@ -1669,7 +1582,7 @@
     {
       "class": "hardbreak.missing",
       "severity": "major",
-      "instances": 1,
+      "instances": 2,
       "documents": [
         "news"
       ],
@@ -1677,7 +1590,7 @@
         "converter-defect": 0,
         "acceptable-alternative": 0,
         "reference-inconsistency": 1,
-        "ambiguous": 0
+        "ambiguous": 1
       },
       "rank": 0,
       "example": {
@@ -3951,48 +3864,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "2bb76f3c",
-      "doc": "news",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[15]",
-      "producedLine": 79,
-      "referenceLine": null,
-      "produced": "Джулиан БРИМ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "96679f02",
-      "doc": "news",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[63]",
-      "producedLine": 326,
-      "referenceLine": null,
-      "produced": "Владимир Ильич Богданович",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "989e3538",
-      "doc": "news",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[72]",
-      "producedLine": 368,
-      "referenceLine": null,
-      "produced": "Александр Петрович Мартынов",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "bfe01a6a",
       "doc": "news",
       "class": "align.spurious.unattested",
@@ -4000,7 +3871,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[100]",
-      "producedLine": 447,
+      "producedLine": 477,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -4056,7 +3927,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/frame[47]/align[1]/paragraph[1]",
-      "producedLine": 213,
+      "producedLine": 228,
       "referenceLine": null,
       "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
       "reference": null,
@@ -4070,77 +3941,35 @@
       "evidence": "content",
       "op": "insert",
       "path": "/frame[61]/heading[1]",
-      "producedLine": 291,
+      "producedLine": 306,
       "referenceLine": null,
       "produced": "ПОЗДРАВЛЯЕМ",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "bb95c0b9",
-      "doc": "news",
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/image[74]",
-      "producedLine": 380,
-      "referenceLine": null,
-      "produced": "",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "88f02a1a",
-      "doc": "news",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/frame[12]/paragraph[3]",
-      "producedLine": 64,
-      "referenceLine": null,
-      "produced": "Юрий Алексеевич СМИРНОВ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1dd960cf",
-      "doc": "news",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/align[15]/paragraph[0]",
-      "producedLine": 82,
-      "referenceLine": null,
-      "produced": "Джулиан БРИМ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "eca67706",
+      "id": "dbca592c",
       "doc": "news",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/align[63]/paragraph[0]",
-      "producedLine": 329,
+      "path": "/frame[63]/align[1]/paragraph[1]",
+      "producedLine": 347,
       "referenceLine": null,
       "produced": "Владимир Ильич Богданович",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "c2e5eac8",
+      "id": "f7cabe2d",
       "doc": "news",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/align[72]/paragraph[0]",
-      "producedLine": 371,
+      "path": "/frame[71]/align[1]/paragraph[1]",
+      "producedLine": 394,
       "referenceLine": null,
       "produced": "Александр Петрович Мартынов",
       "reference": null,
@@ -4154,7 +3983,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[100]/paragraph[0]",
-      "producedLine": 450,
+      "producedLine": 480,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -4203,76 +4032,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "ac8a7b27",
-      "doc": "news",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[12]",
-      "producedLine": 58,
-      "referenceLine": 48,
-      "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
-      "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — produced at /align[13]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4f6f70f8",
-      "doc": "news",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[12]@position",
-      "producedLine": 58,
-      "referenceLine": 48,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "30a8f04c",
-      "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[12]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 49,
-      "produced": null,
-      "reference": "frame: black",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ed0115d2",
-      "doc": "news",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[12]/align[1]",
-      "producedLine": 61,
-      "referenceLine": 51,
-      "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
-      "reference": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари… — at /frame[12]/paragraph[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4b5dc283",
-      "doc": "news",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[12]/image[2]",
-      "producedLine": 68,
-      "referenceLine": 59,
-      "produced": "Юрий Алексеевич Смирнов",
-      "reference": "Юрий Алексеевич Смирнов — produced at /image[13]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "e55c84b3",
       "doc": "news",
       "class": "image.src.value",
@@ -4280,25 +4039,25 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[12]/image[2]@src",
-      "producedLine": 68,
+      "producedLine": 71,
       "referenceLine": 59,
       "produced": "src: main/smirnov_ua.jpg",
       "reference": "src: /../main/smirnov_ua.jpg",
       "verdict": "converter-defect"
     },
     {
-      "id": "bf24be38",
+      "id": "49e94cee",
       "doc": "news",
-      "class": "retyped.paragraph-to-frame",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "paragraph.hyphenation",
+      "severity": "minor",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/frame[14]",
-      "producedLine": 76,
-      "referenceLine": 70,
-      "produced": "14 августа 2020 года в Англии возрасте 87 лет умер выдаю­щийся британский гитарист и лютнист",
-      "reference": "frame: black 14 августа 2020 года в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист align center Джулиан БРИМ — at /paragraph[15]",
-      "verdict": "converter-defect"
+      "path": "/frame[14]/paragraph[1]",
+      "producedLine": 85,
+      "referenceLine": 73,
+      "produced": "**14 августа 2020 года** в Англии возрасте 87 лет умер выдаю­щийся британский гитарист и лютнист",
+      "reference": "**14 августа 2020 года** в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист",
+      "verdict": "ambiguous"
     },
     {
       "id": "014008c2",
@@ -4308,7 +4067,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[20]@src",
-      "producedLine": 96,
+      "producedLine": 106,
       "referenceLine": 92,
       "produced": "src: main/magazines/IGvL_23_2019_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_23_2019_ttl225.jpg",
@@ -4322,7 +4081,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[23]@src",
-      "producedLine": 106,
+      "producedLine": 116,
       "referenceLine": 102,
       "produced": "src: main/magazines/IGvL_24_2019_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_24_2019_ttl225.jpg",
@@ -4336,7 +4095,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[26]@src",
-      "producedLine": 116,
+      "producedLine": 126,
       "referenceLine": 111,
       "produced": "src: main/magazines/IGvL_22_2018_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_22_2018_ttl225.jpg",
@@ -4350,7 +4109,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[29]@src",
-      "producedLine": 127,
+      "producedLine": 137,
       "referenceLine": 121,
       "produced": "src: main/magazines/IGvL_21_2017_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_21_2017_ttl225.jpg",
@@ -4364,7 +4123,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[31]",
-      "producedLine": 135,
+      "producedLine": 145,
       "referenceLine": 128,
       "produced": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неблагоприятных ситуаций. Сегодня я предста…",
       "reference": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неблагоприятных ситуаций. Сегодня я предста…",
@@ -4378,7 +4137,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/image[32]@link",
-      "producedLine": 138,
+      "producedLine": 148,
       "referenceLine": 131,
       "produced": "link: http://www.guitar-times.ru/pages/magazine/mag20.htm",
       "reference": null,
@@ -4392,67 +4151,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[32]@src",
-      "producedLine": 138,
+      "producedLine": 148,
       "referenceLine": 131,
       "produced": "src: main/magazines/IGvL_20_2017_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_20_2017_ttl225.jpg",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "7678ade0",
-      "doc": "news",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[34]@position",
-      "producedLine": 157,
-      "referenceLine": 140,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "adebfe0c",
-      "doc": "news",
-      "class": "frame.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[34]@size",
-      "producedLine": 157,
-      "referenceLine": 140,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "84e71dc9",
-      "doc": "news",
-      "class": "frame.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[34]@src",
-      "producedLine": 157,
-      "referenceLine": 140,
-      "produced": "src: pages/photo/e/efremov.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d7397a54",
-      "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[34]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 141,
-      "produced": null,
-      "reference": "frame: black",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "176d5403",
@@ -4462,10 +4165,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[34]/paragraph[1]",
-      "producedLine": 147,
+      "producedLine": 160,
       "referenceLine": 143,
       "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог Виктор Михайлович ЕФРЕМОВ",
-      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог — at /align[34]",
+      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог — at /frame[34]/align[3]",
       "verdict": "converter-defect"
     },
     {
@@ -4483,20 +4186,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "89467d5d",
-      "doc": "news",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[34]/image[3]",
-      "producedLine": null,
-      "referenceLine": 148,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "aba5f0c3",
       "doc": "news",
       "class": "image.src.value",
@@ -4504,7 +4193,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[36]@src",
-      "producedLine": 165,
+      "producedLine": 180,
       "referenceLine": 158,
       "produced": "src: main/magazines/IGvL_18_19_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_18_19_2016_ttl225.jpg",
@@ -4518,7 +4207,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[39]@src",
-      "producedLine": 176,
+      "producedLine": 191,
       "referenceLine": 169,
       "produced": "src: main/kniga_mg.jpg",
       "reference": "src: /../main/kniga_mg.jpg",
@@ -4532,7 +4221,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[40]",
-      "producedLine": 307,
+      "producedLine": 322,
       "referenceLine": 175,
       "produced": "* * *",
       "reference": "--- — at /frame[61]/paragraph[1]",
@@ -4546,7 +4235,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[42]@src",
-      "producedLine": 185,
+      "producedLine": 200,
       "referenceLine": 180,
       "produced": "src: main/magazines/IGvL_17_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_17_2016_ttl225.jpg",
@@ -4574,7 +4263,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[44]",
-      "producedLine": 192,
+      "producedLine": 207,
       "referenceLine": 189,
       "produced": "Вышел **первый номер журнала \"История гитары в лицах\"** за 2016 год — **№ 1 (16) / 2016** — посвящен российскому гитаристу, педагогу и гитарному мастеру ***Юри…",
       "reference": "Вышел **первый номер журнала \"История гитары в лицах\"** за 2016 год — **№ 1 (16) / 2016** — посвящен российскому гитаристу, педагогу и гитарному мастеру ***Юри…",
@@ -4588,7 +4277,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[44]",
-      "producedLine": 192,
+      "producedLine": 207,
       "referenceLine": 189,
       "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
       "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
@@ -4602,7 +4291,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[45]@src",
-      "producedLine": 195,
+      "producedLine": 210,
       "referenceLine": 192,
       "produced": "src: main/magazines/IGvL_16_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_16_2016_ttl225.jpg",
@@ -4616,7 +4305,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 211,
+      "producedLine": 226,
       "referenceLine": 206,
       "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks",
@@ -4630,7 +4319,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 211,
+      "producedLine": 226,
       "referenceLine": 206,
       "produced": "**20 февраля 2016 года** ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "reference": "**20 февраля 2016 года** ушла из жизни российская гитаристка и выдающийся гитарный педагог **Ядвига Ричардовна** **КОВАЛЕВСКАЯ**",
@@ -4644,7 +4333,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 211,
+      "producedLine": 226,
       "referenceLine": 206,
       "produced": "strong:20 февраля 2016 года",
       "reference": "strong:20 февраля 2016 года · strong:КОВАЛЕВСКАЯ · strong:Ядвига Ричардовна",
@@ -4672,7 +4361,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[50]@src",
-      "producedLine": 229,
+      "producedLine": 244,
       "referenceLine": 224,
       "produced": "src: main/magazines/IGvL_15_2015_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_15_2015_ttl225.jpg",
@@ -4686,7 +4375,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 242,
+      "producedLine": 257,
       "referenceLine": 238,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист — produced at /frame[52]/paragraph[1]",
@@ -4700,7 +4389,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[55]@src",
-      "producedLine": 265,
+      "producedLine": 280,
       "referenceLine": 256,
       "produced": "src: main/magazines/IGvL_14_2015_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_14_2015_ttl225.jpg",
@@ -4714,7 +4403,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[58]@src",
-      "producedLine": 277,
+      "producedLine": 292,
       "referenceLine": 267,
       "produced": "src: main/elutin_konkurs.jpg",
       "reference": "src: /../main/elutin_konkurs.jpg",
@@ -4728,7 +4417,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/frame[61]/paragraph[0]",
-      "producedLine": 289,
+      "producedLine": 304,
       "referenceLine": 278,
       "produced": "frame: red",
       "reference": "frame: red title: ПОЗДРАВЛЯЕМ",
@@ -4742,7 +4431,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[61]/align[1]/paragraph[0]",
-      "producedLine": 293,
+      "producedLine": 308,
       "referenceLine": 284,
       "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛ…",
       "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) — at /frame[61]/align[1]",
@@ -4791,87 +4480,45 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9b41c9b4",
+      "id": "8f768122",
       "doc": "news",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[63]@position",
-      "producedLine": 334,
-      "referenceLine": 305,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ae110954",
-      "doc": "news",
-      "class": "frame.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[63]@size",
-      "producedLine": 334,
-      "referenceLine": 305,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "11063825",
-      "doc": "news",
-      "class": "frame.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[63]@src",
-      "producedLine": 334,
-      "referenceLine": 305,
-      "produced": "src: pages/photo/b/bogdanovic_v.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3132cf70",
-      "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[63]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 306,
-      "produced": null,
-      "reference": "frame: black",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "576f8464",
-      "doc": "news",
-      "class": "retyped.paragraph-to-align",
+      "class": "paragraph.containment",
       "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[63]/align[1]/paragraph[0]",
+      "producedLine": 342,
+      "referenceLine": 310,
+      "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
+      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — produced at /frame[63]/paragraph[1]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "8240ebc3",
+      "doc": "news",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/frame[63]/align[1]/paragraph[0]",
+      "producedLine": 342,
+      "referenceLine": 310,
+      "produced": "**3 августа 2014 года** в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
+      "reference": "**3 августа 2014 года** в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары **…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "b215b577",
+      "doc": "news",
+      "class": "emphasis.span",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[63]/align[1]",
-      "producedLine": 323,
-      "referenceLine": 308,
-      "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a43bdd56",
-      "doc": "news",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[63]/image[2]",
-      "producedLine": null,
-      "referenceLine": 313,
-      "produced": null,
-      "reference": "",
+      "path": "/frame[63]/align[1]/paragraph[0]",
+      "producedLine": 342,
+      "referenceLine": 310,
+      "produced": "strong:3 августа 2014 года",
+      "reference": "strong:3 августа 2014 года · strong:Владимир Ильич Богданович",
       "verdict": "converter-defect"
     },
     {
@@ -4882,7 +4529,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[65]",
-      "producedLine": 341,
+      "producedLine": 361,
       "referenceLine": 322,
       "produced": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
       "reference": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
@@ -4896,7 +4543,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[66]@src",
-      "producedLine": 344,
+      "producedLine": 364,
       "referenceLine": 325,
       "produced": "src: main/magazines/IGvL_13_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_13_2014_ttl225.jpg",
@@ -4910,38 +4557,94 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[69]@src",
-      "producedLine": 356,
+      "producedLine": 376,
       "referenceLine": 336,
       "produced": "src: main/magazines/IGvL_11_12_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_11_12_2014_ttl225.jpg",
       "verdict": "converter-defect"
     },
     {
-      "id": "41ea5253",
+      "id": "298d2ef0",
       "doc": "news",
-      "class": "retyped.paragraph-to-frame",
+      "class": "paragraph.containment",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[71]",
-      "producedLine": 365,
-      "referenceLine": 346,
+      "op": "move",
+      "path": "/frame[71]/align[1]/paragraph[0]",
+      "producedLine": 389,
+      "referenceLine": 351,
       "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
-      "reference": "frame: black align center 16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженны… — at /paragraph[72]",
+      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — produced at /frame[71]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
-      "id": "16adfc05",
+      "id": "3dac2a6e",
       "doc": "news",
-      "class": "retyped.paragraph-to-frame",
+      "class": "hardbreak.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/frame[71]/align[1]/paragraph[0]",
+      "producedLine": 389,
+      "referenceLine": 351,
+      "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
+      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — 0 of 1 hard breaks",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "42ad0c0c",
+      "doc": "news",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/frame[71]/align[1]/paragraph[0]",
+      "producedLine": 389,
+      "referenceLine": 351,
+      "produced": "**16 июня 2014 года** скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
+      "reference": "**16 июня 2014 года** скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России **Алек…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "5745795f",
+      "doc": "news",
+      "class": "emphasis.span",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[71]/align[1]/paragraph[0]",
+      "producedLine": 389,
+      "referenceLine": 351,
+      "produced": "strong:16 июня 2014 года",
+      "reference": "strong:16 июня 2014 года · strong:Александр Петрович · strong:Мартынов",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9a459914",
+      "doc": "news",
+      "class": "retyped.paragraph-to-align",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[73]",
-      "producedLine": 377,
-      "referenceLine": 360,
+      "path": "/frame[73]/align[1]",
+      "producedLine": 406,
+      "referenceLine": 363,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-      "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]",
+      "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[73]/paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "333517d5",
+      "doc": "news",
+      "class": "image.src.value",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[73]/image[2]@src",
+      "producedLine": 408,
+      "referenceLine": 368,
+      "produced": "src: main/paco_de_lucia.jpg",
+      "reference": "src: /../main/paco_de_lucia.jpg",
       "verdict": "converter-defect"
     },
     {
@@ -4952,7 +4655,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[76]@src",
-      "producedLine": 390,
+      "producedLine": 420,
       "referenceLine": 379,
       "produced": "src: main/magazines/IGvL_10_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_10_2014_ttl225.jpg",
@@ -4966,7 +4669,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[90]",
-      "producedLine": 428,
+      "producedLine": 458,
       "referenceLine": 409,
       "produced": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб…",
       "reference": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб… — 1 hard breaks, reference has 0",
@@ -4980,7 +4683,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[92]",
-      "producedLine": 433,
+      "producedLine": 463,
       "referenceLine": 413,
       "produced": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фирмы…",
       "reference": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: — 2 hard breaks, reference has 0",
@@ -4994,7 +4697,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[92]",
-      "producedLine": 433,
+      "producedLine": 463,
       "referenceLine": 413,
       "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
       "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:",
@@ -5008,7 +4711,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[92]",
-      "producedLine": 433,
+      "producedLine": 463,
       "referenceLine": 413,
       "produced": "em:III Международного конкурса гитаристов имени Александра Фраучи · strong:Антон Баранов · strong:Артём Дервоед · strong:Дмитрий Загуменников · strong:Марк Топ…",
       "reference": "em:III Международного конкурса гитаристов имени Александра Фраучи",
@@ -5036,7 +4739,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[95]",
-      "producedLine": 439,
+      "producedLine": 469,
       "referenceLine": 422,
       "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – Ровшан Мамедкулиев (Россия), 2 мест…",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: — 1 hard breaks, reference has 0",
@@ -5050,7 +4753,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[95]",
-      "producedLine": 439,
+      "producedLine": 469,
       "referenceLine": 422,
       "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – **Ровшан Мамедкулиев** (Россия), 2 …",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве:",
@@ -5064,7 +4767,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[95]",
-      "producedLine": 439,
+      "producedLine": 469,
       "referenceLine": 422,
       "produced": "strong:Артём Дервоед · strong:Константин Окуджава · strong:Марк Топчий · strong:Ровшан Мамедкулиев",
       "reference": "(none)",
@@ -5106,7 +4809,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[100]@title",
-      "producedLine": 454,
+      "producedLine": 484,
       "referenceLine": 435,
       "produced": null,
       "reference": "title: Архив новостей",

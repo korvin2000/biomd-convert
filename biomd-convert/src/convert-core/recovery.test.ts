@@ -307,6 +307,36 @@ describe("frames", () => {
     expect(out).toContain("::: frame");
     expect(out).toContain("frame: black");
   });
+
+  it("keeps a black border the author wrote on black text", async () => {
+    // The computed value cannot tell `border: 4px solid #000000` on a cell
+    // whose text is also black from a colourless `border-style: solid`, and the
+    // guard against the second was rejecting the first. Six of `news`'s nine
+    // obituary notices are written this way; the reference frames all nine.
+    const out = await mdMeasured(
+      PROSE +
+        '<table border="0" width="85%"><tr><td style="border: 4px solid #000000; color: #000000">' +
+        "<p>16 июня 2014 года скоропостижно скончался замечательный российский гитарист.</p>" +
+        "</td></tr></table>" +
+        PROSE,
+    );
+    expect(out).toContain("frame: black");
+  });
+
+  it("still declines a border whose colour the author never named", async () => {
+    // The false friend the guard exists for: with no colour declared, the
+    // border computes to the text colour, and reading a palette out of that
+    // turned a festival announcement the reference set as a quotation into a
+    // black callout. Nothing is declared here, so nothing is chosen.
+    const out = await mdMeasured(
+      PROSE +
+        '<table border="0" width="85%"><tr><td style="border-style: solid; border-width: 4px">' +
+        "<p>Десятый юбилейный Международный музыкальный фестиваль в городе Калуге.</p>" +
+        "</td></tr></table>" +
+        PROSE,
+    );
+    expect(out).not.toContain("::: frame");
+  });
 });
 
 /**
