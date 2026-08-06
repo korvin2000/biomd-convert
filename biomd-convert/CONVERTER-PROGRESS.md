@@ -1660,3 +1660,141 @@ region each; `MIN_SUBORDINATED_BLOCKS` is 2). §12.2 chose that gate deliberatel
 and it is the right shape, so this is a ceiling until a second signal exists.
 (e) The ambiguous corridor, 70 findings, still uncalibrated and still the
 largest piece of unexamined instrument behaviour.
+
+## 15. Two classes that were not one mechanism (2026-08-06)
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| §14 close | 368 | 93.8 | 194 | 82 |
+| a block boundary is presentation | 369 | 93.8 | **188** | 82 |
+
+§14.4 guessed that `retyped.paragraph-to-list` (10, 4 docs) and
+`paragraph.spurious.in-break-run` (6, 3 docs) were one general mechanism seen
+from two sides — both are about how a `<br>` run is segmented. Tested, they are
+not, and only one of them is work.
+
+### 15.1 The over-split class was the reference merging, six times out of six
+
+`paragraph.spurious.in-break-run` reports a produced paragraph whose text is a
+*line* of a paragraph on the reference side. Every instance was checked against
+the source:
+
+| document | what the source writes | what the reference writes |
+|---|---|---|
+| `pavlov_azancheev` ×3 | each address is its own `<p class="t8">` | one paragraph, soft-wrapped lines |
+| `goya2` | album title and year are two separate `<p>` | one paragraph, two lines |
+| `williams2` | the track and its link are two separate `<td>` | one paragraph, two lines |
+
+Six for six the produced side is attested by an actual paragraph element and the
+reference is not. The reference's merge renders as a wall of text — `pavlov`'s
+letter loses the break between its two mailing addresses — so this is not even
+an acceptable alternative in the reference's favour.
+
+**The instrument said "defect" because of §14.1.** Giving placement findings
+`structure` evidence stopped them claiming content loss, which was right, but
+`structure` short-circuits triage to `converter-defect` without ever running the
+attestation test. That is correct for a lane, a wrapper or a separator — §16.3
+constrains text, not layout — and wrong for this class, because a block boundary
+against a line ending is the **hard-break question one level out**, and
+`CLAUDE.md` §4 puts hard breaks with presentation, to be attested like content.
+
+`.in-break-run` joins `PRESENTATIONAL`. The two directions then separate the way
+the existing triage logic already handles insertions and deletions, with no
+special case: a *spurious* block whose text the source attests is `ambiguous` —
+the instrument cannot know whether the reference merged deliberately; a
+*missing* block whose text the source attests stays `converter-defect`, because
+there the reference asserts a boundary the produced document lacks.
+
+Corpus effect: converter-defect 194 → 188, ambiguous 70 → 76. Nothing else moved.
+
+### 15.2 The list class is real, and its discriminator is not deterministic yet
+
+`retyped.paragraph-to-list` is the opposite direction and a genuine defect: a
+`<br>` run of parallel record lines emitted as one hard-break paragraph where
+the reference writes a bullet list. `kiselev` 6, `jovicic` 1, `kiselev`'s volume
+list 1, plus `news_2007`'s menu and `segovia`'s bullet run, which belong to the
+nav and glyph-bullet families rather than this one.
+
+`enumeratedItems` already covers the neighbouring shape and correctly declines
+these: it requires an explicit ascending ordinal (`01.`, `2)`) on each line, and
+these runs have none.
+
+**The discriminator was measured before a rule was designed, and it does not
+exist in the shape.** Every multi-line produced run was matched against what the
+reference does with the same text:
+
+| | runs | lines | line length min/med/max |
+|---|---|---|---|
+| reference makes a **list** | 9 | 2–19 | 11 / 30 / 85 |
+| reference keeps a **paragraph** | 69 | 2–11 | 4 / 30 / 2109 |
+
+`kiselev`'s track lists are 3–9 lines of 11–85 characters. `borislova`'s poems
+are 4–9 lines of 10–36 characters, thirteen of them, and the reference keeps
+every one as a paragraph — as §3.5 and the `text.segment` hook both require,
+since verse is lineation and never a list. Line count, line length, length
+variance and lineation all overlap completely. A rule on any of them converts
+`borislova`'s poetry into bullet lists.
+
+Two candidate mechanisms remain, both recorded rather than built:
+
+- **Indent under a label.** All six `kiselev` runs sit in
+  `<blockquote style="margin-left: 25">` under an album title, and after §14.2
+  made the tag transparent that containment is free evidence. It separates
+  cleanly on this corpus — but *only* on `kiselev`, so it is six instances in
+  one document, which `CLAUDE.md` §5 names as the wrong target however many
+  instances it has, and its false friend would be untested. `jovicic`'s run is
+  not indented at all; it is a `<br><br>`-delimited group inside `<p class="cd">`.
+- **An `ITEM` kind for `text.segment`.** The hook exists and classifies breaks as
+  WRAP / PARAGRAPH / LINEATION / SPACING. A track list and a poem are both
+  LINEATION under that vocabulary, which is why the hook cannot answer this
+  today. Distinguishing "independent records" from "one utterance in lines" is
+  semantic interpretation of the content, which is §6's definition of hook
+  territory rather than rule territory. It would need the deterministic
+  acceptance check named before it is built — the obvious candidate being that
+  accepting an `ITEM` verdict may only change block *type*, never text, never
+  line count, and never fire where the run is verse by §3.5's evidence.
+
+Deliberately not built this iteration: a single-document rule, and a hook whose
+acceptance check has not been designed. The class stays open with its evidence
+recorded.
+
+### 15.3 Killed hypotheses added
+
+- **`retyped.paragraph-to-list` and `paragraph.spurious.in-break-run` are one
+  mechanism.** They share a substrate — `<br>` run segmentation — and nothing
+  else. One is a missing detector; the other was an instrument over-claim. A
+  shared substrate is not a shared mechanism.
+- **`structure` evidence is safe for any placement finding.** It bypasses
+  attestation by design. That is correct for layout — lanes, wrappers,
+  separators — and wrong for any class whose claim is about how the same content
+  is *set*. A block boundary against a line ending is presentation.
+- **A record list can be told from verse by shape.** Measured across 78 runs in
+  the 13 references: line count, line length, variance and lineation all
+  overlap. `borislova`'s poems and `kiselev`'s track lists are the same shape.
+
+### 15.4 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 369 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 93.8 |
+| L2 | 314 findings — **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency |
+| L3 | 82 findings, identity 0, deterministic |
+
+Per document, converter defects: `news` 49 · `goya2` 43 · `kiselev` 17 ·
+`borislova` 16 · `segovia` 14 · `pavlov_azancheev` 10 · `news_2007` 9 ·
+`authors` 7 · `segovia1` 7 · `jovicic` 6 · `tarrega` 6 · `williams2` 4 ·
+**`barrios` 0**.
+
+**Open, in order.** (a) `image.src.value` (19, all `goya2`) and
+`image.size.value` (21, 4 docs) — the largest remaining blocks and both
+mechanical: one path-resolution rule, one threshold in `media.ts`.
+(b) The alignment residue — `align.spurious`, `retyped.paragraph-to-align`,
+`retyped.align-to-paragraph` — 16 across 5 documents. (c)
+`retyped.paragraph-to-list`, open with its evidence in §15.2 and blocked on a
+hook design rather than on measurement. (d) The ambiguous corridor, now 76
+findings, still uncalibrated.
+
+**Development corpus frozen here.** The thirteen pairs are the regression corpus
+from this point; the next work is generalization measured on unseen pages, not
+further tuning against these.
