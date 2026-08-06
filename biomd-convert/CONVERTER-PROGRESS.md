@@ -2051,3 +2051,123 @@ is the user's to make.
    blocks are centred but whose cell text is not.
 3. Whether `new_rechin4`'s two over-long lines are under-segmentation or faithful
    long paragraphs.
+
+## 18. Second blind pass — broadened search, four more hypotheses dead (2026-08-06)
+
+A bounded second blind pass across all 10 unseen sources and their outputs,
+searching the objective classes: lost/duplicated/invented content, degraded
+BioMD, routing and containment, collapsed neighbour relationships,
+image/caption and record-field associations. No reference was opened.
+
+**Accepted converter changes: zero.** One documentation correction shipped.
+L0 369 · L1 93.8 · L2 188 · L3 82 — unchanged; the 13 and the 10 blind outputs
+byte-identical.
+
+### 18.1 What the sweep found, and what survived scrutiny
+
+| signal | instances | verdict |
+|---|---|---|
+| duplicated blocks in output | 1 (`new_lagq2`) | **not a defect** — the source really carries that track twice |
+| caption echoed as a paragraph | 0 in the new set | clean; caption binding generalizes |
+| empty `::: column` lanes | 5 over 4 docs | **not objectively wrong** — see 18.2 |
+| `::: align` around a single paragraph | 62 over 9 docs | not new-set-specific: `goya2` has 25 in its *reference* |
+| one-item lists | 4, one document | too narrow to carry a rule |
+| collapsed two-lane album records | `new_lagq2` | real, and the fix is forbidden — see 18.3 |
+
+### 18.2 Killed: "an empty `::: column` is degraded output"
+
+Five spurious-looking empty lanes across `news_2007`, `williams2`,
+`new_geyzel04` and `new_karta` — four documents, and two of them in the
+regression corpus where a reference can adjudicate. It looked like a clean
+candidate until both sides were read:
+
+| document | reference | produced |
+|---|---|---|
+| `goya2` | **5 empty lanes** | 5 |
+| `news_2007` | 0 | 1 |
+| `williams2` | 0 | 1 |
+
+`goya2`'s reference *keeps* the trailing empty lane, and for a reason the code
+already documents: five albums have no cover art, and dropping the lane would
+shift every index after them out of alignment with the thirty that do. The
+shape that is correct on `goya2` and wrong on `news_2007` is byte-identical —
+what separates them is whether a sibling `::: columns` group puts content in
+that lane. For the two *new* documents there is no way to tell blind which kind
+they are, and guessing would break `goya2`.
+
+### 18.3 Killed by an existing contract: reconsidering a failed DATA table as lanes
+
+The best-founded candidate of the pass, and the most instructive failure.
+
+`new_lagq2` is seven album records — cover beside tracklist — and the produced
+output has **zero** `::: columns`: the two-lane relationship is flattened
+entirely. Traced through measured geometry:
+
+| document | grid | ratio | imgDensity | class | outcome |
+|---|---|---|---|---|---|
+| `goya2` | 35×2 | 0.50 | 0.16 | CATALOG | 34 `::: columns` |
+| `new_lendle2` | 10×2 | 0.50 | 0.33 | CATALOG | lanes |
+| `new_lagq2` | 7×2 | **0.37** | 0.46 | **DATA 0.50** | flattened |
+
+Two mechanisms were separated before writing code. The first — that CATALOG's
+tier-1 gate demands lanes of near-equal width (0.45–0.55) and a 150 px cover
+beside a tracklist has no reason to be 50/50 — is true but not the cause:
+widening it would also catch `barrios` (0.67) and `news_2007` (0.27), both in
+the regression corpus.
+
+The actual cause is a **routing asymmetry**. An UNKNOWN verdict is reconsidered
+as a layout region ("not a data table is not 'not a region'"); a DATA verdict
+that cannot be *planned* falls straight to linear flow, so the one classification
+that says "this grid is structured" is the only one never asked whether its
+columns are lanes. That is the identical shape as §13.1's frames and §14.2's
+subordination — a question answered by evidence on one path and by construction
+on the other — and it was implemented on that reasoning.
+
+**It was already considered and deliberately rejected.** `recovery.test.ts`
+carries the contract *"leaves a DATA verdict on the flow path — the false
+friend"*, with the rationale stated outright: "losing a table to lanes is the
+defect this reconsideration could otherwise introduce." The corpus agreed —
+L1 **93.8 → 93.6**, with `borislova`, `goya2` and `williams2` all changed.
+Reverted.
+
+The lesson generalizes past this candidate: *a symmetry argument is not
+evidence.* Three times in this campaign "the same question should be asked on
+every path" produced a real fix; here the paths are deliberately asymmetric,
+and the test that says so was written by someone who had already tried it.
+**Grep the contracts for a candidate before building it.**
+
+### 18.4 `CLAUDE.md` §4 corrected
+
+The `-webkit-*` alignment note claimed a live inconsistency between four call
+sites. Measured, it is closed: every comparison folds through
+`isCenteredAlign`/`foldTextAlign`, `src/ladom/style.ts` documents the split and
+exists to prevent its return, and the remaining `=== "center"` comparisons are
+on already-folded values or raw HTML attributes where they are correct. The
+line numbers had also drifted. Replaced with the standing rule — fold, never
+compare a computed value raw.
+
+### 18.5 Killed hypotheses added
+
+- **An empty lane is degraded output.** It is load-bearing when a sibling group
+  fills that lane; `goya2`'s reference keeps five.
+- **A failed DATA table should be reconsidered as a layout region.** Symmetric
+  with the UNKNOWN path, measurably worse, and already refused by a contract
+  with a named false friend.
+- **CATALOG's near-equal-lane gate is over-fitted.** True, and still not the
+  cause of the one document that misses it; widening it reaches two regression
+  documents.
+- **A block appearing twice in the output is duplication.** Check the *stripped*
+  source text, not the raw HTML — markup splits an occurrence and makes a
+  faithful conversion look like invention.
+
+### 18.6 State
+
+Unchanged from §17: L0 369 tests · L1 93.8 · L2 314 findings, 188
+converter-defect · L3 82. Blind outputs preserved.
+
+The open questions for the reference cycle are those of §17.5, plus: whether
+`new_lagq2`'s album records should be two-lane regions at all, given that the
+one mechanism which would produce them is forbidden by a tested contract. If
+the reference gives them `::: columns`, the contract and the CATALOG gate both
+need revisiting together — and that is a reference-guided decision, not a blind
+one.

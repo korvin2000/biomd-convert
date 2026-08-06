@@ -137,8 +137,10 @@ Three verified corpus facts that shape L3 work:
   `p.t` (16×), `p.t1`, `p.st` and `p.lt` — every one computing to `justify`. Only `p.t3` (3×) is centred.
 - **Computed `text-align` is not always the keyword you expect.** Chromium returns `-webkit-center` /
   `-webkit-left` for elements centred by an ancestor's `align` attribute. An exact `=== "center"` comparison
-  under-detects. `prominence.ts:132` and `structure.ts:1809` handle this; **`prominence.ts:138` and
-  `structure.ts:1437` do not** — a live inconsistency, not a style preference.
+  under-detects. This was once a live inconsistency between call sites; **it is closed.** Every comparison
+  now folds through `isCenteredAlign` / `foldTextAlign` in `src/ladom/style.ts`, whose header records the
+  split and exists to stop it returning. Remaining `=== "center"` comparisons are on already-folded values
+  or on raw HTML attributes, where they are correct. Fold; never compare a computed value raw.
 - **No asset tree exists.** Every referenced image, PDF and MP3 404s. Rendered pages show broken images by
   construction — never chase that as a conversion defect.
 
