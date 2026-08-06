@@ -819,23 +819,46 @@ an instrument, which invariant 2 permits only as an isolated declared step with
 both sides re-baselined, never as a side effect of a converter change. Land the
 detector after that, not before.
 
-### 8.3 Refine `paragraph.spurious` into actionable sub-classes
+### 8.3 `paragraph.spurious` refined — **instrument work done, residue named**
 
-65 instances across **12 of 13 documents** — the largest class, and too coarse to
-own a rule. Per the ladder, a finding a human cannot act on directly is a class
-that is not yet precise enough: refine the class, not the tolerance.
+50 instances across 11 documents, and unactionable as one class: the only thing
+they shared was "the reference has no paragraph here". `structdiff.ts` now asks
+one further question of every spurious produced block — **which construct owns
+this text on the reference side** — and the answer names the owning mechanism.
 
-**This is instrument work, not converter work — do not change converter behaviour
-under it, and it needs no L3.** Known sub-families:
+No literals: the index is built from the reference document under comparison and
+the key is the text itself, folded to words, so an escape (`01\.`), a bullet
+glyph or a different dash cannot hide a home. A detector here cannot name a
+document.
 
-- *caption echo* — the line bound as an image `caption:` is also left as a
-  paragraph below the figure. 4 instances confirmed by probe.
-- *site chrome residue* — the repeated masthead `analyze.md` says must be dropped
-  from every page.
-- *rule residue* — a horizontal line drawn from repeated dashes or bullets that
-  should have become a separator (overlaps `retyped.paragraph-to-break`).
-- *layout residue* — prose duplicated because a region was walked twice.
+| sub-class | inst | docs | who owns it |
+|---|---:|---:|---|
+| `paragraph.spurious.unattested` | 32 | 10 | no reference construct holds the text |
+| `paragraph.spurious.caption-echo` | 7 | 4 | bound as `::: image` `caption:` *and* left below the figure |
+| `paragraph.spurious.in-nav` | 5 | 1 | a `::: nav` item label — the menu was not recognised |
+| `paragraph.spurious.in-list` | 3 | 2 | a list item — a `<br>` run that should have been a list (§8.2a) |
+| `paragraph.spurious.in-table` / `.in-align` / `.in-quote` | 1 each | 1 | a flattened record matrix, the alignment family, a quote |
 
-*Deliverable:* sub-classes emitted by `structdiff.ts` with their own detectors, a
-re-baselined ledger, and each sub-family either given an owning task or classified
-as ceiling.
+The same refinement applies to every `*.spurious` class, so `heading.spurious`
+(8), `image.spurious` (7), `align.spurious` (4), `quote.spurious` and
+`break.spurious` are now split the same way.
+
+**Totals are identical before and after — 613 findings, 501 source-backed.** The
+instrument renames, it does not re-score (invariant 2). 18 of the 50 moved from
+an unactionable class into a named mechanism; the rest is honestly labelled as
+residue rather than hidden behind a tolerance.
+
+**Killed here:** a corpus-level `.chrome` sub-class, splitting `.unattested` by
+cross-document recurrence of the text (≥3 documents) — the only literal-free test
+for site chrome available. It fires on **nothing** across the 13, so it was
+removed rather than shipped on the argument that it would fire on the other ~987.
+
+**Remaining, and not started:** the triage thresholds are still uncalibrated —
+the 0.5–0.95 `ambiguous` word-coverage corridor (80 findings unchecked) and the
+0.65 reconciliation constant. §8.2a adds a third, sharper question to that queue:
+`triage.ts:76` returns `source-backed` for *every* `evidence: "structure"`
+finding unconditionally. That is right for layout — it is what stopped the first
+ledger burying `columns.missing` in the ceiling — but an emphasis span the
+reference deleted is not layout, and until it is settled the enumerated-list rule
+cannot be landed.
+

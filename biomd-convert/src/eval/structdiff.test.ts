@@ -130,9 +130,66 @@ describe("text defect classification", () => {
     // not one paragraph that was rewritten, they are one that vanished and
     // another that appeared, and the two have different owning rules. Collapsing
     // them would hide a deletion behind an edit.
+    // `.unattested` is the sub-class: the reference holds this text in no
+    // construct at all, which is what makes it an insertion rather than an edit.
     expect(classes("совершенно другой текст здесь\n", "нечто иное про гитару\n")).toEqual(
-      expect.arrayContaining(["paragraph.missing", "paragraph.spurious"]),
+      expect.arrayContaining(["paragraph.missing", "paragraph.spurious.unattested"]),
     );
+  });
+});
+
+/**
+ * A spurious produced block is sub-classified by the construct that owns its
+ * text on the reference side, because "the reference has no paragraph here" is
+ * not something a human can act on. Each sub-class names a different owning
+ * mechanism, and the key is the text itself — no document can be named.
+ */
+describe("spurious blocks name where the reference put the text", () => {
+  const cases: Array<[string, string, string]> = [
+    [
+      // Bound as a caption *and* left as a paragraph: the caption family owns it.
+      "::: image\nsrc: a.jpg\ncaption: Памятник Сеговии\n:::\n\nПамятник Сеговии\n",
+      "::: image\nsrc: a.jpg\ncaption: Памятник Сеговии\n:::\n",
+      "paragraph.spurious.caption-echo",
+    ],
+    [
+      // The menu was recognised and the prose run left behind as well.
+      "::: nav\n- [Архив новостей](#a)\n:::\n\nАрхив новостей\n",
+      "::: nav\n- [Архив новостей](#a)\n:::\n",
+      "paragraph.spurious.in-nav",
+    ],
+    [
+      // A `<br>` run emitted as a list *and* as the paragraph it came from.
+      // Unnumbered on purpose: a bare `01. Love Story` line *is* an ordered
+      // list to any CommonMark reader, so it could not be the paragraph this
+      // case is about. The escaped form is covered below, where it stays one.
+      "- Love Story\n\nLove Story\n",
+      "- Love Story\n",
+      "paragraph.spurious.in-list",
+    ],
+    [
+      // The label was promoted to a heading and also kept as a paragraph.
+      "## ВСТУПЛЕНИЕ\n\nВСТУПЛЕНИЕ\n",
+      "## ВСТУПЛЕНИЕ\n",
+      "paragraph.spurious.in-heading",
+    ],
+  ];
+  for (const [produced, reference, expected] of cases) {
+    it(`classifies it as ${expected}`, () => {
+      expect(classes(produced, reference)).toContain(expected);
+    });
+  }
+
+  it("keys on the words, so an escape or a glyph cannot hide the home", () => {
+    // `01\.` and `• … •` differ from the reference byte for byte and are the
+    // same text. A key that did not fold them would report `.unattested` and
+    // send a reader looking for content that is sitting in a list.
+    expect(classes("- 01. Love Story\n\n01\\. Love Story\n", "- 01. Love Story\n")).toContain(
+      "paragraph.spurious.in-list",
+    );
+    expect(
+      classes("::: nav\n- [Архив новостей](#a)\n:::\n\n• Архив новостей •\n", "::: nav\n- [Архив новостей](#a)\n:::\n"),
+    ).toContain("paragraph.spurious.in-nav");
   });
 });
 

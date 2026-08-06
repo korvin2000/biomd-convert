@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-06T02:56:45.965Z",
+  "generated": "2026-08-06T03:05:17.922Z",
   "totals": {
     "findings": 613,
     "sourceBacked": 501,
@@ -119,11 +119,10 @@
   ],
   "classes": [
     {
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
-      "instances": 50,
+      "instances": 32,
       "documents": [
-        "authors",
         "barrios",
         "borislova",
         "goya2",
@@ -136,15 +135,15 @@
         "williams2"
       ],
       "backing": {
-        "source-backed": 50,
+        "source-backed": 32,
         "source-unbacked": 0,
         "ambiguous": 0
       },
-      "rank": 2750,
+      "rank": 1600,
       "example": {
-        "doc": "authors",
-        "path": "/paragraph[5]",
-        "produced": "Один из первых печатных отзывов о проекте \"Гитаристы и композиторы\": Альманах \"Ренессанс гитары-2002\" (Республика Беларусь)",
+        "doc": "barrios",
+        "path": "/paragraph[13]",
+        "produced": "1Другая транскрипция – Баррьос.",
         "reference": null
       }
     },
@@ -294,6 +293,29 @@
         "path": "/paragraph[4]",
         "produced": null,
         "reference": "В 13 лет, отмечая замечательную одаренность ребенка, уже проявившуюся во многих областях — он прекрасно рисовал, обладал удивительными математическими способно…"
+      }
+    },
+    {
+      "class": "paragraph.spurious.caption-echo",
+      "severity": "critical",
+      "instances": 7,
+      "documents": [
+        "authors",
+        "news",
+        "segovia",
+        "williams2"
+      ],
+      "backing": {
+        "source-backed": 7,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 140,
+      "example": {
+        "doc": "authors",
+        "path": "/paragraph[5]",
+        "produced": "Один из первых печатных отзывов о проекте \"Гитаристы и композиторы\": Альманах \"Ренессанс гитары-2002\" (Республика Беларусь)",
+        "reference": null
       }
     },
     {
@@ -479,7 +501,7 @@
       }
     },
     {
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "instances": 8,
       "documents": [
@@ -551,7 +573,7 @@
       }
     },
     {
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "instances": 7,
       "documents": [
@@ -703,6 +725,27 @@
       }
     },
     {
+      "class": "paragraph.spurious.in-list",
+      "severity": "critical",
+      "instances": 3,
+      "documents": [
+        "goya2",
+        "segovia"
+      ],
+      "backing": {
+        "source-backed": 3,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 30,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[20]/column[0]/paragraph[1]",
+        "produced": "09. Promise Me",
+        "reference": null
+      }
+    },
+    {
       "class": "nav.title.missing",
       "severity": "major",
       "instances": 3,
@@ -722,6 +765,26 @@
         "path": "/nav[91]@title",
         "produced": null,
         "reference": "title: Архив новостей"
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-nav",
+      "severity": "critical",
+      "instances": 5,
+      "documents": [
+        "williams2"
+      ],
+      "backing": {
+        "source-backed": 5,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 25,
+      "example": {
+        "doc": "williams2",
+        "path": "/columns[1]/column[0]/nav[1]/paragraph[1]",
+        "produced": "1995-2002",
+        "reference": null
       }
     },
     {
@@ -745,7 +808,7 @@
       }
     },
     {
-      "class": "align.spurious",
+      "class": "align.spurious.unattested",
       "severity": "major",
       "instances": 4,
       "documents": [
@@ -1222,6 +1285,66 @@
       }
     },
     {
+      "class": "paragraph.spurious.in-align",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[16]",
+        "produced": "Джулиан БРИМ",
+        "reference": null
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-quote",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "news_2007"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "news_2007",
+        "path": "/paragraph[9]",
+        "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
+        "reference": null
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-table",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "borislova"
+      ],
+      "backing": {
+        "source-backed": 1,
+        "source-unbacked": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "borislova",
+        "path": "/align[43]/paragraph[1]",
+        "produced": "WMA",
+        "reference": null
+      }
+    },
+    {
       "class": "quote.missing",
       "severity": "critical",
       "instances": 1,
@@ -1242,7 +1365,7 @@
       }
     },
     {
-      "class": "quote.spurious",
+      "class": "quote.spurious.unattested",
       "severity": "critical",
       "instances": 1,
       "documents": [
@@ -1684,7 +1807,7 @@
       }
     },
     {
-      "class": "break.spurious",
+      "class": "break.spurious.unattested",
       "severity": "minor",
       "instances": 1,
       "documents": [
@@ -1969,9 +2092,9 @@
   ],
   "findings": [
     {
-      "id": "e037b3b9",
+      "id": "ef81c649",
       "doc": "authors",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -2151,9 +2274,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "34bf1881",
+      "id": "4bdec2d0",
       "doc": "barrios",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -2165,9 +2288,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "ee96e75c",
+      "id": "5af63aaf",
       "doc": "barrios",
-      "class": "break.spurious",
+      "class": "break.spurious.unattested",
       "severity": "minor",
       "evidence": "structure",
       "op": "insert",
@@ -3145,9 +3268,9 @@
       "backing": "ambiguous"
     },
     {
-      "id": "dd8c4554",
+      "id": "1724938b",
       "doc": "borislova",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3159,9 +3282,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "d3fe33e2",
+      "id": "d5cad437",
       "doc": "borislova",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3173,9 +3296,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "282578e4",
+      "id": "49e3fb30",
       "doc": "borislova",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-table",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3845,9 +3968,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "a4073b1b",
+      "id": "0c4ceb1a",
       "doc": "goya2",
-      "class": "align.spurious",
+      "class": "align.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3859,9 +3982,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "db4a6b87",
+      "id": "f20592b2",
       "doc": "goya2",
-      "class": "align.spurious",
+      "class": "align.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3873,9 +3996,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "28dd1f30",
+      "id": "6a4295e9",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3887,9 +4010,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "f30c7b25",
+      "id": "ce827a7a",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3901,9 +4024,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "bd1b84c8",
+      "id": "fda36838",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-list",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3915,9 +4038,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1705a393",
+      "id": "e395dcd0",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3929,9 +4052,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "a812da74",
+      "id": "7c5ee8f5",
       "doc": "goya2",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3943,9 +4066,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "750e9f3c",
+      "id": "c2bb89f5",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3957,9 +4080,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "5ec5a2d9",
+      "id": "3096e3f4",
       "doc": "goya2",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3971,9 +4094,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "f608d361",
+      "id": "1f023231",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-list",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3985,9 +4108,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "436ad64d",
+      "id": "387da822",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3999,9 +4122,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "3b9a25b7",
+      "id": "4ae388f0",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -4013,9 +4136,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "3bf38ca3",
+      "id": "a1403a6c",
       "doc": "goya2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -5945,9 +6068,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "9b03ce94",
+      "id": "3eba1c81",
       "doc": "jovicic",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -5959,9 +6082,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "2b59c58e",
+      "id": "43e35051",
       "doc": "jovicic",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -6169,9 +6292,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "d62e5e25",
+      "id": "3c8c2fd6",
       "doc": "kiselev",
-      "class": "align.spurious",
+      "class": "align.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -6183,9 +6306,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "700af487",
+      "id": "c2e0bbb6",
       "doc": "kiselev",
-      "class": "align.spurious",
+      "class": "align.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -6197,9 +6320,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "b7c2ed4f",
+      "id": "37844808",
       "doc": "kiselev",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -6211,9 +6334,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "e159f5e4",
+      "id": "39a879c3",
       "doc": "kiselev",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7135,9 +7258,9 @@
       "backing": "ambiguous"
     },
     {
-      "id": "8e62f3bd",
+      "id": "a243b3ac",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7149,9 +7272,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "5bdb8c8c",
+      "id": "ffd27c41",
       "doc": "news",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -7163,9 +7286,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "3b9aa0a0",
+      "id": "0d5daf37",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7177,9 +7300,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1996f8e7",
+      "id": "b736762d",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7191,9 +7314,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "5159cdb0",
+      "id": "d45adca5",
       "doc": "news",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -7205,9 +7328,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "b2ab684a",
+      "id": "9920becf",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-align",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7219,9 +7342,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "4f798aaf",
+      "id": "d77ea5f2",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7233,9 +7356,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "ee11b259",
+      "id": "03be8826",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7247,9 +7370,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "9d9500e9",
+      "id": "09a7e630",
       "doc": "news",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -7261,9 +7384,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1e34c291",
+      "id": "2310e522",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7275,9 +7398,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "26c142b7",
+      "id": "08560a6c",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7289,9 +7412,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "a8553bd3",
+      "id": "4572d72c",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -7303,9 +7426,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "50a74572",
+      "id": "820fb101",
       "doc": "news",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -7317,9 +7440,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "2ad57fde",
+      "id": "74d6a133",
       "doc": "news",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8605,9 +8728,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "99db066f",
+      "id": "708d6cd8",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8619,9 +8742,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "80fca092",
+      "id": "893388c3",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8633,9 +8756,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "6afd2879",
+      "id": "3efe1978",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8647,9 +8770,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "f372471f",
+      "id": "b38c82e4",
       "doc": "news_2007",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8661,9 +8784,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "e2d65ed8",
+      "id": "f17406f5",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8675,9 +8798,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "3ab7b6de",
+      "id": "f771f0cd",
       "doc": "news_2007",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8689,9 +8812,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "13cdc0af",
+      "id": "94cb9a63",
       "doc": "news_2007",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-quote",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8703,9 +8826,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "198fb974",
+      "id": "ad5c02b7",
       "doc": "news_2007",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8717,9 +8840,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "cfc1446f",
+      "id": "fb0775ea",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8731,9 +8854,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "199f0bbe",
+      "id": "1a1651ab",
       "doc": "news_2007",
-      "class": "heading.spurious",
+      "class": "heading.spurious.unattested",
       "severity": "major",
       "evidence": "content",
       "op": "insert",
@@ -8745,9 +8868,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1bfae13d",
+      "id": "2fceca9e",
       "doc": "news_2007",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8885,9 +9008,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "2af28666",
+      "id": "207d2591",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8899,9 +9022,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "18493996",
+      "id": "e5682701",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -8913,9 +9036,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "e9960f7a",
+      "id": "9ff53461",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9235,9 +9358,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1742bc4a",
+      "id": "0c5aeca5",
       "doc": "segovia",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9249,9 +9372,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "5d3bf8dd",
+      "id": "51a3b372",
       "doc": "segovia",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9263,9 +9386,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1eea5a10",
+      "id": "4371d5c4",
       "doc": "segovia",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9277,9 +9400,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "bf3c54d2",
+      "id": "84cb9bae",
       "doc": "segovia",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9291,9 +9414,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "ffe60f46",
+      "id": "8931c0ce",
       "doc": "segovia",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-list",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -9711,9 +9834,9 @@
       "backing": "source-unbacked"
     },
     {
-      "id": "983c1f79",
+      "id": "091c873e",
       "doc": "segovia1",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -9725,9 +9848,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "44792dad",
+      "id": "b968a454",
       "doc": "segovia1",
-      "class": "image.spurious",
+      "class": "image.spurious.unattested",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -9907,9 +10030,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "0badd835",
+      "id": "a1303c7a",
       "doc": "tarrega",
-      "class": "quote.spurious",
+      "class": "quote.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10243,9 +10366,9 @@
       "backing": "source-unbacked"
     },
     {
-      "id": "5db66fec",
+      "id": "aaaae0fc",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10257,9 +10380,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "806e040a",
+      "id": "d6f13e5a",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10271,9 +10394,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "1fdc13f2",
+      "id": "bd68b6c2",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.caption-echo",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10285,9 +10408,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "584e9445",
+      "id": "48438bfa",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10299,9 +10422,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "8af1cc6b",
+      "id": "ed9f4c24",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10313,9 +10436,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "5d674e69",
+      "id": "401f8236",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-nav",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10327,9 +10450,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "112e07e1",
+      "id": "ba979baa",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-nav",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10341,9 +10464,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "6a836829",
+      "id": "21797cc6",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-nav",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10355,9 +10478,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "0417b949",
+      "id": "9cc88c06",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-nav",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -10369,9 +10492,9 @@
       "backing": "source-backed"
     },
     {
-      "id": "86528ebd",
+      "id": "64b42cf6",
       "doc": "williams2",
-      "class": "paragraph.spurious",
+      "class": "paragraph.spurious.in-nav",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",

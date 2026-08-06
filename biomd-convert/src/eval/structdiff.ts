@@ -86,12 +86,14 @@ interface Context {
   doc: string;
   findings: Finding[];
   orphans: Orphan[];
+  /** Where the reference put each piece of text — see {@link indexConstructs}. */
+  referenceHome: Map<string, string>;
 }
 
 export function diffDocuments(doc: string, producedSource: string, referenceSource: string): DiffResult {
   const produced = readBlocks(producedSource).blocks;
   const reference = readBlocks(referenceSource).blocks;
-  const ctx: Context = { doc, findings: [], orphans: [] };
+  const ctx: Context = { doc, findings: [], orphans: [], referenceHome: indexConstructs(reference) };
   compareSequence(ctx, produced, reference, "");
   reconcile(ctx);
   return { doc, findings: dedupe(ctx.findings) };
@@ -164,7 +166,8 @@ function reconcile(ctx: Context): void {
 
 function emitUnmatched(ctx: Context, orphan: Orphan): void {
   const block = orphan.block;
-  const cls = `${classOf(block)}.${orphan.side === "reference" ? "missing" : "spurious"}`;
+  const base = `${classOf(block)}.${orphan.side === "reference" ? "missing" : "spurious"}`;
+  const cls = orphan.side === "produced" ? `${base}.${homeOf(ctx, block)}` : base;
   ctx.findings.push(
     orphan.side === "reference"
       ? finding(ctx.doc, cls, missingSeverity(block), evidenceOf(block), "delete", orphan.path, null, block)
@@ -174,6 +177,100 @@ function emitUnmatched(ctx: Context, orphan: Orphan): void {
 
 function childrenOf(block: Block): Block[] {
   return block.kind === "directive" || block.kind === "quote" ? block.children : [];
+}
+
+// ---------------------------------------------------------------------------
+// Where did the reference put it?
+// ---------------------------------------------------------------------------
+
+/**
+ * Sub-classify a spurious produced block by the construct that owns its text on
+ * the reference side.
+ *
+ * `paragraph.spurious` was the ledger's largest class and its least actionable:
+ * 50 instances across 11 documents with nothing in common except "the reference
+ * has no paragraph here". That is the shape the ladder forbids — a finding a
+ * human cannot act on is a class that is not precise enough. The refinement asks
+ * one further question, and the answer names the owning mechanism:
+ *
+ *   `.caption-echo`  the text is an `::: image` `caption:` — the converter bound
+ *                    the caption *and* left the line below the figure.
+ *   `.in-nav`        a `::: nav` item label. The menu was not recognised.
+ *   `.in-list`       a list item. A `<br>` run that should have been a list.
+ *   `.in-heading`    a heading. Typographic prominence was not recovered.
+ *   `.in-table`      a table cell. A record matrix was flattened.
+ *   `.in-align`      an `::: align` body. The alignment family owns it.
+ *   `.unattested`    no reference construct holds this text at all — page
+ *                    chrome, a caption echo of a dropped figure, or content the
+ *                    reference deleted. The only sub-class that may be ceiling.
+ *
+ * No literals: the index is built from the reference document being compared,
+ * and the key is the text itself. A detector here cannot name a document.
+ */
+function homeOf(ctx: Context, block: Block): string {
+  const key = homeKey(blockText(block));
+  if (key === "") return "unattested";
+  return ctx.referenceHome.get(key) ?? "unattested";
+}
+
+/**
+ * Fold text to a lookup key.
+ *
+ * Case and every non-alphanumeric character are dropped, so an escape (`01\.`),
+ * a bullet glyph, a typographic dash or a different quote cannot hide the fact
+ * that the same words landed somewhere else.
+ */
+function homeKey(text: string): string {
+  return words(text).join(" ").toLowerCase();
+}
+
+/** Reference text → the name of the construct that holds it. */
+function indexConstructs(blocks: readonly Block[]): Map<string, string> {
+  const home = new Map<string, string>();
+  // First writer wins: a caption is also inside its `::: image`, and the caption
+  // is the more specific — and more actionable — answer.
+  const put = (text: string, where: string): void => {
+    const key = homeKey(text);
+    if (key !== "" && !home.has(key)) home.set(key, where);
+  };
+
+  const visit = (list: readonly Block[]): void => {
+    for (const block of list) {
+      switch (block.kind) {
+        case "heading":
+          put(block.inline.text, "in-heading");
+          break;
+        case "list":
+          for (const item of block.items) put(item.inline.text, "in-list");
+          break;
+        case "table":
+          for (const cell of [...block.header, ...block.rows.flat()]) put(cell.text, "in-table");
+          break;
+        case "quote":
+          put(blockText(block), "in-quote");
+          visit(block.children);
+          break;
+        case "directive": {
+          const caption = block.props["caption"];
+          if (caption !== undefined) put(caption, "caption-echo");
+          if (block.name === "nav") for (const child of block.children) putNavItems(child, put);
+          if (block.name === "align") put(flatten(block.children), "in-align");
+          visit(block.children);
+          break;
+        }
+        default:
+          break;
+      }
+    }
+  };
+  visit(blocks);
+  return home;
+}
+
+/** A `::: nav`'s items are an ordinary list inside the directive. */
+function putNavItems(block: Block, put: (text: string, where: string) => void): void {
+  if (block.kind === "list") for (const item of block.items) put(item.inline.text, "in-nav");
+  else put(blockText(block), "in-nav");
 }
 
 /** Name the relocation: a re-tagging, a change of parent, or a reordering. */
