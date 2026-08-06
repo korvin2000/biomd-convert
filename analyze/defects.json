@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-06T07:35:34.133Z",
+  "generated": "2026-08-06T07:40:49.925Z",
   "totals": {
     "findings": 380,
-    "converterDefects": 251,
+    "converterDefects": 256,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 51,
-    "ambiguous": 78,
+    "ambiguous": 73,
     "bySeverity": {
       "critical": 49,
       "major": 168,
@@ -56,7 +56,7 @@
     {
       "doc": "kiselev",
       "findings": 62,
-      "converterDefects": 19,
+      "converterDefects": 20,
       "critical": 2,
       "major": 21,
       "minor": 39
@@ -64,7 +64,7 @@
     {
       "doc": "news",
       "findings": 82,
-      "converterDefects": 62,
+      "converterDefects": 64,
       "critical": 15,
       "major": 45,
       "minor": 22
@@ -72,7 +72,7 @@
     {
       "doc": "news_2007",
       "findings": 20,
-      "converterDefects": 11,
+      "converterDefects": 13,
       "critical": 4,
       "major": 5,
       "minor": 11
@@ -168,7 +168,7 @@
         "doc": "goya2",
         "path": "/columns[60]/column[0]/align[0]",
         "produced": "Noche Latina / Francis Goya & Carmina 1993",
-        "reference": "align center Noche Latina / Francis Goya & Carmina 1993 — at /columns[60]/column[0]/paragraph[1]"
+        "reference": "Noche Latina / Francis Goya & Carmina 1993 — at /columns[60]/column[0]/paragraph[1]"
       }
     },
     {
@@ -224,6 +224,29 @@
         "path": "/paragraph[2]",
         "produced": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классиче-ской гитары. В 2003 году окончил Кишиневскую музыкальную шко…",
         "reference": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классической гитары. В 2003 году окончил Кишиневскую музыкальную школ…"
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "critical",
+      "instances": 7,
+      "documents": [
+        "kiselev",
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 105,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[18]/column[1]/paragraph[1]",
+        "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
+        "reference": null
       }
     },
     {
@@ -361,7 +384,7 @@
         "doc": "goya2",
         "path": "/align[1]",
         "produced": null,
-        "reference": "align center (дискография)"
+        "reference": "(дискография)"
       }
     },
     {
@@ -435,7 +458,7 @@
       "example": {
         "doc": "news",
         "path": "/image[0]",
-        "produced": "image pages/use/album.gif center small /#/menu",
+        "produced": "",
         "reference": null
       }
     },
@@ -481,7 +504,7 @@
         "doc": "news",
         "path": "/frame[73]",
         "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-        "reference": "frame frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санче… — at /paragraph[74]"
+        "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]"
       }
     },
     {
@@ -615,8 +638,8 @@
       "example": {
         "doc": "goya2",
         "path": "/columns[50]/column[1]/image[1]",
-        "produced": "image photo/g/goya/goya_moscow3a.jpg center medium",
-        "reference": "image photo/g/goya/goya_moscow3a.jpg center small — produced at /image[51]"
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -681,7 +704,7 @@
         "doc": "goya2",
         "path": "/images[76]/image[0]",
         "produced": null,
-        "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya"
+        "reference": "Together / Richard Clayderman & Francis Goya"
       }
     },
     {
@@ -724,7 +747,7 @@
       "example": {
         "doc": "borislova",
         "path": "/align[45]",
-        "produced": "align center WMA",
+        "produced": "WMA",
         "reference": null
       }
     },
@@ -746,8 +769,8 @@
       "example": {
         "doc": "tarrega",
         "path": "/image[9]",
-        "produced": "image photo/t/tarrega1.jpg right small Франсиско Таррега",
-        "reference": "image photo/t/tarrega1.jpg right small Франсиско Таррега — produced at /image[7]"
+        "produced": "Франсиско Таррега",
+        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -832,7 +855,7 @@
         "doc": "goya2",
         "path": "/images[72]",
         "produced": null,
-        "reference": "images 2 image photo/g/goya/goya_carmina2a.jpg center small Bahia Lady / Goya & Carmina **1990** image photo/g/goya/fr_goya1.jpg center small Francis Goya"
+        "reference": "image photo/g/goya/goya_carmina2a.jpg center small Bahia Lady / Goya & Carmina **1990** image photo/g/goya/fr_goya1.jpg center small Francis Goya"
       }
     },
     {
@@ -895,7 +918,7 @@
         "doc": "segovia1",
         "path": "/align[59]/columns[0]/column[0]",
         "produced": "Андрес Сеговия",
-        "reference": "column ◀ Андрес Сеговия — at /align[59]/paragraph[0]"
+        "reference": "◀ Андрес Сеговия — at /align[59]/paragraph[0]"
       }
     },
     {
@@ -916,48 +939,6 @@
         "doc": "williams2",
         "path": "/nav[2]/break[0]",
         "produced": "---",
-        "reference": null
-      }
-    },
-    {
-      "class": "paragraph.spurious.caption-echo",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[13]",
-        "produced": "Юрий Алексеевич СМИРНОВ",
-        "reference": null
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-align",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[15]",
-        "produced": "Джулиан БРИМ",
         "reference": null
       }
     },
@@ -1065,7 +1046,7 @@
         "doc": "segovia1",
         "path": "/align[59]/columns[0]",
         "produced": null,
-        "reference": "columns column ◀ Андрес Сеговия column Владимир Бобри ▶"
+        "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
       }
     },
     {
@@ -1148,8 +1129,8 @@
       "example": {
         "doc": "goya2",
         "path": "/images[76]",
-        "produced": "image photo/g/goya/goya_cleiderman.jpg center medium Together / Richard Clayderman & Francis Goya",
-        "reference": "images 2 image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padil… — produced at /image[77]"
+        "produced": "Together / Richard Clayderman & Francis Goya",
+        "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]"
       }
     },
     {
@@ -1190,8 +1171,8 @@
       "example": {
         "doc": "williams2",
         "path": "/nav[2]",
-        "produced": "column Дискография --- 1995-2002 --- 1989-1994 --- 1979-1988 --- 1971-1979 --- 1958-1970",
-        "reference": "nav Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]"
+        "produced": "Дискография --- 1995-2002 --- 1989-1994 --- 1979-1988 --- 1971-1979 --- 1958-1970",
+        "reference": "Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]"
       }
     },
     {
@@ -1211,7 +1192,7 @@
       "example": {
         "doc": "goya2",
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "align center Francis Goya Plays His Favourite Hits",
+        "produced": "Francis Goya Plays His Favourite Hits",
         "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
@@ -1232,7 +1213,7 @@
       "example": {
         "doc": "news_2007",
         "path": "/columns[9]/column[1]/paragraph[0]",
-        "produced": "columns column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
+        "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слухи о сме…",
         "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]"
       }
     },
@@ -1254,7 +1235,7 @@
         "doc": "segovia1",
         "path": "/align[0]",
         "produced": "Техника Андреса Сеговии",
-        "reference": "align center Техника Андреса Сеговии — at /heading[1]"
+        "reference": "Техника Андреса Сеговии — at /heading[1]"
       }
     },
     {
@@ -1275,7 +1256,7 @@
         "doc": "news_2007",
         "path": "/align[1]",
         "produced": "Архив новостей за 2007 год",
-        "reference": "align center Архив новостей за 2007 год — at /heading[2]"
+        "reference": "Архив новостей за 2007 год — at /heading[2]"
       }
     },
     {
@@ -1317,7 +1298,7 @@
         "doc": "news",
         "path": "/lead[1]",
         "produced": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы…",
-        "reference": "lead Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради … — at /paragraph[2]"
+        "reference": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы… — at /paragraph[2]"
       }
     },
     {
@@ -1684,10 +1665,9 @@
     {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
-      "instances": 19,
+      "instances": 14,
       "documents": [
         "goya2",
-        "kiselev",
         "news",
         "news_2007",
         "pavlov_azancheev",
@@ -1697,7 +1677,7 @@
         "converter-defect": 0,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 19
+        "ambiguous": 14
       },
       "rank": 0,
       "example": {
@@ -2097,7 +2077,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "4a915b7e",
+      "id": "e85387fe",
       "doc": "borislova",
       "class": "align.spurious.unattested",
       "severity": "major",
@@ -2106,7 +2086,7 @@
       "path": "/align[45]",
       "producedLine": 291,
       "referenceLine": null,
-      "produced": "align center WMA",
+      "produced": "WMA",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -2447,7 +2427,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "9ed6fd2b",
+      "id": "90f3db73",
       "doc": "goya2",
       "class": "align.missing",
       "severity": "major",
@@ -2457,7 +2437,7 @@
       "producedLine": null,
       "referenceLine": 3,
       "produced": null,
-      "reference": "align center (дискография)",
+      "reference": "(дискография)",
       "verdict": "converter-defect"
     },
     {
@@ -2582,7 +2562,7 @@
       "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
       "producedLine": 205,
       "referenceLine": 210,
-      "produced": "align center Francis Goya Plays His Favourite Hits",
+      "produced": "Francis Goya Plays His Favourite Hits",
       "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]",
       "verdict": "converter-defect"
     },
@@ -2755,7 +2735,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "10a17f5f",
+      "id": "e74ee424",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -2764,8 +2744,8 @@
       "path": "/columns[50]/column[1]/image[1]",
       "producedLine": 805,
       "referenceLine": 804,
-      "produced": "image photo/g/goya/goya_moscow3a.jpg center medium",
-      "reference": "image photo/g/goya/goya_moscow3a.jpg center small — produced at /image[51]",
+      "produced": "",
+      "reference": "produced at /image[51]",
       "verdict": "converter-defect"
     },
     {
@@ -2783,7 +2763,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "da1c1bd1",
+      "id": "97b0d14f",
       "doc": "goya2",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -2793,7 +2773,7 @@
       "producedLine": 816,
       "referenceLine": 819,
       "produced": "Francis Goya in Moscow",
-      "reference": "align center Francis Goya in Moscow — at /columns[52]/column[0]/paragraph[1]",
+      "reference": "Francis Goya in Moscow — at /columns[52]/column[0]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -2825,7 +2805,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "8f18e8bb",
+      "id": "5114c953",
       "doc": "goya2",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -2835,11 +2815,11 @@
       "producedLine": 941,
       "referenceLine": 948,
       "produced": "Noche Latina / Francis Goya & Carmina 1993",
-      "reference": "align center Noche Latina / Francis Goya & Carmina 1993 — at /columns[60]/column[0]/paragraph[1]",
+      "reference": "Noche Latina / Francis Goya & Carmina 1993 — at /columns[60]/column[0]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
-      "id": "7ca71058",
+      "id": "b252ea38",
       "doc": "goya2",
       "class": "align.missing",
       "severity": "major",
@@ -2849,7 +2829,7 @@
       "producedLine": null,
       "referenceLine": 1070,
       "produced": null,
-      "reference": "align center Галерея инструментальной музыки. Francis Goya Grand Records, 2001",
+      "reference": "Галерея инструментальной музыки. Francis Goya Grand Records, 2001",
       "verdict": "converter-defect"
     },
     {
@@ -2895,7 +2875,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "7ed75c56",
+      "id": "88d9e0ac",
       "doc": "goya2",
       "class": "align.missing",
       "severity": "major",
@@ -2905,7 +2885,7 @@
       "producedLine": null,
       "referenceLine": 1132,
       "produced": null,
-      "reference": "align center ДРУГИЕ АЛЬБОМЫ",
+      "reference": "ДРУГИЕ АЛЬБОМЫ",
       "verdict": "converter-defect"
     },
     {
@@ -2923,7 +2903,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "706dad5e",
+      "id": "34347f70",
       "doc": "goya2",
       "class": "images.missing",
       "severity": "major",
@@ -2933,11 +2913,11 @@
       "producedLine": null,
       "referenceLine": 1137,
       "produced": null,
-      "reference": "images 2 image photo/g/goya/goya_carmina2a.jpg center small Bahia Lady / Goya & Carmina **1990** image photo/g/goya/fr_goya1.jpg center small Francis Goya",
+      "reference": "image photo/g/goya/goya_carmina2a.jpg center small Bahia Lady / Goya & Carmina **1990** image photo/g/goya/fr_goya1.jpg center small Francis Goya",
       "verdict": "converter-defect"
     },
     {
-      "id": "b72ed4fb",
+      "id": "c9b14d9e",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -2946,8 +2926,8 @@
       "path": "/images[72]/image[0]",
       "producedLine": 1122,
       "referenceLine": 1140,
-      "produced": "image photo/g/goya/goya_carmina2a.jpg center medium Bahia Lady / Goya & Carmina 1990",
-      "reference": "image photo/g/goya/goya_carmina2a.jpg center small Bahia Lady / Goya & Carmina **1990** — produced at /image[73]",
+      "produced": "Bahia Lady / Goya & Carmina 1990",
+      "reference": "Bahia Lady / Goya & Carmina **1990** — produced at /image[73]",
       "verdict": "converter-defect"
     },
     {
@@ -2979,7 +2959,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "fe69384d",
+      "id": "41eacf0d",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -2988,8 +2968,8 @@
       "path": "/images[72]/image[1]",
       "producedLine": 1129,
       "referenceLine": 1148,
-      "produced": "image photo/g/goya/fr_goya1.jpg center medium Francis Goya",
-      "reference": "image photo/g/goya/fr_goya1.jpg center small Francis Goya — produced at /image[73]",
+      "produced": "Francis Goya",
+      "reference": "Francis Goya — produced at /image[73]",
       "verdict": "converter-defect"
     },
     {
@@ -3007,7 +2987,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "0c9007df",
+      "id": "fce6fc28",
       "doc": "goya2",
       "class": "images.missing",
       "severity": "major",
@@ -3017,11 +2997,11 @@
       "producedLine": null,
       "referenceLine": 1159,
       "produced": null,
-      "reference": "images 2 image photo/g/goya/goya_carmina4a.jpg center small Festival Latino / Goya & Carmina 1994 image photo/g/goya/goya_gondwana1.jpg center small Francis Go…",
+      "reference": "image photo/g/goya/goya_carmina4a.jpg center small Festival Latino / Goya & Carmina 1994 image photo/g/goya/goya_gondwana1.jpg center small Francis Goya / Gond…",
       "verdict": "converter-defect"
     },
     {
-      "id": "eadeba95",
+      "id": "f9f61874",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -3030,8 +3010,8 @@
       "path": "/images[74]/image[0]",
       "producedLine": 1138,
       "referenceLine": 1162,
-      "produced": "image photo/g/goya/goya_carmina4a.jpg center medium Festival Latino / Goya & Carmina 1994",
-      "reference": "image photo/g/goya/goya_carmina4a.jpg center small Festival Latino / Goya & Carmina 1994 — produced at /image[75]",
+      "produced": "Festival Latino / Goya & Carmina 1994",
+      "reference": "Festival Latino / Goya & Carmina 1994 — produced at /image[75]",
       "verdict": "converter-defect"
     },
     {
@@ -3049,7 +3029,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4f7e924a",
+      "id": "13248e23",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -3058,8 +3038,8 @@
       "path": "/images[74]/image[1]",
       "producedLine": 1145,
       "referenceLine": 1169,
-      "produced": "image photo/g/goya/goya_gondwana1.jpg center medium Francis Goya / Gondwana",
-      "reference": "image photo/g/goya/goya_gondwana1.jpg center small Francis Goya / Gondwana — produced at /image[75]",
+      "produced": "Francis Goya / Gondwana",
+      "reference": "Francis Goya / Gondwana — produced at /image[75]",
       "verdict": "converter-defect"
     },
     {
@@ -3077,7 +3057,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9d997ca0",
+      "id": "1e075d6d",
       "doc": "goya2",
       "class": "images.moved",
       "severity": "major",
@@ -3086,8 +3066,8 @@
       "path": "/images[76]",
       "producedLine": 1154,
       "referenceLine": 1180,
-      "produced": "image photo/g/goya/goya_cleiderman.jpg center medium Together / Richard Clayderman & Francis Goya",
-      "reference": "images 2 image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padil… — produced at /image[77]",
+      "produced": "Together / Richard Clayderman & Francis Goya",
+      "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]",
       "verdict": "converter-defect"
     },
     {
@@ -3161,7 +3141,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a37564ad",
+      "id": "284f607c",
       "doc": "goya2",
       "class": "image.missing",
       "severity": "major",
@@ -3171,11 +3151,11 @@
       "producedLine": null,
       "referenceLine": 1183,
       "produced": null,
-      "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya",
+      "reference": "Together / Richard Clayderman & Francis Goya",
       "verdict": "converter-defect"
     },
     {
-      "id": "473ba481",
+      "id": "db306ede",
       "doc": "goya2",
       "class": "image.containment",
       "severity": "major",
@@ -3184,8 +3164,8 @@
       "path": "/images[76]/image[1]",
       "producedLine": 1161,
       "referenceLine": 1190,
-      "produced": "image photo/g/goya/goya_.jpg center medium Maria Padilha",
-      "reference": "image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]",
+      "produced": "Maria Padilha",
+      "reference": "Maria Padilha — produced at /image[77]",
       "verdict": "converter-defect"
     },
     {
@@ -3329,9 +3309,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "55f11eb8",
+      "id": "2dd0839d",
       "doc": "kiselev",
-      "class": "paragraph.spurious.unattested",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -3340,7 +3320,7 @@
       "referenceLine": null,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "f1398cce",
@@ -3525,7 +3505,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "e48fcbe9",
+      "id": "6e56b9df",
       "doc": "kiselev",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -3535,11 +3515,11 @@
       "producedLine": 129,
       "referenceLine": 130,
       "produced": "Музыкальные файлы и ноты размещены с согласия композитора и издательства VP Music Media",
-      "reference": "align center Музыкальные файлы и ноты размещены с согласия композитора и издательства VP Music Media — at /paragraph[11]",
+      "reference": "Музыкальные файлы и ноты размещены с согласия композитора и издательства VP Music Media — at /paragraph[11]",
       "verdict": "converter-defect"
     },
     {
-      "id": "10d807fb",
+      "id": "06e3d27c",
       "doc": "kiselev",
       "class": "align.missing",
       "severity": "major",
@@ -3549,7 +3529,7 @@
       "producedLine": null,
       "referenceLine": 148,
       "produced": null,
-      "reference": "align right Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете: www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci E-ma…",
+      "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете: www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci E-mail: info@vpm…",
       "verdict": "converter-defect"
     },
     {
@@ -4085,7 +4065,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "7585fb76",
+      "id": "3229fc64",
       "doc": "kiselev",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4095,7 +4075,7 @@
       "producedLine": 196,
       "referenceLine": 204,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
-      "reference": "align center Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия) — at /paragraph[17]",
+      "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия) — at /paragraph[17]",
       "verdict": "converter-defect"
     },
     {
@@ -4141,7 +4121,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "76abb20b",
+      "id": "a1176bd6",
       "doc": "kiselev",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4151,7 +4131,7 @@
       "producedLine": 224,
       "referenceLine": 229,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
-      "reference": "align right АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium E-mail: andy.waeyaert@advalvas.be — at /columns[18]/column[1]/paragraph[1]",
+      "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium E-mail: andy.waeyaert@advalvas.be — at /columns[18]/column[1]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -4211,7 +4191,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "ffd27c41",
+      "id": "8a100280",
       "doc": "news",
       "class": "image.spurious.unattested",
       "severity": "major",
@@ -4220,14 +4200,14 @@
       "path": "/image[0]",
       "producedLine": 3,
       "referenceLine": null,
-      "produced": "image pages/use/album.gif center small /#/menu",
+      "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "0d5daf37",
+      "id": "1f11f63e",
       "doc": "news",
-      "class": "paragraph.spurious.unattested",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -4236,12 +4216,12 @@
       "referenceLine": null,
       "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "b92a5360",
+      "id": "098aae98",
       "doc": "news",
-      "class": "paragraph.spurious.caption-echo",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -4253,7 +4233,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "3c760000",
+      "id": "6cf0ae2b",
       "doc": "news",
       "class": "image.spurious.unattested",
       "severity": "major",
@@ -4262,14 +4242,14 @@
       "path": "/image[13]",
       "producedLine": 58,
       "referenceLine": null,
-      "produced": "image main/smirnov_ua.jpg center medium Юрий Алексеевич Смирнов",
+      "produced": "Юрий Алексеевич Смирнов",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "614ec826",
+      "id": "9291ac61",
       "doc": "news",
-      "class": "paragraph.spurious.in-align",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -4295,9 +4275,9 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "b6f8f4f5",
+      "id": "23702620",
       "doc": "news",
-      "class": "paragraph.spurious.unattested",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -4306,7 +4286,7 @@
       "referenceLine": null,
       "produced": "Михаил Владимирович КОРНИШИН",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "715f4240",
@@ -4365,7 +4345,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "9238d7f1",
+      "id": "bb95c0b9",
       "doc": "news",
       "class": "image.spurious.unattested",
       "severity": "major",
@@ -4374,7 +4354,7 @@
       "path": "/image[74]",
       "producedLine": 330,
       "referenceLine": null,
-      "produced": "image main/paco_de_lucia.jpg center medium",
+      "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -4393,7 +4373,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "228553d0",
+      "id": "acaaf0d7",
       "doc": "news",
       "class": "retyped.paragraph-to-lead",
       "severity": "major",
@@ -4403,7 +4383,7 @@
       "producedLine": 11,
       "referenceLine": 3,
       "produced": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы…",
-      "reference": "lead Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради … — at /paragraph[2]",
+      "reference": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы… — at /paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -4435,7 +4415,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "f8a9aa65",
+      "id": "05395a07",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4445,11 +4425,11 @@
       "producedLine": 48,
       "referenceLine": 41,
       "produced": "С НОВЫМ 2022 ГОДОМ!",
-      "reference": "align center С НОВЫМ 2022 ГОДОМ! — at /paragraph[11]",
+      "reference": "С НОВЫМ 2022 ГОДОМ! — at /paragraph[11]",
       "verdict": "converter-defect"
     },
     {
-      "id": "8844a3e9",
+      "id": "8ff0ccf8",
       "doc": "news",
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
@@ -4459,11 +4439,11 @@
       "producedLine": 52,
       "referenceLine": 48,
       "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
-      "reference": "frame frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театр… — at /paragraph[13]",
+      "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — at /paragraph[13]",
       "verdict": "converter-defect"
     },
     {
-      "id": "b5e92adf",
+      "id": "bf24be38",
       "doc": "news",
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
@@ -4473,7 +4453,7 @@
       "producedLine": 66,
       "referenceLine": 70,
       "produced": "14 августа 2020 года в Англии возрасте 87 лет умер выдаю­щийся британский гитарист и лютнист",
-      "reference": "frame frame: black 14 августа 2020 года в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист align center Джулиан БРИМ — at /paragraph[15]",
+      "reference": "frame: black 14 августа 2020 года в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист align center Джулиан БРИМ — at /paragraph[15]",
       "verdict": "converter-defect"
     },
     {
@@ -4659,7 +4639,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "06fc0867",
+      "id": "89467d5d",
       "doc": "news",
       "class": "image.missing",
       "severity": "major",
@@ -4669,7 +4649,7 @@
       "producedLine": null,
       "referenceLine": 148,
       "produced": null,
-      "reference": "image pages/photo/e/efremov.jpg center medium",
+      "reference": "",
       "verdict": "converter-defect"
     },
     {
@@ -4785,7 +4765,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "0783b135",
+      "id": "29b21c3d",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4795,7 +4775,7 @@
       "producedLine": 188,
       "referenceLine": 204,
       "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
-      "reference": "align center 20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — at /frame[47]/paragraph[2]",
+      "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — at /frame[47]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -4827,7 +4807,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "d8a33f54",
+      "id": "7d55a6d4",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4837,7 +4817,7 @@
       "producedLine": 217,
       "referenceLine": 236,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "reference": "align center 26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист Михаил Владимирович КОРНИШИН — at /frame[52]/paragraph[2]",
+      "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист Михаил Владимирович КОРНИШИН — at /frame[52]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -4883,7 +4863,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "a0b2debb",
+      "id": "64645b5f",
       "doc": "news",
       "class": "align.missing",
       "severity": "major",
@@ -4893,7 +4873,7 @@
       "producedLine": null,
       "referenceLine": 281,
       "produced": null,
-      "reference": "align center Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУС…",
+      "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛ…",
       "verdict": "converter-defect"
     },
     {
@@ -5065,7 +5045,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "b7fd00f7",
+      "id": "576f8464",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -5075,11 +5055,11 @@
       "producedLine": 283,
       "referenceLine": 308,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-      "reference": "align center 3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной … — at /paragraph[63]",
+      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]",
       "verdict": "converter-defect"
     },
     {
-      "id": "8c29b34c",
+      "id": "a43bdd56",
       "doc": "news",
       "class": "image.missing",
       "severity": "major",
@@ -5089,7 +5069,7 @@
       "producedLine": null,
       "referenceLine": 313,
       "produced": null,
-      "reference": "image pages/photo/b/bogdanovic_v.jpg center medium",
+      "reference": "",
       "verdict": "converter-defect"
     },
     {
@@ -5135,7 +5115,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4c906751",
+      "id": "41ea5253",
       "doc": "news",
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
@@ -5145,11 +5125,11 @@
       "producedLine": 320,
       "referenceLine": 346,
       "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
-      "reference": "frame frame: black align center 16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Засл… — at /paragraph[72]",
+      "reference": "frame: black align center 16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженны… — at /paragraph[72]",
       "verdict": "converter-defect"
     },
     {
-      "id": "5f302c07",
+      "id": "16adfc05",
       "doc": "news",
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
@@ -5159,7 +5139,7 @@
       "producedLine": 327,
       "referenceLine": 360,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-      "reference": "frame frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санче… — at /paragraph[74]",
+      "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]",
       "verdict": "converter-defect"
     },
     {
@@ -5177,7 +5157,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "6faac8b7",
+      "id": "e4532e57",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -5187,7 +5167,7 @@
       "producedLine": 353,
       "referenceLine": 392,
       "produced": "С НОВЫМ 2014 ГОДОМ!",
-      "reference": "align center С НОВЫМ 2014 ГОДОМ! — at /paragraph[81]",
+      "reference": "С НОВЫМ 2014 ГОДОМ! — at /paragraph[81]",
       "verdict": "converter-defect"
     },
     {
@@ -5345,9 +5325,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e8c728d6",
+      "id": "aaa9343d",
       "doc": "news_2007",
-      "class": "paragraph.spurious.unattested",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -5356,12 +5336,12 @@
       "referenceLine": null,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "3f43a20d",
+      "id": "10e48ed6",
       "doc": "news_2007",
-      "class": "paragraph.spurious.unattested",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
@@ -5370,7 +5350,7 @@
       "referenceLine": null,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "df155376",
@@ -5387,7 +5367,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "b81e9acc",
+      "id": "c9f0f096",
       "doc": "news_2007",
       "class": "retyped.heading2-to-align",
       "severity": "major",
@@ -5397,7 +5377,7 @@
       "producedLine": 3,
       "referenceLine": 3,
       "produced": "Архив новостей за 2007 год",
-      "reference": "align center Архив новостей за 2007 год — at /heading[2]",
+      "reference": "Архив новостей за 2007 год — at /heading[2]",
       "verdict": "converter-defect"
     },
     {
@@ -5494,12 +5474,12 @@
       "path": "/columns[9]/column[1]/paragraph[0]",
       "producedLine": 63,
       "referenceLine": 54,
-      "produced": "columns column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
+      "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слухи о сме…",
       "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]",
       "verdict": "converter-defect"
     },
     {
-      "id": "44623687",
+      "id": "76ec6e84",
       "doc": "news_2007",
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
@@ -5509,7 +5489,7 @@
       "producedLine": 92,
       "referenceLine": 56,
       "produced": "[ сайт фестиваля ]",
-      "reference": "frame frame: black align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — at /columns[9]/column[1]/paragraph[2]",
+      "reference": "frame: black align center Россия, г. Калуга, 21 - 25 мая 2007 г. Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\" [ сайт фестиваля ] — at /columns[9]/column[1]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -5695,7 +5675,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "854d475f",
+      "id": "b1d6b231",
       "doc": "pavlov_azancheev",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -5705,11 +5685,11 @@
       "producedLine": 22,
       "referenceLine": 20,
       "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "align center М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[8]",
+      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[8]",
       "verdict": "converter-defect"
     },
     {
-      "id": "b64f1d93",
+      "id": "8ed822b9",
       "doc": "pavlov_azancheev",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -5719,7 +5699,7 @@
       "producedLine": 26,
       "referenceLine": 27,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
-      "reference": "align right \"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (193… — at /paragraph[8]",
+      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /paragraph[8]",
       "verdict": "converter-defect"
     },
     {
@@ -6115,7 +6095,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4645e323",
+      "id": "511588e0",
       "doc": "segovia",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -6125,7 +6105,7 @@
       "producedLine": 53,
       "referenceLine": 56,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа…",
-      "reference": "align right \"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепе… — at /paragraph[16]",
+      "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа… — at /paragraph[16]",
       "verdict": "converter-defect"
     },
     {
@@ -6381,7 +6361,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "79a9b5b7",
+      "id": "c68e8b01",
       "doc": "segovia1",
       "class": "align.spurious.unattested",
       "severity": "major",
@@ -6390,12 +6370,12 @@
       "path": "/align[59]",
       "producedLine": 242,
       "referenceLine": null,
-      "produced": "align center Андрес Сеговия",
+      "produced": "Андрес Сеговия",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "e1848cfe",
+      "id": "3b6509d2",
       "doc": "segovia1",
       "class": "image.spurious.unattested",
       "severity": "major",
@@ -6404,12 +6384,12 @@
       "path": "/image[59]",
       "producedLine": 235,
       "referenceLine": null,
-      "produced": "image ../main/back.gif center small /#/segovia",
+      "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "b968a454",
+      "id": "62fc4312",
       "doc": "segovia1",
       "class": "image.spurious.unattested",
       "severity": "major",
@@ -6418,12 +6398,12 @@
       "path": "/image[60]",
       "producedLine": 256,
       "referenceLine": null,
-      "produced": "image ../main/forward.gif center small /#/bobri",
+      "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "564bfab1",
+      "id": "91ae3c33",
       "doc": "segovia1",
       "class": "retyped.heading1-to-align",
       "severity": "major",
@@ -6433,7 +6413,7 @@
       "producedLine": 1,
       "referenceLine": 1,
       "produced": "Техника Андреса Сеговии",
-      "reference": "align center Техника Андреса Сеговии — at /heading[1]",
+      "reference": "Техника Андреса Сеговии — at /heading[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6507,7 +6487,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "947a9140",
+      "id": "415f9ca7",
       "doc": "segovia1",
       "class": "columns.missing",
       "severity": "major",
@@ -6517,11 +6497,11 @@
       "producedLine": null,
       "referenceLine": 239,
       "produced": null,
-      "reference": "columns column ◀ Андрес Сеговия column Владимир Бобри ▶",
+      "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶",
       "verdict": "converter-defect"
     },
     {
-      "id": "6fd7fac0",
+      "id": "f2b56828",
       "doc": "segovia1",
       "class": "retyped.paragraph-to-column",
       "severity": "major",
@@ -6531,11 +6511,11 @@
       "producedLine": 245,
       "referenceLine": 241,
       "produced": "Андрес Сеговия",
-      "reference": "column ◀ Андрес Сеговия — at /align[59]/paragraph[0]",
+      "reference": "◀ Андрес Сеговия — at /align[59]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {
-      "id": "b8ced0d5",
+      "id": "655596cf",
       "doc": "segovia1",
       "class": "retyped.paragraph-to-column",
       "severity": "major",
@@ -6545,7 +6525,7 @@
       "producedLine": 252,
       "referenceLine": 244,
       "produced": "Владимир Бобри",
-      "reference": "column Владимир Бобри ▶ — at /align[59]/paragraph[1]",
+      "reference": "Владимир Бобри ▶ — at /align[59]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -6577,7 +6557,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "f8a59acd",
+      "id": "40c2a16b",
       "doc": "tarrega",
       "class": "image.moved",
       "severity": "major",
@@ -6586,8 +6566,8 @@
       "path": "/image[9]",
       "producedLine": 24,
       "referenceLine": 28,
-      "produced": "image photo/t/tarrega1.jpg right small Франсиско Таррега",
-      "reference": "image photo/t/tarrega1.jpg right small Франсиско Таррега — produced at /image[7]",
+      "produced": "Франсиско Таррега",
+      "reference": "Франсиско Таррега — produced at /image[7]",
       "verdict": "converter-defect"
     },
     {
@@ -7053,7 +7033,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "bab3fc19",
+      "id": "389cdcd4",
       "doc": "williams2",
       "class": "image.moved",
       "severity": "major",
@@ -7062,8 +7042,8 @@
       "path": "/columns[1]/column[0]/image[5]",
       "producedLine": 18,
       "referenceLine": 21,
-      "produced": "image photo/w/john_williams/changes1.jpg right small",
-      "reference": "image photo/w/john_williams/changes1.jpg right small — produced at /columns[1]/column[0]/image[3]",
+      "produced": "",
+      "reference": "produced at /columns[1]/column[0]/image[3]",
       "verdict": "converter-defect"
     },
     {
@@ -7151,7 +7131,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "c609fe8d",
+      "id": "7d35ea16",
       "doc": "williams2",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -7161,11 +7141,11 @@
       "producedLine": 89,
       "referenceLine": 87,
       "produced": "MP3",
-      "reference": "align right J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /columns[1]/column[0]/paragraph[27]",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /columns[1]/column[0]/paragraph[27]",
       "verdict": "converter-defect"
     },
     {
-      "id": "18bf7241",
+      "id": "eda333ea",
       "doc": "williams2",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -7175,11 +7155,11 @@
       "producedLine": 91,
       "referenceLine": 93,
       "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
-      "reference": "align right В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org) — at /columns[1]/column[0]/paragraph[27]",
+      "reference": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org) — at /columns[1]/column[0]/paragraph[27]",
       "verdict": "converter-defect"
     },
     {
-      "id": "dd0d4c89",
+      "id": "ea76f8dc",
       "doc": "williams2",
       "class": "nav.containment",
       "severity": "major",
@@ -7188,8 +7168,8 @@
       "path": "/nav[2]",
       "producedLine": 97,
       "referenceLine": 103,
-      "produced": "column Дискография --- 1995-2002 --- 1989-1994 --- 1979-1988 --- 1971-1979 --- 1958-1970",
-      "reference": "nav Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]",
+      "produced": "Дискография --- 1995-2002 --- 1989-1994 --- 1979-1988 --- 1971-1979 --- 1958-1970",
+      "reference": "Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]",
       "verdict": "converter-defect"
     },
     {

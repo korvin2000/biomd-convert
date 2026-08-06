@@ -88,12 +88,20 @@ interface Context {
   orphans: Orphan[];
   /** Where the reference put each piece of text — see {@link indexConstructs}. */
   referenceHome: Map<string, string>;
+  /** Reference text kept as a plain paragraph, whatever else also holds it. */
+  referenceParagraphs: Set<string>;
 }
 
 export function diffDocuments(doc: string, producedSource: string, referenceSource: string): DiffResult {
   const produced = readBlocks(producedSource).blocks;
   const reference = readBlocks(referenceSource).blocks;
-  const ctx: Context = { doc, findings: [], orphans: [], referenceHome: indexConstructs(reference) };
+  const ctx: Context = {
+    doc,
+    findings: [],
+    orphans: [],
+    referenceHome: indexConstructs(reference),
+    referenceParagraphs: indexParagraphs(reference),
+  };
   compareSequence(ctx, produced, reference, "");
   reconcile(ctx);
   return { doc, findings: dedupe(ctx.findings) };
@@ -200,6 +208,9 @@ function childrenOf(block: Block): Block[] {
  *   `.in-heading`    a heading. Typographic prominence was not recovered.
  *   `.in-table`      a table cell. A record matrix was flattened.
  *   `.in-align`      an `::: align` body. The alignment family owns it.
+ *   `.in-paragraph`  the reference keeps it as a paragraph too, somewhere else.
+ *                    Nothing was retyped — this is placement, so the owning
+ *                    mechanism is containment or ordering, not a block rule.
  *   `.unattested`    no reference construct holds this text at all — page
  *                    chrome, a caption echo of a dropped figure, or content the
  *                    reference deleted. The only sub-class that may be ceiling.
@@ -210,6 +221,13 @@ function childrenOf(block: Block): Block[] {
 function homeOf(ctx: Context, block: Block): string {
   const key = homeKey(blockText(block));
   if (key === "") return "unattested";
+  // Same kind, elsewhere — asked first, because nothing was retyped and the
+  // owning mechanism is therefore placement. A reference may hold one piece of
+  // text twice: `news` writes an obituary's subject as a bold paragraph *and*
+  // captions the photograph below it with the same name. Answering
+  // `.caption-echo` there sends a reader hunting for a duplicated caption when
+  // the reference has the very same paragraph, three lines further down.
+  if (block.kind === "paragraph" && ctx.referenceParagraphs.has(key)) return "in-paragraph";
   return ctx.referenceHome.get(key) ?? "unattested";
 }
 
@@ -265,6 +283,28 @@ function indexConstructs(blocks: readonly Block[]): Map<string, string> {
   };
   visit(blocks);
   return home;
+}
+
+/**
+ * Reference text kept as a plain paragraph.
+ *
+ * Separate from {@link indexConstructs} rather than one more case in it,
+ * because a paragraph is not a competing *answer* — it is the answer to a
+ * different question. `indexConstructs` asks "what did this text become";
+ * this asks "did it stay what it was", and {@link homeOf} asks that one first.
+ */
+function indexParagraphs(blocks: readonly Block[]): Set<string> {
+  const keys = new Set<string>();
+  const visit = (list: readonly Block[]): void => {
+    for (const block of list) {
+      if (block.kind === "paragraph") {
+        const key = homeKey(block.inline.text);
+        if (key !== "") keys.add(key);
+      } else visit(childrenOf(block));
+    }
+  };
+  visit(blocks);
+  return keys;
 }
 
 /** A `::: nav`'s items are an ordinary list inside the directive. */
@@ -818,6 +858,33 @@ function blockText(block: Block): string {
   }
 }
 
+/** Directive properties carrying author text rather than presentation (§6.1). */
+const TEXT_PROPS = new Set(["caption", "title", "alt"]);
+
+/**
+ * A block as the *author text* it claims, for a finding's quoted span.
+ *
+ * Deliberately not {@link blockText}, which also drives pairing: there a
+ * directive's name and every property belong, because they are what makes two
+ * directives the same directive. Here they are scaffolding this instrument
+ * added, and the span is handed to `triage` to look up in the source HTML.
+ * `align center Francis Goya in Moscow` appears in no source document ever
+ * written, so every spurious directive read as unattested and every one of them
+ * was called a converter defect — `goya2`'s `Vol. 1` and `Vol. 2` among them,
+ * where the reference had simply joined two source lines into one title.
+ *
+ * §6.1 draws the line already: `caption`, `title` and `alt` are text a reader
+ * receives; `position`, `size`, `frame`, `src` and `link` are presentation and
+ * targets. The directive's own name is never author text.
+ */
+function spanText(block: Block): string {
+  if (block.kind !== "directive") return blockText(block);
+  const text = Object.entries(block.props)
+    .filter(([name]) => TEXT_PROPS.has(name))
+    .map(([, value]) => value);
+  return [...text, flatten(block.children)].join(" ").replace(/\s+/gu, " ").trim();
+}
+
 function flatten(blocks: readonly Block[]): string {
   return blocks.map(blockText).join(" ");
 }
@@ -918,8 +985,8 @@ function finding(
   note?: string,
   at?: [number | null, number | null],
 ): Finding {
-  const p = produced === null ? null : truncate(typeof produced === "string" ? produced : blockText(produced));
-  const r = reference === null ? null : truncate(typeof reference === "string" ? reference : blockText(reference));
+  const p = produced === null ? null : truncate(typeof produced === "string" ? produced : spanText(produced));
+  const r = reference === null ? null : truncate(typeof reference === "string" ? reference : spanText(reference));
   return {
     id: stableId(`${doc}|${cls}|${path}|${r ?? p ?? ""}`),
     doc,

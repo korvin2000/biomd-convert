@@ -191,6 +191,30 @@ describe("spurious blocks name where the reference put the text", () => {
       classes("::: nav\n- [Архив новостей](#a)\n:::\n\n• Архив новостей •\n", "::: nav\n- [Архив новостей](#a)\n:::\n"),
     ).toContain("paragraph.spurious.in-nav");
   });
+
+  it("names a paragraph the reference also keeps as a paragraph", () => {
+    // Nothing was retyped here, so the owning mechanism is placement. Calling
+    // it `.unattested` sent a reader looking for content the reference had
+    // deleted, when the reference holds that very paragraph. Emitted twice on
+    // the produced side so that one copy pairs and the other has to be named —
+    // a single copy simply reconciles as `paragraph.moved`, which is a better
+    // answer still and the reason this sub-class is rarer than it looks.
+    expect(classes("Джулиан БРИМ\n\nДжулиан БРИМ\n\nпрочее\n", "Джулиан БРИМ\n\nпрочее\n")).toContain(
+      "paragraph.spurious.in-paragraph",
+    );
+  });
+
+  it("prefers the same kind when the reference holds one text twice", () => {
+    // `news` writes an obituary's subject as a bold paragraph *and* captions
+    // the photograph below it with the same name. `.caption-echo` reads as a
+    // duplicated caption; the actionable answer is that the paragraph itself is
+    // right and only its place is wrong.
+    const reference = "Юрий Смирнов\n\n::: image\nsrc: a.jpg\ncaption: Юрий Смирнов\n:::\n";
+    const produced = "::: image\nsrc: a.jpg\ncaption: Юрий Смирнов\n:::\n\nЮрий Смирнов\n\nЮрий Смирнов\n";
+    const found = classes(produced, reference);
+    expect(found).toContain("paragraph.spurious.in-paragraph");
+    expect(found).not.toContain("paragraph.spurious.caption-echo");
+  });
 });
 
 describe("triage separates content from layout", () => {
@@ -206,6 +230,16 @@ describe("triage separates content from layout", () => {
 
   it("never calls a layout wrapper unreachable — §16.3 constrains content, not layout", () => {
     expect(triage("columns 01. Love Story", null, source, "columns.missing", "structure")).toBe("converter-defect");
+  });
+
+  it("does not let a directive's own scaffolding decide attestation", () => {
+    // The span quoted for a directive used to open with its name and every
+    // property value, so `align center гитарист и композитор` was absent from
+    // the source for a reason that had nothing to do with the author's text.
+    // The name and the presentational properties are this instrument's, and a
+    // span it wrote itself must not be evidence about the source.
+    expect(triage("гитарист и композитор", null, source, "align.missing", "content")).toBe("converter-defect");
+    expect(triage(null, "гитарист и композитор", source, "align.spurious.unattested", "content")).toBe("ambiguous");
   });
 
   it("treats typography as the migrator's, never the author's", () => {
