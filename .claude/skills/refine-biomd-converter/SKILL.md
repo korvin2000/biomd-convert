@@ -31,11 +31,36 @@ Never build a replacement converter, and never repeat setup that `CONVERTER-PROG
 
 `CLAUDE.md` §3 invariants and §4 triage govern everything below. This file is the *procedure*; that file is the *law*.
 
+## Corpus roles
+
+Three sets with different jobs. `CONVERTER-PROGRESS.md`'s handoff section names the current membership —
+read it there, it changes; this table is what each role *means*.
+
+| role | job |
+|---|---|
+| **regression corpus** | the floor. Its recorded L0/L1/L2/L3 may not be regressed by any accepted change |
+| **refinement set** | where the work happens: rank, adjudicate and fix here |
+| **holdout** | untouched. Never read, diff, score or tune against it; measure it once, at the end |
+
+**Preserving a holdout costs no code.** `diff`, `l3` and `eval` skip any document with no reference file, so
+keeping the holdout's `.bio.md` outside `expectedDir` is sufficient — `corpus run` still converts its source
+and still reports conservation, validation and review items, which is exactly the blind signal you want.
+After placing references, confirm the instruments report the expected document *count*; a holdout that
+quietly rejoined the comparison is the one failure mode this arrangement has.
+
+A class that appears only in the refinement set is a **generalization** finding. One that spans both sets is a
+**rule** finding and outranks it — the regression corpus is evidence too, not just a gate.
+
 ## Start
 
 **Always first:** read the last two or three `##` sections of `CONVERTER-PROGRESS.md`. They carry the current
-rung numbers, the ranked open classes, the killed-hypothesis list and the "open, in order" queue. Do not
-re-derive any of it, and do not treat the numbers written there as still true — verify by measuring.
+rung numbers, the corpus roles, the ranked open classes, the killed-hypothesis list and the "open, in order"
+queue. Do not re-derive any of it, and do not treat the numbers written there as still true — verify by
+measuring.
+
+**Skip what is recorded as done.** Bootstrap, the four instrument rungs, the L5 calibration and any completed
+blind pass are finished work. A killed hypothesis is not re-openable by argument — only by new evidence that
+contradicts the measurement that killed it. `CONVERTER-PROGRESS.md` lists them for exactly this reason.
 
 Then rebuild only what is missing or stale:
 
@@ -63,6 +88,22 @@ ranking predates the last accepted change.
    rule was built around. Search the code comments for the document the reference changed.
 4. **Evaluate the new pairs locally** with `--doc <name>` filters, then **run corpus-wide** before accepting
    anything: a rule that fixes a new page and regresses eight old ones is not an improvement.
+
+### Reference-guided mode — a refinement set that has just gained references
+
+The normal mode once a blind phase closes. Order matters: **baseline before attribution**.
+
+1. Place the references, honour the holdout (above), and confirm the document count the instruments report.
+2. Run all four rungs and record the numbers. They will move because documents joined the comparison, not
+   because anything improved — attributing that to your own work is the easiest mistake here.
+3. Rank corpus-wide, then adjudicate the top class exactly as below.
+4. Where the progress file names a document that settles an *open question*, take it early and out of rank
+   order. A page that can falsify a standing assumption is worth more than a page with more instances.
+
+**Evaluate three things together, never two.** Source `.htm`, produced `.bio.md` and reference `.bio.md`. Two
+of the three can agree and still both be wrong about the third; the source is what adjudicates, and the
+reference is strong human evidence that is nonetheless fallible. `inspect` for what the front half saw,
+`diff` for structure, `l3` for rendered geometry, the browser for the source itself.
 
 ## The loop — one conceptual mechanism per iteration
 
@@ -135,7 +176,11 @@ them, and no instrument may become the objective.
 ## Judging the result
 
 The objective is a valid, visually coherent BioMD document that preserves the source's content, layout intent,
-element ordering and relative positioning — **not** byte-agreement with thirteen hand-made files.
+element ordering and relative positioning — **not** byte-agreement with a set of hand-made files. Rank the
+three questions in this order: **source fidelity** (is the content and its structure preserved), **visual
+layout quality** (does it render as well as or better than the source), **generality** (does the rule that
+produced it hold beyond the page it was found on). Byte-agreement with a reference is evidence about all
+three and is never the objective itself.
 
 - References are strong evidence and fallible human work. A produced document may be *better* when it is
   demonstrably clearer, more consistent with `Biography-Markup.md`, and visually equal or better.
@@ -162,8 +207,11 @@ documents. Decide minor local questions yourself.
 ## Never
 
 - build a replacement converter, or redo bootstrap, instruments or investigations already recorded as done;
+- read, diff, score or tune against the **holdout**;
 - optimise the scalar score, or tune `src/eval/score.ts` or any instrument to move a number;
 - write a corpus-specific string, class, id, filename or title into a detector;
 - trust a reference or an evaluator without checking it against the source;
+- accept a change that regresses the regression corpus, however much it improves a new page;
+- re-open a killed hypothesis on argument rather than on new measurement;
 - edit `biomd-convert/fixtures/**`, `analyze/*.md` or `analyze/*.png`;
 - report a number that was not measured or a completion that was not verified.

@@ -2171,3 +2171,138 @@ one mechanism which would produce them is forbidden by a tested contract. If
 the reference gives them `::: columns`, the contract and the CATALOG gate both
 need revisiting together — and that is a reference-guided decision, not a blind
 one.
+
+## 19. Handoff — the blind phase is closed; the reference-guided phase starts here
+
+Everything above this section is done. **Do not repeat it.** The bootstrap, the
+four instrument rungs, the L5 calibration, the two blind passes over the 10 new
+pages and every hypothesis they killed are recorded and measured. A session that
+picks this up starts at §19.2.
+
+### 19.1 Checkpoint
+
+| rung | value | how to reproduce |
+|---|---|---|
+| L0 | 369 tests, typecheck clean, 0 FAILED conversions | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **93.8** | `sh bench/run.sh` |
+| L2 | 314 findings — **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency | `node dist/cli/index.js diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | 82 findings, identity 0, deterministic | `node dist/cli/index.js l3 -c bench/biomd.config.json` |
+
+Branch `main`, tree clean apart from `.claude/settings.local.json`. The 10 new
+`.htm` are tracked; **no new `.bio.md` reference existed when this was written.**
+
+Blind outputs for the 10 new pages are preserved in the session scratchpad; they
+are reproducible at any time with `corpus run`, and they were byte-identical
+across both blind passes.
+
+### 19.2 Corpus roles from here on
+
+| set | members | role |
+|---|---|---|
+| **regression corpus** | the original **13** pairs | never regress. L0/L1/L2/L3 as in §19.1 are the floor |
+| **refinement set** | **9** new pairs — every `new_*` except `new_karta5` | where the work happens |
+| **holdout** | **`new_karta5`** | untouched. Do not read, diff, score or tune against it |
+
+**Holdout mechanism, decided and requiring no code change:** keep
+`new_karta5.bio.md` *outside* `fixtures/out/`. `diff`, `l3` and `eval` skip any
+document with no reference file — that is already how the 10 blind pages behaved
+— so the holdout stays genuinely unseen while `corpus run` still converts the
+`.htm` and still reports its conservation and validation. Verify after placing
+the references that the instruments report **22** documents, not 23.
+
+`new_karta5` was chosen as the holdout because it is the page that stresses the
+two open questions hardest (§17.1, §17.2); measuring it only at the end is worth
+more than tuning on it.
+
+### 19.3 The exact next step
+
+1. **Baseline first, attribute nothing yet.** Reference edits move every rung
+   with no code change. Place the 9 references, re-run all four rungs, and record
+   the new numbers *before* touching code. Expect L1/L2/L3 to move simply because
+   9 documents joined the comparison.
+2. **Classify and rank** the new defects with `diff --json`, by
+   `instances × severity × generality`, keeping the 13 and the 9 visible
+   separately — a class that appears only in the new set is a generalization
+   finding; one that spans both is a rule finding and outranks it.
+3. **Take `new_lagq2` early**, out of rank order, because it is the one document
+   whose reference can settle a question that is otherwise undecidable — see
+   §19.4. After that, follow the ranking.
+4. One general mechanism per iteration, `CLAUDE.md` §5 contract, full four-rung
+   acceptance, commit with measured before/after.
+
+### 19.4 The one question `new_lagq2` settles, and the contract in its way
+
+`new_lagq2` is seven album records — cover beside tracklist — and the converter
+emits **zero** `::: columns` for them. §18.3 traced why, and the answer is a
+routing asymmetry rather than a threshold:
+
+- an **UNKNOWN** verdict is reconsidered as a layout region ("not a data table is
+  not 'not a region'", `structure.ts`);
+- a **DATA** verdict that cannot be *planned* falls straight to linear flow, so
+  the one classification asserting "this grid is structured" is the only one
+  never asked whether its columns are lanes.
+
+Reconsidering it was implemented and **reverted**: L1 **93.8 → 93.6**, with
+`borislova`, `goya2` and `williams2` all changed. And it is refused outright by
+an existing contract —
+
+> `src/convert-core/recovery.test.ts` → *"leaves a DATA verdict on the flow path —
+> the false friend"*: "A region the classifier *did* type as records must not be
+> quietly promoted to columns by the same fallback: losing a table to lanes is
+> the defect this reconsideration could otherwise introduce."
+
+**If `new_lagq2`'s reference gives those records `::: columns`, that contract and
+the CATALOG width gate have to be revisited together** — the contract forbids the
+only mechanism that would produce them. If the reference flattens them too, the
+contract stands and the current output is right. Either answer closes a question
+that deduction could not.
+
+**The CATALOG width-gate uncertainty.** `classify.ts`'s tier-1 CATALOG gate
+requires two lanes of near-equal width, `ratio` in 0.45–0.55, plus
+`imageDensity > 0.3`. Measured:
+
+| document | grid | ratio | imgDensity | class |
+|---|---|---|---|---|
+| `goya2` | 35×2 | 0.50 | 0.16 | CATALOG |
+| `new_lendle2` | 10×2 | 0.50 | 0.33 | CATALOG |
+| `new_lagq2` | 7×2 | **0.37** | 0.46 | DATA 0.50 |
+
+A 150 px cover beside a tracklist has no reason to be 50/50, so the band is
+probably over-fitted — but it is **not** the cause of `new_lagq2`, and widening it
+reaches `barrios` (0.67) and `news_2007` (0.27), both in the regression corpus.
+Do not widen it on its own; decide it together with §19.4's contract question.
+
+### 19.5 Two blind findings that will otherwise be re-derived
+
+**Empty `::: column` lanes cannot be judged blind.** Five across four documents
+looked like degraded output. They are not:
+
+| document | reference | produced |
+|---|---|---|
+| `goya2` | **5 empty lanes** | 5 |
+| `news_2007` | 0 | 1 |
+| `williams2` | 0 | 1 |
+
+`goya2`'s reference *keeps* them, because five albums have no cover art and
+dropping the lane shifts every index out of alignment with the thirty that do.
+The correct and the incorrect shape are byte-identical; what separates them is
+whether a sibling `::: columns` group puts content in that lane. `news_2007` and
+`williams2` are open defects with reference backing — they are legitimate targets
+in the reference-guided phase, and any rule must keep `goya2`'s five.
+
+**`new_lagq2`'s "duplicated" track is in the source twice.** `FALLA - El Amor
+Brujo` appears on two albums. A raw-HTML search finds one occurrence because
+markup splits the other; the *stripped* text has both. Not invention, not
+duplication — do not chase it. Search stripped source text, never raw HTML, when
+testing a conservation claim.
+
+### 19.6 Where the numbers and the rules live
+
+- measured state, killed hypotheses, open queue — this file
+- binding law, the ladder, triage, rule contracts — `CLAUDE.md`
+- normative syntax — `Biography-Markup.md`
+- generated defect ledger — `analyze/defects.json`
+- the procedure for an iteration — `.claude/skills/refine-biomd-converter/SKILL.md`
+- harness lessons that cost hours to learn — the sibling `learned-patterns.md`
+
+Start the next phase with `/refine-biomd-converter`.

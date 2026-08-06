@@ -93,3 +93,31 @@ afterwards.
 
 Long-running commands: `npm run build` before `sh bench/run.sh` before `diff`/`l3`, always in that order.
 `bench/out/` is a generated directory and is not tracked.
+
+## A symmetry argument is not evidence — grep the contracts first
+
+Three times in this campaign the same reasoning produced a real fix: *"this question is answered by evidence
+on one path and by construction on another, so ask it everywhere."* Frames became notices in whichever path
+reached them; subordination became subordination in whichever path reached it; a home question asked of one
+side got asked of both.
+
+The fourth time it was wrong. A DATA-classified table that cannot be *planned* falls to linear flow while an
+UNKNOWN one is reconsidered as a layout region — the identical shape, and the identical argument. It was
+implemented, and `recovery.test.ts` already carried a contract refusing it by name, with the rationale
+written out: **losing a table to lanes is the defect this reconsideration would introduce.** The corpus
+agreed — L1 dropped and three regression documents changed.
+
+Before building on "these paths should agree", **grep the test files for the path you are about to change**.
+An asymmetry with a named false friend and a test is a decision, not an oversight. The contracts in this repo
+are where previous sessions recorded what they already tried.
+
+## Test a conservation claim against stripped source text, never raw HTML
+
+`new_lagq2` appeared to emit a track twice that the source contained once — until the same search ran over
+the tag-stripped text, where both occurrences are present. Markup had split one of them. The same trap runs
+the other way: a word that "vanished" is often intact and merely re-tokenized (`**E**vening`, `Villa-Lobos`).
+
+`conservation.text.recall` is a **structure-similarity** measure, not a loss measure: it is built on word
+shingles, and every shingle straddling a block boundary breaks when the converter legitimately splits a run.
+One blind page reported 45.3 % recall with zero words, links or images missing. Read `targets.missing`,
+`images.missing` and a word-level check before believing any recall figure.
