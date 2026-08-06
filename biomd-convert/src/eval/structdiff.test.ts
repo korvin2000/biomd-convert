@@ -325,6 +325,23 @@ describe("triage separates content from layout", () => {
     expect(triage("columns 01. Love Story", null, source, "columns.missing", "structure")).toBe("converter-defect");
   });
 
+  it("does not call a block boundary a defect just because it is placement", () => {
+    // `.in-break-run` says one side ended a block where the other ended a line
+    // — the hard-break question one level out, and presentation rather than
+    // layout. `structdiff` gives placement findings `structure` evidence, which
+    // routed the class around attestation and reported all six corpus
+    // instances as defects; measured, every one was the reference merging
+    // paragraphs the source states outright. Attested, it is a question.
+    expect(triage(null, "гитарист и композитор", source, "paragraph.spurious.in-break-run", "structure")).toBe(
+      "ambiguous",
+    );
+    // The other direction still stands: the reference asserts a block the
+    // produced document does not have, and the source has the words.
+    expect(triage("гитарист и композитор", null, source, "paragraph.missing.in-break-run", "structure")).toBe(
+      "converter-defect",
+    );
+  });
+
   it("does not decide a hyphenation finding by source attestation", () => {
     // The source contains the hyphen either way — that is the artifact being
     // reported — so the hyphenated side is attested by construction and the

@@ -101,8 +101,20 @@ export class SourceIndex {
  * paragraph — presentation. A *thematic* break is a separator between regions —
  * layout, and one `analyze.md` asks for by name. Matching both put all 36
  * `break.missing` findings on the ceiling, which is the opposite of true.
+ *
+ * `.in-break-run` is the same question one level out: one side ended a block
+ * where the other ended a line. `structdiff` gives placement findings
+ * `structure` evidence, which is right for a lane or a wrapper and wrong here —
+ * it routed the whole class around the attestation test and reported every
+ * instance as a converter defect. Measured against the sources, **all six were
+ * the reference merging paragraphs the source states outright**:
+ * `pavlov_azancheev` writes each address as its own `<p class="t8">`, `goya2`
+ * writes the album title and its year as two `<p>`s, `williams2` puts the track
+ * and its link in two `<td>`s — and the reference runs each pair together as
+ * soft-wrapped lines of one paragraph. Attested, the produced side is the one
+ * the source backs, and `ambiguous` is what the instrument can honestly say.
  */
-const PRESENTATIONAL = /^(?:emphasis|hardbreak)\b|\.(?:typography|whitespace|case)$/u;
+const PRESENTATIONAL = /^(?:emphasis|hardbreak)\b|\.(?:typography|whitespace|case)$|\.in-break-run$/u;
 
 /**
  * Classes that are *about* a feature {@link fold} erases.

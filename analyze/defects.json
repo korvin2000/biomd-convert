@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-06T13:01:37.631Z",
+  "generated": "2026-08-06T17:54:15.416Z",
   "totals": {
     "findings": 314,
-    "converterDefects": 194,
+    "converterDefects": 188,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 50,
-    "ambiguous": 70,
+    "ambiguous": 76,
     "bySeverity": {
       "critical": 12,
       "major": 150,
@@ -40,7 +40,7 @@
     {
       "doc": "goya2",
       "findings": 49,
-      "converterDefects": 45,
+      "converterDefects": 43,
       "critical": 0,
       "major": 19,
       "minor": 30
@@ -80,7 +80,7 @@
     {
       "doc": "pavlov_azancheev",
       "findings": 15,
-      "converterDefects": 13,
+      "converterDefects": 10,
       "critical": 0,
       "major": 11,
       "minor": 4
@@ -112,7 +112,7 @@
     {
       "doc": "williams2",
       "findings": 11,
-      "converterDefects": 5,
+      "converterDefects": 4,
       "critical": 0,
       "major": 4,
       "minor": 7
@@ -235,29 +235,6 @@
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "goya2",
-        "pavlov_azancheev",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 54,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
-        "produced": "1988",
-        "reference": null
       }
     },
     {
@@ -1699,6 +1676,29 @@
       }
     },
     {
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "pavlov_azancheev",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 6
+      },
+      "rank": 0,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
+        "produced": "1988",
+        "reference": null
+      }
+    },
+    {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "instances": 3,
@@ -2393,7 +2393,7 @@
       "referenceLine": null,
       "produced": "1988",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "e0f7656b",
@@ -2407,7 +2407,7 @@
       "referenceLine": null,
       "produced": "1999",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "942764ff",
@@ -5123,7 +5123,7 @@
       "referenceLine": null,
       "produced": "Адрес первый: г. Краснодар, ул. К.Либкнехта д. № 19 И.Т.К. № 1 - Матвею Степановичу Павлову (именно \"Павлову\", без второй фамилии \"Азанчеев\").",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "10626c22",
@@ -5137,7 +5137,7 @@
       "referenceLine": null,
       "produced": "Адрес второй: станица Усть-Лабинская Краснодарского края, почт. ящ. № 1, И.Т.К. № 4 - Любовье Петровне Павловой. - Остальные правила отправления посылок укажет…",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "5112e8ce",
@@ -5151,7 +5151,7 @@
       "referenceLine": null,
       "produced": "Если приеду в Москву, то лично поделюсь их письмами, описания ими их положения не требует пояснений. Помочь нужно и, если можете, то сделайте это - прошу Вас. …",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "215945b9",
@@ -6145,7 +6145,7 @@
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "0fb0306a",
