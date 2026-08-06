@@ -2000,6 +2000,14 @@ function layoutFrom(
         if (cells.length > 0) columns.push(makeColumn(cells));
       }
       if (columns.length >= 2) {
+        // The row boundary is the author's own division between catalog
+        // entries, and `---` is its Markdown-native rendering. Without it the
+        // regions abut and one album's tracks read as the next album's.
+        // `analyze.md` asks for exactly this on `goya2`: "после каждой группы
+        // альбомов дисков с песнями можно ставить разделитель строки".
+        // Layout, not text — §16.3 constrains invented *content*, and drawing a
+        // separator invents none.
+        if (lanedRows > 0) regions.push({ type: "thematicBreak" });
         regions.push(makeColumns({ children: columns, profile: ctx.options.profile }));
         lanedRows += 1;
         continue;
