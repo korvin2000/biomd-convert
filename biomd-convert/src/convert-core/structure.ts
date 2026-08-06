@@ -583,6 +583,13 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   // §3.8 tables and §2 headings are positioned by their own construct.
   if (block.type === "table" || block.type === "heading") return null;
   if (block.type === "thematicBreak") return null;
+  // A list is never a bounded group. §13 enumerates what one is — "a short
+  // paragraph, dedication, small heading group, or credit line" — and warns
+  // that centred body text is harder to read; across the 13 references **none**
+  // of 499 list items sits inside an `::: align`. The length cap used to hide
+  // this: `segovia`'s discography is 24 items and ~350 characters, so raising
+  // the cap centred the whole discography rather than admitting one more label.
+  if (block.type === "list") return null;
 
   // False friend: the caption bound to a figure. `::: image`'s `caption:` is
   // where it belongs — a competing `align` both duplicates the position and
@@ -2578,14 +2585,37 @@ export function isAlignableLabelText(text: string): boolean {
 }
 
 /**
- * §6: "do not wrap … long body prose".
+ * §6: "do not wrap … long body prose". §13: "use it for a bounded group".
  *
- * The one absolute number in the alignment family, and it is a *spec* limit
- * rather than a tuned one: it separates a label from an article, and both
- * alignment rules read it so the two cannot disagree about where that line is.
- * Every block the references wrap in `::: align` is comfortably under it.
+ * The one absolute number in the alignment family. It exists to separate a
+ * bounded group from an article, and both alignment rules read it so the two
+ * cannot disagree about where that line falls.
+ *
+ * **Measured, not chosen.** Over the 75 blocks the 13 references place inside an
+ * `::: align`: median 41 characters, 90th percentile 178, longest 300 —
+ * `news`'s obituary of 26 February 2014, which is one sentence and plainly a
+ * bounded group rather than an article. Fifteen of the 75 exceed 120, so the
+ * previous value contradicted the evidence, and the comment here claiming
+ * otherwise had never been checked against it. At 120 a `news` notice could not
+ * take its own opening sentence, so the name below it was wrapped alone: an
+ * `align` around two words, the sentence it belongs to left outside.
+ *
+ * 400 clears the longest reference block by a third. It does **not** separate a
+ * label from an article by length any more, and should not be read as doing so:
+ * 98 of the 153 top-level paragraphs in the references are shorter than 400
+ * (median 307), so at this value the number is a ceiling against wrapping a
+ * whole article, not a discriminator.
+ *
+ * That is the right shape for it. The load-bearing evidence is relational and
+ * always was: a block is alignable because its computed alignment *differs from
+ * the page's own prose* ({@link proseAlignOf}) — measured against a
+ * length-weighted aggregate of every prose block on the page, so nothing
+ * qualifies by an absolute value at all. `CLAUDE.md` §5 records that every
+ * single-block typographic threshold tried here regressed the corpus and every
+ * relational one held. This cap is what stops that relation from being asked
+ * about an article; it is not what answers it.
  */
-export const ALIGN_LABEL_MAX_CHARS = 120;
+export const ALIGN_LABEL_MAX_CHARS = 400;
 
 /**
  * `::: align` for a short bounded block the author centred or right-set (§6).

@@ -434,10 +434,48 @@ describe("alignment", () => {
     // `alignableRunMember`, expressed here on the one constant they share so a
     // future edit cannot move the label/prose line in one rule only.
     expect("Владимир МАРКУШЕВИЧ".length).toBeLessThan(ALIGN_LABEL_MAX_CHARS);
-    // The longest block any reference wraps in `::: align`, measured over all
-    // 13 pairs, sits under the limit — the limit separates a label from an
-    // article, and is not tuned to admit one more fixture.
-    expect(ALIGN_LABEL_MAX_CHARS).toBeGreaterThan("Статья предоставлена автором.".length);
+    // From the measurement rather than from one fixture: over the 75 blocks the
+    // 13 references place inside an `::: align`, the longest is 300 characters
+    // — `news`'s obituary of 26 February 2014 — so the limit has to clear it.
+    expect(ALIGN_LABEL_MAX_CHARS).toBeGreaterThan(300);
+  });
+
+  it("never wraps a list, however the page sets it", () => {
+    // §13 enumerates what a bounded group is — "a short paragraph, dedication,
+    // small heading group, or credit line" — and none of 499 list items across
+    // the 13 references sits inside an `::: align`. The length cap used to hide
+    // this: `segovia`'s discography is 24 items, so the first cap large enough
+    // to admit a real notice centred the whole discography with it.
+    return mdMeasured(
+      PROSE +
+        '<ul style="text-align: center">' +
+        "<li>Centenary Celebration</li><li>Complete 1949 London Recordings</li>" +
+        "<li>Short Spanish Pieces</li></ul>" +
+        PROSE,
+    ).then((out) => {
+      expect(out).toContain("- Centenary Celebration");
+      expect(out).not.toContain("::: align");
+    });
+  });
+
+  it("does not wrap a block that is set the way the page is set", () => {
+    // The length cap is a ceiling, not a discriminator — 98 of the 153
+    // top-level paragraphs in the references are shorter than it. What keeps
+    // article prose out of `::: align` is the *relational* test, so that is
+    // what this asserts: a centred block on a page whose prose is centred too
+    // says nothing, however short it is.
+    return mdMeasured(
+      '<p style="text-align: center">Он был выдающимся гитаристом своего поколения и оставил ' +
+        "обширное наследие, которое до сих пор изучают исполнители по всему миру, а его записи " +
+        "переиздаются регулярно и остаются образцом для подражания следующих поколений.</p>" +
+        '<p style="text-align: center">Владимир МАРКУШЕВИЧ</p>' +
+        '<p style="text-align: center">Он стремился преодолеть стереотипы и утвердить гитару в ' +
+        "качестве солирующего инструмента, обращаясь к разным композиторам Европы и Америки, " +
+        "многие из которых до встречи с ним для гитары не сочиняли вовсе.</p>",
+    ).then((out) => {
+      expect(out).toContain("Владимир МАРКУШЕВИЧ");
+      expect(out).not.toContain("::: align");
+    });
   });
 });
 

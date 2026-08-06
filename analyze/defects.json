@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T08:11:23.353Z",
+  "generated": "2026-08-06T08:46:54.466Z",
   "totals": {
     "findings": 356,
-    "converterDefects": 230,
+    "converterDefects": 231,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 54,
-    "ambiguous": 72,
+    "ambiguous": 71,
     "bySeverity": {
-      "critical": 43,
-      "major": 153,
-      "minor": 160
+      "critical": 45,
+      "major": 152,
+      "minor": 159
     }
   },
   "perDocument": [
@@ -31,10 +31,10 @@
     },
     {
       "doc": "borislova",
-      "findings": 22,
-      "converterDefects": 17,
+      "findings": 21,
+      "converterDefects": 16,
       "critical": 5,
-      "major": 8,
+      "major": 7,
       "minor": 9
     },
     {
@@ -63,11 +63,11 @@
     },
     {
       "doc": "news",
-      "findings": 82,
-      "converterDefects": 63,
-      "critical": 15,
+      "findings": 83,
+      "converterDefects": 65,
+      "critical": 17,
       "major": 43,
-      "minor": 24
+      "minor": 23
     },
     {
       "doc": "news_2007",
@@ -79,10 +79,10 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 23,
-      "converterDefects": 20,
+      "findings": 24,
+      "converterDefects": 21,
       "critical": 3,
-      "major": 18,
+      "major": 19,
       "minor": 2
     },
     {
@@ -95,10 +95,10 @@
     },
     {
       "doc": "segovia1",
-      "findings": 11,
-      "converterDefects": 8,
+      "findings": 10,
+      "converterDefects": 7,
       "critical": 0,
-      "major": 8,
+      "major": 7,
       "minor": 3
     },
     {
@@ -122,7 +122,7 @@
     {
       "class": "paragraph.missing",
       "severity": "critical",
-      "instances": 11,
+      "instances": 14,
       "documents": [
         "borislova",
         "jovicic",
@@ -132,12 +132,12 @@
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 10,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 3,
+        "reference-inconsistency": 4,
         "ambiguous": 0
       },
-      "rank": 240,
+      "rank": 300,
       "example": {
         "doc": "borislova",
         "path": "/paragraph[3]",
@@ -175,31 +175,6 @@
       }
     },
     {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 9,
-      "documents": [
-        "borislova",
-        "kiselev",
-        "news",
-        "segovia1",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 135,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[43]/paragraph[1]",
-        "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
-        "reference": "Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставленная лично … — produced at /paragraph[43]"
-      }
-    },
-    {
       "class": "align.spurious.unattested",
       "severity": "major",
       "instances": 8,
@@ -207,6 +182,7 @@
         "borislova",
         "news",
         "news_2007",
+        "pavlov_azancheev",
         "segovia1"
       ],
       "verdicts": {
@@ -215,12 +191,37 @@
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 96,
+      "rank": 120,
       "example": {
         "doc": "borislova",
         "path": "/align[45]",
         "produced": "WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 7,
+      "documents": [
+        "news",
+        "news_2007",
+        "pavlov_azancheev",
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 105,
+      "example": {
+        "doc": "news",
+        "path": "/frame[63]/align[1]",
+        "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
+        "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]"
       }
     },
     {
@@ -243,31 +244,6 @@
         "path": "/quote[4]",
         "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
         "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "news",
-        "path": "/frame[63]/align[1]",
-        "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-        "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]"
       }
     },
     {
@@ -295,24 +271,71 @@
       }
     },
     {
-      "class": "image.src.value",
+      "class": "paragraph.containment",
       "severity": "major",
-      "instances": 17,
+      "instances": 7,
       "documents": [
-        "news"
+        "kiselev",
+        "news",
+        "pavlov_azancheev",
+        "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 17,
+        "converter-defect": 7,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 51,
+      "rank": 84,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
+      }
+    },
+    {
+      "class": "image.src.value",
+      "severity": "major",
+      "instances": 18,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 18,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
       "example": {
         "doc": "news",
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+      }
+    },
+    {
+      "class": "retyped.align-to-paragraph",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "kiselev",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+        "produced": "Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
     {
@@ -358,7 +381,7 @@
         "doc": "news",
         "path": "/break[40]",
         "produced": "* * *",
-        "reference": "--- — at /frame[61]/paragraph[2]"
+        "reference": "--- — at /frame[61]/paragraph[1]"
       }
     },
     {
@@ -386,26 +409,25 @@
       }
     },
     {
-      "class": "retyped.align-to-paragraph",
+      "class": "image.containment",
       "severity": "major",
-      "instances": 5,
+      "instances": 7,
       "documents": [
         "goya2",
-        "kiselev",
         "news"
       ],
       "verdicts": {
-        "converter-defect": 5,
+        "converter-defect": 7,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 45,
+      "rank": 42,
       "example": {
         "doc": "goya2",
-        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "Francis Goya Plays His Favourite Hits",
-        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -433,54 +455,6 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 21,
-      "documents": [
-        "news",
-        "news_2007",
-        "segovia",
-        "segovia1",
-        "tarrega",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 16,
-        "ambiguous": 0
-      },
-      "rank": 30,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[44]",
-        "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
-        "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016"
-      }
-    },
-    {
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "news",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 30,
-      "example": {
-        "doc": "news",
-        "path": "/image[0]",
-        "produced": "",
-        "reference": null
-      }
-    },
-    {
       "class": "link.label.content",
       "severity": "critical",
       "instances": 5,
@@ -504,31 +478,51 @@
       }
     },
     {
-      "class": "paragraph.content.edited",
+      "class": "emphasis.span",
       "severity": "minor",
-      "instances": 13,
+      "instances": 20,
       "documents": [
-        "barrios",
-        "borislova",
-        "jovicic",
-        "kiselev",
         "news",
         "news_2007",
         "segovia",
-        "tarrega"
+        "segovia1",
+        "tarrega",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 3,
+        "converter-defect": 4,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 10
+        "reference-inconsistency": 16,
+        "ambiguous": 0
       },
       "rank": 24,
       "example": {
-        "doc": "kiselev",
-        "path": "/columns[18]/column[0]/paragraph[2]",
-        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
+        "doc": "news",
+        "path": "/paragraph[44]",
+        "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
+        "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016"
+      }
+    },
+    {
+      "class": "image.spurious.unattested",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "news",
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "news",
+        "path": "/image[0]",
+        "produced": "",
+        "reference": null
       }
     },
     {
@@ -573,27 +567,6 @@
         "path": "/columns[10]/column[0]/paragraph[1]",
         "produced": "09. Promise Me",
         "reference": null
-      }
-    },
-    {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
       }
     },
     {
@@ -662,24 +635,31 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-frame",
-      "severity": "major",
-      "instances": 4,
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 12,
       "documents": [
-        "news"
+        "barrios",
+        "borislova",
+        "jovicic",
+        "kiselev",
+        "news",
+        "news_2007",
+        "segovia",
+        "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 0
+        "ambiguous": 10
       },
-      "rank": 12,
+      "rank": 16,
       "example": {
-        "doc": "news",
-        "path": "/frame[73]",
-        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-        "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]"
+        "doc": "kiselev",
+        "path": "/columns[18]/column[0]/paragraph[2]",
+        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
+        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
       }
     },
     {
@@ -749,6 +729,49 @@
       }
     },
     {
+      "class": "retyped.paragraph-to-frame",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 9,
+      "example": {
+        "doc": "news",
+        "path": "/frame[73]",
+        "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
+        "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]"
+      }
+    },
+    {
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "instances": 4,
+      "documents": [
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 8,
+      "example": {
+        "doc": "news",
+        "path": "/frame[34]@position",
+        "produced": "position: center",
+        "reference": null
+      }
+    },
+    {
       "class": "image.caption.missing",
       "severity": "minor",
       "instances": 7,
@@ -767,28 +790,6 @@
         "path": "/columns[4]/column[1]/image[0]@caption",
         "produced": null,
         "reference": "caption: 1.000.000 Platinum"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "news",
-        "path": "/frame[34]@position",
-        "produced": "position: center",
-        "reference": null
       }
     },
     {
@@ -1004,27 +1005,6 @@
       }
     },
     {
-      "class": "break.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "pavlov_azancheev",
-        "path": "/break[48]",
-        "produced": "-----------------------------------------------------------------------------------------",
-        "reference": "--- — produced at /break[8]"
-      }
-    },
-    {
       "class": "column.spurious.unattested",
       "severity": "major",
       "instances": 1,
@@ -1064,6 +1044,27 @@
         "path": "/align[59]/columns[0]",
         "produced": null,
         "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
+      }
+    },
+    {
+      "class": "frame.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/frame[12]",
+        "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
+        "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — produced at /align[13]"
       }
     },
     {
@@ -1566,7 +1567,7 @@
       "rank": 1,
       "example": {
         "doc": "pavlov_azancheev",
-        "path": "/break[48]",
+        "path": "/break[4]",
         "produced": "-----------------------------------------------------------------------------------------",
         "reference": "---"
       }
@@ -1619,7 +1620,7 @@
     {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
-      "instances": 13,
+      "instances": 12,
       "documents": [
         "goya2",
         "news",
@@ -1631,7 +1632,7 @@
         "converter-defect": 0,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 13
+        "ambiguous": 12
       },
       "rank": 0,
       "example": {
@@ -1667,14 +1668,14 @@
     {
       "class": "hardbreak.missing",
       "severity": "major",
-      "instances": 2,
+      "instances": 1,
       "documents": [
         "news"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 2,
+        "reference-inconsistency": 1,
         "ambiguous": 0
       },
       "rank": 0,
@@ -2199,20 +2200,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "1566fb6f",
-      "doc": "borislova",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[43]/paragraph[1]",
-      "producedLine": 277,
-      "referenceLine": 287,
-      "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
-      "reference": "Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставленная лично … — produced at /paragraph[43]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "b2472531",
       "doc": "borislova",
       "class": "hardbreak.spurious",
@@ -2220,7 +2207,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[43]/paragraph[1]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
       "reference": "Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставленная лично … — 4 hard breaks, reference has 3",
@@ -2234,7 +2221,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/align[43]/paragraph[1]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "[ДИСКОГРАФИЯ](/#/borislova1) Основные источники: Официальный сайт Нади Борисловой: [www.buap.mx/cultura](http://www.buap.mx/cultura/nadia/) Publications VP MUS…",
       "reference": "Основные источники: Официальный сайт Нади Борисловой: [www.buap.mx/cultura](http://www.buap.mx/cultura/nadia/) Publications VP MUSIC MEDIA: [www.seicorde.it/Po…",
@@ -2248,7 +2235,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[43]/paragraph[1]/link[0]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "/#/borislova1",
       "reference": "http://www.buap.mx/cultura/nadia/",
@@ -2262,7 +2249,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/align[43]/paragraph[1]/link[0]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "ДИСКОГРАФИЯ",
       "reference": "www.buap.mx/cultura",
@@ -2276,7 +2263,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[43]/paragraph[1]/link[1]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "http://www.buap.mx/cultura/nadia/",
       "reference": "http://www.seicorde.it/Pocci/borislova.htm",
@@ -2290,7 +2277,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/align[43]/paragraph[1]/link[1]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "www.buap.mx/cultura",
       "reference": "www.seicorde.it/Pocci",
@@ -2304,7 +2291,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[43]/paragraph[1]/link[2]",
-      "producedLine": 277,
+      "producedLine": 281,
       "referenceLine": 287,
       "produced": "[www.seicorde.it/Pocci](http://www.seicorde.it/Pocci/borislova.htm)",
       "reference": null,
@@ -3963,20 +3950,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "23593583",
-      "doc": "news",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[13]",
-      "producedLine": 61,
-      "referenceLine": null,
-      "produced": "Юрий Алексеевич СМИРНОВ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "2bb76f3c",
       "doc": "news",
       "class": "align.spurious.unattested",
@@ -3998,7 +3971,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[63]",
-      "producedLine": 321,
+      "producedLine": 326,
       "referenceLine": null,
       "produced": "Владимир Ильич Богданович",
       "reference": null,
@@ -4012,7 +3985,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[72]",
-      "producedLine": 363,
+      "producedLine": 368,
       "referenceLine": null,
       "produced": "Александр Петрович Мартынов",
       "reference": null,
@@ -4026,7 +3999,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[100]",
-      "producedLine": 442,
+      "producedLine": 447,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -4075,20 +4048,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "6cf0ae2b",
-      "doc": "news",
-      "class": "image.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/image[13]",
-      "producedLine": 68,
-      "referenceLine": null,
-      "produced": "Юрий Алексеевич Смирнов",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "9381e875",
       "doc": "news",
       "class": "paragraph.spurious.unattested",
@@ -4117,20 +4076,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "8fcaffc6",
-      "doc": "news",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/frame[61]/align[1]/paragraph[5]",
-      "producedLine": 303,
-      "referenceLine": null,
-      "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
       "id": "bb95c0b9",
       "doc": "news",
       "class": "image.spurious.unattested",
@@ -4138,20 +4083,20 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/image[74]",
-      "producedLine": 375,
+      "producedLine": 380,
       "referenceLine": null,
       "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "4d429d8e",
+      "id": "88f02a1a",
       "doc": "news",
       "class": "paragraph.spurious.in-paragraph",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/align[13]/paragraph[0]",
+      "path": "/frame[12]/paragraph[3]",
       "producedLine": 64,
       "referenceLine": null,
       "produced": "Юрий Алексеевич СМИРНОВ",
@@ -4180,7 +4125,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[63]/paragraph[0]",
-      "producedLine": 324,
+      "producedLine": 329,
       "referenceLine": null,
       "produced": "Владимир Ильич Богданович",
       "reference": null,
@@ -4194,7 +4139,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[72]/paragraph[0]",
-      "producedLine": 366,
+      "producedLine": 371,
       "referenceLine": null,
       "produced": "Александр Петрович Мартынов",
       "reference": null,
@@ -4208,7 +4153,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[100]/paragraph[0]",
-      "producedLine": 445,
+      "producedLine": 450,
       "referenceLine": null,
       "produced": "• Архив новостей •",
       "reference": null,
@@ -4257,17 +4202,87 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "8ff0ccf8",
+      "id": "ac8a7b27",
       "doc": "news",
-      "class": "retyped.paragraph-to-frame",
+      "class": "frame.moved",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[12]",
+      "producedLine": 58,
+      "referenceLine": 48,
+      "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
+      "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — produced at /align[13]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4f6f70f8",
+      "doc": "news",
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/frame[12]@position",
+      "producedLine": 58,
+      "referenceLine": 48,
+      "produced": "position: center",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "30a8f04c",
+      "doc": "news",
+      "class": "paragraph.missing",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "delete",
+      "path": "/frame[12]/paragraph[0]",
+      "producedLine": null,
+      "referenceLine": 49,
+      "produced": null,
+      "reference": "frame: black",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "ed0115d2",
+      "doc": "news",
+      "class": "retyped.paragraph-to-align",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[12]",
-      "producedLine": 57,
-      "referenceLine": 48,
+      "path": "/frame[12]/align[1]",
+      "producedLine": 61,
+      "referenceLine": 51,
       "produced": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари…",
-      "reference": "frame: black align center 21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. … — at /paragraph[13]",
+      "reference": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант оркестра Большого драматического театра им. Г. А. Товстоногова, гитари… — at /frame[12]/paragraph[3]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4b5dc283",
+      "doc": "news",
+      "class": "image.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[12]/image[2]",
+      "producedLine": 68,
+      "referenceLine": 59,
+      "produced": "Юрий Алексеевич Смирнов",
+      "reference": "Юрий Алексеевич Смирнов — produced at /image[13]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e55c84b3",
+      "doc": "news",
+      "class": "image.src.value",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[12]/image[2]@src",
+      "producedLine": 68,
+      "referenceLine": 59,
+      "produced": "src: main/smirnov_ua.jpg",
+      "reference": "src: /../main/smirnov_ua.jpg",
       "verdict": "converter-defect"
     },
     {
@@ -4519,7 +4534,7 @@
       "producedLine": 307,
       "referenceLine": 175,
       "produced": "* * *",
-      "reference": "--- — at /frame[61]/paragraph[2]",
+      "reference": "--- — at /frame[61]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -4719,45 +4734,45 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "90903d08",
+      "id": "47a85bd0",
       "doc": "news",
-      "class": "hardbreak.missing",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 301,
-      "referenceLine": 289,
-      "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-      "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "4d9acce0",
-      "doc": "news",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
       "op": "substitute",
-      "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 301,
-      "referenceLine": 289,
-      "produced": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»**",
-      "reference": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»** и присуждением ей ученой степени **канди…",
+      "path": "/frame[61]/align[1]/paragraph[0]",
+      "producedLine": 293,
+      "referenceLine": 284,
+      "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛ…",
+      "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) — at /frame[61]/align[1]",
       "verdict": "converter-defect"
     },
     {
-      "id": "b7dc7359",
+      "id": "a3c7208e",
       "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
+      "class": "paragraph.missing",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "delete",
+      "path": "/frame[61]/align[1]/paragraph[1]",
+      "producedLine": null,
+      "referenceLine": 287,
+      "produced": null,
+      "reference": "с успешной защитой диссертации на тему:",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e0afc776",
+      "doc": "news",
+      "class": "paragraph.missing",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "delete",
       "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 301,
+      "producedLine": null,
       "referenceLine": 289,
-      "produced": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-      "reference": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» · strong:кандидата искусствоведения",
+      "produced": null,
+      "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и…",
       "verdict": "converter-defect"
     },
     {
@@ -4775,20 +4790,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a3da473f",
-      "doc": "news",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[61]/align[1]/paragraph[4]",
-      "producedLine": 309,
-      "referenceLine": 295,
-      "produced": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература → Диссертации",
-      "reference": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по ссылке на странице: Литература → Диссертации — produced at /frame[61]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "9b41c9b4",
       "doc": "news",
       "class": "frame.position.spurious",
@@ -4796,7 +4797,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/frame[63]@position",
-      "producedLine": 329,
+      "producedLine": 334,
       "referenceLine": 305,
       "produced": "position: center",
       "reference": null,
@@ -4810,7 +4811,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/frame[63]@size",
-      "producedLine": 329,
+      "producedLine": 334,
       "referenceLine": 305,
       "produced": "size: medium",
       "reference": null,
@@ -4824,7 +4825,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/frame[63]@src",
-      "producedLine": 329,
+      "producedLine": 334,
       "referenceLine": 305,
       "produced": "src: pages/photo/b/bogdanovic_v.jpg",
       "reference": null,
@@ -4852,7 +4853,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[63]/align[1]",
-      "producedLine": 318,
+      "producedLine": 323,
       "referenceLine": 308,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]",
@@ -4880,7 +4881,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[65]",
-      "producedLine": 336,
+      "producedLine": 341,
       "referenceLine": 322,
       "produced": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
       "reference": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
@@ -4894,7 +4895,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[66]@src",
-      "producedLine": 339,
+      "producedLine": 344,
       "referenceLine": 325,
       "produced": "src: main/magazines/IGvL_13_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_13_2014_ttl225.jpg",
@@ -4908,7 +4909,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[69]@src",
-      "producedLine": 351,
+      "producedLine": 356,
       "referenceLine": 336,
       "produced": "src: main/magazines/IGvL_11_12_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_11_12_2014_ttl225.jpg",
@@ -4922,7 +4923,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[71]",
-      "producedLine": 360,
+      "producedLine": 365,
       "referenceLine": 346,
       "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
       "reference": "frame: black align center 16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженны… — at /paragraph[72]",
@@ -4936,7 +4937,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[73]",
-      "producedLine": 372,
+      "producedLine": 377,
       "referenceLine": 360,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
       "reference": "frame: black align center Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гоме… — at /paragraph[74]",
@@ -4950,7 +4951,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[76]@src",
-      "producedLine": 385,
+      "producedLine": 390,
       "referenceLine": 379,
       "produced": "src: main/magazines/IGvL_10_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_10_2014_ttl225.jpg",
@@ -4964,7 +4965,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[90]",
-      "producedLine": 423,
+      "producedLine": 428,
       "referenceLine": 409,
       "produced": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб…",
       "reference": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб… — 1 hard breaks, reference has 0",
@@ -4978,7 +4979,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[92]",
-      "producedLine": 428,
+      "producedLine": 433,
       "referenceLine": 413,
       "produced": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фирмы…",
       "reference": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: — 2 hard breaks, reference has 0",
@@ -4992,7 +4993,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[92]",
-      "producedLine": 428,
+      "producedLine": 433,
       "referenceLine": 413,
       "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
       "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:",
@@ -5006,7 +5007,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[92]",
-      "producedLine": 428,
+      "producedLine": 433,
       "referenceLine": 413,
       "produced": "em:III Международного конкурса гитаристов имени Александра Фраучи · strong:Антон Баранов · strong:Артём Дервоед · strong:Дмитрий Загуменников · strong:Марк Топ…",
       "reference": "em:III Международного конкурса гитаристов имени Александра Фраучи",
@@ -5034,7 +5035,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[95]",
-      "producedLine": 434,
+      "producedLine": 439,
       "referenceLine": 422,
       "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – Ровшан Мамедкулиев (Россия), 2 мест…",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: — 1 hard breaks, reference has 0",
@@ -5048,7 +5049,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[95]",
-      "producedLine": 434,
+      "producedLine": 439,
       "referenceLine": 422,
       "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – **Ровшан Мамедкулиев** (Россия), 2 …",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве:",
@@ -5062,7 +5063,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[95]",
-      "producedLine": 434,
+      "producedLine": 439,
       "referenceLine": 422,
       "produced": "strong:Артём Дервоед · strong:Константин Окуджава · strong:Марк Топчий · strong:Ровшан Мамедкулиев",
       "reference": "(none)",
@@ -5104,7 +5105,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/nav[100]@title",
-      "producedLine": 449,
+      "producedLine": 454,
       "referenceLine": 435,
       "produced": null,
       "reference": "title: Архив новостей",
@@ -5433,6 +5434,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "cb87256f",
+      "doc": "pavlov_azancheev",
+      "class": "align.spurious.unattested",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[4]",
+      "producedLine": 16,
+      "referenceLine": null,
+      "produced": "Владимир МАРКУШЕВИЧ",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
       "id": "207d2591",
       "doc": "pavlov_azancheev",
       "class": "paragraph.spurious.unattested",
@@ -5440,7 +5455,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 93,
+      "producedLine": 98,
       "referenceLine": null,
       "produced": "Адрес первый: г. Краснодар, ул. К.Либкнехта д. № 19 И.Т.К. № 1 - Матвею Степановичу Павлову (именно \"Павлову\", без второй фамилии \"Азанчеев\").",
       "reference": null,
@@ -5454,7 +5469,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 95,
+      "producedLine": 100,
       "referenceLine": null,
       "produced": "Адрес второй: станица Усть-Лабинская Краснодарского края, почт. ящ. № 1, И.Т.К. № 4 - Любовье Петровне Павловой. - Остальные правила отправления посылок укажет…",
       "reference": null,
@@ -5468,7 +5483,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/paragraph[32]",
-      "producedLine": 97,
+      "producedLine": 102,
       "referenceLine": null,
       "produced": "Если приеду в Москву, то лично поделюсь их письмами, описания ими их положения не требует пояснений. Помочь нужно и, если можете, то сделайте это - прошу Вас. …",
       "reference": null,
@@ -5489,17 +5504,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "50dcec0f",
+      "id": "cb5a5aa3",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
+      "class": "separator.spelling",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[4]",
-      "producedLine": 13,
+      "producedLine": 24,
       "referenceLine": 13,
-      "produced": "• • •",
-      "reference": "--- — at /paragraph[5]",
+      "produced": "-----------------------------------------------------------------------------------------",
+      "reference": "---",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4c15ebf5",
+      "doc": "pavlov_azancheev",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[5]/paragraph[0]",
+      "producedLine": 19,
+      "referenceLine": 17,
+      "produced": "Владимир МАРКУШЕВИЧ",
+      "reference": "Владимир МАРКУШЕВИЧ — produced at /align[4]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {
@@ -5513,7 +5542,7 @@
       "producedLine": 22,
       "referenceLine": 20,
       "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[8]",
+      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[4]",
       "verdict": "converter-defect"
     },
     {
@@ -5524,10 +5553,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[7]",
-      "producedLine": 26,
+      "producedLine": 30,
       "referenceLine": 27,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
-      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /paragraph[8]",
+      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[5]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -5538,7 +5567,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[17]",
-      "producedLine": 50,
+      "producedLine": 55,
       "referenceLine": 54,
       "produced": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н…",
       "reference": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н… — at /paragraph[18]",
@@ -5552,7 +5581,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[19]",
-      "producedLine": 54,
+      "producedLine": 59,
       "referenceLine": 58,
       "produced": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича …",
       "reference": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича … — at /paragraph[20]",
@@ -5566,7 +5595,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[21]",
-      "producedLine": 59,
+      "producedLine": 64,
       "referenceLine": 63,
       "produced": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,…",
       "reference": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,… — at /paragraph[25]",
@@ -5580,7 +5609,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[22]",
-      "producedLine": 64,
+      "producedLine": 69,
       "referenceLine": 68,
       "produced": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть,",
       "reference": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть, — at /paragraph[25]",
@@ -5594,7 +5623,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[23]",
-      "producedLine": 69,
+      "producedLine": 74,
       "referenceLine": 73,
       "produced": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\".",
       "reference": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\". — at /paragraph[25]",
@@ -5608,7 +5637,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[24]",
-      "producedLine": 74,
+      "producedLine": 79,
       "referenceLine": 78,
       "produced": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн…",
       "reference": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн… — at /paragraph[25]",
@@ -5622,7 +5651,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[31]",
-      "producedLine": 91,
+      "producedLine": 96,
       "referenceLine": 95,
       "produced": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер…",
       "reference": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер… — at /paragraph[32]",
@@ -5636,7 +5665,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[33]",
-      "producedLine": 101,
+      "producedLine": 106,
       "referenceLine": 102,
       "produced": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо…",
       "reference": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо… — at /paragraph[34]",
@@ -5650,7 +5679,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[35]",
-      "producedLine": 105,
+      "producedLine": 110,
       "referenceLine": 106,
       "produced": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек.",
       "reference": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек. — at /paragraph[36]",
@@ -5664,7 +5693,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[37]",
-      "producedLine": 110,
+      "producedLine": 115,
       "referenceLine": 111,
       "produced": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю…",
       "reference": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю… — at /paragraph[38]",
@@ -5678,7 +5707,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[39]",
-      "producedLine": 114,
+      "producedLine": 119,
       "referenceLine": 115,
       "produced": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо…",
       "reference": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо… — at /paragraph[40]",
@@ -5692,7 +5721,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[41]",
-      "producedLine": 118,
+      "producedLine": 123,
       "referenceLine": 119,
       "produced": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов.",
       "reference": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов. — at /paragraph[42]",
@@ -5706,7 +5735,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[43]",
-      "producedLine": 122,
+      "producedLine": 127,
       "referenceLine": 123,
       "produced": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось…",
       "reference": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось… — at /paragraph[44]",
@@ -5720,38 +5749,24 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[46]",
-      "producedLine": 128,
+      "producedLine": 133,
       "referenceLine": 129,
       "produced": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро…",
       "reference": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро… — at /paragraph[47]",
       "verdict": "converter-defect"
     },
     {
-      "id": "590ec4c6",
+      "id": "1b2a3d29",
       "doc": "pavlov_azancheev",
-      "class": "break.moved",
+      "class": "retyped.paragraph-to-break",
       "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[48]",
-      "producedLine": 24,
-      "referenceLine": 137,
-      "produced": "-----------------------------------------------------------------------------------------",
-      "reference": "--- — produced at /break[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "edfa7de5",
-      "doc": "pavlov_azancheev",
-      "class": "separator.spelling",
-      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[48]",
-      "producedLine": 24,
+      "producedLine": 13,
       "referenceLine": 137,
-      "produced": "-----------------------------------------------------------------------------------------",
-      "reference": "---",
+      "produced": "• • •",
+      "reference": "--- — at /paragraph[4]",
       "verdict": "converter-defect"
     },
     {
@@ -6245,20 +6260,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "01f5aaa4",
-      "doc": "segovia1",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[57]/paragraph[0]",
-      "producedLine": 221,
-      "referenceLine": 228,
-      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
-      "reference": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре… — produced at /paragraph[57]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "5c0cb93c",
       "doc": "segovia1",
       "class": "emphasis.span",
@@ -6266,7 +6267,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[57]/paragraph[0]",
-      "producedLine": 221,
+      "producedLine": 225,
       "referenceLine": 228,
       "produced": "(none)",
       "reference": "strong:ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование стать…",
