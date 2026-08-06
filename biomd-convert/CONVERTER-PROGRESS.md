@@ -1216,3 +1216,135 @@ reference dropped the `> ` it used to carry, so this may be largely closed
 already and wants re-measuring before any work. (c) `image.size.value` (21) and
 `image.src.value` (17, all `goya2`) are single-document or mechanical.
 (d) The 0.5–0.95 ambiguous corridor, still uncalibrated, now over 72 findings.
+
+## 12. The label ceiling, and a rule that had to be measured twice (2026-08-06)
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| §11 close | 343 | 93.1 | 230 | 121 |
+| label ceiling 120 → 400 | 345 | **93.2** | 231 | **113** |
+| subordinated documents | 349 | 93.2 | **220** | **99** |
+
+### 12.1 The cap was hiding a list
+
+`ALIGN_LABEL_MAX_CHARS` separated a label from an article, and the comment
+claiming every reference block sat comfortably under 120 had never been checked
+against the references: 15 of the 75 blocks they place inside an `::: align`
+exceed it, and the longest is 300 — `news`'s obituary of 26 February 2014. At
+120 a notice could not take its own opening sentence, so the name below it was
+wrapped alone.
+
+Raising it alone made L3 *worse*, 121 → 152. The sweep said why — the curve was
+a **cliff at 300→400, not a trend**, so the number was never the mechanism:
+
+| cap | L1 | L2 defect | L3 |
+|---|---|---|---|
+| 120 | 93.1 | 230 | 121 |
+| 200 | 93.2 | 243 | 124 |
+| 300 | 93.2 | 242 | 122 |
+| 400 | 93.2 | 232 | **152** |
+
+`segovia`'s discography is 24 items and ~350 characters, and
+`alignableRunMember` excluded tables and headings but not **lists** — so the
+first cap large enough to admit a real notice centred a whole discography. §13
+enumerates what a bounded group is ("a short paragraph, dedication, small
+heading group, or credit line") and warns that centred body text is harder to
+read; across the 13 references **none of 499 list items** sits inside an
+`::: align`.
+
+With lists excluded the sweep is flat from 300 upward — 93.2 / 231 / 113 at 300,
+400 and 600 alike. That is the right shape for the number: a ceiling against
+wrapping an article, not a discriminator. 98 of the 153 top-level paragraphs in
+the references are shorter than 400, so at this value it discriminates nothing.
+The load-bearing evidence is and always was relational — a block is alignable
+because its computed alignment differs from the page's own prose, measured
+length-weighted over every prose block on the page.
+
+**Value set to 400 by user decision.** The measurement supports it, and the
+insensitivity above means the exact figure no longer matters.
+
+### 12.2 A document the source set apart, and two traps in measuring it
+
+§3.5 permits a block quote for material "the source deliberately subordinates to
+the main prose — shown by combined evidence such as a consistently smaller font
+*plus* deeper indentation or separate alignment, never by font size alone".
+`pavlov_azancheev` is an archive of letters and poems; the reference quotes 34
+lines and the converter emitted every one as prose.
+
+`.t8` against `.t` looked like three concordant signals — italic, 10 pt against
+11 pt, inset 25 against 15. Two of the three do not survive measurement.
+
+**Indentation is not rendered.** The stylesheets write `margin-left: 25` with no
+unit, which is invalid CSS, and Chromium drops it. Every block on the page
+computes an inset of **0**, quoted letters included. The indent is in the source
+and not on the page, and the first version of this rule — built on §3.5's
+indentation, faithfully — could never fire on any page in the corpus.
+
+**The quotes define the baseline.** `bodyProminenceOf` samples the longest
+blocks, and on an archive page the longest blocks *are* the letters. Body
+prominence comes out as the quoted matter's own 10 pt and the article's 11 pt
+headnotes measure as *larger*: size reports the opposite of the truth. The same
+trap caught the first italic test, asked as a majority — 8 italic long blocks
+against 4 upright made the page "italic", and the quotes disqualified
+themselves. The test is **contrast**, not majority: a page with *no* upright
+prose is one where italic carries no information, and that is the only case the
+guard needs to catch.
+
+What survives is the one signal the reader sees. Recurrence carries the rule, as
+§5 requires — and the corpus separates cleanly:
+
+| document | wholly-italic blocks | reference quoted lines |
+|---|---|---|
+| `pavlov_azancheev` | 17 | 34 |
+| `segovia` | 2 | 17 |
+| `borislova` | 1 | 2 |
+| `barrios` | 1 | 0 |
+| the other nine | 0 | 0 |
+
+Requiring **two** selects exactly the two documents the references quote and
+excludes the two single-block credit lines. An italic *phrase* inside a
+paragraph never qualifies — a `<p>` wrapping `<i>` computes upright — which is
+§3.5's own "do not turn … ordinary dialogue fragments … into a block quote".
+
+`pavlov_azancheev` emits 34 quoted lines against the reference's 34;
+`retyped.paragraph-to-quote` 14 → 3 there, and the class is no longer ranked.
+
+### 12.3 Killed hypotheses added
+
+- **Indentation as blockquote evidence.** Unitless `margin-left` is invalid CSS;
+  computed inset is 0 corpus-wide. Any rule keyed on indentation is dead on this
+  corpus regardless of how the stylesheet reads.
+- **Font size as subordination evidence.** On a page whose longest blocks are
+  the quoted matter, `bodyProminenceOf` measures the quotes and the comparison
+  inverts. §3.5 forbids size alone anyway; this is why.
+- **Majority tests against a page baseline.** Any "is most of the page X" test
+  lets a dominant construct disqualify itself. Ask for contrast instead.
+
+### 12.4 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 349 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 93.2 |
+| L2 | 346 findings — **220 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
+| L3 | 99 findings, identity 0, deterministic |
+
+Per document, converter defects: `news` 65 · `goya2` 43 · `segovia` 17 ·
+`borislova` 16 · `kiselev` 15 · `news_2007` 15 · `tarrega` 12 ·
+`pavlov_azancheev` 10 · `authors` 8 · `jovicic` 8 · `segovia1` 7 ·
+`williams2` 4 · **`barrios` 0**.
+
+Top classes: `paragraph.missing` (14, 6 docs, critical) · `paragraph.hyphenation`
+(23, 9) · `align.spurious.unattested` (8, 5) · `retyped.paragraph-to-align`
+(7, 5) · `image.size.value` (21, 4) · `paragraph.containment` (7, 4).
+
+**Open, in order.** (a) `paragraph.missing` is now the clear top class — 14
+instances over 6 documents, critical, and content loss rather than layout, so it
+outranks everything else by construction. (b) `paragraph.hyphenation`, 23
+instances over 9 documents, is the widest class in the ledger and mechanical:
+the source soft-hyphenates across line breaks (`ак-тивно`, `испан-скую`) and
+`dehyphenate.ts` already exists. (c) `align.spurious` and
+`retyped.paragraph-to-align` are the same family, 15 between them, and now that
+the region and menu work has settled they should be re-read together.
+(d) `image.size.value` (21, 4 docs) is a threshold question in `media.ts`.
+(e) The 0.5–0.95 ambiguous corridor, still uncalibrated, at 72 findings.
