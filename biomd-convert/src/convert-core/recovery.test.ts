@@ -607,3 +607,97 @@ describe("links", () => {
     expect(out).not.toMatch(/<https?:/u);
   });
 });
+describe("a menu written as a table", () => {
+  /** One row per item — the other way this era wrote a side menu. */
+  const menu = (rows: string) => `<table border="0" width="85%">${rows}</table>`;
+  const row = (cell: string) => `<tr><td width="100%">${cell}</td></tr>`;
+  const item = (href: string, label: string) => row(`<p><a href="${href}">${label}</a></p>`);
+
+  it("becomes a nav, with the unlinked first row as its title", async () => {
+    const out = await md(
+      PROSE +
+        menu(
+          row("<p>Дискография</p>") +
+            item("williams_cd1.htm", "1995-2002") +
+            item("williams_cd2.htm", "1989-1994") +
+            item("williams_cd3.htm", "1979-1988"),
+        ) +
+        PROSE,
+    );
+    expect(out).toContain("::: nav");
+    expect(out).toContain("title: Дискография");
+    expect(out).toContain("- [1995-2002](/#/williams_cd1)");
+    // Routed as a catalog it came out as one region per row with `---` between.
+    expect(out).not.toContain("::: columns");
+  });
+
+  it("joins anchors that share one destination into a single item", async () => {
+    // FrontPage splits a label across two `<a>` often enough that `williams2`
+    // writes its first item as `<a>1995</a><a>-2002</a>`.
+    const out = await md(
+      PROSE +
+        menu(
+          row('<p><a href="cd1.htm">1995</a><a href="cd1.htm">-2002</a></p>') +
+            item("cd2.htm", "1989-1994") +
+            item("cd3.htm", "1979-1988"),
+        ) +
+        PROSE,
+    );
+    expect(out).toContain("- [1995-2002](/#/cd1)");
+    expect(out.match(/\/#\/cd1/gu) ?? []).toHaveLength(1);
+  });
+
+  it("leaves a two-column score table alone", async () => {
+    // False friend: a row here is a work *and* its tablature link, so the row
+    // fills two columns. A menu item fills one.
+    const out = await md(
+      PROSE +
+        menu(
+          '<tr><td>Danza Paraguaya</td><td><a href="t/dp1.txt">TAB</a></td></tr>' +
+            '<tr><td>Julia Florida</td><td><a href="t/jf.txt">TAB</a></td></tr>' +
+            '<tr><td>La Catedral</td><td><a href="t/lc.txt">TAB</a></td></tr>',
+        ) +
+        PROSE,
+    );
+    expect(out).not.toContain("::: nav");
+    expect(out).toContain("Danza Paraguaya");
+  });
+
+  it("leaves a figure over its caption alone", async () => {
+    // False friend: one column, but two rows and no links — the era's figure.
+    const out = await md(
+      PROSE +
+        menu(
+          row('<img src="f.jpg" width="209" height="281">') +
+            row('<p class="ph" style="text-align: center">Андрес Сеговия, 1936</p>'),
+        ) +
+        PROSE,
+    );
+    expect(out).not.toContain("::: nav");
+    expect(out).toContain("Андрес Сеговия, 1936");
+  });
+
+  it("does not read a stack of citations as a menu", async () => {
+    // False friend: one link per row, but the cell is a sentence around it, so
+    // the label test fails and the rows stay prose.
+    const out = await md(
+      PROSE +
+        menu(
+          row('<p>См. также <a href="a.htm">Барриос</a> и его записи</p>') +
+            row('<p>См. также <a href="b.htm">Сеговия</a> и его записи</p>') +
+            row('<p>См. также <a href="c.htm">Таррега</a> и его записи</p>'),
+        ) +
+        PROSE,
+    );
+    expect(out).not.toContain("::: nav");
+  });
+
+  it("rejects a stack whose rows point at one destination", async () => {
+    // Repeated destinations mean the source was listing, not navigating, and
+    // §11 makes duplicate labels invalid outright.
+    const out = await md(
+      PROSE + menu(item("x.htm", "первая") + item("x.htm", "вторая") + item("x.htm", "третья")) + PROSE,
+    );
+    expect(out).not.toContain("::: nav");
+  });
+});

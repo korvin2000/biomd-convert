@@ -29,7 +29,7 @@ import {
   makeNav,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
-import type { TableGrid } from "../ladom/grid.js";
+import { type GridCell, type TableGrid, rowCells } from "../ladom/grid.js";
 import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
@@ -1967,6 +1967,11 @@ function tableRegionFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     return blocksFrom(el, ctx);
   }
 
+  // Asked before the classifier, because a menu is neither a record matrix nor
+  // a layout and both answers are wrong for it. See {@link navFromGrid}.
+  const menu = navFromGrid(grid, ctx, el);
+  if (menu) return menu;
+
   const classification = ctx.options.classifications?.get(el.id) ?? classifyTable(grid);
 
   switch (classification.class) {
@@ -1992,6 +1997,142 @@ function tableRegionFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     default:
       return layoutFrom(grid, ctx, el, classification);
   }
+}
+
+/** A menu label is a label, not a sentence — the same limit `navFrom` uses. */
+const NAV_TABLE_LABEL_MAX_CHARS = 100;
+
+/**
+ * `::: nav` from a table that is a stack of links, or null.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A grid one content-column wide whose rows each hold exactly
+ * one link and nothing else — no second link, no picture, no words outside the
+ * label — with an optional first row that has no link at all and titles the
+ * stack. Containment (one link per cell), cardinality (one occupied column),
+ * recurrence (the same row shape repeated) and ordering (the title first).
+ * No class, colour, id, filename or label vocabulary is read.
+ *
+ * **Recurrence requirement.** Three linked rows minimum, matching `navFrom`.
+ * Two rows are a figure over its caption, or a heading over its paragraph.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - a **discography or score grid**, where a row is a title *and* a TAB link
+ *     — two occupied columns, so the width test rejects it;
+ *   - a **figure table**, image in one row and caption in the next — the cells
+ *     are not links;
+ *   - a **link farm** paragraph, which is prose containing links rather than a
+ *     row per link, and never reaches a grid at all.
+ *
+ * ## Why it belongs here and not in `navFrom`
+ *
+ * `navFrom` reads an *inline* run — links separated by `<br>` or punctuation
+ * inside one paragraph. The other half of this era's menus are written as a
+ * table with one row per item, which is the same construct expressed in the
+ * only other way FrontPage offered, and it never reached that code. Routed as
+ * a catalog instead, `williams2`'s discography menu came out as five separate
+ * one-item regions with `---` between them: five rules, five stray labels, and
+ * §11's "a prominent side menu normally moves directly below the title" lost
+ * along with the menu. `CLAUDE.md` §5 already assumes right-hand menus fold
+ * into the flow; this is the shape they arrive in.
+ */
+function navFromGrid(grid: TableGrid, ctx: Ctx, el: LadomNode): BiomdContent[] | null {
+  // §4.1: a `frame` MUST NOT contain a `nav`, and §13 forbids an `align`
+  // wrapping one. A `column` is neither — the side rail a menu arrives in *is*
+  // a lane, so refusing every bounded context refused the only context this
+  // construct ever occurs in. `layoutFrom` folds the resulting lane away.
+  if (ctx.frameDepth > 0 || grid.rows < 3) return null;
+
+  const rows: GridCell[][] = [];
+  for (let r = 0; r < grid.rows; r += 1) {
+    const occupied = rowCells(grid, r).filter((cell) => !cell.isEmpty);
+    // One content column. A row that fills two is a record, not a menu item.
+    if (occupied.length > 1) return null;
+    if (occupied.length === 1) rows.push(occupied);
+  }
+  if (rows.length < 3) return null;
+
+  const linked: LadomNode[] = [];
+  /** The cell each item came from — its whole text is the item's label. */
+  const cellNodes: LadomNode[] = [];
+  let title: string | null = null;
+  for (const [index, [cell]] of rows.entries()) {
+    const only = cell as GridCell;
+    if (only.images > 0) return null;
+    const label = only.text.replace(/\s+/gu, " ").trim();
+    if (label === "" || label.length > NAV_TABLE_LABEL_MAX_CHARS) return null;
+
+    if (only.links === 0) {
+      // §11: the label a page puts above its menu is that menu's title. Only
+      // the first row may be one — an unlinked row in the middle is a section
+      // break, and this construct has no way to express one.
+      if (index !== 0 || title !== null) return null;
+      title = label;
+      continue;
+    }
+    const anchors = [...walkElements(only.node)].filter((node) => node.tag === "a");
+    const anchor = anchors[0];
+    if (anchors.length === 0 || !anchor) return null;
+    // One destination, however many anchors reach it. FrontPage splits a label
+    // across two `<a>` elements often enough that `williams2` writes its first
+    // menu item as `<a>1995</a><a>-2002</a>`, both pointing at the same page.
+    const href = anchor.attrs["href"] ?? "";
+    if (anchors.some((node) => (node.attrs["href"] ?? "") !== href)) return null;
+    // The cell must be the link and nothing else: `1995-2002` is an item,
+    // `1995-2002 — см. также` is a sentence that happens to contain one.
+    const linkText = anchors
+      .map((node) => textOf(node))
+      .join("")
+      .replace(/\s+/gu, " ")
+      .trim();
+    if (linkText !== label) return null;
+    linked.push(anchor);
+    cellNodes.push(only.node);
+  }
+  if (linked.length < 3) return null;
+
+  const targets: string[] = [];
+  const seen = new Set<string>();
+  for (const link of linked) {
+    const rewritten = rewriteTarget(link.attrs["href"] ?? "", ctx.options.links);
+    if (rewritten.kind === "unsafe" || rewritten.href === "") return null;
+    // Repeated destinations mean the source was listing, not navigating, and
+    // §11 makes duplicate labels invalid outright.
+    if (seen.has(rewritten.href)) return null;
+    seen.add(rewritten.href);
+    targets.push(rewritten.href);
+  }
+
+  // One link per item, whatever the source split it into: the anchors' own
+  // contents concatenate into the label, so `<a>1995</a><a>-2002</a>` becomes
+  // `[1995-2002](…)` rather than two items or a link nested in a link.
+  const items: ListItem[] = cellNodes.map((cell, index) => {
+    const label = [...walkElements(cell)]
+      .filter((node) => node.tag === "a")
+      .flatMap((anchor) => inlineFrom(anchor.children, ctx));
+    return {
+      type: "listItem",
+      spread: false,
+      children: [
+        { type: "paragraph", children: [{ type: "link", url: targets[index] as string, children: label }] },
+      ],
+    };
+  });
+
+  for (let i = 0; i < linked.length; i += 1) {
+    ctx.targets.push(targets[i] as string);
+    ctx.ledger.push(emitted((linked[i] as LadomNode).id, nextId(ctx, "nav-item")));
+  }
+  ctx.ledger.push(emitted(el.id, nextId(ctx, "nav"), { note: `menu table, ${linked.length} item(s)` }));
+  ctx.tables.push({ tableId: el.id, classification: "SHELL", emittedTable: false });
+
+  return [
+    makeNav({
+      list: { type: "list", ordered: false, spread: false, children: items },
+      ...(title !== null ? { title } : {}),
+    }),
+  ];
 }
 
 /**
@@ -2283,6 +2424,17 @@ function layoutFrom(
     const lanes = laneColumnsOf(grid);
     for (let r = 0; r < grid.rows; r += 1) {
       const columns = [];
+      /**
+       * A lane that is nothing but a menu is not a lane.
+       *
+       * §11 and `CLAUDE.md` §5 say the same thing: a prominent side menu folds
+       * into the main flow. Kept as a column it becomes a half-width track of
+       * link labels running beside the article for the article's whole length,
+       * which is the 1998 page's shape and not its meaning — and `column`'s
+       * body in §4.1 is "Markdown and leaf media directives", which a `nav` is
+       * not. The reference closes the region and puts the menu after it.
+       */
+      const folded: BiomdContent[] = [];
       for (let c = 0; c < grid.cols; c += 1) {
         const slot = grid.slots[r]?.[c];
         if (!slot?.isOrigin) continue;
@@ -2294,7 +2446,9 @@ function layoutFrom(
         // The cell is decided now, so the align-run pass may look at it (§13
         // permits `align` inside `column`). During `blocksFrom` above it must
         // not: the region detector reads the produced shape back.
-        const cells = groupAlignedRunsCommitted(inner.filter(isBounded), ctx, cell.node).filter(isBounded);
+        const lowered = inner.filter((block) => block.type !== "biomdNav");
+        folded.push(...inner.filter((block) => block.type === "biomdNav"));
+        const cells = groupAlignedRunsCommitted(lowered.filter(isBounded), ctx, cell.node).filter(isBounded);
         if (cells.length > 0) columns.push(makeColumn(cells));
         // An established lane keeps its place even in a row that has nothing to
         // put there. Five `goya2` albums have no cover art, and dropping the
@@ -2316,6 +2470,7 @@ function layoutFrom(
         if (lanedRows > 0) regions.push(markDerivedRule());
         regions.push(makeColumns({ children: columns, profile: ctx.options.profile }));
         lanedRows += 1;
+        regions.push(...folded);
         continue;
       }
       // A row with one populated cell is not a two-lane region — a spanning
@@ -2323,6 +2478,7 @@ function layoutFrom(
       // the flow, and wrapping it in a one-lane `columns` would claim a layout
       // the author did not draw.
       for (const column of columns) regions.push(...(column.children as BiomdContent[]));
+      regions.push(...folded);
     }
 
     if (lanedRows > 0) {

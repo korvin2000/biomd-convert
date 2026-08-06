@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T08:04:19.001Z",
+  "generated": "2026-08-06T08:11:23.353Z",
   "totals": {
-    "findings": 375,
-    "converterDefects": 248,
+    "findings": 356,
+    "converterDefects": 230,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 54,
-    "ambiguous": 73,
+    "ambiguous": 72,
     "bySeverity": {
-      "critical": 49,
-      "major": 161,
-      "minor": 165
+      "critical": 43,
+      "major": 153,
+      "minor": 160
     }
   },
   "perDocument": [
@@ -111,11 +111,11 @@
     },
     {
       "doc": "williams2",
-      "findings": 29,
-      "converterDefects": 22,
-      "critical": 7,
-      "major": 11,
-      "minor": 11
+      "findings": 10,
+      "converterDefects": 4,
+      "critical": 1,
+      "major": 3,
+      "minor": 6
     }
   ],
   "classes": [
@@ -143,31 +143,6 @@
         "path": "/paragraph[3]",
         "produced": null,
         "reference": "Надя Борислова:"
-      }
-    },
-    {
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "instances": 14,
-      "documents": [
-        "borislova",
-        "news",
-        "news_2007",
-        "segovia1",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 14,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 210,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
-        "reference": null
       }
     },
     {
@@ -222,6 +197,30 @@
         "path": "/align[43]/paragraph[1]",
         "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставл…",
         "reference": "Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.seicorde.it/Pocci Информация, предоставленная лично … — produced at /paragraph[43]"
+      }
+    },
+    {
+      "class": "align.spurious.unattested",
+      "severity": "major",
+      "instances": 8,
+      "documents": [
+        "borislova",
+        "news",
+        "news_2007",
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 8,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 96,
+      "example": {
+        "doc": "borislova",
+        "path": "/align[45]",
+        "produced": "WMA",
+        "reference": null
       }
     },
     {
@@ -505,50 +504,6 @@
       }
     },
     {
-      "class": "nav.title.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "news",
-        "news_2007",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 27,
-      "example": {
-        "doc": "news",
-        "path": "/nav[100]@title",
-        "produced": null,
-        "reference": "title: Архив новостей"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "instances": 5,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 25,
-      "example": {
-        "doc": "williams2",
-        "path": "/nav[2]/align[0]/paragraph[0]",
-        "produced": "1995-2002",
-        "reference": null
-      }
-    },
-    {
       "class": "paragraph.content.edited",
       "severity": "minor",
       "instances": 13,
@@ -707,28 +662,6 @@
       }
     },
     {
-      "class": "list.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "news",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "news",
-        "path": "/list[93]",
-        "produced": null,
-        "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
       "instances": 4,
@@ -769,6 +702,28 @@
         "path": "/image[9]",
         "produced": "Франсиско Таррега",
         "reference": "Франсиско Таррега — produced at /image[7]"
+      }
+    },
+    {
+      "class": "nav.title.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "news",
+        "path": "/nav[100]@title",
+        "produced": null,
+        "reference": "title: Архив новостей"
       }
     },
     {
@@ -900,6 +855,27 @@
       }
     },
     {
+      "class": "list.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 6,
+      "example": {
+        "doc": "news",
+        "path": "/list[93]",
+        "produced": null,
+        "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…"
+      }
+    },
+    {
       "class": "retyped.list-to-table",
       "severity": "major",
       "instances": 2,
@@ -939,27 +915,6 @@
         "path": "/align[59]/columns[0]/column[0]",
         "produced": "Андрес Сеговия",
         "reference": "◀ Андрес Сеговия — at /align[59]/paragraph[0]"
-      }
-    },
-    {
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "instances": 5,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "williams2",
-        "path": "/nav[2]/break[0]",
-        "produced": "---",
-        "reference": null
       }
     },
     {
@@ -1067,6 +1022,27 @@
         "path": "/break[48]",
         "produced": "-----------------------------------------------------------------------------------------",
         "reference": "--- — produced at /break[8]"
+      }
+    },
+    {
+      "class": "column.spurious.unattested",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "williams2",
+        "path": "/columns[1]/column[1]",
+        "produced": "",
+        "reference": null
       }
     },
     {
@@ -1193,27 +1169,6 @@
         "path": "/columns[10]/column[0]/list[0]/item[8]",
         "produced": null,
         "reference": "09. Promise Me"
-      }
-    },
-    {
-      "class": "nav.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "williams2",
-        "path": "/nav[2]",
-        "produced": "align center Дискография --- align center 1995-2002 --- align center 1989-1994 --- align center 1979-1988 --- align center 1971-1979 --- align center 1958-1970",
-        "reference": "Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]"
       }
     },
     {
@@ -1664,7 +1619,7 @@
     {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
-      "instances": 14,
+      "instances": 13,
       "documents": [
         "goya2",
         "news",
@@ -1676,7 +1631,7 @@
         "converter-defect": 0,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 14
+        "ambiguous": 13
       },
       "rank": 0,
       "example": {
@@ -6724,90 +6679,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "b4c94450",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[0]",
-      "producedLine": 104,
-      "referenceLine": null,
-      "produced": "Дискография",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cc15d686",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[0]",
-      "producedLine": 113,
-      "referenceLine": null,
-      "produced": "1995-2002",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "98f49cfa",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[0]",
-      "producedLine": 122,
-      "referenceLine": null,
-      "produced": "1989-1994",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2b0890d6",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[0]",
-      "producedLine": 131,
-      "referenceLine": null,
-      "produced": "1979-1988",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "502990d6",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[0]",
-      "producedLine": 140,
-      "referenceLine": null,
-      "produced": "1971-1979",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e388848b",
-      "doc": "williams2",
-      "class": "align.spurious.unattested",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/align[1]",
-      "producedLine": 149,
-      "referenceLine": null,
-      "produced": "1958-1970",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "dc6e6f66",
       "doc": "williams2",
       "class": "paragraph.spurious.unattested",
@@ -6822,156 +6693,16 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "38dfd518",
+      "id": "3969cbe3",
       "doc": "williams2",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
+      "class": "column.spurious.unattested",
+      "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/nav[2]/break[0]",
-      "producedLine": 110,
+      "path": "/columns[1]/column[1]",
+      "producedLine": 102,
       "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "38dfd518",
-      "doc": "williams2",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/break[0]",
-      "producedLine": 119,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "38dfd518",
-      "doc": "williams2",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/break[0]",
-      "producedLine": 128,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "38dfd518",
-      "doc": "williams2",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/break[0]",
-      "producedLine": 137,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "38dfd518",
-      "doc": "williams2",
-      "class": "break.spurious.unattested",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[2]/break[0]",
-      "producedLine": 146,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7ddb3768",
-      "doc": "williams2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[0]/paragraph[0]",
-      "producedLine": 107,
-      "referenceLine": null,
-      "produced": "Дискография",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "c89be882",
-      "doc": "williams2",
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[0]/paragraph[0]",
-      "producedLine": 116,
-      "referenceLine": null,
-      "produced": "1995-2002",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9150b896",
-      "doc": "williams2",
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[0]/paragraph[0]",
-      "producedLine": 125,
-      "referenceLine": null,
-      "produced": "1989-1994",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9d0cdee2",
-      "doc": "williams2",
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[0]/paragraph[0]",
-      "producedLine": 134,
-      "referenceLine": null,
-      "produced": "1979-1988",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7f71ecaa",
-      "doc": "williams2",
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[0]/paragraph[0]",
-      "producedLine": 143,
-      "referenceLine": null,
-      "produced": "1971-1979",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b8d589a1",
-      "doc": "williams2",
-      "class": "paragraph.spurious.in-nav",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/nav[2]/align[1]/paragraph[0]",
-      "producedLine": 152,
-      "referenceLine": null,
-      "produced": "1958-1970",
+      "produced": "",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -7085,48 +6816,6 @@
       "referenceLine": 87,
       "produced": "MP3",
       "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /columns[1]/column[0]/align[26]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ea76f8dc",
-      "doc": "williams2",
-      "class": "nav.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/nav[2]",
-      "producedLine": 102,
-      "referenceLine": 103,
-      "produced": "align center Дискография --- align center 1995-2002 --- align center 1989-1994 --- align center 1979-1988 --- align center 1971-1979 --- align center 1958-1970",
-      "reference": "Дискография 1995-2002 1989-1994 1979-1988 1971-1979 1958-1970 — produced at /columns[1]/column[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "95ed8f65",
-      "doc": "williams2",
-      "class": "nav.title.missing",
-      "severity": "major",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/nav[2]@title",
-      "producedLine": 102,
-      "referenceLine": 103,
-      "produced": null,
-      "reference": "title: Дискография",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7bf2ed07",
-      "doc": "williams2",
-      "class": "list.missing",
-      "severity": "major",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/nav[2]/list[0]",
-      "producedLine": null,
-      "referenceLine": 105,
-      "produced": null,
-      "reference": "1995-2002 1989-1994 1979-1988 1971-1979 1958-1970",
       "verdict": "converter-defect"
     }
   ]
