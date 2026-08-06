@@ -1844,21 +1844,35 @@ function dataRegionFrom(
 
   const failure = planned.failure ?? (requireEvidence ? "no-source-header" : "unrepresentable");
   const detail = planned.detail || "no source header row and the classifier abstained";
-  ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
 
   if (classification.class === "DATA") {
     // A DATA verdict that cannot be expressed as a table is a classification
     // finding, not a formatting detail: rows and columns are about to be lost.
+    ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
     ctx.ledger.push(
       review(el.id, `classified DATA but not representable as a table (${failure}: ${detail}); emitted as flow`),
     );
     ctx.warnings.push(`${el.id}: DATA table decomposed to linear flow — ${failure}: ${detail}.`);
-  } else {
-    ctx.ledger.push(
-      review(el.id, `classification inconclusive (${classification.reason}); emitted as linear flow`),
-    );
+    return decomposeFrom(grid, ctx, el);
   }
-  return decomposeFrom(grid, ctx, el);
+
+  // **Not a data table is not "not a region".**
+  //
+  // An inconclusive verdict used to fall straight to linear flow, which skipped
+  // the lane path entirely — so a record card that is plainly two columns wide
+  // was flattened without anyone ever asking whether it had lanes. `borislova`
+  // and `jovicic` are both this: a 1×2 grid holding a text lane beside its
+  // cover, classified UNKNOWN because it has no header row to plan from, and
+  // the references give each of them `::: columns`.
+  //
+  // `layoutFrom` is the right next question and answers it on its own evidence;
+  // it falls back to the same linear flow when the region has no lanes, so
+  // nothing is forced. The abstention is still recorded — it is a real thing
+  // that happened — but it no longer decides the shape.
+  ctx.ledger.push(
+    review(el.id, `classification inconclusive (${classification.reason}); reconsidered as a layout region`),
+  );
+  return layoutFrom(grid, ctx, el, classification);
 }
 
 /** Lower a planned semantic matrix to a GFM table, or null if a cell will not fit. */

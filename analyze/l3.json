@@ -18,29 +18,29 @@
     ]
   },
   "totals": {
-    "findings": 260,
+    "findings": 204,
     "alignmentRows": 151
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 47,
+      "instances": 52,
       "documents": 9
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 121,
-      "documents": 11
+      "instances": 86,
+      "documents": 10
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 63,
-      "documents": 7
+      "instances": 45,
+      "documents": 3
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 29,
-      "documents": 8
+      "instances": 21,
+      "documents": 5
     }
   ],
   "findings": [
@@ -52,7 +52,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[43]/paragraph[0]",
-      "producedLine": 253,
+      "producedLine": 277,
       "referenceLine": 283,
       "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.…",
       "reference": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.…",
@@ -85,278 +85,6 @@
       }
     },
     {
-      "id": "207235ad",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[0]/paragraph[0]",
-      "producedLine": 40,
-      "referenceLine": 48,
-      "produced": "La guitarra es la luna en un lago de oro. El piano es un tren cargando cascadas",
-      "reference": "La guitarra es la luna en un lago de oro. El piano es un tren cargando cascadas",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "a950b2fe",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[0]/paragraph[1]",
-      "producedLine": 45,
-      "referenceLine": 53,
-      "produced": "Y la música en las manos de Nadia el puente marino que sostiene un sueño.",
-      "reference": "Y la música en las manos de Nadia el puente marino que sostiene un sueño.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "d670424e",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[0]/paragraph[2]",
-      "producedLine": 50,
-      "referenceLine": 58,
-      "produced": "Anclado en los astros deambula en las notas cuando algún sonido cae abriendo ondas profundas raíces que entendemos todo…",
-      "reference": "Anclado en los astros deambula en las notas cuando algún sonido cae abriendo ondas profundas raíces que entendemos todo…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "ce7887c7",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 59,
-      "referenceLine": 71,
-      "produced": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "reference": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "501186e8",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[1]",
-      "producedLine": 64,
-      "referenceLine": 76,
-      "produced": "В музыке Нади По морскому мосту В сны провожают.",
-      "reference": "В музыке Нади По морскому мосту В сны провожают.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "d7680673",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[2]",
-      "producedLine": 69,
-      "referenceLine": 81,
-      "produced": "Бросит якорь на звезды, Бродит по нотам, Когда звуки падают Открывая волны. Мы их постигаем, слушаем и ощущаем, Так все…",
-      "reference": "Бросит якорь на звезды, Бродит по нотам, Когда звуки падают Открывая волны. Мы их постигаем, слушаем и ощущаем, Так все…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "344df4fa",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/paragraph[0]",
-      "producedLine": 82,
-      "referenceLine": 102,
-      "produced": "Bajo los efectos de la poesía José Luis Vega",
-      "reference": "Bajo los efectos de la poesía José Luis Vega",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "b4bb82bf",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/paragraph[1]",
-      "producedLine": 85,
-      "referenceLine": 105,
-      "produced": "Bajo los efectos de la poesía es posible viajar a la velocidad del pensamiento, mirar el mundo entero flamear, tocar co…",
-      "reference": "Bajo los efectos de la poesía es posible viajar a la velocidad del pensamiento, mirar el mundo entero flamear, tocar co…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "bb9b16aa",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/paragraph[2]",
-      "producedLine": 93,
-      "referenceLine": 113,
-      "produced": "Bajo los efectos de la poesía, usted no es responsable de sus actos: hablará en lengua extraña, hará cópulas públicas, …",
-      "reference": "Bajo los efectos de la poesía, usted no es responsable de sus actos: hablará en lengua extraña, hará cópulas públicas, …",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "7840cde2",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/paragraph[3]",
-      "producedLine": 100,
-      "referenceLine": 120,
-      "produced": "Bajo los efectos de la poesía, se ven blancas galaxias expandiéndose en el ojo de la cerradura y violines viejísimos mu…",
-      "reference": "Bajo los efectos de la poesía, se ven blancas galaxias expandiéndose en el ojo de la cerradura y violines viejísimos mu…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "9aa21311",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[0]/paragraph[4]",
-      "producedLine": 107,
-      "referenceLine": 127,
-      "produced": "No importa cuál sea su pasión, fe, raza, sexo edad o ensoñación política, no debe avergonzarse de volar bajo los efecto…",
-      "reference": "No importa cuál sea su pasión, fe, raza, sexo edad o ensoñación política, no debe avergonzarse de volar bajo los efecto…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "a0df1e83",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[0]",
-      "producedLine": 113,
-      "referenceLine": 137,
-      "produced": "Под воздействием поэзии Хосе Луис Вега",
-      "reference": "Под воздействием поэзии Хосе Луис Вега",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "580ec659",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[1]",
-      "producedLine": 116,
-      "referenceLine": 140,
-      "produced": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "reference": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "7d5a31bd",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[2]",
-      "producedLine": 126,
-      "referenceLine": 150,
-      "produced": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "reference": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "6911ebf0",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[3]",
-      "producedLine": 132,
-      "referenceLine": 156,
-      "produced": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "reference": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "7038cc43",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[4]",
-      "producedLine": 139,
-      "referenceLine": 163,
-      "produced": "Не важно, какая и кого страсть, возраст, вера, пол и раса или положение в политике, не стыдитесь летать под воздействие…",
-      "reference": "Не важно, какая и кого страсть, возраст, вера, пол и раса или положение в политике, не стыдитесь летать под воздействие…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
       "id": "e7d3943c",
       "doc": "borislova",
       "class": "layout.containment.mismatch",
@@ -364,251 +92,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[43]/paragraph[0]",
-      "producedLine": 253,
+      "producedLine": 277,
       "referenceLine": 283,
       "produced": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.…",
       "reference": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Publications VP MUSIC MEDIA: www.…",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "732cb549",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 59,
-      "referenceLine": 71,
-      "produced": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "reference": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "db453a8a",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[1]",
-      "producedLine": 64,
-      "referenceLine": 76,
-      "produced": "В музыке Нади По морскому мосту В сны провожают.",
-      "reference": "В музыке Нади По морскому мосту В сны провожают.",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "9c3311d1",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[2]",
-      "producedLine": 69,
-      "referenceLine": 81,
-      "produced": "Бросит якорь на звезды, Бродит по нотам, Когда звуки падают Открывая волны. Мы их постигаем, слушаем и ощущаем, Так все…",
-      "reference": "Бросит якорь на звезды, Бродит по нотам, Когда звуки падают Открывая волны. Мы их постигаем, слушаем и ощущаем, Так все…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "f2306931",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[0]",
-      "producedLine": 113,
-      "referenceLine": 137,
-      "produced": "Под воздействием поэзии Хосе Луис Вега",
-      "reference": "Под воздействием поэзии Хосе Луис Вега",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "598b5973",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[1]",
-      "producedLine": 116,
-      "referenceLine": 140,
-      "produced": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "reference": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "b1c14303",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[2]",
-      "producedLine": 126,
-      "referenceLine": 150,
-      "produced": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "reference": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "6aab66a2",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[3]",
-      "producedLine": 132,
-      "referenceLine": 156,
-      "produced": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "reference": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "437b2869",
-      "doc": "borislova",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[4]",
-      "producedLine": 139,
-      "referenceLine": 163,
-      "produced": "Не важно, какая и кого страсть, возраст, вера, пол и раса или положение в политике, не стыдитесь летать под воздействие…",
-      "reference": "Не важно, какая и кого страсть, возраст, вера, пол и раса или положение в политике, не стыдитесь летать под воздействие…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "84c00643",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 59,
-      "referenceLine": 71,
-      "produced": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "reference": "Гитара - луна В золотом озере. Рояль - поезд, несущий водопады.",
-      "geometry": {
-        "producedRank": 14,
-        "referenceRank": 12
-      }
-    },
-    {
-      "id": "57af153c",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[1]",
-      "producedLine": 64,
-      "referenceLine": 76,
-      "produced": "В музыке Нади По морскому мосту В сны провожают.",
-      "reference": "В музыке Нади По морскому мосту В сны провожают.",
-      "geometry": {
-        "producedRank": 15,
-        "referenceRank": 14
-      }
-    },
-    {
-      "id": "38f2cfd7",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[0]",
-      "producedLine": 113,
-      "referenceLine": 137,
-      "produced": "Под воздействием поэзии Хосе Луис Вега",
-      "reference": "Под воздействием поэзии Хосе Луис Вега",
-      "geometry": {
-        "producedRank": 24,
-        "referenceRank": 20
-      }
-    },
-    {
-      "id": "0adae7cd",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[1]",
-      "producedLine": 116,
-      "referenceLine": 140,
-      "produced": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "reference": "Под воздействием поэзии Вы можете познать свет со скоростью мысли, Увидеть вокруг себя весь пылающий мир, прикоснуться …",
-      "geometry": {
-        "producedRank": 25,
-        "referenceRank": 22
-      }
-    },
-    {
-      "id": "35c683d9",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[2]",
-      "producedLine": 126,
-      "referenceLine": 150,
-      "produced": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "reference": "Под воздействием поэзии Вы не отвечаете за свои поступки: на странном языке заговорите открыто займетесь любовью, верхо…",
-      "geometry": {
-        "producedRank": 26,
-        "referenceRank": 24
-      }
-    },
-    {
-      "id": "f0cbcbfc",
-      "doc": "borislova",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[14]/column[1]/paragraph[3]",
-      "producedLine": 132,
-      "referenceLine": 156,
-      "produced": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "reference": "Под воздействием поэзии увидите белые расширяющиеся галактики в зрачке замка и старые скрипки стряхивающие с перьев пыл…",
-      "geometry": {
-        "producedRank": 27,
-        "referenceRank": 26
       }
     },
     {
@@ -1993,91 +1483,6 @@
       }
     },
     {
-      "id": "57d5fdc7",
-      "doc": "jovicic",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[0]/paragraph[0]",
-      "producedLine": 40,
-      "referenceLine": 46,
-      "produced": "Jovan Jovicic Classical guitar",
-      "reference": "Jovan Jovicic Classical guitar",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "cd96919a",
-      "doc": "jovicic",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[0]/paragraph[1]",
-      "producedLine": 43,
-      "referenceLine": 49,
-      "produced": "Produkcija Gramofonskih Ploca Radio Televizije Srbije - RTS RECORDS CD 430916",
-      "reference": "Produkcija Gramofonskih Ploca Radio Televizije Srbije - RTS RECORDS CD 430916",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "fbde26eb",
-      "doc": "jovicic",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/image[0]",
-      "producedLine": 63,
-      "referenceLine": 73,
-      "produced": "Й. Йовович CD",
-      "reference": "Й. Йовович CD",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "a31a9269",
-      "doc": "jovicic",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/image[0]",
-      "producedLine": 63,
-      "referenceLine": 73,
-      "produced": "Й. Йовович CD",
-      "reference": "Й. Йовович CD",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "75e6e24f",
-      "doc": "jovicic",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/image[0]",
-      "producedLine": 63,
-      "referenceLine": 73,
-      "produced": "Й. Йовович CD",
-      "reference": "Й. Йовович CD",
-      "geometry": {
-        "producedRank": 14,
-        "referenceRank": 13
-      }
-    },
-    {
       "id": "984b2b3c",
       "doc": "kiselev",
       "class": "layout.align.mismatch",
@@ -2101,6 +1506,75 @@
       }
     },
     {
+      "id": "8cdc07d8",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[12]/column[1]/align[0]/paragraph[0]",
+      "producedLine": 144,
+      "referenceLine": 151,
+      "produced": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
+      "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "95014711",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+      "producedLine": 152,
+      "referenceLine": 155,
+      "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "b6fe0afb",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
+      "producedLine": 155,
+      "referenceLine": 158,
+      "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
       "id": "a481a558",
       "doc": "kiselev",
       "class": "layout.align.mismatch",
@@ -2108,7 +1582,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[13]/heading[0]",
-      "producedLine": 165,
+      "producedLine": 158,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -2131,7 +1605,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 198,
+      "producedLine": 191,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
@@ -2140,6 +1614,52 @@
         "referenceAlign": "center",
         "producedRaw": "start",
         "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "6492fe4b",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
+      "producedLine": 213,
+      "referenceLine": 231,
+      "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
+      "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "452b503a",
+      "doc": "kiselev",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
+      "producedLine": 219,
+      "referenceLine": 237,
+      "produced": "E-mail: andy.waeyaert@advalvas.be",
+      "reference": "E-mail: andy.waeyaert@advalvas.be",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "right",
+        "producedRaw": "start",
+        "referenceRaw": "right",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
         "producedProse": "left",
@@ -2164,23 +1684,6 @@
       }
     },
     {
-      "id": "59ed2f32",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[0]/paragraph[0]",
-      "producedLine": 133,
-      "referenceLine": 140,
-      "produced": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
-      "reference": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
       "id": "f74281b7",
       "doc": "kiselev",
       "class": "layout.containment.mismatch",
@@ -2188,12 +1691,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 140,
+      "producedLine": 144,
       "referenceLine": 151,
       "produced": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
       "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "columns>column",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -2205,12 +1708,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 151,
+      "producedLine": 152,
       "referenceLine": 155,
       "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "(root)",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -2222,12 +1725,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 161,
+      "producedLine": 155,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "(root)",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -2239,7 +1742,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[13]/heading[0]",
-      "producedLine": 165,
+      "producedLine": 158,
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
@@ -2256,47 +1759,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 198,
+      "producedLine": 191,
       "referenceLine": 206,
       "produced": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "reference": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "1c2a667e",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[0]/paragraph[0]",
-      "producedLine": 203,
-      "referenceLine": 214,
-      "produced": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
-      "reference": "Опубликовано издательством IMPRIMUS (Бельгия) в 2002 году",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "16d8f656",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[0]/paragraph[2]",
-      "producedLine": 205,
-      "referenceLine": 218,
-      "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюи…",
-      "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
       }
     },
     {
@@ -2307,12 +1776,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 216,
+      "producedLine": 213,
       "referenceLine": 231,
       "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "columns>column",
         "referenceContainer": "columns>column>align"
       }
     },
@@ -2324,81 +1793,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 222,
+      "producedLine": 219,
       "referenceLine": 237,
       "produced": "E-mail: andy.waeyaert@advalvas.be",
       "reference": "E-mail: andy.waeyaert@advalvas.be",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "columns>column",
         "referenceContainer": "columns>column>align"
-      }
-    },
-    {
-      "id": "c87acaa9",
-      "doc": "kiselev",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 140,
-      "referenceLine": 151,
-      "produced": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
-      "reference": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "a7d2ab12",
-      "doc": "kiselev",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 216,
-      "referenceLine": 231,
-      "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
-      "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "bcf55d75",
-      "doc": "kiselev",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 222,
-      "referenceLine": 237,
-      "produced": "E-mail: andy.waeyaert@advalvas.be",
-      "reference": "E-mail: andy.waeyaert@advalvas.be",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "c6686268",
-      "doc": "kiselev",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[18]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 216,
-      "referenceLine": 231,
-      "produced": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
-      "reference": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 Ieper, Belgium",
-      "geometry": {
-        "producedRank": 30,
-        "referenceRank": 29
       }
     },
     {
@@ -3389,7 +2790,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/quote[0]/paragraph[0]",
-      "producedLine": 31,
+      "producedLine": 78,
       "referenceLine": 55,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
@@ -3412,7 +2813,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[1]",
-      "producedLine": 34,
+      "producedLine": 81,
       "referenceLine": 58,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
@@ -3435,7 +2836,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 38,
+      "producedLine": 85,
       "referenceLine": 62,
       "produced": "[ сайт фестиваля ]",
       "reference": "[ сайт фестиваля ]",
@@ -3468,159 +2869,6 @@
       }
     },
     {
-      "id": "15c5dc6c",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[0]/paragraph[0]",
-      "producedLine": 7,
-      "referenceLine": 12,
-      "produced": "11 декабря 2007 г.",
-      "reference": "11 декабря 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "a09b8674",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[0]",
-      "producedLine": 9,
-      "referenceLine": 15,
-      "produced": "Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Карп…",
-      "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпер…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "07cadd0e",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]/column[0]/paragraph[0]",
-      "producedLine": 13,
-      "referenceLine": 22,
-      "produced": "9 декабря 2007 г.",
-      "reference": "9 декабря 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "fa44eed0",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]/column[1]/paragraph[0]",
-      "producedLine": 15,
-      "referenceLine": 26,
-      "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шум…",
-      "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумее…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "b6b8d426",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[0]/paragraph[0]",
-      "producedLine": 19,
-      "referenceLine": 33,
-      "produced": "25 ноября 2007 г.",
-      "reference": "25 ноября 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "2764a156",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[0]",
-      "producedLine": 21,
-      "referenceLine": 37,
-      "produced": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
-      "reference": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "9ead8aa1",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[1]",
-      "producedLine": 23,
-      "referenceLine": 39,
-      "produced": "В преддверии Нового года стала вновь доступна новогодняя страничка!",
-      "reference": "В преддверии Нового года стала вновь доступна новогодняя страничка!",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "bdd0fb7a",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[6]/column[0]/paragraph[0]",
-      "producedLine": 27,
-      "referenceLine": 45,
-      "produced": "22 апреля 2007 г.",
-      "reference": "22 апреля 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "845968cb",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[6]/column[1]/paragraph[0]",
-      "producedLine": 29,
-      "referenceLine": 48,
-      "produced": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
-      "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слух…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
       "id": "4dd17edd",
       "doc": "news_2007",
       "class": "layout.containment.mismatch",
@@ -3628,7 +2876,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/quote[0]/paragraph[0]",
-      "producedLine": 31,
+      "producedLine": 78,
       "referenceLine": 55,
       "produced": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "reference": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
@@ -3645,7 +2893,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[1]",
-      "producedLine": 34,
+      "producedLine": 81,
       "referenceLine": 58,
       "produced": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "reference": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
@@ -3662,183 +2910,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[6]/column[1]/frame[1]/align[1]/paragraph[2]",
-      "producedLine": 38,
+      "producedLine": 85,
       "referenceLine": 62,
       "produced": "[ сайт фестиваля ]",
       "reference": "[ сайт фестиваля ]",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "columns>column>frame>align"
-      }
-    },
-    {
-      "id": "a5fbaf2a",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[0]/paragraph[0]",
-      "producedLine": 42,
-      "referenceLine": 71,
-      "produced": "10 апреля 2007 г.",
-      "reference": "10 апреля 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "4747dc39",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 44,
-      "referenceLine": 75,
-      "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
-      "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "be4c492e",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]/column[0]/paragraph[0]",
-      "producedLine": 46,
-      "referenceLine": 81,
-      "produced": "4 марта 2007 г.",
-      "reference": "4 марта 2007 г.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "05a63009",
-      "doc": "news_2007",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]/column[1]/paragraph[0]",
-      "producedLine": 48,
-      "referenceLine": 85,
-      "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
-      "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "7a6387e6",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[0]",
-      "producedLine": 9,
-      "referenceLine": 15,
-      "produced": "Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Карп…",
-      "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпер…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "6e47c6c2",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]/column[1]/paragraph[0]",
-      "producedLine": 15,
-      "referenceLine": 26,
-      "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шум…",
-      "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумее…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "2ae6fafc",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[0]",
-      "producedLine": 21,
-      "referenceLine": 37,
-      "produced": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
-      "reference": "Словарь пополнился статьями о Милане Зеленке, Яне Обровской, Софокле Папасе, Б.А. Перотте и Г.С. Сечкине. Внесено ряд п…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "04b2fc79",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[6]/column[1]/paragraph[0]",
-      "producedLine": 29,
-      "referenceLine": 48,
-      "produced": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слу…",
-      "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слух…",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "077f3cd3",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 44,
-      "referenceLine": 75,
-      "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
-      "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно …",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "175f00f7",
-      "doc": "news_2007",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]/column[1]/paragraph[0]",
-      "producedLine": 48,
-      "referenceLine": 85,
-      "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
-      "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
       }
     },
     {
@@ -4867,7 +3945,7 @@
     },
     {
       "doc": "borislova",
-      "producedLine": 253,
+      "producedLine": 277,
       "referenceLine": 283,
       "text": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Pub…",
       "producedAlignment": "left",
@@ -5322,7 +4400,7 @@
     },
     {
       "doc": "jovicic",
-      "producedLine": 63,
+      "producedLine": 71,
       "referenceLine": 73,
       "text": "Й. Йовович CD",
       "producedAlignment": "center",
@@ -5374,10 +4452,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 140,
+      "producedLine": 144,
       "referenceLine": 151,
       "text": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
-      "producedAlignment": "right",
+      "producedAlignment": "left",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -5387,10 +4465,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 151,
+      "producedLine": 152,
       "referenceLine": 155,
       "text": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "producedAlignment": "right",
+      "producedAlignment": "left",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -5400,10 +4478,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 161,
+      "producedLine": 155,
       "referenceLine": 158,
       "text": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "producedAlignment": "right",
+      "producedAlignment": "left",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -5413,7 +4491,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 165,
+      "producedLine": 158,
       "referenceLine": 170,
       "text": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "producedAlignment": "left",
@@ -5426,7 +4504,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 198,
+      "producedLine": 191,
       "referenceLine": 206,
       "text": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "producedAlignment": "left",
@@ -5439,10 +4517,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 216,
+      "producedLine": 213,
       "referenceLine": 231,
       "text": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 I…",
-      "producedAlignment": "right",
+      "producedAlignment": "left",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -5452,10 +4530,10 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 222,
+      "producedLine": 219,
       "referenceLine": 237,
       "text": "E-mail: andy.waeyaert@advalvas.be",
-      "producedAlignment": "right",
+      "producedAlignment": "left",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -5985,7 +5063,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 31,
+      "producedLine": 78,
       "referenceLine": 55,
       "text": "Россия, г. Калуга, 21 - 25 мая 2007 г.",
       "producedAlignment": "left",
@@ -5998,7 +5076,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 34,
+      "producedLine": 81,
       "referenceLine": 58,
       "text": "Десятый юбилейный Международный музыкальный фестиваль \"МИР ГИТАРЫ\"",
       "producedAlignment": "left",
@@ -6011,7 +5089,7 @@
     },
     {
       "doc": "news_2007",
-      "producedLine": 38,
+      "producedLine": 85,
       "referenceLine": 62,
       "text": "[ сайт фестиваля ]",
       "producedAlignment": "left",

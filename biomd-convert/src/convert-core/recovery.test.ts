@@ -9,6 +9,7 @@
 import { describe, expect, it } from "vitest";
 import { convert } from "./pipeline.js";
 import { ALIGN_LABEL_MAX_CHARS, isAlignableLabelText, isDateLabel } from "./structure.js";
+import type { Classification } from "./classify.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
 import { groupColumnsFor, isDecorative, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
@@ -330,6 +331,75 @@ describe("alignment", () => {
     // 13 pairs, sits under the limit — the limit separates a label from an
     // article, and is not tuned to admit one more fixture.
     expect(ALIGN_LABEL_MAX_CHARS).toBeGreaterThan("Статья предоставлена автором.".length);
+  });
+});
+
+/**
+ * A region the classifier could not type is still a region.
+ *
+ * **Invariant.** "Not a data table" is not "not a layout". An inconclusive
+ * verdict used to fall straight to linear flow, which never asked whether the
+ * region had lanes — so a record card two columns wide was flattened without the
+ * question being put. The abstention now hands the region to the lane path,
+ * which decides on its own geometric evidence and falls back to the same linear
+ * flow when there are no lanes, so nothing is forced.
+ *
+ * **Recurrence / false friend.** Both belong to the lane detector, not here:
+ * this contract only asserts that the question reaches it. The false friend it
+ * must not create is a *data* table quietly becoming columns, which is why the
+ * DATA branch still goes to flow and is asserted below.
+ */
+describe("inconclusive table classification", () => {
+  const card =
+    '<table width="400"><tr>' +
+    '<td width="200"><b>Jovan Jovicic</b><br>Classical guitar<br>RTS Records CD 411001</td>' +
+    '<td width="200"><img src="photo/cd.jpg" width="180" height="180" alt="CD"></td>' +
+    '</tr></table>';
+
+  /**
+   * The verdict is supplied rather than provoked.
+   *
+   *  scores a hand-written two-cell fixture as DATA/too-small, so
+   * a synthetic page cannot reach UNKNOWN without reverse-engineering the
+   * scorer — and a test that tuned its fixture until the scorer abstained would
+   * be testing the scorer, not the routing.  is the supported
+   * override the hook layer already uses, so forcing the verdict tests exactly
+   * the decision under contract and nothing else.
+   */
+  async function convertWith(cls: Classification["class"]): Promise<Awaited<ReturnType<typeof convert>>> {
+    const html = page(PROSE + card + PROSE);
+    const doc = parseHtml(html);
+    const inner = [...walkElements(doc.root)].filter((e) => e.tag === "table");
+    const target = inner[inner.length - 1];
+    const classifications = new Map([
+      [target!.id, { class: cls, confidence: 0.4, tier: 4 as const, reason: "forced by test" }],
+    ]);
+    return convert(Buffer.from(html, "utf8"), { profile: SPEC, layoutFidelity: "faithful", classifications });
+  }
+
+  it("reconsiders a headerless two-lane region as a layout, not as flow", async () => {
+    const result = await convertWith("UNKNOWN");
+    // The record card pairs a label lane with its cover; flattened, the two stop
+    // being one record.  and  are this shape, and the
+    // references give both .
+    expect(result.markdown).toContain("::: columns");
+    expect(result.markdown).toContain("::: column");
+  });
+
+  it("still records the abstention rather than hiding it", async () => {
+    const result = await convertWith("UNKNOWN");
+    // Reconsidering the shape must not erase the fact that the classifier could
+    // not type the region — that entry is the queue a human reads.
+    const reviews = result.ledger.filter((e) => e.terminal.kind === "REVIEW");
+    expect(reviews.some((e) => /inconclusive/u.test((e.terminal as { reason: string }).reason))).toBe(true);
+  });
+
+  it("leaves a DATA verdict on the flow path — the false friend", async () => {
+    // A region the classifier *did* type as records must not be quietly
+    // promoted to columns by the same fallback: losing a table to lanes is the
+    // defect this reconsideration could otherwise introduce.
+    const result = await convertWith("DATA");
+    expect(result.markdown).not.toContain("::: columns");
   });
 });
 
