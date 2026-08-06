@@ -111,7 +111,7 @@ const PRESENTATIONAL = /^(?:emphasis|hardbreak)\b|\.(?:typography|whitespace|cas
  * Everything else that folds equal on both sides has no content difference at
  * all, whatever the class name claims.
  */
-const SPELLING = /\.(?:hyphenation|typography(?:\.[a-z]+)?|whitespace|case)$/u;
+const SPELLING = /\.(?:hyphenation(?:\.[a-z]+)?|typography(?:\.[a-z]+)?|whitespace|case)$/u;
 
 /**
  * Classify one finding. See `CLAUDE.md` §4 for the four verdicts.
@@ -184,6 +184,27 @@ export function triage(
   // `классической` fold together, and swallowing it here would retire a defect
   // family `analyze.md` names by name on `barrios`.
   if (!SPELLING.test(cls) && fold(wanted) === fold(got)) return "ambiguous";
+
+  // Hyphenation is the one family where source attestation says nothing, and
+  // says it loudly. The artifact being reported is a hyphen the *source*
+  // contains, so the hyphenated side is attested by construction and the joined
+  // side never is — whichever side did the joining. Running it through the test
+  // below therefore reports "the reference is right" every time, including the
+  // 14 measured cases where the converter joined `клас-сической` correctly and
+  // the reference kept the wrap.
+  //
+  // Direction is the only evidence available here. Keeping a hyphen the
+  // reference joined is a converter defect: the reference did the work and we
+  // did not. Joining one the reference kept cannot be settled without a
+  // dictionary — every instance in this corpus is a correct word, but the
+  // instrument cannot see that, and `ambiguous` is what verdict 4 is for.
+  if (cls.endsWith(".hyphenation.unjoined")) return "converter-defect";
+  if (cls.endsWith(".hyphenation.joined")) return "ambiguous";
+  // Both directions in one paragraph, which means at least one hyphen the
+  // reference joined and this did not. That is work, whatever else is in the
+  // block — calling it ambiguous would let a real defect hide behind a correct
+  // join that happens to sit in the same paragraph.
+  if (cls.endsWith(".hyphenation.mixed")) return "converter-defect";
 
   // The two-sided question, and the reason this function was rewritten.
   // Whichever side the source supports is the side that is right.

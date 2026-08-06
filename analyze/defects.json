@@ -1,33 +1,33 @@
 {
-  "generated": "2026-08-06T10:36:08.383Z",
+  "generated": "2026-08-06T10:49:31.896Z",
   "totals": {
-    "findings": 326,
-    "converterDefects": 200,
+    "findings": 321,
+    "converterDefects": 191,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 50,
-    "ambiguous": 76,
+    "ambiguous": 80,
     "bySeverity": {
       "critical": 37,
       "major": 132,
-      "minor": 157
+      "minor": 152
     }
   },
   "perDocument": [
     {
       "doc": "authors",
       "findings": 8,
-      "converterDefects": 8,
+      "converterDefects": 7,
       "critical": 0,
       "major": 0,
       "minor": 8
     },
     {
       "doc": "barrios",
-      "findings": 6,
+      "findings": 5,
       "converterDefects": 0,
       "critical": 1,
       "major": 3,
-      "minor": 2
+      "minor": 1
     },
     {
       "doc": "borislova",
@@ -47,51 +47,51 @@
     },
     {
       "doc": "jovicic",
-      "findings": 9,
-      "converterDefects": 8,
+      "findings": 8,
+      "converterDefects": 6,
       "critical": 2,
       "major": 1,
-      "minor": 6
+      "minor": 5
     },
     {
       "doc": "kiselev",
-      "findings": 58,
-      "converterDefects": 15,
+      "findings": 57,
+      "converterDefects": 17,
       "critical": 1,
       "major": 17,
-      "minor": 40
+      "minor": 39
     },
     {
       "doc": "news",
-      "findings": 68,
-      "converterDefects": 49,
+      "findings": 64,
+      "converterDefects": 46,
       "critical": 12,
       "major": 35,
-      "minor": 21
+      "minor": 17
     },
     {
       "doc": "news_2007",
-      "findings": 18,
-      "converterDefects": 11,
+      "findings": 17,
+      "converterDefects": 9,
       "critical": 2,
       "major": 5,
-      "minor": 11
+      "minor": 10
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 14,
+      "findings": 15,
       "converterDefects": 10,
       "critical": 3,
       "major": 8,
-      "minor": 3
+      "minor": 4
     },
     {
       "doc": "segovia",
-      "findings": 31,
-      "converterDefects": 17,
+      "findings": 29,
+      "converterDefects": 14,
       "critical": 4,
       "major": 15,
-      "minor": 12
+      "minor": 10
     },
     {
       "doc": "segovia1",
@@ -103,19 +103,19 @@
     },
     {
       "doc": "tarrega",
-      "findings": 24,
+      "findings": 27,
       "converterDefects": 12,
       "critical": 3,
       "major": 15,
-      "minor": 6
+      "minor": 9
     },
     {
       "doc": "williams2",
-      "findings": 10,
+      "findings": 11,
       "converterDefects": 4,
       "critical": 1,
       "major": 3,
-      "minor": 6
+      "minor": 7
     }
   ],
   "classes": [
@@ -143,35 +143,6 @@
         "path": "/paragraph[3]",
         "produced": null,
         "reference": "Надя Борислова:"
-      }
-    },
-    {
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "instances": 24,
-      "documents": [
-        "authors",
-        "barrios",
-        "borislova",
-        "jovicic",
-        "kiselev",
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 17,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 7
-      },
-      "rank": 153,
-      "example": {
-        "doc": "authors",
-        "path": "/paragraph[2]",
-        "produced": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классиче-ской гитары. В 2003 году окончил Кишиневскую музыкальную шко…",
-        "reference": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классической гитары. В 2003 году окончил Кишиневскую музыкальную школ…"
       }
     },
     {
@@ -364,32 +335,6 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 22,
-      "documents": [
-        "news",
-        "news_2007",
-        "segovia",
-        "segovia1",
-        "tarrega",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 16,
-        "ambiguous": 0
-      },
-      "rank": 36,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[44]",
-        "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
-        "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016"
-      }
-    },
-    {
       "class": "break.missing",
       "severity": "minor",
       "instances": 8,
@@ -414,6 +359,32 @@
       }
     },
     {
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 21,
+      "documents": [
+        "news",
+        "news_2007",
+        "segovia",
+        "segovia1",
+        "tarrega",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 16,
+        "ambiguous": 0
+      },
+      "rank": 30,
+      "example": {
+        "doc": "news",
+        "path": "/frame[47]/align[1]/paragraph[0]",
+        "produced": "strong:20 февраля 2016 года",
+        "reference": "strong:20 февраля 2016 года · strong:КОВАЛЕВСКАЯ · strong:Ядвига Ричардовна"
+      }
+    },
+    {
       "class": "link.label.content",
       "severity": "critical",
       "instances": 5,
@@ -434,6 +405,30 @@
         "path": "/align[43]/paragraph[1]/link[0]",
         "produced": "ДИСКОГРАФИЯ",
         "reference": "www.buap.mx/cultura"
+      }
+    },
+    {
+      "class": "paragraph.hyphenation.mixed",
+      "severity": "minor",
+      "instances": 6,
+      "documents": [
+        "authors",
+        "borislova",
+        "jovicic",
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "authors",
+        "path": "/paragraph[6]",
+        "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
+        "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
       }
     },
     {
@@ -1122,7 +1117,7 @@
       "example": {
         "doc": "news_2007",
         "path": "/columns[9]/column[1]/paragraph[0]",
-        "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слухи о сме…",
+        "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смер…",
         "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]"
       }
     },
@@ -1296,6 +1291,27 @@
       }
     },
     {
+      "class": "table.cell.hyphenation.mixed",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 2,
+      "example": {
+        "doc": "kiselev",
+        "path": "/table[8]/cell[2][0]",
+        "produced": "• Prelude-этюд № 2",
+        "reference": "• Prelude- этюд № 2"
+      }
+    },
+    {
       "class": "image.link.spurious",
       "severity": "minor",
       "instances": 1,
@@ -1443,6 +1459,27 @@
       }
     },
     {
+      "class": "paragraph.hyphenation.unjoined",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "news_2007",
+        "path": "/columns[5]/column[1]/paragraph[0]",
+        "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге…",
+        "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге и…"
+      }
+    },
+    {
       "class": "separator.spelling",
       "severity": "minor",
       "instances": 1,
@@ -1557,6 +1594,32 @@
       }
     },
     {
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "instances": 9,
+      "documents": [
+        "borislova",
+        "jovicic",
+        "pavlov_azancheev",
+        "segovia",
+        "tarrega",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 9
+      },
+      "rank": 0,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[5]",
+        "produced": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…",
+        "reference": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…"
+      }
+    },
+    {
       "class": "hardbreak.missing",
       "severity": "major",
       "instances": 2,
@@ -1575,6 +1638,28 @@
         "path": "/frame[47]/align[1]/paragraph[0]",
         "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
         "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks"
+      }
+    },
+    {
+      "class": "link.label.hyphenation.joined",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "authors",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 2
+      },
+      "rank": 0,
+      "example": {
+        "doc": "authors",
+        "path": "/paragraph[8]/link[0]",
+        "produced": "www.abcguitars.com",
+        "reference": "www.abc-guitars.com"
       }
     },
     {
@@ -1741,20 +1826,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "3c37c9b5",
-      "doc": "authors",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[2]",
-      "producedLine": 9,
-      "referenceLine": 9,
-      "produced": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классиче-ской гитары. В 2003 году окончил Кишиневскую музыкальную шко…",
-      "reference": "ТАВРОВСКИЙ Сергей Викторович (род. 24 мая 1985, Киев, Украина), – гитарист, преподаватель классической гитары. В 2003 году окончил Кишиневскую музыкальную школ…",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "6c1b0795",
       "doc": "authors",
       "class": "break.missing",
@@ -1783,16 +1854,16 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "668eae64",
+      "id": "c26dd5c3",
       "doc": "authors",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[6]",
       "producedLine": 26,
       "referenceLine": 28,
-      "produced": "ТАВРОВСКИЙ Виктор Владимиро-вич (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподава-тель философских дисциплин, мар-кетоло…",
+      "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
       "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …",
       "verdict": "converter-defect"
     },
@@ -1811,18 +1882,32 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "afa6adc4",
+      "id": "aa782c3f",
       "doc": "authors",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[8]",
       "producedLine": 35,
       "referenceLine": 37,
-      "produced": "ТАВРОВСКИЙ Александр Викторо-вич (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Укра-ина), – программист. В 2002 году окончил в г. Киеве Национальный…",
+      "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "e297c695",
+      "doc": "authors",
+      "class": "link.label.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[8]/link[0]",
+      "producedLine": 35,
+      "referenceLine": 37,
+      "produced": "www.abcguitars.com",
+      "reference": "www.abc-guitars.com",
+      "verdict": "ambiguous"
     },
     {
       "id": "25847694",
@@ -1837,20 +1922,6 @@
       "produced": null,
       "reference": "---",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "755a3378",
-      "doc": "barrios",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[2]",
-      "producedLine": 9,
-      "referenceLine": 9,
-      "produced": "БАРРИОС[1](#1) (Мангори) Агустин (Agustin Barrios Mangore) (1885-1944), – гениальный парагвайский гитарист виртуоз, значение которого в полной мере было оценен…",
-      "reference": "БАРРИОС[1](#1) (Мангори) Агустин (Agustin Barrios Mangore) (1885-1944), – гениальный парагвайский гитарист виртуоз, значение которого в полной мере было оценен…",
-      "verdict": "ambiguous"
     },
     {
       "id": "c34d9a85",
@@ -1951,9 +2022,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4b92f91b",
+      "id": "f1bafb94",
       "doc": "borislova",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
@@ -1991,6 +2062,20 @@
       "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
       "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "f465f840",
+      "doc": "borislova",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[5]",
+      "producedLine": 15,
+      "referenceLine": 15,
+      "produced": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…",
+      "reference": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…",
+      "verdict": "ambiguous"
     },
     {
       "id": "6ed7b582",
@@ -2047,20 +2132,6 @@
       "produced": null,
       "reference": "size: medium",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "ee10118e",
-      "doc": "borislova",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[10]",
-      "producedLine": 38,
-      "referenceLine": 42,
-      "produced": "Наде Борисловой посвятил свое стихотворение мексикан-ский поэт Виктор Толедо (Víktor Toledo):",
-      "reference": "Наде Борисловой посвятил свое стихотворение мексиканский поэт Виктор Толедо (Víktor Toledo):",
-      "verdict": "ambiguous"
     },
     {
       "id": "d8028412",
@@ -2945,9 +3016,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "7b2152b2",
+      "id": "efef5fe5",
       "doc": "jovicic",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
@@ -2959,46 +3030,32 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "43a7079d",
+      "id": "1bd1e6d6",
       "doc": "jovicic",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/paragraph[6]",
-      "producedLine": 23,
-      "referenceLine": 25,
-      "produced": "На международном конкурсе гитаристов, состоявшемся в Москве в 1957 году во время VI Всемирного фестиваля молодежи и студентов Йован Йовичич (также как и советс…",
-      "reference": "На международном конкурсе гитаристов, состоявшемся в Москве в 1957 году во время VI Всемирного фестиваля молодежи и студентов Йован Йовичич (также как и советс…",
+      "path": "/paragraph[5]",
+      "producedLine": 21,
+      "referenceLine": 23,
+      "produced": "В общей сложности им была написана и исполнена музыка к 68 спектаклям и 40 кинофильмам. Кроме того музыкантом сделано множество записей для большинства крупней…",
+      "reference": "В общей сложности им была написана и исполнена музыка к 68 спектаклям и 40 кинофильмам. Кроме того музыкантом сделано множество записей для большинства крупней…",
       "verdict": "converter-defect"
     },
     {
-      "id": "df72aed6",
+      "id": "feffd7ea",
       "doc": "jovicic",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.joined",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/paragraph[8]",
-      "producedLine": 32,
-      "referenceLine": 34,
-      "produced": "За время своей концертной деятельности Йован Йовович сыграл свыше 2200 концертов почти во всех европейских странах, многих странах Азии и Африки, на Кубе, почт…",
-      "reference": "За время своей концертной деятельности Йован Йовович сыграл свыше 2200 концертов почти во всех европейских странах, многих странах Азии и Африки, на Кубе, почт…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "703ed9c9",
-      "doc": "jovicic",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[10]",
-      "producedLine": 36,
-      "referenceLine": 38,
-      "produced": "Йован Йовичич возглавлял жюри классической гитары на Международном конкурсе юных музыкантов в Белгдаде, Международном конкурсе в г. Крайова (Румыния) в 1994 го…",
-      "reference": "Йован Йовичич возглавлял жюри классической гитары на Международном конкурсе юных музыкантов в Белгдаде, Международном конкурсе в г. Крайова (Румыния) в 1994 го…",
-      "verdict": "converter-defect"
+      "path": "/paragraph[9]",
+      "producedLine": 34,
+      "referenceLine": 36,
+      "produced": "За более чем 50 лет активной творческой деятельности Йован Йовович внес огромный вклад в популяризацию классической гитары как сольного инструмента в Югославии…",
+      "reference": "За более чем 50 лет активной творческой деятельности Йован Йовович внес огромный вклад в популяризацию клас-сической гитары как сольного инструмента в Югослави…",
+      "verdict": "ambiguous"
     },
     {
       "id": "0aa716cf",
@@ -3027,48 +3084,6 @@
       "produced": "size: large",
       "reference": "size: medium",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "f1398cce",
-      "doc": "kiselev",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[2]",
-      "producedLine": 9,
-      "referenceLine": 9,
-      "produced": "КИСЕЛЕВ Олег Николаевич – российский гитарист, компози­тор и педагог. Родился 6 марта 1964 года. Выпускник Челябин­ского музыкального училища, где занимался в …",
-      "reference": "КИСЕЛЕВ Олег Николаевич – российский гитарист, композитор и педагог. Родился 6 марта 1964 года. Выпускник Челябинского музыкального училища, где занимался в кл…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "eef29b9a",
-      "doc": "kiselev",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[3]",
-      "producedLine": 11,
-      "referenceLine": 11,
-      "produced": "Написал более 500 пьес для гитары, рецензии на которые опубликованы в гитарных журналах Великобритании, Ита­лии, США, Швейцарии, России. Записал 8 компакт диск…",
-      "reference": "Написал более 500 пьес для гитары, рецензии на которые опубликованы в гитарных журналах Великобритании, Италии, США, Швейцарии, России. Записал 8 компакт диско…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "4095d0ff",
-      "doc": "kiselev",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[4]",
-      "producedLine": 13,
-      "referenceLine": 13,
-      "produced": "Пьесы О. Н. Киселева опубликованы в Польше, России, Ита­лии, Бельгии, Германии, США, Швеции, Швейцарии, Фран­ции, Нидерландах, Канаде, Беларуси, Украине, Норве…",
-      "reference": "Пьесы О. Н. Киселева опубликованы в Польше, России, Италии, Бельгии, Германии, США, Швеции, Швейцарии, Франции, Нидерландах, Канаде, Беларуси, Украине, Норвеги…",
-      "verdict": "ambiguous"
     },
     {
       "id": "ffdebcb1",
@@ -3209,6 +3224,34 @@
       "produced": "",
       "reference": "&#128279; — column 2",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "403ae2c1",
+      "doc": "kiselev",
+      "class": "table.cell.hyphenation.mixed",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[8]/cell[2][0]",
+      "producedLine": 113,
+      "referenceLine": 113,
+      "produced": "• Prelude-этюд № 2",
+      "reference": "• Prelude- этюд № 2",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "8f088862",
+      "doc": "kiselev",
+      "class": "table.cell.hyphenation.mixed",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[8]/cell[10][0]",
+      "producedLine": 121,
+      "referenceLine": 121,
+      "produced": "• Samba-этюд № 10",
+      "reference": "• Samba- этюд № 10",
+      "verdict": "converter-defect"
     },
     {
       "id": "b9b43162",
@@ -4023,20 +4066,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "49e94cee",
-      "doc": "news",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[14]/paragraph[1]",
-      "producedLine": 85,
-      "referenceLine": 73,
-      "produced": "**14 августа 2020 года** в Англии возрасте 87 лет умер выдаю­щийся британский гитарист и лютнист",
-      "reference": "**14 августа 2020 года** в Англии возрасте 87 лет умер выдающийся британский гитарист и лютнист",
-      "verdict": "ambiguous"
-    },
-    {
       "id": "014008c2",
       "doc": "news",
       "class": "image.src.value",
@@ -4230,34 +4259,6 @@
       "referenceLine": 187,
       "produced": null,
       "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "04c19e81",
-      "doc": "news",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[44]",
-      "producedLine": 207,
-      "referenceLine": 189,
-      "produced": "Вышел **первый номер журнала \"История гитары в лицах\"** за 2016 год — **№ 1 (16) / 2016** — посвящен российскому гитаристу, педагогу и гитарному мастеру ***Юри…",
-      "reference": "Вышел **первый номер журнала \"История гитары в лицах\"** за 2016 год — **№ 1 (16) / 2016** — посвящен российскому гитаристу, педагогу и гитарному мастеру ***Юри…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "98fc7682",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[44]",
-      "producedLine": 207,
-      "referenceLine": 189,
-      "produced": "em:* · em:* · strong:*Юрию Елиферь­евичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
-      "reference": "em:* · em:* · strong:*Юрию Елиферьевичу Юдину (1925–2001) · strong:первый номер журнала \"История гитары в лицах\" · strong:№ 1 (16) / 2016",
       "verdict": "converter-defect"
     },
     {
@@ -4499,20 +4500,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "475d6bc4",
-      "doc": "news",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[65]",
-      "producedLine": 361,
-      "referenceLine": 322,
-      "produced": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
-      "reference": "Вышел **четвертый номер журнала \"История гитары в лицах\"** за 2014 год — **№ 4 (13) / 2014** — *\"Классическая гитара в Ярославле и Ярославской области (1900-20…",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "3fb8eff6",
       "doc": "news",
       "class": "image.src.value",
@@ -4550,7 +4537,7 @@
       "path": "/frame[71]/align[1]/paragraph[0]",
       "producedLine": 389,
       "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
+      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — produced at /frame[71]/paragraph[1]",
       "verdict": "converter-defect"
     },
@@ -4564,7 +4551,7 @@
       "path": "/frame[71]/align[1]/paragraph[0]",
       "producedLine": 389,
       "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
+      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — 0 of 1 hard breaks",
       "verdict": "ambiguous"
     },
@@ -4578,7 +4565,7 @@
       "path": "/frame[71]/align[1]/paragraph[0]",
       "producedLine": 389,
       "referenceLine": 351,
-      "produced": "**16 июня 2014 года** скоропостижно скончался замеча­тельный российский гитарист, солист Московской госу­дарственной филармонии, Заслуженный артист России",
+      "produced": "**16 июня 2014 года** скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
       "reference": "**16 июня 2014 года** скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России **Алек…",
       "verdict": "ambiguous"
     },
@@ -4718,7 +4705,7 @@
       "path": "/paragraph[95]",
       "producedLine": 469,
       "referenceLine": 422,
-      "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – Ровшан Мамедкулиев (Россия), 2 мест…",
+      "produced": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: 1 место – Ровшан Мамедкулиев (Россия), 2 место…",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: — 1 hard breaks, reference has 0",
       "verdict": "ambiguous"
     },
@@ -4732,7 +4719,7 @@
       "path": "/paragraph[95]",
       "producedLine": 469,
       "referenceLine": 422,
-      "produced": "Подведены итоги II Международного конкурса исполни­телей на классической гитаре имени Александра Фраучи в Москве: 1 место – **Ровшан Мамедкулиев** (Россия), 2 …",
+      "produced": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: 1 место – **Ровшан Мамедкулиев** (Россия), 2 м…",
       "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве:",
       "verdict": "ambiguous"
     },
@@ -4849,20 +4836,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "34cbf829",
-      "doc": "news_2007",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/columns[3]/column[1]/paragraph[0]",
-      "producedLine": 16,
-      "referenceLine": 15,
-      "produced": "Добавлена биография известного венгерского гита-риста, основателя Эстергомского гитарного фести-валя Ласло Сендрей-Карпера (1932-1991).",
-      "reference": "Добавлена биография известного венгерского гитариста, основателя Эстергомского гитарного фестиваля Ласло Сендрей-Карпера (1932-1991).",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "27618b17",
       "doc": "news_2007",
       "class": "emphasis.span",
@@ -4877,9 +4850,9 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "b9ebd603",
+      "id": "17558bd5",
       "doc": "news_2007",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.unjoined",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
@@ -4928,7 +4901,7 @@
       "path": "/columns[9]/column[1]/paragraph[0]",
       "producedLine": 63,
       "referenceLine": 54,
-      "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информа-ции, а это значит, что \"слухи о сме…",
+      "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смер…",
       "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]",
       "verdict": "converter-defect"
     },
@@ -4956,8 +4929,22 @@
       "path": "/columns[11]/column[1]/paragraph[0]",
       "producedLine": 120,
       "referenceLine": 83,
-      "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
+      "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abcguitars.com](…",
       "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "f45d41d6",
+      "doc": "news_2007",
+      "class": "link.label.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/columns[11]/column[1]/paragraph[0]/link[0]",
+      "producedLine": 120,
+      "referenceLine": 83,
+      "produced": "www.abcguitars.com",
+      "reference": "www.abc-guitars.com",
       "verdict": "ambiguous"
     },
     {
@@ -4973,20 +4960,6 @@
       "produced": "(none)",
       "reference": "em:* · strong:*4 марта 2007 г.",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "7f304620",
-      "doc": "news_2007",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/columns[13]/column[1]/paragraph[0]",
-      "producedLine": 138,
-      "referenceLine": 94,
-      "produced": "Размещена статья о А.Ф. Гарине. Обновлена ин-формация о Владимире Митякове и В.Фадеевой.",
-      "reference": "Размещена статья о А.Ф. Гарине. Обновлена информация о Владимире Митякове и В.Фадеевой.",
-      "verdict": "converter-defect"
     },
     {
       "id": "5227b1cf",
@@ -5101,16 +5074,16 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "63109ad6",
+      "id": "215945b9",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.hyphenation",
+      "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[2]",
       "producedLine": 9,
       "referenceLine": 9,
-      "produced": "ПАВЛОВ Матвей Степанович \\[артис-тический псевдоним – Азанчеев] (род. 24 февраля (10 марта) 1888, Рождественская вол. Курского уезда Курской обл., – ум. 1963, …",
+      "produced": "ПАВЛОВ Матвей Степанович \\[артистический псевдоним – Азанчеев] (род. 24 февраля (10 марта) 1888, Рождественская вол. Курского уезда Курской обл., – ум. 1963, А…",
       "reference": "ПАВЛОВ Матвей Степанович \\[артистический псевдоним – Азанчеев] (род. 24 февраля (10 марта) 1888, Рождественская вол. Курского уезда Курской обл., – ум. 1963, А…",
       "verdict": "converter-defect"
     },
@@ -5227,6 +5200,20 @@
       "verdict": "ambiguous"
     },
     {
+      "id": "d9a88aa2",
+      "doc": "pavlov_azancheev",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[47]",
+      "producedLine": 138,
+      "referenceLine": 134,
+      "produced": "**P.S.** Автор публикации благодарит за предоставленные материалы С. Муравьёва, В. Ажикулова, О. Тимофеева, В. Нес-терова. Эти материалы печатаются впервые. Ос…",
+      "reference": "**P.S.** Автор публикации благодарит за предоставленные материалы С. Муравьёва, В. Ажикулова, О. Тимофеева, В. Нес-терова. Эти материалы печатаются впервые. Ос…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "1b2a3d29",
       "doc": "pavlov_azancheev",
       "class": "retyped.paragraph-to-break",
@@ -5266,62 +5253,6 @@
       "referenceLine": null,
       "produced": "• Денис Кольвах \"Техника Сеговии\"",
       "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dcf77f44",
-      "doc": "segovia",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[1]",
-      "producedLine": 3,
-      "referenceLine": 3,
-      "produced": "СЕГОВИЯ Андрес (1893-1987) — выдающийся испанский гитарист и педагог. В детстве обучался игре на фортепиано, скрипке и виолончели, одновременно с этим самостоя…",
-      "reference": "СЕГОВИЯ Андрес (1893-1987) — выдающийся испанский гитарист и педагог. В детстве обучался игре на фортепиано, скрипке и виолончели, одновременно с этим самостоя…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "da763377",
-      "doc": "segovia",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[3]",
-      "producedLine": 11,
-      "referenceLine": 11,
-      "produced": "Сеговия один из немногих концертантов, в игре которого критики не могли обнаружить недостатков. Наоборот, каждое последующее выступление артиста выявляло новые…",
-      "reference": "Сеговия один из немногих концертантов, в игре которого критики не могли обнаружить недостатков. Наоборот, каждое последующее выступление артиста выявляло новые…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "25b02ab7",
-      "doc": "segovia",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[4]",
-      "producedLine": 13,
-      "referenceLine": 13,
-      "produced": "Андрес Сеговия с успехом гастролировал в Советском Сою­зе в 1926, 1927 и 1936 годах, и еще раз — в декабре 1929 г. — был в СССР проездом, возвращаясь на родину…",
-      "reference": "Андрес Сеговия с успехом гастролировал в Советском Союзе в 1926, 1927 и 1936 годах, и еще раз — в декабре 1929 г. — был в СССР проездом, возвращаясь на родину …",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "66a6b7bc",
-      "doc": "segovia",
-      "class": "paragraph.hyphenation",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[5]",
-      "producedLine": 15,
-      "referenceLine": 15,
-      "produced": "Находясь в СССР, А. Сеговия проявлял интерес и к юным гитаристам, проводил с ними открытые уроки. 27 марта 1927 года он дал концерт специально для юных ленингр…",
-      "reference": "Находясь в СССР, А. Сеговия проявлял интерес и к юным гитаристам, проводил с ними открытые уроки. 27 марта 1927 года он дал концерт специально для юных ленингр…",
       "verdict": "converter-defect"
     },
     {
@@ -5423,6 +5354,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "d82f80bc",
+      "doc": "segovia",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[17]",
+      "producedLine": 57,
+      "referenceLine": 63,
+      "produced": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья пере-ехала в Хаэн. Замечательное искусство импровиза…",
+      "reference": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья пере-ехала в Хаэн. Замечательное искусство импровиза…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "0dc61be5",
       "doc": "segovia",
       "class": "paragraph.content.edited",
@@ -5493,6 +5438,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "096f0697",
+      "doc": "segovia",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[34]",
+      "producedLine": 120,
+      "referenceLine": 127,
+      "produced": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, объясняя, почему гитара любимый инструмен…",
+      "reference": "В истории Испании не было артиста, который бы так ак-тивно пропагандировал испан-скую музыку по всему миру. Как-то раз, объясняя, почему гитара любимый инструм…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "280149a3",
       "doc": "segovia",
       "class": "retyped.paragraph-to-list",
@@ -5502,7 +5461,7 @@
       "path": "/list[36]",
       "producedLine": 124,
       "referenceLine": 131,
-      "produced": "• Владимир Бобри о некоторых техни-ческих приемах Андреса Сеговии (Крат-кое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) /#/bobri1",
+      "produced": "• Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) /#/bobri1",
       "reference": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) ▶ Денис Кольвах \"Те… — at /paragraph[38]",
       "verdict": "converter-defect"
     },
@@ -5829,6 +5788,34 @@
       "verdict": "ambiguous"
     },
     {
+      "id": "839e726a",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 3,
+      "referenceLine": 3,
+      "produced": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "reference": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "b95c0da7",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[5]",
+      "producedLine": 19,
+      "referenceLine": 19,
+      "produced": "Деятельность Франсиско Тарреги представляется особенно значительной в период общего упадка гитарного искусства в начале ХХ века. Таррега показал широчайшие воз…",
+      "reference": "Деятельность Франсиско Тарреги представляется особенно значительной в период общего упадка гитарного искусства в начале ХХ века. Таррега показал широчайшие воз…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "67d9dea4",
       "doc": "tarrega",
       "class": "retyped.paragraph-to-break",
@@ -5855,6 +5842,20 @@
       "produced": "Франсиско Таррега",
       "reference": "Франсиско Таррега — produced at /image[7]",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "6e50e501",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[10]",
+      "producedLine": 34,
+      "referenceLine": 34,
+      "produced": "Несмотря на увлечение гитарой, Таррега окончил Мадридскую консерваторию по классам фортепиано и композиция. Это произошло лишь потому, что ни в Барселон-ской, …",
+      "reference": "Несмотря на увлечение гитарой, Таррега окончил Мадридскую консерваторию по классам форте-пиано и композиция. Это произошло лишь потому, что ни в Барселон-ской,…",
+      "verdict": "ambiguous"
     },
     {
       "id": "0cf42354",
@@ -6076,7 +6077,7 @@
       "path": "/paragraph[26]",
       "producedLine": 121,
       "referenceLine": 126,
-      "produced": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический сло-варь гитаристов\"(1934). [/#/tarrega2](/#/tarrega2)",
+      "produced": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [/#/tarrega2](/#/tarrega2)",
       "reference": "***Статья о Франсиско Тарреге*** Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [&#128279;](/#/tarrega2)",
       "verdict": "ambiguous"
     },
@@ -6275,6 +6276,20 @@
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "4a84a440",
+      "doc": "williams2",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/columns[1]/column[0]/paragraph[23]",
+      "producedLine": 83,
+      "referenceLine": 82,
+      "produced": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
+      "reference": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
+      "verdict": "ambiguous"
     },
     {
       "id": "7d35ea16",

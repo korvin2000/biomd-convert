@@ -18,6 +18,15 @@
 import type { Lexicon } from "./lexicon.js";
 import type { TextOperation } from "./text-ops.js";
 
+/**
+ * How often a hyphenated form must appear before rule 5 trusts it.
+ *
+ * Two, not one, because the lexicon is built by scanning the same corpus this
+ * runs on: a wrap artifact is indexed as a hyphenated word like any other, so
+ * one attestation is the defect vouching for itself.
+ */
+const MIN_HYPHEN_ATTESTATIONS = 2;
+
 export type HyphenVerdict = "JOIN" | "PRESERVE" | "REVIEW";
 
 export interface HyphenDecision {
@@ -143,8 +152,16 @@ export function decideHyphen(candidate: HyphenCandidate, options: DehyphenateOpt
   }
 
   // 5 — the converse: the hyphenated form is attested and the joined one never is.
+  //
+  // **Recurrence, because the lexicon reads the same broken text.** A wrap
+  // artifact is a hyphenated "word" too, and the corpus scan indexes it like
+  // any other, so a single attestation is exactly what an artifact looks like
+  // from here — the evidence is the defect, quoting itself. `Борис-лавовна` and
+  // `монас-тырь` are each attested once and are each a wrap; `из-за` is
+  // attested twice and is a word. A lexical compound recurs because it is
+  // lexical; an accident of where one line happened to end does not.
   const hyphenCount = lexicon.hyphenatedCount(hyphenatedForm);
-  if (hyphenCount > 0 && joinedCount === 0) {
+  if (hyphenCount >= MIN_HYPHEN_ATTESTATIONS && joinedCount === 0) {
     return {
       verdict: "PRESERVE",
       rule: 5,
@@ -213,10 +230,24 @@ export function dehyphenateText(
   let cursor = 0;
   let opIndex = 0;
 
-  // A break candidate is: letters, a hyphen, a newline (with optional spaces),
-  // then letters. Anything else — a hyphen followed by a space, a hyphen at the
-  // very end of the text — is not a wrap.
-  const pattern = /(\p{L}+)([-‐‑­])[ \t]*\n[ \t]*(\p{L}+)/gu;
+  // A break candidate is letters, a hyphen, then letters — with or without a
+  // newline between them, and nothing else in the gap.
+  //
+  // The newline was originally required, on the reasoning that a wrap leaves
+  // one behind. It does when the author let the editor wrap. This corpus was
+  // typed the other way: the hyphen was inserted to break the word in *the
+  // author's* browser at *their* window width, and then the text kept flowing —
+  // `Укра-ина` and `Владимиро-вич` sit mid-line in the source with the newline
+  // somewhere else entirely. Requiring the newline saw none of them, which is
+  // why this module has been in the pipeline all along with almost nothing to
+  // do.
+  //
+  // Dropping the requirement means every hyphenated word in the corpus now
+  // reaches the cascade, including every genuine compound. That is safe because
+  // the cascade's default is PRESERVE and its first questions are about
+  // compounds: `Римский-Корсаков` and `Переяслав-Хмельницкий` are settled by
+  // rule 3 before any frequency evidence is consulted.
+  const pattern = /(\p{L}+)([-‐‑­])[ \t]*\n?[ \t]*(\p{L}+)/gu;
 
   for (const match of text.matchAll(pattern)) {
     const [whole, left = "", hyphen = "-", right = ""] = match;
@@ -269,6 +300,9 @@ export function dehyphenateText(
  * word reads as two words separated by a hyphen and a space, and nothing can
  * tell them apart from a genuine dash.
  */
+/** Cheap pre-filter: does this text hold a hyphen between two letters at all? */
+const HYPHEN_IN_WORD = /\p{L}[-‐‑­][ \t]*\n?[ \t]*\p{L}/u;
+
 export function dehyphenateDocument(
   root: { children: Array<{ kind: string; id: string; value?: string; children: unknown[] }> },
   options: DehyphenateOptions,
@@ -277,7 +311,11 @@ export function dehyphenateDocument(
   let reviews = 0;
 
   const visit = (node: { kind: string; id: string; value?: string; children: unknown[] }): void => {
-    if (node.kind === "text" && typeof node.value === "string" && /[-‐‑­][ \t]*\n/u.test(node.value)) {
+    // The cheap pre-filter has to admit the same shapes the cascade decides.
+    // It used to require a newline after the hyphen, so a text node holding
+    // `Укра-ина` was skipped before `dehyphenateText` ever saw it — the reason
+    // widening the pattern alone changed nothing.
+    if (node.kind === "text" && typeof node.value === "string" && HYPHEN_IN_WORD.test(node.value)) {
       const result = dehyphenateText(node.value, node.id, options);
       node.value = result.text;
       operations.push(...result.operations);

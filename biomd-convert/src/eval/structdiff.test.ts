@@ -111,7 +111,11 @@ describe("text defect classification", () => {
   const cases: Array<[string, string, string]> = [
     ['гитарист "виртуоз"', "гитарист «виртуоз»", "paragraph.typography.quotes"],
     ["(1913-1942)", "(1913–1942)", "paragraph.typography.dash"],
-    ["классиче-ской музыки", "классической музыки", "paragraph.hyphenation"],
+    ["классиче-ской музыки", "классической музыки", "paragraph.hyphenation.unjoined"],
+    // The other direction, which is not the same finding: the converter joined
+    // the wrap and the reference kept it. Every instance of this in the corpus
+    // is a correct Russian word, and the instrument cannot know that.
+    ["классической музыки", "классиче-ской музыки", "paragraph.hyphenation.joined"],
     ["югославский сербский гитарист", "югославский и сербский гитарист", "paragraph.content.edited"],
     [
       "Родился в 1969 году в Москве в семье пианистов",
@@ -230,6 +234,25 @@ describe("triage separates content from layout", () => {
 
   it("never calls a layout wrapper unreachable — §16.3 constrains content, not layout", () => {
     expect(triage("columns 01. Love Story", null, source, "columns.missing", "structure")).toBe("converter-defect");
+  });
+
+  it("does not decide a hyphenation finding by source attestation", () => {
+    // The source contains the hyphen either way — that is the artifact being
+    // reported — so the hyphenated side is attested by construction and the
+    // joined side never is. Running it through the attestation test says "the
+    // reference is right" every time, including where the converter joined
+    // correctly and the reference kept the wrap. Direction is the only evidence.
+    const withHyphen = new SourceIndex("<p>клас-сической музыки</p>");
+    expect(triage("классической музыки", "клас-сической музыки", withHyphen, "paragraph.hyphenation.unjoined")).toBe(
+      "converter-defect",
+    );
+    expect(triage("клас-сической музыки", "классической музыки", withHyphen, "paragraph.hyphenation.joined")).toBe(
+      "ambiguous",
+    );
+    // Both directions in one block still holds at least one real defect.
+    expect(triage("клас-сической музыки", "классической музыки", withHyphen, "paragraph.hyphenation.mixed")).toBe(
+      "converter-defect",
+    );
   });
 
   it("does not let a directive's own scaffolding decide attestation", () => {

@@ -165,10 +165,30 @@ describe("dehyphenateText", () => {
   });
 
   it("counts reviews so the caller can decide whether to escalate", () => {
+    // Two candidates, not one: a hyphen no longer needs a newline after it to
+    // be examined, because this corpus writes its wraps mid-line. `какое-то` is
+    // undecidable against an empty lexicon and `незнако-моеслово` likewise, so
+    // both are preserved and both are escalated rather than joined on a guess.
     const src = "какое-то незнако-\nмоеслово тут";
     const result = dehyphenateText(src, "ir:1", { lexicon: lexiconOf() });
-    expect(result.reviews).toBe(1);
-    expect(result.operations[0]?.status).toBe("review");
+    expect(result.reviews).toBe(2);
+    expect(result.operations.every((op) => op.status === "review")).toBe(true);
+    expect(result.text).toBe("какое-то незнако-моеслово тут");
+  });
+
+  it("examines a hyphen with no newline after it", () => {
+    // The shape this corpus actually has: the hyphen was typed to break the
+    // word in the author's browser and the text kept flowing, so the newline is
+    // somewhere else entirely. Requiring one saw none of these.
+    const result = dehyphenateText("Укра-ина большая", "ir:1", { lexicon: lexiconOf("Украина большая страна") });
+    expect(result.text).toBe("Украина большая");
+  });
+
+  it("still refuses a compound whose halves are both title-cased", () => {
+    // Rule 3 settles this before any frequency evidence, which is what makes
+    // widening the pattern safe: every genuine compound reaches the cascade now.
+    const result = dehyphenateText("Римский-Корсаков писал", "ir:1", { lexicon: lexiconOf("Римскийкорсаков Римскийкорсаков") });
+    expect(result.text).toBe("Римский-Корсаков писал");
   });
 
   it("handles several candidates in one block independently", () => {

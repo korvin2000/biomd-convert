@@ -773,11 +773,35 @@ export function classifyText(produced: string, reference: string): { suffix: str
   if (noEllipsis(produced) === noEllipsis(reference)) return { suffix: "typography.ellipsis", severity: "minor" };
   if (noNbsp(produced) === noNbsp(reference)) return { suffix: "typography.space", severity: "minor" };
 
-  // Hyphenation: a wrap artifact the source left behind, or one the reference
-  // left behind. Invisible to `normalizeForCompare` by construction, because it
-  // folds intra-word hyphens before comparing.
+  // Hyphenation: a wrap artifact one side left behind. Invisible to
+  // `normalizeForCompare` by construction, because it folds intra-word hyphens
+  // before comparing.
+  //
+  // Which side kept it decides everything, and the two directions are not the
+  // same finding. Source attestation cannot tell them apart — the source has
+  // the hyphen either way, since that is the artifact being reported — so an
+  // undivided class sent all of them to `converter-defect` on the strength of
+  // evidence that says nothing. Measured over the 13 references: 11 hyphens the
+  // reference joins and the converter keeps, and 14 the converter joins and the
+  // reference keeps, every one of those 14 a correct Russian word
+  // (`государственном`, `классической`, `фортепиано`). The references are
+  // internally inconsistent here, so the class has to name the direction and
+  // let triage weigh them differently.
   const dehyphen = (v: string) => noNbsp(v).replace(/(\p{L})[-­]\s*(\p{L})/gu, "$1$2");
-  if (dehyphen(produced) === dehyphen(reference)) return { suffix: "hyphenation", severity: "minor" };
+  if (dehyphen(produced) === dehyphen(reference)) {
+    // Compared word by word, not block by block: a paragraph long enough to
+    // carry one wrap usually carries several, and the reference joins some of
+    // them and keeps others. Asking "does this block contain a hyphen" answered
+    // yes on both sides for 14 of the 16 and named nothing.
+    const kept = (v: string) => new Set(noNbsp(v).match(/\p{L}+[-­]\s*\p{L}+/gu) ?? []);
+    const ours = kept(produced);
+    const theirs = kept(reference);
+    const weKept = [...ours].some((w) => !theirs.has(w));
+    const theyKept = [...theirs].some((w) => !ours.has(w));
+    if (weKept && !theyKept) return { suffix: "hyphenation.unjoined", severity: "minor" };
+    if (theyKept && !weKept) return { suffix: "hyphenation.joined", severity: "minor" };
+    return { suffix: "hyphenation.mixed", severity: "minor" };
+  }
 
   if (noNbsp(produced).toLowerCase() === noNbsp(reference).toLowerCase()) return { suffix: "case", severity: "minor" };
 
