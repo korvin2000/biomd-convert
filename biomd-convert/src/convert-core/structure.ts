@@ -595,6 +595,83 @@ function groupSubordinatedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[]
   return out;
 }
 
+/**
+ * Whether a `<blockquote>`'s content is quoted matter or merely indented.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The tag is not the evidence — the content is, and it is the
+ * *same* evidence {@link groupSubordinatedRuns} keys on: the region is set
+ * wholly in italic on a page with upright prose to contrast against. This path
+ * used to skip the question entirely and answer yes from the tag alone.
+ * Subordination is subordination in whichever path reaches it.
+ *
+ * `<blockquote>` in 1998 FrontPage is an indent as often as a quotation, and
+ * the corpus separates cleanly on §3.5 with nothing else consulted:
+ *
+ * | page | children | reference |
+ * |---|---|---|
+ * | `segovia` | `<i>` — quoted speech, wholly italic | quotes it |
+ * | `kiselev` | `<p>` upright — a track list with durations | a list |
+ * | `tarrega` | four upright blocks, headings and lists among them | flattened |
+ *
+ * **Read off the source element, not the produced blocks.** `blocksFrom`
+ * records subordination for *element children only*, deliberately: an inline
+ * run's **alignment** is its container's and says nothing about the run. Italic
+ * is not like that — `<i>` is written around this run and nothing else — and
+ * `segovia` writes exactly `<blockquote><i>…</i></blockquote>`, so its
+ * paragraph is born from an inline flush and never enters `ctx.subordinated`.
+ * Asking the produced set here answered no on the one page in the corpus whose
+ * blockquotes the reference does quote.
+ *
+ * **Recurrence** is `ctx.subordinationRecurs`, the same page-level gate the run
+ * pass uses, so a page with a single italic aside cannot reach this at all.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - **an indent holding one italic line** — a credit or a title set apart
+ *     inside an otherwise ordinary indented region. `every` rather than `some`:
+ *     a region is quoted matter only when the source set *all* of it apart.
+ *   - **an italic phrase beside bare text**, which is §3.5's "do not turn …
+ *     ordinary dialogue fragments … into a block quote". Text directly under
+ *     the element was not set apart, so its presence settles the question.
+ *
+ * **Why not the tag under the page-level gate instead.** Measured: `recurs` is
+ * true on `kiselev` and `tarrega` too, so a page-level gate separates nothing
+ * here. The evidence has to be read off the content.
+ */
+function quotesItsContent(el: LadomNode, ctx: Ctx): boolean {
+  return ctx.subordinationRecurs && contentIsSubordinated(el, ctx);
+}
+
+/**
+ * Whether a container's *content* is wholly set apart, as opposed to the
+ * container itself carrying the style.
+ *
+ * The same region, written the other way round: `<p style="font-style:italic">`
+ * puts the evidence on the block, `<blockquote><i>…</i></blockquote>` puts it
+ * on the run inside. {@link isSubordinatedBlock} sees the first and not the
+ * second, so this asks the second — and both {@link quotesItsContent} and
+ * {@link subordinationRecursIn} consult it, which is what keeps the gate and
+ * the rule looking at the same evidence.
+ *
+ * Bare text directly under the element disqualifies the region outright: it is
+ * content the source did *not* set apart, so what sits beside it is a phrase,
+ * not a quotation. That is §3.5's "do not turn … ordinary dialogue fragments …
+ * into a block quote", asked structurally.
+ */
+function contentIsSubordinated(el: LadomNode, ctx: Ctx): boolean {
+  let elements = 0;
+  for (const child of el.children) {
+    if (child.kind !== "element") {
+      if (child.kind === "text" && (child.value ?? "").trim() !== "") return false;
+      continue;
+    }
+    if (!isSubordinatedBlock(child, ctx)) return false;
+    elements += 1;
+  }
+  return elements > 0;
+}
+
 function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
   if (ctx.frameDepth > 0 || blocks.length === 0) return blocks;
   // Bounded interiors belong to `alignedGroup`, which is scoped to them. Firing
@@ -944,9 +1021,14 @@ function subordinationRecursIn(root: LadomNode, proseItalic: boolean): boolean {
   const probe = { proseItalic } as Ctx;
   let seen = 0;
   for (const el of walkElements(root)) {
-    if (el.tag !== "p" && el.tag !== "div") continue;
     if (textOf(el).trim() === "") continue;
-    if (!isSubordinatedBlock(el, probe)) continue;
+    // A region set apart by the style on its own block, or — the same shape
+    // written the other way round — by the run inside it. `segovia` sets both
+    // its quotations apart as `<blockquote><i>…</i></blockquote>`, which
+    // carries no style on any `p` or `div` and so counted as nothing at all.
+    const setApart =
+      (el.tag === "p" || el.tag === "div") ? isSubordinatedBlock(el, probe) : el.tag === "blockquote" && contentIsSubordinated(el, probe);
+    if (!setApart) continue;
     seen += 1;
     if (seen >= MIN_SUBORDINATED_BLOCKS) return true;
   }
@@ -1687,9 +1769,15 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
       return [listFrom(el, ctx)];
 
     case "blockquote": {
+      const quoted = quotesItsContent(el, ctx);
       const inner = blocksFrom(el, ctx).filter(isBlockContent);
-      ctx.ledger.push(emitted(el.id, nextId(ctx, "quote")));
-      return inner.length > 0 ? [{ type: "blockquote", children: inner }] : [];
+      if (quoted && inner.length > 0) {
+        ctx.ledger.push(emitted(el.id, nextId(ctx, "quote")));
+        return [{ type: "blockquote", children: inner }];
+      }
+      if (inner.length > 0) ctx.ledger.push(emitted(el.id, nextId(ctx, "block")));
+      else ctx.ledger.push(removed(el.id, "no content after conversion"));
+      return alignedGroup(el, inner, ctx);
     }
 
     case "hr":

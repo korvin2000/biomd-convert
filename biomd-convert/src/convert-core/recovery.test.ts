@@ -70,9 +70,16 @@ class InlineAlignMeasurer implements Measurer {
       const align = /text-align:\s*([a-z-]+)/iu.exec(declared);
       const style = /font-style:\s*([a-z-]+)/iu.exec(declared);
       const border = borderOf(declared);
-      if (align || style || border) {
+      // The one UA default this stand-in owes the rules: `<i>` and `<em>`
+      // compute `font-style: italic` in every browser without declaring it,
+      // and `segovia` sets its quotations apart with exactly `<i>` and no
+      // stylesheet at all. Leaving it out made the subordination rule
+      // untestable end-to-end while looking like the rule being wrong.
+      const uaItalic = el.tag === "i" || el.tag === "em";
+      if (align || style || border || uaItalic) {
         el.style = {
           ...NEUTRAL_STYLE,
+          ...(uaItalic ? { fontStyle: "italic" } : {}),
           ...(align ? { textAlign: (align[1] as string).toLowerCase() } : {}),
           ...(style ? { fontStyle: (style[1] as string).toLowerCase() } : {}),
           ...(border ?? {}),
@@ -392,6 +399,87 @@ describe("frames", () => {
         PROSE,
     );
     expect(out).not.toContain("::: frame");
+  });
+});
+
+/**
+ * `<blockquote>` — rule contract (`CLAUDE.md` §5).
+ *
+ * The tag is an indent as often as a quotation in 1998 FrontPage, so §3.5's
+ * evidence decides and the tag decides nothing. Recurrence is the page-level
+ * gate the run pass already uses, which is why every fixture here carries two
+ * subordinated regions: one would be a credit line, not a quoted archive.
+ */
+describe("a blockquote is quoted matter only when the source set it apart", () => {
+  it("quotes a region the source wrote wholly in italic", async () => {
+    // `segovia` writes exactly this — `<blockquote><i>…</i></blockquote>` —
+    // and the reference quotes both of them.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote><i>Однажды в наш дом пришел гитарист фламенко.</i></blockquote>" +
+        PROSE +
+        "<blockquote><i>По дороге на сцену ко мне подошел старик.</i></blockquote>" +
+        PROSE,
+    );
+    expect(out).toMatch(/^> \*?Однажды/mu);
+    expect(out).toMatch(/^> \*?По дороге/mu);
+  });
+
+  it("flattens an upright indent, however many of them the page has", async () => {
+    // `kiselev` indents six track lists this way and the reference emits lists.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote><p>Игра 0'52\" Колыбельная 0'53\"</p></blockquote>" +
+        PROSE +
+        "<blockquote><p>Прелюдия 1'43\" Листопад 1'20\"</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toMatch(/^>/mu);
+    expect(out).toContain("Игра 0'52\"");
+  });
+
+  it("flattens an indent that merely carries structure", async () => {
+    // `tarrega`'s score catalogue: nine blocks, headings and lists among them.
+    // A region with its own outline is a section, not something quoted.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote><h2>Часть 1</h2><ul><li>Capricho Arabe</li></ul></blockquote>" +
+        PROSE +
+        "<blockquote><h2>Часть 2</h2><ul><li>Rosita (Polka)</li></ul></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toMatch(/^>/mu);
+    expect(out).toContain("Capricho Arabe");
+  });
+
+  it("does not quote an indent that holds one italic line among upright ones", async () => {
+    // False friend: a credit or a title set apart inside an ordinary indented
+    // region. `every` rather than `some` — quoted matter is a region the source
+    // set *all* of apart, not one that contains something emphasised.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote><i>Записал А. Иванов</i><p>Протокол заседания от 12 мая.</p></blockquote>" +
+        PROSE +
+        "<blockquote><i>Записал А. Иванов</i><p>Протокол заседания от 19 мая.</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toMatch(/^>/mu);
+    expect(out).toContain("Протокол заседания от 12 мая.");
+  });
+
+  it("does not quote an italic phrase sitting beside bare text", async () => {
+    // §3.5's own exclusion — "do not turn … ordinary dialogue fragments … into
+    // a block quote". Text directly under the element was not set apart, so its
+    // presence settles the question whatever sits next to it.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote>Он сказал: <i>гитара — маленький оркестр</i>, и вышел.</blockquote>" +
+        PROSE +
+        "<blockquote>Она добавила: <i>это язык сердца</i>, и села.</blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toMatch(/^>/mu);
+    expect(out).toContain("маленький оркестр");
   });
 });
 

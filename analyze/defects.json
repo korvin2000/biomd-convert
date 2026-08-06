@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-06T12:45:30.218Z",
+  "generated": "2026-08-06T13:01:37.631Z",
   "totals": {
-    "findings": 321,
-    "converterDefects": 200,
+    "findings": 314,
+    "converterDefects": 194,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 50,
-    "ambiguous": 71,
+    "ambiguous": 70,
     "bySeverity": {
-      "critical": 13,
-      "major": 156,
+      "critical": 12,
+      "major": 150,
       "minor": 152
     }
   },
@@ -103,10 +103,10 @@
     },
     {
       "doc": "tarrega",
-      "findings": 27,
-      "converterDefects": 12,
-      "critical": 3,
-      "major": 15,
+      "findings": 20,
+      "converterDefects": 6,
+      "critical": 2,
+      "major": 9,
       "minor": 9
     },
     {
@@ -120,27 +120,27 @@
   ],
   "classes": [
     {
-      "class": "paragraph.containment",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
-      "instances": 9,
+      "instances": 10,
       "documents": [
+        "jovicic",
         "kiselev",
-        "news",
-        "pavlov_azancheev",
-        "tarrega"
+        "news_2007",
+        "segovia"
       ],
       "verdicts": {
-        "converter-defect": 9,
+        "converter-defect": 10,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 108,
+      "rank": 120,
       "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
+        "doc": "jovicic",
+        "path": "/columns[12]/column[0]/list[2]",
+        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
+        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[12]/column[0]/paragraph[3]"
       }
     },
     {
@@ -308,27 +308,26 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-list",
+      "class": "paragraph.containment",
       "severity": "major",
-      "instances": 4,
+      "instances": 5,
       "documents": [
-        "jovicic",
         "kiselev",
-        "news_2007",
-        "segovia"
+        "news",
+        "pavlov_azancheev"
       ],
       "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 48,
+      "rank": 45,
       "example": {
-        "doc": "jovicic",
-        "path": "/columns[12]/column[0]/list[2]",
-        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
-        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[12]/column[0]/paragraph[3]"
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -543,49 +542,6 @@
         "path": "/columns[50]/column[1]/image[1]",
         "produced": "",
         "reference": "produced at /image[51]"
-      }
-    },
-    {
-      "class": "retyped.quote-to-list",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "kiselev"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[7]/column[0]/list[3]",
-        "produced": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\"",
-        "reference": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\" — at /columns[7]/column[0]/quote[4]"
-      }
-    },
-    {
-      "class": "heading.containment",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "kiselev",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "kiselev",
-        "path": "/align[13]/heading[0]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -865,7 +821,7 @@
         "doc": "tarrega",
         "path": "/table[18]",
         "produced": "1. Capricho Arabe (Serenata para guitarra) ..................... A. y T. 357 2-3. Preludios No 1 y 2 ......................................................... …",
-        "reference": "1. Capricho Arabe (Serenata para guitarra) A. y T. 357 2-3. Preludios No 1 y 2 A. y T. 358 4. Largo de la Sonata de Beethoven (Op. 7) A. y T. 362 5. Gran Vals … — at /quote[22]/list[5]"
+        "reference": "1. Capricho Arabe (Serenata para guitarra) A. y T. 357 2-3. Preludios No 1 y 2 A. y T. 358 4. Largo de la Sonata de Beethoven (Op. 7) A. y T. 362 5. Gran Vals … — at /list[19]"
       }
     },
     {
@@ -973,6 +929,27 @@
         "path": "/align[59]/columns[0]",
         "produced": null,
         "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
+      }
+    },
+    {
+      "class": "heading.containment",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "kiselev",
+        "path": "/align[13]/heading[0]",
+        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -1889,27 +1866,6 @@
         "path": "/nav[2]/list[0]/item[19]/link[0]",
         "produced": "Галерея инструментальной музыки. Francis Goya\\",
         "reference": "Галерея инструментальной музыки. Francis Goya"
-      }
-    },
-    {
-      "class": "quote.spurious.unattested",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "tarrega",
-        "path": "/quote[22]",
-        "produced": "Сборник произведений Франсиско Тарреги MUSICA PARA GUITARRA POR EL MAESTRO TARREGA Antich y Tena Editores, San Vicente, 99, Valencia (A. y T. 357-360, 362, 364…",
-        "reference": null
       }
     },
     {
@@ -3224,9 +3180,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "41ca8ceb",
+      "id": "684583c5",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3234,13 +3190,13 @@
       "producedLine": 49,
       "referenceLine": 49,
       "produced": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\"",
-      "reference": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\" — at /columns[7]/column[0]/quote[4]",
+      "reference": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\" — at /columns[7]/column[0]/paragraph[4]",
       "verdict": "converter-defect"
     },
     {
-      "id": "60a4dadd",
+      "id": "3d186387",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3248,13 +3204,13 @@
       "producedLine": 56,
       "referenceLine": 56,
       "produced": "Прелюдия 1'43\" Сентиментальная прогулка 1'33\" Дождь за окном 1'12\" Листопад 1'20\"",
-      "reference": "Прелюдия 1'43\" Сентиментальная прогулка 1'33\" Дождь за окном 1'12\" Листопад 1'20\" — at /columns[7]/column[0]/quote[6]",
+      "reference": "Прелюдия 1'43\" Сентиментальная прогулка 1'33\" Дождь за окном 1'12\" Листопад 1'20\" — at /columns[7]/column[0]/paragraph[6]",
       "verdict": "converter-defect"
     },
     {
-      "id": "9c952eec",
+      "id": "7dffad2a",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3262,13 +3218,13 @@
       "producedLine": 63,
       "referenceLine": 63,
       "produced": "\"Ностальгия\" памяти А. Тарковского (1992) 2'06\" \"Соната\" памяти Д. Чимарозо (1986) 1'50\" \"Былина\" Петру Панину (1986) 2'08\" \"Банальный экспромт\" Елене (1987) 3…",
-      "reference": "\"Ностальгия\" памяти А. Тарковского (1992) 2'06\" \"Соната\" памяти Д. Чимарозо (1986) 1'50\" \"Былина\" Петру Панину (1986) 2'08\" \"Банальный экспромт\" Елене (1987) 3… — at /columns[7]/column[0]/quote[8]",
+      "reference": "\"Ностальгия\" памяти А. Тарковского (1992) 2'06\" \"Соната\" памяти Д. Чимарозо (1986) 1'50\" \"Былина\" Петру Панину (1986) 2'08\" \"Банальный экспромт\" Елене (1987) 3… — at /columns[7]/column[0]/paragraph[8]",
       "verdict": "converter-defect"
     },
     {
-      "id": "3a56ca15",
+      "id": "8524c0cf",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3276,13 +3232,13 @@
       "producedLine": 75,
       "referenceLine": 75,
       "produced": "Прелюдия (1992) 1'40\" Песня с вариацией (1992) 2'40\" Танец (1988) 1'54\"",
-      "reference": "Прелюдия (1992) 1'40\" Песня с вариацией (1992) 2'40\" Танец (1988) 1'54\" — at /columns[7]/column[0]/quote[10]",
+      "reference": "Прелюдия (1992) 1'40\" Песня с вариацией (1992) 2'40\" Танец (1988) 1'54\" — at /columns[7]/column[0]/paragraph[10]",
       "verdict": "converter-defect"
     },
     {
-      "id": "cd63cb8b",
+      "id": "0080b6e1",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3290,13 +3246,13 @@
       "producedLine": 81,
       "referenceLine": 81,
       "produced": "Александр Долгих (1989) 1'51\" Андрей Власов (1990) 1'35\" Сергей Быстров (1991) 2'00\" Автопортрет (1989) 1'48\"",
-      "reference": "Александр Долгих (1989) 1'51\" Андрей Власов (1990) 1'35\" Сергей Быстров (1991) 2'00\" Автопортрет (1989) 1'48\" — at /columns[7]/column[0]/quote[12]",
+      "reference": "Александр Долгих (1989) 1'51\" Андрей Власов (1990) 1'35\" Сергей Быстров (1991) 2'00\" Автопортрет (1989) 1'48\" — at /columns[7]/column[0]/paragraph[12]",
       "verdict": "converter-defect"
     },
     {
-      "id": "bc562668",
+      "id": "3259119a",
       "doc": "kiselev",
-      "class": "retyped.quote-to-list",
+      "class": "retyped.paragraph-to-list",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
@@ -3304,7 +3260,7 @@
       "producedLine": 88,
       "referenceLine": 88,
       "produced": "Прощаясь с детством (1993) 1'55\" Танец скорпиона (1990) 1'08\" Старомодный этюд (1990) 1'33\" Клубника со сливками (1993) 1'15\" Танец стеклянных шаров на новогод…",
-      "reference": "Прощаясь с детством (1993) 1'55\" Танец скорпиона (1990) 1'08\" Старомодный этюд (1990) 1'33\" Клубника со сливками (1993) 1'15\" Танец стеклянных шаров на новогод… — at /columns[7]/column[0]/quote[14]",
+      "reference": "Прощаясь с детством (1993) 1'55\" Танец скорпиона (1990) 1'08\" Старомодный этюд (1990) 1'33\" Клубника со сливками (1993) 1'15\" Танец стеклянных шаров на новогод… — at /columns[7]/column[0]/paragraph[14]",
       "verdict": "converter-defect"
     },
     {
@@ -5898,20 +5854,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a1303c7a",
-      "doc": "tarrega",
-      "class": "quote.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/quote[22]",
-      "producedLine": 45,
-      "referenceLine": null,
-      "produced": "Сборник произведений Франсиско Тарреги MUSICA PARA GUITARRA POR EL MAESTRO TARREGA Antich y Tena Editores, San Vicente, 99, Valencia (A. y T. 357-360, 362, 364…",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
       "id": "839e726a",
       "doc": "tarrega",
       "class": "paragraph.hyphenation.joined",
@@ -5992,63 +5934,7 @@
       "producedLine": 45,
       "referenceLine": 45,
       "produced": "Сборник произведений Франсиско Тарреги",
-      "reference": "Сборник произведений Франсиско Тарреги — at /quote[22]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "06466635",
-      "doc": "tarrega",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[14]",
-      "producedLine": 47,
-      "referenceLine": 46,
-      "produced": "MUSICA PARA GUITARRA POR EL MAESTRO TARREGA",
-      "reference": "MUSICA PARA GUITARRA POR EL MAESTRO TARREGA — produced at /quote[22]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a674caf2",
-      "doc": "tarrega",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[15]",
-      "producedLine": 49,
-      "referenceLine": 48,
-      "produced": "Antich y Tena Editores, San Vicente, 99, Valencia (A. y T. 357-360, 362, 364, 391-396)",
-      "reference": "Antich y Tena Editores, San Vicente, 99, Valencia (A. y T. 357-360, 362, 364, 391-396) — produced at /quote[22]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dd012653",
-      "doc": "tarrega",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[16]",
-      "producedLine": 52,
-      "referenceLine": 51,
-      "produced": "Государственная музыкальная библиотека Швеции Из Коллекции Карла Оскара Бойе (1849-1923) – Boije 828, 829",
-      "reference": "Государственная музыкальная библиотека Швеции Из Коллекции Карла Оскара Бойе (1849-1923) – Boije 828, 829 — produced at /quote[22]/paragraph[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2190f5f1",
-      "doc": "tarrega",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[17]",
-      "producedLine": 55,
-      "referenceLine": 54,
-      "produced": "Часть 1 – PDF (2,16 Mb)",
-      "reference": "Часть 1 – PDF (2,16 Mb) — produced at /quote[22]/heading[4]",
+      "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]",
       "verdict": "converter-defect"
     },
     {
@@ -6062,21 +5948,7 @@
       "producedLine": 57,
       "referenceLine": 56,
       "produced": "1. Capricho Arabe (Serenata para guitarra) ..................... A. y T. 357 2-3. Preludios No 1 y 2 ......................................................... …",
-      "reference": "1. Capricho Arabe (Serenata para guitarra) A. y T. 357 2-3. Preludios No 1 y 2 A. y T. 358 4. Largo de la Sonata de Beethoven (Op. 7) A. y T. 362 5. Gran Vals … — at /quote[22]/list[5]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1de2ea01",
-      "doc": "tarrega",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[19]",
-      "producedLine": 63,
-      "referenceLine": 65,
-      "produced": "Часть 2 – PDF (1,23 Mb)",
-      "reference": "Часть 2 – PDF (1,23 Mb) — produced at /quote[22]/heading[6]",
+      "reference": "1. Capricho Arabe (Serenata para guitarra) A. y T. 357 2-3. Preludios No 1 y 2 A. y T. 358 4. Largo de la Sonata de Beethoven (Op. 7) A. y T. 362 5. Gran Vals … — at /list[19]",
       "verdict": "converter-defect"
     },
     {
@@ -6090,21 +5962,7 @@
       "producedLine": 65,
       "referenceLine": 67,
       "produced": "1. Preludio No 20 Chopin .................................................. A. y T. 391 2. Preludio No 3 ......................................................…",
-      "reference": "1. Preludio No 20 Chopin A. y T. 391 2. Preludio No 3 A. y T. 392 3. Preludio No 4 A. y T. 392 4. Preludio No 5 A. y T. 392 5. Preludio No 6 Chopin (Op. 28) A.… — at /quote[22]/list[7]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cbee0a26",
-      "doc": "tarrega",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[21]",
-      "producedLine": 77,
-      "referenceLine": 82,
-      "produced": "МУЗЫКА, ТАБУЛАТУРЫ И НОТЫ ИЗ ДРУГИХ ИЗДАНИЙ",
-      "reference": "МУЗЫКА, ТАБУЛАТУРЫ И НОТЫ ИЗ ДРУГИХ ИЗДАНИЙ — produced at /quote[22]/paragraph[8]",
+      "reference": "1. Preludio No 20 Chopin A. y T. 391 2. Preludio No 3 A. y T. 392 3. Preludio No 4 A. y T. 392 4. Preludio No 5 A. y T. 392 5. Preludio No 6 Chopin (Op. 28) A.… — at /list[21]",
       "verdict": "converter-defect"
     },
     {

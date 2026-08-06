@@ -98,13 +98,25 @@ describe("blockquote used for indentation", () => {
     expect(result.markdown).not.toMatch(/^>/mu);
   });
 
-  it("still quotes a genuine short quotation", async () => {
+  it("does not quote a short one either, when nothing was measured", async () => {
+    // This asserted the opposite until the corpus was measured. The tag alone
+    // is not evidence: `kiselev` indents six track lists with `<blockquote>`
+    // and `tarrega` indents a nine-block score catalogue, headings and lists
+    // among them, and the references quote none of it. §3.5 wants *combined*
+    // evidence, so with no measurement there is none to combine and emitting a
+    // quotation asserts something unevidenced. Flattening keeps every word and
+    // stays valid BioMD, which is the sane degradation.
+    //
+    // The positive contract lives in `recovery.test.ts`, on `mdMeasured` —
+    // `convert()` here falls back to `NullMeasurer` and leaves `el.style`
+    // undefined, so a rule keyed on computed style cannot be exercised at all.
     const html = page(
       "Заголовок",
       `${PROSE}${PROSE}<blockquote><p>Гитара — это маленький оркестр.</p></blockquote>${PROSE}`,
     );
     const result = await convert(Buffer.from(html, "utf8"));
-    expect(result.markdown).toMatch(/^> Гитара/mu);
+    expect(result.markdown).not.toMatch(/^>/mu);
+    expect(result.markdown).toContain("Гитара — это маленький оркестр.");
   });
 
   it("unwraps a blockquote containing a table, so the table is reachable", async () => {
