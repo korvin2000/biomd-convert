@@ -403,6 +403,40 @@ describe("inconclusive table classification", () => {
   });
 });
 
+/**
+ * A caption stated twice.
+ *
+ * **Invariant.** The evidence is *repetition*: a standalone captioned figure
+ * followed by a caption-eligible block that says what the caption already says.
+ * Not a length, not a position, not a similarity score.
+ *
+ * **False friend.** A real paragraph that follows a captioned figure and merely
+ * mentions what the picture shows. Tested for non-firing below.
+ */
+describe("caption echo", () => {
+  const fig = (alt: string, line: string) =>
+    PROSE + '<p align="center"><img src="f.jpg" width="400" height="250" alt="' + alt + '"></p><p align="center">' + line + '</p>' + PROSE;
+
+  it("absorbs a visible line that repeats the alt caption", async () => {
+    const out = await md(fig("Джулиан Брим и Джон Вильямс.", "Джулиан Брим и Джон Вильямс"));
+    expect(out).toContain("caption: Джулиан Брим и Джон Вильямс.");
+    // Once inside the figure, never again beneath it.
+    expect(out.match(/Джулиан Брим и Джон Вильямс/gu) ?? []).toHaveLength(1);
+  });
+
+  it("absorbs an abbreviated repetition", async () => {
+    //  under  — every word but the last matches and the
+    // last pair stands in a prefix relation.
+    const out = await md(fig("Джон Вильямс в 1971 г.", "Джон Вильямс в 1971 году."));
+    expect(out.match(/Джон Вильямс в 1971/gu) ?? []).toHaveLength(1);
+  });
+
+  it("leaves a paragraph that only mentions the picture", async () => {
+    const out = await md(fig("Джон Вильямс в 1971 г.", "Джон Вильямс в 1972 г."));
+    expect(out).toContain("Джон Вильямс в 1972 г.");
+  });
+});
+
 describe("links", () => {
   it("merges adjacent anchors that share one destination", async () => {
     const out = await md(PROSE + '<p><a href="cd1.htm">1995</a><a href="cd1.htm">-2002</a></p>');

@@ -773,6 +773,42 @@ function isBlockTag(tag: string): boolean {
  * width, survives a layout change the figure does not, and is read out of
  * order by a screen reader.
  */
+/**
+ * Whether two strings are the same caption, written twice.
+ *
+ * Folds only what a 1998 author would vary between an attribute and a visible
+ * line: case, spacing, and the trailing period one of the two usually carries.
+ * Deliberately *not* a similarity score — near-equality would start absorbing
+ * paragraphs that merely mention what the picture shows, and the whole point of
+ * this rule is that the text is repeated rather than related.
+ */
+function sameCaptionText(a: string, b: string): boolean {
+  const fold = (t: string) =>
+    t
+      .replace(/\s+/gu, " ")
+      .trim()
+      .replace(/^["«“‘]+|["»”’]+$/gu, "")
+      .replace(/[.,;:!?…]+$/u, "")
+      .toLowerCase();
+  const x = fold(a);
+  const y = fold(b);
+  if (x === "" || y === "") return false;
+  if (x === y) return true;
+
+  // One of the two abbreviates its last word: `в 1971 г.` under
+  // `в 1971 году.`. Still equality rather than similarity — every word but the
+  // last must match exactly, and the last pair must stand in a prefix relation,
+  // which `1971`/`1972` and `ученики`/`учитель` both fail. That keeps the rule
+  // on "the same text written twice" and off "a sentence about the picture".
+  const xs = x.split(" ");
+  const ys = y.split(" ");
+  if (xs.length !== ys.length || xs.length === 0) return false;
+  for (let i = 0; i < xs.length - 1; i += 1) if (xs[i] !== ys[i]) return false;
+  const lastX = xs[xs.length - 1] as string;
+  const lastY = ys[ys.length - 1] as string;
+  return lastX.startsWith(lastY) || lastY.startsWith(lastX);
+}
+
 function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
   const out: BiomdContent[] = [];
   for (let i = 0; i < nodes.length; i += 1) {
@@ -797,6 +833,32 @@ function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] 
           continue;
         }
       }
+    }
+
+    // The same caption, stated twice.
+    //
+    // A 1998 page routinely puts the caption in the picture's `alt` *and* on a
+    // visible line beneath it — `alt="Джулиан Брим и Джон Вильямс."` over a
+    // paragraph reading `Джулиан Брим и Джон Вильямс`. Both are the caption, and
+    // §7 gives an image exactly one, so keeping the line as a paragraph prints
+    // it twice: once inside the figure and once under it.
+    //
+    // The evidence is the *repetition*, not a length or a position: only a
+    // block saying what the caption already says is absorbed, so a real
+    // paragraph that happens to follow a captioned figure is untouched.
+    if (
+      node.type === "biomdImage" &&
+      node.standalone &&
+      node.caption !== undefined &&
+      next !== undefined &&
+      next.type === "paragraph" &&
+      ctx.captionEligible.has(next) &&
+      sameCaptionText(node.caption, phrasingText(next.children as PhrasingContent[]))
+    ) {
+      ctx.ledger.push(mergedInto(nextId(ctx, "caption-echo"), nextId(ctx, "image"), { note: "caption stated twice" }));
+      out.push(node);
+      i += 1;
+      continue;
     }
 
     // §11: "a prominent side menu … normally moves directly below the title".

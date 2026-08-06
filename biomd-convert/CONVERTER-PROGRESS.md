@@ -948,3 +948,120 @@ reaching `layoutFrom`, and this is also the blocker for centre alignment.
 (b) Centre alignment, once (a) lands. (c) `news` still draws 30 rules to the
 reference's 25. (d) The 0.5–0.95 ambiguous corridor and the 0.65 reconciliation
 constant remain uncalibrated, now over 178 ambiguous findings.
+
+
+## 10. Structural recovery — the region family closed (2026-08-06)
+
+Four changes, each measured separately. All four rungs moved together, which had
+not happened before in this campaign.
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| start of section | 320 | 89.1 | 390 | 260 |
+| inconclusive → layout | 320 | **90.9** | **356** | **204** |
+| centre alignment | 320 | 91.0 | 360 | 199 |
+| lanes keep their place | 325 | 90.9 | **301** | **196** |
+| caption echo | 328 | 90.9 | **297** | 196 |
+
+### 10.1 An inconclusive verdict is not "not a region"
+
+`borislova` and `jovicic` emitted 0 `::: columns` where the references have 2
+and 1. The cause was **routing**, not lane detection: a table the classifier
+could not type went to `dataRegionFrom(requireEvidence: true)`, and when that
+abstained it fell straight to linear flow — so the lane path was never asked.
+Both documents are the same shape, a 1×2 grid holding a text lane beside its
+cover, classified UNKNOWN because there is no header row to plan from.
+
+An abstention now hands the region to `layoutFrom`, which decides on its own
+evidence and falls back to the same flow when there are no lanes. `jovicic`
+reached **100.0** on L1; `news_2007` 74.1 → 87.6; `kiselev` 94.2 → 97.0.
+
+### 10.2 Centre alignment — the false friend was a symptom
+
+`center` had been held back because L2 rejected it (596 → 602). The asymmetry was
+real but never about position: centre is *ambient* — inherited, free on a
+caption, and how a lane is filled — so on a page whose lanes had collapsed to
+flow, every lane cell looked like a centred block. §10.1 gave those documents
+their lanes back and the ambiguity went with them: spurious aligns 15 → 4.
+
+**The general lesson, now in the rule contract:** a false friend that exists only
+because an earlier stage failed is not a false friend, it is a symptom. Guarding
+against it at the later stage would have cemented the upstream defect and hidden
+it from every instrument.
+
+Accepted on rendered evidence — L3 `layout.align.mismatch` 52 → 48 — against L2
++4, of which two are `goya2` findings where the reference *joined* two source
+lines into one title.
+
+### 10.3 A lane keeps its place in the rows that have nothing for it
+
+`goya2` emitted 29 `::: columns` against 34. The five missing rows are the albums
+with no cover art: the second cell is genuinely empty, the row produced one
+column, and the whole row fell out of the lane region — five titles running
+full-width while thirty sat in a half-width track.
+
+**Lane detection.** An occasionally-empty lane and a permanently-empty spacer are
+identical in any single row and want opposite treatment. Occupancy across the
+whole grid separates them, and the corpus separates cleanly:
+
+| document | occupancy | reading |
+|---|---|---|
+| `goya2` | `[34, 30]` | two real lanes |
+| `news` | `[36, 0]` | one lane, one spacer |
+| `kiselev` | `[13, 10, 4]` | two lanes, one sparse column |
+| `barrios` | `[27,1,1,1,1,3,3,24,12]` | two lanes among stray cells |
+
+Stated relative to the busiest column rather than as a fraction of the grid, so
+it holds for a two-lane catalog and a nine-column matrix alike.
+
+**An empty `column` is legal.** Only the builder said otherwise: `validate`
+accepts it, and the reference emits five and reports zero errors. §9.1's "leave a
+trailing incomplete row ragged; do not pad it with empty columns" governs a
+*trailing* row of a multi-child grid, where padding invents a track the source
+never had; here the source itself has the empty cell.
+
+L2 fell 59 on this change alone, because the region indices stopped shifting —
+that shift had been mispairing whole subtrees on `goya2` and producing
+`retyped.paragraph-to-align`, `list.containment` and `paragraph.containment`
+findings for blocks that were already correct.
+
+### 10.4 A caption stated twice
+
+A 1998 page routinely puts the caption in the picture's `alt` *and* on a visible
+line beneath it. Both are the caption and §7 gives an image one, so the line was
+printed twice — once inside the figure, once under it. The evidence is
+*repetition*, not a length or a position: equality after folding case, spacing
+and a trailing period, plus one abbreviation form (every word but the last equal,
+the last pair in a prefix relation — `в 1971 г.` under `в 1971 году.`).
+Deliberately not a similarity score, which would start absorbing paragraphs that
+merely mention what the picture shows.
+
+4 of the 7 findings closed. The remaining 3 are **not** caption echoes: the
+sub-classifier indexes headings, lists, tables, quotes and directives but not
+plain reference *paragraphs*, so a block the reference keeps as a paragraph falls
+through to whatever construct does hold its text — an image caption. That is an
+instrument imprecision, not converter work.
+
+### 10.5 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 328 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 90.9 |
+| L2 | 583 findings — **297 converter-defect** · 165 ambiguous · 121 reference-inconsistency |
+| L3 | 196 findings, identity 0, deterministic |
+
+`goya2` fell from 127 converter defects to 61 and is no longer the worst
+document; `news` is, at 69.
+
+Top classes now: `paragraph.containment` (25, 7 docs) · `retyped.paragraph-to-align`
+(14, 6) · `paragraph.missing` (7 of 13, 7 docs) · `paragraph.hyphenation` (16 of
+21, 8 docs) · `image.size.value` (23, 5).
+
+**Open, in order.** (a) `news` — 4 spurious + 3 moved + 1 containment rules, an
+*ordering* difference around a framed obituary rather than a count problem.
+(b) The `.unattested` sub-classifier should index reference paragraphs.
+(c) A directive's own name and property values are quoted into the span triage
+attests against, so any spurious directive reads as unattested — this is what
+mis-verdicts `goya2`'s `Vol. 1`. (d) The 0.5–0.95 corridor, now over 165
+ambiguous findings.
