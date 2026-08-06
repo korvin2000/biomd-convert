@@ -1065,3 +1065,154 @@ Top classes now: `paragraph.containment` (25, 7 docs) · `retyped.paragraph-to-a
 attests against, so any spurious directive reads as unattested — this is what
 mis-verdicts `goya2`'s `Vol. 1`. (d) The 0.5–0.95 corridor, now over 165
 ambiguous findings.
+
+## 11. The references moved, and four rules followed them (2026-08-06)
+
+The reference set was revised toward the source: `barrios` lost its copyedited
+prose, invented headings and four-column media table; `borislova` and `kiselev`
+regained the hard breaks their `<br>`s always meant; `news`, `news_2007` and
+`goya2` gained the entry separators; `williams2` moved its menu out of the
+layout region. Much of what PROGRESS recorded as an unreachable editorializing
+ceiling is now reachable, and **`barrios` has no converter defect left at all.**
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| §10 close | 328 | 90.9 | 297 | 196 |
+| references revised (no code change) | 327 | **92.7** | **258** | — |
+| caption precedence | 332 | 92.8 | 251 | 168 |
+| two L2 blind spots | 335 | 92.8 | *(instrument)* | 168 |
+| align in bounded containers | 337 | 92.9 | 248 | **121** |
+| menu tables | 343 | **93.1** | **230** | 121 |
+
+### 11.1 The line the reader sees outranks `alt`
+
+§6.1 keeps `alt` and `caption` apart — one describes the picture for a reader
+who cannot see it, the other is visible editorial text — and §6.4 shows a figure
+carrying both. The binder took whichever arrived first, which was always `alt`.
+`authors` therefore captioned a scan `Заметка о проекте…` while printing the
+three lines the author actually wrote as a loose paragraph underneath: the
+caption wrong and the text duplicated at once.
+
+A standalone image now binds the *run* of caption-eligible blocks under it and
+replaces an alt-derived caption. A run, because `segovia`'s 1936 photographs
+caption in three lines — a bold title, who is in the picture, where it was
+taken — and taking only the first orphaned the other two. Lines join with a
+space; a first line set wholly in bold takes an em dash before the detail under
+it, read off the inline tree rather than off whether the pipeline happened to
+lift that line to a heading, which depends on context the caption does not have.
+
+This subsumed the older "same caption stated twice" rule and fixed what that one
+got wrong: it kept `alt`'s wording, so `williams2` read `в 1971 г.` where the
+visible line — and the reference — say `в 1971 году.`
+
+### 11.2 Two things a finding was allowed to claim and should not have been
+
+Both instruments, both re-baselined, pairing untouched (380 findings before and
+after, so every move was a verdict changing rather than a diff changing).
+
+**A directive's own scaffolding is not evidence about the source.** The span
+quoted for a directive opened with its name and every property value, and triage
+looks a span up in the source HTML. `align center Francis Goya in Moscow`
+appears in no document anyone has written, so every spurious directive read as
+unattested and was called a defect — and every *missing* one was written off as
+reference editorializing for the same reason, which was the larger error. Split
+from `blockText`, which also drives pairing and where the name and properties
+genuinely belong: they are what makes two directives the same directive.
+
+**A paragraph that stayed a paragraph.** The sub-classifier indexed headings,
+lists, tables, quotes, navs and captions but not plain paragraphs, so a produced
+orphan whose text the reference also keeps as prose fell through to whatever
+construct did hold it. `.in-paragraph` says what is actually wrong: nothing was
+retyped, so this is placement. It is asked *before* the others, because a
+reference may hold one text twice — `news` writes an obituary's subject as a
+bold paragraph *and* captions the photograph below it with the same name — and
+"did it stay what it was" is a different question from "what did it become".
+
+### 11.3 `align` belongs in a bounded container, and three things blocked it
+
+§13: "an `align` block MAY appear inside `lead`, `column`, or `frame`". `news`
+alone puts eight inside frames. The pass reached none of them.
+
+1. **The guard was right, its scope was not.** A region detector reads the
+   produced shape back, so a pass that fires mid-speculation changes what is
+   being speculated about — that is how `jovicic` and `borislova` once lost
+   every column they had. The pass now runs a second time on the container's
+   *committed* children, where nothing is speculative any more.
+2. **A bounded container's own alignment is the evidence.** Alignment is
+   recorded for element children only, on the stated grounds that an inline
+   run's alignment is its parent's. True in the page flow; false at a boundary.
+   A framed notice is one `<p>` of `<br>`-separated lines, so every block in it
+   arrived with no alignment recorded, and the one fact that mattered — this
+   notice is centred and the page is not — was the only thing not written down.
+3. **A caption veto read a candidacy as a fact.** `captionEligible` marks a
+   block whose typography *would* let it be a caption. As an unconditional veto
+   it blocked every centred line in every framed notice: an obituary's opening
+   sentence carries exactly a caption's typography and stands *above* the
+   photograph, so it never becomes one. The test is now positional.
+
+Making it positional inverted a related case — a figure and its caption as two
+rows of a one-column table, where the caption is lowered alone and gets wrapped
+before any picture is in sight. `bindCaptions` unwraps a single-position `align`
+whose contents are all caption candidates: **the alignment was never wrong, it
+was premature.**
+
+`layout.align.mismatch` 49 → 23 and `layout.containment.mismatch` 81 → 60 — the
+*rendered* layout, which is the question this family exists to answer.
+
+### 11.4 A menu written as a table
+
+`navFrom` reads an inline run of links. The other half of this era's menus are a
+table with one row per item — the only other way FrontPage offered — and that
+half never reached it. A menu is neither a record matrix nor a layout, so
+`williams2`'s discography came out as five one-item regions with `---` between
+them, and §11's "a prominent side menu normally moves directly below the title"
+was lost with the menu it described.
+
+One grid one content-column wide, rows each holding exactly one destination and
+nothing else, an optional unlinked first row as the title, three linked rows
+minimum. False friends, each tested for non-firing: a two-column score grid (a
+row is a work *and* its tablature), a figure over its caption (no links), a
+stack of citations (the cell is a sentence around the link), repeated
+destinations. A label split across two anchors sharing one destination is one
+item. A lane holding nothing but a menu is not a lane and folds into the flow —
+`CLAUDE.md` §5, §11 and the reference all agree.
+
+`williams2` 97.4 → 99.1, directives 74.1 → 90.9.
+
+### 11.5 Instrument note: the alignment family had no end-to-end test
+
+`NullMeasurer` leaves `style` undefined by design, and `convert` falls back to
+it, so until now every contract in this family was stated against its helpers
+and no rule could be exercised past them. The stand-in in `recovery.test.ts`
+fills in `text-align` only where the element declares it and leaves everything
+else to the attribute heuristics — a double that changed unrelated decisions
+would be a second, worse cascade rather than a stand-in for measurement.
+
+### 11.6 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 343 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 93.1 |
+| L2 | 356 findings — **230 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
+| L3 | 121 findings, identity 0, deterministic |
+
+Per document, converter defects: `news` 63 · `goya2` 43 · `pavlov_azancheev` 20 ·
+`borislova` 17 · `segovia` 17 · `kiselev` 15 · `news_2007` 15 · `tarrega` 12 ·
+`authors` 8 · `jovicic` 8 · `segovia1` 8 · `williams2` 4 · **`barrios` 0**.
+
+Top classes: `paragraph.missing` (11, 6 docs, critical) · `paragraph.hyphenation`
+(23 of 23, 9 docs) · `paragraph.containment` (9, 5) ·
+`align.spurious.unattested` (8, 4) · `retyped.paragraph-to-quote` (15, 2) ·
+`retyped.paragraph-to-align` (6, 5) · `image.size.value` (21, 4).
+
+**Open, in order.** (a) `ALIGN_LABEL_MAX_CHARS = 120` is a single-block absolute
+threshold of exactly the kind §5 warns about, and it is now the binding
+constraint on four `news` obituaries — the opening sentence cannot join its own
+name, so the name is wrapped alone. 16 of 55 reference `align` bodies exceed
+120 characters. Replace it with relational evidence rather than a bigger number.
+(b) `retyped.paragraph-to-quote`, 15 instances in 2 documents — `news_2007`'s
+reference dropped the `> ` it used to carry, so this may be largely closed
+already and wants re-measuring before any work. (c) `image.size.value` (21) and
+`image.src.value` (17, all `goya2`) are single-document or mechanical.
+(d) The 0.5–0.95 ambiguous corridor, still uncalibrated, now over 72 findings.
