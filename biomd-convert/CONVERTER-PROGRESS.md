@@ -1501,3 +1501,162 @@ the converter emits a heading inside the frame instead — one instance corpus-
 wide, so recorded rather than acted on. (e) The 0.5–0.95 ambiguous corridor,
 still uncalibrated, now at 80 findings and growing as classes are refined into
 it — the single largest piece of unexamined instrument behaviour left.
+
+## 14. A phantom top class, and a tag that was never evidence (2026-08-06)
+
+| | L0 | L1 | L2 converter-defect | L3 |
+|---|---|---|---|---|
+| §13 close | 356 | 93.3 | 191 | 89 |
+| symmetric home attribution | 363 | 93.3 | **200** | 89 |
+| §3.5 decides a blockquote | 368 | **93.8** | **194** | **82** |
+
+### 14.1 `paragraph.missing` contained no missing paragraphs
+
+The ledger's top class — rank 300, `critical`, 10 instances, 6 documents,
+content evidence — was followed down, and every one of the ten had its text
+sitting in the produced document: three as a line inside a hard-break run the
+reference had split into blocks, four as a whole paragraph under a different
+parent, one as a table cell, two absorbed into a longer block. **Zero were
+absent.** A class reporting content loss where none exists had, by construction,
+outranked every class reporting a real defect.
+
+The cause was an asymmetry the file had already half-fixed. `homeOf`
+sub-classifies a *produced* orphan by the construct owning its text on the
+reference side — built because `paragraph.spurious` was "50 instances with
+nothing in common". The mirror question was never asked, so a reference orphan
+was reported bare at `missingSeverity`: critical, content, which reads as prose
+that was lost.
+
+Presence is a fact both sides can be asked about, and it now decides the
+severity. Text present on the other side is a **placement** finding — `major`,
+`structure` — because the defect is which container holds it. Only `.unattested`
+is content, and there `critical` is the truth.
+
+Two folding gaps surfaced while measuring, the same blind spot one function
+over. `homeKey` used `words()` and split on intra-word hyphens, so `успе-хов`
+and `успехов` were different words and `jovicic`'s Segovia testimonial read as
+absent while sitting inside its opening paragraph; it now uses
+`similarityTokens`, which the aligner has always used for exactly this reason.
+Run lines were keyed raw, so `[ДИСКОГРАФИЯ](/#/…)` carried its own target into
+the key; they now go through `inlineOf`.
+
+Two new answers were needed for the corpus's actual absorption shapes:
+`.in-break-run` (one side made a block boundary where the other made a line
+ending) and `.absorbed` (the words run contiguously inside a longer block, at no
+boundary). `.absorbed` is the weakest answer and the only one that can be a
+coincidence, so its minimum was read off the sweep rather than assumed:
+
+| min words | attributed |
+|---|---|
+| 1 | 10 — a bare `ПОЗДРАВЛЯЕМ` matches any sentence containing it |
+| 2 | 9 — `news_2007`'s footer chrome matches inside the page's own heading |
+| 3 | 8 — every full name, no bare label |
+| 4-6 | 5 — three obituary subjects stop being found in the notices naming them |
+
+A trend, not a plateau, so the number does real work; 3 is where it admits every
+three-part name and no single label. The false friend is tested for non-firing.
+
+**The instances did not move, and that is the evidence this was truthfulness
+rather than accounting**: 321 findings before, 321 after, none added, none lost.
+Nine changed verdict and all nine moved *up* — `paragraph.spurious.unattested`
+[ambiguous/critical] became `.in-break-run` or `.absorbed`
+[converter-defect/major], duplications the instrument had been filing as "the
+reference may have deleted it". Corpus critical count 37 to 13.
+
+### 14.2 `<blockquote>` was converted from the tag, with no §3.5 test at all
+
+Following the re-ranked ledger to `paragraph.containment` found three
+mechanisms, and the largest was one wrapper: `tarrega` emitted **33** quoted
+lines against the reference's **0**, a single `<blockquote>` swallowing a
+nine-block score catalogue — headings, lists and all — and producing eight
+findings alone. `kiselev` emitted **29** against **0**, six indented track lists.
+
+§12.2 built a §3.5-grounded subordination test for the CSS path. The tag path
+never asked it. Same shape as §13.1: the question was answered by evidence in
+one path and by construction in the other.
+
+Two hypotheses died before the third was written:
+
+| hypothesis | falsifier |
+|---|---|
+| the tag is never evidence — make it transparent | `segovia` 11 quoted lines to **0**. The reference wants 17. |
+| the tag is evidence, merely ungated — require `subordinationRecurs` | `recurs` is **true** on `kiselev` and `tarrega` too. It separates nothing. |
+
+What separates them is the content, on §3.5's own evidence and nothing else —
+`segovia` 1/1 subordinated children, `kiselev` 0/1, `tarrega` 0/4.
+
+**The evidence had to be read off the source element, not the produced blocks.**
+`blocksFrom` records subordination for element children only, deliberately: an
+inline run's *alignment* is its container's and says nothing about the run.
+Italic is not like that — `<i>` is written around this run and nothing else —
+and `segovia` writes `<blockquote><i>…</i></blockquote>`, so its paragraph is
+born from an inline flush and never enters `ctx.subordinated`. Asking the
+produced set answered no on the one page whose blockquotes the reference quotes.
+`subordinationRecursIn` had the identical blind spot — it counts `p` and `div`
+only — and scored those two regions as nothing. Both now call one shared
+`contentIsSubordinated`.
+
+`InlineAlignMeasurer` gained the one UA default the rule needs: `<i>` and `<em>`
+compute italic without declaring it. Without it the positive contract could not
+be exercised end-to-end, and the rule looked wrong.
+
+The old contract *"still quotes a genuine short quotation"* asserted that the
+tag is enough — the belief this iteration falsified. Unmeasured input now
+flattens rather than asserting an unevidenced quotation; no text is lost either
+way, and the positive contract moved to `mdMeasured`, where computed style
+exists.
+
+`tarrega` 12 to 6 defects, L1 81.5 to 88.5. **`kiselev` holds at 17**: its track
+lists were two defects stacked, and removing the quote exposed the list recovery
+underneath — `retyped.quote-to-list` (6) became `retyped.paragraph-to-list`,
+which is now the top-ranked class.
+
+### 14.3 Killed hypotheses added
+
+- **A tag is not evidence about intent.** `<blockquote>` in this corpus is an
+  indent as often as a quotation. Any rule converting a presentational tag
+  without asking what is inside it will be wrong on roughly half the corpus.
+- **A page-level recurrence gate cannot substitute for content evidence.**
+  `subordinationRecurs` is true on both pages that must *not* quote. Recurrence
+  qualifies a shape; it does not identify one.
+- **A shared evidence set is only shared where it is recorded.**
+  `ctx.subordinated` covers element children and not inline runs, so two
+  consumers reading it saw nothing on the very page the rule was for. Check what
+  populates a set before keying a second rule on it.
+- **An instrument's own key must fold what the rest of the instrument folds.**
+  `homeKey` split on hyphens while `similarityTokens` joined them; the result
+  was a class asserting content loss for text one function over could see.
+
+### 14.4 State and ranking
+
+| rung | value |
+|---|---|
+| L0 | 368 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 93.8 |
+| L2 | 314 findings — **194 converter-defect** · 70 ambiguous · 50 reference-inconsistency |
+| L3 | 82 findings, identity 0, deterministic |
+
+Per document, converter defects: `news` 49 · `goya2` 45 · `kiselev` 17 ·
+`borislova` 16 · `segovia` 14 · `pavlov_azancheev` 13 · `news_2007` 9 ·
+`authors` 7 · `segovia1` 7 · `jovicic` 6 · `tarrega` 6 · `williams2` 5 ·
+**`barrios` 0**.
+
+Top classes: `retyped.paragraph-to-list` (10, 4 docs) · `image.size.value`
+(21, 4) · `align.spurious` (5, 5) · `retyped.paragraph-to-align` (5, 4) ·
+`image.src.value` (19, 1) · `paragraph.spurious.in-break-run` (6, 3) ·
+`retyped.align-to-paragraph` (6, 3) · `paragraph.containment` (5, 3).
+
+**Open, in order.** (a) `retyped.paragraph-to-list`, 10 over 4 documents and now
+top: a `<br>`-separated run of parallel short lines is a list, and `kiselev`'s
+six track lists are the clearest instance now that the quote no longer hides
+them. `paragraph.spurious.in-break-run` (6, 3) is very likely the same mechanism
+seen from the other side — check before treating them separately.
+(b) `image.src.value` (19, all `goya2`) and `image.size.value` (21, 4 docs),
+both mechanical: one path-resolution rule and one threshold in `media.ts`.
+(c) The alignment residue — `align.spurious`, `retyped.paragraph-to-align`,
+`retyped.align-to-paragraph` — 16 across 5 documents. (d) `borislova` and
+`jovicic` want a quote the recurrence gate declines to give (1 subordinated
+region each; `MIN_SUBORDINATED_BLOCKS` is 2). §12.2 chose that gate deliberately
+and it is the right shape, so this is a ceiling until a second signal exists.
+(e) The ambiguous corridor, 70 findings, still uncalibrated and still the
+largest piece of unexamined instrument behaviour.
