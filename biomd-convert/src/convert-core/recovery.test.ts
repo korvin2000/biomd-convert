@@ -66,8 +66,15 @@ class InlineAlignMeasurer implements Measurer {
       // overwrite the attribute heuristics the rest of the pipeline still runs
       // on here, and a stand-in that changes unrelated decisions is not a
       // stand-in for measurement — it is a second, worse cascade.
-      const declared = /text-align:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
-      if (declared) el.style = { ...NEUTRAL_STYLE, textAlign: (declared[1] as string).toLowerCase() };
+      const align = /text-align:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
+      const style = /font-style:\s*([a-z-]+)/iu.exec(el.attrs["style"] ?? "");
+      if (align || style) {
+        el.style = {
+          ...NEUTRAL_STYLE,
+          ...(align ? { textAlign: (align[1] as string).toLowerCase() } : {}),
+          ...(style ? { fontStyle: (style[1] as string).toLowerCase() } : {}),
+        };
+      }
     }
     doc.measured = false;
     return { measured: false, warnings: [] };
@@ -737,5 +744,59 @@ describe("a menu written as a table", () => {
       PROSE + menu(item("x.htm", "первая") + item("x.htm", "вторая") + item("x.htm", "третья")) + PROSE,
     );
     expect(out).not.toContain("::: nav");
+  });
+});
+
+describe("a document the source set apart from the article", () => {
+  /** The page's own narrative voice, upright and long enough to be sampled. */
+  const ARTICLE =
+    '<p style="font-style: normal">Матвей Степанович Павлов-Азанчеев родился в 1888 году и всю ' +
+    "жизнь посвятил семиструнной гитаре, оставив после себя обширное нотное наследие, которое до " +
+    "сих пор изучают исполнители, а его письма сохранились в архиве Александра Ларина.</p>";
+  const letter = (text: string) => `<p style="font-style: italic">${text}</p>`;
+
+  it("quotes a run of italic blocks when the shape recurs", async () => {
+    const out = await mdMeasured(
+      ARTICLE +
+        '<p>• Письмо М.Павлова — А.Ларину (Краснодар, 28 августа 1946 г.)</p>' +
+        letter("Уважаемый Александр Яковлевич! Простите, что не будучи с Вами знаком пишу Вам.") +
+        '<p>• Письмо А.Максимова — А.Ларину (Владикавказ, 9 января 1946 г.)</p>' +
+        letter("Дела и новости таковы: положение первого неопределённо, дела направлены в Москву.") +
+        ARTICLE,
+    );
+    expect(out).toContain("> Уважаемый Александр Яковлевич!");
+    expect(out).toContain("> Дела и новости таковы:");
+    // The headnote naming each letter is the article's voice, not the letter's.
+    expect(out).not.toContain("> • Письмо");
+  });
+
+  it("leaves a single italic block alone", async () => {
+    // Recurrence is what separates a page of quoted documents from a page with
+    // one italic credit line. `barrios` has exactly one and the reference
+    // quotes nothing; `borislova` has one and the reference quotes elsewhere.
+    const out = await mdMeasured(ARTICLE + letter("Подробнее см. «Барриос Мангори — жизнь и творчество».") + ARTICLE);
+    expect(out).toContain("Подробнее см.");
+    expect(out).not.toContain("> Подробнее");
+  });
+
+  it("does not quote a paragraph that merely contains an italic phrase", async () => {
+    // §3.5: "Do not turn titles, scare quotes, ordinary dialogue fragments … into
+    // a block quote." A `<p>` wrapping `<i>` computes upright and stays prose.
+    const out = await mdMeasured(
+      ARTICLE +
+        "<p>Он записал <i>Чакону</i> в 1946 году.</p>" +
+        "<p>Позднее он записал <i>Сарабанду</i> и <i>Гавот</i>.</p>" +
+        ARTICLE,
+    );
+    expect(out).not.toContain("> ");
+  });
+
+  it("says nothing on a page whose prose is italic throughout", async () => {
+    // With no upright prose to contrast against, italic carries no information.
+    // The test is contrast, not majority — a majority test would let the quotes
+    // on an archive page disqualify themselves.
+    const italicArticle = ARTICLE.replace("font-style: normal", "font-style: italic");
+    const out = await mdMeasured(italicArticle + letter("Уважаемый Александр Яковлевич!") + italicArticle);
+    expect(out).not.toContain("> ");
   });
 });

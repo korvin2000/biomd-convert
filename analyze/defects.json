@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-06T08:46:54.466Z",
+  "generated": "2026-08-06T08:58:21.037Z",
   "totals": {
-    "findings": 356,
-    "converterDefects": 231,
+    "findings": 346,
+    "converterDefects": 220,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 54,
-    "ambiguous": 71,
+    "ambiguous": 72,
     "bySeverity": {
       "critical": 45,
-      "major": 152,
-      "minor": 159
+      "major": 141,
+      "minor": 160
     }
   },
   "perDocument": [
@@ -79,11 +79,11 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 24,
-      "converterDefects": 21,
+      "findings": 14,
+      "converterDefects": 10,
       "critical": 3,
-      "major": 19,
-      "minor": 2
+      "major": 8,
+      "minor": 3
     },
     {
       "doc": "segovia",
@@ -222,28 +222,6 @@
         "path": "/frame[63]/align[1]",
         "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
         "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — at /paragraph[63]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "instances": 15,
-      "documents": [
-        "borislova",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 15,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "borislova",
-        "path": "/quote[4]",
-        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
-        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
       }
     },
     {
@@ -526,6 +504,28 @@
       }
     },
     {
+      "class": "retyped.paragraph-to-quote",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "borislova",
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "borislova",
+        "path": "/quote[4]",
+        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
+        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
+      }
+    },
+    {
       "class": "paragraph.content",
       "severity": "critical",
       "instances": 4,
@@ -567,6 +567,35 @@
         "path": "/columns[10]/column[0]/paragraph[1]",
         "produced": "09. Promise Me",
         "reference": null
+      }
+    },
+    {
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 13,
+      "documents": [
+        "barrios",
+        "borislova",
+        "jovicic",
+        "kiselev",
+        "news",
+        "news_2007",
+        "pavlov_azancheev",
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 11
+      },
+      "rank": 18,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[18]/column[0]/paragraph[2]",
+        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
+        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
       }
     },
     {
@@ -632,34 +661,6 @@
         "path": "/images[76]/image[0]",
         "produced": null,
         "reference": "Together / Richard Clayderman & Francis Goya"
-      }
-    },
-    {
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "instances": 12,
-      "documents": [
-        "barrios",
-        "borislova",
-        "jovicic",
-        "kiselev",
-        "news",
-        "news_2007",
-        "segovia",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 10
-      },
-      "rank": 16,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[18]/column[0]/paragraph[2]",
-        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
       }
     },
     {
@@ -5448,13 +5449,13 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "207d2591",
+      "id": "b9d45268",
       "doc": "pavlov_azancheev",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[32]",
+      "path": "/quote[31]/paragraph[1]",
       "producedLine": 98,
       "referenceLine": null,
       "produced": "Адрес первый: г. Краснодар, ул. К.Либкнехта д. № 19 И.Т.К. № 1 - Матвею Степановичу Павлову (именно \"Павлову\", без второй фамилии \"Азанчеев\").",
@@ -5462,13 +5463,13 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "e5682701",
+      "id": "76edead4",
       "doc": "pavlov_azancheev",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[32]",
+      "path": "/quote[31]/paragraph[1]",
       "producedLine": 100,
       "referenceLine": null,
       "produced": "Адрес второй: станица Усть-Лабинская Краснодарского края, почт. ящ. № 1, И.Т.К. № 4 - Любовье Петровне Павловой. - Остальные правила отправления посылок укажет…",
@@ -5476,13 +5477,13 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "9ff53461",
+      "id": "b1643770",
       "doc": "pavlov_azancheev",
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "evidence": "content",
       "op": "insert",
-      "path": "/paragraph[32]",
+      "path": "/quote[31]/paragraph[1]",
       "producedLine": 102,
       "referenceLine": null,
       "produced": "Если приеду в Москву, то лично поделюсь их письмами, описания ими их положения не требует пояснений. Помочь нужно и, если можете, то сделайте это - прошу Вас. …",
@@ -5560,34 +5561,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "015b81c8",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[17]",
-      "producedLine": 55,
-      "referenceLine": 54,
-      "produced": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н…",
-      "reference": "… Дела и новости таковы: Мирон Петрович Папченко и Матвей Степанович Павлов в условиях известных Вам со слов Владимира Павловича Машкевича. Положение первого н… — at /paragraph[18]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "197b85e7",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[19]",
-      "producedLine": 59,
-      "referenceLine": 58,
-      "produced": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича …",
-      "reference": "Уважаемый Александр Яковлевич! Простите, что, не будучи с Вами знаком - пишу Вам. Но делаю это, по настоянию нашего общего знакомого Александра Александровича … — at /paragraph[20]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "736ad62e",
       "doc": "pavlov_azancheev",
       "class": "retyped.paragraph-to-quote",
@@ -5598,7 +5571,7 @@
       "producedLine": 64,
       "referenceLine": 63,
       "produced": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,…",
-      "reference": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,… — at /paragraph[25]",
+      "reference": "Зачарованною сказкой в облаках плывёт луна, Убаюканная лаской нежным светом вся полна, Освещает серебристым реки, лес, луга, поля, Спит, объята сном цветистым,… — at /quote[24]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {
@@ -5612,7 +5585,7 @@
       "producedLine": 69,
       "referenceLine": 68,
       "produced": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть,",
-      "reference": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть, — at /paragraph[25]",
+      "reference": "Помнишь ли? Как с тобой мы прощались, Помнишь ли? Как обещали любить, Помнишь ли? Как на прощанье обнялись, Помнишь ли? Как мы клялись не забыть, — at /quote[24]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {
@@ -5626,134 +5599,22 @@
       "producedLine": 74,
       "referenceLine": 73,
       "produced": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\".",
-      "reference": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\". — at /paragraph[25]",
+      "reference": "Помню я! Твой поцелуй первый чистый, Помню я! Девичий вздох от груди, Помню я! Робкий твой взгляд и лучистый, Помню я! Ты мне сказала \"пиши\". — at /quote[24]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {
-      "id": "c9461117",
+      "id": "7136bdd9",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/quote[24]",
-      "producedLine": 79,
-      "referenceLine": 78,
-      "produced": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн…",
-      "reference": "Годы быстро промелькнули, жизнь вернулась в колею, И избегнув вражьей пули, думал я создать семью… Письма все мои пропали, их никто и не читал, И портрет цветн… — at /paragraph[25]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c9eb81d8",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[31]",
+      "path": "/quote[31]/paragraph[0]",
       "producedLine": 96,
       "referenceLine": 95,
       "produced": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер…",
-      "reference": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер… — at /paragraph[32]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6e7bcb42",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[33]",
-      "producedLine": 106,
-      "referenceLine": 102,
-      "produced": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо…",
-      "reference": "… 12 августа 1946 г. я получил от Максимова следующее известие: \"Спешу поделиться радостью: Мирон Петрович Папченко здоров, свободен и пребывает в полном благо… — at /paragraph[34]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f258d9ad",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[35]",
-      "producedLine": 110,
-      "referenceLine": 106,
-      "produced": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек.",
-      "reference": "– И тот, кто с песней по жизни шагает, тот никогда и нигде не пропадёт. – Я другой такой страны не знаю, где так вольно дышит человек. — at /paragraph[36]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5a79da45",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[37]",
-      "producedLine": 115,
-      "referenceLine": 111,
-      "produced": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю…",
-      "reference": "… М.С. и его жена в том же положении. Грустно, но пока бессильны оказались все попытки. Переписку с ними поддерживаю… — at /paragraph[38]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2276aac7",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[39]",
-      "producedLine": 119,
-      "referenceLine": 115,
-      "produced": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо…",
-      "reference": "... Лично у меня, настроение самое жуткое: от жены нет сведений. Моё письмо к ней, пришло ко мне обратно. Не знаю право, что и предположить - или у неё происхо… — at /paragraph[40]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "151dd09d",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[41]",
-      "producedLine": 123,
-      "referenceLine": 119,
-      "produced": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов.",
-      "reference": "… От жены - сведений нет. Пишет ли тебе? Что с ней? Целую тебя - благодарный М.С.Павлов. — at /paragraph[42]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d08cc1d6",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[43]",
-      "producedLine": 127,
-      "referenceLine": 123,
-      "produced": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось…",
-      "reference": "… Несколько слов по личному вопросу. Вы, Александр Яковлевич, вините меня в том, что я \"обхожу\" Ваш дом, - но нет! Я просто насторожился: на моё письмо с прось… — at /paragraph[44]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e7f4e120",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[46]",
-      "producedLine": 133,
-      "referenceLine": 129,
-      "produced": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро…",
-      "reference": "Уважаемый Александр Яковлевич! Простите, что так поздно высылаю Вам вот эти фотографии Матвея Степановича - только вчера смогла навестить Татьяну Прохоровну Ро… — at /paragraph[47]",
-      "verdict": "converter-defect"
+      "reference": "Многоуважаемый Александр Яковлевич! Любя человека и желая ему в горе всегда посильно помочь, я до некоторой степени считаю себя в праве просить и других поддер…",
+      "verdict": "ambiguous"
     },
     {
       "id": "1b2a3d29",

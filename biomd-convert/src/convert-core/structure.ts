@@ -136,6 +136,12 @@ interface Ctx {
   contentWidth: number | undefined;
   /** Body-text prominence of this page, for "is this block smaller than prose?". */
   bodyProminence: number;
+  /** Whether this page sets its ordinary prose in italic — the §3.5 baseline. */
+  proseItalic: boolean;
+  /** Blocks the source subordinated; empty unless the shape recurs (§5). */
+  subordinated: WeakSet<object>;
+  /** Whether the subordinated shape recurs — decided once, before lowering. */
+  subordinationRecurs: boolean;
   /**
    * Alignment of this page's own prose — the baseline `::: align` is judged against.
    *
@@ -247,6 +253,9 @@ export function recoverStructure(
     tables: [],
     contentWidth: contentWidthOf(root),
     bodyProminence: bodyProminenceOf(root),
+    proseItalic: proseItalicOf(root),
+    subordinated: new WeakSet(),
+    subordinationRecurs: false,
     proseAlign: proseAlignOf(root),
     blockAlign: new WeakMap(),
     documentTextLength: textOf(root).trim().length,
@@ -260,6 +269,8 @@ export function recoverStructure(
     boundedDepth: 0,
     frameDepth: 0,
   };
+
+  ctx.subordinationRecurs = subordinationRecursIn(root, ctx.proseItalic);
 
   const children = blocksFrom(root, ctx);
   return {
@@ -390,14 +401,28 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     // container and not evidence about the run.
     const align = foldTextAlign(child.style?.textAlign);
     if (align !== null) for (const block of produced) ctx.blockAlign.set(block, align);
+    // Same reasoning, for §3.5's subordination: the evidence is on the source
+    // element and has to be recorded while it is still in hand.
+    if (ctx.subordinationRecurs && isSubordinatedBlock(child, ctx)) {
+      for (const block of produced) ctx.subordinated.add(block);
+    }
     out.push(...produced);
   }
 
   flushInline();
   ctx.inCaptionContext = outerCaptionContext;
   ctx.inCenteredBlock = outerCentered;
+  // Subordination before alignment: a quoted letter is one block quote whose
+  // interior alignment is the quote's own business, and wrapping its paragraphs
+  // in `align` first would leave the quote holding directives instead of prose.
   return bindCaptions(
-    groupAlignedRuns(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx),
+    groupAlignedRuns(
+      groupSubordinatedRuns(
+        promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx),
+        ctx,
+      ),
+      ctx,
+    ),
     ctx,
   );
 }
@@ -507,6 +532,67 @@ function groupAlignedRunsCommitted(children: BiomdContent[], ctx: Ctx, container
     ctx.frameDepth = frameDepth;
     ctx.boundedDepth = boundedDepth;
   }
+}
+
+/**
+ * `>` for a run of blocks the source subordinated to the article (§3.5).
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A maximal run of adjacent siblings each set *wholly* in italic
+ * on a page that has upright prose to contrast against — see
+ * {@link isSubordinatedBlock} for why this is the only one of §3.5's signals
+ * that survives measurement on this corpus, and {@link proseItalicOf} for why
+ * the contrast is tested rather than the majority. Explicitly not font size,
+ * which §3.5 rules out in as many words and which on an archive page reports
+ * the opposite of the truth.
+ *
+ * **Recurrence.** The shape must occur at least twice on the page, decided
+ * before lowering by {@link subordinationRecursIn}. This is what carries the
+ * rule: across the 13 references, wholly-italic blocks occur on four pages —
+ * `pavlov_azancheev` (17), `segovia` (2), `borislova` (1), `barrios` (1) — and
+ * requiring two selects exactly the two the references quote.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - a **single italic block**: a credit line or a title, which is what
+ *     `barrios` and `borislova` have and what the recurrence gate excludes;
+ *   - an **italic phrase inside a paragraph**, which §3.5 names outright ("do
+ *     not turn titles, scare quotes, ordinary dialogue fragments … into a block
+ *     quote") — a `<p>` wrapping `<i>` computes upright, so it never qualifies;
+ *   - a **page set in italic throughout**, where the distinction carries no
+ *     information at all.
+ *
+ * A run rather than a block: a quoted letter is several paragraphs, and §3.5
+ * asks for attribution to stay in the final quoted paragraph, which only works
+ * if the whole letter is one quote.
+ */
+function groupSubordinatedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
+  if (!ctx.subordinationRecurs || blocks.length === 0) return blocks;
+
+  const out: BiomdContent[] = [];
+  let run: BiomdContent[] = [];
+
+  const flush = (): void => {
+    // No ledger entry: every member was recorded as EMITTED by the element it
+    // came from, and this pass regroups blocks without consuming source nodes.
+    if (run.length > 0) out.push({ type: "blockquote", children: run as BlockContent[] });
+    run = [];
+  };
+
+  for (const block of blocks) {
+    // A quote holds prose. A picture, a table or a nested region carries its own
+    // structure and §3.5 is about text the source set apart from other text.
+    const eligible =
+      ctx.subordinated.has(block) && (block.type === "paragraph" || block.type === "list" || block.type === "heading");
+    if (!eligible) {
+      flush();
+      out.push(block);
+      continue;
+    }
+    run.push(block);
+  }
+  flush();
+  return out;
 }
 
 function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
@@ -779,6 +865,96 @@ function isCaptionContext(node: LadomNode, ctx: Ctx): boolean {
   if (prominence.centered) return true;
   return prominence.fontPx !== undefined && prominence.fontPx < ctx.bodyProminence * 0.95;
 }
+
+/**
+ * Whether italic can distinguish anything on this page.
+ *
+ * The test is *contrast*, not majority, and the difference is the whole rule.
+ * A majority test asks "is most of the long prose italic", which on an archive
+ * page measures the quoted matter rather than the article: `pavlov_azancheev`
+ * runs 8 italic long blocks against 4 upright, because it is a page of letters,
+ * and a majority test therefore concludes the page is italic and declines to
+ * quote any of them — the quotes disqualifying themselves.
+ *
+ * What actually makes italic meaningless is a page with *no* upright prose at
+ * all, where the stylesheet has set the body italic and the distinction carries
+ * no information. That is what this asks.
+ */
+function proseItalicOf(root: LadomNode): boolean {
+  let italic = 0;
+  let upright = 0;
+  for (const el of walkElements(root)) {
+    if (el.tag !== "p" && el.tag !== "div" && el.tag !== "td") continue;
+    if (el.children.some((c) => c.kind === "element" && isBlockTag(c.tag))) continue;
+    if (textOf(el).length < 200 || el.style === undefined) continue;
+    if (el.style.fontStyle === "italic") italic += 1;
+    else upright += 1;
+  }
+  return italic > 0 && upright === 0;
+}
+
+/**
+ * A block the source deliberately subordinated to the article around it (§3.5).
+ *
+ * §3.5 states both the mapping and the evidence: a block quote "MAY also carry
+ * a coherent commentary, annotation, or source-credit block that the source
+ * deliberately subordinates to the main prose — shown by combined evidence such
+ * as a consistently smaller font *plus* deeper indentation or separate
+ * alignment, **never by font size alone**".
+ *
+ * ## Two corpus facts that decide which evidence is available
+ *
+ * **Indentation is not rendered.** These stylesheets write `margin-left: 25`
+ * with no unit, which is invalid CSS, and Chromium drops it: every block on
+ * `pavlov_azancheev` computes an inset of 0, the quoted letters included. The
+ * indent is in the source and not on the page, so it cannot be the evidence —
+ * a rule built on it can never fire, which is what the first attempt here did.
+ *
+ * **The quotes can define the baseline.** `bodyProminenceOf` samples the
+ * longest blocks, and on a page that is an archive of letters the longest
+ * blocks *are* the letters. `pavlov_azancheev`'s body prominence is therefore
+ * 10 pt — the quoted matter's own size — and the article's 11 pt headnotes
+ * measure as *larger*. Size on such a page reports the opposite of the truth.
+ *
+ * What survives both is the one signal the reader actually sees: the block is
+ * set wholly in italic and the page's prose is not. Not font size, which §3.5
+ * rules out in as many words — a different signal, and a relational one.
+ */
+function isSubordinatedBlock(el: LadomNode, ctx: Ctx): boolean {
+  if (ctx.proseItalic || el.style === undefined) return false;
+  // The *block* is italic, not a phrase inside it: a `<p>` wrapping `<i>…</i>`
+  // computes `normal` and is a paragraph with emphasis in it, which §3.5's
+  // "do not turn … ordinary dialogue fragments … into a block quote" excludes.
+  return el.style.fontStyle === "italic" && textOf(el).trim() !== "";
+}
+
+/**
+ * Whether the subordinated shape *recurs* on this page.
+ *
+ * `CLAUDE.md` §5 makes this a design law rather than a heuristic: every
+ * detector that survived here required recurrence, and every single-block
+ * typographic threshold regressed the corpus. One indented, smaller paragraph
+ * is a paragraph with a stylesheet accident behind it; a page that sets fifteen
+ * of them the same way is a page quoting fifteen documents.
+ *
+ * Counted before lowering, so the answer is the same for every block on the
+ * page and cannot depend on the order containers happen to be visited.
+ */
+function subordinationRecursIn(root: LadomNode, proseItalic: boolean): boolean {
+  const probe = { proseItalic } as Ctx;
+  let seen = 0;
+  for (const el of walkElements(root)) {
+    if (el.tag !== "p" && el.tag !== "div") continue;
+    if (textOf(el).trim() === "") continue;
+    if (!isSubordinatedBlock(el, probe)) continue;
+    seen += 1;
+    if (seen >= MIN_SUBORDINATED_BLOCKS) return true;
+  }
+  return false;
+}
+
+/** Two is a pattern; one is an accident. */
+const MIN_SUBORDINATED_BLOCKS = 2;
 
 /** The prominence of ordinary prose on this page, in px. */
 function bodyProminenceOf(root: LadomNode): number {
