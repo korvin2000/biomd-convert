@@ -27,6 +27,10 @@ function classes(produced: string, reference: string): string[] {
   return diffDocuments("t", produced, reference).findings.map((f) => f.class);
 }
 
+function findings(produced: string, reference: string) {
+  return diffDocuments("t", produced, reference).findings;
+}
+
 describe("identity", () => {
   it("reports nothing when a reference is compared with itself", () => {
     for (const entry of references) {
@@ -134,10 +138,95 @@ describe("text defect classification", () => {
     // not one paragraph that was rewritten, they are one that vanished and
     // another that appeared, and the two have different owning rules. Collapsing
     // them would hide a deletion behind an edit.
-    // `.unattested` is the sub-class: the reference holds this text in no
-    // construct at all, which is what makes it an insertion rather than an edit.
+    // `.unattested` on both sides: neither document holds the other's text in
+    // any construct, which is what makes this an insertion plus a deletion
+    // rather than an edit — and the one case where "missing" means missing.
     expect(classes("совершенно другой текст здесь\n", "нечто иное про гитару\n")).toEqual(
-      expect.arrayContaining(["paragraph.missing", "paragraph.spurious.unattested"]),
+      expect.arrayContaining(["paragraph.missing.unattested", "paragraph.spurious.unattested"]),
+    );
+  });
+});
+
+/**
+ * The home question is symmetric, and its answer decides the severity.
+ *
+ * A reference block was reported bare and `critical`, on `content` evidence,
+ * which reads as prose that was lost. Measured over the corpus it never was:
+ * all ten `paragraph.missing` findings had their text sitting in the produced
+ * document under a different container. Presence is a fact both sides can be
+ * asked about, and a finding may not claim loss while the words are there.
+ */
+describe("missing blocks name where this document put the text", () => {
+  const cases: Array<[string, string, string]> = [
+    [
+      // Still a paragraph, elsewhere: placement, not content. Written twice on
+      // the reference side so that one copy pairs and the other has to be
+      // named — with a single copy the reconciler pairs it across containers
+      // and answers `paragraph.containment`, which is a better answer still.
+      "Джулиан БРИМ\n\nпрочее\n",
+      "Джулиан БРИМ\n\nДжулиан БРИМ\n\nпрочее\n",
+      "paragraph.missing.in-paragraph",
+    ],
+    [
+      // One side ended a line, the other started a block. `Номера изданий:`
+      // heads its own paragraph in the reference and opens a `\`-run here.
+      "Номера изданий:\\\nДжаз-сюита - IMP 066\n",
+      "Номера изданий:\n\nДжаз-сюита - IMP 066\n",
+      "paragraph.missing.in-break-run",
+    ],
+    [
+      // A caption that swallowed the line below the figure. The words are in
+      // the produced document — inside a longer string, at no boundary.
+      "::: image\nsrc: a.jpg\ncaption: А. Сеговия с учениками — Ленинград, гостиница Европейская\n:::\n",
+      "::: image\nsrc: a.jpg\ncaption: А. Сеговия с учениками\n:::\n\nЛенинград, гостиница Европейская\n",
+      "paragraph.missing.absorbed",
+    ],
+    [
+      // Flattened into a record matrix. The table carries other rows on
+      // purpose: a one-cell table simply pairs with the paragraph and reports
+      // `retyped.table-to-paragraph`, which is the reconciler doing better.
+      "| Rodrigo Fantasia | 1954 |\n| --- | --- |\n| Ponce Concierto del Sur | 1941 |\n| Castelnuovo Concerto | 1939 |\n",
+      "Rodrigo Fantasia\n\nсовсем иные слова про другое\n",
+      "paragraph.missing.in-table",
+    ],
+  ];
+  for (const [produced, reference, expected] of cases) {
+    it(`classifies it as ${expected}`, () => {
+      expect(classes(produced, reference)).toContain(expected);
+    });
+  }
+
+  it("calls a placement finding major and structural, not critical content", () => {
+    // The severity *is* the claim. Critical/`content` says prose was lost, and
+    // ranking work by `instances × severity × generality` then puts a class
+    // that loses nothing above every class that does.
+    const found = findings("Джулиан БРИМ\n\nпрочее\n", "Джулиан БРИМ\n\nДжулиан БРИМ\n\nпрочее\n").filter(
+      (f) => f.class === "paragraph.missing.in-paragraph",
+    );
+    expect(found).toHaveLength(1);
+    expect(found[0]).toMatchObject({ severity: "major", evidence: "structure" });
+  });
+
+  it("keeps critical content for the one case where the words are gone", () => {
+    const found = findings("прочее\n", "гитарист и композитор\n\nпрочее\n").filter((f) =>
+      f.class.startsWith("paragraph.missing"),
+    );
+    expect(found).toHaveLength(1);
+    expect(found[0]).toMatchObject({
+      class: "paragraph.missing.unattested",
+      severity: "critical",
+      evidence: "content",
+    });
+  });
+
+  it("does not let a page that names itself absorb its own chrome", () => {
+    // `.absorbed` is the weakest answer and the only one that can be a
+    // coincidence. `news_2007` repeats `Архив новостей` as footer chrome the
+    // reference drops, and it runs inside the page's own heading — two words,
+    // below the minimum, so the finding stays `.unattested` and stays a
+    // question about chrome rather than an answer pointing at the masthead.
+    expect(classes("## Архив новостей за 2007 год\n\n• Архив новостей •\n", "## Архив новостей за 2007 год\n")).toContain(
+      "paragraph.spurious.unattested",
     );
   });
 });

@@ -27,6 +27,7 @@ import {
   type ListBlock,
   type ParagraphBlock,
   type TableBlock,
+  inlineOf,
   readBlocks,
 } from "./blocks.js";
 
@@ -86,10 +87,8 @@ interface Context {
   doc: string;
   findings: Finding[];
   orphans: Orphan[];
-  /** Where the reference put each piece of text — see {@link indexConstructs}. */
-  referenceHome: Map<string, string>;
-  /** Reference text kept as a plain paragraph, whatever else also holds it. */
-  referenceParagraphs: Set<string>;
+  /** One text index per side — see {@link indexSide}. Looked up on the *other*. */
+  index: Record<"produced" | "reference", SideIndex>;
 }
 
 export function diffDocuments(doc: string, producedSource: string, referenceSource: string): DiffResult {
@@ -99,8 +98,7 @@ export function diffDocuments(doc: string, producedSource: string, referenceSour
     doc,
     findings: [],
     orphans: [],
-    referenceHome: indexConstructs(reference),
-    referenceParagraphs: indexParagraphs(reference),
+    index: { produced: indexSide(produced), reference: indexSide(reference) },
   };
   compareSequence(ctx, produced, reference, "");
   reconcile(ctx);
@@ -172,14 +170,48 @@ function reconcile(ctx: Context): void {
   }
 }
 
+/**
+ * Report an orphan, named by where the *other* side put its text.
+ *
+ * The home question is symmetric and was asked on one side only. A produced
+ * orphan was sub-classified by the construct owning its text in the reference;
+ * a reference orphan was reported bare, at `missingSeverity` — `critical`, with
+ * `content` evidence, which reads as "this prose was lost".
+ *
+ * Measured, it never was. All ten `paragraph.missing` findings in the corpus had
+ * their text sitting in the produced document: three as a line inside a
+ * hard-break run the reference had split into blocks, four as a whole paragraph
+ * under a different parent, one as a table cell, two absorbed into a longer
+ * block. Zero were absent. The ledger's top-ranked class, at `critical × 10 × 6`,
+ * pointed at content loss that does not exist, and outranked every real class
+ * while doing it.
+ *
+ * So presence is asked of both sides now, and it decides the severity. A block
+ * whose words are on the other side is a **placement** finding — `major`, and
+ * `structure`, because the defect is which container holds the text, not whether
+ * the text survived. Only `.unattested` — the words are nowhere on the other
+ * side — is a content finding, and that is the one case where `critical` is the
+ * truth. The instances do not move: the same findings are reported, under names
+ * that say what they are.
+ *
+ * The question is only well-posed for blocks whose text *is* their content.
+ * {@link blockText} of a directive is its name and property values followed by
+ * its children, so a `::: columns` never matches anything and `.unattested`
+ * would assert a loss that its own children disprove — and a `---` has no text
+ * to place at all. {@link evidenceOf} already draws exactly that line.
+ */
 function emitUnmatched(ctx: Context, orphan: Orphan): void {
   const block = orphan.block;
   const base = `${classOf(block)}.${orphan.side === "reference" ? "missing" : "spurious"}`;
-  const cls = orphan.side === "produced" ? `${base}.${homeOf(ctx, block)}` : base;
+  const home = evidenceOf(block) === "content" ? homeOf(ctx, block, orphan.side) : null;
+  const cls = home === null ? base : `${base}.${home}`;
+  const placed = home !== null && home !== "unattested";
+  const severity = placed ? "major" : missingSeverity(block);
+  const evidence = placed ? "structure" : evidenceOf(block);
   ctx.findings.push(
     orphan.side === "reference"
-      ? finding(ctx.doc, cls, missingSeverity(block), evidenceOf(block), "delete", orphan.path, null, block)
-      : finding(ctx.doc, cls, missingSeverity(block), evidenceOf(block), "insert", orphan.path, block, null),
+      ? finding(ctx.doc, cls, severity, evidence, "delete", orphan.path, null, block)
+      : finding(ctx.doc, cls, severity, evidence, "insert", orphan.path, block, null),
   );
 }
 
@@ -188,12 +220,11 @@ function childrenOf(block: Block): Block[] {
 }
 
 // ---------------------------------------------------------------------------
-// Where did the reference put it?
+// Where did the other side put it?
 // ---------------------------------------------------------------------------
 
 /**
- * Sub-classify a spurious produced block by the construct that owns its text on
- * the reference side.
+ * Sub-classify an orphan by the construct that owns its text on the other side.
  *
  * `paragraph.spurious` was the ledger's largest class and its least actionable:
  * 50 instances across 11 documents with nothing in common except "the reference
@@ -208,28 +239,90 @@ function childrenOf(block: Block): Block[] {
  *   `.in-heading`    a heading. Typographic prominence was not recovered.
  *   `.in-table`      a table cell. A record matrix was flattened.
  *   `.in-align`      an `::: align` body. The alignment family owns it.
- *   `.in-paragraph`  the reference keeps it as a paragraph too, somewhere else.
+ *   `.in-paragraph`  the other side keeps it as a paragraph too, somewhere else.
  *                    Nothing was retyped — this is placement, so the owning
  *                    mechanism is containment or ordering, not a block rule.
- *   `.unattested`    no reference construct holds this text at all — page
- *                    chrome, a caption echo of a dropped figure, or content the
- *                    reference deleted. The only sub-class that may be ceiling.
+ *   `.in-break-run`  it is one *line* of a paragraph over there, ended by a hard
+ *                    break. One side made a block boundary where the other made
+ *                    a line ending: `Надя Борислова:` heads its own paragraph in
+ *                    the reference and opens a `\`-run here.
+ *   `.absorbed`      its words run contiguously *inside* a longer block over
+ *                    there, at no boundary at all — a caption that swallowed the
+ *                    line below it, a block quote left inline in its prose.
+ *   `.unattested`    no construct on the other side holds this text. On the
+ *                    produced side that is page chrome or content the reference
+ *                    deleted; on the reference side it is the one thing this
+ *                    class always claimed to be — prose that was genuinely lost.
  *
- * No literals: the index is built from the reference document being compared,
- * and the key is the text itself. A detector here cannot name a document.
+ * Asked strongest answer first: an exact match against a whole block beats a
+ * line of one, which beats a run inside one. `.absorbed` is the weakest claim
+ * and therefore last, never displacing an exact answer — and it stays honest
+ * because every finding quotes both spans, so a coincidence is visible to
+ * whoever reads it.
+ *
+ * No literals: both indices are built from the two documents being compared, and
+ * the key is the text itself. A detector here cannot name a document.
  */
-function homeOf(ctx: Context, block: Block): string {
+function homeOf(ctx: Context, block: Block, side: "produced" | "reference"): string {
+  const other = ctx.index[side === "produced" ? "reference" : "produced"];
   const key = homeKey(blockText(block));
   if (key === "") return "unattested";
   // Same kind, elsewhere — asked first, because nothing was retyped and the
-  // owning mechanism is therefore placement. A reference may hold one piece of
+  // owning mechanism is therefore placement. A document may hold one piece of
   // text twice: `news` writes an obituary's subject as a bold paragraph *and*
   // captions the photograph below it with the same name. Answering
   // `.caption-echo` there sends a reader hunting for a duplicated caption when
-  // the reference has the very same paragraph, three lines further down.
-  if (block.kind === "paragraph" && ctx.referenceParagraphs.has(key)) return "in-paragraph";
-  return ctx.referenceHome.get(key) ?? "unattested";
+  // the other side has the very same paragraph, three lines further down.
+  if (block.kind === "paragraph") {
+    if (other.paragraphs.has(key)) return "in-paragraph";
+    // A line of a run is still a paragraph over there, so it belongs with the
+    // same-kind answers and ahead of every retyping one. `borislova` opens with
+    // `# Надя Борислова` and labels a quotation `Надя Борислова:` further down;
+    // folded they are one key, and asking `home` first answered `.in-heading` —
+    // true, coincidental, and it sends a reader to the masthead.
+    if (other.lines.has(key)) return "in-break-run";
+  }
+  const named = other.home.get(key);
+  if (named !== undefined) return named;
+  if (other.lines.has(key)) return "in-break-run";
+  return absorbedIn(other, key) ? "absorbed" : "unattested";
 }
+
+/**
+ * Whether a key runs contiguously inside some longer block on the other side.
+ *
+ * Keys are space-joined words, so padding both ends turns substring containment
+ * into whole-word containment — `гитара` cannot match inside `гитарист`.
+ *
+ * **False friend: a page that names itself.** Containment is the weakest answer
+ * here and the only one that can be a coincidence, because a short phrase may
+ * recur in a document for reasons that have nothing to do with where a block
+ * went. The sweep is a trend rather than a plateau — 10 attributed at one word,
+ * 9 at two, 8 at three, 5 from four up — so the number is doing real work and
+ * was picked by reading what each step admits:
+ *
+ * - at **1**, `news`'s `ПОЗДРАВЛЯЕМ` matches inside any sentence containing it.
+ *   A single word places nothing.
+ * - at **2**, `news_2007`'s footer chrome `• Архив новостей •` matches inside
+ *   the page's own heading, `Архив новостей за 2007 год`. The reference dropped
+ *   that footer; saying the heading holds it sends a reader to the masthead.
+ * - at **4**, three obituary subjects — `Ядвига Ричардовна КОВАЛЕВСКАЯ` and two
+ *   more — stop being recognised inside the notices that name them, and revert
+ *   to claiming the reference holds them nowhere. A full three-part name is not
+ *   a coincidence.
+ *
+ * Three is the value that admits every full name and no bare label. The claim
+ * stays honest above that because each finding quotes both spans: a containment
+ * that *is* coincidental is visible to whoever reads it, and it never hides a
+ * defect — it renames one from "lost" to "misplaced".
+ */
+function absorbedIn(other: SideIndex, key: string): boolean {
+  if (key.split(" ").length < ABSORBED_MIN_WORDS) return false;
+  const needle = ` ${key} `;
+  return other.hosts.some((host) => host.length > key.length && ` ${host} `.includes(needle));
+}
+
+const ABSORBED_MIN_WORDS = 3;
 
 /**
  * Fold text to a lookup key.
@@ -237,14 +330,43 @@ function homeOf(ctx: Context, block: Block): string {
  * Case and every non-alphanumeric character are dropped, so an escape (`01\.`),
  * a bullet glyph, a typographic dash or a different quote cannot hide the fact
  * that the same words landed somewhere else.
+ *
+ * Intra-word hyphens go too, via {@link similarityTokens} and for its reason:
+ * this corpus wraps words mid-token, and a key that split on the hyphen made
+ * `успе-хов` a different word from `успехов`. `jovicic`'s Segovia testimonial
+ * then reported as content the produced document does not have, while sitting
+ * inside its opening paragraph with one wrap artifact in it.
  */
 function homeKey(text: string): string {
-  return words(text).join(" ").toLowerCase();
+  return similarityTokens(text).join(" ");
 }
 
-/** Reference text → the name of the construct that holds it. */
-function indexConstructs(blocks: readonly Block[]): Map<string, string> {
+/**
+ * Everything one document says, keyed by text, for the other to ask about.
+ *
+ * Built per side and identical on both, because "where did the text go" and
+ * "where did the text come from" are the same question asked from opposite
+ * ends. Four indices rather than one, because they are four different answers,
+ * ordered by strength in {@link homeOf}:
+ *
+ * - `home` — what the text *became*: a heading, a list item, a cell, a caption.
+ * - `paragraphs` — whether it *stayed* a paragraph. Not a competing answer, a
+ *   different question, which is why it is asked first and kept separate.
+ * - `lines` — the hard-break-delimited lines of multi-line paragraphs, so a
+ *   block boundary on one side can be recognised as a line ending on the other.
+ * - `hosts` — every indexed key, longest-match fodder for {@link absorbedIn}.
+ */
+interface SideIndex {
+  home: Map<string, string>;
+  paragraphs: Set<string>;
+  lines: Set<string>;
+  hosts: string[];
+}
+
+function indexSide(blocks: readonly Block[]): SideIndex {
   const home = new Map<string, string>();
+  const paragraphs = new Set<string>();
+  const lines = new Set<string>();
   // First writer wins: a caption is also inside its `::: image`, and the caption
   // is the more specific — and more actionable — answer.
   const put = (text: string, where: string): void => {
@@ -255,6 +377,24 @@ function indexConstructs(blocks: readonly Block[]): Map<string, string> {
   const visit = (list: readonly Block[]): void => {
     for (const block of list) {
       switch (block.kind) {
+        case "paragraph": {
+          const key = homeKey(block.inline.text);
+          if (key !== "") paragraphs.add(key);
+          // Only a *multi-line* paragraph can absorb a block: a single-line one
+          // has no interior boundary, and indexing it here would answer
+          // `.in-break-run` for text that is simply a paragraph elsewhere.
+          if (block.lines.length > 1) {
+            // Through `inlineOf`, so a line is keyed by what it *says* — the
+            // whole paragraph is, and a raw line is not. `[ДИСКОГРАФИЯ](/#/…)`
+            // read literally carries its own target into the key and matches
+            // the reference's bare label nowhere.
+            for (const line of block.lines) {
+              const lineKey = homeKey(inlineOf(line).text);
+              if (lineKey !== "" && lineKey !== key) lines.add(lineKey);
+            }
+          }
+          break;
+        }
         case "heading":
           put(block.inline.text, "in-heading");
           break;
@@ -282,29 +422,7 @@ function indexConstructs(blocks: readonly Block[]): Map<string, string> {
     }
   };
   visit(blocks);
-  return home;
-}
-
-/**
- * Reference text kept as a plain paragraph.
- *
- * Separate from {@link indexConstructs} rather than one more case in it,
- * because a paragraph is not a competing *answer* — it is the answer to a
- * different question. `indexConstructs` asks "what did this text become";
- * this asks "did it stay what it was", and {@link homeOf} asks that one first.
- */
-function indexParagraphs(blocks: readonly Block[]): Set<string> {
-  const keys = new Set<string>();
-  const visit = (list: readonly Block[]): void => {
-    for (const block of list) {
-      if (block.kind === "paragraph") {
-        const key = homeKey(block.inline.text);
-        if (key !== "") keys.add(key);
-      } else visit(childrenOf(block));
-    }
-  };
-  visit(blocks);
-  return keys;
+  return { home, paragraphs, lines, hosts: [...home.keys(), ...paragraphs] };
 }
 
 /** A `::: nav`'s items are an ordinary list inside the directive. */

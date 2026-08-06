@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-06T10:49:31.896Z",
+  "generated": "2026-08-06T12:45:30.218Z",
   "totals": {
     "findings": 321,
-    "converterDefects": 191,
+    "converterDefects": 200,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 50,
-    "ambiguous": 80,
+    "ambiguous": 71,
     "bySeverity": {
-      "critical": 37,
-      "major": 132,
+      "critical": 13,
+      "major": 156,
       "minor": 152
     }
   },
@@ -33,64 +33,64 @@
       "doc": "borislova",
       "findings": 21,
       "converterDefects": 16,
-      "critical": 5,
-      "major": 7,
+      "critical": 2,
+      "major": 10,
       "minor": 9
     },
     {
       "doc": "goya2",
       "findings": 49,
-      "converterDefects": 43,
-      "critical": 3,
-      "major": 16,
+      "converterDefects": 45,
+      "critical": 0,
+      "major": 19,
       "minor": 30
     },
     {
       "doc": "jovicic",
       "findings": 8,
       "converterDefects": 6,
-      "critical": 2,
-      "major": 1,
+      "critical": 0,
+      "major": 3,
       "minor": 5
     },
     {
       "doc": "kiselev",
       "findings": 57,
       "converterDefects": 17,
-      "critical": 1,
-      "major": 17,
+      "critical": 0,
+      "major": 18,
       "minor": 39
     },
     {
       "doc": "news",
       "findings": 64,
-      "converterDefects": 46,
-      "critical": 12,
-      "major": 35,
+      "converterDefects": 49,
+      "critical": 5,
+      "major": 42,
       "minor": 17
     },
     {
       "doc": "news_2007",
       "findings": 17,
       "converterDefects": 9,
-      "critical": 2,
-      "major": 5,
+      "critical": 1,
+      "major": 6,
       "minor": 10
     },
     {
       "doc": "pavlov_azancheev",
       "findings": 15,
-      "converterDefects": 10,
-      "critical": 3,
-      "major": 8,
+      "converterDefects": 13,
+      "critical": 0,
+      "major": 11,
       "minor": 4
     },
     {
       "doc": "segovia",
       "findings": 29,
       "converterDefects": 14,
-      "critical": 4,
-      "major": 15,
+      "critical": 1,
+      "major": 18,
       "minor": 10
     },
     {
@@ -112,39 +112,13 @@
     {
       "doc": "williams2",
       "findings": 11,
-      "converterDefects": 4,
-      "critical": 1,
-      "major": 3,
+      "converterDefects": 5,
+      "critical": 0,
+      "major": 4,
       "minor": 7
     }
   ],
   "classes": [
-    {
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "instances": 10,
-      "documents": [
-        "borislova",
-        "jovicic",
-        "kiselev",
-        "news",
-        "news_2007",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 10,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 300,
-      "example": {
-        "doc": "borislova",
-        "path": "/paragraph[3]",
-        "produced": null,
-        "reference": "Надя Борислова:"
-      }
-    },
     {
       "class": "paragraph.containment",
       "severity": "major",
@@ -194,7 +168,7 @@
       }
     },
     {
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "instances": 5,
       "documents": [
@@ -261,6 +235,29 @@
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "pavlov_azancheev",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
+        "produced": "1988",
+        "reference": null
       }
     },
     {
@@ -408,6 +405,29 @@
       }
     },
     {
+      "class": "paragraph.missing.absorbed",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "jovicic",
+        "news",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 27,
+      "example": {
+        "doc": "jovicic",
+        "path": "/quote[2]/paragraph[0]",
+        "produced": null,
+        "reference": "\"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время обучения в Академии Киджана в моем классе добился огромных успехов в ов…"
+      }
+    },
+    {
       "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "instances": 6,
@@ -473,28 +493,6 @@
         "path": "/paragraph[92]",
         "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
         "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-list",
-      "severity": "critical",
-      "instances": 2,
-      "documents": [
-        "goya2",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 20,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[10]/column[0]/paragraph[1]",
-        "produced": "09. Promise Me",
-        "reference": null
       }
     },
     {
@@ -591,7 +589,7 @@
       }
     },
     {
-      "class": "image.spurious.unattested",
+      "class": "image.spurious",
       "severity": "major",
       "instances": 3,
       "documents": [
@@ -610,6 +608,50 @@
         "path": "/image[0]",
         "produced": "",
         "reference": null
+      }
+    },
+    {
+      "class": "paragraph.missing.in-break-run",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "borislova",
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[3]",
+        "produced": null,
+        "reference": "Надя Борислова:"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "news",
+        "path": "/frame[34]/paragraph[2]",
+        "produced": null,
+        "reference": "Виктор Михайлович ЕФРЕМОВ"
       }
     },
     {
@@ -657,6 +699,28 @@
       }
     },
     {
+      "class": "paragraph.spurious.in-list",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "goya2",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[10]/column[0]/paragraph[1]",
+        "produced": "09. Promise Me",
+        "reference": null
+      }
+    },
+    {
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "instances": 2,
@@ -676,6 +740,27 @@
         "path": "/align[71]/heading[0]",
         "produced": "ДРУГИЕ АЛЬБОМЫ",
         "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
+      }
+    },
+    {
+      "class": "paragraph.spurious.absorbed",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 9,
+      "example": {
+        "doc": "news",
+        "path": "/frame[47]/align[1]/paragraph[1]",
+        "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
+        "reference": null
       }
     },
     {
@@ -763,27 +848,6 @@
       }
     },
     {
-      "class": "list.missing",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "news",
-        "path": "/list[93]",
-        "produced": null,
-        "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…"
-      }
-    },
-    {
       "class": "retyped.list-to-table",
       "severity": "major",
       "instances": 2,
@@ -823,69 +887,6 @@
         "path": "/align[59]/columns[0]/column[0]",
         "produced": "Андрес Сеговия",
         "reference": "◀ Андрес Сеговия — at /align[59]/paragraph[0]"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[2]",
-        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
-        "reference": null
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-table",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "borislova"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]/paragraph[0]",
-        "produced": "WMA",
-        "reference": null
-      }
-    },
-    {
-      "class": "quote.missing",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "jovicic"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "jovicic",
-        "path": "/quote[2]",
-        "produced": null,
-        "reference": "\"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время обучения в Академии Киджана в моем классе добился огромных успехов в ов…"
       }
     },
     {
@@ -933,7 +934,7 @@
       }
     },
     {
-      "class": "column.spurious.unattested",
+      "class": "column.spurious",
       "severity": "major",
       "instances": 1,
       "documents": [
@@ -975,7 +976,7 @@
       }
     },
     {
-      "class": "heading.missing",
+      "class": "heading.missing.caption-echo",
       "severity": "major",
       "instances": 1,
       "documents": [
@@ -1098,6 +1099,132 @@
         "path": "/columns[10]/column[0]/list[0]/item[8]",
         "produced": null,
         "reference": "09. Promise Me"
+      }
+    },
+    {
+      "class": "list.missing.absorbed",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/list[93]",
+        "produced": null,
+        "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…"
+      }
+    },
+    {
+      "class": "list.missing.in-break-run",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/list[96]",
+        "produced": null,
+        "reference": "1 место – Ровшан Мамедкулиев (Россия), 2 место – Артём Дервоед (Россия), 3 место – Константин Окуджава (Россия) и Марк Топчий (Украина)"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-table",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "segovia",
+        "path": "/paragraph[43]",
+        "produced": null,
+        "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra"
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[2]",
+        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
+        "reference": null
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-table",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "borislova"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "borislova",
+        "path": "/align[45]/paragraph[0]",
+        "produced": "WMA",
+        "reference": null
+      }
+    },
+    {
+      "class": "quote.missing.absorbed",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "jovicic"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "jovicic",
+        "path": "/quote[2]",
+        "produced": null,
+        "reference": "\"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время обучения в Академии Киджана в моем классе добился огромных успехов в ов…"
       }
     },
     {
@@ -1546,31 +1673,6 @@
       }
     },
     {
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "instances": 12,
-      "documents": [
-        "goya2",
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 12
-      },
-      "rank": 0,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
-        "produced": "1988",
-        "reference": null
-      }
-    },
-    {
       "class": "hardbreak.spurious",
       "severity": "minor",
       "instances": 9,
@@ -1617,6 +1719,28 @@
         "path": "/paragraph[5]",
         "produced": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…",
         "reference": "В 1986-1989 гг. Н. Борислова выступала с концертами во многих городах бывшего Советского Союза. В 1988 году стала солисткой Росконцерта. В 1987-1989 годах была…"
+      }
+    },
+    {
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "instances": 3,
+      "documents": [
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 3
+      },
+      "rank": 0,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[0]",
+        "produced": "Иллюстрированный биографический энциклопедический словарь",
+        "reference": null
       }
     },
     {
@@ -1994,9 +2118,9 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "e85387fe",
+      "id": "b5c7b817",
       "doc": "borislova",
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -2011,8 +2135,8 @@
       "id": "e555dc3f",
       "doc": "borislova",
       "class": "paragraph.spurious.in-table",
-      "severity": "critical",
-      "evidence": "content",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/align[45]/paragraph[0]",
       "producedLine": 294,
@@ -2036,11 +2160,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9777efe3",
+      "id": "1d2b8ed8",
       "doc": "borislova",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/paragraph[3]",
       "producedLine": null,
@@ -2148,11 +2272,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "21049657",
+      "id": "53ed33d8",
       "doc": "borislova",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/align[43]/paragraph[0]",
       "producedLine": null,
@@ -2291,8 +2415,8 @@
       "id": "481dd861",
       "doc": "goya2",
       "class": "paragraph.spurious.in-list",
-      "severity": "critical",
-      "evidence": "content",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/columns[10]/column[0]/paragraph[1]",
       "producedLine": 185,
@@ -2302,32 +2426,32 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "999680b5",
+      "id": "09df3623",
       "doc": "goya2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
       "producedLine": 349,
       "referenceLine": null,
       "produced": "1988",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "9a928309",
+      "id": "e0f7656b",
       "doc": "goya2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/columns[40]/column[0]/align[0]/paragraph[1]",
       "producedLine": 662,
       "referenceLine": null,
       "produced": "1999",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "942764ff",
@@ -2988,11 +3112,11 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "a0bd82ac",
+      "id": "5824675a",
       "doc": "jovicic",
-      "class": "quote.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "quote.missing.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/quote[2]",
       "producedLine": null,
@@ -3002,11 +3126,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e2fef93f",
+      "id": "fd460f89",
       "doc": "jovicic",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/quote[2]/paragraph[0]",
       "producedLine": null,
@@ -3800,11 +3924,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "6578e093",
+      "id": "af813ce4",
       "doc": "kiselev",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/columns[18]/column[0]/paragraph[1]",
       "producedLine": null,
@@ -3884,9 +4008,9 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "bfe01a6a",
+      "id": "7d307e8b",
       "doc": "news",
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3912,9 +4036,9 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "8a100280",
+      "id": "b8b67ab1",
       "doc": "news",
-      "class": "image.spurious.unattested",
+      "class": "image.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -3929,8 +4053,8 @@
       "id": "1f11f63e",
       "doc": "news",
       "class": "paragraph.spurious.in-paragraph",
-      "severity": "critical",
-      "evidence": "content",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[2]",
       "producedLine": 13,
@@ -3940,18 +4064,18 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9381e875",
+      "id": "78d307bc",
       "doc": "news",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/frame[47]/align[1]/paragraph[1]",
       "producedLine": 228,
       "referenceLine": null,
       "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "58cac983",
@@ -3968,32 +4092,32 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "dbca592c",
+      "id": "7e9ada79",
       "doc": "news",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/frame[63]/align[1]/paragraph[1]",
       "producedLine": 347,
       "referenceLine": null,
       "produced": "Владимир Ильич Богданович",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "f7cabe2d",
+      "id": "862c94ec",
       "doc": "news",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/frame[71]/align[1]/paragraph[1]",
       "producedLine": 394,
       "referenceLine": null,
       "produced": "Александр Петрович Мартынов",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "dd79f8d8",
@@ -4178,11 +4302,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "50e42b26",
+      "id": "30a3d210",
       "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/frame[34]/paragraph[2]",
       "producedLine": null,
@@ -4416,11 +4540,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a3c7208e",
+      "id": "f6f84724",
       "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/frame[61]/align[1]/paragraph[1]",
       "producedLine": null,
@@ -4430,11 +4554,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e0afc776",
+      "id": "50c6fac4",
       "doc": "news",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/frame[61]/align[1]/paragraph[2]",
       "producedLine": null,
@@ -4682,11 +4806,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "27a16225",
+      "id": "54b45207",
       "doc": "news",
-      "class": "list.missing",
+      "class": "list.missing.absorbed",
       "severity": "major",
-      "evidence": "content",
+      "evidence": "structure",
       "op": "delete",
       "path": "/list[93]",
       "producedLine": null,
@@ -4738,11 +4862,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "cfad53bc",
+      "id": "5d5173ab",
       "doc": "news",
-      "class": "list.missing",
+      "class": "list.missing.in-break-run",
       "severity": "major",
-      "evidence": "content",
+      "evidence": "structure",
       "op": "delete",
       "path": "/list[96]",
       "producedLine": null,
@@ -4780,9 +4904,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "49012c7c",
+      "id": "39b7dc93",
       "doc": "news_2007",
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -4878,11 +5002,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "95a6b349",
+      "id": "7520eaaf",
       "doc": "news_2007",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/columns[9]/column[0]/paragraph[0]",
       "producedLine": null,
@@ -5018,9 +5142,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "cb87256f",
+      "id": "5416ef86",
       "doc": "pavlov_azancheev",
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -5032,46 +5156,46 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "b9d45268",
+      "id": "781875ea",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/quote[31]/paragraph[1]",
       "producedLine": 98,
       "referenceLine": null,
       "produced": "Адрес первый: г. Краснодар, ул. К.Либкнехта д. № 19 И.Т.К. № 1 - Матвею Степановичу Павлову (именно \"Павлову\", без второй фамилии \"Азанчеев\").",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "76edead4",
+      "id": "10626c22",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/quote[31]/paragraph[1]",
       "producedLine": 100,
       "referenceLine": null,
       "produced": "Адрес второй: станица Усть-Лабинская Краснодарского края, почт. ящ. № 1, И.Т.К. № 4 - Любовье Петровне Павловой. - Остальные правила отправления посылок укажет…",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "b1643770",
+      "id": "5112e8ce",
       "doc": "pavlov_azancheev",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/quote[31]/paragraph[1]",
       "producedLine": 102,
       "referenceLine": null,
       "produced": "Если приеду в Москву, то лично поделюсь их письмами, описания ими их положения не требует пояснений. Помочь нужно и, если можете, то сделайте это - прошу Вас. …",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
       "id": "215945b9",
@@ -5245,8 +5369,8 @@
       "id": "8931c0ce",
       "doc": "segovia",
       "class": "paragraph.spurious.in-list",
-      "severity": "critical",
-      "evidence": "content",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[38]",
       "producedLine": 126,
@@ -5270,11 +5394,11 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "d880ea63",
+      "id": "aa367b0b",
       "doc": "segovia",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.absorbed",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/image[6]/paragraph[0]",
       "producedLine": null,
@@ -5494,11 +5618,11 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "4ee4012b",
+      "id": "27e972db",
       "doc": "segovia",
-      "class": "heading.missing",
+      "class": "heading.missing.caption-echo",
       "severity": "major",
-      "evidence": "content",
+      "evidence": "structure",
       "op": "delete",
       "path": "/heading[40]",
       "producedLine": null,
@@ -5550,11 +5674,11 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "e5104024",
+      "id": "52db765e",
       "doc": "segovia",
-      "class": "paragraph.missing",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-table",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/paragraph[43]",
       "producedLine": null,
@@ -5634,9 +5758,9 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "c68e8b01",
+      "id": "9020d5ba",
       "doc": "segovia1",
-      "class": "align.spurious.unattested",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -5648,9 +5772,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "3b6509d2",
+      "id": "5e66cb3d",
       "doc": "segovia1",
-      "class": "image.spurious.unattested",
+      "class": "image.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -5662,9 +5786,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "62fc4312",
+      "id": "67770d0d",
       "doc": "segovia1",
-      "class": "image.spurious.unattested",
+      "class": "image.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
@@ -6152,23 +6276,23 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "dc6e6f66",
+      "id": "8869092c",
       "doc": "williams2",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/columns[1]/column[0]/align[26]/paragraph[0]",
       "producedLine": 91,
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
       "reference": null,
-      "verdict": "ambiguous"
+      "verdict": "converter-defect"
     },
     {
-      "id": "3969cbe3",
+      "id": "0fb0306a",
       "doc": "williams2",
-      "class": "column.spurious.unattested",
+      "class": "column.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
