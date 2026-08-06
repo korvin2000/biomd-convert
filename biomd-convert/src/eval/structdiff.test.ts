@@ -196,19 +196,68 @@ describe("spurious blocks name where the reference put the text", () => {
 describe("triage separates content from layout", () => {
   const source = new SourceIndex("<p>гитарист и композитор</p><table><tr><td>1989</td></tr></table>");
 
-  it("treats prose the source does not attest as a ceiling, not a defect", () => {
-    expect(triage("Избранные записи", null, source, "heading.missing", "content")).toBe("source-unbacked");
+  it("treats prose the source does not attest as a reference inconsistency, not a defect", () => {
+    expect(triage("Избранные записи", null, source, "heading.missing", "content")).toBe("reference-inconsistency");
   });
 
   it("treats prose the source attests as a defect", () => {
-    expect(triage("гитарист и композитор", null, source, "paragraph.missing", "content")).toBe("source-backed");
+    expect(triage("гитарист и композитор", null, source, "paragraph.missing", "content")).toBe("converter-defect");
   });
 
   it("never calls a layout wrapper unreachable — §16.3 constrains content, not layout", () => {
-    expect(triage("columns 01. Love Story", null, source, "columns.missing", "structure")).toBe("source-backed");
+    expect(triage("columns 01. Love Story", null, source, "columns.missing", "structure")).toBe("converter-defect");
   });
 
   it("treats typography as the migrator's, never the author's", () => {
-    expect(triage("«виртуоз»", '"виртуоз"', source, "paragraph.typography.quotes", "content")).toBe("source-unbacked");
+    expect(triage("«виртуоз»", '"виртуоз"', source, "paragraph.typography.quotes", "content")).toBe(
+      "reference-inconsistency",
+    );
+  });
+
+  // The correction this policy exists for: the verdict is decided by which side
+  // the *source* supports, not by which side differs from the reference.
+  it("blames the reference when the produced side is the attested one", () => {
+    // `goya2` in miniature: the source italicises a duration, the reference
+    // rewrites it as a plain em-dash run. Reproducing the reference would be the
+    // §16.3 violation, so the converter is not the thing to change here.
+    const italic = new SourceIndex("<p>трек <i>4.07</i></p>");
+    expect(triage("(none)", "em:4.07", italic, "emphasis.span", "structure")).toBe("reference-inconsistency");
+    // The mirror image: emphasis the source never had is invention, and work.
+    expect(triage("(none)", "em:трек", italic, "emphasis.span", "structure")).toBe("converter-defect");
+    // And a loss of the author's own emphasis is work too.
+    expect(triage("em:4.07", "(none)", italic, "emphasis.span", "structure")).toBe("converter-defect");
+  });
+
+  it("blames the converter when the reference side is the attested one", () => {
+    expect(triage("гитарист и композитор", "нечто иное", source, "paragraph.content", "content")).toBe(
+      "converter-defect",
+    );
+  });
+
+  it("does not call a presentational difference layout", () => {
+    // `evidence: "structure"` is not a licence. An emphasis span, a hard break
+    // and a rule spelling are claims about how content is *spelled*; only a
+    // claim about where content *sits* is unconditionally actionable.
+    expect(triage("совсем другое", "тоже другое", source, "hardbreak.spurious", "structure")).not.toBe(
+      "converter-defect",
+    );
+    expect(triage("совсем другое", "тоже другое", source, "columns.containment", "structure")).toBe("converter-defect");
+    // A *thematic* break is a separator between regions — layout, not spelling.
+    // Matching it as presentational put all 36 on the ceiling.
+    expect(triage("---", null, source, "break.missing", "structure")).toBe("converter-defect");
+  });
+
+  it("asks rather than answers when the produced side keeps attested source text", () => {
+    // The reference has nothing here and the produced text is in the source.
+    // Keeping source content is not inventing it, but dropping page chrome is
+    // not a defect either, and nothing deterministic separates the two.
+    expect(triage(null, "гитарист и композитор", source, "paragraph.spurious", "content")).toBe("ambiguous");
+    // Unattested on both sides is invented outright, and that is always work.
+    expect(triage(null, "телефон редакции 555-0100", source, "paragraph.spurious", "content")).toBe("converter-defect");
+    // But when the sub-class names where the reference keeps the text, the
+    // produced document simply has it twice, and that is never a question.
+    expect(triage(null, "гитарист и композитор", source, "paragraph.spurious.caption-echo", "content")).toBe(
+      "converter-defect",
+    );
   });
 });

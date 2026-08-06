@@ -524,7 +524,7 @@ program
   .option("--json <file>", "write the defect ledger here")
   .option("--class <name>", "only findings whose class starts with this prefix")
   .option("--doc <name>", "only this document")
-  .option("--backing <kind>", "source-backed | source-unbacked | ambiguous")
+  .option("--verdict <kind>", "converter-defect | acceptable-alternative | reference-inconsistency | ambiguous")
   .option("-l, --limit <n>", "classes to list in the roll-up", "30")
   .option("-v, --verbose", "list every finding, not just the class roll-up")
   .option("-c, --config <file>", "explicit config file")
@@ -575,18 +575,18 @@ program
     for (const pair of pairs) {
       const index = pair.source === null ? null : new SourceIndex(pair.source);
       for (const f of diffDocuments(pair.doc, pair.produced, pair.reference).findings) {
-        all.push({ ...f, backing: triage(f.reference, f.produced, index, f.class, f.evidence) });
+        all.push({ ...f, verdict: triage(f.reference, f.produced, index, f.class, f.evidence) });
       }
     }
 
     const classPrefix = options.class as string | undefined;
     const docFilter = options.doc as string | undefined;
-    const backingFilter = options.backing as string | undefined;
+    const verdictFilter = options.verdict as string | undefined;
     const filtered = all.filter(
       (f) =>
         (!classPrefix || f.class.startsWith(classPrefix)) &&
         (!docFilter || f.doc === docFilter) &&
-        (!backingFilter || f.backing === backingFilter),
+        (!verdictFilter || f.verdict === verdictFilter),
     );
 
     const ledger = buildLedger(filtered, pairs.map((p) => p.doc));
@@ -596,7 +596,7 @@ program
       process.stdout.write("\n");
       for (const f of ledger.findings) {
         const where = `${f.doc}:${f.referenceLine ?? "-"}→${f.producedLine ?? "-"}`;
-        process.stdout.write(`${f.severity[0]!.toUpperCase()} ${f.class}  ${where}  ${f.path}  [${f.backing}]\n`);
+        process.stdout.write(`${f.severity[0]!.toUpperCase()} ${f.class}  ${where}  ${f.path}  [${f.verdict}]\n`);
         if (f.reference !== null) process.stdout.write(`    want: ${f.reference}\n`);
         if (f.produced !== null) process.stdout.write(`    got : ${f.produced}\n`);
       }

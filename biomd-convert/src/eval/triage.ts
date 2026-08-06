@@ -9,13 +9,30 @@
  * content, so a finding whose reference side is *not attested by the source* is
  * a ceiling, not a defect, and must be excluded from targets rather than closed.
  *
- * The test is deliberately crude and deliberately one-directional: does the text
- * the reference expects occur in the source at all? A crude attested/unattested
- * test is honest about what it measures; a clever one would quietly decide
- * questions that belong to a human.
+ * The objective is a valid, visually good conversion that keeps the source's
+ * content and layout intent — not byte-agreement with the references. So the
+ * question is not "does the produced side match the reference" but "which side
+ * does the *source* support", and the test runs on **both sides**. When the
+ * produced side is attested and the reference side is not, the reference is the
+ * thing that moved, and reporting that as a converter defect sends a reader to
+ * fix code that is already right.
+ *
+ * The test is deliberately crude: does the text occur in the source at all? A
+ * crude attested/unattested test is honest about what it measures; a clever one
+ * would quietly decide questions that belong to a human.
  */
 
-export type Backing = "source-backed" | "source-unbacked" | "ambiguous";
+/**
+ * See `CLAUDE.md` §4. Only `converter-defect` is work.
+ *
+ * `triage()` never returns `acceptable-alternative`, and that is deliberate
+ * rather than an omission: the verdict means "differs from the reference,
+ * preserves the intent, **visually** equal or better", and a text-attestation
+ * test cannot see a rendering. It is reachable only from L3 geometry or an L4
+ * judgement, which is where the evidence for it lives. Returning it from here on
+ * a text heuristic would be the instrument deciding a question it cannot see.
+ */
+export type Verdict = "converter-defect" | "acceptable-alternative" | "reference-inconsistency" | "ambiguous";
 
 /**
  * A searchable model of one source document: its visible text, folded.
@@ -27,10 +44,26 @@ export type Backing = "source-backed" | "source-unbacked" | "ambiguous";
 export class SourceIndex {
   private readonly folded: string;
   private readonly tokens: Set<string>;
+  private readonly emphasized: string;
 
   constructor(html: string) {
     this.folded = fold(stripTags(html));
     this.tokens = new Set(this.folded.split(" ").filter((w) => w.length > 0));
+    this.emphasized = fold(stripTags(emphasisRuns(html)));
+  }
+
+  /**
+   * Whether a span occurs inside the source's own emphasis markup.
+   *
+   * The one piece of *presentation* the source states outright. Everything else
+   * about spelling — a dash, a quote, a case — is 1998 HTML and tells us nothing
+   * about intent, but `<i>` and `<b>` are the author saying "set this apart".
+   * Without this, a produced emphasis span and a reference em-dash fold to the
+   * same words and no text test can say which side moved.
+   */
+  hasEmphasis(value: string): boolean {
+    const needle = fold(value);
+    return needle.length > 0 && this.emphasized.includes(needle);
   }
 
   /** Whether a span occurs verbatim (folded) in the source. */
@@ -50,14 +83,33 @@ export class SourceIndex {
 }
 
 /**
- * Classify one finding.
+ * Classes whose evidence is *presentational* rather than layout.
  *
- * `reference === null` means the produced document invented something; that is
- * always a real defect regardless of the source, so it is source-backed by
- * definition. Everything else turns on whether the source attests the reference
- * side. The band between "verbatim" and "unattested" is `ambiguous`, which is
- * hook territory — the source says something close but not this, which is
- * exactly the shape of a copyedit.
+ * Layout is a claim about where content sits: a lane, a wrapper, a separator, an
+ * ordering. Presentation is a claim about how the same content is spelled — an
+ * emphasis span, a hard break, a dash, a letter case. §16.3 constrains invented
+ * text and says nothing about the former, which is why layout is actionable
+ * unconditionally; the latter is exactly where the migrator's editorial choices
+ * live, so it has to be attested like content.
+ *
+ * The distinction is not cosmetic. `goya2`'s source writes `<i>4.07</i>` at the
+ * end of each track and the reference writes `— 4.07`; treating that as layout
+ * reported 37 converter defects for a reference decision §16.3 forbids the
+ * converter to reproduce.
+ *
+ * `hardbreak` only, never `break`. A hard break is a line ending inside a
+ * paragraph — presentation. A *thematic* break is a separator between regions —
+ * layout, and one `analyze.md` asks for by name. Matching both put all 36
+ * `break.missing` findings on the ceiling, which is the opposite of true.
+ */
+const PRESENTATIONAL = /^(?:emphasis|hardbreak)\b|\.(?:typography|whitespace|case)$/u;
+
+/**
+ * Classify one finding. See `CLAUDE.md` §4 for the four verdicts.
+ *
+ * Everything turns on which side the source attests. Both are tested, because a
+ * finding where the produced side is attested and the reference side is not is a
+ * statement about the *reference*, not about the converter.
  */
 export function triage(
   referenceSpan: string | null,
@@ -65,32 +117,114 @@ export function triage(
   source: SourceIndex | null,
   cls: string,
   evidence: "content" | "structure" = "content",
-): Backing {
+): Verdict {
   // Layout is not content. §16.3 forbids inventing *text*; it says nothing
   // about wrapping text that is already there in a `::: columns`, splitting a
   // lane, drawing a `---`, or reading a size off the geometry. Running those
   // through a text-attestation test mislabels every one of them as an
   // unreachable ceiling — which is how the first build of this instrument
   // buried `columns.missing`, the largest genuinely reachable class in the
-  // corpus, in the ceiling list. Structure is always actionable.
-  if (evidence === "structure") return "source-backed";
+  // corpus, in the ceiling list. Layout structure is always actionable.
+  if (evidence === "structure" && !PRESENTATIONAL.test(cls)) return "converter-defect";
 
   if (source === null) return "ambiguous";
-  if (referenceSpan === null) return "source-backed";
 
-  // A typography or whitespace class can never be source-backed: the source is
-  // 1998 HTML with straight quotes and hyphens, so the reference spelling is by
-  // construction the migrator's, not the author's.
-  if (cls.includes("typography") || cls.endsWith(".whitespace")) return "source-unbacked";
+  // A typography or whitespace class can never be a converter defect: the source
+  // is 1998 HTML with straight quotes and hyphens, so the reference spelling is
+  // by construction the migrator's, not the author's.
+  if (cls.includes("typography") || cls.endsWith(".whitespace")) return "reference-inconsistency";
 
-  const span = stripLabel(referenceSpan);
-  if (span.trim() === "") return "ambiguous";
-  if (source.hasSpan(span)) return "source-backed";
+  const wanted = referenceSpan === null ? null : stripLabel(referenceSpan);
+  const got = producedSpan === null ? null : stripLabel(producedSpan);
+  const referenceAttested = wanted !== null && wanted.trim() !== "" && source.hasSpan(wanted);
+  const producedAttested = got !== null && got.trim() !== "" && source.hasSpan(got);
 
-  const coverage = source.wordCoverage(span);
+  // An insertion: the reference has nothing *here*.
+  //
+  // `structdiff` sub-classifies these by the construct that owns the text on the
+  // reference side, and that answer settles the verdict. A `.caption-echo` or a
+  // `.in-nav` means the reference does hold this content — in an `::: image`
+  // caption, in a menu — so emitting it as a paragraph as well is a duplication,
+  // and duplication is a defect however attested the words are.
+  //
+  // With no such home, keeping source text is not inventing it — but neither is
+  // dropping page chrome a defect, and nothing deterministic separates the two,
+  // so an attested insertion is a question rather than an answer. An
+  // *unattested* one is invented outright (§16.3).
+  if (wanted === null) {
+    if (/\.(?:caption-echo|in-[a-z]+)$/u.test(cls)) return "converter-defect";
+    return producedAttested ? "ambiguous" : "converter-defect";
+  }
+  if (wanted.trim() === "") return "ambiguous";
+
+  // A deletion: the produced document dropped something. Only a defect if the
+  // source had it; otherwise the reference added it and §16.3 forbids following.
+  if (got === null) return referenceAttested ? "converter-defect" : "reference-inconsistency";
+
+  // Emphasis is quoted as a `strength:text` list, so it needs the source's own
+  // markup rather than a prose test: `<i>4.07</i>` and `— 4.07` carry identical
+  // words, and `fold()` erases the only characters that differ.
+  if (cls === "emphasis.span") return triageEmphasis(wanted, got, source);
+
+  // Any other presentational difference over the same content — a hard break, a
+  // rule spelling — has no evidence in the source at all. 1998 HTML says nothing
+  // about it, so the honest answer is that we cannot tell.
+  if (PRESENTATIONAL.test(cls) && fold(wanted) === fold(got)) return "ambiguous";
+
+  // The two-sided question, and the reason this function was rewritten.
+  // Whichever side the source supports is the side that is right.
+  if (referenceAttested && !producedAttested) return "converter-defect";
+  if (producedAttested && !referenceAttested) return "reference-inconsistency";
+  if (referenceAttested) return "converter-defect";
+
+  const coverage = source.wordCoverage(wanted);
   if (coverage >= 0.95) return "ambiguous";
-  if (coverage <= 0.5) return "source-unbacked";
+  if (coverage <= 0.5) return "reference-inconsistency";
   return "ambiguous";
+}
+
+/**
+ * Decide an emphasis difference against the source's own `<i>` / `<b>`.
+ *
+ * The only class where the reference and the converter can both be *right about
+ * the words* and disagree about the markup, so it is the only one where "which
+ * side does the source support" has to be asked of the markup rather than the
+ * text. `goya2` is 25 instances of it: the source italicises each track's
+ * duration and the reference rewrote every one as `— 4.07`.
+ */
+function triageEmphasis(wanted: string, got: string, source: SourceIndex): Verdict {
+  const wantRuns = emphasisSpans(wanted);
+  const gotRuns = emphasisSpans(got);
+  const extra = gotRuns.filter((t) => !wantRuns.includes(t));
+  const missing = wantRuns.filter((t) => !gotRuns.includes(t));
+
+  // The source marks it and the converter dropped it: a real loss.
+  if (missing.length > 0 && missing.every((t) => source.hasEmphasis(t))) return "converter-defect";
+  // The converter marks what the source does not: invention, and always work.
+  if (extra.length > 0 && !extra.every((t) => source.hasEmphasis(t))) return "converter-defect";
+  // The converter kept what the author set apart; the reference chose otherwise.
+  if (extra.length > 0) return "reference-inconsistency";
+  // The reference added emphasis the source never had.
+  if (missing.length > 0) return "reference-inconsistency";
+  return "ambiguous";
+}
+
+/** `em:4.07 · strong:Title` → `["4.07", "Title"]`. `(none)` yields nothing. */
+function emphasisSpans(quoted: string): string[] {
+  if (quoted.trim() === "" || quoted === "(none)") return [];
+  return quoted
+    .split(" · ")
+    .map((run) => run.replace(/^(?:em|strong):/u, "").trim())
+    .filter((t) => t.length > 0);
+}
+
+/** The text inside the source's emphasis markup, tags and all. */
+function emphasisRuns(html: string): string {
+  const runs: string[] = [];
+  const re = /<(i|em|b|strong)\b[^>]*>([\s\S]*?)<\/\1>/giu;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) runs.push(m[2] as string);
+  return runs.join("  ");
 }
 
 /** Property findings are quoted as `key: value`; only the value is content. */
