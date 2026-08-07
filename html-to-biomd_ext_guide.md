@@ -1,7 +1,7 @@
 # Legacy HTML → BioMD Conversion Procedure
 
 **Profile:** ABC encyclopedia HTML → BioMD Lite 1.6.  
-**Authority:** `Biography-Markup.md` defines valid syntax; source HTML defines
+**Authority:** `BioMD-Reference.md` defines valid syntax; source HTML defines
 content, wording, order, and target identity; this procedure defines migration
 decisions. Priority: a later rule here overrides an earlier one.
 
@@ -404,7 +404,7 @@ Optional body.
 :::
 ```
 
-Use only `Biography-Markup.md` directives/properties:
+Use only `BioMD-Reference.md` directives/properties:
 
 ```text
 lead       Markdown body

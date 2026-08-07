@@ -3,7 +3,7 @@
 **Working name:** `biomd-convert`
 **Status:** consolidated implementation plan — supersedes `htm-to-md_utility_plan_A.md` and `htm-to-md_utility_plan_B.md`
 **Corpus target:** ~1 000 files / ~20 MB, mostly Russian legacy HTML (abc-guitars.com / *«Гитаристы и композиторы»*)
-**Normative output contract:** [`Biography-Markup.md`](Biography-Markup.md) — BioMD Lite v1.6
+**Normative output contract:** [`BioMD-Reference.md`](BioMD-Reference.md) — BioMD Lite
 **Policy inputs:** [`html-to-biomd_guide.md`](html-to-biomd_guide.md), [`html-to-biomd_ext_guide.md`](html-to-biomd_ext_guide.md)
 **Date:** 2026-07-31
 
@@ -104,7 +104,7 @@ discriminated union is the better *output* AST: it encodes spec §4.1's content 
 types, so `columns` holding anything but `column` is a compile error rather than a lint. §6 takes
 A's node shape and B's directive union.
 
-**Spec compatibility.** Both are compatible with `Biography-Markup.md` v1.6 and both correctly
+**Spec compatibility.** Both are compatible with `BioMD-Reference.md` and both correctly
 implement §16.2's four-way classification and §3.8's table rules. B is the only one that identified
 the two real compatibility hazards: spec §10's lane mandate conflicting with a simplification policy,
 and the divergence between the spec and the renderer that implements it. A is the only one that
@@ -718,7 +718,7 @@ Four independent arguments, all of which survived review:
 Concretely: a two-column album catalog emits each album as a sequential block — label, `::: image`
 cover, track list — in visual reading order, with no lane machinery.
 
-> **Spec implication, stated plainly.** `Biography-Markup.md` §10 currently *mandates* lane
+> **Spec implication, stated plainly.** `BioMD-Reference.md` §10 currently *mandates* lane
 > preservation for source-proven track grids. Under `simplified` that clause becomes profile-dependent
 > rather than normative. Note the spec already contemplates a fidelity trade-off in the same section
 > ("if row-major mobile reading is more important than persistent lanes…") — this extends that

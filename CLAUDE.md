@@ -29,7 +29,7 @@ Those thirteen are **evidence, not the target**. The product is a rule system th
 ~987 pages and to any structurally similar corpus, plus an evaluation apparatus that localizes defects
 precisely enough to act on. Both halves are deliverables.
 
-Fidelity means three things at once: conformance to `Biography-Markup.md` under the target profile;
+Fidelity means three things at once: conformance to `BioMD-Reference.md` under the target profile;
 structural and visual equivalence to the references — layout intent, not pixels; and no loss or invention of
 content. Moving one while breaking another is a regression.
 
@@ -53,7 +53,7 @@ cd biomd-convert && npm run biomd -- inspect fixtures/html/segovia.htm
 
 ## 2. Ground truth, highest precedence first
 
-1. **`Biography-Markup.md`** — normative BioMD Lite 1.6 syntax, and §16.3 (no invented content).
+1. **`BioMD-Reference.md`** — normative BioMD Lite syntax, and §16.3 (no invented content).
 2. **`biomd-convert/fixtures/html/*.htm` ↔ `fixtures/out/*.bio.md`** — 13 hand-made pairs. Normative for
    every judgement the spec leaves open. Read them as evidence of intent.
 3. **`analyze/analyze.md`** (Russian, per-page complaints) + **`analyze/design.png`** (green frames =
@@ -121,7 +121,7 @@ not yet precise enough — refine the class, not the tolerance. Held to **identi
 sides ⇒ zero findings) and **determinism**.
 
 **L3 — Rendered and geometric adjudication. NOT YET BUILT — see PROGRESS §7.** Build `tools/render-biomd.ts`
-from `Biography-Markup.md`, modelling the target renderer's known quirks (`biomd-ast/read.ts` documents the
+from `BioMD-Reference.md`, modelling the target renderer's known quirks (`biomd-ast/read.ts` documents the
 `PROPERTY_HEADER_DIRECTIVES` asymmetry and `columns.divider` promoted to a synthetic first column;
 `conformance.test.ts` asserts them). Diagnostic-only; the converter must never import it. **Invariant: both
 `.bio.md` sides render through identical code** — the same file twice must produce byte-identical output.
@@ -161,7 +161,7 @@ blind spot found this way is worth more than the defect that revealed it.
 **Triage — mandatory, four-way, before any finding becomes work.** The objective is a valid, visually good
 BioMD conversion that preserves the source content and reproduces the source's layout intent where that is
 useful — *not* byte-agreement with thirteen hand-made files. A produced document may be **better** than its
-reference when it is demonstrably clearer, more consistent with `Biography-Markup.md`, and visually equal or
+reference when it is demonstrably clearer, more consistent with `BioMD-Reference.md`, and visually equal or
 better. Every mismatch therefore gets one of four verdicts, and only the first is work:
 
 1. **`converter-defect`** — the output loses content, violates BioMD, misreads source structure, or produces

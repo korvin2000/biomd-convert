@@ -1,7 +1,7 @@
 # HTML → BioMD Lite 1.6 Conversion Guide
 
 **Purpose:** convert legacy encyclopedia HTML to UTF-8 `.bio.md`.  
-**Authority:** `Biography-Markup.md` defines valid BioMD syntax; source HTML defines facts, wording, content, and target identity. If they conflict, follow the specification for structure and the source for content.  
+**Authority:** `BioMD-Reference.md` defines valid BioMD syntax; source HTML defines facts, wording, content, and target identity. If they conflict, follow the specification for structure and the source for content.  
 **Highest-priority link policy:** Section 9 overrides every conflicting link or
 path rule in this guide, `HTML-to-BioMD-Lite-Conversion-Guide.md`, and all other
 guides.  

@@ -368,7 +368,7 @@ of bug, not an instance, and each is fixed at the class level.
 3. **Triage tested structural findings by text attestation.** That put
    `columns.missing` (43 instances, 5 documents) — the largest deterministically
    reachable class in the corpus, named as reachable in §5.1 — in the *ceiling*
-   list. `Biography-Markup.md` §16.3 forbids inventing **text**; wrapping text that
+   list. `BioMD-Reference.md` §16.3 forbids inventing **text**; wrapping text that
    is already present in a `::: columns`, splitting a lane, drawing a `---` or
    reading a size off geometry invents nothing. Every finding now carries
    `evidence: "content" | "structure"`, and structure is never attested.
@@ -451,7 +451,7 @@ building it.
 
 | module | role |
 |---|---|
-| `src/l3/render.ts` | `.bio.md` → deterministic HTML, from `Biography-Markup.md` + the target model in `biomd-ast/read.ts`. One entry point, no side parameter. |
+| `src/l3/render.ts` | `.bio.md` → deterministic HTML, from `BioMD-Reference.md` + the target model in `biomd-ast/read.ts`. One entry point, no side parameter. |
 | `src/l3/geometry.ts` | the vocabulary: vendor/logical `text-align` folding, box-derived alignment, the page's own prose baseline, row banding, reading rank, overflow, lanes |
 | `src/l3/probe.ts` | Chromium harness. Same launch flags, viewport, offline routing and asset placeholder as `ladom/measure.ts` |
 | `src/l3/compare.ts` | rendered surfaces → localized findings + the alignment evidence table |
@@ -1930,7 +1930,7 @@ Outputs preserved before any comparison, for the reference step.
 
 ## 17. Blind improvement phase — two hypotheses, both falsified (2026-08-06)
 
-Worked from the 10 unseen sources, the current output, `Biography-Markup.md` and
+Worked from the 10 unseen sources, the current output, `BioMD-Reference.md` and
 the existing rules only. No reference was opened. **No rule shipped**, and the
 reason is the result: both candidate mechanisms were carried to the point where
 the evidence killed them, which is cheaper now than after they were built.
@@ -2300,7 +2300,7 @@ testing a conservation claim.
 
 - measured state, killed hypotheses, open queue — this file
 - binding law, the ladder, triage, rule contracts — `CLAUDE.md`
-- normative syntax — `Biography-Markup.md`
+- normative syntax — `BioMD-Reference.md`
 - generated defect ledger — `analyze/defects.json`
 - the procedure for an iteration — `.claude/skills/refine-biomd-converter/SKILL.md`
 - harness lessons that cost hours to learn — the sibling `learned-patterns.md`

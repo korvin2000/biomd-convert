@@ -2,7 +2,7 @@
 
 ## 1. Executive conclusion
 
-The current converter is a sound **compiler skeleton**, but not yet the semantic/layout recovery system described by `Biography-Markup.md`, `html-to-biomd_guide.md`, and `html-to-biomd_ext_guide.md`.
+The current converter is a sound **compiler skeleton**, but not yet the semantic/layout recovery system described by `BioMD-Reference.md`, `html-to-biomd_guide.md`, and `html-to-biomd_ext_guide.md`.
 
 Its strongest work is foundational: tolerant decoding and parsing, browser-backed geometry, physical table-grid reconstruction, typed BioMD AST/builders, deterministic serialization, target rewriting, provenance/conservation checks, bounded LLM transport, caching, budgets, and structural validation. These are worth retaining.
 
@@ -31,7 +31,7 @@ A clean deterministic conversion with Chromium measurement produced an official 
 
 ### 2.1 Authorities studied
 
-1. `Biography-Markup.md` v1.6 — normative syntax and preservation model.
+1. `BioMD-Reference.md` — normative syntax and preservation model.
 2. `html-to-biomd_guide.md` — migration rules and ABC link policy.
 3. `html-to-biomd_ext_guide.md` — detailed preprocessing, semantic transformation, and verification procedure.
 4. `htm-to-md_utility_plan.md` — intended implementation architecture, including semantic IR and LLM hook catalogue.

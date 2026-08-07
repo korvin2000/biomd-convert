@@ -237,7 +237,7 @@ and the conservation gate reports them as invented content.
 
 ## Target profiles
 
-`Biography-Markup.md` v1.6 and the renderer that consumes the output have
+`Biography-Markup.md` and the renderer that consumes the output have
 drifted. That divergence is data, not hardcoded behaviour
 (`src/biomd-ast/profile.ts`):
 

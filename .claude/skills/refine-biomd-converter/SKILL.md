@@ -19,8 +19,11 @@ Never build a replacement converter, and never repeat setup that `CONVERTER-PROG
 
 | what | where |
 |---|---|
+| **navigation — read first, it routes the rest** | `.claude-memory/INDEX.md` |
 | binding rules, the ladder, triage, rule contracts | `CLAUDE.md` |
-| normative BioMD Lite 1.6 syntax and §-numbers | `Biography-Markup.md` |
+| normative BioMD Lite syntax and §-numbers | `BioMD-Reference.md` — the baseline profile |
+| a BioMD rule the short reference leaves out | `Biography-Markup.md` — **fallback only**, stricter; where the two differ the short reference governs |
+| icon / micro-image → glyph policy and the known-icon map | `mini_images_to_md_guide.md` |
 | campaign brief, phases, harness tips | `analyze/REFINE-CONVERTER.prompt.md` |
 | measured state, killed hypotheses, what remains | `biomd-convert/CONVERTER-PROGRESS.md` |
 | current defect ledger (generated) | `analyze/defects.json` |
@@ -43,10 +46,12 @@ read it there, it changes; this table is what each role *means*.
 | **holdout** | untouched. Never read, diff, score or tune against it; measure it once, at the end |
 
 **Preserving a holdout costs no code.** `diff`, `l3` and `eval` skip any document with no reference file, so
-keeping the holdout's `.bio.md` outside `expectedDir` is sufficient — `corpus run` still converts its source
-and still reports conservation, validation and review items, which is exactly the blind signal you want.
-After placing references, confirm the instruments report the expected document *count*; a holdout that
-quietly rejoined the comparison is the one failure mode this arrangement has.
+keeping the holdout's `.bio.md` outside `expectedDir` is sufficient. Keeping its `.htm` outside the scanned
+HTML directory as well is *stronger* but costs the blind signal — `corpus run` then does not convert it, so
+its conservation, validation and review items are not reported either; measuring it at the end means moving
+the source back deliberately. Whichever arrangement is in force, after placing references confirm the
+instruments report the expected document *count*; a holdout that quietly rejoined the comparison is the one
+failure mode this arrangement has.
 
 A class that appears only in the refinement set is a **generalization** finding. One that spans both sets is a
 **rule** finding and outranks it — the regression corpus is evidence too, not just a gate.
@@ -183,7 +188,7 @@ produced it hold beyond the page it was found on). Byte-agreement with a referen
 three and is never the objective itself.
 
 - References are strong evidence and fallible human work. A produced document may be *better* when it is
-  demonstrably clearer, more consistent with `Biography-Markup.md`, and visually equal or better.
+  demonstrably clearer, more consistent with `BioMD-Reference.md`, and visually equal or better.
 - Invisible Markdown differences, escaping differences and minor reference inconsistencies are acceptable
   alternatives when the rendered result is equivalent or better. Do not chase them.
 - **Never modify a reference fixture**, and never edit one to close a finding.
