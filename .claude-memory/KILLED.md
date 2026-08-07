@@ -30,6 +30,8 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | A narrow flank beside a dominant column is a page rail | killed **before it was written**: `new_blackmore`'s reference lanes measure 29/71 with the *text* in the narrow one, so the rule would have cemented its 3 open `column.missing`. Flanked on **both** sides is the discriminator; width alone is not | 21.6 |
 | An all-empty table header is a different question from an empty header cell | it is the same answer repeated. Treating it as a special case aborted the whole table and cost two record matrices — `new_dyens` came out as 20 loose aligned paragraphs | 21.4 |
 | An mdast `html` node is a way to emit a character reference | it serializes correctly and then trips `raw-html` **and** `table-cell-block-content`, both correctly. Emit the character; fold the spelling in the instrument | 21.4 |
+| A one-row media record licenses a one-row table | reopened legitimately once §21.4 removed the emitter blocker §17.4 killed it on — then killed again on better evidence. The shape occurs **three times corpus-wide** and the references split **2–1**, with `williams2` (regression corpus) writing `::: align`. `new_kolpakov`'s row is not even covered: its third cell is an unlinked `(1,7 Mb)` | 22.2 |
+| The alignment family is its own mechanism | a third of it closed as a *side effect* of the region work in §21.2 and §22.1, with no alignment rule touched. Read it **after** the region and table families settle | 22.3 |
 
 ## 2. Instrument hypotheses — your own differ/renderer/judge is a first-class suspect
 

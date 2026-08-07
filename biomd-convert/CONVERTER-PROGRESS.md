@@ -2648,3 +2648,106 @@ them. Their evidence is recurrence across sibling grids on the page, which the
 classifier does not see. Dropping the requirement to reach them would admit the
 figure-over-caption false friend; the right fix is to give the classifier that
 cross-grid view, which is a corpus-pass change and its own mechanism.
+
+## 22. Cross-grid recurrence, and a one-row table that stays killed (2026-08-08)
+
+| rung | §21 | now |
+|---|---|---|
+| L0 | 405 tests | **406 tests**, typecheck clean, 0 FAILED |
+| L1 | 92.6 | **92.7**, clean share 9.1 % → **13.6 %** |
+| L2 | 508 · 327 converter-defect | **481 · 300** |
+| L3 | 149 | **140** |
+| validator | 28 errors | 28 |
+
+### 22.1 Recurrence may come from a sibling grid
+
+§21.7 left `new_blackmore`'s three `column.missing` open *by decision*: the
+picture-pairing gate wanted two paired rows inside the grid, and `new_blackmore`
+writes each of its three interview cards as its own one-row table with prose
+between them. The recurrence is real; it is simply invisible from inside any one
+grid.
+
+`classifyTable` now takes an optional `PageEvidence`, computed once in
+`pipeline.ts`'s classification loop where every grid is already in hand. The gate
+accepts **two paired rows in the grid, or one paired row plus a picture-paired
+sibling elsewhere on the page.** That honours `CLAUDE.md` §5's recurrence
+requirement rather than relaxing it — the shape must still repeat with content
+between occurrences — and the false friend stays refused: one picture beside one
+line with nothing like it on the page is a figure over its caption, and belongs
+to `media.ts`.
+
+`new_blackmore` 35 → **8** converter-defects, L1 93.4 → **96.4** (dirs 62.5 →
+92.7). The three `retyped.paragraph-to-align` findings downstream of the missing
+lanes closed with them, which is worth noting on its own: **a third of the
+alignment family was a symptom of the region family**, exactly as §10.2 recorded
+the first time.
+
+### 22.2 The one-row record table: killed again, and now for a better reason
+
+Three documents put a single media record in a one-row grid and the converter
+flattens all three into `::: align` blocks — `borislova`'s `WMA`, `new_karta`'s
+`WMA`, `new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`. Those account for most of
+the `align.spurious` class, and `new_kolpakov` is the corpus's weakest document
+at L1 67.9 with `tables=0/1`.
+
+§17.4 killed "recurrence among accepted peers licenses a one-row table" on a
+*measured* blocker: "`tableFromPlan` cannot synthesize a header from one row".
+§21.4 removed that blocker, so the hypothesis was legitimately reopenable — new
+measurement, not argument.
+
+It was reopened, measured, and is dead again. A predicate for the shape — a
+one-row grid of 2–4 columns whose first cell carries words and whose others hold
+a single short anchor each — matches **exactly three grids in the corpus**:
+
+| document | grid | reference emits |
+|---|---|---|
+| `borislova` | 1×2 | a table |
+| `new_karta` | 1×4 | a table |
+| **`williams2`** | 1×2 | **`::: align`**, text and `[MP3]` on two lines |
+
+The references disagree 2–1 on structurally identical input, and the dissenter is
+in the regression corpus. `new_kolpakov`'s row is not even covered by the
+predicate — its third cell is `(1,7 Mb)`, an unlinked size annotation, and
+widening the predicate to admit it also admits every two-cell layout row.
+
+So: three instances, no majority to follow, a regression-corpus document on the
+other side, and no intra-grid recurrence available by construction. `minRows: 2`
+stands. Recorded rather than shipped.
+
+### 22.3 Killed hypotheses added
+
+- **A one-row media record licenses a one-row table.** Reopened legitimately once
+  §21.4 removed the emitter blocker §17.4 killed it on, then killed again on
+  better evidence: the shape occurs three times corpus-wide and the references
+  split 2–1, with `williams2` — regression corpus — writing `::: align`.
+- **The alignment family is its own mechanism.** A third of it closed as a side
+  effect of the region work in §21.2 and §22.1 without an alignment rule being
+  touched. Read the family *after* the region and table families have settled,
+  not alongside them.
+
+### 22.4 State and queue
+
+**Open, in order** — *measured* 2026-08-08 over 22 documents:
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 405 | `paragraph.containment` | 27 | 5 | 19 are `williams2` §21.5 and **not a target**; real remainder 8 |
+| 288 | `align.spurious` | 12 | 8 | 4 are `williams2` §21.5, 3 are §22.2. Real remainder ≈5, and thin |
+| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (§15.2) |
+| 162 | `align.missing` | 9 | 6 | |
+| 162 | `retyped.paragraph-to-align` | 9 | 6 | |
+| 120 | `image.spurious` | 8 | 5 | |
+| 84 | `image.size.value` | 21 | 4 | a threshold in `media.ts`; sweep it, do not pick it |
+
+Two observations for whoever takes the next iteration. First, **the top of the
+ledger is now thin**: after removing `williams2`'s reference-inconsistency and
+§22.2's dead class, no open class has more than about ten actionable instances,
+and the largest single-document concentration left is `goya2`'s 16
+`image.size.value` — a `media.ts` threshold, which the sweep discipline covers.
+Second, the two biggest remaining *documents* are `news` (49) and `goya2` (43),
+both regression corpus and both long-known; they are worth a document-shaped
+read rather than a class-shaped one.
+
+Unchanged and still open from §20.8: the mini-image → glyph map (`glyphs.ts` now
+exists to hold it), wrapped-masthead heading recovery, and the uncalibrated
+0.5–0.95 ambiguous corridor (94 findings).

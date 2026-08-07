@@ -37,9 +37,10 @@ disagree, the repository file wins and this index gets fixed.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: the first refinement iteration is done
-(PROGRESS §21, four mechanisms, L1 90.3 → 92.6, L2 745 → 508); next is the **alignment family**, and
-check upstream first, because three lane defects just closed and §10.2 already recorded once that a
-spurious align was a symptom of collapsed lanes.
+(PROGRESS §21–§22, **five mechanisms**, L1 90.3 → 92.7, L2 745 → 481, L3 287 → 140). The top of the
+ledger is now thin, so the next iteration is probably better spent **document-shaped than
+class-shaped** — `news` (49) and `goya2` (43). Do **not** open the alignment family yet: a third of
+it closed as a side effect of the region work without an alignment rule being touched.
 
 ---
 

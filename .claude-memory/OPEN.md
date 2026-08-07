@@ -3,33 +3,37 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21). Facts marked
+Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21–§22). Facts marked
 *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. Four mechanisms accepted in the first iteration — all
-four rungs improved or held, one commit each, full before/after in every message.
+Reference-guided refinement, 22 documents. **Five mechanisms accepted** — all four rungs improved or
+held on every one, one commit each, full before/after in every message.
 
-**Current state, *measured* 2026-08-08 (PROGRESS §21):**
+**Current state, *measured* 2026-08-08 (PROGRESS §22.4):**
 
 | rung | value |
 |---|---|
-| L0 | 405 tests, typecheck clean, 0 FAILED |
-| L1 | **92.6 %** (was 90.3), clean share 9.1 % |
-| L2 | 508 findings — **327 converter-defect** · 94 ambiguous · 87 reference-inconsistency, 90 classes |
-| L3 | 149 findings, identity 0, deterministic |
-| validator | 28 errors, all `table-header-empty` — see §3.2 |
+| L0 | 406 tests, typecheck clean, 0 FAILED |
+| L1 | **92.7 %** (was 90.3), clean share **13.6 %** (was 9.1) |
+| L2 | 481 findings — **300 converter-defect** (was 580) · 94 ambiguous · 87 reference-inconsistency |
+| L3 | 140 findings (was 287), identity 0, deterministic |
+| validator | 28 errors (was 23), all `table-header-empty` — see §3.2 and PROGRESS §21.4 |
 
 That is the floor. Nothing accepted from here may regress it.
 
-**Next mechanism: the alignment family** — `align.spurious` (12/8 docs), `retyped.paragraph-to-align`
-(12/7), `align.missing` (9/6), `retyped.align-to-paragraph`. 33+ instances over 9 documents, and the
-region/lane work they were entangled with has now settled, so they can finally be read together
-rather than one at a time. PROGRESS §10.2 already recorded once that a spurious centre align was a
-*symptom* of collapsed lanes upstream — check that first, because three lane defects just closed.
+**The top of the ledger is now thin.** After removing `williams2`'s recorded reference-inconsistency
+and the class §22.2 killed, no open class has more than about ten actionable instances. The next
+iteration is probably better spent **document-shaped than class-shaped**: `news` (49 converter-
+defects) and `goya2` (43) are the two biggest and both are long-known regression-corpus documents.
+
+**Do not open the alignment family as a mechanism yet.** A third of it closed as a *side effect* of
+the region work in §21.2 and §22.1 with no alignment rule touched, and 4 of `align.spurious`'s 12 are
+`williams2` §3.2 while 3 more are the dead class of §22.2. Re-measure it after the next region or
+table change rather than before.
 
 ---
 
@@ -95,22 +99,20 @@ question instead. PROGRESS §21.5.
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
 | 405 | `paragraph.containment` | 27 | 5 | 19 are `williams2` §3.2 and **not a target**; real remainder 8 |
-| 288 | `align.spurious` | 12 | 8 | **next mechanism** |
-| 252 | `retyped.paragraph-to-align` | 12 | 7 | same family |
+| 288 | `align.spurious` | 12 | 8 | 4 are `williams2` §3.2, 3 are the dead class of PROGRESS §22.2. Real remainder ≈5 |
 | 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2) |
-| 162 | `align.missing` | 9 | 6 | same family |
+| 162 | `align.missing` | 9 | 6 | |
+| 162 | `retyped.paragraph-to-align` | 9 | 6 | |
 | 120 | `image.spurious` | 8 | 5 | |
-| 84 | `image.size.value` | 21 | 4 | a threshold in `media.ts`; sweep it, do not pick it |
-
-Open **by decision**, not by oversight: `new_blackmore`'s 3 `column.missing`. Its picture-paired
-grids are one row each, so the pairing gate's recurrence requirement excludes them; their evidence is
-recurrence across *sibling grids on the page*, which the classifier cannot see. Dropping the
-requirement admits the figure-over-caption false friend. The fix is a corpus-pass change and its own
-mechanism.
+| 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts`, sweep it, do not pick it |
 
 Also carried: `image.src.value` (19, all `goya2` — mechanical, single-document) · `borislova`/
 `jovicic` want a quote the recurrence gate declines (`MIN_SUBORDINATED_BLOCKS` is 2, each has 1) ·
 `frame`'s `title:` property unused (one instance corpus-wide).
+
+`new_kolpakov` is the weakest document at L1 67.9 with `tables=0/1`, and PROGRESS §22.2 explains why
+that is a ceiling rather than an open defect: the one-row table it wants is the shape the references
+split 2–1 on.
 
 ## 5. Instrument debt — what to distrust, in order
 
