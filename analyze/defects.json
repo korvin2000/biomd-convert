@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-07T23:45:12.199Z",
+  "generated": "2026-08-07T23:53:23.004Z",
   "totals": {
-    "findings": 508,
-    "converterDefects": 327,
+    "findings": 481,
+    "converterDefects": 300,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
     "ambiguous": 94,
     "bySeverity": {
       "critical": 22,
-      "major": 284,
-      "minor": 202
+      "major": 272,
+      "minor": 187
     }
   },
   "perDocument": [
@@ -71,11 +71,11 @@
     },
     {
       "doc": "new_blackmore",
-      "findings": 39,
-      "converterDefects": 35,
+      "findings": 12,
+      "converterDefects": 8,
       "critical": 0,
-      "major": 20,
-      "minor": 19
+      "major": 8,
+      "minor": 4
     },
     {
       "doc": "new_dyens",
@@ -245,33 +245,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 12,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 12,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 252,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[35]/column[0]/align[0]",
-        "produced": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
-        "reference": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г. — at /columns[35]/column[0]/paragraph[1]"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-list",
       "severity": "major",
       "instances": 11,
@@ -320,6 +293,32 @@
         "path": "/align[87]",
         "produced": null,
         "reference": "Александр НЕВЕРОВ"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 9,
+      "documents": [
+        "new_lagq2",
+        "new_lendle2",
+        "news",
+        "pavlov_azancheev",
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 9,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 162,
+      "example": {
+        "doc": "new_lagq2",
+        "path": "/align[16]",
+        "produced": "[Назад] [Фото]",
+        "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
       }
     },
     {
@@ -705,50 +704,6 @@
       }
     },
     {
-      "class": "column.missing",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "new_blackmore",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]/column[1]",
-        "produced": null,
-        "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html"
-      }
-    },
-    {
-      "class": "image.missing",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "goya2",
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]/image[0]",
-        "produced": null,
-        "reference": "Together / Richard Clayderman & Francis Goya"
-      }
-    },
-    {
       "class": "paragraph.content.edited",
       "severity": "minor",
       "instances": 16,
@@ -1086,27 +1041,6 @@
       }
     },
     {
-      "class": "column.containment",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[35]/column[0]",
-        "produced": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
-        "reference": "align center 'Аргументы и факты' #14 (1119) 3 апреля 2002 г. — produced at /align[35]"
-      }
-    },
-    {
       "class": "paragraph.spurious.absorbed",
       "severity": "major",
       "instances": 3,
@@ -1364,111 +1298,6 @@
       }
     },
     {
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[35]/column[0]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.link.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@link",
-        "produced": "link: http://www.kp.ru/articles/issue22759/paper15489.html",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@size",
-        "produced": "size: medium",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@src",
-        "produced": "src: photo/b/blackmore_kp.jpg",
-        "reference": null
-      }
-    },
-    {
       "class": "align.position.missing",
       "severity": "major",
       "instances": 1,
@@ -1511,6 +1340,27 @@
       }
     },
     {
+      "class": "column.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "williams2",
+        "path": "/columns[1]/column[0]",
+        "produced": null,
+        "reference": "align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к…"
+      }
+    },
+    {
       "class": "column.spurious",
       "severity": "major",
       "instances": 1,
@@ -1550,6 +1400,27 @@
         "path": "/columns[20]",
         "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "image.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[76]/image[0]",
+        "produced": null,
+        "reference": "Together / Richard Clayderman & Francis Goya"
       }
     },
     {
@@ -4891,132 +4762,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "2488a9b0",
-      "doc": "new_blackmore",
-      "class": "columns.link.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@link",
-      "producedLine": 42,
-      "referenceLine": 32,
-      "produced": "link: http://www.kp.ru/articles/issue22759/paper15489.html",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6059f6dd",
-      "doc": "new_blackmore",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@position",
-      "producedLine": 42,
-      "referenceLine": 32,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "587a023d",
-      "doc": "new_blackmore",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@size",
-      "producedLine": 42,
-      "referenceLine": 32,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "449f70b0",
-      "doc": "new_blackmore",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]@src",
-      "producedLine": 42,
-      "referenceLine": 32,
-      "produced": "src: photo/b/blackmore_kp.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5e930c1b",
-      "doc": "new_blackmore",
-      "class": "column.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[8]/column[0]",
-      "producedLine": 35,
-      "referenceLine": 33,
-      "produced": "27 марта 2002 г.",
-      "reference": "align center 27 марта 2002 г. — produced at /align[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6974b5c3",
-      "doc": "new_blackmore",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[8]/column[0]@position",
-      "producedLine": 35,
-      "referenceLine": 33,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e376155a",
-      "doc": "new_blackmore",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[8]/column[0]/align[0]",
-      "producedLine": 38,
-      "referenceLine": 35,
-      "produced": "27 марта 2002 г.",
-      "reference": "27 марта 2002 г. — at /columns[8]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5012ca8b",
-      "doc": "new_blackmore",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[8]/column[1]",
-      "producedLine": null,
-      "referenceLine": 43,
-      "produced": null,
-      "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "029fa553",
-      "doc": "new_blackmore",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[8]/column[1]/image[0]",
-      "producedLine": null,
-      "referenceLine": 44,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "f4501580",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-heading2",
@@ -5024,7 +4769,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[9]",
-      "producedLine": 48,
+      "producedLine": 60,
       "referenceLine": 53,
       "produced": "Ричи Блэкмор: «Вcтречайте, скоро буду!»",
       "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!» — at /paragraph[10]",
@@ -5038,137 +4783,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[10]",
-      "producedLine": 50,
+      "producedLine": 62,
       "referenceLine": 55,
       "produced": "(none)",
       "reference": "em:Накануне своего приезда в Москву один из главных гитаристов прошлого столетия рассказывает о накладных ногтях, злых менеджерах и добрых старых временах",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "48c13524",
-      "doc": "new_blackmore",
-      "class": "columns.link.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[35]@link",
-      "producedLine": 110,
-      "referenceLine": 107,
-      "produced": "link: http://www.aif.ru/aif/1119/",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1a30392f",
-      "doc": "new_blackmore",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[35]@position",
-      "producedLine": 110,
-      "referenceLine": 107,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3d2e63eb",
-      "doc": "new_blackmore",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[35]@size",
-      "producedLine": 110,
-      "referenceLine": 107,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e2bd137f",
-      "doc": "new_blackmore",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[35]@src",
-      "producedLine": 110,
-      "referenceLine": 107,
-      "produced": "src: photo/b/blackmore_aif.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0b257f5e",
-      "doc": "new_blackmore",
-      "class": "column.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[35]/column[0]",
-      "producedLine": 102,
-      "referenceLine": 108,
-      "produced": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
-      "reference": "align center 'Аргументы и факты' #14 (1119) 3 апреля 2002 г. — produced at /align[35]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b58d7557",
-      "doc": "new_blackmore",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[35]/column[0]@position",
-      "producedLine": 102,
-      "referenceLine": 108,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0f102d83",
-      "doc": "new_blackmore",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[35]/column[0]/align[0]",
-      "producedLine": 105,
-      "referenceLine": 110,
-      "produced": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
-      "reference": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г. — at /columns[35]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7c1236dc",
-      "doc": "new_blackmore",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[35]/column[1]",
-      "producedLine": null,
-      "referenceLine": 119,
-      "produced": null,
-      "reference": "image photo/b/blackmore_aif.jpg center medium http://www.aif.ru/aif/1119/",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0a9e60bf",
-      "doc": "new_blackmore",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[35]/column[1]/image[0]",
-      "producedLine": null,
-      "referenceLine": 120,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
     },
     {
       "id": "ea6833a6",
@@ -5178,136 +4797,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[37]",
-      "producedLine": 123,
+      "producedLine": 147,
       "referenceLine": 136,
       "produced": "Гитарист \"тяжелого\" поведения",
       "reference": "Гитарист \"тяжелого\" поведения — at /paragraph[38]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f8ed9b1a",
-      "doc": "new_blackmore",
-      "class": "columns.link.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[68]@link",
-      "producedLine": 199,
-      "referenceLine": 203,
-      "produced": "link: http://www.itogi.ru/paper2002.nsf/Article/Itogi_2002_04_01_10_0223.html",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "646962e9",
-      "doc": "new_blackmore",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[68]@position",
-      "producedLine": 199,
-      "referenceLine": 203,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d2e55759",
-      "doc": "new_blackmore",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[68]@size",
-      "producedLine": 199,
-      "referenceLine": 203,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a88c1253",
-      "doc": "new_blackmore",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[68]@src",
-      "producedLine": 199,
-      "referenceLine": 203,
-      "produced": "src: photo/b/blackmore_itogi.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7e3622ad",
-      "doc": "new_blackmore",
-      "class": "column.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[68]/column[0]",
-      "producedLine": 191,
-      "referenceLine": 204,
-      "produced": "No. 13 (303) 19 апреля 2002",
-      "reference": "align center No. 13 (303) 19 апреля 2002 — produced at /align[68]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b5582781",
-      "doc": "new_blackmore",
-      "class": "column.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[68]/column[0]@position",
-      "producedLine": 191,
-      "referenceLine": 204,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "84b4c1c4",
-      "doc": "new_blackmore",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[68]/column[0]/align[0]",
-      "producedLine": 194,
-      "referenceLine": 206,
-      "produced": "No. 13 (303) 19 апреля 2002",
-      "reference": "No. 13 (303) 19 апреля 2002 — at /columns[68]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4392aeb0",
-      "doc": "new_blackmore",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[68]/column[1]",
-      "producedLine": null,
-      "referenceLine": 215,
-      "produced": null,
-      "reference": "image photo/b/blackmore_itogi.jpg center medium http://www.itogi.ru/paper2002.nsf/Article/Itogi_2002_04_01_10_0223.html",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "467b93c5",
-      "doc": "new_blackmore",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": null,
-      "referenceLine": 217,
-      "produced": null,
-      "reference": "",
       "verdict": "converter-defect"
     },
     {
@@ -5318,7 +4811,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[69]",
-      "producedLine": 205,
+      "producedLine": 241,
       "referenceLine": 226,
       "produced": "О вкусах не спорят",
       "reference": "О вкусах не спорят — at /paragraph[70]",
@@ -5346,7 +4839,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[87]/paragraph[0]",
-      "producedLine": 241,
+      "producedLine": 277,
       "referenceLine": 266,
       "produced": "Александр НЕВЕРОВ",
       "reference": "Александр НЕВЕРОВ — at /heading[88]",
@@ -5360,7 +4853,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[89]",
-      "producedLine": 245,
+      "producedLine": 281,
       "referenceLine": 271,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
       "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина. — at /paragraph[90]",

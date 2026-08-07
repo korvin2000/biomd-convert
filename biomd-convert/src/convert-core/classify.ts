@@ -195,7 +195,7 @@ export function extractFeatures(grid: TableGrid, corpusFrequency?: number): Tabl
  * Each returns a verdict only on decisive evidence. Returning null is the
  * common and correct outcome for anything interesting.
  */
-export function classifyTier1(grid: TableGrid, f: TableFeatures): Classification | null {
+export function classifyTier1(grid: TableGrid, f: TableFeatures, page?: PageEvidence): Classification | null {
   // Corpus chrome: the same structure with the same text on most pages.
   if ((f.corpusFrequency ?? 0) > 0.7) {
     return { class: "SHELL", confidence: 0.95, tier: 1, reason: "structure recurs on >70% of corpus pages" };
@@ -284,21 +284,29 @@ export function classifyTier1(grid: TableGrid, f: TableFeatures): Classification
   // planned is not reconsidered — so its reference's six `::: columns` came out
   // as loose prose. Classification, not routing, was the thing that was wrong.
   //
-  // **Recurrence requirement.** Two paired rows, with the grid's own row
-  // boundary between them. A single picture beside a single line is a figure
-  // over its caption, and `media.ts` binds those far better than a lane pair
-  // would: it is the named false friend and it is tested for non-firing.
+  // **Recurrence requirement.** The paired shape must repeat, with content
+  // between the occurrences — either two paired rows inside this grid, or the
+  // same shape in another grid on the page. The second form is not a relaxation
+  // of the first: `new_blackmore` writes each of its three interview cards as
+  // its own one-row table, so the recurrence is real and simply not visible
+  // from inside any one of them. A single picture beside a single line with
+  // nothing like it anywhere on the page is a figure over its caption, which
+  // `media.ts` binds far better than a lane pair would — that is the named
+  // false friend, and it is tested for non-firing.
   //
   // Deliberately *after* the tier-1 DATA gates: a resource matrix that happens
   // to carry thumbnails is still a resource matrix.
-  if (f.cols === 2 && grid.rows >= 2) {
-    const paired = picturePairedRows(grid);
-    if (paired === 1) {
+  if (f.cols === 2 && picturePairedRows(grid) === 1) {
+    const recurs = grid.rows >= 2 || (page?.picturePairedPeers ?? 0) >= 1;
+    if (recurs) {
       return {
         class: "CATALOG",
         confidence: 0.85,
         tier: 1,
-        reason: "every content row pairs a picture with its matter",
+        reason:
+          grid.rows >= 2
+            ? "every content row pairs a picture with its matter"
+            : "one picture-paired row, and the shape recurs elsewhere on the page",
       };
     }
   }
@@ -385,7 +393,25 @@ export function classifyTier2(f: TableFeatures): Classification {
 }
 
 /** Run the deterministic tiers in order. */
-export function classifyTable(grid: TableGrid, corpusFrequency?: number): Classification {
+export function classifyTable(
+  grid: TableGrid,
+  corpusFrequency?: number,
+  page?: PageEvidence,
+): Classification {
   const features = extractFeatures(grid, corpusFrequency);
-  return classifyTier1(grid, features) ?? classifyTier2(features);
+  return classifyTier1(grid, features, page) ?? classifyTier2(features);
+}
+
+/**
+ * What the rest of the page says, for the gates that need recurrence.
+ *
+ * A grid on its own cannot tell "this shape repeats here" from "this happens
+ * once", and `CLAUDE.md` §5 makes recurrence a requirement rather than a
+ * preference. Most of this file's evidence is intra-grid, so most gates never
+ * need it; the picture-pairing gate does, because the shape it recognises is
+ * sometimes drawn one row at a time in several sibling tables.
+ */
+export interface PageEvidence {
+  /** How many *other* grids in the document are wholly picture-paired. */
+  picturePairedPeers: number;
 }

@@ -781,8 +781,9 @@ describe("a two-column grid that pairs a picture with its matter", () => {
   });
 
   it("leaves a single picture beside a single line to the caption binder", async () => {
-    // The false friend. One row is a figure, and a figure's caption belongs to
-    // the picture, not to a lane beside it.
+    // The false friend. One row, and nothing like it anywhere on the page: that
+    // is a figure, and a figure's caption belongs to the picture rather than to
+    // a lane beside it.
     const out = await laned(
       PROSE +
         '<table border="0" width="476">' +
@@ -791,6 +792,18 @@ describe("a two-column grid that pairs a picture with its matter", () => {
         PROSE,
     );
     expect(out).not.toContain("::: columns");
+  });
+
+  it("accepts a one-row card when the shape recurs in a sibling table", async () => {
+    // `new_blackmore` writes each of its three interview cards as its own
+    // one-row table with prose between them, so the recurrence is real and
+    // simply invisible from inside any one grid. Its reference lanes all three.
+    const card = (cover: string, line: string) =>
+      `<table border="0" width="476">${record(cover, line)}</table>`;
+    const out = await laned(
+      PROSE + card("kp.jpg", "27 марта 2002 г.") + PROSE + card("aif.jpg", "3 апреля 2002 г.") + PROSE,
+    );
+    expect(out.match(/^::: columns$/gmu)?.length).toBe(2);
   });
 
   it("leaves a resource matrix alone even when it carries pictures", async () => {

@@ -44,7 +44,7 @@ import { ABC_LINK_PROFILE, type LinkProfile, rewriteTarget } from "./links.js";
 import { Ledger, type LedgerEntry } from "./ledger.js";
 import { Lexicon } from "./lexicon.js";
 import { removeBoilerplate } from "./boilerplate.js";
-import { type Classification, classifyTable } from "./classify.js";
+import { type Classification, classifyTable, picturePairedRows } from "./classify.js";
 import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
 import { planDataTable } from "./data-table.js";
 import { recoverHeadings } from "./headings.js";
@@ -296,11 +296,17 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   const resolver = options.resolver ?? NULL_RESOLVER;
   const escalations = { consulted: 0, resolved: 0 };
 
+  // Page-level evidence, computed once: which grids are wholly picture-paired.
+  // A one-row card cannot see that two of its siblings are the same shape, and
+  // that is the recurrence its classification depends on.
+  const picturePaired = new Set(grids.filter((g) => picturePairedRows(g) === 1).map((g) => g.id));
+
   const classifications: Array<{ tableId: string; classification: Classification }> = [];
   for (const grid of grids) {
     const override = options.classifications?.get(grid.id);
     const frequency = corpusFrequency?.get(grid.id);
-    let classification = override ?? classifyTable(grid, frequency);
+    const page = { picturePairedPeers: picturePaired.size - (picturePaired.has(grid.id) ? 1 : 0) };
+    let classification = override ?? classifyTable(grid, frequency, page);
 
     // Escalation point 1. An abstention is not a verdict, and flattening an
     // ambiguous region to prose is a decision with consequences — so ask,
