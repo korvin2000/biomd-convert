@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-07T23:40:11.632Z",
+  "generated": "2026-08-07T23:45:12.199Z",
   "totals": {
-    "findings": 543,
-    "converterDefects": 364,
+    "findings": 508,
+    "converterDefects": 327,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 88,
-    "ambiguous": 91,
+    "referenceInconsistencies": 87,
+    "ambiguous": 94,
     "bySeverity": {
-      "critical": 21,
-      "major": 319,
-      "minor": 203
+      "critical": 22,
+      "major": 284,
+      "minor": 202
     }
   },
   "perDocument": [
@@ -63,11 +63,11 @@
     },
     {
       "doc": "new_bach",
-      "findings": 46,
-      "converterDefects": 42,
-      "critical": 0,
-      "major": 40,
-      "minor": 6
+      "findings": 11,
+      "converterDefects": 5,
+      "critical": 1,
+      "major": 5,
+      "minor": 5
     },
     {
       "doc": "new_blackmore",
@@ -194,22 +194,21 @@
     {
       "class": "paragraph.containment",
       "severity": "major",
-      "instances": 43,
+      "instances": 27,
       "documents": [
         "kiselev",
-        "new_bach",
         "new_lendle2",
         "news",
         "pavlov_azancheev",
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 43,
+        "converter-defect": 27,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 774,
+      "rank": 405,
       "example": {
         "doc": "kiselev",
         "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
@@ -273,33 +272,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 11,
-      "documents": [
-        "new_bach",
-        "new_blackmore",
-        "new_geyzel04",
-        "new_lagq2",
-        "new_lendle2",
-        "new_rechin4",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 11,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 231,
-      "example": {
-        "doc": "new_bach",
-        "path": "/align[0]",
-        "produced": null,
-        "reference": "Иоганн Себастьян Бах"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-list",
       "severity": "major",
       "instances": 11,
@@ -325,16 +297,16 @@
       }
     },
     {
-      "class": "image.spurious",
+      "class": "align.missing",
       "severity": "major",
       "instances": 9,
       "documents": [
-        "new_bach",
+        "new_blackmore",
         "new_geyzel04",
+        "new_lagq2",
         "new_lendle2",
         "new_rechin4",
-        "news",
-        "segovia1"
+        "williams2"
       ],
       "verdicts": {
         "converter-defect": 9,
@@ -344,44 +316,22 @@
       },
       "rank": 162,
       "example": {
-        "doc": "new_bach",
-        "path": "/image[30]/image[0]",
-        "produced": "Источник: Большая энциклопедия Кирилла и Мефодия 2000",
-        "reference": null
+        "doc": "new_blackmore",
+        "path": "/align[87]",
+        "produced": null,
+        "reference": "Александр НЕВЕРОВ"
       }
     },
     {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 13,
-      "documents": [
-        "goya2",
-        "new_bach",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 13,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 117,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
-      }
-    },
-    {
-      "class": "retyped.align-to-paragraph",
+      "class": "image.spurious",
       "severity": "major",
       "instances": 8,
       "documents": [
-        "goya2",
-        "kiselev",
-        "new_bach",
-        "news"
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4",
+        "news",
+        "segovia1"
       ],
       "verdicts": {
         "converter-defect": 8,
@@ -389,12 +339,12 @@
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 96,
+      "rank": 120,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "Francis Goya Plays His Favourite Hits",
-        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
+        "doc": "new_geyzel04",
+        "path": "/images[85]/image[0]",
+        "produced": "Главы 8-9",
+        "reference": null
       }
     },
     {
@@ -422,29 +372,6 @@
       }
     },
     {
-      "class": "heading.containment",
-      "severity": "major",
-      "instances": 9,
-      "documents": [
-        "kiselev",
-        "new_bach",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 81,
-      "example": {
-        "doc": "kiselev",
-        "path": "/align[13]/heading[0]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-break",
       "severity": "major",
       "instances": 5,
@@ -466,7 +393,7 @@
         "doc": "new_bach",
         "path": "/break[2]",
         "produced": "* * *",
-        "reference": "*** — at /columns[31]/column[0]/paragraph[1]"
+        "reference": "*** — at /paragraph[3]"
       }
     },
     {
@@ -491,6 +418,28 @@
         "path": "/align[71]/heading[0]",
         "produced": "ДРУГИЕ АЛЬБОМЫ",
         "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
+      }
+    },
+    {
+      "class": "image.containment",
+      "severity": "major",
+      "instances": 11,
+      "documents": [
+        "goya2",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 11,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 66,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -593,6 +542,29 @@
       }
     },
     {
+      "class": "retyped.align-to-paragraph",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "kiselev",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+        "produced": "Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
+      }
+    },
+    {
       "class": "paragraph.spurious.in-table",
       "severity": "major",
       "instances": 5,
@@ -641,24 +613,48 @@
     {
       "class": "link.label.content",
       "severity": "critical",
-      "instances": 5,
+      "instances": 6,
       "documents": [
         "barrios",
         "borislova",
+        "new_bach",
         "tarrega"
       ],
       "verdicts": {
         "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 3
+        "ambiguous": 4
       },
-      "rank": 30,
+      "rank": 40,
       "example": {
         "doc": "borislova",
         "path": "/align[43]/paragraph[1]/link[0]",
         "produced": "ДИСКОГРАФИЯ",
         "reference": "www.buap.mx/cultura"
+      }
+    },
+    {
+      "class": "heading.containment",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "kiselev",
+        "new_bach",
+        "new_lagq2"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 27,
+      "example": {
+        "doc": "kiselev",
+        "path": "/align[13]/heading[0]",
+        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -753,6 +749,36 @@
       }
     },
     {
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 16,
+      "documents": [
+        "barrios",
+        "borislova",
+        "jovicic",
+        "kiselev",
+        "new_bach",
+        "news",
+        "news_2007",
+        "pavlov_azancheev",
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 14
+      },
+      "rank": 20,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[18]/column[0]/paragraph[2]",
+        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
+        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
+      }
+    },
+    {
       "class": "paragraph.content",
       "severity": "critical",
       "instances": 4,
@@ -772,57 +798,6 @@
         "path": "/paragraph[92]",
         "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
         "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
-      }
-    },
-    {
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "instances": 15,
-      "documents": [
-        "barrios",
-        "borislova",
-        "jovicic",
-        "kiselev",
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 13
-      },
-      "rank": 18,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[18]/column[0]/paragraph[2]",
-        "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
-        "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
-      }
-    },
-    {
-      "class": "image.position.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "borislova",
-        "new_bach"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "borislova",
-        "path": "/images[6]/image[0]@position",
-        "produced": null,
-        "reference": "position: center"
       }
     },
     {
@@ -913,50 +888,6 @@
       }
     },
     {
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "instances": 8,
-      "documents": [
-        "goya2",
-        "new_bach"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 14,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]/column[1]/image[0]@caption",
-        "produced": null,
-        "reference": "caption: 1.000.000 Platinum"
-      }
-    },
-    {
-      "class": "column.spurious",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_bach",
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]/column[0]",
-        "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
-        "reference": null
-      }
-    },
-    {
       "class": "columns.missing",
       "severity": "major",
       "instances": 2,
@@ -976,28 +907,6 @@
         "path": "/align[59]/columns[0]",
         "produced": null,
         "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
-      }
-    },
-    {
-      "class": "columns.spurious",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_bach",
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]",
-        "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
-        "reference": null
       }
     },
     {
@@ -1173,7 +1082,7 @@
         "doc": "new_bach",
         "path": "/align[0]/heading[1]",
         "produced": "Бах",
-        "reference": "Бах — at /align[7]/paragraph[1]"
+        "reference": "Бах — at /align[0]/paragraph[2]"
       }
     },
     {
@@ -1219,15 +1128,35 @@
       }
     },
     {
-      "class": "image.size.missing",
+      "class": "image.caption.missing",
       "severity": "minor",
-      "instances": 3,
+      "instances": 7,
       "documents": [
-        "borislova",
-        "new_bach"
+        "goya2"
       ],
       "verdicts": {
-        "converter-defect": 3,
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 7,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[4]/column[1]/image[0]@caption",
+        "produced": null,
+        "reference": "caption: 1.000.000 Platinum"
+      }
+    },
+    {
+      "class": "image.position.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "borislova"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
@@ -1235,9 +1164,9 @@
       "rank": 6,
       "example": {
         "doc": "borislova",
-        "path": "/images[6]/image[0]@size",
+        "path": "/images[6]/image[0]@position",
         "produced": null,
-        "reference": "size: medium"
+        "reference": "position: center"
       }
     },
     {
@@ -1582,11 +1511,11 @@
       }
     },
     {
-      "class": "break.containment",
+      "class": "column.spurious",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "new_bach"
+        "new_karta"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1596,10 +1525,31 @@
       },
       "rank": 3,
       "example": {
-        "doc": "new_bach",
-        "path": "/break[27]",
-        "produced": "---",
-        "reference": "--- — produced at /columns[31]/column[0]/break[26]"
+        "doc": "new_karta",
+        "path": "/columns[20]/column[1]",
+        "produced": "align center WMA",
+        "reference": null
+      }
+    },
+    {
+      "class": "columns.spurious",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_karta",
+        "path": "/columns[20]",
+        "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
+        "reference": null
       }
     },
     {
@@ -1621,27 +1571,6 @@
         "path": "/image[9]",
         "produced": "Франсиско Таррега",
         "reference": "Франсиско Таррега — produced at /image[7]"
-      }
-    },
-    {
-      "class": "image.src.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_bach"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_bach",
-        "path": "/image[30]@src",
-        "produced": null,
-        "reference": "src: ../main/km.gif"
       }
     },
     {
@@ -2044,27 +1973,6 @@
       }
     },
     {
-      "class": "table.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_bach"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_bach",
-        "path": "/table[26]",
-        "produced": "TAB MIDI Air on the G String - (Air from BWV 1068 arr Wilhelmi) - 2 versions TAB — Anna Magdalena Anh 114 - Minuet in G TAB — Anna Magdalena Anh 124 - March in…",
-        "reference": "Произведение Табулатура MIDI Air on the G String - (Air from BWV 1068 arr Wilhelmi) - 2 versions TAB — Anna Magdalena Anh 114 - Minuet in G TAB — Anna Magdalen… — produced at /columns[31]/column[0]/table[25]"
-      }
-    },
-    {
       "class": "table.geometry.cols",
       "severity": "major",
       "instances": 1,
@@ -2083,6 +1991,27 @@
         "path": "/table[14]",
         "produced": "MP3 ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу работу MP3 — • Прогул…",
         "reference": "Название части Формат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP… — 3 columns, reference has 2"
+      }
+    },
+    {
+      "class": "image.size.missing",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "borislova"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 2,
+      "example": {
+        "doc": "borislova",
+        "path": "/images[6]/image[0]@size",
+        "produced": null,
+        "reference": "size: medium"
       }
     },
     {
@@ -2147,27 +2076,6 @@
         "path": "/heading[15]/text",
         "produced": "The Best of the L.A.G.Q",
         "reference": "***T***he Best of the L.A.G.Q"
-      }
-    },
-    {
-      "class": "image.link.missing",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_bach"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "new_bach",
-        "path": "/image[30]@link",
-        "produced": null,
-        "reference": "link: http://www.km.ru"
       }
     },
     {
@@ -2355,17 +2263,18 @@
     {
       "class": "hardbreak.spurious",
       "severity": "minor",
-      "instances": 9,
+      "instances": 10,
       "documents": [
         "borislova",
         "kiselev",
+        "new_bach",
         "news"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
         "reference-inconsistency": 8,
-        "ambiguous": 1
+        "ambiguous": 2
       },
       "rank": 0,
       "example": {
@@ -4758,62 +4667,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "8f405df5",
-      "doc": "new_bach",
-      "class": "columns.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[31]",
-      "producedLine": 10,
-      "referenceLine": null,
-      "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bf84eff3",
-      "doc": "new_bach",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[31]/column[0]",
-      "producedLine": 12,
-      "referenceLine": null,
-      "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "43ae7200",
-      "doc": "new_bach",
-      "class": "image.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/image[30]/image[0]",
-      "producedLine": 175,
-      "referenceLine": null,
-      "produced": "Источник: Большая энциклопедия Кирилла и Мефодия 2000",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dfda4dae",
-      "doc": "new_bach",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[0]",
-      "producedLine": null,
-      "referenceLine": 1,
-      "produced": null,
-      "reference": "Иоганн Себастьян Бах",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "2d8494f4",
       "doc": "new_bach",
       "class": "heading.containment",
@@ -4824,7 +4677,7 @@
       "producedLine": 1,
       "referenceLine": 4,
       "produced": "Иоганн Себастьян",
-      "reference": "Иоганн Себастьян — produced at /heading[7]",
+      "reference": "Иоганн Себастьян — produced at /heading[0]",
       "verdict": "converter-defect"
     },
     {
@@ -4838,21 +4691,7 @@
       "producedLine": 6,
       "referenceLine": 5,
       "produced": "Бах",
-      "reference": "Бах — at /align[7]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "efa9eb1a",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[1]",
-      "producedLine": 13,
-      "referenceLine": 8,
-      "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
-      "reference": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба… — produced at /columns[31]/column[0]/paragraph[0]",
+      "reference": "Бах — at /align[0]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -4863,66 +4702,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/break[2]",
-      "producedLine": 15,
+      "producedLine": 11,
       "referenceLine": 10,
       "produced": "* * *",
-      "reference": "*** — at /columns[31]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "42f84753",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[3]",
-      "producedLine": 17,
-      "referenceLine": 12,
-      "produced": "БАХ (Bach) Иоганн Себастьян [31 (21) марта 1685, Эйзенах – 28 июля 1750, Лейпциг], немецкий композитор.",
-      "reference": "БАХ (Bach) Иоганн Себастьян [31 (21) марта 1685, Эйзенах – 28 июля 1750, Лейпциг], немецкий композитор. — produced at /columns[31]/column[0]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ffe502ff",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[4]",
-      "producedLine": 19,
-      "referenceLine": 14,
-      "produced": "Род, семья, детские и отроческие годы",
-      "reference": "Род, семья, детские и отроческие годы — produced at /columns[31]/column[0]/heading[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9f0b3219",
-      "doc": "new_bach",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[5]",
-      "producedLine": 22,
-      "referenceLine": 17,
-      "produced": "Иоганн Себастьян Бах",
-      "reference": "Иоганн Себастьян Бах — produced at /columns[31]/column[0]/image[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "639b5ecc",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[6]",
-      "producedLine": 28,
-      "referenceLine": 23,
-      "produced": "Бах принадлежал к разветвленному немецкому роду, подавляющее большинство представителей которого на протяжении трех столетий были профессиональными музыкантами…",
-      "reference": "Бах принадлежал к разветвленному немецкому роду, подавляющее большинство представителей которого на протяжении трех столетий были профессиональными музыкантами… — produced at /columns[31]/column[0]/paragraph[5]",
+      "reference": "*** — at /paragraph[3]",
       "verdict": "converter-defect"
     },
     {
@@ -4933,109 +4716,11 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[6]",
-      "producedLine": 28,
+      "producedLine": 24,
       "referenceLine": 23,
       "produced": "Бах принадлежал к разветвленному немецкому роду, подавляющее большинство представителей которого на протяжении трех столетий были профессиональными музыкантами…",
       "reference": "Бах принадлежал к разветвленному немецкому роду, подавляющее большинство представителей которого на протяжении трех столетий были профессиональными музыкантами…",
       "verdict": "ambiguous"
-    },
-    {
-      "id": "12fa450e",
-      "doc": "new_bach",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[7]/paragraph[0]",
-      "producedLine": 31,
-      "referenceLine": 29,
-      "produced": "Годы странствий (1703-08)",
-      "reference": "Годы странствий (1703-08) — at /columns[31]/column[0]/align[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3196fa89",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[8]",
-      "producedLine": 37,
-      "referenceLine": 32,
-      "produced": "После окончания учебы Бах был занят поиском работы, обеспечивающей хлебом насущным и оставляющей время для творчества. С 1703 по 1708 он служит в Веймаре, Арнш…",
-      "reference": "После окончания учебы Бах был занят поиском работы, обеспечивающей хлебом насущным и оставляющей время для творчества. С 1703 по 1708 он служит в Веймаре, Арнш… — produced at /columns[31]/column[0]/paragraph[7]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9c21ca20",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[9]",
-      "producedLine": 39,
-      "referenceLine": 34,
-      "produced": "Веймарский период (1708-17)",
-      "reference": "Веймарский период (1708-17) — produced at /columns[31]/column[0]/heading[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "95579082",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[10]",
-      "producedLine": 41,
-      "referenceLine": 36,
-      "produced": "Получив в 1708 место придворного музыканта у герцога Веймарского, Бах обосновывается в Веймаре, где проводит 9 лет. Эти годы стали временем интенсивного творче…",
-      "reference": "Получив в 1708 место придворного музыканта у герцога Веймарского, Бах обосновывается в Веймаре, где проводит 9 лет. Эти годы стали временем интенсивного творче… — produced at /columns[31]/column[0]/paragraph[9]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4c7ae66d",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[11]",
-      "producedLine": 43,
-      "referenceLine": 38,
-      "produced": "В Веймаре у Баха родились сыновья, будущие известные композиторы Вильгельм Фридеман и Карл Филипп Эммануил.",
-      "reference": "В Веймаре у Баха родились сыновья, будущие известные композиторы Вильгельм Фридеман и Карл Филипп Эммануил. — produced at /columns[31]/column[0]/paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fc798bbb",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[12]",
-      "producedLine": 45,
-      "referenceLine": 40,
-      "produced": "Служба в Кетене (1717-23)",
-      "reference": "Служба в Кетене (1717-23) — produced at /columns[31]/column[0]/heading[11]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2589771d",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[13]",
-      "producedLine": 47,
-      "referenceLine": 42,
-      "produced": "В 1717 Бах принял приглашение на службу герцога Анхальт-Кетенского Леопольда. Жизнь в Кетене поначалу была счастливейшим временем в жизни композитора: князь, п…",
-      "reference": "В 1717 Бах принял приглашение на службу герцога Анхальт-Кетенского Леопольда. Жизнь в Кетене поначалу была счастливейшим временем в жизни композитора: князь, п… — produced at /columns[31]/column[0]/paragraph[12]",
-      "verdict": "converter-defect"
     },
     {
       "id": "0c2bd442",
@@ -5045,192 +4730,10 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[13]",
-      "producedLine": 47,
+      "producedLine": 43,
       "referenceLine": 42,
       "produced": "В 1717 Бах принял приглашение на службу герцога Анхальт-Кетенского Леопольда. Жизнь в Кетене поначалу была счастливейшим временем в жизни композитора: князь, п…",
       "reference": "В 1717 Бах принял приглашение на службу герцога Анхальт-Кетенского Леопольда. Жизнь в Кетене поначалу была счастливейшим временем в жизни композитора: князь, п…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a32b150d",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[14]",
-      "producedLine": 49,
-      "referenceLine": 44,
-      "produced": "Но безоблачный период жизни Баха оборвался в 1720: умирает его жена, оставляя четырех малолетних детей.",
-      "reference": "Но безоблачный период жизни Баха оборвался в 1720: умирает его жена, оставляя четырех малолетних детей. — produced at /columns[31]/column[0]/paragraph[13]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0250eca8",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[15]",
-      "producedLine": 51,
-      "referenceLine": 46,
-      "produced": "В 1721 Бах женится второй раз на Анне Магдалене Вилькен. В 1723 состоялось исполнение его «Страстей по Иоанну» в церкви св. Фомы в Лейпциге, и вскоре Бах получ…",
-      "reference": "В 1721 Бах женится второй раз на Анне Магдалене Вилькен. В 1723 состоялось исполнение его «Страстей по Иоанну» в церкви св. Фомы в Лейпциге, и вскоре Бах получ… — produced at /columns[31]/column[0]/paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0e10fbaa",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[16]",
-      "producedLine": 53,
-      "referenceLine": 48,
-      "produced": "В Лейпциге (1723-50)",
-      "reference": "В Лейпциге (1723-50) — produced at /columns[31]/column[0]/heading[15]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3813a791",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[17]",
-      "producedLine": 55,
-      "referenceLine": 50,
-      "produced": "Бах становится «музыкальным директором» всех церквей города, следя за личным составом музыкантов и певцов, наблюдая за их обучением, назначая необходимые к исп…",
-      "reference": "Бах становится «музыкальным директором» всех церквей города, следя за личным составом музыкантов и певцов, наблюдая за их обучением, назначая необходимые к исп… — produced at /columns[31]/column[0]/paragraph[16]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6d9bdf54",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[18]",
-      "producedLine": 57,
-      "referenceLine": 52,
-      "produced": "Судьба творческого наследия",
-      "reference": "Судьба творческого наследия — produced at /columns[31]/column[0]/heading[17]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "051807e3",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[19]",
-      "producedLine": 59,
-      "referenceLine": 54,
-      "produced": "В конце 1740-х годов здоровье Баха ухудшилось, особенно беспокоила резкая потеря зрения. Две неудачные операции по удалению катаракты привели к полной слепоте.…",
-      "reference": "В конце 1740-х годов здоровье Баха ухудшилось, особенно беспокоила резкая потеря зрения. Две неудачные операции по удалению катаракты привели к полной слепоте.… — produced at /columns[31]/column[0]/paragraph[18]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a30110ba",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[20]",
-      "producedLine": 61,
-      "referenceLine": 56,
-      "produced": "Торжественные похороны вызвали огромное стечение народа из разных мест. Композитора похоронили вблизи церкви св. Фомы, в которой он прослужил 27 лет. Однако по…",
-      "reference": "Торжественные похороны вызвали огромное стечение народа из разных мест. Композитора похоронили вблизи церкви св. Фомы, в которой он прослужил 27 лет. Однако по… — produced at /columns[31]/column[0]/paragraph[19]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "00364a27",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[21]",
-      "producedLine": 63,
-      "referenceLine": 58,
-      "produced": "Сложной оказалась и судьба его наследия. При жизни Бах пользовался известностью. Однако после смерти композитора имя и музыка его стали предаваться забвению. П…",
-      "reference": "Сложной оказалась и судьба его наследия. При жизни Бах пользовался известностью. Однако после смерти композитора имя и музыка его стали предаваться забвению. П… — produced at /columns[31]/column[0]/paragraph[20]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "077b10cd",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[22]",
-      "producedLine": 65,
-      "referenceLine": 60,
-      "produced": "Бах – крупнейшая фигура мировой музыкальной культуры. Его творчество представляет собой одну из вершин философской мысли в музыке. Свободно скрещивая черты не …",
-      "reference": "Бах – крупнейшая фигура мировой музыкальной культуры. Его творчество представляет собой одну из вершин философской мысли в музыке. Свободно скрещивая черты не … — produced at /columns[31]/column[0]/paragraph[21]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fe417efe",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[23]",
-      "producedLine": 67,
-      "referenceLine": 62,
-      "produced": "Среди продолжателей исканий Баха – его сыновья. Всего у него было 20 детей: семеро от первой жены – Марии Барбары Бах (1684-1720), и 13 от второй – Анны Магдал…",
-      "reference": "Среди продолжателей исканий Баха – его сыновья. Всего у него было 20 детей: семеро от первой жены – Марии Барбары Бах (1684-1720), и 13 от второй – Анны Магдал… — produced at /columns[31]/column[0]/paragraph[22]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f5d8592a",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[24]",
-      "producedLine": 69,
-      "referenceLine": 64,
-      "produced": "Литература:",
-      "reference": "Литература: — produced at /columns[31]/column[0]/heading[23]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6f2c92ef",
-      "doc": "new_bach",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[25]",
-      "producedLine": 71,
-      "referenceLine": 66,
-      "produced": "Швейцер А. И. С. Бах. М., 1964. Хаммершлаг Я. Если бы Бах вел дневник. Будапешт, 1965. Морозов С. Бах. М., 1984. // Сер. Жизнь замечательных людей.",
-      "reference": "Швейцер А. И. С. Бах. М., 1964. Хаммершлаг Я. Если бы Бах вел дневник. Будапешт, 1965. Морозов С. Бах. М., 1984. // Сер. Жизнь замечательных людей. — produced at /columns[31]/column[0]/paragraph[24]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4236672f",
-      "doc": "new_bach",
-      "class": "table.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/table[26]",
-      "producedLine": 75,
-      "referenceLine": 70,
-      "produced": "TAB MIDI Air on the G String - (Air from BWV 1068 arr Wilhelmi) - 2 versions TAB — Anna Magdalena Anh 114 - Minuet in G TAB — Anna Magdalena Anh 124 - March in…",
-      "reference": "Произведение Табулатура MIDI Air on the G String - (Air from BWV 1068 arr Wilhelmi) - 2 versions TAB — Anna Magdalena Anh 114 - Minuet in G TAB — Anna Magdalen… — produced at /columns[31]/column[0]/table[25]",
       "verdict": "converter-defect"
     },
     {
@@ -5241,7 +4744,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[26]/header[0]",
-      "producedLine": 75,
+      "producedLine": 71,
       "referenceLine": 70,
       "produced": "",
       "reference": "Произведение — column 0",
@@ -5255,53 +4758,53 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[26]/header[1]",
-      "producedLine": 75,
+      "producedLine": 71,
       "referenceLine": 70,
       "produced": "TAB",
       "reference": "Табулатура — column 1",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "4587eb53",
+      "id": "f0f95496",
       "doc": "new_bach",
-      "class": "break.containment",
-      "severity": "major",
+      "class": "hardbreak.spurious",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "move",
-      "path": "/break[27]",
-      "producedLine": 160,
-      "referenceLine": 155,
-      "produced": "---",
-      "reference": "--- — produced at /columns[31]/column[0]/break[26]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c0e5eb58",
-      "doc": "new_bach",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[28]",
-      "producedLine": null,
-      "referenceLine": 158,
-      "produced": null,
-      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ►",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b34f232b",
-      "doc": "new_bach",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
+      "op": "insert",
       "path": "/align[28]/paragraph[0]",
-      "producedLine": 163,
+      "producedLine": 162,
       "referenceLine": 161,
       "produced": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] /#/bach_lute",
-      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ► — at /columns[31]/column[0]/align[27]",
-      "verdict": "converter-defect"
+      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ► — 1 hard breaks, reference has 0",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "5889ec6d",
+      "doc": "new_bach",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/align[28]/paragraph[0]",
+      "producedLine": 162,
+      "referenceLine": 161,
+      "produced": "*См. также:* \\[ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] [/#/bach\\_lute](/#/bach_lute)",
+      "reference": "*См. также:* \\[ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] [&#9658;](/#/bach_lute)",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "88f80cd5",
+      "doc": "new_bach",
+      "class": "link.label.content",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/align[28]/paragraph[0]/link[0]",
+      "producedLine": 162,
+      "referenceLine": 161,
+      "produced": "/#/bach_lute",
+      "reference": "►",
+      "verdict": "ambiguous"
     },
     {
       "id": "e2125b7d",
@@ -5315,90 +4818,6 @@
       "referenceLine": 165,
       "produced": null,
       "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a38845e6",
-      "doc": "new_bach",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[30]",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": "image ../main/km.gif center small Источник: Большая энциклопедия Кирилла и Мефодия 2000 http://www.km.ru",
-      "reference": "Источник: Большая энциклопедия Кирилла и Мефодия 2000 — produced at /columns[31]/column[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b72e4ea8",
-      "doc": "new_bach",
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/image[30]@caption",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": null,
-      "reference": "caption: Источник: Большая энциклопедия Кирилла и Мефодия 2000",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "740aa93a",
-      "doc": "new_bach",
-      "class": "image.link.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/image[30]@link",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": null,
-      "reference": "link: http://www.km.ru",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9ac90d12",
-      "doc": "new_bach",
-      "class": "image.position.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/image[30]@position",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": null,
-      "reference": "position: center",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2d5ecd60",
-      "doc": "new_bach",
-      "class": "image.size.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/image[30]@size",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": null,
-      "reference": "size: small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7690f5e1",
-      "doc": "new_bach",
-      "class": "image.src.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/image[30]@src",
-      "producedLine": 173,
-      "referenceLine": 168,
-      "produced": null,
-      "reference": "src: ../main/km.gif",
       "verdict": "converter-defect"
     },
     {

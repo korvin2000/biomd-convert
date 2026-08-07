@@ -2797,6 +2797,8 @@ function layoutFrom(
     }
 
     const lanes = laneColumnsOf(grid, (r, c) => (loweredRows[r]?.[c]?.blocks.length ?? 0) > 0);
+    const rails = pageRailColumns(grid);
+    for (const c of rails) lanes.delete(c);
     for (let r = 0; r < grid.rows; r += 1) {
       const columns = [];
       const folded: BiomdContent[] = [];
@@ -2804,7 +2806,10 @@ function layoutFrom(
         const cellContent = loweredRows[r]?.[c];
         if (!cellContent) continue;
         folded.push(...cellContent.folded);
-        if (cellContent.blocks.length > 0) columns.push(makeColumn(cellContent.blocks));
+        // A rail's content is not lost — it joins the flow after the region, the
+        // same way a folded menu does.
+        if (rails.has(c)) folded.push(...cellContent.blocks);
+        else if (cellContent.blocks.length > 0) columns.push(makeColumn(cellContent.blocks));
         // An established lane keeps its place even in a row that has nothing to
         // put there. Five `goya2` albums have no cover art, and dropping the
         // empty lane dropped the whole row out of the two-lane region — so five
@@ -2917,6 +2922,76 @@ export function laneColumnsOf(
   // separating populations, not trimming one.
   for (let c = 0; c < grid.cols; c += 1) if ((occupancy[c] ?? 0) * 2 >= busiest && busiest > 0) lanes.add(c);
   return lanes;
+}
+
+/**
+ * The narrow decorated strips the era drew down each side of a page.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Geometry and position together: the row's *middle* column is
+ * the widest, and the columns on either side of it are each far narrower. That
+ * is `CLAUDE.md` §5's corpus fact stated as measurement — "content is the centre
+ * column (~½ viewport); page chrome and footer drop; right-hand menus fold into
+ * the main flow" — and it is what the flanks *are*, not what they happen to
+ * contain: this site's rails hold a menu on one page, an off-site credit badge
+ * on the next, and nothing at all on twenty.
+ *
+ * **Why width alone will not do.** It was tried and measured wrong first: a
+ * plain "narrow lane beside a dominant one" test also fires on
+ * `new_blackmore`'s figure regions, whose reference lanes measure 29/71 with
+ * the *text* in the narrow one. Being flanked on **both** sides is what
+ * separates a page frame from a lane pair, and it is why this reads position
+ * rather than width alone.
+ *
+ * **Recurrence.** None is required of a single grid, and none is available: the
+ * frame is drawn once per page. Its recurrence is across the corpus — measured
+ * identical on all 22 documents at `[116, 529, 115]` in a 760 px row — which is
+ * evidence this function does not need and could not see.
+ *
+ * **False friend**, tested for non-firing: a genuine three-lane region. Every
+ * multi-column grid in the corpus that is not a page frame has its widest column
+ * *first* (`[298, 28, 28]`, `[360, 45, 45]`, `[304, 36, 55, 55]`) or equal thirds
+ * (`[357, 357, 357]`), so the ratio separating them is 0.22 against 1.00 — a
+ * ceiling with an order of magnitude of room, not a discriminator.
+ */
+export function pageRailColumns(grid: TableGrid): Set<number> {
+  const rails = new Set<number>();
+  if (grid.cols !== 3) return rails;
+  const widths: number[] = [];
+  for (let c = 0; c < grid.cols; c += 1) {
+    let w = 0;
+    for (const cell of columnCellsOf(grid, c)) w = Math.max(w, cell.node.box?.w ?? 0);
+    widths.push(w);
+  }
+  const [left = 0, centre = 0, right = 0] = widths;
+  if (centre <= 0) return rails;
+  if (centre <= left || centre <= right) return rails;
+  if (left <= centre * MAX_RAIL_SHARE) rails.add(0);
+  if (right <= centre * MAX_RAIL_SHARE) rails.add(2);
+  // Both sides, or it is not a frame — one narrow column beside a wide one is a
+  // lane pair, which is exactly what `new_blackmore` writes.
+  return rails.size === 2 ? rails : new Set<number>();
+}
+
+/**
+ * How wide a flank may be and still be a decoration rather than a lane.
+ *
+ * Half the content column. The corpus measures 0.22 for both real rails and
+ * 1.00 for the nearest non-rail, so the sweep across 0.3–0.7 is flat and the
+ * exact number does not matter — which is the shape a limit should have.
+ */
+const MAX_RAIL_SHARE = 0.5;
+
+function columnCellsOf(grid: TableGrid, col: number): GridCell[] {
+  const out: GridCell[] = [];
+  for (let r = 0; r < grid.rows; r += 1) {
+    const slot = grid.slots[r]?.[col];
+    if (!slot?.isOrigin) continue;
+    const cell = grid.cells.find((x) => x.id === slot.originId);
+    if (cell) out.push(cell);
+  }
+  return out;
 }
 
 function isBounded(node: BiomdContent): node is BoundedContent {

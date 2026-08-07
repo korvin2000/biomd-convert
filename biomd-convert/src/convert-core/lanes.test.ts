@@ -9,7 +9,7 @@
 import { describe, expect, it } from "vitest";
 import type { TableGrid } from "../ladom/grid.js";
 import { makeColumn } from "../biomd-ast/index.js";
-import { laneColumnsOf } from "./structure.js";
+import { laneColumnsOf, pageRailColumns } from "./structure.js";
 
 /**
  * A grid from an occupancy map: `"XX"` is a row with both cells populated,
@@ -112,5 +112,76 @@ describe("an empty column is legal — every other bounded directive is not", ()
     // spec and the target renderer.
     expect(() => makeColumn([])).not.toThrow();
     expect(makeColumn([])).toEqual({ type: "biomdColumn", children: [] });
+  });
+});
+
+/**
+ * The page frame's side rails.
+ *
+ * **Invariant.** Geometry *and* position: the middle column is the widest and
+ * both outer columns are far narrower. That is `CLAUDE.md` §5's "content is the
+ * centre column, right-hand menus fold into the main flow", stated as
+ * measurement rather than as a guess about what the rails contain — measured
+ * identical on all 22 corpus documents at `[116, 529, 115]` in a 760 px row,
+ * holding a menu on one page, an off-site credit badge on another, and nothing
+ * at all on twenty.
+ *
+ * **False friend**, tested for non-firing below: a real three-lane region, and a
+ * lane pair where one lane simply happens to be narrow. The second is why the
+ * rule reads position and not width alone — `new_blackmore`'s reference lanes
+ * measure 29/71 with the *text* in the narrow one, so a plain "narrow flank"
+ * test would have flattened the three regions its `column.missing` findings are
+ * still open on.
+ */
+describe("page rails are not lanes", () => {
+  /** A one-row grid from measured column widths. */
+  function widthGrid(widths: readonly number[]): TableGrid {
+    const cells = widths.map((w, c) => ({ id: `0:${c}`, isEmpty: false, node: { box: { x: 0, y: 0, w, h: 10 } } }));
+    const slots = [widths.map((_, c) => ({ isOrigin: true, originId: `0:${c}` }))];
+    return { rows: 1, cols: widths.length, slots, cells } as unknown as TableGrid;
+  }
+
+  it("finds both rails of the site's page frame", () => {
+    expect([...pageRailColumns(widthGrid([116, 529, 115]))].sort()).toEqual([0, 2]);
+    expect([...pageRailColumns(widthGrid([64, 458, 115]))].sort()).toEqual([0, 2]);
+  });
+
+  it("leaves a three-lane region alone — the widest column is not the middle", () => {
+    // Every non-frame multi-column grid measured in the corpus.
+    for (const widths of [
+      [298, 28, 28],
+      [360, 45, 45],
+      [360, 40, 49],
+      [400, 49, 49],
+    ]) {
+      expect([...pageRailColumns(widthGrid(widths))], widths.join("/")).toEqual([]);
+    }
+  });
+
+  it("leaves equal thirds alone", () => {
+    expect([...pageRailColumns(widthGrid([357, 357, 357]))]).toEqual([]);
+  });
+
+  it("leaves a narrow lane beside a wide one alone — the measured false friend", () => {
+    // `new_blackmore`'s figure regions, and `kiselev`'s and `barrios`'s cards.
+    for (const widths of [
+      [63, 296],
+      [250, 132],
+      [176, 300],
+    ]) {
+      expect([...pageRailColumns(widthGrid(widths))], widths.join("/")).toEqual([]);
+    }
+  });
+
+  it("needs both sides — one rail is a lane pair, not a frame", () => {
+    // Content on the left with a narrow strip after it is the shape of a card,
+    // not of a page frame; a frame is the thing the content sits *inside*.
+    expect([...pageRailColumns(widthGrid([529, 116, 115]))]).toEqual([]);
+    expect([...pageRailColumns(widthGrid([116, 115, 529]))]).toEqual([]);
+  });
+
+  it("says nothing without measurement", () => {
+    const unmeasured = { rows: 1, cols: 3, slots: [[0, 1, 2].map((c) => ({ isOrigin: true, originId: `0:${c}` }))], cells: [0, 1, 2].map((c) => ({ id: `0:${c}`, isEmpty: false, node: {} })) } as unknown as TableGrid;
+    expect([...pageRailColumns(unmeasured)]).toEqual([]);
   });
 });
