@@ -59,6 +59,52 @@ describe("lane detection", () => {
   });
 });
 
+/**
+ * Occupancy is whatever the caller is going to build the region out of.
+ *
+ * **Invariant.** A column is a lane when it carries content in a substantial
+ * share of the rows *of the content the region will be assembled from*. No
+ * width, no position, no threshold on the page: the same relative-occupancy
+ * test, applied to the right input.
+ *
+ * **Why it is a separate question.** The source cell and the lowered cell
+ * disagree exactly once, and it matters every time: a cell holding nothing but
+ * a side menu is source-occupied and lane-empty, because `layoutFrom` folds a
+ * `nav` out of the lane and emits it after the region. Reading occupancy off
+ * the source then claimed a lane the assembly had already emptied — and on the
+ * site's own page frame that phantom was the second column keeping a one-lane
+ * region alive.
+ *
+ * **False friend**, tested for non-firing: `goya2`'s five coverless albums. A
+ * lane that is empty in *some* rows is still a lane, whichever input is used to
+ * measure it — the distinction is "empty here" versus "empty everywhere", and
+ * collapsing the two shifts thirty catalog rows out of alignment.
+ */
+describe("lane occupancy is measured on what the region is built from", () => {
+  it("drops a column whose content all leaves the lane", () => {
+    // The page frame: `[margin | article | menu rail]`. All three cells carry
+    // source content, but the rail's is a menu and menus fold into the flow, so
+    // after lowering the rail contributes nothing to any row.
+    const grid = gridOf(["XXX"]);
+    expect([...laneColumnsOf(grid)].sort()).toEqual([0, 1, 2]);
+    const lowered = laneColumnsOf(grid, (_r, c) => c === 1);
+    expect([...lowered]).toEqual([1]);
+  });
+
+  it("keeps a lane that lowers to nothing in one row but not in another", () => {
+    // The false friend. Column 1 is empty in the last row only; that is a
+    // coverless album, not a rail, and its place in the region is the content.
+    const lanes = laneColumnsOf(gridOf(["XX", "XX", "XX", "XX", "XX"]), (r, c) => !(c === 1 && r === 4));
+    expect([...lanes].sort()).toEqual([0, 1]);
+  });
+
+  it("still reads the source cell when no predicate is supplied", () => {
+    // The default has to stay the source grid: callers that have not lowered
+    // anything yet are asking about the shape the author drew.
+    expect([...laneColumnsOf(gridOf(["X.", "X.", "X."]))].sort()).toEqual([0]);
+  });
+});
+
 describe("an empty column is legal — every other bounded directive is not", () => {
   it("builds a column with no children", () => {
     // The track position is the content. `goya2`'s reference emits five of these

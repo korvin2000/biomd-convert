@@ -2692,25 +2692,30 @@ function layoutFrom(
     //
     // With `rows === 1` this is identical to the column-wise construction, so a
     // genuine two-lane page layout — article beside sidebar — is unaffected.
-    const lanes = laneColumnsOf(grid);
+    //
+    // **Lowering happens first, and lane occupancy is read off its result.**
+    // The two used to disagree: occupancy came from the source grid while the
+    // region was assembled from the lowered blocks, so a cell whose entire
+    // content leaves the lane — a side menu, which is folded out below —
+    // counted as an occupied lane and then contributed an empty `::: column`.
+    // On the site's own page frame (`[margin | article | rail]`, measured
+    // identical on all 22 documents) that phantom lane was the *second* column
+    // that kept the region alive, and the whole article ended up inside a
+    // two-lane layout whose other lane held nothing. See {@link laneColumnsOf}.
+    // `null` where the row has no cell of its own at that column — a colspan
+    // continuation or a ragged row. That is not an empty lane: an empty lane
+    // holds a place in the region, a missing cell has no place to hold.
+    type LoweredCell = { blocks: BoundedContent[]; folded: BiomdContent[] } | null;
+    const loweredRows: LoweredCell[][] = [];
     for (let r = 0; r < grid.rows; r += 1) {
-      const columns = [];
-      /**
-       * A lane that is nothing but a menu is not a lane.
-       *
-       * §11 and `CLAUDE.md` §5 say the same thing: a prominent side menu folds
-       * into the main flow. Kept as a column it becomes a half-width track of
-       * link labels running beside the article for the article's whole length,
-       * which is the 1998 page's shape and not its meaning — and `column`'s
-       * body in §4.1 is "Markdown and leaf media directives", which a `nav` is
-       * not. The reference closes the region and puts the menu after it.
-       */
-      const folded: BiomdContent[] = [];
+      const row: LoweredCell[] = [];
       for (let c = 0; c < grid.cols; c += 1) {
         const slot = grid.slots[r]?.[c];
-        if (!slot?.isOrigin) continue;
-        const cell = grid.cells.find((x) => x.id === slot.originId);
-        if (!cell) continue;
+        const cell = slot?.isOrigin ? grid.cells.find((x) => x.id === slot.originId) : undefined;
+        if (!cell) {
+          row.push(null);
+          continue;
+        }
         ctx.boundedDepth += 1;
         // `framedCell`, not `blocksFrom`: a bordered notice is a notice in
         // whichever path reaches it, and only the catalog path was asking. So
@@ -2720,13 +2725,38 @@ function layoutFrom(
         // falls back to `blocksFrom` when there is no border evidence.
         const inner = framedCell(cell.node, ctx);
         ctx.boundedDepth -= 1;
+        /**
+         * A lane that is nothing but a menu is not a lane.
+         *
+         * §11 and `CLAUDE.md` §5 say the same thing: a prominent side menu
+         * folds into the main flow. Kept as a column it becomes a half-width
+         * track of link labels running beside the article for the article's
+         * whole length, which is the 1998 page's shape and not its meaning —
+         * and `column`'s body in §4.1 is "Markdown and leaf media directives",
+         * which a `nav` is not. The reference closes the region and puts the
+         * menu after it.
+         */
+        const kept = inner.filter((block) => block.type !== "biomdNav");
         // The cell is decided now, so the align-run pass may look at it (§13
         // permits `align` inside `column`). During lowering above it must not:
         // the region detector reads the produced shape back.
-        const lowered = inner.filter((block) => block.type !== "biomdNav");
-        folded.push(...inner.filter((block) => block.type === "biomdNav"));
-        const cells = groupAlignedRunsCommitted(lowered.filter(isBounded), ctx, cell.node).filter(isBounded);
-        if (cells.length > 0) columns.push(makeColumn(cells));
+        row.push({
+          blocks: groupAlignedRunsCommitted(kept.filter(isBounded), ctx, cell.node).filter(isBounded),
+          folded: inner.filter((block) => block.type === "biomdNav"),
+        });
+      }
+      loweredRows.push(row);
+    }
+
+    const lanes = laneColumnsOf(grid, (r, c) => (loweredRows[r]?.[c]?.blocks.length ?? 0) > 0);
+    for (let r = 0; r < grid.rows; r += 1) {
+      const columns = [];
+      const folded: BiomdContent[] = [];
+      for (let c = 0; c < grid.cols; c += 1) {
+        const cellContent = loweredRows[r]?.[c];
+        if (!cellContent) continue;
+        folded.push(...cellContent.folded);
+        if (cellContent.blocks.length > 0) columns.push(makeColumn(cellContent.blocks));
         // An established lane keeps its place even in a row that has nothing to
         // put there. Five `goya2` albums have no cover art, and dropping the
         // empty lane dropped the whole row out of the two-lane region — so five
@@ -2809,15 +2839,27 @@ function layoutFrom(
  * **False friend.** A sparse column that carries content once or twice — the
  * four such columns in 's nine-column grid — which is a stray cell, not
  * a lane, and would otherwise pull empty columns into every row.
+ *
+ * **What counts as content is the caller's to say.** The default reads the
+ * source cell, which is right for a grid nobody has lowered yet. `layoutFrom`
+ * passes what survived lowering instead, because a cell whose whole content
+ * leaves the lane — a side menu folded into the flow — is *source*-occupied
+ * and *lane*-empty, and the region is built from the second of those. Measuring
+ * one and building the other is what turned the site's own page frame into a
+ * two-lane region whose second lane was the menu it had just removed.
  */
-export function laneColumnsOf(grid: TableGrid): Set<number> {
+export function laneColumnsOf(
+  grid: TableGrid,
+  occupied?: (row: number, col: number) => boolean,
+): Set<number> {
   const occupancy = new Array<number>(grid.cols).fill(0);
   for (let r = 0; r < grid.rows; r += 1) {
     for (let c = 0; c < grid.cols; c += 1) {
       const slot = grid.slots[r]?.[c];
       if (!slot?.isOrigin) continue;
       const cell = grid.cells.find((x) => x.id === slot.originId);
-      if (cell && !cell.isEmpty) occupancy[c] = (occupancy[c] ?? 0) + 1;
+      if (!cell) continue;
+      if (occupied ? occupied(r, c) : !cell.isEmpty) occupancy[c] = (occupancy[c] ?? 0) + 1;
     }
   }
   const busiest = Math.max(0, ...occupancy);

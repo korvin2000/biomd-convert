@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-07T22:50:08.873Z",
+  "generated": "2026-08-07T23:17:32.598Z",
   "totals": {
-    "findings": 745,
-    "converterDefects": 580,
+    "findings": 691,
+    "converterDefects": 526,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 84,
     "ambiguous": 81,
     "bySeverity": {
       "critical": 26,
-      "major": 497,
+      "major": 443,
       "minor": 222
     }
   },
@@ -87,10 +87,10 @@
     },
     {
       "doc": "new_geyzel04",
-      "findings": 97,
-      "converterDefects": 92,
+      "findings": 12,
+      "converterDefects": 7,
       "critical": 1,
-      "major": 92,
+      "major": 7,
       "minor": 4
     },
     {
@@ -183,10 +183,10 @@
     },
     {
       "doc": "williams2",
-      "findings": 11,
-      "converterDefects": 4,
+      "findings": 42,
+      "converterDefects": 35,
       "critical": 0,
-      "major": 4,
+      "major": 35,
       "minor": 7
     }
   ],
@@ -194,23 +194,23 @@
     {
       "class": "paragraph.containment",
       "severity": "major",
-      "instances": 141,
+      "instances": 83,
       "documents": [
         "kiselev",
         "new_bach",
-        "new_geyzel04",
         "new_lagq2",
         "new_lendle2",
         "news",
-        "pavlov_azancheev"
+        "pavlov_azancheev",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 141,
+        "converter-defect": 83,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 2961,
+      "rank": 1743,
       "example": {
         "doc": "kiselev",
         "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
@@ -221,7 +221,7 @@
     {
       "class": "align.spurious",
       "severity": "major",
-      "instances": 33,
+      "instances": 37,
       "documents": [
         "borislova",
         "new_dyens",
@@ -230,15 +230,16 @@
         "news",
         "news_2007",
         "pavlov_azancheev",
-        "segovia1"
+        "segovia1",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 33,
+        "converter-defect": 37,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 792,
+      "rank": 999,
       "example": {
         "doc": "borislova",
         "path": "/align[45]",
@@ -273,7 +274,7 @@
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 11,
+      "instances": 12,
       "documents": [
         "new_blackmore",
         "new_lagq2",
@@ -284,12 +285,12 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 11,
+        "converter-defect": 12,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 231,
+      "rank": 252,
       "example": {
         "doc": "new_blackmore",
         "path": "/columns[35]/column[0]/align[0]",
@@ -307,7 +308,8 @@
         "new_geyzel04",
         "new_lagq2",
         "new_lendle2",
-        "new_rechin4"
+        "new_rechin4",
+        "williams2"
       ],
       "verdicts": {
         "converter-defect": 11,
@@ -315,7 +317,7 @@
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 198,
+      "rank": 231,
       "example": {
         "doc": "new_bach",
         "path": "/align[0]",
@@ -375,51 +377,49 @@
       }
     },
     {
-      "class": "column.spurious",
+      "class": "column.missing",
       "severity": "major",
-      "instances": 11,
+      "instances": 16,
       "documents": [
-        "new_bach",
-        "new_geyzel04",
-        "new_karta",
+        "new_blackmore",
+        "new_lagq2",
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 11,
+        "converter-defect": 16,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 132,
+      "rank": 144,
       "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]/column[0]",
-        "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
-        "reference": null
+        "doc": "new_blackmore",
+        "path": "/columns[8]/column[1]",
+        "produced": null,
+        "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html"
       }
     },
     {
-      "class": "heading.containment",
+      "class": "image.containment",
       "severity": "major",
-      "instances": 11,
+      "instances": 13,
       "documents": [
-        "kiselev",
+        "goya2",
         "new_bach",
-        "new_geyzel04",
-        "new_lagq2"
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 11,
+        "converter-defect": 13,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 132,
+      "rank": 117,
       "example": {
-        "doc": "kiselev",
-        "path": "/align[13]/heading[0]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -444,28 +444,6 @@
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
         "produced": "Francis Goya Plays His Favourite Hits",
         "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
-      }
-    },
-    {
-      "class": "column.missing",
-      "severity": "major",
-      "instances": 15,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 15,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]/column[1]",
-        "produced": null,
-        "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html"
       }
     },
     {
@@ -516,13 +494,13 @@
       }
     },
     {
-      "class": "image.containment",
+      "class": "heading.containment",
       "severity": "major",
       "instances": 9,
       "documents": [
-        "goya2",
+        "kiselev",
         "new_bach",
-        "new_geyzel04"
+        "new_lagq2"
       ],
       "verdicts": {
         "converter-defect": 9,
@@ -532,10 +510,10 @@
       },
       "rank": 81,
       "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
+        "doc": "kiselev",
+        "path": "/align[13]/heading[0]",
+        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -561,6 +539,30 @@
         "path": "/break[2]",
         "produced": "* * *",
         "reference": "*** — at /columns[31]/column[0]/paragraph[1]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-heading2",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "new_blackmore",
+        "new_geyzel04",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 72,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[71]/heading[0]",
+        "produced": "ДРУГИЕ АЛЬБОМЫ",
+        "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
       }
     },
     {
@@ -637,6 +639,28 @@
       }
     },
     {
+      "class": "column.spurious",
+      "severity": "major",
+      "instances": 8,
+      "documents": [
+        "new_bach",
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 8,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 48,
+      "example": {
+        "doc": "new_bach",
+        "path": "/columns[31]/column[0]",
+        "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
+        "reference": null
+      }
+    },
+    {
       "class": "break.missing",
       "severity": "minor",
       "instances": 9,
@@ -659,52 +683,6 @@
         "path": "/break[4]",
         "produced": null,
         "reference": "---"
-      }
-    },
-    {
-      "class": "columns.spurious",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "new_bach",
-        "new_geyzel04",
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 45,
-      "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]",
-        "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
-        "reference": null
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "goya2",
-        "new_blackmore",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 45,
-      "example": {
-        "doc": "goya2",
-        "path": "/align[71]/heading[0]",
-        "produced": "ДРУГИЕ АЛЬБОМЫ",
-        "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
       }
     },
     {
@@ -798,6 +776,28 @@
         "path": "/paragraph[6]",
         "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
         "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
+      }
+    },
+    {
+      "class": "columns.spurious",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "new_bach",
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "new_bach",
+        "path": "/columns[31]",
+        "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
+        "reference": null
       }
     },
     {
@@ -1071,6 +1071,28 @@
       }
     },
     {
+      "class": "columns.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "segovia1",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "segovia1",
+        "path": "/align[59]/columns[0]",
+        "produced": null,
+        "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
+      }
+    },
+    {
       "class": "heading.missing.caption-echo",
       "severity": "major",
       "instances": 2,
@@ -1090,28 +1112,6 @@
         "path": "/heading[46]",
         "produced": null,
         "reference": "ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\""
-      }
-    },
-    {
-      "class": "image.moved",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "tarrega",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "tarrega",
-        "path": "/image[9]",
-        "produced": "Франсиско Таррега",
-        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -1153,7 +1153,7 @@
       "rank": 12,
       "example": {
         "doc": "new_geyzel04",
-        "path": "/columns[85]/column[0]/images[81]",
+        "path": "/images[85]",
         "produced": "image ../main/previous.gif Главы 8-9 /#/geyzel_03 image ../main/h2.gif Владимир Вавилов /#/v_vavilov",
         "reference": null
       }
@@ -1653,11 +1653,11 @@
       }
     },
     {
-      "class": "columns.missing",
+      "class": "image.moved",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "segovia1"
+        "tarrega"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1667,10 +1667,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "segovia1",
-        "path": "/align[59]/columns[0]",
-        "produced": null,
-        "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
+        "doc": "tarrega",
+        "path": "/image[9]",
+        "produced": "Франсиско Таррега",
+        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -1741,7 +1741,7 @@
       "severity": "major",
       "instances": 1,
       "documents": [
-        "new_geyzel04"
+        "williams2"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1751,10 +1751,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "new_geyzel04",
-        "path": "/list[82]",
-        "produced": "Я опустил приставки http:// и www. во многих интернетовских адресах. При цитировании письменных материалов я сохранял орфографию и пунктуацию источников.",
-        "reference": "Я опустил приставки http:// и www. во многих интернетовских адресах. При цитировании письменных материалов я сохранял орфографию и пунктуацию источников. — produced at /columns[85]/column[0]/list[79]"
+        "doc": "williams2",
+        "path": "/columns[1]/column[0]/list[11]",
+        "produced": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J…",
+        "reference": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J… — produced at /list[2]"
       }
     },
     {
@@ -1881,27 +1881,6 @@
         "path": "/quote[2]",
         "produced": null,
         "reference": "\"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время обучения в Академии Киджана в моем классе добился огромных успехов в ов…"
-      }
-    },
-    {
-      "class": "retyped.align-to-heading2",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_geyzel04"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/align[2]/heading[0]",
-        "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-        "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /columns[85]/column[0]/align[0]"
       }
     },
     {
@@ -2069,7 +2048,7 @@
         "doc": "new_geyzel04",
         "path": "/heading[78]",
         "produced": "БЛАГОДАРНОСТИ:",
-        "reference": "БЛАГОДАРНОСТИ: — at /columns[85]/column[0]/paragraph[75]"
+        "reference": "БЛАГОДАРНОСТИ: — at /paragraph[79]"
       }
     },
     {
@@ -6502,521 +6481,59 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "40b18d6f",
-      "doc": "new_geyzel04",
-      "class": "columns.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[85]",
-      "producedLine": 12,
-      "referenceLine": null,
-      "produced": "column align center ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА А теперь вернемся к вопросу, который мы уже полагали решенным: авт…",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "303b2014",
-      "doc": "new_geyzel04",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[85]/column[0]",
-      "producedLine": 14,
-      "referenceLine": null,
-      "produced": "align center ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА А теперь вернемся к вопросу, который мы уже полагали решенным: авторство …",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "503f8dce",
+      "id": "01173648",
       "doc": "new_geyzel04",
       "class": "images.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/columns[85]/column[0]/images[81]",
-      "producedLine": 191,
+      "path": "/images[85]",
+      "producedLine": 187,
       "referenceLine": null,
       "produced": "image ../main/previous.gif Главы 8-9 /#/geyzel_03 image ../main/h2.gif Владимир Вавилов /#/v_vavilov",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "6e7a43ed",
-      "doc": "new_geyzel04",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[85]/column[1]",
-      "producedLine": 210,
-      "referenceLine": null,
-      "produced": "",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4a3a6d50",
+      "id": "65e6bed2",
       "doc": "new_geyzel04",
       "class": "image.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/columns[85]/column[0]/images[81]/image[0]",
-      "producedLine": 194,
+      "path": "/images[85]/image[0]",
+      "producedLine": 190,
       "referenceLine": null,
       "produced": "Главы 8-9",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "7e92ad84",
+      "id": "fa1b9e8e",
       "doc": "new_geyzel04",
       "class": "image.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/columns[85]/column[0]/images[81]/image[1]",
-      "producedLine": 200,
+      "path": "/images[85]/image[1]",
+      "producedLine": 196,
       "referenceLine": null,
       "produced": "Владимир Вавилов",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "8796306d",
+      "id": "6b2777b7",
       "doc": "new_geyzel04",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[1]",
-      "producedLine": null,
-      "referenceLine": 3,
-      "produced": null,
-      "reference": "© 2005 Зеэв Гейзель Материал предоставлен автором",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "80254d3d",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[1]/paragraph[0]",
-      "producedLine": 6,
-      "referenceLine": 6,
-      "produced": "© 2005 Зеэв Гейзель",
-      "reference": "© 2005 Зеэв Гейзель — produced at /align[84]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e9b62f0f",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[1]/paragraph[1]",
-      "producedLine": 8,
-      "referenceLine": 8,
-      "produced": "Материал предоставлен автором",
-      "reference": "Материал предоставлен автором — produced at /align[84]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "393ed8b3",
-      "doc": "new_geyzel04",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[2]",
-      "producedLine": null,
-      "referenceLine": 12,
-      "produced": null,
-      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c45596b8",
-      "doc": "new_geyzel04",
-      "class": "retyped.align-to-heading2",
+      "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[2]/heading[0]",
-      "producedLine": 16,
+      "producedLine": 15,
       "referenceLine": 15,
       "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /columns[85]/column[0]/align[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9823ad48",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[3]",
-      "producedLine": 22,
-      "referenceLine": 18,
-      "produced": "А теперь вернемся к вопросу, который мы уже полагали решенным: авторство музыки. Было однозначно установлено, что таковое не принадлежит ФКдМ. Наиболее естеств…",
-      "reference": "А теперь вернемся к вопросу, который мы уже полагали решенным: авторство музыки. Было однозначно установлено, что таковое не принадлежит ФКдМ. Наиболее естеств… — produced at /columns[85]/column[0]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e1b88101",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[4]",
-      "producedLine": 24,
-      "referenceLine": 20,
-      "produced": "Такая версия показалась мне маловероятной. В самом деле, Вавилов (в отличие от автора этих строк) - не дилетант, млеющий от вида \"старинных\" нот. Он был извест…",
-      "reference": "Такая версия показалась мне маловероятной. В самом деле, Вавилов (в отличие от автора этих строк) - не дилетант, млеющий от вида \"старинных\" нот. Он был извест… — produced at /columns[85]/column[0]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "012a919c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[5]",
-      "producedLine": 26,
-      "referenceLine": 22,
-      "produced": "Но для завершения последнего необходимо было хоть что-то узнать о Владимире Вавилове. Для начала я обратился во всемогущий Интернет, но тут меня ждало крупное …",
-      "reference": "Но для завершения последнего необходимо было хоть что-то узнать о Владимире Вавилове. Для начала я обратился во всемогущий Интернет, но тут меня ждало крупное … — produced at /columns[85]/column[0]/paragraph[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "56858caf",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[6]",
-      "producedLine": 28,
-      "referenceLine": 24,
-      "produced": "Начались месяцы поисков. Труднее всего оказалось с музыковедами: на вопрос о музыке они тут же начинали мне объяснять то, что уже было известно: это - не Франч…",
-      "reference": "Начались месяцы поисков. Труднее всего оказалось с музыковедами: на вопрос о музыке они тут же начинали мне объяснять то, что уже было известно: это - не Франч… — produced at /columns[85]/column[0]/paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2e301a38",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[7]",
-      "producedLine": 30,
-      "referenceLine": 26,
-      "produced": "От всей этой фантасмагории у меня в какой-то момент появилась мысль: а был ли вообще такой человек, Вавилов? Вот ведь сайт \"Классика\" открыл форум на тему, по …",
-      "reference": "От всей этой фантасмагории у меня в какой-то момент появилась мысль: а был ли вообще такой человек, Вавилов? Вот ведь сайт \"Классика\" открыл форум на тему, по … — produced at /columns[85]/column[0]/paragraph[5]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "45f8f82e",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[8]",
-      "producedLine": 32,
-      "referenceLine": 28,
-      "produced": "И если Хвостенко в уже упоминавшемся интервью \"Независимой газете\", не моргнув глазом, утверждал: \"Неизвестно, существовал ли в XVI веке автор, Франческо ди Ми…",
-      "reference": "И если Хвостенко в уже упоминавшемся интервью \"Независимой газете\", не моргнув глазом, утверждал: \"Неизвестно, существовал ли в XVI веке автор, Франческо ди Ми… — produced at /columns[85]/column[0]/paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0a35fba9",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[9]",
-      "producedLine": 34,
-      "referenceLine": 30,
-      "produced": "Но - долой мистику! После блужданий по интернету появляется имя: Я. Ковалевская. Еще несколько усилий - и есть телефон в Санкт-Петербурге. Звоню. На другом кон…",
-      "reference": "Но - долой мистику! После блужданий по интернету появляется имя: Я. Ковалевская. Еще несколько усилий - и есть телефон в Санкт-Петербурге. Звоню. На другом кон… — produced at /columns[85]/column[0]/paragraph[7]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "04739073",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[10]",
-      "producedLine": 36,
-      "referenceLine": 32,
-      "produced": "- Володя Вавилов? Ну конечно я его прекрасно помню. И мелодии, которые он сочинял… И эту, которую он выдал за Франческо да Милано…",
-      "reference": "- Володя Вавилов? Ну конечно я его прекрасно помню. И мелодии, которые он сочинял… И эту, которую он выдал за Франческо да Милано… — produced at /columns[85]/column[0]/paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "492f0cbf",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[11]",
-      "producedLine": 38,
-      "referenceLine": 34,
-      "produced": "И стала рассказывать, соединяя найденные мною обрывки. А затем я получил письмо от Олега Тимофеева - лютниста, по совместительству защитившему докторат по исто…",
-      "reference": "И стала рассказывать, соединяя найденные мною обрывки. А затем я получил письмо от Олега Тимофеева - лютниста, по совместительству защитившему докторат по исто… — produced at /columns[85]/column[0]/paragraph[9]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8752c7fb",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[12]",
-      "producedLine": 40,
-      "referenceLine": 36,
-      "produced": "Что Вы сказали? Тюмень - не город-герой? Ну это уже по недосмотру Президиума Верховного Совета СССР. Я не знаю, о чем они думали, но я лично считаю, что именно…",
-      "reference": "Что Вы сказали? Тюмень - не город-герой? Ну это уже по недосмотру Президиума Верховного Совета СССР. Я не знаю, о чем они думали, но я лично считаю, что именно… — produced at /columns[85]/column[0]/paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8514d6fd",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[13]",
-      "producedLine": 42,
-      "referenceLine": 38,
-      "produced": "Тут, благодаря О. Тимофееву, появляется еще одно имя: питерский специалист по всему, связанному с гитарой: Абрам Семенович Бруштейн. Он был первым в списке тех…",
-      "reference": "Тут, благодаря О. Тимофееву, появляется еще одно имя: питерский специалист по всему, связанному с гитарой: Абрам Семенович Бруштейн. Он был первым в списке тех… — produced at /columns[85]/column[0]/paragraph[11]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "95a3a160",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[14]",
-      "producedLine": 44,
-      "referenceLine": 40,
-      "produced": "Вавиловых в Санкт-Петербурге много. Но на \"Витебском пр.\" живет только одна подходящая кандидатура: Тамара Владимировна Вавилова. Номер найден, я звоню… и зада…",
-      "reference": "Вавиловых в Санкт-Петербурге много. Но на \"Витебском пр.\" живет только одна подходящая кандидатура: Тамара Владимировна Вавилова. Номер найден, я звоню… и зада… — produced at /columns[85]/column[0]/paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19ba58aa",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[15]",
-      "producedLine": 46,
-      "referenceLine": 42,
-      "produced": "Вообще-то к этому моменту я знал уже достаточно много о В. Ф. Вавилове. А именно:",
-      "reference": "Вообще-то к этому моменту я знал уже достаточно много о В. Ф. Вавилове. А именно: — produced at /columns[85]/column[0]/paragraph[13]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ecc58f87",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[16]",
-      "producedLine": 48,
-      "referenceLine": 44,
-      "produced": "Училище при Ленинградской консерватории, помимо прочих своих достоинств, было давно известно своим классом гитары, который вел выдающийся гитарный педагог П. И…",
-      "reference": "Училище при Ленинградской консерватории, помимо прочих своих достоинств, было давно известно своим классом гитары, который вел выдающийся гитарный педагог П. И… — produced at /columns[85]/column[0]/paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "83a70c78",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[17]",
-      "producedLine": 50,
-      "referenceLine": 46,
-      "produced": "Так что естественно, что Вавилову было мало гитарной славы. Он хотел быть композитором. Более того - он и считал себя таковым, и поскольку чувствовал недостато…",
-      "reference": "Так что естественно, что Вавилову было мало гитарной славы. Он хотел быть композитором. Более того - он и считал себя таковым, и поскольку чувствовал недостато… — produced at /columns[85]/column[0]/paragraph[15]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e4226e4e",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[18]",
-      "producedLine": 52,
-      "referenceLine": 48,
-      "produced": "ВВ писал песни, гитарные композиции, но ему все время хотелось большего - совершить то, чего не делали другие, и играть иначе: взять в руки лютню, возродить ее…",
-      "reference": "ВВ писал песни, гитарные композиции, но ему все время хотелось большего - совершить то, чего не делали другие, и играть иначе: взять в руки лютню, возродить ее… — produced at /columns[85]/column[0]/paragraph[16]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8e465baf",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[19]",
-      "producedLine": 54,
-      "referenceLine": 50,
-      "produced": "По правде говоря, не совсем. Даже \"лютня\", на которой он играл, была собственно не лютней, а \"лютневой гитарой\", довольно поздним музыкальным инструментом (нас…",
-      "reference": "По правде говоря, не совсем. Даже \"лютня\", на которой он играл, была собственно не лютней, а \"лютневой гитарой\", довольно поздним музыкальным инструментом (нас… — produced at /columns[85]/column[0]/paragraph[17]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ffd4dfe2",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[20]",
-      "producedLine": 56,
-      "referenceLine": 52,
-      "produced": "Сначала ВВ выпустил самоучитель игры на гитаре. В самоучитель он включил несколько произведений, подписанных именами известных русских гитаристов. Надо ли объя…",
-      "reference": "Сначала ВВ выпустил самоучитель игры на гитаре. В самоучитель он включил несколько произведений, подписанных именами известных русских гитаристов. Надо ли объя… — produced at /columns[85]/column[0]/paragraph[18]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e742f966",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[21]",
-      "producedLine": 58,
-      "referenceLine": 54,
-      "produced": "И он исполнил! Имя его совершенно заслуженно стоит на обложке диска, и вовсе не из-за того, что он является одним из исполнителей. \"Вавилов\" - единственное имя…",
-      "reference": "И он исполнил! Имя его совершенно заслуженно стоит на обложке диска, и вовсе не из-за того, что он является одним из исполнителей. \"Вавилов\" - единственное имя… — produced at /columns[85]/column[0]/paragraph[19]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "399b78e6",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[22]",
-      "producedLine": 60,
-      "referenceLine": 56,
-      "produced": "Точнее - две. Потому что был еще и \"Ричеркар\", приписанный другому композитору той эпохи - Николо Нигрино. (Возможно, именно с ним был спутан ФКдМ в уже упомин…",
-      "reference": "Точнее - две. Потому что был еще и \"Ричеркар\", приписанный другому композитору той эпохи - Николо Нигрино. (Возможно, именно с ним был спутан ФКдМ в уже упомин… — produced at /columns[85]/column[0]/paragraph[20]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2c543701",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[23]",
-      "producedLine": 62,
-      "referenceLine": 58,
-      "produced": "Итак, все это я уже знал, когда позвонил Тамаре Владимировне. И поэтому, удостоверившись в том, что на проводе - дочь ВВ, я задал ровно один вопрос: \"Почему?\".…",
-      "reference": "Итак, все это я уже знал, когда позвонил Тамаре Владимировне. И поэтому, удостоверившись в том, что на проводе - дочь ВВ, я задал ровно один вопрос: \"Почему?\".… — produced at /columns[85]/column[0]/paragraph[21]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "65e4d158",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[24]",
-      "producedLine": 64,
-      "referenceLine": 60,
-      "produced": "- Отец был уверен, что сочинения безвестного самоучки с банальной фамилией \"Вавилов\" никогда не издадут. Но он очень хотел, чтобы его музыка стала известна. Эт…",
-      "reference": "- Отец был уверен, что сочинения безвестного самоучки с банальной фамилией \"Вавилов\" никогда не издадут. Но он очень хотел, чтобы его музыка стала известна. Эт… — produced at /columns[85]/column[0]/paragraph[22]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "26df51b3",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[25]",
-      "producedLine": 66,
-      "referenceLine": 62,
-      "produced": "Итак: можно считать установленным, что автор музыки - В. Ф. Вавилов. Несмотря на то, что нет у меня автографа - нотного листа, на котором - ноты псевдо-Канцоны…",
-      "reference": "Итак: можно считать установленным, что автор музыки - В. Ф. Вавилов. Несмотря на то, что нет у меня автографа - нотного листа, на котором - ноты псевдо-Канцоны… — produced at /columns[85]/column[0]/paragraph[23]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9b27eb5c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[26]",
-      "producedLine": 68,
-      "referenceLine": 64,
-      "produced": "Спросить - некого. Владимир Вавилов умер… 11 марта 1973 г., от рака поджелудочной железы. Он не дожил двух месяцев до своего 48-летия.",
-      "reference": "Спросить - некого. Владимир Вавилов умер… 11 марта 1973 г., от рака поджелудочной железы. Он не дожил двух месяцев до своего 48-летия. — produced at /columns[85]/column[0]/paragraph[24]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4d396d1a",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[27]",
-      "producedLine": 70,
-      "referenceLine": 66,
-      "produced": "Он умер в Ленинграде примерно в те дни, когда в Москве впервые раздалось под звуки гитары: \"Над небом голубым…\"",
-      "reference": "Он умер в Ленинграде примерно в те дни, когда в Москве впервые раздалось под звуки гитары: \"Над небом голубым…\" — produced at /columns[85]/column[0]/paragraph[25]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ab0321b7",
-      "doc": "new_geyzel04",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[28]",
-      "producedLine": 72,
-      "referenceLine": 68,
-      "produced": "ГЛАВА 11, ПРОХОДЯЩАЯ БУКВАЛЬНО НАД НЕБОМ ГОЛУБЫМ",
-      "reference": "ГЛАВА 11, ПРОХОДЯЩАЯ БУКВАЛЬНО НАД НЕБОМ ГОЛУБЫМ — produced at /columns[85]/column[0]/heading[26]",
+      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /align[2]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -7027,137 +6544,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[28]/text",
-      "producedLine": 72,
+      "producedLine": 68,
       "referenceLine": 68,
       "produced": "(none)",
       "reference": "em:* · em:* · strong:*ГЛАВА 11, ПРОХОДЯЩАЯ БУКВАЛЬНО НАД НЕБОМ ГОЛУБЫМ",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "51ff4a16",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[29]",
-      "producedLine": 74,
-      "referenceLine": 70,
-      "produced": "У нас остался ровно один вопрос. Тот самый, по которому спорили как-то в городе Париже БГ и АХ. Итак: \"под небом голубым\" или \"над небом\"?",
-      "reference": "У нас остался ровно один вопрос. Тот самый, по которому спорили как-то в городе Париже БГ и АХ. Итак: \"под небом голубым\" или \"над небом\"? — produced at /columns[85]/column[0]/paragraph[27]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6ce38863",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[30]",
-      "producedLine": 76,
-      "referenceLine": 72,
-      "produced": "То есть ответ мы уже знаем: конечно, \"над\", как в тексте АВ. Спор был о другом: как правильнее? Поскольку, как мы уже знаем, текст не принадлежал ни одному из …",
-      "reference": "То есть ответ мы уже знаем: конечно, \"над\", как в тексте АВ. Спор был о другом: как правильнее? Поскольку, как мы уже знаем, текст не принадлежал ни одному из … — produced at /columns[85]/column[0]/paragraph[28]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9dd8f6f7",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[31]",
-      "producedLine": 78,
-      "referenceLine": 74,
-      "produced": "Впрочем, назвать его художником было бы преуменьшением. Его студия в мансарде на углу Фонтанки и Майорова была неким фантастическим центром, притягивавшим самы…",
-      "reference": "Впрочем, назвать его художником было бы преуменьшением. Его студия в мансарде на углу Фонтанки и Майорова была неким фантастическим центром, притягивавшим самы… — produced at /columns[85]/column[0]/paragraph[29]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "91658a72",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[32]",
-      "producedLine": 80,
-      "referenceLine": 76,
-      "produced": "Общение с Акселем повлияло на многих из них роковым образом. Например, под его влиянием музыкант \"Аквариума\" Андрей Решетин, он же \"Рюша\", увлекся барочной муз…",
-      "reference": "Общение с Акселем повлияло на многих из них роковым образом. Например, под его влиянием музыкант \"Аквариума\" Андрей Решетин, он же \"Рюша\", увлекся барочной муз… — produced at /columns[85]/column[0]/paragraph[30]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "33dbc5be",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[33]",
-      "producedLine": 82,
-      "referenceLine": 78,
-      "produced": "Вы, читатель, ожидаете, что сейчас откроется: и Вавилов бывал в мансарде у Акселя? Ах, как бы это было красиво! К сожалению - никаких свидетельств этому знаком…",
-      "reference": "Вы, читатель, ожидаете, что сейчас откроется: и Вавилов бывал в мансарде у Акселя? Ах, как бы это было красиво! К сожалению - никаких свидетельств этому знаком… — produced at /columns[85]/column[0]/paragraph[31]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8700a65e",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[34]",
-      "producedLine": 84,
-      "referenceLine": 80,
-      "produced": "\"В 1972 году Аксель получил заказ: сделать мозаическое панно \"Небо\" для Таврического сада. Мозаика делалась не из настоящей, приготовленной заранее смальты, а …",
-      "reference": "\"В 1972 году Аксель получил заказ: сделать мозаическое панно \"Небо\" для Таврического сада. Мозаика делалась не из настоящей, приготовленной заранее смальты, а … — produced at /columns[85]/column[0]/paragraph[32]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e142e862",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[35]",
-      "producedLine": 86,
-      "referenceLine": 82,
-      "produced": "Здесь память подвела Волохонского - площадь панно должна была быть не 30, а… 254 квадратных метра! Этот гигантский проект (описание которого можно найти на сай…",
-      "reference": "Здесь память подвела Волохонского - площадь панно должна была быть не 30, а… 254 квадратных метра! Этот гигантский проект (описание которого можно найти на сай… — produced at /columns[85]/column[0]/paragraph[33]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "56e7c460",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[36]",
-      "producedLine": 88,
-      "referenceLine": 84,
-      "produced": "А на замечание о том, что за 15 минут стихотворение можно не написать, а только \"записать под диктовку\", АВ в письме к Т. Жаковской ответил: \"...правда и то, ч…",
-      "reference": "А на замечание о том, что за 15 минут стихотворение можно не написать, а только \"записать под диктовку\", АВ в письме к Т. Жаковской ответил: \"...правда и то, ч… — produced at /columns[85]/column[0]/paragraph[34]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4d6a33e7",
-      "doc": "new_geyzel04",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[37]",
-      "producedLine": 90,
-      "referenceLine": 86,
-      "produced": "ВМЕСТО ЭПИЛОГА",
-      "reference": "ВМЕСТО ЭПИЛОГА — produced at /columns[85]/column[0]/heading[35]",
-      "verdict": "converter-defect"
     },
     {
       "id": "c8dfe67e",
@@ -7167,123 +6558,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[37]/text",
-      "producedLine": 90,
+      "producedLine": 86,
       "referenceLine": 86,
       "produced": "(none)",
       "reference": "em:* · em:* · strong:*ВМЕСТО ЭПИЛОГА",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "2fed526f",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[38]",
-      "producedLine": 92,
-      "referenceLine": 88,
-      "produced": "Итак: Автор слов - Анри (Андрей) Волохонский. Слова написаны в ноябре 1972 г. на услышанную с пластинки музыку. Навеяны атмосферой в мастерской Б. Аксельрода.",
-      "reference": "Итак: Автор слов - Анри (Андрей) Волохонский. Слова написаны в ноябре 1972 г. на услышанную с пластинки музыку. Навеяны атмосферой в мастерской Б. Аксельрода. — produced at /columns[85]/column[0]/paragraph[36]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fd31ebc5",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[39]",
-      "producedLine": 95,
-      "referenceLine": 91,
-      "produced": "Автор музыки - Владимир Вавилов. Музыка написана примерно в 1967-68 гг. Более точно - определить не удалось.",
-      "reference": "Автор музыки - Владимир Вавилов. Музыка написана примерно в 1967-68 гг. Более точно - определить не удалось. — produced at /columns[85]/column[0]/paragraph[37]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d8b76ffe",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[40]",
-      "producedLine": 97,
-      "referenceLine": 93,
-      "produced": "Первый исполнитель - Алексей Хвостенко. Все остальные варианты исполнения генетически восходят к его, хвостенковскому, и генерируются по нехитрой формуле \"услы…",
-      "reference": "Первый исполнитель - Алексей Хвостенко. Все остальные варианты исполнения генетически восходят к его, хвостенковскому, и генерируются по нехитрой формуле \"услы… — produced at /columns[85]/column[0]/paragraph[38]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "75aed10d",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[41]",
-      "producedLine": 99,
-      "referenceLine": 95,
-      "produced": "Вот мы и подошли к концу нашей истории - светлой и грустной. Светлой - потому что вот уже более 30 лет живет в мире Песня, у которой меняли и название, и слова…",
-      "reference": "Вот мы и подошли к концу нашей истории - светлой и грустной. Светлой - потому что вот уже более 30 лет живет в мире Песня, у которой меняли и название, и слова… — produced at /columns[85]/column[0]/paragraph[39]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c081bf75",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[42]",
-      "producedLine": 101,
-      "referenceLine": 97,
-      "produced": "А грустная - по причинам противоположным. Как-то остались в тени ее два подлинных автора. То есть поискав по Интернету - можно найти робкие упоминания о каждом…",
-      "reference": "А грустная - по причинам противоположным. Как-то остались в тени ее два подлинных автора. То есть поискав по Интернету - можно найти робкие упоминания о каждом… — produced at /columns[85]/column[0]/paragraph[40]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e4631b64",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[43]",
-      "producedLine": 103,
-      "referenceLine": 99,
-      "produced": "Я не знаю, сможет ли наш маленький экскурс в историю Песни что-то изменить. На своих концертах, исполняя Песню на иврите, я называю ее подлинных авторов: Анри …",
-      "reference": "Я не знаю, сможет ли наш маленький экскурс в историю Песни что-то изменить. На своих концертах, исполняя Песню на иврите, я называю ее подлинных авторов: Анри … — produced at /columns[85]/column[0]/paragraph[41]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4e986ec0",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[44]",
-      "producedLine": 105,
-      "referenceLine": 101,
-      "produced": "Над небом голубым есть город золотой…",
-      "reference": "Над небом голубым есть город золотой… — produced at /columns[85]/column[0]/paragraph[42]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cf67a2be",
-      "doc": "new_geyzel04",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[45]",
-      "producedLine": 108,
-      "referenceLine": 104,
-      "produced": "ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
-      "reference": "produced at /columns[85]/column[0]/image[43]",
-      "verdict": "converter-defect"
     },
     {
       "id": "61fb28b4",
@@ -7293,7 +6572,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/image[45]@caption",
-      "producedLine": 108,
+      "producedLine": 104,
       "referenceLine": 104,
       "produced": "caption: ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
       "reference": null,
@@ -7314,440 +6593,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "68ba1336",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[47]",
-      "producedLine": 114,
-      "referenceLine": 111,
-      "produced": "АКСЕЛЬРОД, Борис - художник, в мастерской которого в Ленинграде было написано стихотворение А. Волохонского \"Над небом голубым…\".",
-      "reference": "АКСЕЛЬРОД, Борис - художник, в мастерской которого в Ленинграде было написано стихотворение А. Волохонского \"Над небом голубым…\". — produced at /columns[85]/column[0]/paragraph[44]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3e9f7708",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[48]",
-      "producedLine": 116,
-      "referenceLine": 113,
-      "produced": "БУДАГОВ, Ануар - автор и исполнитель второго перевода Песни на иврит.",
-      "reference": "БУДАГОВ, Ануар - автор и исполнитель второго перевода Песни на иврит. — produced at /columns[85]/column[0]/paragraph[45]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "32c163ca",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[49]",
-      "producedLine": 118,
-      "referenceLine": 115,
-      "produced": "ВАВИЛОВ, Владимир (сокр. ВВ) - автор музыки Песни и первый ее исполнитель (без слов).",
-      "reference": "ВАВИЛОВ, Владимир (сокр. ВВ) - автор музыки Песни и первый ее исполнитель (без слов). — produced at /columns[85]/column[0]/paragraph[46]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c5d69b65",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[50]",
-      "producedLine": 120,
-      "referenceLine": 117,
-      "produced": "ВАВИЛОВ, ПЕТР - интернетовский фантом-дубль В. Вавилова. В реальной жизни не бывает.",
-      "reference": "ВАВИЛОВ, ПЕТР - интернетовский фантом-дубль В. Вавилова. В реальной жизни не бывает. — produced at /columns[85]/column[0]/paragraph[47]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5361c7c6",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[51]",
-      "producedLine": 122,
-      "referenceLine": 119,
-      "produced": "ВАВИЛОВА, Тамара - дочь Владимира Вавилова.",
-      "reference": "ВАВИЛОВА, Тамара - дочь Владимира Вавилова. — produced at /columns[85]/column[0]/paragraph[48]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bd562457",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[52]",
-      "producedLine": 124,
-      "referenceLine": 121,
-      "produced": "ВОЛОХОНСКИЙ, Анри (сокр. АВ) - автор слов Песни.",
-      "reference": "ВОЛОХОНСКИЙ, Анри (сокр. АВ) - автор слов Песни. — produced at /columns[85]/column[0]/paragraph[49]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "752d5b06",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[53]",
-      "producedLine": 126,
-      "referenceLine": 123,
-      "produced": "ГЕЙЗЕЛЬ, Зеэв - автор и исполнитель третьего перевода Песни на иврит.",
-      "reference": "ГЕЙЗЕЛЬ, Зеэв - автор и исполнитель третьего перевода Песни на иврит. — produced at /columns[85]/column[0]/paragraph[50]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "68e25b9d",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[54]",
-      "producedLine": 128,
-      "referenceLine": 125,
-      "produced": "ГЕРШТЕЙН, Лариса - исполнитель первого перевода Песни на иврит, а также автор и исполнитель многих легенд о Песне.",
-      "reference": "ГЕРШТЕЙН, Лариса - исполнитель первого перевода Песни на иврит, а также автор и исполнитель многих легенд о Песне. — produced at /columns[85]/column[0]/paragraph[51]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bb20edfa",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[55]",
-      "producedLine": 130,
-      "referenceLine": 127,
-      "produced": "ГЛОЗМАН, Владимир - автор первого перевода Песни на иврит",
-      "reference": "ГЛОЗМАН, Владимир - автор первого перевода Песни на иврит — produced at /columns[85]/column[0]/paragraph[52]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "48961707",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[56]",
-      "producedLine": 132,
-      "referenceLine": 129,
-      "produced": "ГОРОШЕВСКИЙ, Эрик - режиссер, поставивший в 1975-76 гг. в студии \"Радуга\" пьесу Корнеля \"Сид\", где Л. Тихомиров исполнил Песню.",
-      "reference": "ГОРОШЕВСКИЙ, Эрик - режиссер, поставивший в 1975-76 гг. в студии \"Радуга\" пьесу Корнеля \"Сид\", где Л. Тихомиров исполнил Песню. — produced at /columns[85]/column[0]/paragraph[53]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "900b4dab",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[57]",
-      "producedLine": 134,
-      "referenceLine": 131,
-      "produced": "ГРЕБЕНЩИКОВ, Борис (сокр. БГ) - автор третьего варианта текста Песни и ее пятый исполнитель (в фильме \"Асса\").",
-      "reference": "ГРЕБЕНЩИКОВ, Борис (сокр. БГ) - автор третьего варианта текста Песни и ее пятый исполнитель (в фильме \"Асса\"). — produced at /columns[85]/column[0]/paragraph[54]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0ad737d4",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[58]",
-      "producedLine": 136,
-      "referenceLine": 133,
-      "produced": "ДРАЧИНСКИЙ, Марк - спел Песню автору данной статьи почти 30 лет тому назад.",
-      "reference": "ДРАЧИНСКИЙ, Марк - спел Песню автору данной статьи почти 30 лет тому назад. — produced at /columns[85]/column[0]/paragraph[55]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c801211d",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[59]",
-      "producedLine": 138,
-      "referenceLine": 135,
-      "produced": "ЙЕХЕЗКИЭЛЬ - библейский пророк. Согласно заявлению автора слов Песни, образы Йехезкиэля вдохновили его творчество. Однако более компетентные граждане считают, …",
-      "reference": "ЙЕХЕЗКИЭЛЬ - библейский пророк. Согласно заявлению автора слов Песни, образы Йехезкиэля вдохновили его творчество. Однако более компетентные граждане считают, … — produced at /columns[85]/column[0]/paragraph[56]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fb657316",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[60]",
-      "producedLine": 140,
-      "referenceLine": 137,
-      "produced": "КАЛЛОШ, Шандор - советский композитор. Первым обратил внимание на мистификацию В. Вавилова.",
-      "reference": "КАЛЛОШ, Шандор - советский композитор. Первым обратил внимание на мистификацию В. Вавилова. — produced at /columns[85]/column[0]/paragraph[57]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d080628f",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[61]",
-      "producedLine": 142,
-      "referenceLine": 139,
-      "produced": "КАМБУРОВА, Елена - певица, второй исполнитель Песни (в собственной редакции текста).",
-      "reference": "КАМБУРОВА, Елена - певица, второй исполнитель Песни (в собственной редакции текста). — produced at /columns[85]/column[0]/paragraph[58]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e0911235",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[62]",
-      "producedLine": 144,
-      "referenceLine": 141,
-      "produced": "КАНОВА, Франческо да Милано (сокр. ФКдМ) - итальянский лютневый композитор 16-го века. К Песне отношения не имеет, хотя ему приписывалась ее музыка. Кроме того…",
-      "reference": "КАНОВА, Франческо да Милано (сокр. ФКдМ) - итальянский лютневый композитор 16-го века. К Песне отношения не имеет, хотя ему приписывалась ее музыка. Кроме того… — produced at /columns[85]/column[0]/paragraph[59]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c99b1fad",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[63]",
-      "producedLine": 146,
-      "referenceLine": 143,
-      "produced": "КОВАЛЕВСКАЯ, Ядвига - преподаватель гитары в Ленинградском музыкальном училище, предоставившая автору сведения о В. Вавилове. Непосредственного отношения к Пес…",
-      "reference": "КОВАЛЕВСКАЯ, Ядвига - преподаватель гитары в Ленинградском музыкальном училище, предоставившая автору сведения о В. Вавилове. Непосредственного отношения к Пес… — produced at /columns[85]/column[0]/paragraph[60]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "326c9d7a",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[64]",
-      "producedLine": 148,
-      "referenceLine": 145,
-      "produced": "ЛУФЕРОВ, Виктор - российский бард, четвертый исполнитель Песни (в редакции Е. Камбуровой).",
-      "reference": "ЛУФЕРОВ, Виктор - российский бард, четвертый исполнитель Песни (в редакции Е. Камбуровой). — produced at /columns[85]/column[0]/paragraph[61]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f0c401d0",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[65]",
-      "producedLine": 150,
-      "referenceLine": 147,
-      "produced": "МОРИЦ, Юнна - поэтесса, ее называли автором одной из редакций текста Волохонского. В действительности никакого отношения к Песне не имеет.",
-      "reference": "МОРИЦ, Юнна - поэтесса, ее называли автором одной из редакций текста Волохонского. В действительности никакого отношения к Песне не имеет. — produced at /columns[85]/column[0]/paragraph[62]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f7f65f3c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[66]",
-      "producedLine": 152,
-      "referenceLine": 149,
-      "produced": "ПУШКИН, Александр Сергеевич - русский поэт, автор стихотворения, начинающегося словами \"Под небом голубым…\" (музыку романса на эти стихи написал Ю.Шапорин). К …",
-      "reference": "ПУШКИН, Александр Сергеевич - русский поэт, автор стихотворения, начинающегося словами \"Под небом голубым…\" (музыку романса на эти стихи написал Ю.Шапорин). К … — produced at /columns[85]/column[0]/paragraph[63]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "16c6a89f",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[67]",
-      "producedLine": 154,
-      "referenceLine": 151,
-      "produced": "РУССО, Анри (\"Таможенник\") - французский хужожник-примитивист. К Песне отношения не имеет.",
-      "reference": "РУССО, Анри (\"Таможенник\") - французский хужожник-примитивист. К Песне отношения не имеет. — produced at /columns[85]/column[0]/paragraph[64]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7e8028b9",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[68]",
-      "producedLine": 156,
-      "referenceLine": 153,
-      "produced": "СОЛОВЬЕВ, Сергей - режиссер фильма \"Асса\" (1987 г.), где Гребенщиков спел песню \"Под небом голубым\", авторы которой не были указаны в титрах.",
-      "reference": "СОЛОВЬЕВ, Сергей - режиссер фильма \"Асса\" (1987 г.), где Гребенщиков спел песню \"Под небом голубым\", авторы которой не были указаны в титрах. — produced at /columns[85]/column[0]/paragraph[65]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dfac9253",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[69]",
-      "producedLine": 158,
-      "referenceLine": 155,
-      "produced": "ТАГОР, Рабиндранат - индийский поэт, имя которого как-то связывали с Песней. Непонятно - почему.",
-      "reference": "ТАГОР, Рабиндранат - индийский поэт, имя которого как-то связывали с Песней. Непонятно - почему. — produced at /columns[85]/column[0]/paragraph[66]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b6aa90b9",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[70]",
-      "producedLine": 160,
-      "referenceLine": 157,
-      "produced": "ТИМОФЕЕВ, Олег - русскоязычный лютнист, руководитель ансамбля \"Айова гитарс\", исполнявшего уже в 21-м веке гитарные произведения ВВ.",
-      "reference": "ТИМОФЕЕВ, Олег - русскоязычный лютнист, руководитель ансамбля \"Айова гитарс\", исполнявшего уже в 21-м веке гитарные произведения ВВ. — produced at /columns[85]/column[0]/paragraph[67]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cfb130b9",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[71]",
-      "producedLine": 162,
-      "referenceLine": 159,
-      "produced": "ТИХОМИРОВ, Леонид - третий исполнитель Песни (текст канонический).",
-      "reference": "ТИХОМИРОВ, Леонид - третий исполнитель Песни (текст канонический). — produced at /columns[85]/column[0]/paragraph[68]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2139c50c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[72]",
-      "producedLine": 164,
-      "referenceLine": 161,
-      "produced": "ТУРОВСКИЙ, Роман - художник и композитор, первым начал пропагандировать в Интернете факт, что Франческа Канова не является автором музыки Песни.",
-      "reference": "ТУРОВСКИЙ, Роман - художник и композитор, первым начал пропагандировать в Интернете факт, что Франческа Канова не является автором музыки Песни. — produced at /columns[85]/column[0]/paragraph[69]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "560fccec",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[73]",
-      "producedLine": 166,
-      "referenceLine": 163,
-      "produced": "ФРАНЧЕСКО ДИ МИЛАНО - неправильно написанное на пластинке имя итальянского композитора Франческо Канова (см.), не имеющего отношения к музыке на этой пластинке…",
-      "reference": "ФРАНЧЕСКО ДИ МИЛАНО - неправильно написанное на пластинке имя итальянского композитора Франческо Канова (см.), не имеющего отношения к музыке на этой пластинке… — produced at /columns[85]/column[0]/paragraph[70]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "aec28a8c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[74]",
-      "producedLine": 168,
-      "referenceLine": 165,
-      "produced": "ХА-ЛЕВИ, Йехуда (в другой русской транслитерации - Йегуда Галеви) - великий еврейский поэт средневековья. Жил давно. К Песне отношения не имеет.",
-      "reference": "ХА-ЛЕВИ, Йехуда (в другой русской транслитерации - Йегуда Галеви) - великий еврейский поэт средневековья. Жил давно. К Песне отношения не имеет. — produced at /columns[85]/column[0]/paragraph[71]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "784beed6",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[75]",
-      "producedLine": 170,
-      "referenceLine": 167,
-      "produced": "ХВОСТЕНКО, Алексей (сокр. АХ) - редактор музыки и первый исполнитель Песни.",
-      "reference": "ХВОСТЕНКО, Алексей (сокр. АХ) - редактор музыки и первый исполнитель Песни. — produced at /columns[85]/column[0]/paragraph[72]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6868dfda",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[76]",
-      "producedLine": 172,
-      "referenceLine": 169,
-      "produced": "ШАПОРИН Юрий - советский композитор. Написал, в частности, романс \"Под небом голубым\" на стихи А.С.Пушкина. Тем не менее, к Песне отношения не имеет.",
-      "reference": "ШАПОРИН Юрий - советский композитор. Написал, в частности, романс \"Под небом голубым\" на стихи А.С.Пушкина. Тем не менее, к Песне отношения не имеет. — produced at /columns[85]/column[0]/paragraph[73]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c6e4b23a",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[77]",
-      "producedLine": 174,
-      "referenceLine": 171,
-      "produced": "ШЕПТОВИЦКИЙ, Леви - специалист по лютне. Знает все-все-все про Франческо Канова, который не имеет отношения к Песне. Как и сам Шептовицкий.",
-      "reference": "ШЕПТОВИЦКИЙ, Леви - специалист по лютне. Знает все-все-все про Франческо Канова, который не имеет отношения к Песне. Как и сам Шептовицкий. — produced at /columns[85]/column[0]/paragraph[74]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "8ec17e98",
       "doc": "new_geyzel04",
       "class": "retyped.paragraph-to-heading3",
@@ -7755,52 +6600,10 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[78]",
-      "producedLine": 176,
+      "producedLine": 172,
       "referenceLine": 173,
       "produced": "БЛАГОДАРНОСТИ:",
-      "reference": "БЛАГОДАРНОСТИ: — at /columns[85]/column[0]/paragraph[75]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6658107c",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[79]",
-      "producedLine": 178,
-      "referenceLine": 175,
-      "produced": "Автор выражает горячую признательность всем, кто помог ему в работе над статьей. Не вдаваясь в подробности персонального вклада каждого из них, перечислю имена…",
-      "reference": "Автор выражает горячую признательность всем, кто помог ему в работе над статьей. Не вдаваясь в подробности персонального вклада каждого из них, перечислю имена… — produced at /columns[85]/column[0]/paragraph[76]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "80e486ab",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[80]",
-      "producedLine": 180,
-      "referenceLine": 177,
-      "produced": "Отдельное спасибо - Интернету в целом.",
-      "reference": "Отдельное спасибо - Интернету в целом. — produced at /columns[85]/column[0]/paragraph[77]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3f890689",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[81]",
-      "producedLine": 182,
-      "referenceLine": 179,
-      "produced": "Примечания:",
-      "reference": "Примечания: — produced at /columns[85]/column[0]/paragraph[78]",
+      "reference": "БЛАГОДАРНОСТИ: — at /paragraph[79]",
       "verdict": "converter-defect"
     },
     {
@@ -7811,38 +6614,24 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[81]",
-      "producedLine": 182,
+      "producedLine": 178,
       "referenceLine": 179,
       "produced": "(none)",
       "reference": "em:* · em:* · strong:*Примечания:",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "0668f6b8",
+      "id": "383cfe46",
       "doc": "new_geyzel04",
-      "class": "list.containment",
+      "class": "align.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "move",
-      "path": "/list[82]",
-      "producedLine": 184,
-      "referenceLine": 181,
-      "produced": "Я опустил приставки http:// и www. во многих интернетовских адресах. При цитировании письменных материалов я сохранял орфографию и пунктуацию источников.",
-      "reference": "Я опустил приставки http:// и www. во многих интернетовских адресах. При цитировании письменных материалов я сохранял орфографию и пунктуацию источников. — produced at /columns[85]/column[0]/list[79]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ed0e9eb2",
-      "doc": "new_geyzel04",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[83]",
-      "producedLine": 187,
-      "referenceLine": 184,
-      "produced": "Алон-Швут, 2005, 15 февраля.",
-      "reference": "Алон-Швут, 2005, 15 февраля. — produced at /columns[85]/column[0]/paragraph[80]",
+      "op": "delete",
+      "path": "/align[84]",
+      "producedLine": null,
+      "referenceLine": 188,
+      "produced": null,
+      "reference": "Главы 8-9 | Владимир Вавилов",
       "verdict": "converter-defect"
     },
     {
@@ -13026,45 +11815,255 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "8869092c",
+      "id": "af9d65b4",
+      "doc": "williams2",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[2]",
+      "producedLine": 3,
+      "referenceLine": null,
+      "produced": "- 2 -",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "a03de9cd",
+      "doc": "williams2",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[2]",
+      "producedLine": 84,
+      "referenceLine": null,
+      "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "88dd64a8",
+      "doc": "williams2",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[2]",
+      "producedLine": 91,
+      "referenceLine": null,
+      "produced": "MP3",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "38121014",
+      "doc": "williams2",
+      "class": "align.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/align[2]",
+      "producedLine": 98,
+      "referenceLine": null,
+      "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "cea34048",
       "doc": "williams2",
       "class": "paragraph.spurious.in-break-run",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/columns[1]/column[0]/align[26]/paragraph[0]",
-      "producedLine": 91,
+      "path": "/align[2]/paragraph[0]",
+      "producedLine": 87,
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "0fb0306a",
+      "id": "8146ed34",
       "doc": "williams2",
-      "class": "column.spurious",
+      "class": "columns.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[1]/column[1]",
-      "producedLine": 102,
-      "referenceLine": null,
-      "produced": "",
-      "reference": null,
+      "op": "delete",
+      "path": "/columns[1]",
+      "producedLine": null,
+      "referenceLine": 3,
+      "produced": null,
+      "reference": "column align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привле…",
       "verdict": "converter-defect"
     },
     {
-      "id": "389cdcd4",
+      "id": "24ece3e2",
       "doc": "williams2",
-      "class": "image.moved",
+      "class": "column.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/columns[1]/column[0]",
+      "producedLine": null,
+      "referenceLine": 5,
+      "produced": null,
+      "reference": "align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к…",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "25093e62",
+      "doc": "williams2",
+      "class": "align.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/columns[1]/column[0]/align[0]",
+      "producedLine": null,
+      "referenceLine": 7,
+      "produced": null,
+      "reference": "- 2 -",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "7a170f60",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 6,
+      "referenceLine": 9,
+      "produced": "- 2 -",
+      "reference": "- 2 - — produced at /align[2]/paragraph[0]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0492327d",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[1]",
+      "producedLine": 9,
+      "referenceLine": 11,
+      "produced": "В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к работе над музыкой…",
+      "reference": "В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к работе над музыкой… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "fa1df9a0",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[2]",
+      "producedLine": 11,
+      "referenceLine": 13,
+      "produced": "Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую режи…",
+      "reference": "Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую режи… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "f0f14bd0",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[3]",
+      "producedLine": 19,
+      "referenceLine": 15,
+      "produced": "В последующие годы Джон Вильямс еще не раз принимал участие в записи музыки для кино, а в небольшом австралийском фильме Emma's War (Война Эммы) он выступил уж…",
+      "reference": "В последующие годы Джон Вильямс еще не раз принимал участие в записи музыки для кино, а в небольшом австралийском фильме Emma's War (Война Эммы) он выступил уж… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "245f0857",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[4]",
+      "producedLine": 21,
+      "referenceLine": 17,
+      "produced": "Дружеские и творческие контакты Вильямса со многими зарубежными музыкантами нередко были продиктованы его политической солидарностью с их борьбой за восстановл…",
+      "reference": "Дружеские и творческие контакты Вильямса со многими зарубежными музыкантами нередко были продиктованы его политической солидарностью с их борьбой за восстановл… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "887700e3",
+      "doc": "williams2",
+      "class": "image.containment",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
       "path": "/columns[1]/column[0]/image[5]",
-      "producedLine": 18,
+      "producedLine": 14,
       "referenceLine": 21,
       "produced": "",
-      "reference": "produced at /columns[1]/column[0]/image[3]",
+      "reference": "produced at /image[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "3cc90e0d",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[6]",
+      "producedLine": 23,
+      "referenceLine": 26,
+      "produced": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен…",
+      "reference": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "ea86c67b",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[7]",
+      "producedLine": 25,
+      "referenceLine": 28,
+      "produced": "Запись классической музыки, сначала на пластинки, а позднее на CD-диски, стала, безусловно, важнейшей частью творческой жизни Джона Вильямса. Можно предположит…",
+      "reference": "Запись классической музыки, сначала на пластинки, а позднее на CD-диски, стала, безусловно, важнейшей частью творческой жизни Джона Вильямса. Можно предположит… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0783a74d",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[8]",
+      "producedLine": 27,
+      "referenceLine": 30,
+      "produced": "Важным событием в творческой биографии Джона Вильямса была его встреча с другим, не менее знаменитым британским гитаристом, – Джулианом Бримом (род. 1933).",
+      "reference": "Важным событием в творческой биографии Джона Вильямса была его встреча с другим, не менее знаменитым британским гитаристом, – Джулианом Бримом (род. 1933). — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "cdac5fb3",
+      "doc": "williams2",
+      "class": "image.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/image[9]",
+      "producedLine": 30,
+      "referenceLine": 33,
+      "produced": "Джулиан Брим и Джон Вильямс",
+      "reference": "Джулиан Брим и Джон Вильямс. — produced at /image[2]",
       "verdict": "converter-defect"
     },
     {
@@ -13075,11 +12074,39 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[1]/column[0]/image[9]@caption",
-      "producedLine": 34,
+      "producedLine": 30,
       "referenceLine": 33,
       "produced": "caption: Джулиан Брим и Джон Вильямс",
       "reference": "caption: Джулиан Брим и Джон Вильямс.",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "17a11e5c",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[10]",
+      "producedLine": 36,
+      "referenceLine": 39,
+      "produced": "Брим на восемь лет старше Вильямса. Уже в детские годы он проявил исключительную музыкальную одаренность и когда в возрасте 12 лет состоялся его концертный деб…",
+      "reference": "Брим на восемь лет старше Вильямса. Уже в детские годы он проявил исключительную музыкальную одаренность и когда в возрасте 12 лет состоялся его концертный деб… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b938e697",
+      "doc": "williams2",
+      "class": "list.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/list[11]",
+      "producedLine": 38,
+      "referenceLine": 41,
+      "produced": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J…",
+      "reference": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J… — produced at /list[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "e4955555",
@@ -13089,7 +12116,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[11]/item[0]",
-      "producedLine": 42,
+      "producedLine": 38,
       "referenceLine": 41,
       "produced": "strong:Together",
       "reference": "em:Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), · strong:Together",
@@ -13103,7 +12130,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[11]/item[1]",
-      "producedLine": 43,
+      "producedLine": 39,
       "referenceLine": 42,
       "produced": "strong:Together Again",
       "reference": "em:Julian Bream and John Williams [RCA RD 80456], в США – Julian & John II, – 1973/1974, · strong:Together Again",
@@ -13117,7 +12144,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[11]/item[2]",
-      "producedLine": 44,
+      "producedLine": 40,
       "referenceLine": 43,
       "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
       "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…",
@@ -13131,11 +12158,67 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/list[11]/item[2]",
-      "producedLine": 44,
+      "producedLine": 40,
       "referenceLine": 43,
       "produced": "strong:Julian Bream & John Williams Live",
       "reference": "em:[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел весной 1979 года. · strong:Julian Br…",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "eef1bc1a",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[12]",
+      "producedLine": 42,
+      "referenceLine": 45,
+      "produced": "Во второй половине 1960-х годов Вильямсу, похоже, наскучило играть один и тот же репертуар перед одной и той же аудиторией и он начинает искать новые способы т…",
+      "reference": "Во второй половине 1960-х годов Вильямсу, похоже, наскучило играть один и тот же репертуар перед одной и той же аудиторией и он начинает искать новые способы т… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "cbfa29ae",
+      "doc": "williams2",
+      "class": "image.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/image[13]",
+      "producedLine": 45,
+      "referenceLine": 48,
+      "produced": "Джон Вильямс в 1971 году.",
+      "reference": "Джон Вильямс в 1971 году. — produced at /image[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "90727cb9",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[14]",
+      "producedLine": 51,
+      "referenceLine": 54,
+      "produced": "В апреле 1979 года Джон Вильямс неожиданно для многих стал одним из основателей и участников группы Sky. Когда в начале лета того же года в музыкальных магазин…",
+      "reference": "В апреле 1979 года Джон Вильямс неожиданно для многих стал одним из основателей и участников группы Sky. Когда в начале лета того же года в музыкальных магазин… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0487334f",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[15]",
+      "producedLine": 53,
+      "referenceLine": 56,
+      "produced": "Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и композит…",
+      "reference": "Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и композит… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "afb365e2",
@@ -13145,11 +12228,123 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/paragraph[15]",
-      "producedLine": 57,
+      "producedLine": 53,
       "referenceLine": 56,
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "462124a4",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[16]",
+      "producedLine": 55,
+      "referenceLine": 58,
+      "produced": "Уйдя из Sky Джон Вильямс целиком посвятил себя записям новых дисков – работе, которую он полностью не прерывал никогда: новые записи произведений Альбениса (Ec…",
+      "reference": "Уйдя из Sky Джон Вильямс целиком посвятил себя записям новых дисков – работе, которую он полностью не прерывал никогда: новые записи произведений Альбениса (Ec… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "674ddf06",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[17]",
+      "producedLine": 57,
+      "referenceLine": 60,
+      "produced": "Еще в начале 1970-х годов Джон Вильямс принял для себя решение отказаться от продолжительных туров, особенно если они диктовались не творческими, а финансовыми…",
+      "reference": "Еще в начале 1970-х годов Джон Вильямс принял для себя решение отказаться от продолжительных туров, особенно если они диктовались не творческими, а финансовыми… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b981c717",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[18]",
+      "producedLine": 59,
+      "referenceLine": 62,
+      "produced": "В 1980 году (а это, кстати, годы \"электрической\" карьеры музыканта) Джон Вильямс был награжден Королевой Орденом британской империи (Order of the British Empir…",
+      "reference": "В 1980 году (а это, кстати, годы \"электрической\" карьеры музыканта) Джон Вильямс был награжден Королевой Орденом британской империи (Order of the British Empir… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "205f380d",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[19]",
+      "producedLine": 61,
+      "referenceLine": 64,
+      "produced": "С 1984 по 1990 год Вильямса неоднократно приглашают на крупные музыкальные фестивали. В 1984 году он является артистическим директором Летнего музыкального фес…",
+      "reference": "С 1984 по 1990 год Вильямса неоднократно приглашают на крупные музыкальные фестивали. В 1984 году он является артистическим директором Летнего музыкального фес… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4143618f",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[20]",
+      "producedLine": 63,
+      "referenceLine": 66,
+      "produced": "В 1984 г. важным событием в творческой жизни Вильямса стало исполнение им премьеры Концерта для гитары и гобоя д'амур Vers l'arc-en-ciel Тору Такемицу, – с Сим…",
+      "reference": "В 1984 г. важным событием в творческой жизни Вильямса стало исполнение им премьеры Концерта для гитары и гобоя д'амур Vers l'arc-en-ciel Тору Такемицу, – с Сим… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "ac30894e",
+      "doc": "williams2",
+      "class": "image.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/image[21]",
+      "producedLine": 66,
+      "referenceLine": 69,
+      "produced": "Джон Вильямс и Пако Пенья",
+      "reference": "Джон Вильямс и Пако Пенья — produced at /image[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "acedf8a3",
+      "doc": "williams2",
+      "class": "image.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/image[22]",
+      "producedLine": 73,
+      "referenceLine": 76,
+      "produced": "Джон Вильямс на обложках гитарных журналов.",
+      "reference": "Джон Вильямс на обложках гитарных журналов. — produced at /image[2]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "30265c3e",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[23]",
+      "producedLine": 79,
+      "referenceLine": 82,
+      "produced": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
+      "reference": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti… — produced at /paragraph[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "4a84a440",
@@ -13159,11 +12354,25 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/columns[1]/column[0]/paragraph[23]",
-      "producedLine": 83,
+      "producedLine": 79,
       "referenceLine": 82,
       "produced": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
       "reference": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "c910adf8",
+      "doc": "williams2",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[1]/column[0]/paragraph[24]",
+      "producedLine": 81,
+      "referenceLine": 84,
+      "produced": "К началу биографии",
+      "reference": "К началу биографии — produced at /paragraph[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "7d35ea16",
@@ -13173,10 +12382,24 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[1]/column[0]/align[25]",
-      "producedLine": 93,
+      "producedLine": 94,
       "referenceLine": 87,
       "produced": "MP3",
-      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /columns[1]/column[0]/align[26]/paragraph[0]",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /align[2]/paragraph[0]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "eda333ea",
+      "doc": "williams2",
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/columns[1]/column[0]/align[26]",
+      "producedLine": 101,
+      "referenceLine": 93,
+      "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
+      "reference": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org) — at /align[2]/paragraph[0]",
       "verdict": "converter-defect"
     }
   ]

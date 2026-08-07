@@ -919,6 +919,59 @@ describe("a menu written as a table", () => {
     );
     expect(out).not.toContain("::: nav");
   });
+
+  /**
+   * The rail the menu arrives in is not a lane either.
+   *
+   * **Invariant.** A lane carries content in a substantial share of the rows of
+   * *the content the region is assembled from*. `navFromGrid` already assumed
+   * this — its header says "`layoutFrom` folds the resulting lane away" — but
+   * occupancy was read off the source grid while the region was built from the
+   * lowered blocks, so the emptied rail still contributed a `::: column` and
+   * that column was the second one, keeping a one-lane region alive.
+   *
+   * **Recurrence.** None is available and none is needed: the question is not
+   * "does this shape repeat" but "is this column ever populated", which is the
+   * lane detector's existing test on the input it should always have had.
+   *
+   * **False friend**, covered by `lanes.test.ts` and by `goya2` corpus-wide: a
+   * lane empty in *some* rows. Empty-here and empty-everywhere want opposite
+   * treatment and only the second is a rail.
+   */
+  /** The lane path only exists under `faithful`, which is what the corpus runs. */
+  const laned = async (body: string): Promise<string> =>
+    (await convert(Buffer.from(page(body), "utf8"), { profile: SPEC, layoutFidelity: "faithful" })).markdown;
+
+  it("folds a menu rail out of the page frame instead of laning the article", async () => {
+    // The site template, measured identical on all 22 corpus documents: an
+    // empty margin cell, the article, and a rail holding the side menu.
+    const out = await laned(
+      '<table border="0" width="760"><tr>' +
+        '<td width="116">&nbsp;</td>' +
+        `<td width="529">${PROSE}${PROSE}</td>` +
+        `<td width="115" valign="top">${menu(
+          item("a.htm", "Первая глава") + item("b.htm", "Вторая глава") + item("c.htm", "Третья глава"),
+        )}</td>` +
+        "</tr></table>",
+    );
+    expect(out).toContain("::: nav");
+    // The article is the page, not one track of a two-lane layout — and a
+    // `columns` with a single `column` is not a legal region anyway (§2).
+    expect(out).not.toContain("::: columns");
+  });
+
+  it("still lanes a rail that keeps content of its own — non-firing", async () => {
+    // The same frame with a rail that does *not* fold away. Two populated lanes
+    // remain two lanes: this rule removes a phantom, never a real column.
+    const out = await laned(
+      '<table border="0" width="760"><tr>' +
+        `<td width="529">${PROSE}</td>` +
+        '<td width="115" valign="top"><p>Записи и ноты этого периода хранятся в архиве.</p></td>' +
+        "</tr></table>",
+    );
+    expect(out).toContain("::: columns");
+    expect(out).toContain("::: column");
+  });
 });
 
 describe("a document the source set apart from the article", () => {
