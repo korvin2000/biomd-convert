@@ -67,6 +67,35 @@ function contentKind(cell: GridCell): ContentKind {
   return t.length > 80 ? "longText" : "shortText";
 }
 
+/**
+ * How much of a two-column grid is a picture set beside its matter.
+ *
+ * Returns the share of content rows in which one cell is a bare picture and the
+ * other carries words — the relation that makes a row a *record* rather than
+ * two independent cells. 0 when the grid is not two columns wide.
+ *
+ * This is the evidence the CATALOG gate was reaching for through column widths.
+ * A 150 px cover beside a tracklist is a catalog row and is nowhere near equal
+ * lanes, so `ratio ≈ 0.5` under-detects it; measured, `new_lagq2` sits at 0.37
+ * and `new_blackmore` at 0.18 while both are unmistakable picture pairings.
+ */
+export function picturePairedRows(grid: TableGrid): number {
+  if (grid.cols !== 2) return 0;
+  let content = 0;
+  let paired = 0;
+  for (let r = 0; r < grid.rows; r += 1) {
+    const row = rowCells(grid, r);
+    if (row.length !== 2) continue;
+    const kinds = row.map(contentKind);
+    if (kinds.every((k) => k === "empty")) continue;
+    content += 1;
+    const pictures = kinds.filter((k) => k === "image").length;
+    const worded = kinds.filter((k) => k === "shortText" || k === "longText" || k === "link" || k === "mixed").length;
+    if (pictures === 1 && worded === 1) paired += 1;
+  }
+  return content > 0 ? paired / content : 0;
+}
+
 export function extractFeatures(grid: TableGrid, corpusFrequency?: number): TableFeatures {
   const cells = grid.cells;
   const cellCount = cells.length;
@@ -240,6 +269,36 @@ export function classifyTier1(grid: TableGrid, f: TableFeatures): Classification
         confidence: 0.85,
         tier: 1,
         reason: `two measured lanes at ${(ratio * 100).toFixed(0)}/${(100 - ratio * 100).toFixed(0)} carrying media`,
+      };
+    }
+  }
+
+  // The same catalog, evidenced by the pairing instead of by the widths.
+  //
+  // **Invariant.** Every content row of a two-column grid sets a bare picture
+  // beside worded matter. That relation — one cell is the picture *of* what the
+  // other says — is what makes the row a record; the near-equal widths the gate
+  // above asks for are a consequence that a cover beside a tracklist simply
+  // does not have. Measured: `new_lagq2` pairs 7 of 7 rows at a 37/63 split and
+  // scored DATA, then fell to linear flow because a DATA verdict that cannot be
+  // planned is not reconsidered — so its reference's six `::: columns` came out
+  // as loose prose. Classification, not routing, was the thing that was wrong.
+  //
+  // **Recurrence requirement.** Two paired rows, with the grid's own row
+  // boundary between them. A single picture beside a single line is a figure
+  // over its caption, and `media.ts` binds those far better than a lane pair
+  // would: it is the named false friend and it is tested for non-firing.
+  //
+  // Deliberately *after* the tier-1 DATA gates: a resource matrix that happens
+  // to carry thumbnails is still a resource matrix.
+  if (f.cols === 2 && grid.rows >= 2) {
+    const paired = picturePairedRows(grid);
+    if (paired === 1) {
+      return {
+        class: "CATALOG",
+        confidence: 0.85,
+        tier: 1,
+        reason: "every content row pairs a picture with its matter",
       };
     }
   }

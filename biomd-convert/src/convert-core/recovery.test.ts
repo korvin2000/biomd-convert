@@ -730,6 +730,86 @@ describe("inconclusive table classification", () => {
 });
 
 /**
+ * A catalog is evidenced by the pairing, not by the column widths.
+ *
+ * **Invariant.** Every content row of a two-column grid sets a bare picture
+ * beside worded matter — one cell is the picture *of* what the other says.
+ * Relational and unitless: no width, no pixel threshold, no filename. The gate
+ * it joins asks instead for lanes of near-equal width, which a 150 px cover
+ * beside a tracklist has no reason to be; measured, `new_lagq2` pairs 7 of 7
+ * rows at a 37/63 split, scored DATA, and lost all six of its reference's
+ * `::: columns` to linear flow.
+ *
+ * This is the answer to the question `new_lagq2` was held back to settle
+ * (PROGRESS §19.4): the CATALOG gate was wrong, and the contract above — a DATA
+ * verdict must not be reconsidered as lanes — did not have to move. The grid
+ * simply never becomes DATA now.
+ *
+ * **Recurrence requirement.** Two paired rows, separated by the grid's own row
+ * boundary.
+ *
+ * **False friend**, tested for non-firing: one picture beside one line, which
+ * is a figure over its caption. `media.ts` binds that pair far better than a
+ * lane region would, and the recurrence requirement is what keeps it away.
+ */
+describe("a two-column grid that pairs a picture with its matter", () => {
+  /** The lane path only exists under `faithful`, which is what the corpus runs. */
+  const laned = async (body: string): Promise<string> =>
+    (
+      await convert(Buffer.from(page(body), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+
+  const record = (cover: string, matter: string) =>
+    `<tr><td width="176"><img src="${cover}" width="150" height="150"></td>` +
+    `<td width="300">${matter}</td></tr>`;
+
+  it("becomes lanes when the pairing recurs", async () => {
+    const out = await laned(
+      PROSE +
+        '<table border="0" width="476">' +
+        record("cd1.jpg", "Dances From Renaissance to Nutcracker<br>TCHAIKOVSKY - Nutcracker Suite") +
+        record("cd2.jpg", "Evening in Grenada<br>BOCCHERINI - Introduction and Fandango") +
+        "</table>" +
+        PROSE,
+    );
+    expect(out).toContain("::: columns");
+    expect(out.match(/^::: column$/gmu)?.length).toBe(4);
+  });
+
+  it("leaves a single picture beside a single line to the caption binder", async () => {
+    // The false friend. One row is a figure, and a figure's caption belongs to
+    // the picture, not to a lane beside it.
+    const out = await laned(
+      PROSE +
+        '<table border="0" width="476">' +
+        record("cd1.jpg", "Andrés Segovia, 1955") +
+        "</table>" +
+        PROSE,
+    );
+    expect(out).not.toContain("::: columns");
+  });
+
+  it("leaves a resource matrix alone even when it carries pictures", async () => {
+    // The tier-1 DATA gates run first on purpose: a column that is entirely
+    // single short links is a resource matrix whatever else the grid holds.
+    const out = await laned(
+      PROSE +
+        '<table border="0" width="476">' +
+        '<tr><td><img src="a.gif" width="16" height="16"></td><td><a href="a.htm">MP3</a></td></tr>' +
+        '<tr><td><img src="b.gif" width="16" height="16"></td><td><a href="b.htm">MIDI</a></td></tr>' +
+        '<tr><td><img src="c.gif" width="16" height="16"></td><td><a href="c.htm">TAB</a></td></tr>' +
+        "</table>" +
+        PROSE,
+    );
+    expect(out).not.toContain("::: columns");
+  });
+});
+
+/**
  * A caption stated twice.
  *
  * **Invariant.** The evidence is *repetition*: a standalone captioned figure

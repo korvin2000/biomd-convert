@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-07T23:17:32.598Z",
+  "generated": "2026-08-07T23:25:56.896Z",
   "totals": {
-    "findings": 691,
-    "converterDefects": 526,
+    "findings": 616,
+    "converterDefects": 451,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 84,
     "ambiguous": 81,
     "bySeverity": {
       "critical": 26,
-      "major": 443,
-      "minor": 222
+      "major": 385,
+      "minor": 205
     }
   },
   "perDocument": [
@@ -111,11 +111,11 @@
     },
     {
       "doc": "new_lagq2",
-      "findings": 84,
-      "converterDefects": 84,
+      "findings": 9,
+      "converterDefects": 9,
       "critical": 0,
-      "major": 64,
-      "minor": 20
+      "major": 6,
+      "minor": 3
     },
     {
       "doc": "new_lendle2",
@@ -192,33 +192,6 @@
   ],
   "classes": [
     {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 83,
-      "documents": [
-        "kiselev",
-        "new_bach",
-        "new_lagq2",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 83,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1743,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
-      }
-    },
-    {
       "class": "align.spurious",
       "severity": "major",
       "instances": 37,
@@ -245,6 +218,32 @@
         "path": "/align[45]",
         "produced": "WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 43,
+      "documents": [
+        "kiselev",
+        "new_bach",
+        "new_lendle2",
+        "news",
+        "pavlov_azancheev",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 43,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 774,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -377,29 +376,6 @@
       }
     },
     {
-      "class": "column.missing",
-      "severity": "major",
-      "instances": 16,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 16,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 144,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]/column[1]",
-        "produced": null,
-        "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html"
-      }
-    },
-    {
       "class": "image.containment",
       "severity": "major",
       "instances": 13,
@@ -444,29 +420,6 @@
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
         "produced": "Francis Goya Plays His Favourite Hits",
         "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
-      }
-    },
-    {
-      "class": "image.missing",
-      "severity": "major",
-      "instances": 10,
-      "documents": [
-        "goya2",
-        "new_blackmore",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 10,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]/image[0]",
-        "produced": null,
-        "reference": "Together / Richard Clayderman & Francis Goya"
       }
     },
     {
@@ -596,6 +549,32 @@
       }
     },
     {
+      "class": "break.missing",
+      "severity": "minor",
+      "instances": 10,
+      "documents": [
+        "authors",
+        "kiselev",
+        "new_bach",
+        "new_lagq2",
+        "news",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 10,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 60,
+      "example": {
+        "doc": "authors",
+        "path": "/break[4]",
+        "produced": null,
+        "reference": "---"
+      }
+    },
+    {
       "class": "retyped.paragraph-to-lead",
       "severity": "major",
       "instances": 10,
@@ -658,31 +637,6 @@
         "path": "/columns[31]/column[0]",
         "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
         "reference": null
-      }
-    },
-    {
-      "class": "break.missing",
-      "severity": "minor",
-      "instances": 9,
-      "documents": [
-        "authors",
-        "kiselev",
-        "new_bach",
-        "news",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 45,
-      "example": {
-        "doc": "authors",
-        "path": "/break[4]",
-        "produced": null,
-        "reference": "---"
       }
     },
     {
@@ -779,6 +733,28 @@
       }
     },
     {
+      "class": "column.missing",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "new_blackmore",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/columns[8]/column[1]",
+        "produced": null,
+        "reference": "image photo/b/blackmore_kp.jpg center medium http://www.kp.ru/articles/issue22759/paper15489.html"
+      }
+    },
+    {
       "class": "columns.spurious",
       "severity": "major",
       "instances": 4,
@@ -798,6 +774,28 @@
         "path": "/columns[31]",
         "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
         "reference": null
+      }
+    },
+    {
+      "class": "image.missing",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "goya2",
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[76]/image[0]",
+        "produced": null,
+        "reference": "Together / Richard Clayderman & Francis Goya"
       }
     },
     {
@@ -871,72 +869,6 @@
         "path": "/columns[18]/column[0]/paragraph[2]",
         "produced": "Номера изданий: Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070",
         "reference": "Джаз-сюита - IMP 066 Осенняя сюита - IMP 067 Зимняя сюита - IMP 068 Весенняя сюита - IMP 069 Летняя сюита - IMP 070"
-      }
-    },
-    {
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "instances": 9,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "instances": 9,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@size",
-        "produced": "size: medium",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "instances": 9,
-      "documents": [
-        "new_blackmore",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/columns[8]@src",
-        "produced": "src: photo/b/blackmore_kp.jpg",
-        "reference": null
       }
     },
     {
@@ -1586,6 +1518,69 @@
         "doc": "new_blackmore",
         "path": "/columns[8]@link",
         "produced": "link: http://www.kp.ru/articles/issue22759/paper15489.html",
+        "reference": null
+      }
+    },
+    {
+      "class": "columns.position.spurious",
+      "severity": "minor",
+      "instances": 3,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/columns[8]@position",
+        "produced": "position: center",
+        "reference": null
+      }
+    },
+    {
+      "class": "columns.size.spurious",
+      "severity": "minor",
+      "instances": 3,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/columns[8]@size",
+        "produced": "size: medium",
+        "reference": null
+      }
+    },
+    {
+      "class": "columns.src.spurious",
+      "severity": "minor",
+      "instances": 3,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/columns[8]@src",
+        "produced": "src: photo/b/blackmore_kp.jpg",
         "reference": null
       }
     },
@@ -7804,7 +7799,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[17]",
-      "producedLine": 138,
+      "producedLine": 208,
       "referenceLine": null,
       "produced": "Music by:",
       "reference": null,
@@ -7818,7 +7813,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[17]",
-      "producedLine": 140,
+      "producedLine": 210,
       "referenceLine": null,
       "produced": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street Electrical P…",
       "reference": null,
@@ -7867,1067 +7862,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "afa29297",
+      "id": "273e45e6",
       "doc": "new_lagq2",
-      "class": "columns.position.spurious",
+      "class": "break.missing",
       "severity": "minor",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[3]@position",
-      "producedLine": 9,
-      "referenceLine": 13,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7f0b1d6b",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[3]@size",
-      "producedLine": 9,
-      "referenceLine": 13,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b5321d38",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[3]@src",
-      "producedLine": 9,
-      "referenceLine": 13,
-      "produced": "src: photo/l/lagq_cd1.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f8cc3347",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
       "op": "delete",
-      "path": "/columns[3]/column[0]",
+      "path": "/break[14]",
       "producedLine": null,
-      "referenceLine": 15,
+      "referenceLine": 204,
       "produced": null,
-      "reference": "image photo/l/lagq_cd1.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ccb0eb4c",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[3]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 17,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "92f632eb",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[3]/column[1]",
-      "producedLine": null,
-      "referenceLine": 24,
-      "produced": null,
-      "reference": "Dances From Renaissance to Nutcracker TCHAIKOVSKY- Nutcracker Suite op.71a; PRAETORIUS- Dance Suite; WARLOCK- Capriol Suite; MORLEY- 4 Dances; GABRIELI- 4 Inst…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a9b747ea",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[0]",
-      "producedLine": 14,
-      "referenceLine": 25,
-      "produced": "Dances From Renaissance to Nutcracker",
-      "reference": "Dances From Renaissance to Nutcracker — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "365ff36c",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[1]",
-      "producedLine": 16,
-      "referenceLine": 27,
-      "produced": "TCHAIKOVSKY- Nutcracker Suite op.71a;",
-      "reference": "TCHAIKOVSKY- Nutcracker Suite op.71a; — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fb89473e",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[2]",
-      "producedLine": 18,
-      "referenceLine": 29,
-      "produced": "PRAETORIUS- Dance Suite;",
-      "reference": "PRAETORIUS- Dance Suite; — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9c71a6ef",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[3]",
-      "producedLine": 20,
-      "referenceLine": 31,
-      "produced": "WARLOCK- Capriol Suite;",
-      "reference": "WARLOCK- Capriol Suite; — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d71faac5",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[4]",
-      "producedLine": 22,
-      "referenceLine": 33,
-      "produced": "MORLEY- 4 Dances;",
-      "reference": "MORLEY- 4 Dances; — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5cb48465",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[3]/column[1]/paragraph[5]",
-      "producedLine": 24,
-      "referenceLine": 35,
-      "produced": "GABRIELI- 4 Instrumental Pieces",
-      "reference": "GABRIELI- 4 Instrumental Pieces — produced at /paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "caa1812d",
-      "doc": "new_lagq2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[5]@position",
-      "producedLine": 29,
-      "referenceLine": 44,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f7e38479",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[5]@size",
-      "producedLine": 29,
-      "referenceLine": 44,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e5948a8f",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[5]@src",
-      "producedLine": 29,
-      "referenceLine": 44,
-      "produced": "src: photo/l/lagq_cd2.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4923da22",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[5]/column[0]",
-      "producedLine": null,
-      "referenceLine": 46,
-      "produced": null,
-      "reference": "image photo/l/lagq_cd2.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bc35b4e2",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[5]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 48,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19221255",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[5]/column[1]",
-      "producedLine": null,
-      "referenceLine": 55,
-      "produced": null,
-      "reference": "Evening in Grenada BOCCHERINI- Introduction and Fandango; KROUSE- Folias; FALLA- El Amor Brujo; DEBUSSY- La Soiree dans Grenade; RIMSKY KORSAKOV - Capriccio Es…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2ca8ed3a",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[0]",
-      "producedLine": 34,
-      "referenceLine": 56,
-      "produced": "Evening in Grenada",
-      "reference": "Evening in Grenada — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5033e77d",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[1]",
-      "producedLine": 36,
-      "referenceLine": 58,
-      "produced": "BOCCHERINI- Introduction and Fandango;",
-      "reference": "BOCCHERINI- Introduction and Fandango; — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b9197e2a",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[2]",
-      "producedLine": 38,
-      "referenceLine": 60,
-      "produced": "KROUSE- Folias;",
-      "reference": "KROUSE- Folias; — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b5f27d5e",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[3]",
-      "producedLine": 40,
-      "referenceLine": 62,
-      "produced": "FALLA- El Amor Brujo;",
-      "reference": "FALLA- El Amor Brujo; — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f35746f8",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[4]",
-      "producedLine": 42,
-      "referenceLine": 64,
-      "produced": "DEBUSSY- La Soiree dans Grenade;",
-      "reference": "DEBUSSY- La Soiree dans Grenade; — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6a567e9c",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[5]/column[1]/paragraph[5]",
-      "producedLine": 44,
-      "referenceLine": 66,
-      "produced": "RIMSKY KORSAKOV - Capriccio Espagnol",
-      "reference": "RIMSKY KORSAKOV - Capriccio Espagnol — produced at /paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b87a1bc3",
-      "doc": "new_lagq2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[7]@position",
-      "producedLine": 49,
-      "referenceLine": 75,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "431fdfe7",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[7]@size",
-      "producedLine": 49,
-      "referenceLine": 75,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "16f2da5a",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[7]@src",
-      "producedLine": 49,
-      "referenceLine": 75,
-      "produced": "src: photo/l/lagq_cd3.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1a0dae4d",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[7]/column[0]",
-      "producedLine": null,
-      "referenceLine": 77,
-      "produced": null,
-      "reference": "image photo/l/lagq_cd3.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4d28f6d0",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[7]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 79,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b3650a17",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[7]/column[1]",
-      "producedLine": null,
-      "referenceLine": 86,
-      "produced": null,
-      "reference": "Labyrinth YORK- Quiccan, Pacific Coast Highway, Bantu; KROUSE- Labyrinth; COPLAND - Simple Gifts, Corral Nocturne, Hoe-Down; BASIE - Jumpin’ at the Woodside; E…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b3ca10c0",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[0]",
-      "producedLine": 54,
-      "referenceLine": 87,
-      "produced": "Labyrinth",
-      "reference": "Labyrinth — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "657d088d",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[1]",
-      "producedLine": 56,
-      "referenceLine": 89,
-      "produced": "YORK- Quiccan, Pacific Coast Highway, Bantu;",
-      "reference": "YORK- Quiccan, Pacific Coast Highway, Bantu; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "dfdb6313",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[2]",
-      "producedLine": 58,
-      "referenceLine": 91,
-      "produced": "KROUSE- Labyrinth;",
-      "reference": "KROUSE- Labyrinth; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f912e458",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[3]",
-      "producedLine": 60,
-      "referenceLine": 93,
-      "produced": "COPLAND - Simple Gifts, Corral Nocturne, Hoe-Down;",
-      "reference": "COPLAND - Simple Gifts, Corral Nocturne, Hoe-Down; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1fe61cfb",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[4]",
-      "producedLine": 62,
-      "referenceLine": 95,
-      "produced": "BASIE - Jumpin’ at the Woodside;",
-      "reference": "BASIE - Jumpin’ at the Woodside; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1ba58c5c",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[5]",
-      "producedLine": 64,
-      "referenceLine": 97,
-      "produced": "EAGAN-Red, White, Black ‘n’ Blue;",
-      "reference": "EAGAN-Red, White, Black ‘n’ Blue; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "014bef1a",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[6]",
-      "producedLine": 66,
-      "referenceLine": 99,
-      "produced": "SOUSA - Black Horse Troop;",
-      "reference": "SOUSA - Black Horse Troop; — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "60d532cf",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[7]/column[1]/paragraph[7]",
-      "producedLine": 68,
-      "referenceLine": 101,
-      "produced": "TRAD - Shenandoah",
-      "reference": "TRAD - Shenandoah — produced at /paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5b74e119",
-      "doc": "new_lagq2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[9]@position",
-      "producedLine": 73,
-      "referenceLine": 110,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "42a1d8c5",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[9]@size",
-      "producedLine": 73,
-      "referenceLine": 110,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "54b82985",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[9]@src",
-      "producedLine": 73,
-      "referenceLine": 110,
-      "produced": "src: photo/l/lagq_cd4.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "235b3734",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[9]/column[0]",
-      "producedLine": null,
-      "referenceLine": 112,
-      "produced": null,
-      "reference": "image photo/l/lagq_cd4.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a9cfd216",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[9]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 114,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6d6d5893",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[9]/column[1]",
-      "producedLine": null,
-      "referenceLine": 121,
-      "produced": null,
-      "reference": "For Thy Pleasure BACH- Brandenburg Concerto nr.6, Allegro from nr.3; Prelude & Fugue in C; Fugue nr.3; HANDEL- Arrival of the Queen of Sheba; FINK- Monteverdia…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "705f8328",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[0]",
-      "producedLine": 78,
-      "referenceLine": 122,
-      "produced": "For Thy Pleasure",
-      "reference": "For Thy Pleasure — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "05f7ac50",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[1]",
-      "producedLine": 80,
-      "referenceLine": 124,
-      "produced": "BACH- Brandenburg Concerto nr.6, Allegro from nr.3; Prelude & Fugue in C; Fugue nr.3;",
-      "reference": "BACH- Brandenburg Concerto nr.6, Allegro from nr.3; Prelude & Fugue in C; Fugue nr.3; — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f97de4d4",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[2]",
-      "producedLine": 82,
-      "referenceLine": 126,
-      "produced": "HANDEL- Arrival of the Queen of Sheba;",
-      "reference": "HANDEL- Arrival of the Queen of Sheba; — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "29b12da3",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[3]",
-      "producedLine": 84,
-      "referenceLine": 128,
-      "produced": "FINK- Monteverdiana;",
-      "reference": "FINK- Monteverdiana; — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e900bd83",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[4]",
-      "producedLine": 86,
-      "referenceLine": 130,
-      "produced": "PURCELL- Rondeau, Fantasia;",
-      "reference": "PURCELL- Rondeau, Fantasia; — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "06ab465e",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[5]",
-      "producedLine": 88,
-      "referenceLine": 132,
-      "produced": "TELEMANN- Concerto for 4 violins;",
-      "reference": "TELEMANN- Concerto for 4 violins; — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3727312f",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[9]/column[1]/paragraph[6]",
-      "producedLine": 90,
-      "referenceLine": 134,
-      "produced": "PACHELBEL- Loose Canon",
-      "reference": "PACHELBEL- Loose Canon — produced at /paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "570bd13e",
-      "doc": "new_lagq2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[11]@position",
-      "producedLine": 95,
-      "referenceLine": 143,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3257707c",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[11]@size",
-      "producedLine": 95,
-      "referenceLine": 143,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a8e6db4b",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[11]@src",
-      "producedLine": 95,
-      "referenceLine": 143,
-      "produced": "src: photo/l/lagq_cd5.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d4b7ea4a",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[11]/column[0]",
-      "producedLine": null,
-      "referenceLine": 145,
-      "produced": null,
-      "reference": "image photo/l/lagq_cd5.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "53b7f05b",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[11]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 147,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0996cf2e",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[11]/column[1]",
-      "producedLine": null,
-      "referenceLine": 154,
-      "produced": null,
-      "reference": "El Amor Brujo FALLA- El Amor Brujo; SCIAMMARELLA- Interlude for Love; COPLAND- Corral Nocturne, Hoe-Down; BROUWER- Cuban Landscape with Rain; KROUSE- Antique S…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "10c7b820",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 100,
-      "referenceLine": 155,
-      "produced": "El Amor Brujo",
-      "reference": "El Amor Brujo — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "42c62711",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[1]",
-      "producedLine": 102,
-      "referenceLine": 157,
-      "produced": "FALLA- El Amor Brujo;",
-      "reference": "FALLA- El Amor Brujo; — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "490e4edc",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[2]",
-      "producedLine": 104,
-      "referenceLine": 159,
-      "produced": "SCIAMMARELLA- Interlude for Love;",
-      "reference": "SCIAMMARELLA- Interlude for Love; — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "70b62c54",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[3]",
-      "producedLine": 106,
-      "referenceLine": 161,
-      "produced": "COPLAND- Corral Nocturne, Hoe-Down;",
-      "reference": "COPLAND- Corral Nocturne, Hoe-Down; — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "18d62610",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[4]",
-      "producedLine": 108,
-      "referenceLine": 163,
-      "produced": "BROUWER- Cuban Landscape with Rain;",
-      "reference": "BROUWER- Cuban Landscape with Rain; — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cfa87454",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[11]/column[1]/paragraph[5]",
-      "producedLine": 110,
-      "referenceLine": 165,
-      "produced": "KROUSE- Antique Suite",
-      "reference": "KROUSE- Antique Suite — produced at /paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0fe73e60",
-      "doc": "new_lagq2",
-      "class": "columns.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[13]@position",
-      "producedLine": 115,
-      "referenceLine": 174,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f21a2546",
-      "doc": "new_lagq2",
-      "class": "columns.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[13]@size",
-      "producedLine": 115,
-      "referenceLine": 174,
-      "produced": "size: small",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "44c32a84",
-      "doc": "new_lagq2",
-      "class": "columns.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[13]@src",
-      "producedLine": 115,
-      "referenceLine": 174,
-      "produced": "src: photo/l/lagq_cd6.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "35ad7a3b",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[13]/column[0]",
-      "producedLine": null,
-      "referenceLine": 176,
-      "produced": null,
-      "reference": "image photo/l/lagq_cd6.jpg center small",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "05fc22b9",
-      "doc": "new_lagq2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[13]/column[0]/image[0]",
-      "producedLine": null,
-      "referenceLine": 178,
-      "produced": null,
-      "reference": "",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "84912541",
-      "doc": "new_lagq2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[13]/column[1]",
-      "producedLine": null,
-      "referenceLine": 185,
-      "produced": null,
-      "reference": "Recital FAURE- Pavane; HOLST- St.Paul's Suite; KROUSE- Bulerias; ROSSINI- Barber of Seville; SIEGEL- East L.A.Phase; STRAVINSKY- Tango, Pastorale, Circus Polka",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b17f11dc",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[0]",
-      "producedLine": 120,
-      "referenceLine": 186,
-      "produced": "Recital",
-      "reference": "Recital — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2dafcaf5",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[1]",
-      "producedLine": 122,
-      "referenceLine": 188,
-      "produced": "FAURE- Pavane;",
-      "reference": "FAURE- Pavane; — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "362205c1",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[2]",
-      "producedLine": 124,
-      "referenceLine": 190,
-      "produced": "HOLST- St.Paul's Suite;",
-      "reference": "HOLST- St.Paul's Suite; — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ff39eecd",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[3]",
-      "producedLine": 126,
-      "referenceLine": 192,
-      "produced": "KROUSE- Bulerias;",
-      "reference": "KROUSE- Bulerias; — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "09c7c97e",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[4]",
-      "producedLine": 128,
-      "referenceLine": 194,
-      "produced": "ROSSINI- Barber of Seville;",
-      "reference": "ROSSINI- Barber of Seville; — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a7b6fd91",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[5]",
-      "producedLine": 130,
-      "referenceLine": 196,
-      "produced": "SIEGEL- East L.A.Phase;",
-      "reference": "SIEGEL- East L.A.Phase; — produced at /paragraph[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "39951b41",
-      "doc": "new_lagq2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[13]/column[1]/paragraph[6]",
-      "producedLine": 132,
-      "referenceLine": 198,
-      "produced": "STRAVINSKY- Tango, Pastorale, Circus Polka",
-      "reference": "STRAVINSKY- Tango, Pastorale, Circus Polka — produced at /paragraph[14]",
+      "reference": "---",
       "verdict": "converter-defect"
     },
     {
@@ -8938,7 +7883,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/heading[15]/text",
-      "producedLine": 136,
+      "producedLine": 206,
       "referenceLine": 206,
       "produced": "The Best of the L.A.G.Q",
       "reference": "***T***he Best of the L.A.G.Q",
@@ -8952,7 +7897,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[15]/text",
-      "producedLine": 136,
+      "producedLine": 206,
       "referenceLine": 206,
       "produced": "(none)",
       "reference": "strong:*T",
@@ -8966,7 +7911,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]",
-      "producedLine": 142,
+      "producedLine": 212,
       "referenceLine": 209,
       "produced": "[Назад] [Фото]",
       "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]",
