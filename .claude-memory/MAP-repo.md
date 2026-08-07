@@ -73,8 +73,9 @@ claude-project/
 | `pipeline.ts` | the conversion pipeline | pass ordering |
 | `corpus.ts` | Stage 0 — corpus pass (fingerprints, chrome model, lexicon) | |
 | `boilerplate.ts` | boilerplate removal — the corpus pass cashing in | site chrome, masthead repeats |
-| `structure.ts` | **structure recovery, the biggest file** | `layoutFrom` (lanes/`::: columns`), region routing, `estimatePosition`, lane occupancy (§10.3) |
-| `classify.ts` | table classification — Tier 1 gates, Tier 2 scored | CATALOG width gate `ratio 0.45–0.55` + `imageDensity > 0.3` — **open, see OPEN §2.1** |
+| `structure.ts` | **structure recovery, the biggest file** | `layoutFrom` (lanes/`::: columns`), region routing, `estimatePosition`, `laneColumnsOf` (occupancy is measured on **lowered** content, §21.2a), `pageRailColumns` (§21.2b), `synthesizeHeader`/`isLinkColumn` (§21.4) |
+| `classify.ts` | table classification — Tier 1 gates, Tier 2 scored | CATALOG: the width gate `ratio 0.45–0.55` + `imageDensity > 0.3`, **and** `picturePairedRows === 1` with a two-row recurrence requirement (§21.3) |
+| `glyphs.ts` | lexical data — symbols the target cannot draw | `LINK_GLYPH`; the home the unbuilt 29-entry icon map needs (OPEN §2.4) |
 | `data-table.ts` | physical grid → semantic record matrix | `planDataTable` (`minRows: 2`), `dominantLabel`, `tableFromPlan` |
 | `media.ts` | what an `<img>` *means*, apart from where it sits | decorative filter (rendered geometry, never filename), size calibration against the article content box, caption binding, `::: images` grouping |
 | `frames.ts` | semantic frames + bounded alignment | `framedCell`, `alignedGroup`, `groupAlignedRuns`, `ALIGN_LABEL_MAX_CHARS = 400`, `alignableRunMember` (lists excluded) |

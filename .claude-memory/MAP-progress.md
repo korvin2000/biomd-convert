@@ -29,25 +29,25 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 17 Blind improvement | 1931–2054 | one-row table rule killed `17.1:1944` · unbacked centring / null align baseline `17.2:1983` · corpses `17.4:2029` · **what the references must settle `17.5:2045`** | **HOT** |
 | 18 Second blind pass | 2055–2174 | sweep results `18.1:2066` · empty lane not judgeable blind `18.2:2077` · **DATA→lanes killed by an existing contract `18.3:2098`** · corpses `18.5:2149` | **HOT** |
 | 19 Handoff | 2175–2309 | **checkpoint `19.1:2182` · corpus roles `19.2:2198` · exact next step `19.3:2217` · the `new_lagq2` question `19.4:2233` · two blind findings `19.5:2275`** | **HOT** |
-| 20 22-doc baseline + permissions | 2310–2461 | **the 22-document baseline `20.1:2315`** · implementation stricter than its format `20.2:2337` · `align`/`frame` `20.3:2361` · `---`≡`***` `20.4:2376` · **measured effect, output byte-identical `20.5:2390`** · what was *not* changed `20.6:2413` · corpses `20.7:2427` · **state + queue `20.8:2442`** | **HOT** |
+| 20 22-doc baseline + permissions | 2310–2461 | **the 22-document baseline `20.1:2315`** · implementation stricter than its format `20.2:2337` · `align`/`frame` `20.3:2361` · `---`≡`***` `20.4:2376` · **measured effect, output byte-identical `20.5:2390`** · what was *not* changed `20.6:2413` · corpses `20.7:2427` · state + queue `20.8:2442` | REF |
+| 21 four mechanisms | 2463–2650 | **a class that was three mechanisms `21.1:2480`** · **the page frame `21.2:2496`** · **§19.4 answered: the CATALOG gate, not the contract `21.3:2532`** · **table headers without invention `21.4:2550`** · `williams2` reference-inconsistency `21.5:2590` · corpses `21.6:2609` · **state + queue `21.7:2626`** | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§20 (2310–2461)** and **§19.2–19.5 (2198–2298)** — the current
-state, the corpus roles and the open questions. Add §16.6–16.7 (1904–1930) for the archetype map,
-and §18.3 (2098–2138) before touching table routing.
+A session resuming cold needs **§21 (2463–2650)** and **§19.2 (2198–2216)** — the current state and
+the corpus roles. Add §16.6–16.7 (1904–1930) for the archetype map, and §18.3 (2098–2138) together
+with §21.3 (2532–2549) before touching table routing: the first killed a fallback, the second is why
+the classification was the thing that had to move instead.
 
-## Checkpoint — §20.5/§20.8, measured 2026-08-08 over **22 documents**
+## Checkpoint — §21, measured 2026-08-08 over **22 documents**
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | 388 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **90.3 %**, clean share 9.1 % | `sh bench/run.sh` |
-| L2 | 745 findings — **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
-| L3 | 287 findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| L0 | 405 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **92.6 %**, clean share 9.1 % | `sh bench/run.sh` |
+| L2 | 508 findings — **327 converter-defect** · 94 ambiguous · 87 reference-inconsistency, 90 classes | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | 149 findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | 28 errors, all `table-header-empty` (§21.4) | `corpus run -c bench/biomd.config.json` |
 
-Superseded: §19.1's 369 / 93.8 / 314 / 82 was the **13-document** corpus. The gap is nine documents
-joining the comparison, not a regression — see §20.1.
-
-`analyze/defects.json` in the repo is still the 13-document ledger until the next `diff --json` run
-writes over it; check `perDocument.length` before trusting it.
+Superseded: §20.8's 388 / 90.3 / 745 / 287 was the same 22 documents before the first refinement
+iteration. §19.1's 369 / 93.8 / 314 / 82 was the **13**-document corpus and is not comparable at all.

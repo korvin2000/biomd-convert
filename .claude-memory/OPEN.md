@@ -3,185 +3,125 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**. Facts marked *measured* were taken this session; facts marked *recorded*
-are quoted from PROGRESS and have not been re-measured.
+Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21). Facts marked
+*measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-The blind phase is closed (PROGRESS §16–§18). The 9 new references are placed, the holdout is parked
-in `fixtures/html2/` + `fixtures/out2/`, and **the 22-document baseline has been taken** — PROGRESS
-§20.1. The permissions work of §20.2–§20.5 landed on top of it with **byte-identical output**.
+Reference-guided refinement, 22 documents. Four mechanisms accepted in the first iteration — all
+four rungs improved or held, one commit each, full before/after in every message.
 
-**Current state, measured 2026-08-08 (PROGRESS §20.8):**
+**Current state, *measured* 2026-08-08 (PROGRESS §21):**
 
 | rung | value |
 |---|---|
-| L0 | 388 tests, typecheck clean, 0 FAILED |
-| L1 | **90.3 %**, clean share 9.1 % |
-| L2 | 745 findings — **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes |
-| L3 | 287 findings, identity 0, deterministic |
+| L0 | 405 tests, typecheck clean, 0 FAILED |
+| L1 | **92.6 %** (was 90.3), clean share 9.1 % |
+| L2 | 508 findings — **327 converter-defect** · 94 ambiguous · 87 reference-inconsistency, 90 classes |
+| L3 | 149 findings, identity 0, deterministic |
+| validator | 28 errors, all `table-header-empty` — see §3.2 |
 
 That is the floor. Nothing accepted from here may regress it.
 
-**Step 1 — rank**, keeping the 13 and the 9 visible separately. A class in both sets is a *rule*
-finding and outranks a class only in the new set, which is a *generalization* finding. Regenerate the
-ledger first: `analyze/defects.json` in the repo is still the 13-document version.
-
-**Step 2 — take `new_lagq2` first, out of rank order** (§2.1 below). It settles a standing question no
-other document can.
-
----
-
-## 2. What the new references settled — *measured 2026-08-08*
-
-### 2.1 `new_lagq2`: PROGRESS §19.4 is answered, and the answer is **yes**
-
-The reference gives the seven album records **6 `::: columns` / 12 `::: column`**, cover in lane 1 and
-tracklist in lane 2, separated by `---` (7 rules). The converter emits **zero** — the region is
-flattened entirely.
-
-So the pre-registered consequence applies: **the contract and the CATALOG gate have to be revisited
-together.**
-
-- `src/convert-core/recovery.test.ts` → *"leaves a DATA verdict on the flow path — the false friend"*
-  forbids the only mechanism that would produce them, on the stated rationale that *losing a table to
-  lanes is the defect this reconsideration could otherwise introduce*. Reconsidering DATA→lanes was
-  implemented and reverted once: L1 93.8 → 93.6, `borislova`/`goya2`/`williams2` all changed (§18.3).
-- `src/convert-core/classify.ts`'s tier-1 CATALOG gate wants `ratio` 0.45–0.55 **and**
-  `imageDensity > 0.3`. *Recorded* (PROGRESS §19.4, not re-measured): `goya2` 35×2 / 0.50 / 0.16 →
-  CATALOG · `new_lendle2` 10×2 / 0.50 / 0.33 → CATALOG · **`new_lagq2` 7×2 / 0.37 / 0.46 → DATA
-  0.50**. A 150 px cover beside a tracklist
-  has no reason to be 50/50. Widening it alone reaches `barrios` (0.67) and `news_2007` (0.27), both
-  regression documents — so widen it *with* the routing decision, never on its own.
-- `new_lendle2` is the control: same archetype, already CATALOG, already laned.
-
-### 2.2 `new_karta`: PROGRESS §17.5 Q1 is answered — **tables with supplied labels**
-
-Variable-arity media records become **GFM tables**, and the columns the source does not name are
-headed with a link glyph:
-
-```
-| Композиция | Формат | &#128279; | &#128279; |
-```
-
-Two consequences. First, `dominantLabel`/`tableFromPlan` needing a recurring label across three body
-rows is the blocker, and the reference shows what to supply instead. Second — the memory note that
-*"abstracting guessed table headers and replacing a bare URL label with a link glyph are proposals in
-`analyze.md`, not reference-attested"* is **now false**: `&#128279;` occurs **16 times across 7
-references** (`tarrega` 5, `barrios` 3, `new_dyens` 3, `new_karta` 2, `kiselev` 2, `borislova` 1) and
-the `analyze.md` requests are attested. This changes the L5 verdict on those two complaints from
-*proposal* to *work*.
-
-### 2.3 `new_rechin4`: PROGRESS §17.5 Q3 points at under-segmentation
-
-The reference is 78 lines with **9 `::: lead`** and 4 `##`; the converter produced 11 paragraphs for a
-33 KB source and two `line-too-long` errors (4156 and 2850 chars against a 2200 ceiling). The two
-over-long lines are under-segmentation, not faithful long paragraphs. `::: lead` used nine times in
-one document is an idiom no other reference uses — check `BioMD-Reference.md` §3 (`lead` "MAY
-represent … a distinctly styled introductory source region") before assuming it is a defect.
-
-### 2.4 New class: **mini-image → glyph is specified, attested, and unimplemented**
-
-`mini_images_to_md_guide.md` defines the policy and a 29-entry known-icon map. *Measured*: the
-references use numeric character references in **10 of 22** documents — `&#128279;` ×16 (link),
-`&#9664;` ×2 (previous), `&#9658;` ×1, `&#128904;` ×1, `&#128578;` ×1 — and **`src/` contains no icon
-map at all** (`media.ts`'s decorative filter drops such images on rendered geometry instead, and
-`bench/out/` contains zero `&#`).
-
-Building it must respect `CLAUDE.md` §3.5: the map is a **documented, language-tagged data file**, the
-detector consults it and **degrades gracefully when the list does not match**, and classification
-needs ≥2 independent UI signals with no strong content-image signal conflicting. Note one divergence
-to settle: the guide maps *next* to `&#9654;` (U+25B6 ▶) while `new_bach` uses `&#9658;` (U+25BA ►).
-
-Also unreferenced anywhere until now: this guide is not named in `CLAUDE.md` §2's ground-truth list.
-It is now named in the skill's sources table.
+**Next mechanism: the alignment family** — `align.spurious` (12/8 docs), `retyped.paragraph-to-align`
+(12/7), `align.missing` (9/6), `retyped.align-to-paragraph`. 33+ instances over 9 documents, and the
+region/lane work they were entangled with has now settled, so they can finally be read together
+rather than one at a time. PROGRESS §10.2 already recorded once that a spurious centre align was a
+*symptom* of collapsed lanes upstream — check that first, because three lane defects just closed.
 
 ---
 
-## 3. Answered — the user settled these on 2026-08-08 (PROGRESS §20)
+## 2. What the first iteration settled
 
-- **`::: frame` inside `::: align`** — legal, not a rule violation, but pointless: a frame is
-  full-width, so `frame` wrapping `align` is the intended shape. `BioMD-Reference.md` §2 records it;
-  the validator advises (`align-wraps-frame`, warning) and **must not reject or rewrite**.
-- **`---` vs `***`** — one construct. §1 states the equivalence; the `separator.spelling` L2 finding
-  is gone.
-- **Reference permissiveness is normative.** The implementation may narrow what it *emits* (only via
-  a `TargetProfile`, which is a claim about the renderer) and never what it *accepts*. Six narrowings
-  were removed; see §20.2.
+### 2.1 The page frame — closed, three documents, two mechanisms
 
-Still open, and now a *rule* question rather than a permissions one:
+All 22 documents draw the same template: a one-row three-column band measured `[116, 529, 115]` in a
+760 px row — empty margin, article, decorated rail. Nineteen have an empty rail and were always
+right. The three that were not are fixed by (a) measuring lane occupancy on *lowered* content rather
+than on the source grid, and (b) `pageRailColumns`, which rejects a flank pair by geometry **and
+position** (middle column widest, both outer far narrower). Details in PROGRESS §21.2.
 
-### 3.1 A wrapped masthead: one `#` or two? *(affects a reusable rule and ≥2 documents)*
+### 2.2 `new_lagq2` closed §19.4 — and did **not** move the DATA contract
 
-**Permission side: settled.** `h1-count` is a warning, so two `#` now validates.
-**Rule side: open.** The converter emits exactly one `#` on all 22 documents and
-`enforceSingleTitle` never fires (§20.6), so producing the reference's shape needs heading recovery
-to *recognise* a two-line title — with a false friend that must not fire: two `#` separated by
-content are two titles, not one wrapped one.
+The CATALOG gate was wrong, not the routing. `picturePairedRows` replaces the near-equal-width
+requirement with the relation it was reaching for: every content row pairs a bare picture with worded
+matter. `recovery.test.ts`'s "leaves a DATA verdict on the flow path" contract is untouched and
+§18.3's killed hypothesis stays killed. PROGRESS §21.3.
 
-The new references disagree with the old idiom **and with each other**:
+### 2.3 `new_karta`/`new_dyens` closed §17.5 Q1 — supply the header, never the noun
 
-| | reference writes |
-|---|---|
-| `new_blackmore` | `# Ричи Блэкмор Ritchie Blackmore & Blackmore's Night` — one heading, joined |
-| `segovia1`, `goya2`, `borislova`, `williams2`, `new_kolpakov` | one `#`, sometimes inside `::: align` |
-| **`new_bach`**, **`new_lagq2`** | `::: align` containing **two consecutive `# ` lines** (`# Иоганн Себастьян` / `# Бах`) |
+A table whose columns have no recurring label is no longer abandoned. An unnamed **links** column is
+headed with U+1F517; the **subject** column stays empty, because `Название`/`Композиция`/`Формат`
+appear in no source and naming one would be §16.3 invention. `src/convert-core/glyphs.ts` is the new
+lexical data file and is also the home the unbuilt icon map needs. PROGRESS §21.4.
 
+### 2.4 Still open, unchanged: mini-image → glyph
+
+`mini_images_to_md_guide.md` defines a 29-entry known-icon map; `src/` implements none of it. The
+references use numeric character references in 10 of 22 documents. `glyphs.ts` now exists to hold the
+map. One divergence to settle: the guide maps *next* to `&#9654;` (▶) while `new_bach` uses
+`&#9658;` (►).
+
+---
+
+## 3. Questions for the user
+
+### 3.1 A wrapped masthead: one `#` or two? *(carried from §20.6, unchanged)*
+
+`h1-count` is a warning, so two `#` validates; the converter emits exactly one on all 22 and
+`enforceSingleTitle` never fires. Producing the reference shape needs heading recovery to *recognise*
+a two-line title, with the false friend that two `#` separated by content are two titles.
 `new_blackmore` joins its two-part title into one heading while `new_bach` and `new_lagq2` split
-theirs, so the references do not agree with each other and the discriminator has to come from the
-**source** (is this one title that wrapped, or two?), not from the reference set.
+theirs, so the discriminator must come from the **source**, not from the reference set.
 
-### 3.2 Not a question — recorded so nobody chases it
+### 3.2 `williams2`'s one-lane `::: columns` — *new, and the one open triage call*
 
-`***` appears as a thematic break in `new_bach`, `news` and `tarrega` (once each) alongside `---`.
-Both parse to the same node — now stated normatively in `BioMD-Reference.md` §1, enforced by a
-contract in `structdiff.test.ts`, and no longer reportable. Do not open a class for it.
+The converter now flattens the page frame to linear flow on all three documents that have a
+non-empty rail. `new_geyzel04`'s and `new_bach`'s references agree. `williams2`'s reference instead
+keeps a `::: columns` containing a **single** `::: column` around the whole article — which
+`BioMD-Reference.md` §2 forbids (`columns` requires ≥2 `column`). The sources are the same construct,
+so no rule produces both.
+
+Recorded as `reference-inconsistency` and **not** chased; it costs `williams2` 31 L2 findings that
+are all the same fact. Confirm the reading, or say the wrapper is wanted and it becomes a rule
+question instead. PROGRESS §21.5.
 
 ---
 
-## 4. Open defect classes
+## 4. Open defect classes — *measured* 2026-08-08 over 22 documents
 
-**Top-ranked, *measured* 2026-08-08 over 22 documents** (`instances × severity × generality`):
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 405 | `paragraph.containment` | 27 | 5 | 19 are `williams2` §3.2 and **not a target**; real remainder 8 |
+| 288 | `align.spurious` | 12 | 8 | **next mechanism** |
+| 252 | `retyped.paragraph-to-align` | 12 | 7 | same family |
+| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2) |
+| 162 | `align.missing` | 9 | 6 | same family |
+| 120 | `image.spurious` | 8 | 5 | |
+| 84 | `image.size.value` | 21 | 4 | a threshold in `media.ts`; sweep it, do not pick it |
 
-| rank | class | inst | docs |
-|---:|---|---:|---:|
-| 2961 | `paragraph.containment` | 141 | 7 |
-| 792 | `align.spurious` | 33 | 8 |
-| 552 | `paragraph.spurious.in-table` | 46 | 4 |
-| 231 | `retyped.paragraph-to-align` | 11 | 7 |
+Open **by decision**, not by oversight: `new_blackmore`'s 3 `column.missing`. Its picture-paired
+grids are one row each, so the pairing gate's recurrence requirement excludes them; their evidence is
+recurrence across *sibling grids on the page*, which the classifier cannot see. Dropping the
+requirement admits the figure-over-caption false friend. The fix is a corpus-pass change and its own
+mechanism.
 
-`paragraph.containment` at 141 instances over 7 documents is now the clear top class and is dominated
-by the new set — `new_lagq2`, `new_lendle2`, `new_bach`, `new_geyzel04` — which is consistent with
-§2.1: blocks that belong in a lane are sitting at top level because the lane was never built. Check
-whether it and `new_lagq2`'s zero `::: columns` are one mechanism **before** treating them separately.
-
-`paragraph.spurious.in-table` (46, 4 docs) is very likely the same story one stage further on: text
-the reference puts in a table cell, emitted as loose prose because the table was declined (§2.2).
-
-Carried over from the 13-document ledger — *recorded*, re-rank before using:
-
-| class | why it is still open |
-|---|---|
-| `image.src.value` (19, all `goya2`) | one path-resolution rule; mechanical, single-document |
-| `image.size.value` (21, 4 docs) | a threshold in `media.ts`; sweep it, do not pick it |
-| alignment residue — `align.spurious`, `retyped.paragraph-to-align`, `retyped.align-to-paragraph` (16, 5 docs) | the region, menu and frame work has settled; re-read them together |
-| `retyped.paragraph-to-list` | real, and **blocked on a hook design**: the discriminator does not exist in the shape (§15.2). Candidate is an `ITEM` kind for `text.segment`, whose acceptance check must be named first — may change block *type* only, never text, never line count, never fire where §3.5's evidence says verse |
-| `borislova`/`jovicic` want a quote the recurrence gate declines | `MIN_SUBORDINATED_BLOCKS` is 2 and each has 1. Ceiling until a second signal exists |
-| `frame`'s `title:` property unused | `news` puts `ПОЗДРАВЛЯЕМ` in it; one instance corpus-wide, recorded not acted on |
+Also carried: `image.src.value` (19, all `goya2` — mechanical, single-document) · `borislova`/
+`jovicic` want a quote the recurrence gate declines (`MIN_SUBORDINATED_BLOCKS` is 2, each has 1) ·
+`frame`'s `title:` property unused (one instance corpus-wide).
 
 ## 5. Instrument debt — what to distrust, in order
 
-1. **The 0.5–0.95 `ambiguous` word-coverage corridor is set, not calibrated** — ~76 findings, and the
-   single largest piece of unexamined instrument behaviour. So is the **0.65** reconciliation constant
-   behind the `containment` classes; the class split has never been measured at 0.55 or 0.75.
-2. **L3's renderer is a model of the target, not the target.** Where the real renderer differs in a
-   way `read()` does not document, L3 is wrong *in the same direction on both sides* — the one error
-   class a comparison cannot reveal.
-3. **L3 pairs by rendered text, deliberately independent of L2.** A block the migrator rewrote past
-   0.65 similarity is unpaired, and unpaired blocks yield no L3 finding. Presence stays L2's question.
-4. **One viewport (1024 px).** Nothing yet asserts a finding is stable across widths.
-5. **L4 is not built.** The judge pipeline in `CLAUDE.md` §4 — side-blind, schema-validated,
-   `claude-opus-5` via the `deep` slot, calibrated before trusted, advisory only — does not exist yet.
-   Do not report an L4 number.
+1. **The 0.5–0.95 `ambiguous` word-coverage corridor is set, not calibrated** — now 94 findings, the
+   largest piece of unexamined instrument behaviour. So is the **0.65** reconciliation constant behind
+   the `containment` classes.
+2. **The validator does not check `columns` ≥ 2 `column`**, which is a `BioMD-Reference.md` §2 MUST.
+   Found while adjudicating §3.2; recorded, not fixed.
+3. **L3's renderer is a model of the target, not the target.** Where the real renderer differs in a
+   way `read()` does not document, L3 is wrong *in the same direction on both sides*.
+4. **L3 pairs by rendered text, deliberately independent of L2.** A block rewritten past 0.65
+   similarity is unpaired, and unpaired blocks yield no L3 finding. Presence stays L2's question.
+5. **One viewport (1024 px).** Nothing yet asserts a finding is stable across widths.
+6. **L4 is not built.** Do not report an L4 number.

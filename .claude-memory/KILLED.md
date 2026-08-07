@@ -26,6 +26,10 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | CATALOG's near-equal-lane gate is over-fitted *and is the cause* | over-fitted: probably. The cause of `new_lagq2`: no — widening it reaches `barrios` (0.67) and `news_2007` (0.27) | 18.5 |
 | Centre alignment cannot be admitted (4 guards tried) | it could — the false friend was a **symptom** of collapsed lanes upstream. §10.1 gave those documents their lanes back and spurious aligns fell 15 → 4 | 10.2 |
 | A corpus-level `.chrome` sub-class by cross-document text recurrence | fires on **nothing** across the 13; removed rather than shipped on the argument that it would fire on the other ~987 | 8.3 |
+| `paragraph.containment` is the missing-lane mechanism | 91 of its 141 instances were the **opposite** defect — spurious lanes wrapping prose. Grouping the class by the *direction* of its findings falsified it in one query | 21.1 |
+| A narrow flank beside a dominant column is a page rail | killed **before it was written**: `new_blackmore`'s reference lanes measure 29/71 with the *text* in the narrow one, so the rule would have cemented its 3 open `column.missing`. Flanked on **both** sides is the discriminator; width alone is not | 21.6 |
+| An all-empty table header is a different question from an empty header cell | it is the same answer repeated. Treating it as a special case aborted the whole table and cost two record matrices — `new_dyens` came out as 20 loose aligned paragraphs | 21.4 |
+| An mdast `html` node is a way to emit a character reference | it serializes correctly and then trips `raw-html` **and** `table-cell-block-content`, both correctly. Emit the character; fold the spelling in the instrument | 21.4 |
 
 ## 2. Instrument hypotheses — your own differ/renderer/judge is a first-class suspect
 

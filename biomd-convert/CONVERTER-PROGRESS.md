@@ -2459,3 +2459,192 @@ work. (c) The mini-image → glyph family: specified in `mini_images_to_md_guide
 attested in 10 of 22 references (25 glyph instances), and entirely absent from
 `src/`. (d) Wrapped-masthead heading recovery (§20.6). (e) The 0.5–0.95 ambiguous
 corridor, still uncalibrated, now over 81 findings.
+
+## 21. Four mechanisms, and the page frame was three of them (2026-08-08)
+
+The first refinement iteration against the 22-document baseline. Four accepted
+changes, one conceptual mechanism each, every one adjudicated on all four rungs.
+
+| rung | §20.8 | now | reproduce with |
+|---|---|---|---|
+| L0 | 388 tests, 0 FAILED | **405 tests**, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | 90.3 | **92.6** | `sh bench/run.sh` |
+| L2 | 745 findings · 580 converter-defect | **508 · 327** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | 287 | **149** | `l3 -c bench/biomd.config.json` |
+| validator errors | 23 | 28 | `corpus run -c bench/biomd.config.json` |
+
+Per document, converter-defects: `new_dyens` 34 → **0** · `new_lagq2` 84 → **9**
+· `new_karta` 60 → **7** · `new_geyzel04` 92 → **7** · `new_bach` 42 → **5** ·
+`williams2` 4 → **35** (a recorded reference-inconsistency, §21.5).
+
+### 21.1 `paragraph.containment` was not one mechanism — it was three
+
+141 instances over 7 documents, ranked first, and the standing hypothesis was
+that it was the missing-lane story. Grouping the findings by *what moved where*
+took ten minutes and split the class immediately:
+
+| shape | inst | documents |
+|---|---|---|
+| reference top level → produced inside `columns/column` | 91 | `new_geyzel04` 75, `new_bach` 16 |
+| reference inside `columns/column` → produced top level | 40 | `new_lagq2` |
+| `frame/align/paragraph` → `frame/paragraph` | 6 | `new_lendle2`, `news` |
+
+The dominant half is the **opposite** of the missing-lane hypothesis: spurious
+lanes wrapping ordinary prose, not absent ones. **Group a class by the direction
+of its findings before believing a single explanation of it.**
+
+### 21.2 The page frame, and why it produced two different defects
+
+Every one of the 22 documents draws the same site template — a one-row,
+three-column band, measured `[116, 529, 115]` in a 760 px row: an empty margin
+cell, the article, and a decorated rail. On nineteen documents the rail is empty
+and `layoutFrom` correctly emits one lane and flattens. On three it is not:
+
+| document | rail holds | produced | reference |
+|---|---|---|---|
+| `new_geyzel04` | side menu | `columns` + 82-block lane + **empty lane** | no `columns` |
+| `williams2` | side menu | `columns` + 26-block lane + **empty lane** | `columns` + **one** lane |
+| `new_bach` | off-site credit badge | `columns` + 28-block lane + 1-block lane | no `columns` |
+
+Two mechanisms, both accepted:
+
+**(a) Lane occupancy was measured on the wrong input.** `laneColumnsOf` read the
+*source* grid while the region was assembled from the *lowered* blocks. A cell
+holding nothing but a menu is source-occupied and lane-empty, because
+`layoutFrom` folds a `nav` out of the lane by design — `navFromGrid`'s own header
+says "`layoutFrom` folds the resulting lane away", and it did not. The emptied
+rail contributed a `::: column`, and that column was the second one keeping the
+region alive. `laneColumnsOf` now takes an occupancy predicate; the default still
+reads the source cell, which is right for a grid nobody has lowered yet.
+
+One trap worth recording: cells *absent* from a row (colspan continuations) must
+stay skipped rather than counting as empty lanes. Treating them alike added five
+spurious regions to `new_lendle2` and two to `news_2007` in an intermediate
+version, and L1 caught it at 90.2 before anything else did.
+
+**(b) `pageRailColumns` — the rails are decoration, by geometry and position.**
+The row's middle column is the widest and both outer columns are far narrower.
+Keying on what the flanks *are* rather than on what they hold is what makes one
+rule cover a rail with a menu, a rail with a badge, and twenty empty ones.
+`MAX_RAIL_SHARE` swept 0.3 – 0.9: L1 is 92.6 at every value, because the corpus
+measures 0.22 for both real rails and 1.00 for the nearest non-rail.
+
+### 21.3 `new_lagq2` answered §19.4: the CATALOG gate was wrong, the contract was not
+
+The tier-1 CATALOG gate asked for two lanes of near-equal width plus an image
+density. A 150 px cover beside a tracklist has no reason to be 50/50 —
+`new_lagq2` splits **37/63**, missed the gate, scored DATA at tier 2, and a DATA
+verdict that cannot be planned falls straight to linear flow.
+
+`picturePairedRows` measures the relation the gate was reaching for: the share of
+content rows in which one cell is a bare picture and the other carries words.
+Corpus-wide it is non-zero on nine grids and 1.00 on seven; the new tier-1 gate
+fires on `paired === 1` with a two-row recurrence requirement and changes the
+routing of **exactly one grid** in the corpus.
+
+So §19.4's pre-registered question resolves *without* touching
+`recovery.test.ts`'s "leaves a DATA verdict on the flow path" contract or §18.3's
+killed hypothesis: the grid simply never becomes DATA now. Classification, not
+routing, was the thing that was wrong.
+
+### 21.4 A table nobody could name is still a table
+
+`synthesizeHeader` was all-or-nothing: a column with no recurring label got an
+empty header cell, but if *no* column had one it returned null and the whole
+table was abandoned. The ledger said so in plain words — "classified DATA but not
+representable as a table (no source header row and the classifier abstained);
+emitted as flow" — and the cost was the matrix. `new_dyens`'s five score records
+came out as twenty loose `::: align` blocks with three work titles read as
+quotations, which is the false friend §16.4 traced to exactly this.
+
+A blank header row is not conformant either: `BioMD-Reference.md` §1 (Tables) —
+"Every GFM table column MUST have a header". So the fix is the header the
+references write. `isLinkColumn` asks whether every populated cell of a column is
+a short anchor, and such a column is headed with U+1F517 LINK SYMBOL.
+
+That is not invention, and the human record settles it rather than the references
+doing so alone: `analyze/analyze.md` asks for this symbol in the same words on
+three separate pages — *"&#128279; просто показывает символ ссылки (Link) — он
+универсальный"* — and the references write it 16 times across six documents.
+A symbol for "link" asserts nothing the source does not already state by holding
+the link. The **subject** column stays empty: `Название`, `Композиция` and
+`Формат` appear nowhere in any source, so naming it would be §16.3 invention, and
+L2 already triages every such reference cell as `reference-inconsistency`.
+
+New lexical data file `src/convert-core/glyphs.ts` (`CLAUDE.md` §3.5), which is
+also the home the unbuilt icon → glyph map of open item (c) needs.
+
+**Instrument correction, both sides re-baselined.** `stripMarkup` now resolves
+numeric character references. `CLAUDE.md` §4 already lists entity decoding among
+what L2 adjudicates and it did not, so the link glyph against the references'
+`&#128279;` read as a difference for output that was exactly right. The fold
+changes a character's *spelling*, never which character it is, so the typography
+blind spot next door is untouched — `«` versus `"` is still a finding, and the
+contract asserts that `&#9654;` still differs from `&#128279;`.
+
+**Validator errors 23 → 28**, and the increase is honest rather than hidden: all
+of it is `table-header-empty` on the subject column of tables that previously did
+not exist at all, less one on `kiselev` that the glyph filled. The column has no
+attested name; the alternative to the error is losing the records.
+
+### 21.5 `williams2` — a reference-inconsistency, recorded not chased
+
+`williams2` went 4 → 35 converter-defects, and every one of them is the same
+fact: its reference wraps the whole article in a `::: columns` containing
+**one** `::: column`, and the converter now emits linear flow.
+
+- `BioMD-Reference.md` §2 requires `columns` to have **≥2 `column`** children, so
+  the reference's region is not conformant. (Our own validator does not check
+  this — recorded as instrument debt, not fixed here.)
+- The two other documents whose source frame is byte-identical in the relevant
+  respect — `new_geyzel04`, `new_bach`, both rails holding a folded menu or badge
+  — have references with **no** `columns` at all.
+- `layoutFrom`'s own long-standing comment already says a one-lane region "would
+  claim a layout the author did not draw".
+
+The references therefore disagree with each other on identical input, and no rule
+can produce both. Verdict 3, `reference-inconsistency`. Flagged to the user
+rather than closed by a special case.
+
+### 21.6 Killed hypotheses added
+
+- **`paragraph.containment` is the missing-lane mechanism.** 91 of its 141
+  instances were the opposite defect — spurious lanes wrapping prose. Grouping by
+  the direction of the move falsified it in one query.
+- **A narrow flank beside a dominant column is a page rail.** Falsified *before*
+  it was written: `new_blackmore`'s reference lanes measure **29/71** with the
+  *text* in the narrow lane, so the rule would have cemented its three open
+  `column.missing` findings. Being flanked on **both** sides is the discriminator;
+  width alone is not.
+- **An mdast `html` node is a way to emit a character reference.** It serializes
+  correctly and then trips `raw-html` *and* `table-cell-block-content`, both
+  correctly. Emit the character and fold the spelling in the instrument instead.
+- **The all-empty header row was a different question from the empty header
+  cell.** It was the same answer repeated, and treating it as a separate case
+  cost two whole record matrices.
+
+### 21.7 State and queue
+
+**Open, in order** — re-ranked over 22 documents after the four changes:
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 405 | `paragraph.containment` | 27 | 5 | **19 are `williams2` §21.5 and not a target**; the real remainder is 8 |
+| 288 | `align.spurious` | 12 | 8 | alignment residue; the region work has now settled, so re-read the family together |
+| 252 | `retyped.paragraph-to-align` | 12 | 7 | same family |
+| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (§15.2), unchanged |
+| 162 | `align.missing` | 9 | 6 | same family as the two above |
+| 84 | `image.size.value` | 21 | 4 | a threshold in `media.ts`; sweep it, do not pick it |
+
+The alignment family is now the largest actionable thing in the corpus (33
+instances across three classes and 9 documents) and is the natural next
+mechanism. Also still open and unchanged from §20.8: the mini-image → glyph map
+(c) — `glyphs.ts` now exists to hold it — wrapped-masthead heading recovery (d),
+and the uncalibrated 0.5–0.95 ambiguous corridor (e), now 94 findings.
+
+`new_blackmore`'s three `column.missing` findings are open by *decision*: their
+grids are one row each, so the pairing gate's recurrence requirement excludes
+them. Their evidence is recurrence across sibling grids on the page, which the
+classifier does not see. Dropping the requirement to reach them would admit the
+figure-over-caption false friend; the right fix is to give the classifier that
+cross-grid view, which is a corpus-pass change and its own mechanism.

@@ -36,8 +36,10 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** — see [OPEN.md](OPEN.md) §1. In short: baseline all four rungs over 22 documents
-*before attributing anything to code*, then take `new_lagq2` first, out of rank order.
+**Next action** — see [OPEN.md](OPEN.md) §1. In short: the first refinement iteration is done
+(PROGRESS §21, four mechanisms, L1 90.3 → 92.6, L2 745 → 508); next is the **alignment family**, and
+check upstream first, because three lane defects just closed and §10.2 already recorded once that a
+spurious align was a symptom of collapsed lanes.
 
 ---
 
