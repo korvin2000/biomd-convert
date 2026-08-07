@@ -1,11 +1,15 @@
 /**
  * Target profiles — what the consuming renderer actually supports.
  *
- * The plan's §12 established that the normative spec (`Biography-Markup.md`
- * v1.6) and the one real parser have drifted. Rather than hard-code the
- * narrower reality, the divergence lives here as data: the builders refuse to
- * construct an unsupported construct, the validator diagnoses it, and a single
- * flag re-enables it when a renderer patch lands.
+ * The normative reference (`BioMD-Reference.md`, BioMD Lite 1.6) and the one
+ * real parser have drifted. Rather than hard-code the narrower reality, the
+ * divergence lives here as data: the builders refuse to construct an
+ * unsupported construct, the validator diagnoses it, and a single flag
+ * re-enables it when a renderer patch lands.
+ *
+ * A `false` here is a claim about the **renderer**, never about the format. It
+ * is the only legitimate reason for this converter to emit less than the
+ * reference permits; every other narrowing is a defect.
  *
  * Nothing in this file imports, executes or depends on the renderer. These are
  * recorded observations about the output format, equivalent to a compatibility
@@ -25,8 +29,17 @@ export interface TargetProfile {
     readonly frameDirective: boolean;
     /** `::: signature` (spec §13). */
     readonly signatureDirective: boolean;
-    /** `columns` → `divider: true` (spec §10). */
+    /** `columns` → `divider: true` (Reference §3). */
     readonly columnsDivider: boolean;
+    /**
+     * `columns` → the `columns: 2|3|4` track-count property (Reference §3).
+     *
+     * Separate from {@link columnsDivider} because they are separate properties
+     * with one shared defect: the target does not strip *any* property header
+     * inside `columns`, so either line is promoted to a synthetic first column.
+     * A profile that fixes one need not fix the other.
+     */
+    readonly columnsProperty: boolean;
     /** Leading-zero ordered-list markers `01.` `02.` (spec §3.4). */
     readonly leadingZeroListMarkers: boolean;
     /** Raw HTML passthrough. */
@@ -69,6 +82,7 @@ export const PROFILE_RENDERER_CURRENT: TargetProfile = {
     frameDirective: false,
     signatureDirective: false,
     columnsDivider: false,
+    columnsProperty: false,
     leadingZeroListMarkers: false,
     rawHtml: false,
   },
@@ -79,11 +93,12 @@ export const PROFILE_RENDERER_CURRENT: TargetProfile = {
 /** The normative specification, for validating hand-authored documents. */
 export const PROFILE_SPEC_V16: TargetProfile = {
   id: "spec-1.6",
-  description: "Biography-Markup.md v1.6 as written",
+  description: "BioMD-Reference.md (BioMD Lite 1.6) as written",
   supports: {
     frameDirective: true,
     signatureDirective: true,
     columnsDivider: true,
+    columnsProperty: true,
     leadingZeroListMarkers: true,
     rawHtml: false,
   },

@@ -27,12 +27,14 @@ Canonical output SHOULD use compact, unambiguous syntax.
 | image | `![alt](src)` | simple image; use `::: image` for caption/layout/frame/link |
 | footnote | `x[^id]` + `[^id]: note` | `remark-gfm` |
 | table | GFM pipe table | alignment: `:---`, `---:`, `:---:` |
-| separator | `---` | thematic/visual separation |
+| separator | `---` or `***` | thematic/visual separation; the two spellings are **the same construct** |
 | hard break | trailing `\` | inside one logical block only |
 | code | `` `x` `` / fenced ``` or `~~~` | preserve real `<code>/<pre>` content |
 | escape | `\*`, `\#`, … | literal syntax punctuation |
 
 `remark-gfm` may accept `~x~` when `singleTilde:true` (default); generate `~~x~~` for portability. Soft line breaks remain prose; use `\` only for significant source line breaks. A trailing `\` at block end is literal.
+
+`---`, `***` and `___` are interchangeable spellings of one thematic break and MUST be treated as equivalent — by parsers, validators, comparison tools and any conversion diff. `---` is canonical for generated output; a document that writes `***` is not different from one that writes `---`, and the difference MUST NOT be reported.
 
 Raw HTML/CSS/JS/JSX/MDX **MUST NOT** be emitted by BioMD contract. Convert/adopt visible HTML output to supported syntax/directives.
 
@@ -70,9 +72,11 @@ Names/properties MUST be lowercase ASCII; one property/line; value = rest of lin
 
 Leaf media = `image`,`images`,`document`.
 
-Allowed nesting: `images→image`; `columns→column`; `column→Markdown+leaf`; `frame→Markdown+leaf+align`; `lead→Markdown+align`; `align→Markdown+leaf`.
+Allowed nesting: `images→image`; `columns→column`; `column→Markdown+leaf+align+nav`; `frame→Markdown+leaf+align`; `lead→Markdown+align`; `align→Markdown+leaf+frame`.
 
 Forbidden: `columns` in `column`; nested `frame`; `nav` in `frame`; `columns|nav` in `align`; arbitrary deeper nesting. Invalid nesting MUST degrade in place to readable content, never deletion.
+
+**`align` and `frame` together.** `frame` inside `align` is permitted and is not an error, but it accomplishes nothing: a frame occupies the full width of its container, so the alignment has nothing to act on. `align` inside `frame` is the intended shape and is what a bordered notice with centred text should be written as. A converter SHOULD emit `frame→align`; a validator MAY advise on `align→frame` but MUST NOT reject it, and MUST NOT rewrite it.
 
 ## 3. Directive behavior
 
@@ -121,6 +125,8 @@ Image `frame:` and `::: frame` share theme concepts but differ in scope.
 
 ### `align`
 `position: left|center|right` REQUIRED. Alignment only; never changes source order. Allowed inside `lead|column|frame`; MUST NOT wrap `columns|nav`. MAY preserve semantic **or purely visual** bounded alignment; do not use as margins/indentation/spacing/fake columns.
+
+It MAY contain a `frame`, but see §2 — a frame is full-width, so `frame` wrapping `align` is the shape that expresses "a bordered notice, centred inside it".
 
 ### `signature`
 Compact signature/credit/author/place block. Best for closing or source-credit groups; keep short.

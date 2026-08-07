@@ -53,16 +53,28 @@ cd biomd-convert && npm run biomd -- inspect fixtures/html/segovia.htm
 
 ## 2. Ground truth, highest precedence first
 
-1. **`BioMD-Reference.md`** — normative BioMD Lite syntax, and §16.3 (no invented content).
-2. **`biomd-convert/fixtures/html/*.htm` ↔ `fixtures/out/*.bio.md`** — 13 hand-made pairs. Normative for
-   every judgement the spec leaves open. Read them as evidence of intent.
-3. **`analyze/analyze.md`** (Russian, per-page complaints) + **`analyze/design.png`** (green frames =
+1. **`BioMD-Reference.md`** — normative BioMD Lite syntax. §0 carries the no-fabrication rule ("Do not
+   fabricate factual text, captions, headings, `href`/`src`, or targets") and the precedence ladder
+   `content > targets > reading order > hierarchy/grouping > layout > visible distinction > exact style`.
+   It is deliberately **more permissive** than the older spec, and that permissiveness is normative: an
+   implementation may narrow what it *emits*, never what it *accepts*.
+2. **`Biography-Markup.md`** — the older, stricter spec. **Fallback only**, for what the short reference
+   leaves unstated. Where the two conflict the short reference governs; its `§` numbers do not correspond,
+   so always say which document a `§` belongs to.
+3. **`mini_images_to_md_guide.md`** — icon / micro-image → glyph policy and the known-icon map. Normative
+   for that family. The map is lexical data under invariant 5, never detector literals.
+4. **`biomd-convert/fixtures/html/*.htm` ↔ `fixtures/out/*.bio.md`** — 22 hand-made pairs (13 regression +
+   9 refinement). Normative for every judgement the spec leaves open. Read them as evidence of intent.
+5. **`analyze/analyze.md`** (Russian, per-page complaints) + **`analyze/design.png`** (green frames =
    convert, red = chrome to drop) + `analyze/snapshot_*.png`. The only record of *human* quality judgement.
-4. **`html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md`** — the manual procedure behind the references.
+6. **`html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md`** — the manual procedure behind the references.
    Advisory and possibly stale: where a guide contradicts `fixtures/out/`, the reference wins — and say so.
-5. **`biomd-convert/CONVERTER-PROGRESS.md`** — current measured state. Verify, don't trust.
-6. **`CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md`**
+7. **`biomd-convert/CONVERTER-PROGRESS.md`** — current measured state. Verify, don't trust.
+8. **`CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md`**
    — historical. PROGRESS §3 records where the assessment was measurably wrong; that pattern repeats.
+
+Navigation: `.claude-memory/INDEX.md` routes to all of the above and to `CONVERTER-PROGRESS.md` by line
+range. It is an index, never a source of truth — where it disagrees with a file here, the file wins.
 
 ---
 

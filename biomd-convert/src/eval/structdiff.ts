@@ -639,9 +639,13 @@ function comparePair(ctx: Context, produced: Block, reference: Block, path: stri
       compareTable(ctx, produced as TableBlock, reference, path);
       return;
     case "break":
-      if ((produced as typeof reference).marker !== reference.marker) {
-        ctx.findings.push(finding(ctx.doc, "separator.spelling", "minor", "structure", "substitute", path, produced, reference));
-      }
+      // Nothing to compare. `---`, `***` and `___` are three spellings of one
+      // thematic break (`BioMD-Reference.md` §1) — same node, same rendering,
+      // no reader can tell them apart. The old `separator.spelling` finding
+      // reported a difference that does not exist, which is precisely the
+      // "invisible Markdown difference" the project's objective says not to
+      // chase. A separator that is *missing* or *spurious* is still reported;
+      // that is a claim about the document, not about how it is typed.
       return;
     case "code":
       if ((produced as typeof reference).value !== reference.value) {

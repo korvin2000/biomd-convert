@@ -2306,3 +2306,156 @@ testing a conservation claim.
 - harness lessons that cost hours to learn — the sibling `learned-patterns.md`
 
 Start the next phase with `/refine-biomd-converter`.
+
+## 20. The 22-document baseline, and an implementation stricter than its format (2026-08-08)
+
+Two separate things happened here and they are reported separately, because
+conflating them is how a re-baseline gets mistaken for a regression.
+
+### 20.1 Baseline first — the nine references joined, no code changed
+
+§19.3 step 1, executed. The nine `new_*` references were placed in
+`fixtures/out/`, the holdout parked outside `fixtures/` entirely, and all four
+rungs re-run **before** a line of code was touched.
+
+| rung | 13 documents (§19.1) | **22 documents, 2026-08-08** |
+|---|---|---|
+| L0 | 369 tests, typecheck clean, 0 FAILED | 369 tests, typecheck clean, **0 FAILED** |
+| L1 | 93.8 | **90.3** |
+| L2 | 314 findings — 188 converter-defect | **746 findings — 581 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes |
+| L3 | 82 | **287** |
+
+**Every one of those movements is nine documents joining the comparison.** The
+13 outputs are byte-identical. Attributing any part of the drop to code would be
+the mistake §19.3 exists to prevent.
+
+Worst new documents by L1: `new_kolpakov` 67.9 · `new_dyens` 68.5 ·
+`new_karta` 78.3. Best: `new_lendle2` 96.1 · `new_bach` 96.8. `new_lagq2`
+reports `recall=45.3%` with zero words, links or images missing — §16.2 again,
+and still not a loss.
+
+### 20.2 The implementation was stricter than the format, in six places
+
+`BioMD-Reference.md` was revised toward flexibility, and measuring against it
+showed the codebase refusing documents the format allows. The governing rule,
+now stated in the README and in `profile.ts`: **the converter may narrow what it
+emits, never what it accepts.** A narrowing that is a claim about the consuming
+renderer belongs in a `TargetProfile`; every other narrowing is a defect.
+
+| what was refused | what the reference says | now |
+|---|---|---|
+| a four-track `::: columns` | §2 "≥2 `column`", §3 "`columns: 2|3|4`" | 2–4 children; the bounds are the reference's own |
+| the `columns: 2|3|4` property | §3, optional | representable and validated; **emission profile-gated**, because the target does not strip a property header inside `columns` (§7.3's quirk, identical to `divider`) |
+| palette tokens on a picture `frame:` | §3 `curl / none / mat / black / white / red / gold` | accepted; `shadow` and `oval` kept as legacy so older documents read back unchanged |
+| a title wrapped over two `#` lines | §6 — one `#` is "a corpus convention, not a syntax requirement" | `h1-count` is a **warning** |
+| a heading level skip | §6 asks for a preserved hierarchy, not an unbroken sequence | `heading-skips-level` is a **warning** |
+| nesting depth 4 | §3 allows `align` inside a `column`, so `columns > column > align > image` is ordinary | budget raised 3 → 4 |
+| a line over 2200 characters | the reference states no ceiling | `line-too-long` is a **warning**, kept as an under-segmentation detector |
+
+**The severity split now follows §0.** `MUST` — a parser, renderer, value,
+nesting or path constraint — is an error; `SHOULD` and `MAY` are warnings,
+however strong the preference. Three checks were errors on preferences the
+reference states as conventions, which made conforming documents fail and taught
+every consumer of the `errors=` column to distrust it.
+
+### 20.3 `align` containing `frame`: legal, pointless, and neither rejected nor rewritten
+
+`new_karta`'s reference nests a `::: frame` inside an `::: align`. The user
+settled it: not a rule violation, but the inversion is what makes sense — a
+frame occupies the full width of its container, so an `align` around one has no
+slack to work with, while `frame` wrapping `align` is exactly "a bordered notice
+with centred contents".
+
+`BioMD-Reference.md` §2 now records this, and it constrains implementations in
+both directions: a validator MAY advise, MUST NOT reject, and **MUST NOT
+rewrite**. `makeAlign` already accepted it — the `BoundedContent` comment
+claiming otherwise was describing a check that never existed — and the validator
+now emits `align-wraps-frame` at warning severity, with the inverted shape tested
+for non-firing.
+
+### 20.4 `---` and `***` are one construct — an instrument correction
+
+Declared as an isolated instrument change under invariant 2. §1 of the reference
+now states the equivalence outright: `---`, `***` and `___` are three spellings
+of one thematic break, and the difference MUST NOT be reported.
+
+`structdiff.ts` was reporting it, as `separator.spelling`. One instance across
+the 22 documents — three references write `***` at least once while every
+produced document writes `---` — and it is precisely the "invisible Markdown
+difference" the project objective names as something not to chase. Removed;
+`break.missing` and `break.spurious` are untouched and tested for non-firing,
+because a separator that is absent or added is a claim about the document rather
+than about how it is typed.
+
+### 20.5 Measured effect — output byte-identical, no rung regressed
+
+| | before (§20.1 baseline) | after |
+|---|---|---|
+| L0 typecheck | clean | clean |
+| L0 tests | 369 | **388** (+19 contracts) |
+| L0 FAILED conversions | 0 | **0** |
+| **`bench/out/` bytes** | — | **identical, all 22 documents** |
+| L1 overall | 90.3 | **90.3** |
+| L1 clean share | 4.5 % (1 of 22) | **9.1 % (2 of 22)** |
+| L2 findings / converter-defect | 746 / 581 | **745 / 580** |
+| L3 findings | 287 | **287** |
+
+The only L2 movement is the one `separator.spelling` finding, which is the
+instrument correction and nothing else — no other class moved by a single
+instance. Conversion quality cannot have changed, because the conversion did not
+change: every output byte is the same.
+
+Validation diagnostics corpus-wide are now 24 `table-header-empty` errors (the
+known hook territory, §5.3), 7 `complexity-budget` errors and 3 `line-too-long`
+warnings. `new_geyzel04` went `REVIEW` → `ok`: §16.5 recorded it as "nesting
+depth 4 against a budget of 3", and the budget was the thing that was wrong.
+
+### 20.6 What was deliberately *not* changed, with the measurement that decided it
+
+**`enforceSingleTitle` was left alone.** §6 no longer requires a single `#`, so
+the guard is no longer mandatory — but it never fires: **0 title repairs across
+23 manifests, and all 22 produced documents already emit exactly one `#`.**
+Relaxing it would therefore change nothing measurable and could not be falsified.
+
+The two references that write a wrapped masthead as two `#` lines inside an
+`::: align` — `new_bach`, `new_lagq2` — are not blocked by that guard. They need
+*heading recovery* to recognise a title split across two lines, which is a rule
+change with its own contract, its own false friend (two `#` separated by content
+are two titles, not one wrapped one) and its own four-rung adjudication. It is
+refinement work, not a permissions fix, and it is queued as such.
+
+### 20.7 Killed hypotheses added
+
+- **A type union can carry a per-container nesting rule.** `BoundedContent`
+  claimed to exclude `columns` and `nav`; it never did — `BlockContent` is
+  augmented with every directive. The three containers forbid *different* things,
+  so the constraint is only statable per container, which is where it already
+  lived. A comment asserting a check that does not exist is worse than no check.
+- **A validator error is the right home for a strong preference.** Three were,
+  and the cost was not pedantry: `errors=` became a column nobody could act on,
+  and a conforming wrapped masthead was indistinguishable from a broken document.
+  Severity must track `MUST` vs `SHOULD`, not how strongly the implementer feels.
+- **A guard that is no longer required should be removed.** Not without measuring
+  whether it fires. `enforceSingleTitle` is now optional and still inert;
+  deleting it would have been an unfalsifiable change presented as a fix.
+
+### 20.8 State
+
+| rung | value |
+|---|---|
+| L0 | 388 tests, typecheck clean, 0 FAILED conversions |
+| L1 | 90.3 over 22 documents |
+| L2 | 745 findings — **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency |
+| L3 | 287 findings, identity 0, deterministic |
+
+**Open, in order.** (a) `new_lagq2` — its reference gives the seven album records
+6 `::: columns` / 12 `::: column` and the converter emits **zero**, so §19.4's
+question is answered *yes* and the `recovery.test.ts` DATA-path contract and the
+CATALOG width gate must now be revisited **together**. Take it first, out of rank
+order. (b) `new_karta` answers §17.5 Q1: variable-arity records become GFM tables
+with supplied labels, the unnamed link columns headed with a link glyph — which
+also makes the two `analyze.md` requests L5 filed as "proposals" reference-attested
+work. (c) The mini-image → glyph family: specified in `mini_images_to_md_guide.md`,
+attested in 10 of 22 references (25 glyph instances), and entirely absent from
+`src/`. (d) Wrapped-masthead heading recovery (§20.6). (e) The 0.5–0.95 ambiguous
+corridor, still uncalibrated, now over 81 findings.

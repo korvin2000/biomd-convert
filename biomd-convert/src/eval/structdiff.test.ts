@@ -54,6 +54,32 @@ describe("identity", () => {
       expect(f.producedLine !== null || f.referenceLine !== null, f.class).toBe(true);
     }
   });
+
+  /**
+   * `BioMD-Reference.md` §1: `---`, `***` and `___` are one construct.
+   *
+   * Identity has to hold across the spelling, not merely across the byte. An
+   * instrument that reports a difference no reader can see manufactures work,
+   * and this one did — three of the twenty-two references write `***` at least
+   * once while every produced document writes `---`.
+   */
+  it("reports nothing when two documents differ only in how a rule is spelled", () => {
+    const dashes = "# T\n\nОдин.\n\n---\n\nДва.\n";
+    for (const marker of ["***", "___"]) {
+      const other = dashes.replace("---", marker);
+      expect(diffDocuments("t", other, dashes).findings, marker).toEqual([]);
+      // …and in the other direction, because a differ that is not symmetric here
+      // would simply move the false finding to the other side.
+      expect(diffDocuments("t", dashes, other).findings, marker).toEqual([]);
+    }
+  });
+
+  it("FALSE FRIEND: a rule that is absent or added is still reported", () => {
+    const withRule = "# T\n\nОдин.\n\n---\n\nДва.\n";
+    const without = "# T\n\nОдин.\n\nДва.\n";
+    expect(classes(without, withRule)).toContain("break.missing");
+    expect(classes(withRule, without).some((c) => c.startsWith("break.spurious"))).toBe(true);
+  });
 });
 
 describe("blind spots the scalar score folds away", () => {

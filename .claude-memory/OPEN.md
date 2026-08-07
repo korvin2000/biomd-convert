@@ -4,29 +4,32 @@
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
 Last touched **2026-08-08**. Facts marked *measured* were taken this session; facts marked *recorded*
-are quoted from PROGRESS and have **not** been re-measured since 2026-08-06.
+are quoted from PROGRESS and have not been re-measured.
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-The blind phase is closed (PROGRESS §16–§18). The **9 new references have been placed** in
-`fixtures/out/` (untracked, *measured*), the holdout is parked in `fixtures/html2/` + `fixtures/out2/`,
-and `analyze/defects.json` on disk is still the **13-document** ledger (*measured*: 314 findings /
-188 converter-defect / 13 `perDocument` entries). Nothing has been re-baselined yet.
+The blind phase is closed (PROGRESS §16–§18). The 9 new references are placed, the holdout is parked
+in `fixtures/html2/` + `fixtures/out2/`, and **the 22-document baseline has been taken** — PROGRESS
+§20.1. The permissions work of §20.2–§20.5 landed on top of it with **byte-identical output**.
 
-**Step 1 — baseline before attribution.** Reference edits move every rung with no code change. Build,
-re-run all four rungs over the 22-document corpus, record the numbers, and only then attribute
-anything. Confirm the instruments report **22** documents, not 23.
+**Current state, measured 2026-08-08 (PROGRESS §20.8):**
 
-```bash
-cd biomd-convert && npm run build && sh bench/run.sh
-```
+| rung | value |
+|---|---|
+| L0 | 388 tests, typecheck clean, 0 FAILED |
+| L1 | **90.3 %**, clean share 9.1 % |
+| L2 | 745 findings — **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes |
+| L3 | 287 findings, identity 0, deterministic |
 
-**Step 2 — rank**, keeping the 13 and the 9 visible separately. A class in both sets is a *rule*
-finding and outranks a class only in the new set, which is a *generalization* finding.
+That is the floor. Nothing accepted from here may regress it.
 
-**Step 3 — take `new_lagq2` first, out of rank order** (§2.1 below). It settles a standing question no
+**Step 1 — rank**, keeping the 13 and the 9 visible separately. A class in both sets is a *rule*
+finding and outranks a class only in the new set, which is a *generalization* finding. Regenerate the
+ledger first: `analyze/defects.json` in the repo is still the 13-document version.
+
+**Step 2 — take `new_lagq2` first, out of rank order** (§2.1 below). It settles a standing question no
 other document can.
 
 ---
@@ -97,9 +100,26 @@ It is now named in the skill's sources table.
 
 ---
 
-## 3. Questions for the user — batched, none blocking
+## 3. Answered — the user settled these on 2026-08-08 (PROGRESS §20)
+
+- **`::: frame` inside `::: align`** — legal, not a rule violation, but pointless: a frame is
+  full-width, so `frame` wrapping `align` is the intended shape. `BioMD-Reference.md` §2 records it;
+  the validator advises (`align-wraps-frame`, warning) and **must not reject or rewrite**.
+- **`---` vs `***`** — one construct. §1 states the equivalence; the `separator.spelling` L2 finding
+  is gone.
+- **Reference permissiveness is normative.** The implementation may narrow what it *emits* (only via
+  a `TargetProfile`, which is a claim about the renderer) and never what it *accepts*. Six narrowings
+  were removed; see §20.2.
+
+Still open, and now a *rule* question rather than a permissions one:
 
 ### 3.1 A wrapped masthead: one `#` or two? *(affects a reusable rule and ≥2 documents)*
+
+**Permission side: settled.** `h1-count` is a warning, so two `#` now validates.
+**Rule side: open.** The converter emits exactly one `#` on all 22 documents and
+`enforceSingleTitle` never fires (§20.6), so producing the reference's shape needs heading recovery
+to *recognise* a two-line title — with a false friend that must not fire: two `#` separated by
+content are two titles, not one wrapped one.
 
 The new references disagree with the old idiom **and with each other**:
 
@@ -109,33 +129,38 @@ The new references disagree with the old idiom **and with each other**:
 | `segovia1`, `goya2`, `borislova`, `williams2`, `new_kolpakov` | one `#`, sometimes inside `::: align` |
 | **`new_bach`**, **`new_lagq2`** | `::: align` containing **two consecutive `# ` lines** (`# Иоганн Себастьян` / `# Бах`) |
 
-`enforceSingleTitle()` (PROGRESS §4.4) enforces exactly one `#` and no level skips, and `h1-count` is
-a validation rule — so the two-`#` form is currently unreachable by construction.
-`BioMD-Reference.md` §6 permits it ("exactly one `#` is a corpus convention, not a syntax
-requirement"). **Which reading is authoritative:** keep one `#` per page and join a wrapped title, or
-relax `enforceSingleTitle` so a visually two-line masthead can stay two headings?
+`new_blackmore` joins its two-part title into one heading while `new_bach` and `new_lagq2` split
+theirs, so the references do not agree with each other and the discriminator has to come from the
+**source** (is this one title that wrapped, or two?), not from the reference set.
 
-### 3.2 `::: frame` inside `::: align` — reference vs `BioMD-Reference.md` §2
-
-`new_karta` nests a `::: frame` inside an `::: align position: center`. §2's allowed-nesting list is
-`align → Markdown + leaf media` (leaf = `image`, `images`, `document`), and "arbitrary deeper nesting"
-is forbidden. **To verify by running `biomd validate` against the reference before treating it as
-either a defect or a licence** — if the validator accepts it the list is under-specified, and if it
-rejects it the reference has an invalid construct that no rule may reproduce.
-
-### 3.3 Not a question — recorded so nobody chases it
+### 3.2 Not a question — recorded so nobody chases it
 
 `***` appears as a thematic break in `new_bach`, `news` and `tarrega` (once each) alongside `---`.
-Both parse to the same node. This is an invisible Markdown difference and an **acceptable
-alternative**; do not open a class for it.
+Both parse to the same node — now stated normatively in `BioMD-Reference.md` §1, enforced by a
+contract in `structdiff.test.ts`, and no longer reportable. Do not open a class for it.
 
 ---
 
-## 4. Open defect classes — *recorded* PROGRESS §15.4, 13-document ledger, **re-rank before using**
+## 4. Open defect classes
 
-Per document, converter defects: `news` 49 · `goya2` 43 · `kiselev` 17 · `borislova` 16 · `segovia` 14
-· `pavlov_azancheev` 10 · `news_2007` 9 · `authors` 7 · `segovia1` 7 · `jovicic` 6 · `tarrega` 6 ·
-`williams2` 4 · **`barrios` 0**.
+**Top-ranked, *measured* 2026-08-08 over 22 documents** (`instances × severity × generality`):
+
+| rank | class | inst | docs |
+|---:|---|---:|---:|
+| 2961 | `paragraph.containment` | 141 | 7 |
+| 792 | `align.spurious` | 33 | 8 |
+| 552 | `paragraph.spurious.in-table` | 46 | 4 |
+| 231 | `retyped.paragraph-to-align` | 11 | 7 |
+
+`paragraph.containment` at 141 instances over 7 documents is now the clear top class and is dominated
+by the new set — `new_lagq2`, `new_lendle2`, `new_bach`, `new_geyzel04` — which is consistent with
+§2.1: blocks that belong in a lane are sitting at top level because the lane was never built. Check
+whether it and `new_lagq2`'s zero `::: columns` are one mechanism **before** treating them separately.
+
+`paragraph.spurious.in-table` (46, 4 docs) is very likely the same story one stage further on: text
+the reference puts in a table cell, emitted as loose prose because the table was declined (§2.2).
+
+Carried over from the 13-document ledger — *recorded*, re-rank before using:
 
 | class | why it is still open |
 |---|---|

@@ -104,7 +104,12 @@ export interface QuoteBlock extends BlockBase {
 
 export interface BreakBlock extends BlockBase {
   kind: "break";
-  /** The literal rule spelling; `***` and `---` are both thematic breaks. */
+  /**
+   * The literal rule spelling, for display only.
+   *
+   * `---`, `***` and `___` are one construct (`BioMD-Reference.md` §1) — never
+   * compare this field. It is carried so a report can quote the line as written.
+   */
   marker: string;
 }
 

@@ -150,6 +150,10 @@ function renderBlock(block: Block, ctx: Ctx, path: string): string {
     case "quote":
       return `<blockquote${attrs(block, path)}>\n${renderBlocks(block.children, ctx, path)}\n</blockquote>`;
     case "break":
+      // `data-marker` is provenance for a human reading the rendered page. It
+      // carries no style and no geometry, so the three legal spellings of a
+      // thematic break (`BioMD-Reference.md` §1) produce identical boxes — which
+      // is the property that lets L3 compare a `***` page against a `---` one.
       return `<hr${attrs(block, path, { "data-marker": block.marker })}>`;
     case "code":
       return `<pre${attrs(block, path)}><code>${escapeHtml(block.value)}</code></pre>`;

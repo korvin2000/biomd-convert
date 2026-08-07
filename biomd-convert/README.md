@@ -205,8 +205,16 @@ running the pipeline rather than reading it:
    back as hyphenation evidence.
 
 **Invalid output is unrepresentable.** The content model of
-`Biography-Markup.md` §4.1 lives in the types and the builders. The serializer
-is the only component that emits a `:::`.
+`BioMD-Reference.md` §2 lives in the types and the builders (`Biography-Markup.md`
+is the fallback for what the short reference leaves unstated). The serializer is
+the only component that emits a `:::`.
+
+The rule that keeps this honest: **the converter may narrow what it emits, never
+what it accepts.** A narrowing that is a claim about the consuming renderer
+belongs in a target profile; anything else is a defect, and three of them were —
+a four-track `columns`, the palette tokens on a picture `frame:`, and a page
+title wrapped over two `#` lines were all refused by this codebase and all
+permitted by the format.
 
 **De-hyphenation is the inverse problem.** No hyphenation library
 de-hyphenates; patterns serve as a *validity oracle* at rule 6 of a seven-rule
@@ -237,7 +245,7 @@ and the conservation gate reports them as invented content.
 
 ## Target profiles
 
-`Biography-Markup.md` and the renderer that consumes the output have
+`BioMD-Reference.md` and the renderer that consumes the output have
 drifted. That divergence is data, not hardcoded behaviour
 (`src/biomd-ast/profile.ts`):
 
@@ -246,7 +254,11 @@ drifted. That divergence is data, not hardcoded behaviour
 | `::: frame` | not emitted — degrades to a blockquote or titled section | emitted |
 | `::: signature` | not emitted — degrades to paragraphs | emitted |
 | `columns` → `divider` | **never emitted** — the target parses the property line as content, producing a bogus first column | emitted |
+| `columns` → `columns: 2\|3\|4` | **never emitted** — same defect, separate property: no property header inside `columns` is stripped | emitted |
 | leading-zero list markers | loss recorded | preserved |
+
+A profile flag is the *only* legitimate reason to emit less than the reference
+permits. Everything else is accepted on read and validated on both profiles.
 
 `src/biomd-ast/conformance.test.ts` reproduces each behaviour, so the
 compatibility table cannot quietly go stale.

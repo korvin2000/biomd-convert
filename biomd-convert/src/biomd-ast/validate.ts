@@ -7,6 +7,15 @@
  *
  * Every finding carries a stable `code` so the repair loop and the review UI
  * can act on it without string matching.
+ *
+ * **`error` means the document is wrong, not merely unusual.** The severity
+ * split follows `BioMD-Reference.md` §0: `MUST` (a parser, renderer, value,
+ * nesting or path constraint) is an error; `SHOULD` and `MAY` are warnings,
+ * however strong the preference. Three checks were errors on preferences the
+ * reference states as conventions — `h1-count`, `heading-skips-level` and
+ * `line-too-long` — which made conforming documents fail and taught every
+ * consumer of the `errors=` column to distrust it. They still fire; they no
+ * longer condemn.
  */
 import type { Nodes, Parents, Table } from "mdast";
 import { DEFAULT_PROFILE, type TargetProfile } from "./profile.js";
@@ -14,6 +23,9 @@ import { navItemLabels } from "./builders.js";
 import { normalizeLabel, plainText } from "./text.js";
 import {
   ALIGN_POSITIONS,
+  COLUMNS_COUNTS,
+  COLUMNS_MAX_CHILDREN,
+  COLUMNS_MIN_CHILDREN,
   DOCUMENT_MODES,
   FRAME_PALETTES,
   IMAGE_POSITIONS,
@@ -59,7 +71,12 @@ export interface ComplexityBudget {
  */
 export const DEFAULT_COMPLEXITY_BUDGET: ComplexityBudget = {
   maxDirectiveDensity: 25,
-  maxNestingDepth: 3,
+  // Four, because the reference reaches four legitimately and the old value of
+  // three made a conforming shape a budget violation: §3 allows `align` inside
+  // a `column`, §2 allows `column` inside `columns` and leaf media inside an
+  // `align`, so `columns > column > align > image` is four deep and entirely
+  // ordinary. Five is still a smell — nothing in the reference composes that far.
+  maxNestingDepth: 4,
   maxDirectivesTotal: 40,
   minWordsForDensity: 200,
 };
@@ -138,8 +155,10 @@ export function validate(root: BiomdRoot, options: ValidateOptions = {}): Valida
         if (previousDepth !== 0 && node.depth > previousDepth + 1) {
           add(
             "heading-skips-level",
-            "error",
-            `Heading jumps from h${previousDepth} to h${node.depth}; the hierarchy must not skip a level (§18).`,
+            "warning",
+            `Heading jumps from h${previousDepth} to h${node.depth}. Reference §6 asks for a hierarchy that ` +
+              "is preserved and normalized where that improves it, not for an unbroken sequence — so this " +
+              "is a fidelity smell, not a grammar violation.",
             path,
           );
         }
@@ -197,11 +216,23 @@ export function validate(root: BiomdRoot, options: ValidateOptions = {}): Valida
     }
   });
 
+  // Reference §6 is explicit: "CommonMark supports h1–h6; 'exactly one #' is
+  // therefore a corpus convention, not a syntax requirement", and the policy it
+  // states is a SHOULD. Reporting it as an error made a conforming document
+  // fail validation — and, worse, made every consumer of `errors=` treat a
+  // masthead wrapped over two lines as broken output.
+  //
+  // Still reported, because it is the single most reliable sign that heading
+  // recovery misfired: zero means no title was found, three means three
+  // candidates were promoted. A warning says "look at this", which is true; an
+  // error said "this file is invalid", which was not.
   if (headingH1 !== 1) {
     diagnostics.push({
       code: "h1-count",
-      severity: "error",
-      message: `A document must contain exactly one level-1 heading; found ${headingH1} (§18).`,
+      severity: "warning",
+      message:
+        `Found ${headingH1} level-1 heading(s). Reference §6 prefers exactly one for a page with one clear ` +
+        "title, but treats that as a convention rather than a syntax rule.",
       path: "root",
     });
   }
@@ -279,6 +310,19 @@ function checkDirective(
       if (!ALIGN_POSITIONS.includes(node.position)) {
         add("align-position", "error", `Invalid align position ${JSON.stringify(node.position)}.`, path);
       }
+      // Advisory only, and deliberately so: Reference §2 permits the nesting and
+      // forbids rejecting or rewriting it. A frame fills its container's width,
+      // so an `align` around one has nothing to align; `frame` wrapping `align`
+      // is the shape that expresses a bordered notice with centred contents.
+      if (node.children.some((c) => c.type === "biomdFrame")) {
+        add(
+          "align-wraps-frame",
+          "warning",
+          "`align` contains a `frame`. A frame occupies the full width of its container, so the alignment " +
+            "has no effect; `frame` wrapping `align` is the intended shape (Reference §2). Legal either way.",
+          path,
+        );
+      }
       break;
     }
     case "biomdImage": {
@@ -322,11 +366,38 @@ function checkDirective(
     }
     case "biomdColumns": {
       const n = node.children.length;
-      if (n < 2 || n > 3) {
-        add("columns-arity", "error", `\`columns\` requires two or three columns; found ${n} (§4.1).`, path);
+      if (n < COLUMNS_MIN_CHILDREN || n > COLUMNS_MAX_CHILDREN) {
+        add(
+          "columns-arity",
+          "error",
+          `\`columns\` requires between ${COLUMNS_MIN_CHILDREN} and ${COLUMNS_MAX_CHILDREN} columns; ` +
+            `found ${n} (Reference §2, §3).`,
+          path,
+        );
       }
       if (node.children.some((c) => c.type !== "biomdColumn")) {
-        add("columns-children", "error", "`columns` contains only `column` children (§4.1).", path);
+        add("columns-children", "error", "`columns` contains only `column` children (Reference §2).", path);
+      }
+      if (node.columns !== undefined) {
+        if (!COLUMNS_COUNTS.includes(node.columns)) {
+          add("columns-count", "error", `\`columns\` must be 2, 3 or 4; found ${node.columns}.`, path);
+        } else if (node.columns !== n) {
+          add(
+            "columns-count-mismatch",
+            "error",
+            `\`columns: ${node.columns}\` disagrees with ${n} column children.`,
+            path,
+          );
+        }
+        if (!profile.supports.columnsProperty) {
+          add(
+            "columns-property-unsupported",
+            "error",
+            `Target ${JSON.stringify(profile.id)} does not strip a property header inside \`columns\`; ` +
+              "`columns:` is pushed into the tree as a bogus first column and corrupts the layout.",
+            path,
+          );
+        }
       }
       if (node.divider === true && !profile.supports.columnsDivider) {
         add(
@@ -503,8 +574,15 @@ export function lintText(text: string, options: ValidateOptions = {}): Diagnosti
     if (line.length > profile.maxLineLength) {
       diagnostics.push({
         code: "line-too-long",
-        severity: "error",
-        message: `Line ${index + 1} is ${line.length} characters; the ceiling is ${profile.maxLineLength} (§16.3).`,
+        // A warning, not an error: `BioMD-Reference.md` states no line ceiling,
+        // and a long line renders correctly. It is kept because it is a good
+        // *under-segmentation* detector — a 4000-character line usually means a
+        // whole section landed in one paragraph — but that is a conversion
+        // quality signal, not a conformance failure.
+        severity: "warning",
+        message:
+          `Line ${index + 1} is ${line.length} characters against a soft ceiling of ${profile.maxLineLength}. ` +
+          "Not a conformance failure; usually a sign that a region was not segmented.",
         path: `line:${index + 1}`,
       });
     }

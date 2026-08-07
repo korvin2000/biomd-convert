@@ -17,6 +17,10 @@ import {
   type BiomdAlign,
   type BiomdColumn,
   type BiomdColumns,
+  COLUMNS_COUNTS,
+  COLUMNS_MAX_CHILDREN,
+  COLUMNS_MIN_CHILDREN,
+  type ColumnsCount,
   type BiomdDocument,
   type BiomdFrame,
   type BiomdImage,
@@ -106,8 +110,11 @@ function requireNonEmptyChildren(directive: string, children: readonly unknown[]
 }
 
 /**
- * §4.1 nesting: `align` must not contain `columns` or `nav`; `frame` must not
- * contain `frame` or `nav`; `column` must not contain `columns`.
+ * Reference §2 nesting: `align` must not contain `columns` or `nav`; `frame`
+ * must not contain `frame` or `nav`; `column` must not contain `columns`.
+ *
+ * Each container passes its own forbidden list. Nothing is forbidden everywhere,
+ * which is why the constraint cannot live in the `BoundedContent` type.
  */
 function rejectNested(directive: string, children: readonly BoundedContent[], forbidden: readonly string[]): void {
   for (const child of children) {
@@ -138,6 +145,16 @@ export interface AlignInit {
   children: BoundedContent[];
 }
 
+/**
+ * `::: align` — Reference §3.
+ *
+ * `columns` and `nav` are refused by name; a `frame` child is **accepted**. It
+ * is a legal construct that accomplishes nothing — a frame takes the full width
+ * of its container, so there is no slack for the alignment to act on — and
+ * §2 records the intended inversion, `frame` wrapping `align`. Refusing it here
+ * would reject a document the format permits, and rewriting it would move a
+ * reader's content without being asked; the validator advises instead.
+ */
 export function makeAlign(init: AlignInit): BiomdAlign {
   const position = requireEnum("align", "position", init.position, ALIGN_POSITIONS);
   requireNonEmptyChildren("align", init.children);
@@ -284,6 +301,8 @@ export function makeColumn(children: BoundedContent[]): BiomdColumn {
 
 export interface ColumnsInit {
   children: BiomdColumn[];
+  /** Declared track count (Reference §3). Omit for the legacy 2–3-child form. */
+  columns?: ColumnsCount | number;
   divider?: boolean;
   profile?: TargetProfile;
 }
@@ -291,21 +310,41 @@ export interface ColumnsInit {
 export function makeColumns(init: ColumnsInit): BiomdColumns {
   const profile = init.profile ?? DEFAULT_PROFILE;
   const { children } = init;
-  if (children.length < 2 || children.length > 3) {
+  if (children.length < COLUMNS_MIN_CHILDREN || children.length > COLUMNS_MAX_CHILDREN) {
     throw new BiomdBuildError(
       "columns",
-      `requires two or three column children, received ${children.length} (§4.1)`,
+      `requires between ${COLUMNS_MIN_CHILDREN} and ${COLUMNS_MAX_CHILDREN} column children, ` +
+        `received ${children.length} (Reference §2 "≥2 column", §3 "columns: 2|3|4")`,
     );
   }
   for (const child of children) {
     if (child.type !== "biomdColumn") {
-      throw new BiomdBuildError("columns", "contains only column children (§4.1)");
+      throw new BiomdBuildError("columns", "contains only column children (Reference §2)");
     }
   }
   const node: BiomdColumns = {
     type: "biomdColumns",
-    children: children as BiomdColumns["children"],
+    children,
   };
+  if (init.columns !== undefined) {
+    const count = requireEnum("columns", "columns", init.columns, COLUMNS_COUNTS);
+    if (count !== children.length) {
+      throw new BiomdBuildError(
+        "columns",
+        `\`columns: ${count}\` disagrees with ${children.length} column children; the property declares ` +
+          "the track count and a reader that trusts it would lay the grid out wrongly",
+      );
+    }
+    if (!profile.supports.columnsProperty) {
+      throw new BiomdBuildError(
+        "columns",
+        `target profile ${JSON.stringify(profile.id)} cannot render the \`columns\` property — like ` +
+          "`divider`, the line is not stripped and becomes a bogus first column. Omit it; the child " +
+          "count already states the arity.",
+      );
+    }
+    node.columns = count;
+  }
   if (init.divider === true) {
     if (!profile.supports.columnsDivider) {
       throw new BiomdBuildError(
