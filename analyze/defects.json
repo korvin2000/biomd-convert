@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-07T23:25:56.896Z",
+  "generated": "2026-08-07T23:40:11.632Z",
   "totals": {
-    "findings": 616,
-    "converterDefects": 451,
+    "findings": 543,
+    "converterDefects": 364,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 84,
-    "ambiguous": 81,
+    "referenceInconsistencies": 88,
+    "ambiguous": 91,
     "bySeverity": {
-      "critical": 26,
-      "major": 385,
-      "minor": 205
+      "critical": 21,
+      "major": 319,
+      "minor": 203
     }
   },
   "perDocument": [
@@ -55,10 +55,10 @@
     },
     {
       "doc": "kiselev",
-      "findings": 57,
+      "findings": 56,
       "converterDefects": 17,
       "critical": 0,
-      "major": 18,
+      "major": 17,
       "minor": 39
     },
     {
@@ -79,11 +79,11 @@
     },
     {
       "doc": "new_dyens",
-      "findings": 35,
-      "converterDefects": 34,
-      "critical": 1,
-      "major": 30,
-      "minor": 4
+      "findings": 7,
+      "converterDefects": 0,
+      "critical": 0,
+      "major": 1,
+      "minor": 6
     },
     {
       "doc": "new_geyzel04",
@@ -95,11 +95,11 @@
     },
     {
       "doc": "new_karta",
-      "findings": 72,
-      "converterDefects": 60,
-      "critical": 4,
-      "major": 62,
-      "minor": 6
+      "findings": 28,
+      "converterDefects": 7,
+      "critical": 0,
+      "major": 26,
+      "minor": 2
     },
     {
       "doc": "new_kolpakov",
@@ -192,35 +192,6 @@
   ],
   "classes": [
     {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 37,
-      "documents": [
-        "borislova",
-        "new_dyens",
-        "new_karta",
-        "new_kolpakov",
-        "news",
-        "news_2007",
-        "pavlov_azancheev",
-        "segovia1",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 37,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 999,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
-        "reference": null
-      }
-    },
-    {
       "class": "paragraph.containment",
       "severity": "major",
       "instances": 43,
@@ -241,31 +212,35 @@
       "rank": 774,
       "example": {
         "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-        "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-        "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]"
+        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
+        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
-      "class": "paragraph.spurious.in-table",
+      "class": "align.spurious",
       "severity": "major",
-      "instances": 46,
+      "instances": 12,
       "documents": [
         "borislova",
-        "new_dyens",
         "new_karta",
-        "new_kolpakov"
+        "new_kolpakov",
+        "news",
+        "news_2007",
+        "pavlov_azancheev",
+        "segovia1",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 46,
+        "converter-defect": 12,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 552,
+      "rank": 288,
       "example": {
         "doc": "borislova",
-        "path": "/align[45]/paragraph[0]",
+        "path": "/align[45]",
         "produced": "WMA",
         "reference": null
       }
@@ -618,24 +593,25 @@
       }
     },
     {
-      "class": "column.spurious",
+      "class": "paragraph.spurious.in-table",
       "severity": "major",
-      "instances": 8,
+      "instances": 5,
       "documents": [
-        "new_bach",
-        "new_karta"
+        "borislova",
+        "new_karta",
+        "new_kolpakov"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 48,
+      "rank": 45,
       "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]/column[0]",
-        "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
+        "doc": "borislova",
+        "path": "/align[45]/paragraph[0]",
+        "produced": "WMA",
         "reference": null
       }
     },
@@ -674,8 +650,8 @@
       "verdicts": {
         "converter-defect": 2,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 3,
-        "ambiguous": 0
+        "reference-inconsistency": 0,
+        "ambiguous": 3
       },
       "rank": 30,
       "example": {
@@ -755,28 +731,6 @@
       }
     },
     {
-      "class": "columns.spurious",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "new_bach",
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "new_bach",
-        "path": "/columns[31]",
-        "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
-        "reference": null
-      }
-    },
-    {
       "class": "image.missing",
       "severity": "major",
       "instances": 4,
@@ -796,28 +750,6 @@
         "path": "/images[76]/image[0]",
         "produced": null,
         "reference": "Together / Richard Clayderman & Francis Goya"
-      }
-    },
-    {
-      "class": "break.spurious",
-      "severity": "minor",
-      "instances": 10,
-      "documents": [
-        "new_dyens",
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 10,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 20,
-      "example": {
-        "doc": "new_dyens",
-        "path": "/break[8]",
-        "produced": "---",
-        "reference": null
       }
     },
     {
@@ -1003,6 +935,28 @@
       }
     },
     {
+      "class": "column.spurious",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_bach",
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_bach",
+        "path": "/columns[31]/column[0]",
+        "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
+        "reference": null
+      }
+    },
+    {
       "class": "columns.missing",
       "severity": "major",
       "instances": 2,
@@ -1022,6 +976,28 @@
         "path": "/align[59]/columns[0]",
         "produced": null,
         "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
+      }
+    },
+    {
+      "class": "columns.spurious",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_bach",
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_bach",
+        "path": "/columns[31]",
+        "produced": "column БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произвед…",
+        "reference": null
       }
     },
     {
@@ -1239,27 +1215,6 @@
         "doc": "news",
         "path": "/frame[47]/align[1]/paragraph[1]",
         "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
-        "reference": null
-      }
-    },
-    {
-      "class": "quote.spurious.in-table",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_dyens"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "new_dyens",
-        "path": "/align[8]/quote[0]",
-        "produced": "Tango En Skaï",
         "reference": null
       }
     },
@@ -2064,7 +2019,7 @@
         "doc": "borislova",
         "path": "/table[44]",
         "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-        "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[2]"
+        "reference": "песня 🔗 \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[2]"
       }
     },
     {
@@ -2321,34 +2276,14 @@
       }
     },
     {
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "instances": 31,
-      "documents": [
-        "kiselev"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 31
-      },
-      "rank": 0,
-      "example": {
-        "doc": "kiselev",
-        "path": "/table[14]/cell[0][1]",
-        "produced": "—",
-        "reference": ""
-      }
-    },
-    {
       "class": "table.header.cell",
       "severity": "major",
-      "instances": 30,
+      "instances": 41,
       "documents": [
         "barrios",
         "kiselev",
         "new_bach",
+        "new_dyens",
         "new_karta",
         "segovia",
         "tarrega"
@@ -2356,8 +2291,8 @@
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 30,
-        "ambiguous": 0
+        "reference-inconsistency": 36,
+        "ambiguous": 5
       },
       "rank": 0,
       "example": {
@@ -2365,6 +2300,28 @@
         "path": "/table[13]/header[0]",
         "produced": "",
         "reference": "Название — column 0"
+      }
+    },
+    {
+      "class": "table.cell.content.edited",
+      "severity": "minor",
+      "instances": 33,
+      "documents": [
+        "kiselev",
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 33
+      },
+      "rank": 0,
+      "example": {
+        "doc": "kiselev",
+        "path": "/table[14]/cell[0][1]",
+        "produced": "—",
+        "reference": ""
       }
     },
     {
@@ -2465,13 +2422,11 @@
       }
     },
     {
-      "class": "table.missing.unattested",
-      "severity": "critical",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
       "instances": 6,
       "documents": [
-        "new_dyens",
-        "new_karta",
-        "new_kolpakov"
+        "new_dyens"
       ],
       "verdicts": {
         "converter-defect": 0,
@@ -2482,9 +2437,9 @@
       "rank": 0,
       "example": {
         "doc": "new_dyens",
-        "path": "/table[7]",
-        "produced": null,
-        "reference": "Название &#128279; &#128279; &#128279; Tango En Skaï TAB MIDI RAM Ноты (.gif 1-2 ) ZIP GIF-1 GIF-2 Кшиштоф Пелех и оркестр \"Amadeus\" - - MP3 Valse En Skaï - - …"
+        "path": "/table[7]/cell[2][1]",
+        "produced": "—",
+        "reference": "-"
       }
     },
     {
@@ -2701,6 +2656,27 @@
       }
     },
     {
+      "class": "table.missing.unattested",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "new_kolpakov"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 1,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "new_kolpakov",
+        "path": "/table[13]",
+        "produced": null,
+        "reference": "Название Формат Размер Венгерка WMA (1,7 Mb)"
+      }
+    },
+    {
       "class": "table.row.spurious",
       "severity": "major",
       "instances": 1,
@@ -2850,7 +2826,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "bf9e049e",
+      "id": "e1e4acf3",
       "doc": "barrios",
       "class": "link.label.content",
       "severity": "critical",
@@ -2860,8 +2836,8 @@
       "producedLine": 28,
       "referenceLine": 28,
       "produced": "/#/barrios1",
-      "reference": "&#128279;",
-      "verdict": "reference-inconsistency"
+      "reference": "🔗",
+      "verdict": "ambiguous"
     },
     {
       "id": "07eee891",
@@ -3172,7 +3148,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "15a2cd29",
+      "id": "ed52dd52",
       "doc": "borislova",
       "class": "retyped.paragraph-to-table",
       "severity": "major",
@@ -3182,7 +3158,7 @@
       "producedLine": 287,
       "referenceLine": 292,
       "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-      "reference": "песня &#128279; \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[2]",
+      "reference": "песня 🔗 \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -4124,20 +4100,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "93a7741f",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/header[2]",
-      "producedLine": 111,
-      "referenceLine": 111,
-      "produced": "",
-      "reference": "&#128279; — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "403ae2c1",
       "doc": "kiselev",
       "class": "table.cell.hyphenation.mixed",
@@ -4166,31 +4128,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "b9b43162",
-      "doc": "kiselev",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 166,
-      "referenceLine": 155,
-      "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — produced at /align[13]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2a22fd1f",
+      "id": "a220d04d",
       "doc": "kiselev",
       "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
+      "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
+      "producedLine": 163,
+      "referenceLine": 155,
+      "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
+      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — at /align[13]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "13eb0294",
+      "doc": "kiselev",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
       "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 171,
+      "producedLine": 174,
       "referenceLine": 158,
       "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — at /align[14]",
+      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -4201,7 +4163,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[13]@position",
-      "producedLine": 163,
+      "producedLine": 171,
       "referenceLine": 167,
       "produced": "position: right",
       "reference": "position: center",
@@ -5314,7 +5276,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "3aa13330",
+      "id": "c0e5eb58",
       "doc": "new_bach",
       "class": "align.missing",
       "severity": "major",
@@ -5324,11 +5286,11 @@
       "producedLine": null,
       "referenceLine": 158,
       "produced": null,
-      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] &#9658;",
+      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ►",
       "verdict": "converter-defect"
     },
     {
-      "id": "09e0990f",
+      "id": "b34f232b",
       "doc": "new_bach",
       "class": "retyped.align-to-paragraph",
       "severity": "major",
@@ -5338,7 +5300,7 @@
       "producedLine": 163,
       "referenceLine": 161,
       "produced": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] /#/bach_lute",
-      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] &#9658; — at /columns[31]/column[0]/align[27]",
+      "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ► — at /columns[31]/column[0]/align[27]",
       "verdict": "converter-defect"
     },
     {
@@ -5986,493 +5948,101 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "39962eae",
+      "id": "3173b862",
       "doc": "new_dyens",
-      "class": "align.spurious",
+      "class": "table.header.cell",
       "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 27,
-      "referenceLine": null,
-      "produced": "Tango En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "10ebae9b",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 34,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "029c08c5",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 41,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9753f6d4",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 48,
-      "referenceLine": null,
-      "produced": "RAM",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9a6c7493",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 57,
-      "referenceLine": null,
-      "produced": "Ноты (.gif 1-2 )",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "53f439a3",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 64,
-      "referenceLine": null,
-      "produced": "ZIP",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e10f34cc",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 71,
-      "referenceLine": null,
-      "produced": "GIF-1",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e40f3985",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 78,
-      "referenceLine": null,
-      "produced": "GIF-2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4dcd775d",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 87,
-      "referenceLine": null,
-      "produced": "Кшиштоф Пелех и оркестр \"Amadeus\" MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "66fd82c8",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 98,
-      "referenceLine": null,
-      "produced": "Valse En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "32ef7aae",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 105,
-      "referenceLine": null,
-      "produced": "MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c099ef4f",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 114,
-      "referenceLine": null,
-      "produced": "Libra Sonatine",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "029c08c5",
-      "doc": "new_dyens",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]",
-      "producedLine": 121,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2bbba0b2",
-      "doc": "new_dyens",
-      "class": "quote.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]",
-      "producedLine": 30,
-      "referenceLine": null,
-      "produced": "Tango En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "07301b74",
-      "doc": "new_dyens",
-      "class": "quote.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]",
-      "producedLine": 101,
-      "referenceLine": null,
-      "produced": "Valse En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5906b1f3",
-      "doc": "new_dyens",
-      "class": "quote.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]",
-      "producedLine": 117,
-      "referenceLine": null,
-      "produced": "Libra Sonatine",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ca761675",
-      "doc": "new_dyens",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[8]",
-      "producedLine": 54,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ca761675",
-      "doc": "new_dyens",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[8]",
-      "producedLine": 84,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ca761675",
-      "doc": "new_dyens",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[8]",
-      "producedLine": 95,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ca761675",
-      "doc": "new_dyens",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[8]",
-      "producedLine": 111,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8c0ae3fb",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 37,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9a325be5",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 44,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "12732c34",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 51,
-      "referenceLine": null,
-      "produced": "RAM",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bc9a9cf3",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 60,
-      "referenceLine": null,
-      "produced": "Ноты (.gif 1-2 )",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "50516d03",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 67,
-      "referenceLine": null,
-      "produced": "ZIP",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "abaad82c",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 74,
-      "referenceLine": null,
-      "produced": "GIF-1",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "aeaadce5",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 81,
-      "referenceLine": null,
-      "produced": "GIF-2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a0b07ebb",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 90,
-      "referenceLine": null,
-      "produced": "Кшиштоф Пелех и оркестр \"Amadeus\"",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ab7cc5b7",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[1]",
-      "producedLine": 92,
-      "referenceLine": null,
-      "produced": "MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f0897dce",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 108,
-      "referenceLine": null,
-      "produced": "MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9a325be5",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/paragraph[0]",
-      "producedLine": 124,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cd7692f5",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]/paragraph[0]",
-      "producedLine": 30,
-      "referenceLine": null,
-      "produced": "Tango En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5692cf4f",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]/paragraph[0]",
-      "producedLine": 101,
-      "referenceLine": null,
-      "produced": "Valse En Skaï",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8aafcdc2",
-      "doc": "new_dyens",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[8]/quote[0]/paragraph[0]",
-      "producedLine": 117,
-      "referenceLine": null,
-      "produced": "Libra Sonatine",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "df170ad5",
-      "doc": "new_dyens",
-      "class": "table.missing.unattested",
-      "severity": "critical",
       "evidence": "content",
-      "op": "delete",
-      "path": "/table[7]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[7]/header[0]",
+      "producedLine": 26,
       "referenceLine": 26,
-      "produced": null,
-      "reference": "Название &#128279; &#128279; &#128279; Tango En Skaï TAB MIDI RAM Ноты (.gif 1-2 ) ZIP GIF-1 GIF-2 Кшиштоф Пелех и оркестр \"Amadeus\" - - MP3 Valse En Skaï - - …",
+      "produced": "",
+      "reference": "Название — column 0",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "055d2da9",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[2][1]",
+      "producedLine": 28,
+      "referenceLine": 28,
+      "produced": "—",
+      "reference": "-",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "2317ab4a",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[2][2]",
+      "producedLine": 28,
+      "referenceLine": 28,
+      "produced": "—",
+      "reference": "-",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "9272ad1e",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[3][1]",
+      "producedLine": 29,
+      "referenceLine": 29,
+      "produced": "—",
+      "reference": "-",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "54b7fd1d",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[3][2]",
+      "producedLine": 29,
+      "referenceLine": 29,
+      "produced": "—",
+      "reference": "-",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "e7248af7",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[4][1]",
+      "producedLine": 30,
+      "referenceLine": 30,
+      "produced": "—",
+      "reference": "-",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "6f92c914",
+      "doc": "new_dyens",
+      "class": "table.cell.typography.dash",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[7]/cell[4][2]",
+      "producedLine": 30,
+      "referenceLine": 30,
+      "produced": "—",
+      "reference": "-",
       "verdict": "reference-inconsistency"
     },
     {
@@ -6644,160 +6214,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "d9b6d4b3",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]",
-      "producedLine": 30,
-      "referenceLine": null,
-      "produced": "Samba: Tico-Tico no Fuba MP3 MIDI(1) MIDI(2)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3c70d987",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]",
-      "producedLine": 45,
-      "referenceLine": null,
-      "produced": "Табулатура (TablEdit) TEF",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0714dde7",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]",
-      "producedLine": 56,
-      "referenceLine": null,
-      "produced": "Ноты (.gif 1-2 ) ZIP GIF-1 GIF-2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "44a162cc",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 82,
-      "referenceLine": null,
-      "produced": "Eight Lessons TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6b8cb857",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 93,
-      "referenceLine": null,
-      "produced": "Etude in C TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "60e4bf33",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 104,
-      "referenceLine": null,
-      "produced": "Rondo",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "159c36ca",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 111,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "eb6b6026",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 120,
-      "referenceLine": null,
-      "produced": "Etude Nr.2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "159c36ca",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]",
-      "producedLine": 127,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1fb1e788",
-      "doc": "new_karta",
-      "class": "columns.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]",
-      "producedLine": 136,
-      "referenceLine": null,
-      "produced": "column La Regalona (Habanera) column column",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a8f8daef",
-      "doc": "new_karta",
-      "class": "columns.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]",
-      "producedLine": 154,
-      "referenceLine": null,
-      "produced": "column Ноты (.jpg ) column align center [ 1 ] column align center MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "0e736be5",
       "doc": "new_karta",
       "class": "columns.spurious",
@@ -6805,79 +6221,9 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]",
-      "producedLine": 245,
+      "producedLine": 122,
       "referenceLine": null,
       "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3caac440",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]",
-      "producedLine": 268,
-      "referenceLine": null,
-      "produced": "Aubade TAB Romance TAB MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1315fab8",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[0]",
-      "producedLine": 138,
-      "referenceLine": null,
-      "produced": "La Regalona (Habanera)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "21a8f91b",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[0]",
-      "producedLine": 156,
-      "referenceLine": null,
-      "produced": "Ноты (.jpg )",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0ed17041",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[1]",
-      "producedLine": 162,
-      "referenceLine": null,
-      "produced": "align center [ 1 ]",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "038b48fa",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[2]",
-      "producedLine": 173,
-      "referenceLine": null,
-      "produced": "align center MIDI",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -6889,37 +6235,9 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]/column[1]",
-      "producedLine": 253,
+      "producedLine": 130,
       "referenceLine": null,
       "produced": "align center WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9ad56910",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[1]/align[0]",
-      "producedLine": 164,
-      "referenceLine": null,
-      "produced": "[ 1 ]",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6b5531a1",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[2]/align[0]",
-      "producedLine": 175,
-      "referenceLine": null,
-      "produced": "MIDI",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -6931,499 +6249,9 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]/column[1]/align[0]",
-      "producedLine": 255,
+      "producedLine": 132,
       "referenceLine": null,
       "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "286e1ad3",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[6]",
-      "producedLine": 42,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "286e1ad3",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[6]",
-      "producedLine": 53,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6819e248",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[10]",
-      "producedLine": 90,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6819e248",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[10]",
-      "producedLine": 101,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6819e248",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[10]",
-      "producedLine": 117,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "94fe3b2e",
-      "doc": "new_karta",
-      "class": "break.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/break[12]",
-      "producedLine": 151,
-      "referenceLine": null,
-      "produced": "---",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bf3ab446",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 33,
-      "referenceLine": null,
-      "produced": "Samba: Tico-Tico no Fuba",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5799cbf5",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[1]",
-      "producedLine": 35,
-      "referenceLine": null,
-      "produced": "MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "580d4e85",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[2]",
-      "producedLine": 37,
-      "referenceLine": null,
-      "produced": "MIDI(1)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1c342eb3",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[3]",
-      "producedLine": 39,
-      "referenceLine": null,
-      "produced": "MIDI(2)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0336fc0c",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 48,
-      "referenceLine": null,
-      "produced": "Табулатура (TablEdit)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0865cdb0",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[1]",
-      "producedLine": 50,
-      "referenceLine": null,
-      "produced": "TEF",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0ac223a5",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 59,
-      "referenceLine": null,
-      "produced": "Ноты (.gif 1-2 )",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f29607e0",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[1]",
-      "producedLine": 61,
-      "referenceLine": null,
-      "produced": "ZIP",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9c2ab258",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[2]",
-      "producedLine": 63,
-      "referenceLine": null,
-      "produced": "GIF-1",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d74bdb1c",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]/paragraph[3]",
-      "producedLine": 65,
-      "referenceLine": null,
-      "produced": "GIF-2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ec10ea3f",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 85,
-      "referenceLine": null,
-      "produced": "Eight Lessons",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e83967f3",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[1]",
-      "producedLine": 87,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b8519590",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 96,
-      "referenceLine": null,
-      "produced": "Etude in C",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e83967f3",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[1]",
-      "producedLine": 98,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "abb934eb",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 107,
-      "referenceLine": null,
-      "produced": "Rondo",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a36f33b2",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 114,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bd4fa4fe",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 123,
-      "referenceLine": null,
-      "produced": "Etude Nr.2",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a36f33b2",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[10]/paragraph[0]",
-      "producedLine": 130,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "53fc617e",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[1]",
-      "producedLine": 144,
-      "referenceLine": null,
-      "produced": "",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c06135e3",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[2]",
-      "producedLine": 147,
-      "referenceLine": null,
-      "produced": "",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "98877e94",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]/paragraph[0]",
-      "producedLine": 271,
-      "referenceLine": null,
-      "produced": "Aubade",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ad57ca2a",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]/paragraph[1]",
-      "producedLine": 273,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "32f7c73f",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]/paragraph[2]",
-      "producedLine": 275,
-      "referenceLine": null,
-      "produced": "Romance",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "81376984",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]/paragraph[3]",
-      "producedLine": 277,
-      "referenceLine": null,
-      "produced": "TAB",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3f835199",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[22]/paragraph[4]",
-      "producedLine": 279,
-      "referenceLine": null,
-      "produced": "MIDI",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "db029035",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[0]/paragraph[0]",
-      "producedLine": 139,
-      "referenceLine": null,
-      "produced": "La Regalona (Habanera)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "073fe8c6",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[0]/paragraph[0]",
-      "producedLine": 157,
-      "referenceLine": null,
-      "produced": "Ноты (.jpg )",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a254cd6e",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 167,
-      "referenceLine": null,
-      "produced": "[ 1 ]",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c3bff6c5",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[12]/column[2]/align[0]/paragraph[0]",
-      "producedLine": 178,
-      "referenceLine": null,
-      "produced": "MIDI",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -7435,7 +6263,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 258,
+      "producedLine": 135,
       "referenceLine": null,
       "produced": "WMA",
       "reference": null,
@@ -7456,17 +6284,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "10c47d06",
+      "id": "e781b301",
       "doc": "new_karta",
-      "class": "table.missing.unattested",
-      "severity": "critical",
+      "class": "table.header.cell",
+      "severity": "major",
       "evidence": "content",
-      "op": "delete",
-      "path": "/table[5]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[5]/header[0]",
+      "producedLine": 29,
       "referenceLine": 33,
-      "produced": null,
-      "reference": "Композиция Формат &#128279; &#128279; Samba: Tico-Tico no Fuba MP3 MIDI(1) MIDI(2) Табулатура (TablEdit) — TEF — Ноты (.gif 1-2 ) ZIP GIF-1 GIF-2",
+      "produced": "",
+      "reference": "Композиция — column 0",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "bd65a893",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[5]/header[1]",
+      "producedLine": 29,
+      "referenceLine": 33,
+      "produced": "🔗",
+      "reference": "Формат — column 1",
       "verdict": "reference-inconsistency"
     },
     {
@@ -7477,39 +6319,123 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[7]",
-      "producedLine": 71,
+      "producedLine": 38,
       "referenceLine": 42,
       "produced": "El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA",
       "reference": "Композиция Формат El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA — at /align[8]",
       "verdict": "converter-defect"
     },
     {
-      "id": "00628bc5",
+      "id": "97b004a2",
       "doc": "new_karta",
-      "class": "table.missing.unattested",
-      "severity": "critical",
+      "class": "table.header.cell",
+      "severity": "major",
       "evidence": "content",
-      "op": "delete",
-      "path": "/table[9]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[9]/header[0]",
+      "producedLine": 48,
       "referenceLine": 49,
-      "produced": null,
-      "reference": "Название произведения Ноты (TAB) MIDI Eight Lessons TAB — Etude in C TAB — Rondo — MIDI Etude Nr.2 — MIDI",
+      "produced": "",
+      "reference": "Название произведения — column 0",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "52c9ab14",
+      "id": "1a1faea9",
       "doc": "new_karta",
-      "class": "table.missing.unattested",
-      "severity": "critical",
+      "class": "table.header.cell",
+      "severity": "major",
       "evidence": "content",
-      "op": "delete",
-      "path": "/table[11]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[9]/header[1]",
+      "producedLine": 48,
+      "referenceLine": 49,
+      "produced": "🔗",
+      "reference": "Ноты (TAB) — column 1",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "8274418f",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[9]/header[2]",
+      "producedLine": 48,
+      "referenceLine": 49,
+      "produced": "🔗",
+      "reference": "MIDI — column 2",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "da7ed190",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[11]/header[0]",
+      "producedLine": 57,
       "referenceLine": 58,
-      "produced": null,
-      "reference": "Композиция Ноты (TAB) MIDI La Regalona (Habanera) Ноты (.jpg ) [ 1 ] MIDI",
+      "produced": "",
+      "reference": "Композиция — column 0",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "4e94e654",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[11]/header[1]",
+      "producedLine": 57,
+      "referenceLine": 58,
+      "produced": "",
+      "reference": "Ноты (TAB) — column 1",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "f91396be",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[11]/header[2]",
+      "producedLine": 57,
+      "referenceLine": 58,
+      "produced": "",
+      "reference": "MIDI — column 2",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "6da7cb6c",
+      "doc": "new_karta",
+      "class": "table.cell.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[11]/cell[0][1]",
+      "producedLine": 57,
+      "referenceLine": 58,
+      "produced": "—",
+      "reference": "",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "2e0d83fd",
+      "doc": "new_karta",
+      "class": "table.cell.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[11]/cell[0][2]",
+      "producedLine": 57,
+      "referenceLine": 58,
+      "produced": "—",
+      "reference": "",
+      "verdict": "ambiguous"
     },
     {
       "id": "86f81cbf",
@@ -7519,7 +6445,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[13]/header[0]",
-      "producedLine": 187,
+      "producedLine": 64,
       "referenceLine": 66,
       "produced": "",
       "reference": "Произведение — column 0",
@@ -7533,7 +6459,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[13]/header[1]",
-      "producedLine": 187,
+      "producedLine": 64,
       "referenceLine": 66,
       "produced": "TAB",
       "reference": "Ноты (TAB) — column 1",
@@ -7547,7 +6473,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[13]/header[2]",
-      "producedLine": 187,
+      "producedLine": 64,
       "referenceLine": 66,
       "produced": "MIDI",
       "reference": "Аудио (MIDI/WMA) — column 2",
@@ -7561,7 +6487,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[15]/header[0]",
-      "producedLine": 204,
+      "producedLine": 81,
       "referenceLine": 83,
       "produced": "",
       "reference": "Название — column 0",
@@ -7575,7 +6501,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[15]/header[1]",
-      "producedLine": 204,
+      "producedLine": 81,
       "referenceLine": 83,
       "produced": "MP3",
       "reference": "Формат — column 1",
@@ -7589,7 +6515,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[17]/header[0]",
-      "producedLine": 212,
+      "producedLine": 89,
       "referenceLine": 91,
       "produced": "",
       "reference": "Название произведения — column 0",
@@ -7603,7 +6529,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[17]/header[1]",
-      "producedLine": 212,
+      "producedLine": 89,
       "referenceLine": 91,
       "produced": "TAB",
       "reference": "Таблатура — column 1",
@@ -7617,7 +6543,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[17]/header[2]",
-      "producedLine": 212,
+      "producedLine": 89,
       "referenceLine": 91,
       "produced": "MIDI",
       "reference": "MIDI / MP3 — column 2",
@@ -7631,25 +6557,53 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[19]",
-      "producedLine": 247,
+      "producedLine": 124,
       "referenceLine": 123,
       "produced": "Heitor Villa-Lobos - Prelude No 3 in A Minor",
       "reference": "Название произведения Формат Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]/column[0]",
       "verdict": "converter-defect"
     },
     {
-      "id": "7bbcfabb",
+      "id": "4fe30646",
       "doc": "new_karta",
-      "class": "table.missing.unattested",
-      "severity": "critical",
+      "class": "table.header.cell",
+      "severity": "major",
       "evidence": "content",
-      "op": "delete",
-      "path": "/table[21]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[21]/header[0]",
+      "producedLine": 144,
       "referenceLine": 129,
-      "produced": null,
-      "reference": "Название Табы MIDI Aubade TAB — Romance TAB MIDI",
+      "produced": "",
+      "reference": "Название — column 0",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "d72359b7",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[21]/header[1]",
+      "producedLine": 144,
+      "referenceLine": 129,
+      "produced": "🔗",
+      "reference": "Табы — column 1",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "d3438971",
+      "doc": "new_karta",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[21]/header[2]",
+      "producedLine": 144,
+      "referenceLine": 129,
+      "produced": "",
+      "reference": "MIDI — column 2",
+      "verdict": "ambiguous"
     },
     {
       "id": "8eb706b0",
@@ -8296,7 +7250,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9a65561b",
+      "id": "5f76da58",
       "doc": "new_lendle2",
       "class": "align.missing",
       "severity": "major",
@@ -8306,11 +7260,11 @@
       "producedLine": null,
       "referenceLine": 228,
       "produced": null,
-      "reference": "&#9664;",
+      "reference": "◀",
       "verdict": "converter-defect"
     },
     {
-      "id": "7b7fd4a8",
+      "id": "0c13a277",
       "doc": "new_lendle2",
       "class": "paragraph.missing.unattested",
       "severity": "critical",
@@ -8320,7 +7274,7 @@
       "producedLine": null,
       "referenceLine": 231,
       "produced": null,
-      "reference": "&#9664;",
+      "reference": "◀",
       "verdict": "reference-inconsistency"
     },
     {
@@ -8576,7 +7530,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "010f2958",
+      "id": "629a6120",
       "doc": "new_rechin4",
       "class": "align.missing",
       "severity": "major",
@@ -8586,11 +7540,11 @@
       "producedLine": null,
       "referenceLine": 74,
       "produced": null,
-      "reference": "&#9664; | &#128904;",
+      "reference": "◀ | 🞈",
       "verdict": "converter-defect"
     },
     {
-      "id": "d3533287",
+      "id": "326555f9",
       "doc": "new_rechin4",
       "class": "paragraph.missing.unattested",
       "severity": "critical",
@@ -8600,7 +7554,7 @@
       "producedLine": null,
       "referenceLine": 77,
       "produced": null,
-      "reference": "&#9664; | &#128904;",
+      "reference": "◀ | 🞈",
       "verdict": "reference-inconsistency"
     },
     {
@@ -10704,7 +9658,7 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "2bbd7997",
+      "id": "5678a39c",
       "doc": "tarrega",
       "class": "link.label.content",
       "severity": "critical",
@@ -10714,8 +9668,8 @@
       "producedLine": 121,
       "referenceLine": 126,
       "produced": "/#/tarrega2",
-      "reference": "&#128279;",
-      "verdict": "reference-inconsistency"
+      "reference": "🔗",
+      "verdict": "ambiguous"
     },
     {
       "id": "444f0244",
@@ -10732,7 +9686,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "15987c0e",
+      "id": "741c07e3",
       "doc": "tarrega",
       "class": "emphasis.span",
       "severity": "minor",
@@ -10742,11 +9696,11 @@
       "producedLine": 123,
       "referenceLine": 128,
       "produced": "strong:Список произведений для гитары соло /#/tarrega1",
-      "reference": "strong:Список произведений для гитары соло &#128279;",
+      "reference": "strong:Список произведений для гитары соло 🔗",
       "verdict": "converter-defect"
     },
     {
-      "id": "166b7b12",
+      "id": "fa1de0bf",
       "doc": "tarrega",
       "class": "link.label.content",
       "severity": "critical",
@@ -10756,8 +9710,8 @@
       "producedLine": 123,
       "referenceLine": 128,
       "produced": "/#/tarrega1",
-      "reference": "&#128279;",
-      "verdict": "reference-inconsistency"
+      "reference": "🔗",
+      "verdict": "ambiguous"
     },
     {
       "id": "af9d65b4",

@@ -74,6 +74,32 @@ describe("identity", () => {
     }
   });
 
+  /**
+   * A numeric character reference and its character are one character.
+   *
+   * `CLAUDE.md` §4 puts entity decoding among the things L2 adjudicates, and
+   * this is that fold. `mini_images_to_md_guide.md` sanctions both spellings —
+   * "compact inline text **or** a Unicode/HTML numeric character reference" —
+   * the references write `&#128279;` sixteen times across six documents, and
+   * the converter cannot write that spelling without either a backslash escape
+   * or a raw-HTML node. Reporting the difference manufactured a finding for
+   * output that was exactly right.
+   *
+   * The fold changes the *spelling* of a character and never which character it
+   * is, so it does not reach the typography blind spot next door: `«` and `"`
+   * stay a finding.
+   */
+  it("reports nothing when two documents differ only in how a character is spelled", () => {
+    const glyph = "# T\n\n| Название | \u{1F517} |\n| - | - |\n| Adelita | [TAB](t.txt) |\n";
+    const entity = glyph.replace("\u{1F517}", "&#128279;");
+    expect(diffDocuments("t", entity, glyph).findings).toEqual([]);
+    expect(diffDocuments("t", glyph, entity).findings).toEqual([]);
+    // Hex spelling too, and the other direction of the same character.
+    expect(diffDocuments("t", glyph.replace("\u{1F517}", "&#x1F517;"), glyph).findings).toEqual([]);
+    // The near neighbour that must still differ: one character is not another.
+    expect(diffDocuments("t", glyph.replace("\u{1F517}", "&#9654;"), glyph).findings).not.toEqual([]);
+  });
+
   it("FALSE FRIEND: a rule that is absent or added is still reported", () => {
     const withRule = "# T\n\nОдин.\n\n---\n\nДва.\n";
     const without = "# T\n\nОдин.\n\nДва.\n";

@@ -41,6 +41,7 @@ import {
   cellText,
   planDataTable,
 } from "./data-table.js";
+import { LINK_GLYPH } from "./glyphs.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -2573,27 +2574,74 @@ function suppliedHeader(labels: readonly string[]): TableRow {
  * Only ever *transcribed*: a label is used when it is the dominant repeated text
  * of that column ("TAB" down a whole column of tablature links). Where the
  * column has no such label the header cell is left empty, which the validator
- * reports as an error and the ledger as a review item — the honest outcome,
- * because inventing a caption is an editorial change (§16.3). The `table.records`
- * hook is what resolves it when a model is available.
+ * reports and the ledger records as a review item — the honest outcome, because
+ * inventing a caption is an editorial change (§16.3). The `table.records` hook
+ * is what resolves it when a model is available.
+ *
+ * **An all-empty header is the same answer repeated, not a different one.** It
+ * used to abort the table, and aborting cost the whole matrix: `new_dyens`'s
+ * five score records and `new_karta`'s catalogue fell to linear flow, where
+ * every cell became its own aligned paragraph and three work titles were read
+ * as quotations (the false friend PROGRESS §16.4 traced to exactly this).
+ * `BioMD-Reference.md`'s precedence ladder puts reading order and grouping far
+ * above visible distinction, and §1 says to prefer a table while the source
+ * rows and columns remain intelligible — a blank header row loses a label, a
+ * flattened matrix loses the records. The review item and the `headerMissing`
+ * flag still carry the missing labels to whoever can supply them.
  */
 function synthesizeHeader(plan: LogicalTablePlan, ctx: Ctx): TableRow | null {
   const row: TableRow = { type: "tableRow", children: [] };
+  let unlabelled = 0;
   for (let band = 0; band < plan.bands.length; band += 1) {
-    const label = dominantLabel(plan.body.map((r) => r.cells[band] as PlannedCell));
-    row.children.push({
-      type: "tableCell",
-      children: label ? [{ type: "text", value: label }] : [],
-    });
+    const column = plan.body.map((r) => r.cells[band] as PlannedCell);
+    const label = dominantLabel(column);
+    if (label) {
+      row.children.push({ type: "tableCell", children: [{ type: "text", value: label }] });
+      continue;
+    }
+    if (isLinkColumn(column)) {
+      row.children.push({ type: "tableCell", children: [{ type: "text", value: LINK_GLYPH }] });
+      continue;
+    }
+    unlabelled += 1;
+    row.children.push({ type: "tableCell", children: [] });
   }
-  if (row.children.every((c) => c.children.length === 0)) {
-    // Not a single column has a recurring label. Emitting an entirely blank
-    // header row helps nobody; leave it to the review path.
-    ctx.warnings.push("table has neither a source header nor any recurring column label");
-    return null;
+  if (unlabelled > 0) {
+    ctx.warnings.push(`${unlabelled} column(s) have neither a source header nor a recurring label`);
   }
   return row;
 }
+
+/**
+ * Whether a column holds links and nothing else worth calling it by.
+ *
+ * **Invariant.** Every cell that has anything in it is an anchor with a label
+ * short enough to *be* a label — cardinality (one or more links), containment
+ * (the link is the cell, not a phrase inside it) and homogeneity down the
+ * column. No filename, no href pattern, no vocabulary of format names: `TAB`,
+ * `MIDI`, `ZIP`, `GIF-1` and `Часть 1 — PDF` all qualify on the same evidence.
+ *
+ * **Recurrence requirement.** Two linked cells. One link under an empty header
+ * is a stray cell, and the column that holds it is not "the links column".
+ *
+ * **False friend.** A prose column that happens to contain a link — a sentence
+ * with a reference in it. The label-length limit is what separates them, and it
+ * is the same limit `contentKind` and `navFromGrid` already use for the same
+ * question.
+ */
+function isLinkColumn(column: readonly PlannedCell[]): boolean {
+  let linked = 0;
+  for (const cell of column) {
+    if (cell.isEmpty) continue;
+    const links = cell.sources.reduce((a, s) => a + s.links, 0);
+    if (links < 1 || cellText(cell).length >= LINK_LABEL_MAX_CHARS) return false;
+    linked += 1;
+  }
+  return linked >= 2;
+}
+
+/** A link label is a label, not a sentence — `contentKind`'s limit, shared. */
+const LINK_LABEL_MAX_CHARS = 40;
 
 /** The text that at least 60% of a column's non-empty cells repeat verbatim. */
 function dominantLabel(cells: readonly PlannedCell[]): string | null {

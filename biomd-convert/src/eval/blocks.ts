@@ -405,9 +405,15 @@ export function inlineOf(raw: string): Inline {
  *
  * Backslash escapes are resolved last so that `1\.` and `\[Надежда]` compare
  * equal to their unescaped spellings: escaping is a serializer decision, not
- * content. Typography is *not* normalized here — `"` versus `«` is a finding,
- * and folding it away here would be exactly the blind spot this instrument was
- * built to remove.
+ * content. Numeric character references are resolved for the same reason and no
+ * other: `&#128279;` and `🔗` are one character written two ways, both sanctioned
+ * by `mini_images_to_md_guide.md`, and every renderer shows the same glyph. The
+ * fold applies to both sides, so identity is unaffected.
+ *
+ * Typography is *not* normalized here — `"` versus `«` is a finding, and folding
+ * it away would be exactly the blind spot this instrument was built to remove.
+ * Decoding a character reference is not that: it changes the spelling of a
+ * character, never which character it is.
  */
 export function stripMarkup(value: string): string {
   return value
@@ -417,6 +423,10 @@ export function stripMarkup(value: string): string {
     .replace(/(?<![*\w])(\*|_)(?=\S)([\s\S]*?\S)\1(?![*\w])/gu, "$2")
     .replace(/`([^`]*)`/gu, "$1")
     .replace(/\\([\\`*_{}[\]()#+\-.!|>~])/gu, "$1")
+    .replace(/&#(\d{1,7});|&#[xX]([0-9a-fA-F]{1,6});/gu, (whole, dec: string | undefined, hex: string | undefined) => {
+      const code = dec === undefined ? Number.parseInt(hex ?? "", 16) : Number.parseInt(dec, 10);
+      return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : whole;
+    })
     .replace(/[ \t]+/gu, " ")
     .trim();
 }

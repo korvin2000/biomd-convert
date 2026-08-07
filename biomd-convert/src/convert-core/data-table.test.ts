@@ -176,3 +176,61 @@ describe("end to end", () => {
     }
   });
 });
+
+/**
+ * A column the source never named still gets a header.
+ *
+ * **Invariant.** `BioMD-Reference.md` §1 (Tables): every GFM column MUST have a
+ * header. Transcribing a recurring label is preferred because it is attested;
+ * where there is none, a column whose every populated cell is a short anchor is
+ * a links column, and the link symbol says that and nothing more. Cardinality,
+ * containment and homogeneity down the column — no href pattern, no filename,
+ * no vocabulary of format names.
+ *
+ * **Why it matters more than the label.** The header used to be all-or-nothing:
+ * if no column had a recurring label the whole table was abandoned, and a
+ * five-record score matrix came out as twenty loose aligned paragraphs with
+ * three work titles read as quotations. `analyze/analyze.md` asks for exactly
+ * this symbol on three separate pages, and the references write it sixteen
+ * times across six documents.
+ *
+ * **Recurrence requirement.** Two linked cells in the column.
+ *
+ * **False friend**, tested for non-firing: a column of prose that contains a
+ * link. A label is not a sentence, and the length limit is the separator.
+ */
+describe("a header for a column the source never labelled", () => {
+  const linkRow = (work: string, a: string, b: string) =>
+    `<tr><td>${work}</td><td><a href="${a}">${a.slice(-3).toUpperCase()}</a></td>` +
+    `<td><a href="${b}">${b.slice(-3).toUpperCase()}</a></td></tr>`;
+
+  it("heads an unnamed links column with the link symbol", async () => {
+    // Mixed format tokens down each column, so no column has a dominant label —
+    // `new_dyens` in miniature, where the table used to vanish entirely.
+    const html =
+      "<html><body><table border=\"0\">" +
+      linkRow("Tango En Skaï", "tab/skai.txt", "midi/tango.mid") +
+      linkRow("Valse En Skaï", "ram/valse.ram", "mp/valse.mp3") +
+      linkRow("Libra Sonatine", "zip/libra.zip", "gif/libra.gif") +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toMatch(/^\|.*\|$/mu);
+    expect(result.markdown.split("\u{1F517}")).toHaveLength(3);
+    // The subject column stays empty: naming it would be invention (§16.3).
+    expect(result.markdown).toMatch(/^\|\s*\|/mu);
+  });
+
+  it("does not call a prose column a links column — non-firing", async () => {
+    const sentence = (name: string, href: string) =>
+      `<tr><td>${name}</td><td>Подробнее об этой записи можно прочитать в <a href="${href}">обзоре</a>, ` +
+      "опубликованном в журнале в том же году.</td></tr>";
+    const html =
+      "<html><body><table border=\"0\">" +
+      sentence("Adelita", "a.htm") +
+      sentence("Capricho", "b.htm") +
+      sentence("Recuerdos", "c.htm") +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).not.toContain("\u{1F517}");
+  });
+});
