@@ -3960,3 +3960,106 @@ The author also corrected `new_rechin4`'s `h2.gif` to `&#9679;` and `news_2007`'
 family. Neither moved a rung: L2 folds numeric character references before comparing, and
 `news_2007`'s smiley sits in a paragraph the converter does not emit at all — which is its own,
 larger, unexamined defect.
+
+## 31. A holistic sweep: one lying property class, one missing group (2026-08-08)
+
+A single pass asked three questions at once — which rules the reference revision made obsolete,
+which are correct but improvable, and what could be corrected immediately. Two mechanisms landed.
+Both were found by **adjudicating the two heaviest documents rather than the ranked classes**:
+`news` (45 defects) and `goya2` (34) held 44 % of the ledger between them and neither had ever been
+attacked as a document (§27.5 said so; this is that step).
+
+### 31.1 `src` was adjudicated as layout, and 19 defects were phantom
+
+`compareDirective` assigned `content` evidence to prose properties (`caption`, `alt`, `title`,
+`active`) and `structure` to everything else. `triage` returns `converter-defect` for structural
+evidence **unconditionally**, on the rule that layout is always actionable — which is right for a
+lane, a wrapper or a separator, and wrong for a URL. `BioMD-Reference.md` §0 ranks targets second
+behind content and §16.3 names `href`/`src` outright, so the one property class §16.3 protects by
+name was the one class routed past the attestation test.
+
+**Measured.** All 19 `image.src.value` findings on `news` report the produced `main/magazines/X.jpg`
+against a reference `/../main/magazines/X.jpg`. The source writes `main/magazines/X.jpg`; the `/../`
+prefix occurs in **no source in the corpus and in exactly one of the 22 references**. The converter
+was verbatim-correct and following the reference would have invented a target.
+
+Two things had to move together. `isTargetProp` is `src` **only**: an asset path is carried through
+verbatim, whereas `links.ts` rewrites `../menu.htm` to `/#/menu`, so neither side of a `link`
+finding can ever appear in the source and attestation would answer "unattested" about a correct
+value. And attestation for a target reads the **raw decoded HTML** — `stripTags` throws attributes
+away and `fold` erases `/`, `.` and `_`, which is all a URL is made of, so the folded index called
+two different destinations the same content.
+
+L2 287 → 275 findings, **180 → 152 converter-defect**, 40 → 59 reference-inconsistency. Output
+byte-identical; L0, L1 and L3 unmoved. **This is an instrument correction and not a conversion
+improvement** — it removes work that never existed, which is worth more than closing it would have
+been, but it must never be reported as the converter getting better.
+
+### 31.2 A flattened grid row that is nothing but pictures is one row
+
+`goya2` draws its "ДРУГИЕ АЛЬБОМЫ" plates as three table rows of two covers each. The grid does not
+plan as records, `layoutFrom`'s lane attempt rolls back, and `decomposeFrom` shipped **six loose
+`::: image` blocks** where the reference groups each pair as `::: images columns: 2`.
+
+Both existing `::: images` paths (`figureOf`, `imagesFrom`) read an *inline* run — images inside one
+`<p>`. This corpus draws the other half of its plates as a row per plate, which reached neither.
+`imageRowFrom` asks §8's question of a flattened row instead: two or more standalone images and
+nothing else.
+
+**Recurrence does not apply and the contract says so** — the `<tr>` is adjacency *declared* by the
+author, not inferred from typography, so it needs no corroboration; same exemption as `isUiIcon`.
+The **false friend is a record row**, a picture beside the words about it — `goya2`'s own album grid
+and `williams2`'s track list — refused by testing the *whole* row rather than the images in it, and
+tested for non-firing. `recovery.test.ts` was grepped first (`learned-patterns.md`: a symmetry
+argument is not evidence): no contract governed this path, so the asymmetry was an oversight and
+not a decision, unlike the DATA→lanes case §18.3 killed.
+
+**Measured, 22 documents.** L0 431 → **434 tests**, 0 FAILED, validator **13 → 13**, typecheck clean.
+L1 **94.4 → 94.4** (flat). L2 287 → **275** · 180 → **152 defect**. L3 **85 → 70**.
+
+Only `goya2`'s output changed, so the whole L3 fall of 15 is its. Produced `::: images` counts now
+**equal the references on all 22 documents**. `goya2` 41/34 → 29/25.
+
+**The tradeoff, stated.** The 18 findings the old shape produced are replaced by 12 new ones:
+`image.position.missing` ×6 and `image.size.missing` ×6, because the reference keeps `position` and
+`size` on its grouped children. `BioMD-Reference.md` §4.1 states child `position/size` are
+"**omitted/ignored**" and its property table gives a child `image` only `src` + `alt|caption|link|
+frame`; `makeGroupedImage` throws on either. So those 12 are `reference-quirk` and emitting them
+would be a conformance violation. Net −12 findings, −9 defects, and the *structure* is now identical.
+
+### 31.3 What the sweep measured and did not build — reach figures, so nobody re-derives them
+
+`/new_rules.md` still holds six unimplemented author rules (§29.1). Their reach, **measured** over
+the 22 pairs this pass, which is the number that decides whether any is worth a rule:
+
+| rule | measured reach | verdict |
+|---|---|---|
+| drop an empty trailing table column | **0** tables, either side | no reach in this corpus |
+| `_` ≡ `*` italic | **0** real spans — every `_` match in `fixtures/out/` is a filename underscore inside a URL | not a class; but see the risk below |
+| merge consecutive same-alignment `::: align` | the **references keep 5 such pairs unmerged** (`goya2`, `new_geyzel04`, `new_karta`, `williams2` ×2) against 8 the converter has and they do not | the rule is permissive ("можно"), not mandatory — a blanket merge breaks 5 agreements to fix 8 |
+| URL integrity, no line split in a link label | **0** instances on either side | already correct |
+| `::: signature` for a source list rather than `::: nav` | 1 document (`new_kolpakov` — the reference writes `signature`, the converter `nav`); `new_blackmore` emits a `nav` the reference has none of, `new_rechin4` the reverse | small but real, vocabulary is stated outright |
+| `==` for a long quoted sentence | 6 spans, 3 documents (`jovicic` 1, `new_blackmore` 1, `new_rechin4` 4) — and 2 of `new_rechin4`'s are **under** the stated 64-character floor and are not in quotes, so the rule as written does not explain its own corpus | needs the author; also needs the triage half of rule 18 |
+
+`goya2`'s 7 `image.caption.missing` are **not work**: the reference keeps the album title in
+`column[0]` *and* repeats it as the cover's `caption` in `column[1]`. The source states it once and
+`CLAUDE.md` §5 says to emit a visible caption once, not twice. Triage cannot see this — it is a
+whole-document echo question, and `structdiff` already has the machinery (`homeOf`, the
+`.caption-echo` sub-class) but applies it only to orphan insertions, never to a property deletion.
+That is the cheapest remaining instrument improvement and it is worth more than the 7 findings.
+
+**A risk the `_` probe turned up.** Every `_` in the references is a URL underscore. Nothing has
+checked whether `eval/blocks.ts` reads `abmv8_4.txt` as an emphasis span; if it does, part of
+`emphasis.span` (24 instances, already downgraded) is an artefact. One cheap probe, not taken.
+
+### 31.4 New floor
+
+| rung | value |
+|---|---|
+| L0 | **434 tests**, typecheck clean, 0 FAILED, validator **13**, clean share 13.6 % |
+| L1 | **94.4 %** |
+| L2 | **275 findings — 152 converter-defect** · 64 ambiguous · 59 reference-inconsistency · 9 critical |
+| L3 | **70 findings**, identity 0, deterministic |
+
+The §30 floor was 431 / 94.4 / 287 · 180 / 85. Of the 28-defect fall, **19 are the instrument
+telling the truth** and 9 are the converter improving; say which is which whenever this is quoted.

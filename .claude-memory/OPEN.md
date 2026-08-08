@@ -3,9 +3,8 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the column vocabulary (`f5665c4`), one reverted attempt
-(§30.1), and the author's icon corrections (`3097a48`). Facts marked *measured* were taken then; facts marked *recorded*
-are quoted and have not been re-measured.
+Last touched **2026-08-08**, after the holistic sweep (`da7246e`, `486e9c9`, PROGRESS §31). Facts
+marked *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
 
@@ -16,14 +15,14 @@ Reference-guided refinement, 22 documents. **The author revised 21 of 22 referen
 change; the numbers below are re-baselined against the revised references, and any figure quoted
 from PROGRESS §21–§28 predates them.
 
-**Current state, *measured* 2026-08-08, after `f5665c4`:**
+**Current state, *measured* 2026-08-08, after `486e9c9`:**
 
 | rung | value |
 |---|---|
-| L0 | **431 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L0 | **434 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
 | L1 | **94.4 %** |
-| L2 | **287 findings — 180 converter-defect** · 67 ambiguous · 40 reference-inconsistency · 9 critical |
-| L3 | **85 findings** (11 critical), identity 0, deterministic |
+| L2 | **275 findings — 152 converter-defect** · 64 ambiguous · 59 reference-inconsistency · 9 critical |
+| L3 | **70 findings**, identity 0, deterministic |
 | validator | **13 errors** (was 28). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice — once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
 
 That is the floor. Nothing accepted from here may regress it.
@@ -43,7 +42,12 @@ masthead split point (OPEN §3.2), and the centred-section-label ruling of §24.
 
 **Closed since the last entry:** `image.spurious` 8/5 → 0 (`55e7a8c`, §2.0) · `table.header.cell`
 43/7 → 8, none a defect (`f5665c4`, PROGRESS §30.2) · the two guide-vs-reference glyph conflicts,
-corrected by the author in `3097a48` — **the icon family now has no open question**.
+corrected by the author in `3097a48` — **the icon family now has no open question** ·
+`goya2`'s `images.*` cluster 18 → 0 (`da7246e`, PROGRESS §31.2) · `image.src.value` 19 defects → 0,
+by fixing the instrument, not the converter (`486e9c9`, PROGRESS §31.1).
+
+> **Of the last 28-defect fall, 19 are the instrument telling the truth and 9 are the converter
+> improving.** Never quote the drop without that split.
 
 **Next: `segovia1`'s missing four-lane footer region — `columns.missing`.** Chosen because §30.1
 demonstrated it rather than because of its rank. The footer is a four-cell row (`◀`, *Андрес
@@ -55,10 +59,17 @@ a symptom. `segovia1` is third-worst at 11 findings / 10 defect / 2 critical and
 it. Probe first whether the same shape exists elsewhere (`new_geyzel04`'s and `new_rechin4`'s
 footers are *not* tables, so they are a different mechanism).
 
-Then, if that stalls: **go document-first, not class-first.** `news` (45 defects) and `goya2` (34) are
-a quarter of the whole ledger and neither has ever been attacked *as a document*. Enumerate one of
-them by node path, not by class, and look for the shared container defect — that is exactly how
-§27.2 found `new_lendle2`'s missing frame.
+**Document-first is now attested twice.** PROGRESS §31 did it on `news` and `goya2` and both paid:
+one instrument lie (19) and one missing group (9). `news` still holds 26 defects and no single
+mechanism above 4 — it is the next document to enumerate by node path. `kiselev` (43 findings, 12
+defect) has never been looked at either.
+
+**Cheapest remaining instrument work, and it outranks the findings it closes:** `structdiff` has
+`homeOf` and a `.caption-echo` sub-class, but applies them only to orphan *insertions*, never to a
+property *deletion*. So `goya2`'s 7 `image.caption.missing` read as defects when the reference is
+duplicating the album title it already keeps in `column[0]` — the once-not-twice rule `CLAUDE.md` §5
+states. Same shape as §31.1. Probe also whether `eval/blocks.ts` reads a URL underscore
+(`abmv8_4.txt`) as an emphasis span; if it does, part of `emphasis.span` is an artefact.
 
 **Downgraded, do not take on rank alone:** `emphasis.span` (verdicts flip on identical evidence
 across documents; 17 of 24 already reference-inconsistency, and the 7 defects are one *different*
@@ -174,7 +185,25 @@ from the linked case:
    measurements that rule out typography, length and position are in PROGRESS §26.3, so do not
    re-derive them.
 
-## 4. Open defect classes — *measured* 2026-08-08 over 22 documents, after `55e7a8c`
+## 3b. `/new_rules.md` — reach measured, so nobody re-derives it (PROGRESS §31.3)
+
+Six author rules remain unimplemented. Four have **no reach in this corpus** and are not work:
+
+| rule | measured reach |
+|---|---|
+| drop an empty trailing table column | **0** tables, either side |
+| `_` ≡ `*` italic | **0** real spans — every `_` in `fixtures/out/` is a URL underscore |
+| URL integrity, no line split in a link label | **0** instances, either side |
+| merge consecutive same-alignment `::: align` | the **references keep 5 such pairs unmerged**; the rule says "можно", so a blanket merge breaks 5 agreements to fix 8 |
+
+Two are live: **`::: signature` for a source list** (stated vocabulary; `new_kolpakov`'s reference
+writes `signature` where the converter writes `nav`, `new_blackmore` emits a `nav` the reference has
+none of, `new_rechin4` the reverse) and **`==` for a long quoted sentence** (6 spans, 3 documents) —
+but 2 of `new_rechin4`'s 4 are under the stated 64-character floor and are not in quotes, so the
+rule as written does not explain its own corpus, and its second half asks the *instrument* to ignore
+the difference. Ask the author before building either.
+
+## 4. Open defect classes — *measured* 2026-08-08 over 22 documents, after `486e9c9`
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
@@ -182,7 +211,7 @@ from the linked case:
 | 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **7 of 8 are container-only.** A rule for it was built and **reverted** — PROGRESS §30.1. Do not retry without the `columns` region first |
 | 132 | `retyped.paragraph-to-list` | 11 | 11 | 4 | killed on measurement §15.2/§15.3 — shape overlap total |
 | 72 | `align.spurious` | 6 | 6 | 4 | 3 are the one-row media table §22.2 killed **twice** |
-| 57 | `image.src.value` | 19 | 19 | 1 | all `goya2` — mechanical, single-document |
+| ~~—~~ | ~~`image.src.value`~~ | 19 | **0** | 1 | **all `news`, not `goya2` as this table said.** Now reference-inconsistency: the `/../` prefix is in no source and 1 of 22 references |
 | 54 | `retyped.align-to-paragraph` | 6 | 6 | 3 | shadow of the same container family |
 | 42 | `emphasis.span` | 24 | 7 | 6 | downgraded — the 7 defects are a *different* mechanism |
 | 33 | `table.cell.content.edited` | 33 | 0 | 2 | not a target |

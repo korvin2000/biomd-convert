@@ -38,11 +38,13 @@ disagree, the repository file wins and this index gets fixed.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: the author revised **21 of 22 references,
 `BioMD-Reference.md`, and added `/new_rules.md`** in `06eeafb`, so **every number in PROGRESS
-§21–§28 predates the current corpus** (PROGRESS §29.1). Two mechanisms landed since — a linked
-micro-image is now its glyph (§29.3), and a synthesized column header gets the house name (§30.2).
-Current floor: L0 **431 tests / 13 validator errors**, L1 **94.4**, L2 **287 · 180 defect**,
-L3 **85**. One attempt was built and reverted on its measurement (§30.1) — read it before touching
-the alignment family. Next is `segovia1`'s missing four-lane footer region.
+§21–§28 predates the current corpus** (PROGRESS §29.1). Four mechanisms landed since — a linked
+micro-image is now its glyph (§29.3), a synthesized column header gets the house name (§30.2), a
+flattened all-picture row is one `::: images` (§31.2), and `src` is adjudicated as a target rather
+than as layout (§31.1). Current floor: L0 **434 tests / 13 validator errors**, L1 **94.4**,
+L2 **275 · 152 defect**, L3 **70**. One attempt was built and reverted on its measurement (§30.1) —
+read it before touching the alignment family. Next is `segovia1`'s missing four-lane footer region,
+or `news`/`kiselev` document-first, which paid twice in §31.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.

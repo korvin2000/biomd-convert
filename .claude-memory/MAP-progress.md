@@ -40,10 +40,11 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 28 `new_karta` corrected; re-baseline | 3617–3697 | **the ruling voids §27.1's `image.spurious` downgrade `28.1:3652`** · a glyph always reads unattested `28.2:3672` · **new floor 424 / 92.7 / 417 · 241 / 92 `28.3:3684`** | **HOT** |
 | 29 revision re-baseline; the linked icon | 3701–3843 | **`06eeafb` moved every rung with no code change; two ceilings closed themselves `29.1:3703`** · **two cheap probes chose the smaller class on priority, not size `29.2:3738`** · **`dropDecorative` vs `runImages` — direct children vs descend-through-`<a>` `29.3:3762`** · **new floor 429 / 94.3 / 322 · 180 / 85 `29.4:3806`** · what was held back, and two guide-vs-reference glyphs to confirm `29.5:3832` | **HOT** |
 | 30 a revert, and the column vocabulary | 3848–3962 | **KILLED: a word-less block may open an align run because it carries a target — `segovia1`'s lane cells merged four lanes into one `30.1:3854`** · **the column vocabulary; §16.3 not engaged; a superseded contract `30.2:3902`** · **new floor 431 / 94.4 / 287 · 180 / 85, validator 28 → 13 `30.2`** · residual + no guide-vs-reference conflicts left `30.3:3950` | **HOT** |
+| 31 a holistic sweep | 3964-4065 | **`src` adjudicated as layout — 19 phantom defects `31.1:3968`** · **a flattened all-picture row is one `::: images` `31.2:3993`** · **`/new_rules.md` reach measured; 4 of 6 have zero reach `31.3:4021`** · **new floor 434 / 94.4 / 275 · 152 / 70 `31.4:4055`** | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§30 (3848–3962)**, **§29 (3701–3843)**, **§28 (3617–3697)**, **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
+A session resuming cold needs **§31 (3964–4065)**, **§30 (3848–3962)**, **§29 (3701–3843)**, **§28 (3617–3697)**, **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
 **§21 (2463–2650)** — the current state, the author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
