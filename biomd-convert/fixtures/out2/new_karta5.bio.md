@@ -34,14 +34,14 @@ position: center
 | 8-струнная гитара (Александр Виноград) | — | — | [MP3](pages/music/mp/polet_shmelja.mp3) |
 | Ноты (\*.gif) [\[ 1 \]](pages/music/scores/bb1.gif) [\[ 2 \]](pages/music/scores/bb2.gif) [\[ 3 \]](pages/music/scores/bb3.gif) [\[ 4 \]](pages/music/scores/bb4.gif) [\[ 5 \]](pages/music/scores/bb5.gif) [\[ 6 \]](pages/music/scores/bb6.gif) | [ZIP](pages/music/scores/polet_shmelia.zip) | — | — |
 
-| *Родриго*Хоакин |  |
+| *Родриго*Хоакин | |
 | --- | --: |
-| Fantasia Para Un Gentilhombre for guitar & orchestra ( Guitar - Andres Segovia ) |  |
+| Fantasia Para Un Gentilhombre for guitar & orchestra ( Guitar - Andres Segovia ) | — |
 | I. Villano y Recercarre | [МР3](pages/music/mp/rodrigo-fantasia-gentilhombre_01.mp3) |
 | II. Espanoleta e Fanfare de la Caballeria de Napoles | [МР3](pages/music/mp/rodrigo-fantasia-gentilhombre_02.mp3) |
 | III. Danza de Las Hachas | [МР3](pages/music/mp/rodrigo-fantasia-gentilhombre_03.mp3) |
 | IV. Canario | [МР3](pages/music/mp/rodrigo-fantasia-gentilhombre_04.mp3) |
-| Concierto de Aranjuez for Guitar & Orchestra (Guitar - John Zaradin ) |  |
+| Concierto de Aranjuez for Guitar & Orchestra (Guitar - John Zaradin ) | — |
 | II. Adagio (fragment) | [МР3](pages/music/mp/concierto_de_aranjuez_IIa.mp3) |
 | Ноты (\*.gif) I. \[ [1](pages/music/scores/concierto_de_aranjuez/1/cda1_1.gif) ] \[ [2](pages/music/scores/concierto_de_aranjuez/1/cda1_2.gif) ] \[ [3](pages/music/scores/concierto_de_aranjuez/1/cda1_3.gif) ] \[ [4](pages/music/scores/concierto_de_aranjuez/1/cda1_4.gif) ]  \[ [5](pages/music/scores/concierto_de_aranjuez/1/cda1_5.gif) ] \[ [6](pages/music/scores/concierto_de_aranjuez/1/cda1_6.gif) ]  \[ [7](pages/music/scores/concierto_de_aranjuez/1/cda1_7.gif) ] \[ [8](pages/music/scores/concierto_de_aranjuez/1/cda1_8.gif) ] | [zip](pages/music/scores/concierto_de_aranjuez/concierto_de_aranjuez1.zip) |
 | II. \[ [1](pages/music/scores/concierto_de_aranjuez/2/cda2_1.gif) ] \[ [2](pages/music/scores/concierto_de_aranjuez/2/cda2_2.gif) ] \[ [3](pages/music/scores/concierto_de_aranjuez/2/cda2_3.gif) ] \[ [4](pages/music/scores/concierto_de_aranjuez/2/cda2_4.gif) ]  \[ [5](pages/music/scores/concierto_de_aranjuez/2/cda2_5.gif) ] \[ [6](pages/music/scores/concierto_de_aranjuez/2/cda2_6.gif) ]  \[ [7](pages/music/scores/concierto_de_aranjuez/2/cda2_7.gif) ] \[ [8](pages/music/scores/concierto_de_aranjuez/2/cda2_8.gif) ] | [zip](pages/music/scores/concierto_de_aranjuez/concierto_de_aranjuez2.zip) |
@@ -59,7 +59,7 @@ position: center
 
 |*Сор* Фернандо| | | | | |
 | --- | --: | --: | --: | --: | --: |
-| Двадцать этюдов | | | | | |
+| Двадцать этюдов | — | — | — | — | — |
 | Estudio Nr. 01 | [MIDI](pages/music/midi/ss-01.mid) | [MP3](pages/music/mp/estudio-01.mp3) | Estudio Nr. 11 | [MIDI](pages/music/midi/ss-11.mid) | [MP3](pages/music/mp/estudio-11.mp3) |
 | Estudio Nr. 02 | [MIDI](pages/music/midi/ss-02.mid) | [MP3](pages/music/mp/estudio-02.mp3) | Estudio Nr. 12 | [MIDI](pages/music/midi/ss-12.mid) | [MP3](pages/music/mp/estudio-12.mp3) |
 | Estudio Nr. 03 | [MIDI](pages/music/midi/ss-03.mid) | [MP3](pages/music/mp/estudio-03.mp3) | Estudio Nr. 13 | [MIDI](pages/music/midi/ss-13.mid) | [MP3](pages/music/mp/estudio-13.mp3) |
@@ -111,7 +111,7 @@ position: center
 
 |*Фраучи* Александр| |
 | --- | --: |
-| См. на странице [биографии](/#/frauchi) альбом: "А. Фраучи. Гитара"(Мелодия, 1982) | |
+| См. на странице [биографии](/#/frauchi) альбом: "А. Фраучи. Гитара"(Мелодия, 1982) | — |
 
 
 | *Хилл/Вильчински* гитарный дуэт | |
@@ -152,6 +152,6 @@ active: П Я
 ::: align
 position: center
 
-[&#9664;](/#/karta4) | [&#128904;](/#/karta)
+[&#9664;](/#/karta4) [&#128904;](/#/karta)
 
 :::

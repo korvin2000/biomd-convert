@@ -8,9 +8,10 @@ frame: white
 ::: align
 position: center
 
-***Variations capricieuses***
+**Variations capricieuses**
 
 :::
+
 :::
 
 ::: columns
@@ -47,9 +48,10 @@ frame: white
 ::: align
 position: center
 
-***Curiosities & Favourites***
+**Curiosities & Favourites**
 
 :::
+
 :::
 
 ---
@@ -97,9 +99,10 @@ frame: white
 ::: align
 position: center
 
-***Agustin Barrios Mangore***
+**Agustin Barrios Mangore**
 
 :::
+
 :::
 
 ---
@@ -151,9 +154,10 @@ frame: white
 ::: align
 position: center
 
-***Heitor Villa-Lobos***
+**Heitor Villa-Lobos**
 
 :::
+
 :::
 
 ---
@@ -188,9 +192,10 @@ frame: white
 ::: align
 position: center
 
-***Spanish Guitar Music***
+**Spanish Guitar Music**
 
 :::
+
 :::
 
 ---

@@ -159,7 +159,7 @@ Use direct structure first; visual fallback second.
 | `h1`…`h6` | `#`…`######` |
 | `p` / text | paragraphs |
 | `strong/b` / bold | `**` |
-| `em/i` / italic | `*` |
+| `em/i` / italic | `*` or `_` |
 | highlight/accent | `==` when useful |
 | `del/s/strike` | `~~` |
 | `blockquote` | `>` |

@@ -2,8 +2,11 @@
 
 ::: align
 position: center
+
 (дискография)
+
 :::
+
 ::: nav
 title: ИЗБРАННАЯ ДИСКОГРАФИЯ
 
@@ -60,7 +63,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_1000000a.jpg
 position: center
-size: small
+size: medium
 caption: 1.000.000 Platinum
 :::
 
@@ -158,7 +161,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_hits1a.jpg
 position: center
-size: small
+size: medium
 caption: Francis Goya Plays His Favourite Hits vol. 1
 :::
 
@@ -220,7 +223,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_hits2a.jpg
 position: center
-size: small
+size: medium
 caption: Francis Goya Plays His Favourite Hits vol. 2
 :::
 
@@ -280,7 +283,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_hits1b.jpg
 position: center
-size: small
+size: medium
 caption: Best of Francis Goya
 :::
 
@@ -402,7 +405,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_hifisound.jpg
 position: center
-size: small
+size: medium
 :::
 
 :::
@@ -513,7 +516,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_2000a.jpg
 position: center
-size: small
+size: medium
 caption: Collection 2000 / Francis Goya
 :::
 
@@ -655,7 +658,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_historia1.jpg
 position: center
-size: small
+size: medium
 caption: Historia De Un Amor
 :::
 
@@ -796,7 +799,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_moscow1.jpg
 position: center
-size: small
+size: medium
 :::
 
 
@@ -804,7 +807,7 @@ size: small
 ::: image
 src: photo/g/goya/goya_moscow3a.jpg
 position: center
-size: small
+size: medium
 :::
 
 :::
@@ -818,9 +821,10 @@ size: small
 
 ::: align
 position: center
-**Francis Goya in Moscow**
-:::
 
+**Francis Goya in Moscow**
+
+:::
 :::
 
 ::: column
@@ -828,7 +832,7 @@ position: center
 ::: image
 src: photo/g/goya/goya_inmoscow1.jpg
 position: center
-size: small
+size: medium
 caption: Francis Goya in Moscow
 :::
 
@@ -1069,10 +1073,12 @@ position: center
 
 ::: align
 position: center
+
 **Галерея инструментальной музыки.**\
 **Francis Goya**
 
 Grand Records, 2001
+
 :::
 
 :::
@@ -1082,7 +1088,7 @@ Grand Records, 2001
 ::: image
 src: photo/g/goya/goya_instrum.jpg
 position: center
-size: small
+size: medium
 :::
 
 :::
@@ -1129,10 +1135,8 @@ size: small
 
 :::
 
-::: align
-position: center
 ## ДРУГИЕ АЛЬБОМЫ
-:::
+
 
 ::: images
 columns: 2
@@ -1140,15 +1144,14 @@ columns: 2
 ::: image
 src: photo/g/goya/goya_carmina2a.jpg
 position: center
-size: small
-caption: Bahia Lady / Goya & Carmina **1990**
-size: small
+size: medium
+caption: Bahia Lady / Goya & Carmina 1990
 :::
 
 ::: image
 src: photo/g/goya/fr_goya1.jpg
 position: center
-size: small
+size: medium
 caption: Francis Goya
 :::
 
@@ -1162,14 +1165,14 @@ columns: 2
 ::: image
 src: photo/g/goya/goya_carmina4a.jpg
 position: center
-size: small
+size: medium
 caption: Festival Latino / Goya & Carmina 1994
 :::
 
 ::: image
 src: photo/g/goya/goya_gondwana1.jpg
 position: center
-size: small
+size: medium
 caption: Francis Goya / Gondwana
 :::
 
@@ -1183,14 +1186,14 @@ columns: 2
 ::: image
 src: photo/g/goya/goya_cleiderman.jpg
 position: center
-size: small
+size: medium
 caption: Together / Richard Clayderman & Francis Goya
 :::
 
 ::: image
 src: photo/g/goya/goya_.jpg
 position: center
-size: small
+size: medium
 caption: Maria Padilha
 :::
 

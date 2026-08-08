@@ -202,10 +202,7 @@ size: small
 
 :::
 
----
-
-### ***T***he Best of the L.A.G.Q
-
+### The Best of the L.A.G.Q
 ::: align
 position: center
 

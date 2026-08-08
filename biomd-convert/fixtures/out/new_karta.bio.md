@@ -16,6 +16,7 @@ frame: white
 Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запозданием.
 
 :::
+
 :::
 
 ::: nav
@@ -31,7 +32,7 @@ active: А Бартоли
 
 *Абреу* Зекинья
 
-| Композиция | Формат | &#128279; | &#128279; |
+| Название | Аудиоформат | Аудиоформат | Аудиоформат |
 | - | - | - | - |
 | Samba: Tico-Tico no Fuba | [MP3](pages/music/mp/tico-tico.mp3) | [MIDI(1)](pages/music/midi/ticoticonofuba.mid) | [MIDI(2)](pages/music/midi/tico_tico.mid) |
 | Табулатура (TablEdit) | — | [TEF](pages/music/tab/tef/Tico-Tico.tef) | — |
@@ -40,14 +41,14 @@ active: А Бартоли
 
 *Абреу* Сержиу и Эдуарду
 
-| Композиция | Формат |
+| Название | Аудиоформат |
 | - | - |
 | El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) | [WMA](pages/music/wma/abreuduo_albeniz.wma) |
 
 
 *Агуадо* Дионисио
 
-| Название произведения | Ноты (TAB) | MIDI |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | Eight Lessons | [TAB](pages/music/tab/da_8lz.txt) | — |
 | Etude in C | [TAB](pages/music/tab/da_etcz.txt) | — |
@@ -56,7 +57,7 @@ active: А Бартоли
 
 *Алаис* Хуан
 
-| Композиция | Ноты (TAB) | MIDI |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | La Regalona (Habanera) |  |  |
 | Ноты (.jpg ) | [\[ 1 \]](pages/music/scores/alais_regalona.jpg) | [MIDI](pages/music/midi/alais_regalona.mid) |
@@ -64,7 +65,7 @@ active: А Бартоли
 
 *Альбенис* Исаак
 
-| Произведение | Ноты (TAB) | Аудио (MIDI/WMA) |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | Celebre Serenata Espanola (Cadiz) - (arranged Miguel Llobet) | [TAB](pages/music/tab/iacadizz.txt) | — |
 | Cordoba - from Chants d'Espagne | [TAB](pages/music/tab/iacordz.txt) | — |
@@ -81,7 +82,7 @@ active: А Бартоли
 
 *Армик*
 
-| Название | Формат |
+| Название | Аудиоформат |
 | - | - |
 | Isle of the Sun | [MP3](pages/music/mp/arm_sun.mp3) |
 | Romantic Souls | [MP3](pages/music/mp/arm_souls.mp3) |
@@ -89,7 +90,7 @@ active: А Бартоли
 
 *Барриос Мангори* Агустин
 
-| Название произведения | Таблатура | MIDI / MP3 |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | Choro Da Saudade - Nostalgic Choro | [TAB](pages/music/tab/abmsaudz.txt) | [MIDI](pages/music/midi/abmsaud.mid) |
 | Contemplacion (Vals et Tremelo) | [TAB](pages/music/tab/abmcontz.txt) | — |
@@ -121,13 +122,13 @@ active: А Бартоли
 
 *Барруэко* Мануэль
 
-| Название произведения | Формат |
+| Название | Аудиоформат |
 | - | - |
 | Heitor Villa-Lobos - *Prelude No 3 in A Minor* | [WMA](pages/music/wma/lobos_prelud3.wma) |
 
 *Бартоли* Рене
 
-| Название | Табы | MIDI |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | Aubade | [TAB](pages/music/tab/rbaubad.txt) | — |
 | Romance | [TAB](pages/music/tab/rbromanc.txt) | [MIDI](pages/music/midi/rbromanc.mid) |
@@ -146,8 +147,6 @@ active: А Бартоли
 ::: align
 position: center
 
-[&#9658;](/#/karta2)
+[&#9654;](/#/karta2)
 
 :::
-
----

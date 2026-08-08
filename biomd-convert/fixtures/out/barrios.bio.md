@@ -26,7 +26,7 @@ caption: Агустин Барриос
 
 [1](#2)Другая транскрипция – Баррьос.
 
-*Подробнее см.:* "Барриос Мангори - жизнь и творчество" [&#128279;](/#/barrios1)
+*Подробнее см.:* "Барриос Мангори - жизнь и творчество" [/#/barrios1](/#/barrios1)
 
 ::: columns
 
@@ -78,7 +78,7 @@ caption: Barrios - CD (2)
 
 :::
 
-| Название | &#128279; | &#128279; |
+| Название | Аудиоформат | Аудиоформат |
 | - | - | - |
 | Choro Da Saudade - Nostalgic Choro | [TAB](music/tab/abmsaudz.txt) | [MIDI](music/midi/abmsaud.mid) |
 | Contemplacion (Vals et Tremelo) | [TAB](music/tab/abmcontz.txt) | — |
