@@ -27,19 +27,19 @@
     ]
   },
   "totals": {
-    "findings": 93,
+    "findings": 97,
     "alignmentRows": 278
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 46,
-      "documents": 13
+      "instances": 48,
+      "documents": 14
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 21,
-      "documents": 8
+      "instances": 23,
+      "documents": 9
     },
     {
       "class": "layout.lane.mismatch",
@@ -71,6 +71,29 @@
       }
     },
     {
+      "id": "7798cf8d",
+      "doc": "goya2",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[71]/heading[0]",
+      "producedLine": 1149,
+      "referenceLine": 1134,
+      "produced": "ДРУГИЕ АЛЬБОМЫ",
+      "reference": "ДРУГИЕ АЛЬБОМЫ",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "unknown",
+        "referenceProse": "unknown"
+      }
+    },
+    {
       "id": "304e2c1c",
       "doc": "goya2",
       "class": "layout.align.mismatch",
@@ -78,7 +101,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[72]/image[0]",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "produced": "Bahia Lady / Goya & Carmina 1990",
       "reference": "Bahia Lady / Goya & Carmina 1990",
@@ -101,7 +124,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[72]/image[1]",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -124,7 +147,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[0]",
-      "producedLine": 1173,
+      "producedLine": 1168,
       "referenceLine": 1162,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -147,7 +170,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[1]",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya / Gondwana",
@@ -170,7 +193,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[76]/image[0]",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1183,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -193,7 +216,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[76]/image[1]",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -209,6 +232,23 @@
       }
     },
     {
+      "id": "80b8b5b4",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[71]/heading[0]",
+      "producedLine": 1149,
+      "referenceLine": 1134,
+      "produced": "ДРУГИЕ АЛЬБОМЫ",
+      "reference": "ДРУГИЕ АЛЬБОМЫ",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
+      }
+    },
+    {
       "id": "c942f923",
       "doc": "goya2",
       "class": "layout.containment.mismatch",
@@ -216,7 +256,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[72]/image[0]",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "produced": "Bahia Lady / Goya & Carmina 1990",
       "reference": "Bahia Lady / Goya & Carmina 1990",
@@ -233,7 +273,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[72]/image[1]",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -250,7 +290,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[0]",
-      "producedLine": 1173,
+      "producedLine": 1168,
       "referenceLine": 1162,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994",
@@ -267,7 +307,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya / Gondwana",
@@ -284,7 +324,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[76]/image[0]",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1183,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "Together / Richard Clayderman & Francis Goya",
@@ -301,7 +341,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[76]/image[1]",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -505,7 +545,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[72]/image[1]",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "produced": "Francis Goya",
       "reference": "Francis Goya",
@@ -522,7 +562,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya / Gondwana",
@@ -539,7 +579,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[76]/image[1]",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha",
@@ -736,6 +776,46 @@
       "referenceLine": 170,
       "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
       "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
+      }
+    },
+    {
+      "id": "c43f9462",
+      "doc": "new_bach",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[7]/paragraph[0]",
+      "producedLine": 26,
+      "referenceLine": 29,
+      "produced": "Годы странствий (1703-08)",
+      "reference": "Годы странствий (1703-08)",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "54c9db23",
+      "doc": "new_bach",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[7]/paragraph[0]",
+      "producedLine": 26,
+      "referenceLine": 29,
+      "produced": "Годы странствий (1703-08)",
+      "reference": "Годы странствий (1703-08)",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
@@ -2297,10 +2377,10 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1153,
+      "producedLine": 1149,
       "referenceLine": 1134,
       "text": "ДРУГИЕ АЛЬБОМЫ",
-      "producedAlignment": "center",
+      "producedAlignment": "left",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": "-webkit-center",
       "sourceAlignment": "center",
@@ -2310,7 +2390,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "text": "Bahia Lady / Goya & Carmina 1990",
       "producedAlignment": "center",
@@ -2323,7 +2403,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "text": "Francis Goya",
       "producedAlignment": "center",
@@ -2336,7 +2416,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1173,
+      "producedLine": 1168,
       "referenceLine": 1162,
       "text": "Festival Latino / Goya & Carmina 1994",
       "producedAlignment": "center",
@@ -2349,7 +2429,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "text": "Francis Goya / Gondwana",
       "producedAlignment": "center",
@@ -2362,7 +2442,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1183,
       "text": "Together / Richard Clayderman & Francis Goya",
       "producedAlignment": "center",
@@ -2375,7 +2455,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "text": "Maria Padilha",
       "producedAlignment": "center",
@@ -2609,10 +2689,10 @@
     },
     {
       "doc": "new_bach",
-      "producedLine": 30,
+      "producedLine": 26,
       "referenceLine": 29,
       "text": "Годы странствий (1703-08)",
-      "producedAlignment": "center",
+      "producedAlignment": "left",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": "-webkit-center",
       "sourceAlignment": "center",
@@ -2622,7 +2702,7 @@
     },
     {
       "doc": "new_bach",
-      "producedLine": 162,
+      "producedLine": 157,
       "referenceLine": 161,
       "text": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] &#9658;",
       "producedAlignment": "right",
@@ -2635,7 +2715,7 @@
     },
     {
       "doc": "new_bach",
-      "producedLine": 167,
+      "producedLine": 162,
       "referenceLine": 168,
       "text": "Источник: Большая энциклопедия Кирилла и Мефодия 2000",
       "producedAlignment": "center",

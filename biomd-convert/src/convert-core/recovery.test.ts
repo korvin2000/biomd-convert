@@ -326,6 +326,32 @@ describe("outline", () => {
     });
   });
 
+  it("recovers a section label that follows a banner carrying its own words", async () => {
+    // The caption guard asks whether a picture stands above the label, and it
+    // has to mean a picture still looking for its words. `new_blackmore` sets
+    // each reprinted interview under a small table holding the paper's date and
+    // a linked masthead image; that block has already said what it is, and
+    // reading it as "a photograph above" cost the article below its heading.
+    const banner =
+      '<div align="center"><table border="0" width="80%"><tr>' +
+      '<td width="29%"><p>27 марта 2002 г.</p></td>' +
+      '<td width="71%"><a href="a.htm"><img src="photo/b/kp.jpg" width="294" height="34"></a></td>' +
+      "</tr></table></div>";
+    const out = await md(`${PROSE}${banner}<p class="t"><b>Гитарист "тяжелого" поведения</b></p>${PROSE}${PROSE}`);
+    expect(out).toMatch(/^## Гитарист "тяжелого" поведения$/mu);
+  });
+
+  it("false friend: a bare picture above a short line still makes it a caption", async () => {
+    // The other half of the same decision. A picture with no words of its own
+    // is one that has not been captioned yet, and the line under it is what
+    // captions it — which is why the guard exists at all.
+    const out = await md(
+      `${PROSE}<p><img src="photo/s/segovia.jpg" width="300" height="400"></p>` +
+        `<p align="center"><b>Андрес Сеговия в 1936 году</b></p>${PROSE}${PROSE}`,
+    );
+    expect(out).not.toMatch(/^## Андрес Сеговия в 1936 году$/mu);
+  });
+
   it("reads a run of one repeated ornament as the rule the author drew", async () => {
     // Cardinality, not typography: three of the same ornament and nothing else
     // in the block. `CLAUDE.md` invariant 4 puts drawing a separator outside

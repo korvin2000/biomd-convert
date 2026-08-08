@@ -421,7 +421,21 @@ function tableAncestors(el: LadomNode): number {
   return n;
 }
 
-/** True when the nearest preceding sibling with content shows a picture. */
+/**
+ * True when the nearest preceding sibling with content is a *bare* picture.
+ *
+ * The distinction this guard exists for is between a caption and a section
+ * label, and it turns on what precedes: a caption closes the picture above it,
+ * a label introduces the body below it. So the picture has to be one that is
+ * still looking for its words.
+ *
+ * A preceding block that carries a picture **and its own text** is not: it is
+ * a figure that has already said what it is, or a region of its own.
+ * `new_blackmore` sets each reprinted interview under a small table holding the
+ * paper's date and a linked masthead image, and reading that as "a photograph
+ * above" cost the article below it its heading — twice, on the two of seven
+ * interviews that happened to carry a banner.
+ */
 function followsImage(el: LadomNode): boolean {
   let cur: LadomNode | null = el;
   while (cur) {
@@ -430,7 +444,7 @@ function followsImage(el: LadomNode): boolean {
       const previous = siblings[i] as LadomNode;
       if (previous.kind === "text" && (previous.value ?? "").trim() === "") continue;
       if (previous.kind === "comment") continue;
-      if (previous.metrics.images > 0) return true;
+      if (previous.metrics.images > 0) return textOf(previous).trim() === "";
       if (previous.metrics.textLen > 0) return false;
     }
     // Nothing before it here; the picture may be the last thing in the block

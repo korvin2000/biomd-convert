@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T01:43:07.247Z",
+  "generated": "2026-08-08T01:50:24.352Z",
   "totals": {
-    "findings": 438,
-    "converterDefects": 256,
+    "findings": 440,
+    "converterDefects": 258,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
     "ambiguous": 95,
     "bySeverity": {
       "critical": 22,
-      "major": 227,
-      "minor": 189
+      "major": 228,
+      "minor": 190
     }
   },
   "perDocument": [
@@ -39,10 +39,10 @@
     },
     {
       "doc": "goya2",
-      "findings": 49,
-      "converterDefects": 43,
+      "findings": 50,
+      "converterDefects": 44,
       "critical": 0,
-      "major": 19,
+      "major": 20,
       "minor": 30
     },
     {
@@ -63,10 +63,10 @@
     },
     {
       "doc": "new_bach",
-      "findings": 7,
-      "converterDefects": 1,
+      "findings": 8,
+      "converterDefects": 2,
       "critical": 1,
-      "major": 2,
+      "major": 3,
       "minor": 4
     },
     {
@@ -74,8 +74,8 @@
       "findings": 12,
       "converterDefects": 8,
       "critical": 0,
-      "major": 6,
-      "minor": 6
+      "major": 5,
+      "minor": 7
     },
     {
       "doc": "new_dyens",
@@ -293,6 +293,30 @@
       }
     },
     {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 7,
+      "documents": [
+        "goya2",
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 84,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[71]",
+        "produced": null,
+        "reference": "ДРУГИЕ АЛЬБОМЫ"
+      }
+    },
+    {
       "class": "image.spurious",
       "severity": "major",
       "instances": 7,
@@ -317,27 +341,33 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "instances": 6,
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 32,
       "documents": [
-        "goya2",
         "new_blackmore",
         "new_geyzel04",
-        "tarrega"
+        "new_lagq2",
+        "new_lendle2",
+        "news",
+        "news_2007",
+        "segovia",
+        "segovia1",
+        "tarrega",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 6,
+        "converter-defect": 7,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
+        "reference-inconsistency": 25,
         "ambiguous": 0
       },
-      "rank": 72,
+      "rank": 70,
       "example": {
-        "doc": "goya2",
-        "path": "/align[71]/heading[0]",
-        "produced": "ДРУГИЕ АЛЬБОМЫ",
-        "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
+        "doc": "new_blackmore",
+        "path": "/heading[70]/text",
+        "produced": "(none)",
+        "reference": "strong:О вкусах не спорят"
       }
     },
     {
@@ -361,36 +391,6 @@
         "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
         "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
         "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
-      }
-    },
-    {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 31,
-      "documents": [
-        "new_blackmore",
-        "new_geyzel04",
-        "new_lagq2",
-        "new_lendle2",
-        "news",
-        "news_2007",
-        "segovia",
-        "segovia1",
-        "tarrega",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 25,
-        "ambiguous": 0
-      },
-      "rank": 60,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/heading[15]/text",
-        "produced": "(none)",
-        "reference": "strong:*T"
       }
     },
     {
@@ -460,29 +460,6 @@
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
-      }
-    },
-    {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 54,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/align[84]",
-        "produced": null,
-        "reference": "Главы 8-9 | Владимир Вавилов"
       }
     },
     {
@@ -576,6 +553,29 @@
         "path": "/align[43]/paragraph[1]/link[0]",
         "produced": "ДИСКОГРАФИЯ",
         "reference": "www.buap.mx/cultura"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-heading2",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "new_blackmore",
+        "new_geyzel04",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 36,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/heading[10]",
+        "produced": "Ричи Блэкмор: «Вcтречайте, скоро буду!»",
+        "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!» — at /paragraph[11]"
       }
     },
     {
@@ -787,6 +787,28 @@
       }
     },
     {
+      "class": "heading.containment",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "goya2",
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[71]/heading[0]",
+        "produced": "ДРУГИЕ АЛЬБОМЫ",
+        "reference": "ДРУГИЕ АЛЬБОМЫ — produced at /heading[73]"
+      }
+    },
+    {
       "class": "heading.missing.caption-echo",
       "severity": "major",
       "instances": 2,
@@ -916,6 +938,28 @@
         "path": "/columns[10]/column[0]/paragraph[1]",
         "produced": "09. Promise Me",
         "reference": null
+      }
+    },
+    {
+      "class": "retyped.heading2-to-align",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_bach",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_bach",
+        "path": "/align[7]",
+        "produced": "Годы странствий (1703-08)",
+        "reference": "Годы странствий (1703-08) — at /heading[8]"
       }
     },
     {
@@ -1345,27 +1389,6 @@
       }
     },
     {
-      "class": "heading.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "kiselev"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "kiselev",
-        "path": "/align[13]/heading[0]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
-      }
-    },
-    {
       "class": "image.missing",
       "severity": "major",
       "instances": 1,
@@ -1636,27 +1659,6 @@
         "path": "/align[0]",
         "produced": "Техника Андреса Сеговии",
         "reference": "Техника Андреса Сеговии — at /heading[1]"
-      }
-    },
-    {
-      "class": "retyped.heading2-to-align",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news_2007",
-        "path": "/align[1]",
-        "produced": "Архив новостей за 2007 год",
-        "reference": "Архив новостей за 2007 год — at /heading[2]"
       }
     },
     {
@@ -3290,17 +3292,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4ed4d9fc",
+      "id": "88d9e0ac",
       "doc": "goya2",
-      "class": "retyped.paragraph-to-heading2",
+      "class": "align.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
+      "op": "delete",
+      "path": "/align[71]",
+      "producedLine": null,
+      "referenceLine": 1132,
+      "produced": null,
+      "reference": "ДРУГИЕ АЛЬБОМЫ",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "15aa544e",
+      "doc": "goya2",
+      "class": "heading.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
       "path": "/align[71]/heading[0]",
-      "producedLine": 1153,
+      "producedLine": 1149,
       "referenceLine": 1134,
       "produced": "ДРУГИЕ АЛЬБОМЫ",
-      "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]",
+      "reference": "ДРУГИЕ АЛЬБОМЫ — produced at /heading[73]",
       "verdict": "converter-defect"
     },
     {
@@ -3325,7 +3341,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[72]/image[0]",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "produced": "Bahia Lady / Goya & Carmina 1990",
       "reference": "Bahia Lady / Goya & Carmina **1990** — produced at /image[73]",
@@ -3339,7 +3355,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/images[72]/image[0]@caption",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "produced": "caption: Bahia Lady / Goya & Carmina 1990",
       "reference": "caption: Bahia Lady / Goya & Carmina **1990**",
@@ -3353,7 +3369,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[72]/image[0]@size",
-      "producedLine": 1157,
+      "producedLine": 1152,
       "referenceLine": 1140,
       "produced": "size: medium",
       "reference": "size: small",
@@ -3367,7 +3383,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[72]/image[1]",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "produced": "Francis Goya",
       "reference": "Francis Goya — produced at /image[73]",
@@ -3381,7 +3397,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[72]/image[1]@size",
-      "producedLine": 1164,
+      "producedLine": 1159,
       "referenceLine": 1148,
       "produced": "size: medium",
       "reference": "size: small",
@@ -3409,7 +3425,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[0]",
-      "producedLine": 1173,
+      "producedLine": 1168,
       "referenceLine": 1162,
       "produced": "Festival Latino / Goya & Carmina 1994",
       "reference": "Festival Latino / Goya & Carmina 1994 — produced at /image[75]",
@@ -3423,7 +3439,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[0]@size",
-      "producedLine": 1173,
+      "producedLine": 1168,
       "referenceLine": 1162,
       "produced": "size: medium",
       "reference": "size: small",
@@ -3437,7 +3453,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[74]/image[1]",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "produced": "Francis Goya / Gondwana",
       "reference": "Francis Goya / Gondwana — produced at /image[75]",
@@ -3451,7 +3467,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[74]/image[1]@size",
-      "producedLine": 1180,
+      "producedLine": 1175,
       "referenceLine": 1169,
       "produced": "size: medium",
       "reference": "size: small",
@@ -3465,7 +3481,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[76]",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": "Together / Richard Clayderman & Francis Goya",
       "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]",
@@ -3479,7 +3495,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/images[76]@caption",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": "caption: Together / Richard Clayderman & Francis Goya",
       "reference": null,
@@ -3493,7 +3509,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]@columns",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": null,
       "reference": "columns: 2",
@@ -3507,7 +3523,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[76]@position",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": "position: center",
       "reference": null,
@@ -3521,7 +3537,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[76]@size",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": "size: medium",
       "reference": null,
@@ -3535,7 +3551,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/images[76]@src",
-      "producedLine": 1189,
+      "producedLine": 1184,
       "referenceLine": 1180,
       "produced": "src: photo/g/goya/goya_cleiderman.jpg",
       "reference": null,
@@ -3563,7 +3579,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/images[76]/image[1]",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "produced": "Maria Padilha",
       "reference": "Maria Padilha — produced at /image[77]",
@@ -3577,7 +3593,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/images[76]/image[1]@size",
-      "producedLine": 1196,
+      "producedLine": 1191,
       "referenceLine": 1190,
       "produced": "size: medium",
       "reference": "size: small",
@@ -4494,6 +4510,20 @@
       "verdict": "ambiguous"
     },
     {
+      "id": "df61e09d",
+      "doc": "new_bach",
+      "class": "retyped.heading2-to-align",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[7]",
+      "producedLine": 26,
+      "referenceLine": 26,
+      "produced": "Годы странствий (1703-08)",
+      "reference": "Годы странствий (1703-08) — at /heading[8]",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "20def884",
       "doc": "new_bach",
       "class": "table.header.cell",
@@ -4501,7 +4531,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[26]/header[0]",
-      "producedLine": 71,
+      "producedLine": 66,
       "referenceLine": 70,
       "produced": "",
       "reference": "Произведение — column 0",
@@ -4515,7 +4545,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[26]/header[1]",
-      "producedLine": 71,
+      "producedLine": 66,
       "referenceLine": 70,
       "produced": "TAB",
       "reference": "Табулатура — column 1",
@@ -4529,7 +4559,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/align[28]/paragraph[0]",
-      "producedLine": 162,
+      "producedLine": 157,
       "referenceLine": 161,
       "produced": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] /#/bach_lute",
       "reference": "См. также: [ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] ► — 1 hard breaks, reference has 0",
@@ -4543,7 +4573,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/align[28]/paragraph[0]",
-      "producedLine": 162,
+      "producedLine": 157,
       "referenceLine": 161,
       "produced": "*См. также:* \\[ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] [/#/bach\\_lute](/#/bach_lute)",
       "reference": "*См. также:* \\[ О ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ] [&#9658;](/#/bach_lute)",
@@ -4557,7 +4587,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/align[28]/paragraph[0]/link[0]",
-      "producedLine": 162,
+      "producedLine": 157,
       "referenceLine": 161,
       "produced": "/#/bach_lute",
       "reference": "►",
@@ -4718,17 +4748,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "f03d2a7e",
+      "id": "204bfbf9",
       "doc": "new_blackmore",
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
+      "class": "emphasis.span",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/heading[70]",
+      "path": "/heading[70]/text",
       "producedLine": 243,
       "referenceLine": 228,
-      "produced": "О вкусах не спорят",
-      "reference": "О вкусах не спорят — at /paragraph[71]",
+      "produced": "(none)",
+      "reference": "strong:О вкусах не спорят",
       "verdict": "converter-defect"
     },
     {
