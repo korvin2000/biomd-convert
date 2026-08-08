@@ -67,21 +67,21 @@ the guide maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 
 ---
 
-## 3. Questions for the reference author — batched, not yet asked
+## 3. Answered by the reference author — do not re-investigate
 
-Both affect a reusable rule and several documents, so `CLAUDE.md` §4 says ask rather than decide.
-
-1. **Does a recovered centred section label keep its `::: align`?** One source shape,
-   `<p align="center">SHORT LABEL</p>` above its own body, is written three ways across two
-   references: `new_bach` gives five of them a bare `##` and the sixth an `::: align` with no
-   heading at all; `goya2` gives `ДРУГИЕ АЛЬБОМЫ` an `::: align` **containing** the `##`. The
-   converter emits a bare `##` for all of them. Same construct as the split headline, so the answer
-   is a rule. PROGRESS §24.5.
-2. **`new_blackmore`'s masthead split point.** The reference writes `# Ричи Блэкмор Ritchie` /
-   `## Blackmore & Blackmore's Night`. Measured in the browser, the source renders `Ричи Блэкмор` at
-   26.7 px and `Ritchie Blackmore & Blackmore's Night` at 16 px as two line boxes — the reference
-   moves one word across a boundary the source draws twice. Recorded as reference-inconsistency;
-   two minor findings remain. PROGRESS §24.5.
+1. **A recovered centred section label gets a bare `##`; the centring is dropped.** *Ruled
+   2026-08-08.* One source shape, `<p align="center">SHORT LABEL</p>` above its own body, was
+   written three ways across two references (`new_bach` five bare `##` and one `::: align` with no
+   heading; `goya2` an `::: align` containing the `##`). The heading level carries the structure;
+   the `::: align` wrapper is for a **split headline**, where it is what makes consecutive `#` lines
+   one heading, and for nothing else. The converter already does this, so **no code changed**.
+   `goya2`'s `align.missing` + `heading.containment` at `/align[71]` and `new_bach`'s
+   `retyped.heading2-to-align` are `reference-inconsistency`, not targets. PROGRESS §24.5.
+2. **`new_blackmore`'s masthead split point** — settled deterministically, not by asking. The
+   reference writes `# Ричи Блэкмор Ritchie` / `## Blackmore & Blackmore's Night`; measured in the
+   browser the source renders `Ричи Блэкмор` at 26.7 px and `Ritchie Blackmore & Blackmore's Night`
+   at 16 px as two line boxes, so the reference moves one word across a boundary the source draws
+   twice. Reference-inconsistency; two minor `heading.content.edited` remain. PROGRESS §24.5.
 
 ## 4. Open defect classes — *measured* 2026-08-08 over 22 documents
 
@@ -91,7 +91,7 @@ Both affect a reusable rule and several documents, so `CLAUDE.md` §4 says ask r
 | 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
 | 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame`/`columns` |
 | 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts` |
-| 84 | `align.missing` | 7 | 4 | one is question 1 above |
+| 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§3.1) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 63 | `paragraph.containment` | 7 | 3 | |
 | 60 | `break.missing` | 10 | **6** | widest in the ledger; the entry-separator family |

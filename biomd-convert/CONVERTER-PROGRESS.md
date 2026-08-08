@@ -2995,6 +2995,16 @@ centred section label **keeps its `::: align`**, as `goya2` has it. It is the sa
 construct the masthead rule already emits for a split headline, so the answer is
 a reusable rule, not a per-document choice.
 
+**Answered by the author, 2026-08-08: a bare `##`, and the centring is dropped.**
+The heading level carries the structure and `BioMD-Reference.md` §2 positions a
+heading by its own construct; the wrapper is for a *split headline*, where it is
+what makes consecutive `#` lines one heading, and for nothing else. So the
+converter's current output is authoritative for all three cases and **no code
+changes**. The two findings §24.4 recorded as open on `goya2` —
+`align.missing` at `/align[71]` and `heading.containment` at
+`/align[71]/heading[0]` — are `reference-inconsistency`, verdict 3, and are not
+targets. Do not re-investigate.
+
 Second, smaller: `new_blackmore`'s reference splits its masthead
 `# Ричи Блэкмор Ritchie` / `## Blackmore & Blackmore's Night`. Measured in the
 browser, the source renders `Ричи Блэкмор` at 26.7 px and `Ritchie Blackmore &
