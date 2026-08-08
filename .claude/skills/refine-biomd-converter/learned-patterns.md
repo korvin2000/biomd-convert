@@ -94,6 +94,11 @@ afterwards.
 Long-running commands: `npm run build` before `sh bench/run.sh` before `diff`/`l3`, always in that order.
 `bench/out/` is a generated directory and is not tracked.
 
+**`eval` scores whatever is already in `bench/out/`; only `bench/run.sh` reconverts.** So the cheap way to
+re-read a per-document table after a full run is `eval`, and the expensive mistake is using it to compare two
+*builds* — stash the change, rebuild, and `eval` without re-running the bench and both sides report the
+newer output. One A/B in this campaign came back "no difference" for exactly that reason.
+
 ## A class that names one document is usually an instrument, not a rule
 
 Three of the five mechanisms in `CONVERTER-PROGRESS.md` §24 had this shape: a defect that appeared
