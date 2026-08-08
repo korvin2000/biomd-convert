@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T04:28:36.410Z",
+  "generated": "2026-08-08T04:54:38.057Z",
   "totals": {
-    "findings": 429,
-    "converterDefects": 250,
+    "findings": 413,
+    "converterDefects": 238,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 87,
+    "referenceInconsistencies": 83,
     "ambiguous": 92,
     "bySeverity": {
-      "critical": 20,
-      "major": 220,
-      "minor": 189
+      "critical": 15,
+      "major": 211,
+      "minor": 187
     }
   },
   "perDocument": [
@@ -119,11 +119,11 @@
     },
     {
       "doc": "new_lendle2",
-      "findings": 29,
-      "converterDefects": 20,
-      "critical": 6,
-      "major": 15,
-      "minor": 8
+      "findings": 13,
+      "converterDefects": 8,
+      "critical": 1,
+      "major": 6,
+      "minor": 6
     },
     {
       "doc": "new_rechin4",
@@ -218,7 +218,7 @@
     {
       "class": "emphasis.span",
       "severity": "minor",
-      "instances": 34,
+      "instances": 36,
       "documents": [
         "new_blackmore",
         "new_geyzel04",
@@ -232,12 +232,12 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 9,
+        "converter-defect": 10,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 25,
+        "reference-inconsistency": 26,
         "ambiguous": 0
       },
-      "rank": 90,
+      "rank": 100,
       "example": {
         "doc": "new_blackmore",
         "path": "/heading[10]/text",
@@ -271,31 +271,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "new_lagq2",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 90,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/align[16]",
-        "produced": "[Назад] [Фото]",
-        "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
-      }
-    },
-    {
       "class": "image.size.value",
       "severity": "minor",
       "instances": 21,
@@ -320,30 +295,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "goya2",
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 84,
-      "example": {
-        "doc": "goya2",
-        "path": "/align[71]",
-        "produced": null,
-        "reference": "ДРУГИЕ АЛЬБОМЫ"
-      }
-    },
-    {
       "class": "image.spurious",
       "severity": "major",
       "instances": 7,
@@ -365,29 +316,6 @@
         "path": "/images[85]/image[0]",
         "produced": "Главы 8-9",
         "reference": null
-      }
-    },
-    {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "kiselev",
-        "new_lendle2",
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 63,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -439,6 +367,30 @@
       }
     },
     {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 5,
+      "documents": [
+        "goya2",
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 60,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[71]",
+        "produced": null,
+        "reference": "ДРУГИЕ АЛЬБОМЫ"
+      }
+    },
+    {
       "class": "image.src.value",
       "severity": "major",
       "instances": 19,
@@ -457,6 +409,53 @@
         "path": "/image[7]@src",
         "produced": "src: main/magazines/IGvL_2020_2021.jpg",
         "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "new_lagq2",
+        "news",
+        "pavlov_azancheev",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 48,
+      "example": {
+        "doc": "new_lagq2",
+        "path": "/align[16]",
+        "produced": "[Назад] [Фото]",
+        "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
+      }
+    },
+    {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 5,
+      "documents": [
+        "kiselev",
+        "new_lendle2",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 45,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
+        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -606,6 +605,29 @@
       }
     },
     {
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "new_lendle2",
+        "news",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 27,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]/paragraph[0]",
+        "produced": null,
+        "reference": "frame: white"
+      }
+    },
+    {
       "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "instances": 6,
@@ -692,27 +714,6 @@
         "path": "/paragraph[17]",
         "produced": "Music by:",
         "reference": null
-      }
-    },
-    {
-      "class": "frame.moved",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "new_lendle2"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 15,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[7]",
-        "produced": "Agustin Barrios Mangore",
-        "reference": "frame: white align center Agustin Barrios Mangore — produced at /align[8]"
       }
     },
     {
@@ -888,28 +889,6 @@
         "path": "/quote[2]/paragraph[0]",
         "produced": null,
         "reference": "\"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время обучения в Академии Киджана в моем классе добился огромных успехов в ов…"
-      }
-    },
-    {
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "news",
-        "path": "/frame[34]/paragraph[2]",
-        "produced": null,
-        "reference": "Виктор Михайлович ЕФРЕМОВ"
       }
     },
     {
@@ -1171,27 +1150,6 @@
       }
     },
     {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 5,
-      "documents": [
-        "new_lendle2"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[7]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
       "class": "image.caption.content.edited",
       "severity": "minor",
       "instances": 4,
@@ -1296,6 +1254,27 @@
         "path": "/columns[20]",
         "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "frame.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]",
+        "produced": "Heitor Villa-Lobos",
+        "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]"
       }
     },
     {
@@ -1783,6 +1762,27 @@
       }
     },
     {
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]@position",
+        "produced": "position: center",
+        "reference": null
+      }
+    },
+    {
       "class": "image.link.spurious",
       "severity": "minor",
       "instances": 1,
@@ -2052,29 +2052,6 @@
       }
     },
     {
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "instances": 8,
-      "documents": [
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 8,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/align[84]/paragraph[0]",
-        "produced": null,
-        "reference": "Главы 8-9 | Владимир Вавилов"
-      }
-    },
-    {
       "class": "paragraph.spurious.in-break-run",
       "severity": "major",
       "instances": 6,
@@ -2137,6 +2114,29 @@
         "path": "/frame[47]/align[1]/paragraph[0]",
         "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
         "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks"
+      }
+    },
+    {
+      "class": "paragraph.missing.unattested",
+      "severity": "critical",
+      "instances": 3,
+      "documents": [
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 3,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/align[84]/paragraph[0]",
+        "produced": null,
+        "reference": "Главы 8-9 | Владимир Вавилов"
       }
     },
     {
@@ -5539,80 +5539,10 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/image[17]",
-      "producedLine": 208,
+      "producedLine": 228,
       "referenceLine": null,
       "produced": "",
       "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "58f40ad8",
-      "doc": "new_lendle2",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[2]",
-      "producedLine": 5,
-      "referenceLine": 5,
-      "produced": "Variations capricieuses",
-      "reference": "frame: white align center Variations capricieuses — produced at /align[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ce9086fd",
-      "doc": "new_lendle2",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[2]@position",
-      "producedLine": 5,
-      "referenceLine": 5,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "576f7eea",
-      "doc": "new_lendle2",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[2]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 6,
-      "produced": null,
-      "reference": "frame: white",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "aa3d836a",
-      "doc": "new_lendle2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[2]/align[1]",
-      "producedLine": null,
-      "referenceLine": 8,
-      "produced": null,
-      "reference": "Variations capricieuses",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "aae39264",
-      "doc": "new_lendle2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[2]/align[1]/paragraph[0]",
-      "producedLine": 8,
-      "referenceLine": 11,
-      "produced": "Variations capricieuses",
-      "reference": "Variations capricieuses — produced at /frame[2]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -5623,81 +5553,11 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[2]/align[1]/paragraph[0]",
-      "producedLine": 8,
+      "producedLine": 11,
       "referenceLine": 11,
       "produced": "(none)",
       "reference": "strong:*Variations capricieuses",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "1fd85b85",
-      "doc": "new_lendle2",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[4]",
-      "producedLine": 40,
-      "referenceLine": 44,
-      "produced": "Curiosities & Favourites",
-      "reference": "frame: white align center Curiosities & Favourites — produced at /align[5]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "edf03fa7",
-      "doc": "new_lendle2",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[4]@position",
-      "producedLine": 40,
-      "referenceLine": 44,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7ca54210",
-      "doc": "new_lendle2",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[4]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 45,
-      "produced": null,
-      "reference": "frame: white",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "c5e08efb",
-      "doc": "new_lendle2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[4]/align[1]",
-      "producedLine": null,
-      "referenceLine": 47,
-      "produced": null,
-      "reference": "Curiosities & Favourites",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "85ab2cc9",
-      "doc": "new_lendle2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[4]/align[1]/paragraph[0]",
-      "producedLine": 43,
-      "referenceLine": 50,
-      "produced": "Curiosities & Favourites",
-      "reference": "Curiosities & Favourites — produced at /frame[4]/paragraph[2]",
-      "verdict": "converter-defect"
     },
     {
       "id": "1643ffba",
@@ -5707,66 +5567,24 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[4]/align[1]/paragraph[0]",
-      "producedLine": 43,
+      "producedLine": 51,
       "referenceLine": 50,
       "produced": "(none)",
       "reference": "strong:*Curiosities & Favourites",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "0e0f7fad",
+      "id": "45e29d40",
       "doc": "new_lendle2",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[7]",
-      "producedLine": 86,
-      "referenceLine": 94,
-      "produced": "Agustin Barrios Mangore",
-      "reference": "frame: white align center Agustin Barrios Mangore — produced at /align[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "42cdb090",
-      "doc": "new_lendle2",
-      "class": "frame.position.spurious",
+      "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[7]@position",
-      "producedLine": 86,
-      "referenceLine": 94,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ffed9bdf",
-      "doc": "new_lendle2",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[7]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 95,
-      "produced": null,
-      "reference": "frame: white",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "12fe648d",
-      "doc": "new_lendle2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[7]/align[1]",
-      "producedLine": 89,
-      "referenceLine": 97,
-      "produced": "Agustin Barrios Mangore",
-      "reference": "Agustin Barrios Mangore — at /frame[7]/paragraph[2]",
+      "path": "/frame[7]/align[1]/paragraph[0]",
+      "producedLine": 102,
+      "referenceLine": 100,
+      "produced": "(none)",
+      "reference": "strong:*Agustin Barrios Mangore",
       "verdict": "converter-defect"
     },
     {
@@ -5777,7 +5595,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[10]",
-      "producedLine": 136,
+      "producedLine": 151,
       "referenceLine": 148,
       "produced": "Heitor Villa-Lobos",
       "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]",
@@ -5791,25 +5609,25 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/frame[10]@position",
-      "producedLine": 136,
+      "producedLine": 151,
       "referenceLine": 148,
       "produced": "position: center",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "2c0eddc3",
+      "id": "03e81e02",
       "doc": "new_lendle2",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "evidence": "structure",
       "op": "delete",
       "path": "/frame[10]/paragraph[0]",
       "producedLine": null,
       "referenceLine": 149,
       "produced": null,
       "reference": "frame: white",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "d5bbb904",
@@ -5833,7 +5651,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 139,
+      "producedLine": 154,
       "referenceLine": 154,
       "produced": "Heitor Villa-Lobos",
       "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]",
@@ -5847,67 +5665,25 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 139,
+      "producedLine": 154,
       "referenceLine": 154,
       "produced": "(none)",
       "reference": "strong:*Heitor Villa-Lobos",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "f8f4480f",
+      "id": "1e1570b4",
       "doc": "new_lendle2",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[13]",
-      "producedLine": 169,
-      "referenceLine": 185,
-      "produced": "Spanish Guitar Music",
-      "reference": "frame: white align center Spanish Guitar Music — produced at /align[14]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e76c621d",
-      "doc": "new_lendle2",
-      "class": "frame.position.spurious",
+      "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[13]@position",
-      "producedLine": 169,
-      "referenceLine": 185,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ad29ed94",
-      "doc": "new_lendle2",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[13]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 186,
-      "produced": null,
-      "reference": "frame: white",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "8ec23c97",
-      "doc": "new_lendle2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[13]/align[1]",
-      "producedLine": 172,
-      "referenceLine": 188,
-      "produced": "Spanish Guitar Music",
-      "reference": "Spanish Guitar Music — at /frame[13]/paragraph[2]",
-      "verdict": "converter-defect"
+      "path": "/frame[13]/align[1]/paragraph[0]",
+      "producedLine": 190,
+      "referenceLine": 191,
+      "produced": "(none)",
+      "reference": "strong:*Spanish Guitar Music",
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "5f76da58",

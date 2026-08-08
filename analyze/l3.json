@@ -27,13 +27,13 @@
     ]
   },
   "totals": {
-    "findings": 95,
+    "findings": 92,
     "alignmentRows": 279
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 47,
+      "instances": 43,
       "documents": 14
     },
     {
@@ -48,8 +48,8 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 10,
-      "documents": 4
+      "instances": 11,
+      "documents": 5
     }
   ],
   "findings": [
@@ -907,57 +907,6 @@
       }
     },
     {
-      "id": "e9df8c26",
-      "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[2]/align[1]/paragraph[0]",
-      "producedLine": 8,
-      "referenceLine": 11,
-      "produced": "Variations capricieuses",
-      "reference": "Variations capricieuses",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "04588a0f",
-      "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[4]/align[1]/paragraph[0]",
-      "producedLine": 43,
-      "referenceLine": 50,
-      "produced": "Curiosities & Favourites",
-      "reference": "Curiosities & Favourites",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "b701a137",
-      "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[7]/align[1]/paragraph[0]",
-      "producedLine": 89,
-      "referenceLine": 100,
-      "produced": "Agustin Barrios Mangore",
-      "reference": "Agustin Barrios Mangore",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
       "id": "8da6cbf0",
       "doc": "new_lendle2",
       "class": "layout.containment.mismatch",
@@ -965,7 +914,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 139,
+      "producedLine": 154,
       "referenceLine": 154,
       "produced": "Heitor Villa-Lobos",
       "reference": "Heitor Villa-Lobos",
@@ -975,20 +924,20 @@
       }
     },
     {
-      "id": "46f6b8c1",
+      "id": "b65c043a",
       "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
       "evidence": "structure",
       "op": "move",
-      "path": "/frame[13]/align[1]/paragraph[0]",
-      "producedLine": 172,
-      "referenceLine": 191,
-      "produced": "Spanish Guitar Music",
-      "reference": "Spanish Guitar Music",
+      "path": "/frame[10]/paragraph[0]",
+      "producedLine": 185,
+      "referenceLine": 149,
+      "produced": "frame: white",
+      "reference": "frame: white",
       "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "frame>align"
+        "producedRank": 20,
+        "referenceRank": 16
       }
     },
     {
@@ -3962,7 +3911,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 8,
+      "producedLine": 11,
       "referenceLine": 11,
       "text": "Variations capricieuses",
       "producedAlignment": "center",
@@ -3975,7 +3924,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 16,
+      "producedLine": 21,
       "referenceLine": 20,
       "text": "W. Lendle CD's - Variations capricieuses",
       "producedAlignment": "center",
@@ -3988,7 +3937,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 43,
+      "producedLine": 51,
       "referenceLine": 50,
       "text": "Curiosities & Favourites",
       "producedAlignment": "center",
@@ -4001,7 +3950,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 53,
+      "producedLine": 63,
       "referenceLine": 61,
       "text": "W. Lendle CD's - Curiosities & Favourites",
       "producedAlignment": "center",
@@ -4014,7 +3963,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 89,
+      "producedLine": 102,
       "referenceLine": 100,
       "text": "Agustin Barrios Mangore",
       "producedAlignment": "center",
@@ -4027,7 +3976,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 99,
+      "producedLine": 114,
       "referenceLine": 111,
       "text": "W. Lendle CD's - Agustin Barrios Mangore",
       "producedAlignment": "center",
@@ -4040,7 +3989,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 139,
+      "producedLine": 154,
       "referenceLine": 154,
       "text": "Heitor Villa-Lobos",
       "producedAlignment": "center",
@@ -4053,7 +4002,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 149,
+      "producedLine": 164,
       "referenceLine": 165,
       "text": "W. Lendle CD's - Heitor Villa-Lobos",
       "producedAlignment": "center",
@@ -4066,7 +4015,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 172,
+      "producedLine": 190,
       "referenceLine": 191,
       "text": "Spanish Guitar Music",
       "producedAlignment": "center",
@@ -4079,7 +4028,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 182,
+      "producedLine": 202,
       "referenceLine": 202,
       "text": "W. Lendle CD's - Spanish Guitar Music",
       "producedAlignment": "center",

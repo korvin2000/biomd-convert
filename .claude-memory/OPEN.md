@@ -3,24 +3,25 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after PROGRESS §25 and the §26 adjudication. Facts marked
+Last touched **2026-08-08**, after PROGRESS §27. Facts marked
 *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. **Two mechanisms accepted this iteration** (PROGRESS
-§25), one commit each, all four rungs improved or held, no document regressed.
+Reference-guided refinement, 22 documents. **One mechanism accepted this iteration** (PROGRESS
+§27) after cheap triage downgraded four of the five top-ranked classes. All four rungs improved;
+`new_lendle2` is the only document that moved.
 
-**Current state, *measured* 2026-08-08 (PROGRESS §25):**
+**Current state, *measured* 2026-08-08 (PROGRESS §27):**
 
 | rung | value |
 |---|---|
-| L0 | **423 tests**, typecheck clean, 0 FAILED |
-| L1 | **93.1 %**, clean share 13.6 % |
-| L2 | **429 findings — 250 converter-defect** · 92 ambiguous · 87 reference-inconsistency |
-| L3 | **95 findings** (10 critical), identity 0, deterministic |
+| L0 | **424 tests**, typecheck clean, 0 FAILED |
+| L1 | **93.2 %**, clean share 13.6 % |
+| L2 | **413 findings — 238 converter-defect** · 92 ambiguous · 83 reference-inconsistency |
+| L3 | **92 findings** (11 critical), identity 0, deterministic |
 | validator | 28 errors, all `table-header-empty` — PROGRESS §21.4 |
 
 That is the floor. Nothing accepted from here may regress it.
@@ -31,22 +32,39 @@ That is the floor. Nothing accepted from here may regress it.
 > it. **`corpus scan` is still required after a fresh clone** — §24.4 changed the chrome
 > fingerprint and a cached `bench/corpus/corpus-profile.json` from before it makes `news` regress.
 
-**Next: `emphasis.span`** — 34 instances / 10 documents, the widest reach left, but **only 9 are
-converter-defect**; confirm that split on two or three instances before any survey work, it is the
-§14.1 shape.
+**Next: go document-first, not class-first.** `news` (45 defects) and `goya2` (44) are a third of
+the whole ledger and neither has ever been attacked *as a document*. Enumerate one of them by node
+path, not by class, and look for the shared container defect — that is exactly how §27.2 found
+`new_lendle2`'s missing frame, which took it from third-worst to mid-table in one change.
 
-Three classes are now **off the queue and must not be scored**: `retyped.paragraph-to-lead` (author
-ruling, §26.2 — visual-only in *both* directions), `image.size.value` (§25.4 — not a threshold, the
-calibration table is recorded there), and 7 of `break.missing`'s 10 instances (§25.3; only
-`new_bach` ×1 and `segovia` ×1 remain unexamined).
+**Downgraded in §27.1, do not take on rank alone:** `emphasis.span` (verdicts flip on identical
+evidence across documents; 25 of 34 already reference-inconsistency) · `image.spurious` (five
+different reference treatments of one source shape) · `align.missing`,
+`retyped.paragraph-to-align`, `paragraph.containment` (**shadow classes** — they fire at the same
+node paths as the missing container that causes them, and outrank their own cause).
 
-> **The rank column measures what an instrument noticed, not what work is available.** Three of the
-> last four classes taken from the top of the queue were ceilings, instrument artefacts or several
-> mechanisms wearing one name. Adjudicate two or three instances *before* surveying.
+Off the queue entirely: `retyped.paragraph-to-lead` (author ruling §26.2), `image.size.value`
+(§25.4), 7 of `break.missing`'s 10 (§25.3).
+
+> **The rank column measures what an instrument noticed, not what work is available.** Four of the
+> last five classes taken from the top were ceilings, shadows or several mechanisms wearing one
+> name. §27 spent twenty minutes triaging five classes and found the mechanism worth building at
+> **rank 15**. Triage 2–3 instances *before* surveying, always.
 
 ---
 
 ## 2. What this iteration settled
+
+### 2.0 A panel drawn with a background tint is a frame
+
+`new_lendle2` writes `border: 1 solid #D5A96F` on five album panels — **unitless**, so Chromium
+drops the shorthand and computes `border-style: none`. The tint (`rgb(252,243,216)` on the page's
+`rgb(247,231,175)`) is the only evidence left, and `paletteFor` already maps it to the `white` the
+reference names. **Occupancy is the invariant, not recurrence**: `goya2` tints fifteen cells the
+same way and its reference frames none — they are `width="50%"` lane cells, while `new_lendle2`'s
+are `colspan="2"` and own their row. Recurrence would invert the answer. The fallback had to move
+*ahead* of the `border-style: none` early return — the pre-filter trap, hit twice now. One missing
+frame had been producing 18 defects across five classes. PROGRESS §27.2.
 
 ### 2.1 A heading is one line — at every depth
 
@@ -99,13 +117,11 @@ maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
 | 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
-| 90 | `emphasis.span` | 34 | **10** | only 9 are converter-defect — check the split first |
+| 90 | `emphasis.span` | 34 | **10** | **downgraded §27.1** — verdicts flip on identical evidence |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed **twice** |
-| 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame`/`columns` |
 | 84 | `image.size.value` | 21 | 4 | **not a threshold** — table in PROGRESS §25.4 |
-| 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§3.1) |
-| 84 | `image.spurious` | 7 | 4 | |
-| 63 | `paragraph.containment` | 7 | 3 | |
+| 84 | `image.spurious` | 7 | 4 | **downgraded §27.1** — five reference treatments of one shape |
+| 84 | `align.missing` | 4 | 3 | **shadow class** §27.1; was 7/4 |
 | ~~60~~ | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue** — author ruling §26.2, visual-only both ways |
 | 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |
 | 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |

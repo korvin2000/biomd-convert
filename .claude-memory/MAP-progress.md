@@ -36,23 +36,24 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 24 five mechanisms | 2848–3090 | **masthead = containment × typography `24.1:2866`** · **two lossy folds in `normalize` `24.2:2899`** · drawn rule + the byline it exposed `24.3:2918` · **two lying instruments: chrome fingerprint, `followsImage` `24.4:2945`** · **author ruling: a recovered centred `##` keeps no `::: align` `24.5:2981`** · corpses `24.6:3016` · **nav title + `nav` is legal in a `column` `24.8:3033`** · state + queue `24.9:3068` | **HOT** |
 | 25 `break.missing` decomposed | 3092–3288 | **a "missing break" that was a setext heading `25.1:3112`** · **a drawn rule is a line; a rule may join an align run `25.2:3153`** · **the three that are not targets, with the evidence `25.3:3183`** · **image-size calibration table — not a threshold `25.4:3218`** · corpses `25.5:3244` · state + queue `25.6:3262` | **HOT** |
 | 26 `lead` ruled a ceiling | 3290–3439 | the class is the whole unbuilt construct `26.1:3307` · **author ruling: `lead` is aesthetic, not structural `26.2:3324`** · **what was measured — typography, length, position `26.3:3343`** · corpses `26.4:3391` · **state + "rank measures what an instrument noticed" `26.5:3413`** | **HOT** |
+| 27 triage first; the tinted panel | 3467–3615 | **the triage table — 4 classes downgraded `27.1:3486`** · **a dead unitless border; occupancy not recurrence `27.2:3530`** · **the length floor, measured and reverted `27.3:3560`** · corpses `27.4:3576` · **state + go document-first on `goya2`/`news` `27.5:3592`** | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
+A session resuming cold needs **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
 **§21 (2463–2650)** — the current state, the author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
 the thing that had to move instead.
 
-## Checkpoint — §25/§26, measured 2026-08-08 over **22 documents** (§26 changed no rung)
+## Checkpoint — §27, measured 2026-08-08 over **22 documents**
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | 423 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **93.1 %**, clean share 13.6 % | `sh bench/run.sh` |
-| L2 | 429 findings — **250 converter-defect** · 92 ambiguous · 87 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
-| L3 | **95** findings (10 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| L0 | 424 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **93.2 %**, clean share 13.6 % | `sh bench/run.sh` |
+| L2 | 413 findings — **238 converter-defect** · 92 ambiguous · 83 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **92** findings (11 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
 | validator | 28 errors, all `table-header-empty` (§21.4) | `corpus run -c bench/biomd.config.json` |
 
 `bench/run.sh` needs Chromium — `npx playwright install chromium` on a fresh machine, or every

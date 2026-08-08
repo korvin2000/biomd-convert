@@ -3463,3 +3463,153 @@ and at this stage of the campaign the top of the queue is increasingly made of
 things that cannot be closed. The next class taken should be adjudicated on two
 or three instances *before* any survey work, and `emphasis.span` — where only 9
 of 34 instances are converter-defect — should have that split confirmed first.
+
+## 27. Cheap triage first: five classes downgraded, one mechanism found outside them (2026-08-08)
+
+Ranking by finding count stopped. §25 and §26 both ended with a top-ranked class
+that could not be closed, so this iteration began with **cheap triage** — two or
+three instances per class, no surveys, no code — across the five highest-ranked
+unresolved classes. Four were downgraded in about twenty minutes. The mechanism
+that was actually worth building **ranked fifteenth by finding count** and was
+not among the five.
+
+| rung | §26 | after |
+|---|---|---|
+| L0 | 423 tests, 0 FAILED | **424 tests**, typecheck clean, 0 FAILED |
+| L1 | 93.1 | **93.2** |
+| L2 | 429 · 250 converter-defect | **413 · 238**, critical 20 → **15** |
+| L3 | 95, 10 critical | **92**, 11 critical |
+
+`new_lendle2` is the only document that moved on any rung: L2 29/20 → **13/8**
+(429 − 413 = 29 − 13 exactly), L3 5 → **2**, L1 96.1 → **98.2**.
+
+### 27.1 The triage table
+
+| class | inst | "defects" | docs | mechanisms | deterministic signal | verdict |
+|---|---:|---:|---:|---|---|---|
+| `emphasis.span` | 34 | 9 | 10 | **≥3** | none | **downgrade** |
+| `align.missing` | 7 | 7 | 4 | 3 | shadow of others | **dissolve** |
+| `retyped.paragraph-to-align` | 6 | 6 | 5 | 2 | shadow of others | **dissolve** |
+| `paragraph.containment` | 7 | 7 | 3 | 2 | shadow of others | **dissolve** |
+| `image.spurious` | 7 | 7 | 4 | 1 | contested | **downgrade** |
+
+**`emphasis.span` — the label is not reliable.** Of 34, 25 are already
+`reference-inconsistency`, and the 9 remaining split into three unrelated
+mechanisms: 3 are emphasis inside a *heading* that `dropEmphasis` strips by a
+documented decision, 4 are `news` paragraphs inside `frame>align` that are
+entangled with a containment mismatch at the same node, 2 are emphasis
+*segmentation* inside long paragraphs. Decisively: the **same source shape is
+labelled differently in different documents** — `new_lagq2`'s `strong:*T` drop
+cap is `converter-defect` while `new_lendle2`'s `strong:*Variations
+capricieuses` is `reference-inconsistency`. A class whose verdict flips on
+identical evidence cannot be worked.
+
+**Three classes were not classes.** `align.missing`,
+`retyped.paragraph-to-align` and `paragraph.containment` fire at *the same node
+paths* as each other and as `frame.moved`. They are downstream shadows: when a
+container is missing, L2 reports the container, its position property, the
+alignment inside it, the containment of every block beneath it, and the emphasis
+of those blocks. On `new_lendle2` that is **18 findings in five classes from one
+missing `frame`** — 21 of the document's 23. Ranking by class hides this
+completely; the shadows outrank their own cause.
+
+**`image.spurious` — contested by the references.** All 7 are small linked
+navigation gifs (11–16 px inside an `<a>`). One source shape gets **five
+different reference treatments**: `new_karta` keeps `main/next.gif` as a full
+`::: image` with `size: small`; `new_bach` and `segovia` write the glyph
+`&#9658;`/`▶`; `new_geyzel04` writes the `alt` text as a link label;
+`new_rechin4` writes two glyphs in an `::: align`; `segovia1` merges the glyph
+into the adjacent link's label inside `::: columns`. `new_karta`'s 16 px linked
+`next.gif` is byte-identical in shape to `new_geyzel04`'s and is kept as an
+image — so the negative control is indistinguishable from the positives. One
+sub-claim is clean and was verified — **no reference ever groups icon-sized
+images into `::: images`**, and the converter does it twice — but fixing only
+that turns the group into two standalone `::: image` blocks, which the reference
+still does not have, so it closes nothing. Not built.
+
+### 27.2 A panel drawn with a background tint
+
+The mechanism worth building was `frame.moved` (5 instances, 1 document,
+rank 15) plus its four shadows.
+
+`new_lendle2` writes `border: 1 solid #D5A96F` on five album panels. **The width
+is unitless, so the whole shorthand is invalid** and Chromium computes
+`border-style: none`, width 0 — measured on all five, the same trap
+`learned-patterns.md` records for `margin-left: 25`. `frameEvidenceFor` reads
+borders only, so it saw nothing and emitted zero frames against the reference's
+five.
+
+What the reader still sees is the background: `rgb(252,243,216)` against the
+page's `rgb(247,231,175)`. `paletteFor` already maps that to `white`, which is
+exactly what the reference names five times. A tint differing from the nearest
+painted ancestor is the same construct as a border.
+
+**The invariant is occupancy — not colour, and not recurrence.** `goya2` tints
+**fifteen** cells identically, with the same dead unitless borders, and its
+reference frames none: they are `width="50%"` *lane* cells, two to a catalog
+row. `new_lendle2`'s five are `colspan="2" width="100%"` and own their row.
+Recurrence is useless here and would invert the answer — `goya2` recurs fifteen
+times to `new_lendle2`'s five — so the contract states occupancy instead and
+tests the `goya2` shape for non-firing.
+
+**The fallback had to move ahead of the `border-style: none` early return.**
+Behind it, none of the five panels reached the new code; the probe printed
+nothing at all, which is the pre-filter trap `learned-patterns.md` names and the
+second time this campaign has hit it.
+
+### 27.3 Known limit, measured and reverted
+
+Four of the five panels are framed. `Heitor Villa-Lobos` is 18 characters and
+the shared 20-character floor rejects it, which also creates the one new L3
+critical: `layout.order.mismatch` 10 → 11, the pairing artefact of four produced
+frames against five reference ones.
+
+Dropping the floor for the tint path was implemented and measured. The argument
+was sound — `spansItsRow` is a stronger occupancy claim than a character count —
+and it worked: fifth panel emitted, L3 **92 → 90**, critical **11 → 10**. But
+the same floor is the only thing keeping the *menu-label* cells out. `news` and
+`news_2007` each set `• Архив новостей •` in a spanning tinted cell and each
+gained a **spurious frame** (9 → 10, 1 → 2); L1 fell 93.2 → 93.1 and L2 rose
+413 · 238 → 418 · 241. **Reverted.** A box the author did not draw, on two
+regression-corpus documents, outranks two L3 findings on one.
+
+### 27.4 Killed hypotheses added
+
+- **`emphasis.span` is workable.** Its verdicts are not stable across documents
+  for identical evidence; 25 of 34 are already reference-inconsistency.
+- **`align.missing`, `retyped.paragraph-to-align` and `paragraph.containment`
+  are defect classes.** They are shadows cast by a missing container, and they
+  outrank their own cause in the ledger.
+- **A background-tint frame can be gated by recurrence.** `CLAUDE.md` §5's
+  recurrence law is the wrong instrument here: the false friend recurs three
+  times as often as the positive.
+- **Icon-sized linked images have one correct treatment.** Five references
+  choose five different ones for the same asset, and `new_karta` keeps as an
+  `::: image` exactly what `new_geyzel04` turns into a text link.
+- **Dropping the tint path's length floor is free.** It costs two spurious
+  frames on `news` and `news_2007`.
+
+### 27.5 State
+
+**Open, in order.** The ranking below is by finding count because that is what
+the ledger computes, but §27.1 is the reason it must not be followed blindly —
+**read the shadows column first.**
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
+| 90 | `emphasis.span` | 34 | 10 | **downgraded §27.1** — verdicts unstable across documents |
+| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
+| 84 | `image.size.value` | 21 | 4 | not a threshold — §25.4 |
+| 84 | `image.spurious` | 7 | 4 | **downgraded §27.1** — five reference treatments of one shape |
+| 84 | `align.missing` | 4 | 3 | **shadow class** — down from 7/4 |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+
+The two biggest documents are now `news` (45 defects) and `goya2` (44), and
+together they are a third of the ledger. Neither has been attacked as a
+*document*; every pass at them so far has come through a class. **Given that
+three of the last four class-led attempts closed nothing, the next iteration
+should triage `goya2` and `news` document-first** — take the worst document,
+enumerate its findings by node path rather than by class, and look for the
+shared container defect the way §27.2 found `new_lendle2`'s. `new_lendle2` went
+from third-worst to mid-table on one mechanism found exactly that way.
