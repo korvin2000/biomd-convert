@@ -1,9 +1,5 @@
 # Джон Вильямс
 
-::: columns
-
-::: column
-
 ::: align
 position: center
 **- 2 -**
@@ -94,10 +90,6 @@ J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**
 position: right
 В статье использованы материалы сайта\
 John Williams/The Guitarist – [plum.cream.org](http://plum.cream.org/williams/biog1.htm))
-:::
-
-:::
-
 :::
 
 ::: nav

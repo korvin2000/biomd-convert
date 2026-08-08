@@ -1,4 +1,6 @@
-# Ричи Блэкмор Ritchie Blackmore & Blackmore's Night
+# Ричи Блэкмор Ritchie
+
+## Blackmore & Blackmore's Night
 
 БЛЭКМОР Ричи (Ritchie Blackmore), родился 14 апреля 1945 года, - знаменитый гитарист ХХ столетия, лидер и один из основателей легендарной группы Deep Purple и создатель не менее известной группы Rainbow.
 
