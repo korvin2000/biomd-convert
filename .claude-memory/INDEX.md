@@ -37,12 +37,11 @@ disagree, the repository file wins and this index gets fixed.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: two refinement iterations are done
-(PROGRESS §21–§24, **nine mechanisms** plus two author adjudications; L1 90.3 → 92.9, L2 745 → 440,
-L3 287 → 97). The wrapped masthead is closed. Next is **`align.spurious`** (8 instances, 7
-documents): §22.3's deferral of the alignment family has expired now that the region and table
-families have settled and the class is still there. **Run `corpus scan` first on a fresh clone** —
-§24.4 changed the chrome fingerprint. Two questions are waiting on the reference author
-([OPEN.md](OPEN.md) §3).
+(PROGRESS §21–§24, **ten mechanisms** plus three author adjudications; L1 90.3 → 93.0, L2 745 → 432,
+L3 287 → 97). The wrapped masthead is closed, and `align.spurious` fell from 8 / 7 docs to 6 / 5
+without an alignment rule being touched. Next is **`break.missing`** (10 instances, **6 documents**
+— the widest class in the ledger and never examined). **Run `corpus scan` first on a fresh clone**
+— §24.4 changed the chrome fingerprint.
 
 ---
 
@@ -65,7 +64,7 @@ families have settled and the class is still there. **Run `corpus scan` first on
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` — advisory, possibly stale | grep |
 | history, superseded | `CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md` | avoid |
 
-**Never open end to end:** `CONVERTER-PROGRESS.md` (2846 ln, ~58k tokens). Route through
+**Never open end to end:** `CONVERTER-PROGRESS.md` (3090 ln, ~62k tokens). Route through
 [MAP-progress.md](MAP-progress.md); it maps every `##`/`###` to a line range and a one-line summary.
 
 ---

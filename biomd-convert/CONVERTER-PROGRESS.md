@@ -2845,16 +2845,16 @@ to close the finding by special-casing the converter, and refused to edit the
 reference; putting the side-by-side to the author resolved in one exchange what
 no amount of deterministic evidence could have.
 
-## 24. Four mechanisms: the wrapped masthead, the drawn rule, and two instruments that were lying (2026-08-08)
+## 24. Five mechanisms: the wrapped masthead, the drawn rule, and three instruments that were lying (2026-08-08)
 
-One iteration, four accepted changes, one commit each with the measured
+One iteration, five accepted changes, one commit each with the measured
 before/after on every rung in the message. Nothing regressed on any document.
 
 | rung | §23 | after |
 |---|---|---|
-| L0 | 406 tests, 0 FAILED | **418 tests**, typecheck clean, 0 FAILED |
-| L1 | 92.7 | **92.9** |
-| L2 | 453 · 271 converter-defect | **440 · 258** |
+| L0 | 406 tests, 0 FAILED | **420 tests**, typecheck clean, 0 FAILED |
+| L1 | 92.7 | **93.0** |
+| L2 | 453 · 271 converter-defect | **432 · 252** |
 | L3 | 110, 20 critical | **97, 10 critical** |
 | validator | 28 errors | 28 |
 
@@ -3030,16 +3030,61 @@ Recorded as `reference-inconsistency`; two minor `heading.content.edited` remain
   between lines set the same way is a hand-wrap. Killed by `segovia1` and
   `new_geyzel04`, whose references join theirs.
 
-### 24.7 State
+### 24.8 A menu keeps its label, and a lane is not a frame
 
-**Open, in order.** (a) The `::: align` around a recovered section label — §24.5,
-blocked on the author. (b) `align.spurious` (8 instances, 7 documents) is now the
-top-ranked class, and §22.3's advice to read the alignment family only after the
-region and table families settle has been honoured for three iterations; the
-region work is done and it is still there. (c) `retyped.paragraph-to-list` (11, 5)
-remains blocked on the hook design of §15.2. (d) `image.spurious` (7, 4) and
-`image.size.value` (21, 4 — 16 of them `goya2`). (e) `break.missing` (10, **6
-documents**, the widest class in the ledger) is the entry-separator family: the
-references draw a `---` at structural boundaries the converter's derived-rule
-logic does not reach. (f) The mini-image → glyph map is still specified,
-attested and unimplemented; `glyphs.ts` now holds two of its neighbours.
+`align.spurious` was the top-ranked class when §24.7 was written, and its two
+`news` / `news_2007` instances were both the same construct: `• Архив новостей •`
+emitted as a loose centred paragraph above the year bar.
+
+**The label above a menu titles it.** §11 already says so and the existing branch
+already implemented it — for a *recovered heading*. Both news pages set theirs in
+a tinted, bordered, centred cell of its own, where no typographic rule reaches
+it, so it arrived as an aligned paragraph and the branch never saw it. Position
+is the evidence in both cases; which construct the label happened to land in is
+not. The matched bullets are decoration, and **symmetry** is what says so — which
+is what keeps the rule off a label that merely *starts* with a marker, since a
+leading bullet is a list marker and `stripLabelGlyphs` answers that case
+differently. False friend, tested: a sentence above a menu, refused on length,
+word count and terminal punctuation at once, because absorbing one would move
+body text into a directive property.
+
+**`navFrom` refused every bounded context.** `BioMD-Reference.md` §2 forbids
+`nav` inside a `frame` and forbids `align` wrapping one; it does **not** forbid a
+`column` — `column→Markdown+leaf+align+nav` is in the nesting table, and the side
+rail a menu arrives in *is* a lane. `navFromGrid` already draws that line and its
+header says why. So `news_2007`'s year bar — the same bar `news` emits as a
+`nav`, one lane deeper — came out as ten bracketed links in a paragraph.
+
+The third instrument-shaped defect of the iteration, and the one most at risk of
+being reasoned into rather than measured: §18.3's trap is exactly "these two
+paths should agree". It was **measured**, and `recovery.test.ts` and
+`lanes.test.ts` were grepped for nav contracts first; both still pass. L1 92.9 →
+**93.0**, L2 440 · 258 → **432 · 252**, `news` 48 → 46 and `news_2007` 9 → 5
+converter-defects, L3 flat.
+
+The `align` half needs no guard of its own: `alignedGroup` refuses inner content
+containing a `nav`, and `isBounded` keeps one out of `groupAlignedRuns`' runs.
+
+### 24.9 State
+
+**Open, in order**, *measured* after all five mechanisms:
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
+| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
+| 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
+| 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts` — sweep it |
+| 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§24.5) |
+| 84 | `image.spurious` | 7 | 4 | |
+| 60 | `break.missing` | 10 | **6** | widest in the ledger; the entry-separator family |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+
+`break.missing` is the widest class left and has never been examined: the
+references draw a `---` at structural boundaries the derived-rule logic in
+`decomposeFrom` does not reach — `authors` wants two and the converter emits
+none, though its only source `<hr>` is the footer's and is correctly dropped.
+
+The mini-image → glyph map remains specified, attested in 10 of 22 references and
+unimplemented; `glyphs.ts` now holds `LINK_GLYPH` and `RULE_GLYPHS`, so it has a
+home and two neighbours.

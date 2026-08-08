@@ -10,16 +10,16 @@ Last touched **2026-08-08**, after the second refinement iteration (PROGRESS §2
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. **Four mechanisms accepted this iteration** (PROGRESS
+Reference-guided refinement, 22 documents. **Five mechanisms accepted this iteration** (PROGRESS
 §24), one commit each, all four rungs improved or held on every one, no document regressed.
 
 **Current state, *measured* 2026-08-08 (PROGRESS §24):**
 
 | rung | value |
 |---|---|
-| L0 | **418 tests**, typecheck clean, 0 FAILED |
-| L1 | **92.9 %**, clean share 13.6 % |
-| L2 | **440 findings — 258 converter-defect** · 95 ambiguous · 87 reference-inconsistency |
+| L0 | **420 tests**, typecheck clean, 0 FAILED |
+| L1 | **93.0 %**, clean share 13.6 % |
+| L2 | **432 findings — 252 converter-defect** · 93 ambiguous · 87 reference-inconsistency |
 | L3 | **97 findings** (10 critical, was 20), identity 0, deterministic |
 | validator | 28 errors, all `table-header-empty` — PROGRESS §21.4 |
 
@@ -28,16 +28,17 @@ That is the floor. Nothing accepted from here may regress it.
 > **`corpus scan` is required after a fresh clone.** §24.4 changed the chrome fingerprint, so a
 > cached `bench/corpus/corpus-profile.json` from before that commit is wrong and `news` regresses.
 
-**Next: `align.spurious`** — 8 instances, 7 documents, now the top-ranked class. §22.3's advice to
-read the alignment family only after the region and table families settle has been honoured for
-three iterations; the region work is done and the class is still there, so the deferral has expired.
-Three of the eight are `WMA` / `(1,7 Mb)` cells and two are `• Архив новостей •`.
+**Next: `break.missing`** — 10 instances, **6 documents**, the widest class in the ledger and never
+examined. The references draw a `---` at structural boundaries the derived-rule logic in
+`decomposeFrom` does not reach: `authors` wants two and the converter emits none, though its only
+source `<hr>` is the footer's and is correctly dropped. Minor severity, maximal generality.
 
 Then, in order: `image.spurious` (7, 4 docs) · `image.size.value` (21, 4 docs, 16 of them `goya2` —
-a threshold in `media.ts`, sweep it, do not pick it) · `break.missing` (10, **6 docs**, the widest
-class in the ledger — the entry-separator family) · the mini-image → glyph map (§2.3 below).
+a threshold in `media.ts`, sweep it, do not pick it) · the mini-image → glyph map (§2.4 below).
 
-`retyped.paragraph-to-list` (11, 5 docs) stays blocked on the hook design of PROGRESS §15.2.
+`retyped.paragraph-to-list` (10, 4 docs) is top-ranked and stays blocked on the hook design of
+PROGRESS §15.2. `align.spurious` is down to 6 / 5 docs and **3 of the 6 are the one-row media table
+§22.2 killed twice** — do not reopen it on argument.
 
 ---
 
@@ -50,15 +51,23 @@ prominence ⇒ consecutive `#` inside the box's `::: align`; one block + `<br>` 
 one joined `#`, because the break is a hand-wrap to fit a 458 px cell; one block + `<br>` + unequal
 ⇒ `#` + `##`. `enforceSingleTitle` now treats adjacent `#` lines as one title.
 
-### 2.2 Two instruments were lying — both fixed, both cheap
+### 2.2 Three instruments were lying — all fixed, all cheap
 
 The chrome fingerprint hashed `width` verbatim, so `news`'s `width="760px"` frame matched no
 recurring structure and shipped as content (L3 106 → 93 on that alone). `followsImage` read any
 block *containing* an image as a photograph awaiting a caption, so a dated newspaper banner cost two
-`new_blackmore` article titles their heading. Details in §24.4 — **check the instrument before the
-rule** is now attested three times in this campaign.
+`new_blackmore` article titles their heading. `navFrom` refused every bounded context where
+`BioMD-Reference.md` §2 forbids only `frame` and `align`, so `news_2007`'s year bar came out as ten
+bracketed links. Details in §24.4 and §24.8 — **check the instrument before the rule** is now
+attested four times in this campaign.
 
-### 2.3 Still open, unchanged: mini-image → glyph
+### 2.3 The nav title, and the `align.spurious` that was not about alignment
+
+Both `news` instances of what was the top-ranked alignment class turned out to be a menu missing its
+`title:` and a menu that was never recognised at all. Neither needed an alignment rule; the class
+fell 8 / 7 docs → 6 / 5 with none touched. PROGRESS §24.8.
+
+### 2.4 Still open, unchanged: mini-image → glyph
 
 `mini_images_to_md_guide.md` defines a 29-entry known-icon map; `src/` implements none of it. The
 references use numeric character references in 10 of 22 documents. `glyphs.ts` now holds
@@ -87,14 +96,14 @@ the guide maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
-| 168 | `align.spurious` | 8 | 7 | next |
-| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
+| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
+| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed **twice** |
 | 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame`/`columns` |
 | 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts` |
 | 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§3.1) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 63 | `paragraph.containment` | 7 | 3 | |
-| 60 | `break.missing` | 10 | **6** | widest in the ledger; the entry-separator family |
+| 60 | `break.missing` | 10 | **6** | widest in the ledger; the entry-separator family — **next** |
 | 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
 | 36 | `retyped.paragraph-to-heading2` | 4 | 3 | was 6/4 before §24.4 |
 
@@ -105,7 +114,7 @@ that is a ceiling rather than an open defect.
 
 ## 5. Instrument debt — what to distrust, in order
 
-1. **The 0.5–0.95 `ambiguous` word-coverage corridor is set, not calibrated** — 95 findings, the
+1. **The 0.5–0.95 `ambiguous` word-coverage corridor is set, not calibrated** — 93 findings, the
    largest piece of unexamined instrument behaviour. So is the **0.65** reconciliation constant
    behind the `containment` classes.
 2. **The validator does not check `columns` ≥ 2 `column`**, which is a `BioMD-Reference.md` §2 MUST.
