@@ -86,15 +86,44 @@ export function declaredFontPx(node: LadomNode): number | undefined {
   // `<font size>`, folded onto the parent by normalize(). Legacy sizes 1–7 map
   // to roughly 0.6×–3× body; `+n` / `-n` are relative to 3.
   const legacy = node.attrs["size"] ?? node.attrs["data-fold-font-size"];
-  if (legacy !== undefined) {
-    const relative = /^[+-]/u.test(legacy.trim());
-    const n = Number.parseInt(legacy, 10);
-    if (Number.isFinite(n)) {
-      const level = Math.max(1, Math.min(7, relative ? 3 + n : n));
-      return BASE_FONT_PX * [0.63, 0.82, 1, 1.13, 1.5, 2, 3][level - 1]!;
-    }
-  }
+  if (legacy !== undefined) return legacyFontPx(legacy);
   return undefined;
+}
+
+/** A legacy `<font size>` level resolved to px. */
+function legacyFontPx(value: string): number | undefined {
+  const relative = /^[+-]/u.test(value.trim());
+  const n = Number.parseInt(value, 10);
+  if (!Number.isFinite(n)) return undefined;
+  const level = Math.max(1, Math.min(7, relative ? 3 + n : n));
+  return BASE_FONT_PX * [0.63, 0.82, 1, 1.13, 1.5, 2, 3][level - 1]!;
+}
+
+/**
+ * The size the text sitting *directly* inside a node renders at.
+ *
+ * Different from {@link effectiveFontPx} in exactly one case, and deliberately
+ * so. `normalize` unwraps a presentational wrapper that covered all of its
+ * parent's text and records its size on the parent — after which the parent's
+ * own measured `font-size`, taken before the unwrap, no longer describes the
+ * text the parent now holds directly. `<span><font size=4>(дискография)</font>
+ * </span>` measures 26.7 px on the span and renders at 18 px.
+ *
+ * Scoped to comparisons *between* runs of text, where the question is how two
+ * pieces of text are set relative to each other. `effectiveFontPx` stays the
+ * general reading: heading recovery ranks whole blocks, and a block's own
+ * computed size is the right thing for that — reading the folded value there
+ * costs three section headings in the corpus, because a legacy page routinely
+ * wraps a whole centred label in a `<font size=2>` it does not mean as a
+ * demotion.
+ */
+export function textFontPx(node: LadomNode): number | undefined {
+  const folded = node.attrs["data-fold-font-size"];
+  if (folded !== undefined) {
+    const px = legacyFontPx(folded);
+    if (px !== undefined) return px;
+  }
+  return effectiveFontPx(node);
 }
 
 /** Font size in effect for a node, inherited from the nearest ancestor that set one. */
@@ -109,6 +138,26 @@ export function effectiveFontPx(node: LadomNode): number | undefined {
 }
 
 const BOLD_TAGS = new Set(["b", "strong", "th", "h1", "h2", "h3", "h4", "h5", "h6"]);
+
+/**
+ * Weight in effect for a node, inherited like {@link effectiveFontPx}.
+ *
+ * Bold is read as a *class*, not as a number, on purpose. A `<b>` inside a box
+ * already declared `font: bold` computes to 900 against the box's 700, and the
+ * two render identically in a family with one bold face — treating that as a
+ * level would split a headline whose lines the author set the same way.
+ */
+export function effectiveBold(node: LadomNode): boolean {
+  let cur: LadomNode | null = node;
+  while (cur) {
+    if (isBold(cur)) return true;
+    // A measured node already carries the inherited value; anything above it
+    // has been accounted for.
+    if (cur.style) return false;
+    cur = cur.parent;
+  }
+  return false;
+}
 
 function isBold(node: LadomNode): boolean {
   if (node.style && node.style.fontWeight >= 600) return true;

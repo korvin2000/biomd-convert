@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T00:29:34.941Z",
+  "generated": "2026-08-08T01:18:44.153Z",
   "totals": {
-    "findings": 453,
-    "converterDefects": 271,
+    "findings": 447,
+    "converterDefects": 265,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
     "ambiguous": 95,
     "bySeverity": {
-      "critical": 24,
-      "major": 242,
-      "minor": 187
+      "critical": 23,
+      "major": 235,
+      "minor": 189
     }
   },
   "perDocument": [
@@ -63,19 +63,19 @@
     },
     {
       "doc": "new_bach",
-      "findings": 11,
-      "converterDefects": 5,
+      "findings": 9,
+      "converterDefects": 3,
       "critical": 1,
-      "major": 5,
+      "major": 3,
       "minor": 5
     },
     {
       "doc": "new_blackmore",
-      "findings": 15,
-      "converterDefects": 11,
-      "critical": 1,
-      "major": 10,
-      "minor": 4
+      "findings": 14,
+      "converterDefects": 10,
+      "critical": 0,
+      "major": 8,
+      "minor": 6
     },
     {
       "doc": "new_dyens",
@@ -111,10 +111,10 @@
     },
     {
       "doc": "new_lagq2",
-      "findings": 9,
-      "converterDefects": 9,
+      "findings": 6,
+      "converterDefects": 6,
       "critical": 0,
-      "major": 6,
+      "major": 3,
       "minor": 3
     },
     {
@@ -245,31 +245,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 8,
-      "documents": [
-        "new_blackmore",
-        "new_geyzel04",
-        "new_lagq2",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 8,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 120,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[88]",
-        "produced": null,
-        "reference": "Александр НЕВЕРОВ"
-      }
-    },
-    {
       "class": "image.spurious",
       "severity": "major",
       "instances": 8,
@@ -365,6 +340,30 @@
         "path": "/image[1]@size",
         "produced": "size: small",
         "reference": "size: medium"
+      }
+    },
+    {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 7,
+      "documents": [
+        "new_blackmore",
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 84,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/align[88]",
+        "produced": null,
+        "reference": "Александр НЕВЕРОВ"
       }
     },
     {
@@ -629,29 +628,6 @@
         "path": "/paragraph[92]",
         "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
         "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
-      }
-    },
-    {
-      "class": "heading.containment",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "kiselev",
-        "new_bach",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 27,
-      "example": {
-        "doc": "kiselev",
-        "path": "/align[13]/heading[0]",
-        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
-        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -1016,28 +992,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-heading1",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_bach",
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_bach",
-        "path": "/align[0]/heading[1]",
-        "produced": "Бах",
-        "reference": "Бах — at /align[0]/paragraph[2]"
-      }
-    },
-    {
       "class": "paragraph.spurious.absorbed",
       "severity": "major",
       "instances": 3,
@@ -1077,6 +1031,28 @@
         "path": "/columns[4]/column[1]/image[0]@caption",
         "produced": null,
         "reference": "caption: 1.000.000 Platinum"
+      }
+    },
+    {
+      "class": "heading.content.edited",
+      "severity": "minor",
+      "instances": 3,
+      "documents": [
+        "new_blackmore",
+        "new_lagq2"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 6,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/heading[0]/text",
+        "produced": "Ричи Блэкмор",
+        "reference": "Ричи Блэкмор Ritchie"
       }
     },
     {
@@ -1203,27 +1179,6 @@
         "path": "/frame[7]@position",
         "produced": "position: center",
         "reference": null
-      }
-    },
-    {
-      "class": "heading.content",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/heading[1]/text",
-        "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
-        "reference": "Blackmore & Blackmore's Night"
       }
     },
     {
@@ -1421,11 +1376,11 @@
       }
     },
     {
-      "class": "heading.level",
+      "class": "heading.containment",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "new_blackmore"
+        "kiselev"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1435,31 +1390,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "new_blackmore",
-        "path": "/heading[1]",
-        "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
-        "reference": "Blackmore & Blackmore's Night — h1, reference h2"
-      }
-    },
-    {
-      "class": "heading.missing.absorbed",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/heading[0]",
-        "produced": null,
-        "reference": "Ричи Блэкмор Ritchie"
+        "doc": "kiselev",
+        "path": "/align[13]/heading[0]",
+        "produced": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА",
+        "reference": "ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА — produced at /heading[14]"
       }
     },
     {
@@ -1944,27 +1878,6 @@
         "path": "/table[8]/cell[2][0]",
         "produced": "• Prelude-этюд № 2",
         "reference": "• Prelude- этюд № 2"
-      }
-    },
-    {
-      "class": "heading.content.edited",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_lagq2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/heading[15]/text",
-        "produced": "The Best of the L.A.G.Q",
-        "reference": "***T***he Best of the L.A.G.Q"
       }
     },
     {
@@ -4556,34 +4469,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "2d8494f4",
-      "doc": "new_bach",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[0]/heading[0]",
-      "producedLine": 1,
-      "referenceLine": 4,
-      "produced": "Иоганн Себастьян",
-      "reference": "Иоганн Себастьян — produced at /heading[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "88a4c049",
-      "doc": "new_bach",
-      "class": "retyped.paragraph-to-heading1",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[0]/heading[1]",
-      "producedLine": 6,
-      "referenceLine": 5,
-      "produced": "Бах",
-      "reference": "Бах — at /align[0]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "0c168547",
       "doc": "new_bach",
       "class": "retyped.paragraph-to-break",
@@ -4710,44 +4595,30 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "6ee8226f",
+      "id": "e5b563fd",
       "doc": "new_blackmore",
-      "class": "heading.missing.absorbed",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/heading[0]",
-      "producedLine": null,
+      "class": "heading.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/heading[0]/text",
+      "producedLine": 1,
       "referenceLine": 1,
-      "produced": null,
+      "produced": "Ричи Блэкмор",
       "reference": "Ричи Блэкмор Ritchie",
       "verdict": "converter-defect"
     },
     {
-      "id": "10c52594",
+      "id": "dea5ea80",
       "doc": "new_blackmore",
-      "class": "heading.level",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/heading[1]",
-      "producedLine": 1,
-      "referenceLine": 3,
-      "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
-      "reference": "Blackmore & Blackmore's Night — h1, reference h2",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4dacc6cb",
-      "doc": "new_blackmore",
-      "class": "heading.content",
-      "severity": "critical",
+      "class": "heading.content.edited",
+      "severity": "minor",
       "evidence": "content",
       "op": "substitute",
       "path": "/heading[1]/text",
-      "producedLine": 1,
+      "producedLine": 3,
       "referenceLine": 3,
-      "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
+      "produced": "Ritchie Blackmore & Blackmore's Night",
       "reference": "Blackmore & Blackmore's Night",
       "verdict": "converter-defect"
     },
@@ -4759,7 +4630,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[5]",
-      "producedLine": 9,
+      "producedLine": 11,
       "referenceLine": 11,
       "produced": "(none)",
       "reference": "em:Как говорит сам Ричи Блэкмор, он \"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать …",
@@ -4773,7 +4644,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/align[6]@active",
-      "producedLine": 11,
+      "producedLine": 13,
       "referenceLine": 13,
       "produced": "active: Источники:",
       "reference": null,
@@ -4787,7 +4658,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/align[6]@position",
-      "producedLine": 11,
+      "producedLine": 13,
       "referenceLine": 13,
       "produced": null,
       "reference": "position: right",
@@ -4801,7 +4672,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[6]/paragraph[0]",
-      "producedLine": 14,
+      "producedLine": 16,
       "referenceLine": 16,
       "produced": "Источники: rock.ru rol.ru blackmore.jsa.ru",
       "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[6]/list[1]",
@@ -4815,7 +4686,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[8]/paragraph[0]",
-      "producedLine": 31,
+      "producedLine": 33,
       "referenceLine": 30,
       "produced": "(none)",
       "reference": "em:Ниже на нашей странице собраны \"под одной крышей\" несколько интервью Ричи Блэкмора, опубликованных в российской прессе в марте - апреле 2002 года.",
@@ -4829,7 +4700,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[10]",
-      "producedLine": 60,
+      "producedLine": 62,
       "referenceLine": 55,
       "produced": "Ричи Блэкмор: «Вcтречайте, скоро буду!»",
       "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!» — at /paragraph[11]",
@@ -4843,7 +4714,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[11]",
-      "producedLine": 62,
+      "producedLine": 64,
       "referenceLine": 57,
       "produced": "(none)",
       "reference": "em:Накануне своего приезда в Москву один из главных гитаристов прошлого столетия рассказывает о накладных ногтях, злых менеджерах и добрых старых временах",
@@ -4857,7 +4728,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[38]",
-      "producedLine": 147,
+      "producedLine": 149,
       "referenceLine": 138,
       "produced": "Гитарист \"тяжелого\" поведения",
       "reference": "Гитарист \"тяжелого\" поведения — at /paragraph[39]",
@@ -4871,7 +4742,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[70]",
-      "producedLine": 241,
+      "producedLine": 243,
       "referenceLine": 228,
       "produced": "О вкусах не спорят",
       "reference": "О вкусах не спорят — at /paragraph[71]",
@@ -4899,7 +4770,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[88]/paragraph[0]",
-      "producedLine": 277,
+      "producedLine": 279,
       "referenceLine": 268,
       "produced": "Александр НЕВЕРОВ",
       "reference": "Александр НЕВЕРОВ — at /heading[89]",
@@ -4913,7 +4784,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[90]",
-      "producedLine": 281,
+      "producedLine": 283,
       "referenceLine": 273,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
       "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина. — at /paragraph[91]",
@@ -5725,7 +5596,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[17]",
-      "producedLine": 208,
+      "producedLine": 213,
       "referenceLine": null,
       "produced": "Music by:",
       "reference": null,
@@ -5739,52 +5610,10 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[17]",
-      "producedLine": 210,
+      "producedLine": 215,
       "referenceLine": null,
       "produced": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street Electrical P…",
       "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c7dbd5e9",
-      "doc": "new_lagq2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[0]",
-      "producedLine": null,
-      "referenceLine": 1,
-      "produced": null,
-      "reference": "Лос-Анджелесский гитарный квартет",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4c21a1b6",
-      "doc": "new_lagq2",
-      "class": "heading.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[0]/heading[0]",
-      "producedLine": 1,
-      "referenceLine": 4,
-      "produced": "Лос-Анджелесский",
-      "reference": "Лос-Анджелесский — produced at /heading[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "86c1e511",
-      "doc": "new_lagq2",
-      "class": "retyped.paragraph-to-heading1",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[0]/heading[1]",
-      "producedLine": 3,
-      "referenceLine": 5,
-      "produced": "гитарный квартет",
-      "reference": "гитарный квартет — at /paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -5809,7 +5638,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/heading[15]/text",
-      "producedLine": 206,
+      "producedLine": 211,
       "referenceLine": 206,
       "produced": "The Best of the L.A.G.Q",
       "reference": "***T***he Best of the L.A.G.Q",
@@ -5823,7 +5652,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[15]/text",
-      "producedLine": 206,
+      "producedLine": 211,
       "referenceLine": 206,
       "produced": "(none)",
       "reference": "strong:*T",
@@ -5837,7 +5666,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]",
-      "producedLine": 212,
+      "producedLine": 217,
       "referenceLine": 209,
       "produced": "[Назад] [Фото]",
       "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]",

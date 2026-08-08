@@ -1723,6 +1723,25 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     }
   }
 
+  // A headline the author wrapped inside one block with `<br>` (headings.ts).
+  // The lines are inline runs, so the split has to happen after inline
+  // lowering — which is where `splitLines` already puts every other `<br>`
+  // decision on this page.
+  const mastheadPlan = el.attrs["data-biomd-masthead"];
+  if (mastheadPlan !== undefined) {
+    const depths = mastheadPlan.split(",").map((d) => Number.parseInt(d, 10));
+    const lines = splitLines(inlineFrom(flattenBlocks(el.children), ctx)).filter((line) => lineText(line) !== "");
+    if (lines.length === depths.length && depths.every((d) => d >= 1 && d <= 6)) {
+      ctx.ledger.push(emitted(el.id, nextId(ctx, "heading")));
+      return lines.map((line, i) => {
+        const depth = depths[i] as 1 | 2 | 3 | 4 | 5 | 6;
+        const node: BiomdContent = { type: "heading", depth, children: headingPhrasing(line.content) };
+        if (depth > 1) ctx.recoveredHeadings.add(node);
+        return node;
+      });
+    }
+  }
+
   // §2.1: the second line of a masthead stays a secondary title line, set in
   // italics directly under the title — not a second `#`, and not prose.
   if (el.attrs["data-biomd-subtitle"] !== undefined) {
@@ -1762,6 +1781,8 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
       const inner = blocksFrom(el, ctx);
       if (inner.length > 0) ctx.ledger.push(emitted(el.id, nextId(ctx, "block")));
       else ctx.ledger.push(removed(el.id, "no content after conversion"));
+      const masthead = mastheadAlign(el, inner, ctx);
+      if (masthead) return masthead;
       return alignedGroup(el, inner, ctx);
     }
 
@@ -3088,6 +3109,34 @@ function alignedGroup(el: LadomNode, inner: BiomdContent[], ctx: Ctx): BiomdCont
 }
 
 /**
+ * The `::: align` that holds a headline the author wrapped over several lines.
+ *
+ * BioMD has no multi-line heading. `BioMD-Reference.md` §2 lets `align` hold
+ * Markdown, and consecutive `#` lines inside one are what the target renderer
+ * sets as a single headline across lines — so the container is part of the
+ * representation, not decoration on top of it. `alignedGroup` and
+ * `alignableRunMember` both decline headings, and correctly: a heading is
+ * positioned by its own construct. This is the one case where the alignment is
+ * *what makes the headings one heading*, so it is decided by the rule that
+ * recognised the headline (headings.ts) rather than by the generic pass.
+ *
+ * `isDistinctiveAlign` is deliberately **not** asked. Everywhere else the
+ * question is whether the author set this block apart from the page, and a
+ * centred block on a centred page answers no. Here the container is part of
+ * how the headline is written down, so it is required even on a page that
+ * centres everything — the alternative is two bare `#` lines that read as two
+ * titles.
+ */
+function mastheadAlign(el: LadomNode, inner: BiomdContent[], ctx: Ctx): BiomdContent[] | null {
+  const declared = el.attrs["data-biomd-masthead-align"];
+  if (declared !== "center" && declared !== "right") return null;
+  if (ctx.frameDepth > 0 || inner.length === 0) return null;
+  if (!inner.every((n) => n.type === "heading")) return null;
+  ctx.ledger.push(emitted(el.id, nextId(ctx, "align"), { note: "wrapped masthead" }));
+  return [makeAlign({ position: declared, children: inner as BoundedContent[] })];
+}
+
+/**
  * One layout cell, wrapped in `::: frame` when the author bordered it (§12).
  *
  * A bordered cell in the middle of a news column is an obituary notice or an
@@ -3202,26 +3251,42 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
  * merely the first paragraph.
  */
 /**
- * §2: "Every document MUST have exactly one level-one heading."
+ * `BioMD-Reference.md` §6: one `#` for a source with one clear page title.
  *
  * Treated as a planning invariant rather than a validator finding. Waiting for
  * the validator to report `h1-count` produces a file that is written, looks
- * plausible, and is invalid — and on a thousand-page batch nobody reads the
- * report. Typographic recovery cannot guarantee the invariant on its own: a
- * page whose title is split over two lines nominates neither line, and a page
- * with two equally large labels nominates both.
+ * plausible, and is off-convention — and on a thousand-page batch nobody reads
+ * the report. Typographic recovery cannot guarantee the invariant on its own: a
+ * page with two equally large labels nominates both.
  *
- * The repair is the smallest one that satisfies the rule: the first heading in
- * reading order becomes the title, every later `#` becomes `##`, and nothing
+ * **Consecutive `#` lines are one title.** A headline the author wrapped over
+ * two lines is one page title with no hierarchy between its halves, and BioMD
+ * writes it as adjacent `#` lines inside the alignment that sets them as one
+ * block (headings.ts). Demoting the second half to `##` would assert a
+ * hierarchy the headline does not have, so adjacency — nothing but other title
+ * lines between them — is what separates one wrapped title from two competing
+ * ones. Titles separated by content are still competing titles and are still
+ * demoted.
+ *
+ * The repair is the smallest one that satisfies the rule: the first title group
+ * in reading order stays the title, every later `#` becomes `##`, and nothing
  * is invented. A document with no heading at all is left alone — there is
  * nothing to promote, and the review item already says so.
  */
 export function enforceSingleTitle(root: BiomdRoot): { root: BiomdRoot; changes: string[] } {
   const changes: string[] = [];
   const headings: Array<{ node: { depth: number; type: string }; index: number }> = [];
+  /** The sibling list a heading sits in, and where — adjacency is asked here. */
+  const place = new Map<{ depth: number; type: string }, { siblings: BiomdContent[]; at: number }>();
   const visit = (nodes: BiomdContent[]): void => {
-    nodes.forEach((node) => {
-      if (node.type === "heading") headings.push({ node, index: headings.length });
+    nodes.forEach((node, at) => {
+      if (node.type === "heading") {
+        headings.push({ node, index: headings.length });
+        place.set(node, { siblings: nodes, at });
+      }
+      // Phrasing children are not blocks; descending into a heading would count
+      // its own text as something standing between it and the next heading.
+      if (node.type === "heading") return;
       const children = (node as { children?: unknown }).children;
       if (Array.isArray(children)) visit(children as BiomdContent[]);
     });
@@ -3237,7 +3302,16 @@ export function enforceSingleTitle(root: BiomdRoot): { root: BiomdRoot; changes:
       first.node.depth = 1;
     }
   } else if (titles.length > 1) {
+    // Walk the run of titles adjacent to the first one; only a title that
+    // stands apart from it — in another container, or with content between —
+    // is a competing title.
+    let previous = place.get(titles[0]?.node as { depth: number; type: string });
     for (const extra of titles.slice(1)) {
+      const here = place.get(extra.node);
+      if (previous && here && here.siblings === previous.siblings && here.at === previous.at + 1) {
+        previous = here;
+        continue;
+      }
       changes.push("more than one level-one heading; demoted a later one to h2");
       extra.node.depth = 2;
     }

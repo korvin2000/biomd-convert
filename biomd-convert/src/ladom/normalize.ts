@@ -13,7 +13,7 @@ import { type LadomNode, textOf, walk, walkElements } from "./types.js";
 export interface NormalizeRecord {
   id: string;
   tag: string;
-  action: "unwrap" | "remove";
+  action: "unwrap" | "remove" | "keep";
   reason: string;
   /** Text that moved to the parent (unwrap) or was discarded (remove). */
   text: string;
@@ -62,6 +62,27 @@ export function normalize(root: LadomNode, options: NormalizeOptions = {}): Norm
     }
     const size = el.attrs["size"];
     const color = el.attrs["color"];
+    // A size declared on *part* of a line says "this run is set differently
+    // from the rest of the line". Folding that onto the parent asserts it of
+    // the whole line, which is false, and the unwrap then erases the only
+    // record of where the distinction began and ended. Keep the wrapper and
+    // record the evidence on itself instead: it stays an inline element, so
+    // nothing downstream sees a new block, and the run boundary survives.
+    //
+    // A wrapper that covers everything its parent covers is *not* kept, even
+    // when it renders at a different size. There the fold is faithful — every
+    // word of the parent is set that way — and keeping the element instead
+    // makes it the innermost carrier of the text, which moves which node
+    // heading recovery nominates and what size that node reports. Measured
+    // corpus-wide: keeping only partial covers changes nothing on any rung;
+    // keeping full covers as well costs three section headings.
+    if (size !== undefined && !coversParentText(el)) {
+      el.attrs["data-fold-font-size"] = size;
+      if (color !== undefined) el.attrs["data-fold-color"] = color;
+      foldedStyles += 1;
+      records.push({ id: el.id, tag: el.tag, action: "keep", reason: "style evidence for part of a line", text: "" });
+      continue;
+    }
     if (size) annotate(el, "data-fold-font-size", size);
     if (color) annotate(el, "data-fold-color", color);
     foldedStyles += 1;
@@ -149,6 +170,20 @@ export function normalize(root: LadomNode, options: NormalizeOptions = {}): Norm
 
   computeMetrics(root);
   return { records, foldedStyles, warnings };
+}
+
+/**
+ * True when a wrapper holds everything its parent holds.
+ *
+ * Only then is folding the wrapper's style onto the parent a faithful
+ * restatement rather than a claim about text the wrapper never covered.
+ */
+function coversParentText(el: LadomNode): boolean {
+  const parent = el.parent;
+  if (!parent) return true;
+  const own = textOf(el).replace(/\s+/gu, " ").trim();
+  const all = textOf(parent).replace(/\s+/gu, " ").trim();
+  return own === all;
 }
 
 function annotate(el: LadomNode, key: string, value: string): void {

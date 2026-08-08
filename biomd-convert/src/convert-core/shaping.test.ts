@@ -7,7 +7,9 @@
  * body text, a portrait glued to the first word of the biography.
  */
 import { describe, expect, it } from "vitest";
+import type { BiomdContent } from "../biomd-ast/types.js";
 import { convert } from "./pipeline.js";
+import { enforceSingleTitle } from "./structure.js";
 import { runCorpusPass } from "./corpus.js";
 import { recoverHeadings } from "./headings.js";
 import { removeBoilerplate } from "./boilerplate.js";
@@ -67,10 +69,107 @@ describe("heading recovery", () => {
     expect(result.diagnostics.filter((d) => d.code === "h1-count")).toHaveLength(0);
   });
 
-  it("emits an ATX heading rather than a setext one for a wrapped title", async () => {
+  it("joins a title the author hand-wrapped with <br> inside one block", async () => {
     const result = await convert(Buffer.from(page("Олег Николаевич<br>Киселев", PROSE), "utf8"));
     expect(result.markdown).toMatch(/^# Олег Николаевич Киселев$/mu);
     expect(result.markdown).not.toMatch(/^=+$/mu);
+  });
+
+  it("keeps a title the author wrote as two blocks as two title lines", async () => {
+    // The containment half of the masthead contract. The same two words, set
+    // the same way, mean different things depending on how the author divided
+    // them: a `<br>` inside one block is a hand-wrap to fit a 458 px cell (the
+    // test above), two blocks are two lines the author drew — and BioMD writes
+    // one headline over two lines as consecutive `#` inside the alignment that
+    // sets them as a block. `#` + `##` would assert a hierarchy a name split in
+    // half does not have.
+    const asBlocks = `<p align="center"><span>Лос-Анджелесский</span></p><p align="center"><span>гитарный квартет</span></p>`;
+    const html = `<html><head><title>Словарь</title></head><body>${CHROME}
+      <table border="0" width="760"><tr><td width="458">
+        <div class="vt1" style="COLOR: #A7876F; FONT: bold 20pt Arial; WIDTH: 100%">${asBlocks}</div>
+      </td></tr></table>
+      <table border="0" width="760"><tr><td width="529">${PROSE}</td></tr></table></body></html>`;
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toMatch(
+      /::: align\nposition: center\n\n# Лос-Анджелесский\n\n# гитарный квартет\n\n:::/u,
+    );
+  });
+
+  it("makes the smaller half of a wrapped masthead a subtitle, not a second title", async () => {
+    // The discriminator is the lines' typography compared with each other, not
+    // an absolute size: the second line here declares its own smaller size
+    // inside a box that declares 20pt for everything else.
+    const title = 'Ричи Блэкмор<br><font size="3">Ritchie Blackmore &amp; Blackmore\'s Night</font>';
+    const result = await convert(Buffer.from(page(title, PROSE), "utf8"));
+    expect(result.markdown).toMatch(/^# Ричи Блэкмор$/mu);
+    expect(result.markdown).toMatch(/^## Ritchie Blackmore & Blackmore's Night$/mu);
+    // A title and its subtitle are two headings; the alignment container is
+    // only what makes *equal* lines read as one headline.
+    expect(result.markdown).not.toMatch(/::: align\nposition: center\n\n# Ричи/u);
+  });
+
+  it("reads the same masthead through a renamed class and permuted attributes", async () => {
+    // The invariant is typography and containment; nothing in the rule may be
+    // able to name this corpus. Same shape, no `vt1`, no `<span>`, attributes
+    // in another order.
+    //
+    // Known limit, not asserted here: a box written as `<center>` is unwrapped
+    // by `normalize` before heading recovery runs, which leaves the lines with
+    // no box to be lines of. All 22 mastheads in the corpus use a `<div>`.
+    const masthead =
+      `<div id="hdr" class="q7" style="WIDTH: 100%; FONT: bold 20pt Arial; COLOR: #A7876F">` +
+      `<p align="center">Лос-Анджелесский</p><p align="center">гитарный квартет</p></div>`;
+    const html = `<html><head><title>Словарь</title></head><body>${CHROME}
+      <table border="0" width="760"><tr><td width="458">${masthead}</td></tr></table>
+      <table border="0" width="760"><tr><td width="529">${PROSE}</td></tr></table></body></html>`;
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toMatch(
+      /::: align\nposition: center\n\n# Лос-Анджелесский\n\n# гитарный квартет\n\n:::/u,
+    );
+  });
+
+  it("false friend: a smaller line in its own block stays a block, not a heading", async () => {
+    // `goya2`'s masthead — a name over a smaller `(дискография)`, written as two
+    // `<p>`. A separate block the author set smaller is a separate block; only a
+    // `<br>` continuation is still headline matter, and the reference agrees.
+    const masthead = `<p align="center"><span>Френсис Гойя</span></p><p align="center"><span><font size="4">(дискография)</font></span></p>`;
+    const html = `<html><head><title>Словарь</title></head><body>${CHROME}
+      <table border="0" width="760"><tr><td width="458">
+        <div class="vt1" style="COLOR: #A7876F; FONT: bold 20pt Arial; WIDTH: 100%">${masthead}</div>
+      </td></tr></table>
+      <table border="0" width="760"><tr><td width="529">${PROSE}</td></tr></table></body></html>`;
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toMatch(/^# Френсис Гойя$/mu);
+    expect(result.markdown).not.toMatch(/^#+ \(дискография\)$/mu);
+    expect(result.markdown).toContain("(дискография)");
+  });
+
+  it("keeps adjacent title lines but demotes a title that stands apart", () => {
+    // The false friend §20.6 named, stated on the pass that decides it: two
+    // headings *separated by content* are two competing titles and the later
+    // one is demoted; two adjacent ones are the halves of one wrapped headline
+    // and demoting either asserts a hierarchy the headline does not have.
+    const heading = (depth: 1 | 2, text: string): BiomdContent => ({
+      type: "heading",
+      depth,
+      children: [{ type: "text", value: text }],
+    });
+    const wrapped = heading(1, "Иоганн Себастьян");
+    const wrappedTail = heading(1, "Бах");
+    const competing = heading(1, "Второй заголовок");
+    const root = {
+      type: "root" as const,
+      children: [
+        { type: "biomdAlign" as const, position: "center" as const, children: [wrapped, wrappedTail] },
+        { type: "paragraph" as const, children: [{ type: "text" as const, value: PROSE }] },
+        competing,
+      ] as BiomdContent[],
+    };
+    const result = enforceSingleTitle(root as never);
+    expect(wrapped.depth).toBe(1);
+    expect(wrappedTail.depth).toBe(1);
+    expect(competing.depth).toBe(2);
+    expect(result.changes).toHaveLength(1);
   });
 
   it("strips emphasis inside a heading", async () => {
