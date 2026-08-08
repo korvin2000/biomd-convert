@@ -1984,19 +1984,18 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
  * covers the whole heading is likewise redundant — the heading already is the
  * emphasis — and `**Title**` differs from `Title` for every consumer that
  * matches on the label.
+ *
+ * **The fold has to reach every depth.** A `<br>` the author put *inside* the
+ * emphasis — `<b>М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963).<br></b>(Краткая биография…)`,
+ * which is how this era wrote a two-line title with only its first line bold —
+ * is not a top-level child, so folding the top level alone left it in place and
+ * `dropEmphasis` then lifted it back out. The result was the one setext heading
+ * in the corpus: an underline of 89 hyphens that `blocks.ts` reads as a
+ * thematic break, `read()` passes through as opaque Markdown, and CommonMark
+ * turns into an `h2` swallowing the line above it. Three readings of one line.
  */
 function headingPhrasing(nodes: PhrasingContent[]): PhrasingContent[] {
-  const flat: PhrasingContent[] = [];
-  const push = (list: readonly PhrasingContent[]): void => {
-    for (const node of list) {
-      if (node.type === "break") {
-        flat.push({ type: "text", value: " " });
-        continue;
-      }
-      flat.push(node);
-    }
-  };
-  push(nodes);
+  const flat = foldBreaks(nodes);
 
   // Drop emphasis outright. A heading is uniformly prominent already, and a
   // partially bold one — `# **Андрес** Сеговия`, which is what the source
@@ -2013,6 +2012,23 @@ function headingPhrasing(nodes: PhrasingContent[]): PhrasingContent[] {
     else if (stripped !== first.value) first.value = stripped;
   }
   return out.filter((n) => n.type !== "text" || n.value !== "");
+}
+
+/**
+ * Replace every `break`, at any depth, with a space.
+ *
+ * Containers are copied rather than mutated: the caller is usually building a
+ * heading *out of* a paragraph that may still be in the tree if the promotion
+ * is abandoned, and a heading is the only context where a line break is
+ * line-fitting rather than meaning.
+ */
+export function foldBreaks(nodes: readonly PhrasingContent[]): PhrasingContent[] {
+  return nodes.map((node) => {
+    if (node.type === "break") return { type: "text", value: " " } as PhrasingContent;
+    const children = (node as { children?: unknown }).children;
+    if (!Array.isArray(children)) return node;
+    return { ...node, children: foldBreaks(children as PhrasingContent[]) } as PhrasingContent;
+  });
 }
 
 function dropEmphasis(nodes: readonly PhrasingContent[]): PhrasingContent[] {

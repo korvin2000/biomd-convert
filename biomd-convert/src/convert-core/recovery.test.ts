@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { convert } from "./pipeline.js";
-import { ALIGN_LABEL_MAX_CHARS, isAlignableLabelText, isDateLabel } from "./structure.js";
+import { ALIGN_LABEL_MAX_CHARS, foldBreaks, isAlignableLabelText, isDateLabel } from "./structure.js";
 import type { Classification } from "./classify.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
 import { isDrawnRule } from "./glyphs.js";
@@ -189,6 +189,34 @@ describe("break-run segmentation", () => {
       { type: "text", value: "works" },
     ]);
     expect(lifted.map((n) => n.type)).toEqual(["strong", "break", "text"]);
+  });
+
+  it("folds a break out of a heading at every depth", () => {
+    // A heading is one line. A `<br>` nested inside the emphasis that covers
+    // only the first line — `<b>Title<br></b>subtitle` — used to survive the
+    // top-level fold and force the serializer into setext form.
+    const folded = foldBreaks([
+      { type: "strong", children: [{ type: "text", value: "Title" }, { type: "break" }] },
+      { type: "link", url: "/x", children: [{ type: "text", value: "a" }, { type: "break" }, { type: "text", value: "b" }] },
+      { type: "break" },
+      { type: "text", value: "tail" },
+    ]);
+    const types = (n: unknown): unknown =>
+      Array.isArray((n as { children?: unknown }).children)
+        ? [(n as { type: string }).type, ((n as { children: unknown[] }).children ?? []).map(types)]
+        : (n as { type: string }).type;
+    expect(folded.map(types)).toEqual([
+      ["strong", ["text", "text"]],
+      ["link", ["text", "text", "text"]],
+      "text",
+      "text",
+    ]);
+    // False friend: a break outside a heading is meaning, not line-fitting, so
+    // nothing else in the pipeline may call this — `liftBreaks` is that path.
+    expect(liftBreaks([{ type: "strong", children: [{ type: "text", value: "1989" }, { type: "break" }] }]).map((n) => n.type)).toEqual([
+      "strong",
+      "break",
+    ]);
   });
 
   it("never splits a link around a break", () => {
