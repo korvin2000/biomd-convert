@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the third refinement iteration (PROGRESS §25). Facts marked
+Last touched **2026-08-08**, after PROGRESS §25 and the §26 adjudication. Facts marked
 *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
@@ -31,14 +31,18 @@ That is the floor. Nothing accepted from here may regress it.
 > it. **`corpus scan` is still required after a fresh clone** — §24.4 changed the chrome
 > fingerprint and a cached `bench/corpus/corpus-profile.json` from before it makes `news` regress.
 
-**Next: `retyped.paragraph-to-lead`** — 10 instances, 2 documents, in the top ten and **never
-examined**. Then `emphasis.span` (34 instances / 10 documents, but only 9 are converter-defect —
-confirm that split before investing, it is the §14.1 shape).
+**Next: `emphasis.span`** — 34 instances / 10 documents, the widest reach left, but **only 9 are
+converter-defect**; confirm that split on two or three instances before any survey work, it is the
+§14.1 shape.
 
-`image.size.value` (21 / 4) is **not** a threshold sweep — §24.9 said it was and §25.4 measured that
-it is not; the calibration table is recorded there, do not re-derive it. `break.missing` is
-decomposed (§25.3): 7 of its 10 instances are not targets, and only `new_bach` ×1 and `segovia` ×1
-remain unexamined.
+Three classes are now **off the queue and must not be scored**: `retyped.paragraph-to-lead` (author
+ruling, §26.2 — visual-only in *both* directions), `image.size.value` (§25.4 — not a threshold, the
+calibration table is recorded there), and 7 of `break.missing`'s 10 instances (§25.3; only
+`new_bach` ×1 and `segovia` ×1 remain unexamined).
+
+> **The rank column measures what an instrument noticed, not what work is available.** Three of the
+> last four classes taken from the top of the queue were ceilings, instrument artefacts or several
+> mechanisms wearing one name. Adjudicate two or three instances *before* surveying.
 
 ---
 
@@ -81,6 +85,14 @@ maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 2. **`new_blackmore`'s masthead split point** — settled deterministically in the browser: the source
    draws two line boxes at 26.7 px and 16 px, and the reference moves one word across that boundary.
    Reference-inconsistency; two minor `heading.content.edited` remain. PROGRESS §24.5.
+3. **`::: lead` is aesthetic, not structural, and the ruling is symmetric.** *Ruled 2026-08-08.*
+   Applied when every paragraph opens with a highlighted initial, or when the article is built from
+   long paragraphs that read better broken up — and applied to **one document only**, so its absence
+   elsewhere is deliberate. A `lead` discrepancy in **either** direction is visual, not a fidelity
+   defect: emitting one where a reference has none is not a regression if it reads better. The
+   converter emits `lead` nowhere and that stays correct. All 10 findings are off the queue; the
+   measurements that rule out typography, length and position are in PROGRESS §26.3, so do not
+   re-derive them.
 
 ## 4. Open defect classes — *measured* 2026-08-08 over 22 documents
 
@@ -94,7 +106,7 @@ maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 | 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§3.1) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 63 | `paragraph.containment` | 7 | 3 | |
-| 60 | `retyped.paragraph-to-lead` | 10 | 2 | never examined — **next** |
+| ~~60~~ | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue** — author ruling §26.2, visual-only both ways |
 | 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |
 | 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
 

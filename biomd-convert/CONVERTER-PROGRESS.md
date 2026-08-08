@@ -3286,3 +3286,180 @@ Environment note: `sh bench/run.sh` requires Chromium (`visual: always`). A fres
 machine needs `npx playwright install chromium` or every document reports "no
 output produced". This repository also carries a multi-pack-index that git 2.45
 cannot read; `git config core.multiPackIndex false` unblocks it locally.
+
+## 26. `retyped.paragraph-to-lead`: an author ruling, and no rule (2026-08-08)
+
+Investigated instance by instance, as §25 taught. **No code change** beyond a
+docstring correction, and that is the result rather than a failure to find one:
+the class is now settled by the reference author instead of sitting unexamined
+in the top ten.
+
+| rung | §25 | after |
+|---|---|---|
+| L0 | 423 tests, 0 FAILED | 423 tests, typecheck clean, 0 FAILED |
+| L1 | 93.1 | 93.1 |
+| L2 | 429 · 250 converter-defect | 429 · 250 |
+| L3 | 95, 10 critical | 95, 10 critical |
+
+Unchanged on every rung and every document, which is what a comment-only change
+must produce.
+
+### 26.1 The class is the whole construct, not a regression in one
+
+All **10** `::: lead` in the 22 references are these 10 findings: 9 in
+`new_rechin4`, 1 in `news`. `convert-core` emits `::: lead` **never** — the
+directive is built in `biomd-ast/builders.ts`, typed, serialized and validated,
+and no pass has ever produced one.
+
+What made this look like a live mechanism was a **docstring for a function that
+does not exist**, sitting immediately above `enforceSingleTitle`'s: *"Promote the
+first substantial paragraph to `::: lead` when the source marked it as an
+introduction. Deliberately conservative…"*. A reader — and the previous
+session's queue entry — takes that as a shipped, conservative pass being
+outvoted, rather than as an unbuilt construct. It is now replaced by the finding
+below. **This is the third orphaned specification found in this campaign**, after
+the mini-image glyph map and `frame`'s unused `title:`; the pattern is a written
+policy with no call site, and it costs a session every time.
+
+### 26.2 The author's ruling — authoritative, do not re-investigate
+
+> *"A decision regarding `::: lead` should be made in two situations: if every
+> paragraph in the document begins with a specifically highlighted bold or
+> capitalised letter, or if the article consists of large, long paragraphs. In
+> the second case, a long text with such paragraphs becomes visually more
+> appealing and easier to read. The decision to use `::: lead` was made purely
+> for aesthetic reasons, rather than on the basis of HTML structure. It was
+> purely my human decision."* — 2026-08-08
+
+Both criteria are judgements about the **finished page**, and the second is a
+readability decision the source cannot state. This is the same shape as §24.5's
+ruling: an author decision recorded as a ceiling, with **no code changed**.
+
+Asked whether the absence of `lead` elsewhere was an oversight, the author
+confirmed and went further:
+
+> *"I only applied the change to `::: lead` to one document, so it isn't
+> reflected in the others. This is purely a visual adjustment and is not
+> critical. If it is applied and there is a discrepancy with the reference, it is
+> a visual improvement and should not adversely affect the metrics or evaluation
+> criteria."* — 2026-08-08
+
+So the ruling is **symmetric, and it is the operative one**: `lead` is a visual
+nicety, and a discrepancy in *either* direction is not a fidelity defect.
+
+- Not emitting `lead` where a reference has one — the present state, all 10
+  findings — is **not a target**.
+- Emitting `lead` where a reference has none is likewise **not a regression**,
+  provided it is a visual improvement. Any future `lead` rule is therefore
+  judged on rendered quality (L3, the browser), never on agreement with
+  `fixtures/out/`, and L2's `lead` classes must not be read as converter defects
+  in either direction.
+
+`new_rechin4` ×9 is the "long paragraphs" case; `news` ×1 is a genuine editorial
+intro. §16.3 is not the barrier — a directive wrapper invents no text — but
+`CLAUDE.md` §5's rule contract is: there is no invariant to key on, and now no
+metric that would confirm one if there were.
+
+### 26.3 What was measured, so the criteria are not re-tested
+
+**Typography attests nothing.** `BioMD-Reference.md` §3 allows `lead` for "a
+semantic lead **or** a distinctly styled introductory source region". Measured
+through the real Chromium measurer:
+
+- `news`'s intro is `p.t1` and the archive it introduces is `p.t2`; both compute
+  **13.33 px, weight 400, upright, `rgb(51,51,40)`**, differing only in a
+  `text-align` that occurs in both. Different class, identical rendering. The
+  second licence is therefore unavailable, and the first is a judgement.
+- `new_rechin4`'s four `<p class="t">` blocks are the entire prose of the page —
+  17596, 3819, 3591 and 1498 characters, split at `<br><br>` into the 9
+  paragraphs the reference wraps. All compute **14.67 px / 400 / justify**. With
+  9 of 9 wrapped there is no unwrapped prose to contrast against; the construct
+  *is* the page, which is exactly the majority-test trap `bodyProminenceOf`'s
+  header records.
+
+**Length does not recover it.** Over all 22 references, classifying every
+top-level body paragraph by whether it sits inside a `lead`:
+
+| | n | min | p25 | median | p90 | max |
+|---|---:|---:|---:|---:|---:|---:|
+| inside `lead` | 11 | 220 | 612 | 839 | — | 4164 |
+| plain | 570 | 7 | 46 | 139 | 695 | 3136 |
+
+The distributions overlap through the whole of the `lead` range. **29 plain
+paragraphs in 15 documents exceed 900 characters** — `williams2` 3136,
+`williams2` 1665, `segovia` 1587, `jovicic` 1354 — all longer than seven of the
+nine `new_rechin4` leads. And `news`'s two leads are **413 and 220**, shorter
+than a plain 1303-character paragraph on the same page, so length is
+*anti*-correlated with `lead` there. No paragraph-level threshold exists.
+
+**A per-document median separates it, with one positive.** Median body-paragraph
+length: `new_rechin4` **839**; then `authors` 631, `new_kolpakov` 605,
+`williams2` 540, `jovicic` 540, `new_dyens` 498, `new_bach` 334, and down to
+`new_karta` 17. Any threshold in (631, 839] selects `new_rechin4` and nothing
+else — a single-instance discriminator with the nearest negative analogue 1.33×
+away, which §12.1's sweep lesson calls a cliff rather than a mechanism. Its
+payoff would be **rewrapping an entire document body**, the largest blast radius
+in the pipeline, on the other ~987 pages, from one supporting document.
+
+**Criterion (a) is not exercised by this corpus.** No document wraps in `lead`
+because of highlighted initials. The drop-cap shape does occur — `new_lagq2`'s
+`**R**ecital` and `***T***he Best of the L.A.G.Q`, `new_lendle2`'s album titles —
+but on *labels*, not on every paragraph, and neither reference uses `lead`. So
+the criterion has zero positive instances and its false friend is already in the
+corpus. Nothing to build against.
+
+### 26.4 Killed hypotheses added
+
+- **`retyped.paragraph-to-lead` is a defect in a working pass.** There is no
+  pass. The class is the entire `lead` construct, unbuilt.
+- **`lead` is recoverable from a distinctly styled source region.** Measured on
+  both documents: `news`'s intro and body render identically, and
+  `new_rechin4`'s page has exactly one prose style. §3's second licence does not
+  apply to either instance the corpus has.
+- **`lead` is recoverable from paragraph length.** 29 plain paragraphs in 15
+  documents are longer than most `lead` paragraphs; `news`'s leads are shorter
+  than its own plain prose.
+- **`lead` is recoverable from a positional signal** — prose between the title
+  and the page's first author-drawn `<hr>`. Fires on `kiselev`, `new_bach` and
+  `new_lagq2` as well, where the references write a plain paragraph. It also
+  cannot satisfy §5's recurrence requirement, since there is at most one lead per
+  page by definition.
+- **A hook should take it.** §6 puts judgement in a hook, and the skill warns
+  against parking a broad class for want of an elegant rule — but this is one
+  aesthetic decision per document, the author has stated it is not derived from
+  the source, and no acceptance check for "this reads better wrapped" can be
+  written. A hook needs a deterministic check that can reject it; this has none.
+- **The 10 findings are a gap to close.** They are not. The author's symmetric
+  ruling (§26.2) makes `lead` a visual nicety in both directions, so closing
+  them would move an instrument without improving the conversion — and a rule
+  that emitted `lead` correctly by the author's criteria would still show as 10
+  findings plus new ones. This class can never reach zero and should not be
+  scored.
+
+### 26.5 State
+
+Unchanged from §25.6 on every rung. The queue changes only by removing this
+class:
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
+| 90 | `emphasis.span` | 34 | 10 | only **9** are converter-defect — verify the split first |
+| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
+| 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
+| 84 | `image.size.value` | 21 | 4 | **not a threshold** — §25.4 |
+| 84 | `align.missing` | 7 | 4 | `goya2`'s is reference-inconsistency (§24.5) |
+| 84 | `image.spurious` | 7 | 4 | |
+| 63 | `paragraph.containment` | 7 | 3 | |
+| 60 | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue — §26.2. Visual-only in both directions, author-ruled; never score it** |
+| 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+
+Three of the last four classes examined — `break.missing`, `image.size.value`,
+`retyped.paragraph-to-lead` — turned out to be ceilings, instrument artefacts or
+several mechanisms rather than one actionable defect. **The ledger's rank column
+is measuring how much an instrument noticed, not how much work is available**,
+and at this stage of the campaign the top of the queue is increasingly made of
+things that cannot be closed. The next class taken should be adjudicated on two
+or three instances *before* any survey work, and `emphasis.span` — where only 9
+of 34 instances are converter-defect — should have that split confirmed first.

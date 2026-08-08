@@ -3433,11 +3433,44 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
 }
 
 /**
- * Promote the first substantial paragraph to `::: lead` when the source marked
- * it as an introduction.
+ * `::: lead` is deliberately never emitted. Ruled by the reference author,
+ * 2026-08-08 — PROGRESS §26. Do not re-derive this.
  *
- * Deliberately conservative: a lead is a genuine introductory summary, not
- * merely the first paragraph.
+ * This paragraph used to describe a "promote the first substantial paragraph to
+ * `::: lead`" pass that has never existed, which made `retyped.paragraph-to-lead`
+ * read like a regression in a working mechanism rather than an unbuilt one.
+ *
+ * All 10 `::: lead` in the 22 references are in two documents, and the author
+ * states the choice was **aesthetic, not structural** — applied when every
+ * paragraph opens with a highlighted initial, or when the article is built from
+ * long paragraphs that read better broken up — and applied to one document only,
+ * so its absence elsewhere is not an omission. The ruling is **symmetric**: a
+ * `lead` discrepancy in either direction is a visual matter and not a fidelity
+ * defect, so a future rule here is judged on rendered quality and never on
+ * agreement with `fixtures/out/`.
+ *
+ * Both criteria are judgements about the finished page, and the measurements
+ * agree that the source does not carry them:
+ *
+ *  - `new_rechin4` wraps **9 of its 9** body paragraphs. Its four `<p class="t">`
+ *    blocks are the entire prose of the page and all compute 14.67 px / 400 /
+ *    justify, so there is nothing to contrast against — the construct *is* the
+ *    page, which is the majority-test trap `bodyProminenceOf`'s header warns
+ *    about.
+ *  - `news`'s two are a genuine editorial intro that measures **identical** to
+ *    the archive body it introduces: 13.33 px, weight 400, upright,
+ *    `rgb(51,51,40)`, differing only in a `text-align` that recurs in the body.
+ *    So §3's "distinctly styled introductory source region" is not attested.
+ *
+ * Length does not recover it either. Across the 22 references, `lead`
+ * paragraphs run 220–4164 characters while **29 plain paragraphs in 15
+ * documents** exceed 900 — `williams2` reaches 3136 and `segovia` 1587, longer
+ * than most leads — and `news`'s own leads (413, 220) are shorter than a plain
+ * 1303-character paragraph on the same page. Only a *per-document* median
+ * separates them, and only with one positive: `new_rechin4` at 839 against
+ * `authors` at 631. A single-instance threshold whose payoff is rewrapping an
+ * entire document body is the largest blast radius in the pipeline for the least
+ * evidence, so no rule is built and none should be.
  */
 /**
  * `BioMD-Reference.md` §6: one `#` for a source with one clear page title.

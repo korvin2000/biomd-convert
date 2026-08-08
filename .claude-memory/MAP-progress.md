@@ -35,16 +35,17 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 23 author adjudications | 2755–2846 | **`williams2`'s wrapper was a reference mistake `23.1:2772`** · **the wrapped masthead is two rules `23.2:2791`** · read the fixture, not the summary `23.3:2834` | **HOT** |
 | 24 five mechanisms | 2848–3090 | **masthead = containment × typography `24.1:2866`** · **two lossy folds in `normalize` `24.2:2899`** · drawn rule + the byline it exposed `24.3:2918` · **two lying instruments: chrome fingerprint, `followsImage` `24.4:2945`** · **author ruling: a recovered centred `##` keeps no `::: align` `24.5:2981`** · corpses `24.6:3016` · **nav title + `nav` is legal in a `column` `24.8:3033`** · state + queue `24.9:3068` | **HOT** |
 | 25 `break.missing` decomposed | 3092–3288 | **a "missing break" that was a setext heading `25.1:3112`** · **a drawn rule is a line; a rule may join an align run `25.2:3153`** · **the three that are not targets, with the evidence `25.3:3183`** · **image-size calibration table — not a threshold `25.4:3218`** · corpses `25.5:3244` · state + queue `25.6:3262` | **HOT** |
+| 26 `lead` ruled a ceiling | 3290–3439 | the class is the whole unbuilt construct `26.1:3307` · **author ruling: `lead` is aesthetic, not structural `26.2:3324`** · **what was measured — typography, length, position `26.3:3343`** · corpses `26.4:3391` · **state + "rank measures what an instrument noticed" `26.5:3413`** | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and **§21 (2463–2650)** — the current state, the
-author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
+A session resuming cold needs **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
+**§21 (2463–2650)** — the current state, the author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
 the thing that had to move instead.
 
-## Checkpoint — §25, measured 2026-08-08 over **22 documents**
+## Checkpoint — §25/§26, measured 2026-08-08 over **22 documents** (§26 changed no rung)
 
 | rung | value | reproduce with |
 |---|---|---|

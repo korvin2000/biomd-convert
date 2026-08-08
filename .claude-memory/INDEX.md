@@ -37,10 +37,15 @@ disagree, the repository file wins and this index gets fixed.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: three refinement iterations are done
-(PROGRESS §21–§25, **twelve mechanisms** plus three author adjudications; L1 90.3 → 93.1, L2 745 →
-429, L3 287 → 95). `break.missing` — the widest class — was examined and **decomposed into five
-unrelated mechanisms**, two built and three not targets (§25.3). Next is
-**`retyped.paragraph-to-lead`** (10 instances, 2 documents, never examined).
+(PROGRESS §21–§26, **twelve mechanisms** plus four author adjudications; L1 90.3 → 93.1, L2 745 →
+429, L3 287 → 95). `break.missing` was **decomposed into five unrelated mechanisms**, two built and
+three not targets (§25.3); `retyped.paragraph-to-lead` is **off the queue** on an author ruling —
+`lead` is aesthetic and a discrepancy either way is not a defect (§26.2). Next is **`emphasis.span`**
+(34 instances / 10 documents, but only 9 are converter-defect — confirm that split first).
+
+> **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
+> the last four classes taken from the top were ceilings or several mechanisms sharing a name.
+> Adjudicate two or three instances before surveying.
 
 **Three setup traps on a fresh clone:** `npx playwright install chromium` (L1 needs it), `corpus
 scan` (§24.4 changed the chrome fingerprint), and `git config core.multiPackIndex false` (this
