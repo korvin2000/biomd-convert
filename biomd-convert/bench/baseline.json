@@ -1,0 +1,1602 @@
+{
+  "overall": 0.8233107816195434,
+  "documents": [
+    {
+      "name": "authors",
+      "text": {
+        "recall": 0.747093023255814,
+        "precision": 0.749271137026239,
+        "f1": 0.7481804949053857,
+        "expected": 344,
+        "actual": 343,
+        "matched": 257,
+        "missing": [
+          "авторы проекта тавровский сергей викторович",
+          "проекта тавровский сергей викторович тавровский",
+          "тавровский сергей викторович тавровский сергей",
+          "сергей викторович тавровский сергей тавровский",
+          "викторович тавровский сергей тавровский сергей",
+          "живет и работает в киеве",
+          "и работает в киеве украина",
+          "работает в киеве украина инициатор"
+        ]
+      },
+      "headings": {
+        "recall": 0.2,
+        "precision": 1,
+        "f1": 0.33333333333333337,
+        "expected": 5,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tтавровский сергей викторович",
+          "2\tтавровский виктор владимирович",
+          "2\tтавровский александр викторович",
+          "2\tновый член коллектива"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 4,
+        "actual": 4,
+        "matched": 4,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 5,
+        "actual": 5,
+        "matched": 5,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.8,
+        "precision": 1,
+        "f1": 0.888888888888889,
+        "expected": 5,
+        "actual": 4,
+        "matched": 4,
+        "missing": [
+          "image"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.8466763706938379
+    },
+    {
+      "name": "barrios",
+      "text": {
+        "recall": 0.7274052478134111,
+        "precision": 0.7349042709867453,
+        "f1": 0.7311355311355311,
+        "expected": 686,
+        "actual": 679,
+        "matched": 499,
+        "missing": [
+          "агустин барриос агустин барриос барриос¹",
+          "барриос агустин барриос барриос¹ мангори",
+          "агустин барриос барриос¹ мангори агустин",
+          "барриос барриос¹ мангори агустин agustin",
+          "барриос¹ мангори агустин agustin barrios",
+          "1885 1944 гениальный парагвайский гитариствиртуоз",
+          "1944 гениальный парагвайский гитариствиртуоз значение",
+          "гениальный парагвайский гитариствиртуоз значение которого"
+        ]
+      },
+      "headings": {
+        "recall": 0.2,
+        "precision": 1,
+        "f1": 0.33333333333333337,
+        "expected": 5,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tизбранные записи",
+          "3\tcomplete historical recordings 1913 1942",
+          "3\t20 famous guitar recordings 1913 1929",
+          "2\tноты и медиаматериалы"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 0.9591836734693877,
+        "f1": 0.9791666666666666,
+        "expected": 47,
+        "actual": 49,
+        "matched": 47,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.8,
+        "f1": 0.888888888888889,
+        "expected": 4,
+        "actual": 5,
+        "matched": 4,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.7,
+        "precision": 1,
+        "f1": 0.8235294117647058,
+        "expected": 10,
+        "actual": 7,
+        "matched": 7,
+        "missing": [
+          "columns",
+          "column"
+        ]
+      },
+      "tableCells": {
+        "recall": 0.95,
+        "precision": 0.9047619047619048,
+        "f1": 0.9268292682926829,
+        "expected": 60,
+        "actual": 63,
+        "matched": 57,
+        "missing": [
+          "page 1 page 2 zip",
+          "1 2 3 4 5 6 zip prelude 1 2",
+          "la catedral 1st movement prelude saudade lento исп вл митяков"
+        ]
+      },
+      "tableShape": 0.8194444444444444,
+      "expectedTables": [
+        {
+          "cols": 4,
+          "rows": 24,
+          "header": [
+            "произведение",
+            "табулатура",
+            "аудио midi",
+            "ноты и архивы"
+          ],
+          "cells": [
+            "choro da saudade nostalgic choro",
+            "tab",
+            "midi",
+            "contemplacion vals et tremelo",
+            "tab",
+            "cueca",
+            "tab",
+            "danza paraguaya no 1",
+            "tab",
+            "midi",
+            "don perez freire",
+            "tab",
+            "el sueno de la munequita 2 versions",
+            "tab",
+            "midi",
+            "el ultimo tremolo una limosnita por el amor de dios",
+            "tab",
+            "midi",
+            "estilo uruguayo",
+            "tab",
+            "estudio inconcluso",
+            "tab",
+            "julia florida barcarola",
+            "tab",
+            "mp3",
+            "page 1 page 2 zip",
+            "la catedral",
+            "1 2 3 4 5 6 zip prelude 1 2",
+            "la catedral 1st movement prelude saudade lento исп вл митяков",
+            "tab",
+            "wma",
+            "la catedral 2nd movement andante religioso",
+            "tab",
+            "la catedral 3rd movement allegro solemne",
+            "tab",
+            "midi",
+            "las abejas the bees",
+            "tab",
+            "midi",
+            "maxixe",
+            "tab",
+            "minuet in c",
+            "tab",
+            "oracion por todos",
+            "tab",
+            "prelude in cm",
+            "tab",
+            "midi",
+            "tango no 2",
+            "midi",
+            "un sueno en la floresta",
+            "tab",
+            "midi",
+            "vals op 8 no 3",
+            "tab",
+            "vals op 8 no 4 2 versions",
+            "tab",
+            "midi",
+            "villancio de navidad traditional",
+            "tab"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 3,
+          "rows": 27,
+          "header": [
+            "",
+            "tab",
+            "midi"
+          ],
+          "cells": [
+            "choro da saudade nostalgic choro",
+            "tab",
+            "midi",
+            "contemplacion vals et tremelo",
+            "tab",
+            "cueca",
+            "tab",
+            "danza paraguaya no 1",
+            "tab",
+            "midi",
+            "don perez freire",
+            "tab",
+            "el sueno de la munequita 2 versions",
+            "tab",
+            "midi",
+            "el ultimo tremolo una limosnita por el amor de dios",
+            "tab",
+            "midi",
+            "estilo uruguayo",
+            "tab",
+            "estudio inconcluso",
+            "tab",
+            "julia florida barcarola",
+            "tab",
+            "mp3",
+            "ноты 1 2",
+            "zip",
+            "la catedral",
+            "ноты 1 2 3 4 5 6",
+            "zip",
+            "ноты прелюдия 1 2",
+            "la catedral 1st movement prelude preludio saudade lento запись в исп вл митякова",
+            "tab",
+            "wma",
+            "la catedral 2nd movement andante religioso",
+            "tab",
+            "la catedral 3rd movement allegro solemne",
+            "tab",
+            "midi",
+            "las abejas the bees",
+            "tab",
+            "midi",
+            "maxixe",
+            "tab",
+            "minuet in c",
+            "tab",
+            "oracion por todos",
+            "tab",
+            "prelude in cm",
+            "tab",
+            "midi",
+            "tango no 2",
+            "midi",
+            "un sueno en la floresta",
+            "tab",
+            "midi",
+            "vals op 8 no 3",
+            "tab",
+            "vals op 8 no 4 2 versions",
+            "tab",
+            "midi",
+            "villancio de navidad traditional",
+            "tab"
+          ]
+        }
+      ],
+      "overall": 0.791759657427699
+    },
+    {
+      "name": "borislova",
+      "text": {
+        "recall": 0.9581211092246746,
+        "precision": 0.964123006833713,
+        "f1": 0.9611126880499575,
+        "expected": 1767,
+        "actual": 1756,
+        "matched": 1693,
+        "missing": [
+          "в музыкальных школах москвы мне",
+          "музыкальных школах москвы мне было",
+          "школах москвы мне было 8",
+          "москвы мне было 8 лет",
+          "научиться играть на гитаре надя",
+          "играть на гитаре надя борислова",
+          "на гитаре надя борислова в",
+          "гитаре надя борислова в 1986"
+        ]
+      },
+      "headings": {
+        "recall": 0.07142857142857142,
+        "precision": 1,
+        "f1": 0.13333333333333333,
+        "expected": 14,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tпроизведения для гитары 1989 2002",
+          "3\t1989",
+          "3\t1990 1993",
+          "3\t1993",
+          "3\t1994",
+          "3\t1995",
+          "3\t1997",
+          "3\t1999"
+        ]
+      },
+      "links": {
+        "recall": 0.75,
+        "precision": 0.75,
+        "f1": 0.75,
+        "expected": 4,
+        "actual": 4,
+        "matched": 3,
+        "missing": [
+          "#/borislova1.htm"
+        ]
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.1,
+        "precision": 1,
+        "f1": 0.18181818181818182,
+        "expected": 10,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "image",
+          "images",
+          "columns",
+          "column"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.7823489579301387
+    },
+    {
+      "name": "goya2",
+      "text": {
+        "recall": 0.8631361760660248,
+        "precision": 0.8881811748053786,
+        "f1": 0.8754795953958843,
+        "expected": 1454,
+        "actual": 1413,
+        "matched": 1255,
+        "missing": [
+          "francis goya plays his favourite",
+          "goya plays his favourite hits",
+          "plays his favourite hits vol",
+          "his favourite hits vol 1",
+          "favourite hits vol 1 francis",
+          "hits vol 1 francis goya",
+          "vol 1 francis goya plays",
+          "1 francis goya plays his"
+        ]
+      },
+      "headings": {
+        "recall": 0.3333333333333333,
+        "precision": 0.25,
+        "f1": 0.28571428571428575,
+        "expected": 3,
+        "actual": 4,
+        "matched": 1,
+        "missing": [
+          "1\tфренсис гойя",
+          "2\tдискография"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 26,
+        "actual": 26,
+        "matched": 26,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 17,
+        "actual": 17,
+        "matched": 17,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.1506849315068493,
+        "precision": 1,
+        "f1": 0.2619047619047619,
+        "expected": 146,
+        "actual": 22,
+        "matched": 22,
+        "missing": [
+          "align",
+          "columns",
+          "column",
+          "images"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.81740578338067
+    },
+    {
+      "name": "jovicic",
+      "text": {
+        "recall": 0.6709511568123393,
+        "precision": 0.651685393258427,
+        "f1": 0.6611779607346421,
+        "expected": 778,
+        "actual": 801,
+        "matched": 522,
+        "missing": [
+          "5 июля 1926 югославский и",
+          "июля 1926 югославский и сербский",
+          "1926 югославский и сербский гитарист",
+          "югославский и сербский гитарист и",
+          "и сербский гитарист и композитор",
+          "университет доктор наук 1964 впоследствии",
+          "доктор наук 1964 впоследствии опубликовал",
+          "наук 1964 впоследствии опубликовал несколько"
+        ]
+      },
+      "headings": {
+        "recall": 0.5,
+        "precision": 1,
+        "f1": 0.6666666666666666,
+        "expected": 2,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tзапись jovan jovicic classical guitar"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 4,
+        "actual": 4,
+        "matched": 4,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.25,
+        "precision": 1,
+        "f1": 0.4,
+        "expected": 8,
+        "actual": 2,
+        "matched": 2,
+        "missing": [
+          "images",
+          "image",
+          "columns",
+          "column"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.8050200548870593
+    },
+    {
+      "name": "kiselev",
+      "text": {
+        "recall": 0.9320388349514563,
+        "precision": 0.9381107491856677,
+        "f1": 0.935064935064935,
+        "expected": 927,
+        "actual": 921,
+        "matched": 864,
+        "missing": [
+          "16 сборников олега киселева полное",
+          "сборников олега киселева полное собрание",
+          "олега киселева полное собрание сочинений",
+          "киселева полное собрание сочинений том",
+          "полное собрание сочинений том i",
+          "собрание сочинений том i клубника",
+          "рокн ролл для тех кому",
+          "ролл для тех кому за"
+        ]
+      },
+      "headings": {
+        "recall": 0.14285714285714285,
+        "precision": 1,
+        "f1": 0.25,
+        "expected": 14,
+        "actual": 2,
+        "matched": 2,
+        "missing": [
+          "2\tполное собрание сочинений",
+          "2\tзапись олег киселев композиторгитарист",
+          "3\tдетская сюита 1984 посвящение раису асатуллину",
+          "3\tосенняя сюита 1986",
+          "3\tдевять пьеспосвящений 1986 1992",
+          "3\tанглийская сюита 1988 1992",
+          "3\tчетыре музыкальных портрета 1989 1991",
+          "3\tпять несложных пьес 1990 1993"
+        ]
+      },
+      "links": {
+        "recall": 0.8837209302325582,
+        "precision": 1,
+        "f1": 0.9382716049382717,
+        "expected": 43,
+        "actual": 38,
+        "matched": 38,
+        "missing": [
+          "http://users.iol.it/vincenzo.pocci",
+          "mailto:info@vpmusicmedia.com",
+          "mailto:vincenzo.pocci@iol.it",
+          "mailto:andy.waeyaert@advalvas.be",
+          "mailto:oleg.kiselev@list.ru"
+        ]
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 2,
+        "actual": 2,
+        "matched": 2,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.625,
+        "precision": 1,
+        "f1": 0.7692307692307693,
+        "expected": 8,
+        "actual": 5,
+        "matched": 5,
+        "missing": [
+          "columns",
+          "column"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 0.9864864864864865,
+        "f1": 0.9931972789115647,
+        "expected": 73,
+        "actual": 74,
+        "matched": 73,
+        "missing": []
+      },
+      "tableShape": 0.9807692307692308,
+      "expectedTables": [
+        {
+          "cols": 3,
+          "rows": 12,
+          "header": [
+            "произведение",
+            "аудио",
+            "ноты"
+          ],
+          "cells": [
+            "baroque этюд 1",
+            "mp3",
+            "preludeэтюд 2",
+            "mp3",
+            "pdf",
+            "premonition этюд 3",
+            "mp3",
+            "departure этюд 4",
+            "mp3",
+            "there you are absent этюд 5",
+            "mp3",
+            "frozen river этюд 6",
+            "mp3",
+            "rock n roll этюд 7",
+            "mp3",
+            "mood этюд 8",
+            "mp3",
+            "along the soft carpet of fallen leaves этюд 9",
+            "mp3",
+            "pdf",
+            "sambaэтюд 10",
+            "mp3",
+            "былина исп о киселев",
+            "wma",
+            "вальс при свечах исп о киселев",
+            "wma"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 26,
+          "header": [
+            "сюита произведение",
+            "аудио",
+            "ноты"
+          ],
+          "cells": [
+            "джазсюита 2001 александру виницкому одному из моих любимых композиторов",
+            "стакан сока со льдом в жаркий полдень",
+            "mp3",
+            "ищу работу",
+            "mp3",
+            "прогулка вдоль витрин дорогих магазинов",
+            "mp3",
+            "прохладный кафе мягкий свет тихая музыка",
+            "mp3",
+            "не стреляйте в гитариста он играет как умеет",
+            "mp3",
+            "осенняя сюита 1986",
+            "прелюдия",
+            "mp3",
+            "сентиментальная прогулка",
+            "mp3",
+            "дождь за окном",
+            "mp3",
+            "листопад",
+            "mp3",
+            "зимняя сюита 1996 виктору козлову",
+            "метель",
+            "mp3",
+            "вальс снежинок",
+            "mp3",
+            "одиночество вдвоем",
+            "mp3",
+            "на катке",
+            "mp3",
+            "весенняя сюита 1996 моему другу станиславу савельеву",
+            "ожидание",
+            "mp3",
+            "начало",
+            "mp3",
+            "подснежники",
+            "mp3",
+            "купание воробьев в апрельской луже",
+            "mp3",
+            "летняя сюита 1997",
+            "на пляже",
+            "mp3",
+            "старый парк во время грозы",
+            "mp3",
+            "последняя иллюзия",
+            "mp3",
+            "завтрак на траве",
+            "mp3"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 3,
+          "rows": 13,
+          "header": [
+            "",
+            "mp3",
+            ""
+          ],
+          "cells": [
+            "десять музыкальных этюдов для гитары исп о киселев",
+            "baroque этюд 1",
+            "mp3",
+            "preludeэтюд 2",
+            "mp3",
+            "pdf",
+            "premonition этюд 3",
+            "mp3",
+            "departure этюд 4",
+            "mp3",
+            "there you are absent этюд 5",
+            "mp3",
+            "frozen river этюд 6",
+            "mp3",
+            "rock n roll этюд 7",
+            "mp3",
+            "mood этюд 8",
+            "mp3",
+            "along the soft carpet of fallen leaves этюд 9",
+            "mp3",
+            "pdf",
+            "sambaэтюд 10",
+            "mp3",
+            "былина исп о киселев",
+            "wma",
+            "вальс при свечах исп о киселев",
+            "wma"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 26,
+          "header": [
+            "",
+            "mp3",
+            ""
+          ],
+          "cells": [
+            "джазсюита 2001 александру виницкому одному из моих любимых композиторов",
+            "стакан сока со льдом в жаркий полдень",
+            "mp3",
+            "ищу работу",
+            "mp3",
+            "прогулка вдоль витрин дорогих магазинов",
+            "mp3",
+            "прохладный кафе мягкий свет тихая музыка",
+            "mp3",
+            "не стреляйте в гитариста он играет как умеет",
+            "mp3",
+            "осенняя сюита 1986",
+            "прелюдия",
+            "mp3",
+            "сентиментальная прогулка",
+            "mp3",
+            "дождь за окном",
+            "mp3",
+            "листопад",
+            "mp3",
+            "зимняя сюита 1996 виктору козлову",
+            "метель",
+            "mp3",
+            "вальс снежинок",
+            "mp3",
+            "одиночество вдвоем",
+            "mp3",
+            "на катке",
+            "mp3",
+            "весенняя сюита 1996 моему другу станиславу савельеву",
+            "ожидание",
+            "mp3",
+            "начало",
+            "mp3",
+            "подснежники",
+            "mp3",
+            "купание воробьев в апрельской луже",
+            "mp3",
+            "летняя сюита 1997",
+            "на пляже",
+            "mp3",
+            "старый парк во время грозы",
+            "mp3",
+            "последняя иллюзия",
+            "mp3",
+            "завтрак на траве",
+            "mp3"
+          ]
+        }
+      ],
+      "overall": 0.8702398130969559
+    },
+    {
+      "name": "news",
+      "text": {
+        "recall": 0.9226190476190477,
+        "precision": 0.9532595325953259,
+        "f1": 0.9376890502117363,
+        "expected": 1680,
+        "actual": 1626,
+        "matched": 1550,
+        "missing": [
+          "в лицах 2020 2021 открыть",
+          "лицах 2020 2021 открыть связанный",
+          "2020 2021 открыть связанный материал",
+          "2021 открыть связанный материал история",
+          "открыть связанный материал история гитары",
+          "связанный материал история гитары в",
+          "материал история гитары в лицах",
+          "1 2 28 29 открыть"
+        ]
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 0.3333333333333333,
+        "f1": 0.5,
+        "expected": 1,
+        "actual": 3,
+        "matched": 1,
+        "missing": []
+      },
+      "links": {
+        "recall": 0.8536585365853658,
+        "precision": 0.9722222222222222,
+        "f1": 0.9090909090909091,
+        "expected": 41,
+        "actual": 36,
+        "matched": 35,
+        "missing": [
+          "http://www.guitar-times.ru/pages/magazine/mag25.htm",
+          "http://www.guitar-times.ru/pages/magazine/mag26.htm",
+          "http://www.guitar-times.ru/pages/magazine/mag27.htm",
+          "http://www.guitar-times.ru/pages/magazine/mag28_29.htm",
+          "http://www.guitar-times.ru/pages/magazine/mag23.htm",
+          "http://www.guitar-times.ru/pages/magazine/mag24.htm"
+        ]
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.8846153846153846,
+        "f1": 0.9387755102040816,
+        "expected": 23,
+        "actual": 26,
+        "matched": 23,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.3939393939393939,
+        "precision": 1,
+        "f1": 0.5652173913043478,
+        "expected": 33,
+        "actual": 13,
+        "matched": 13,
+        "missing": [
+          "image",
+          "frame"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.8680696415780002
+    },
+    {
+      "name": "news_2007",
+      "text": {
+        "recall": 0.9660194174757282,
+        "precision": 0.9567307692307693,
+        "f1": 0.961352657004831,
+        "expected": 206,
+        "actual": 208,
+        "matched": 199,
+        "missing": [
+          "в фадеевой архив новостей последние",
+          "фадеевой архив новостей последние 2008",
+          "архив новостей последние 2008 2010",
+          "новостей последние 2008 2010 2006",
+          "последние 2008 2010 2006 2005",
+          "2008 2010 2006 2005 2004",
+          "2010 2006 2005 2004 2003"
+        ]
+      },
+      "headings": {
+        "recall": 0.25,
+        "precision": 1,
+        "f1": 0.4,
+        "expected": 8,
+        "actual": 2,
+        "matched": 2,
+        "missing": [
+          "3\t11 декабря 2007 г",
+          "3\t9 декабря 2007 г",
+          "3\t25 ноября 2007 г",
+          "3\t22 апреля 2007 г",
+          "3\t10 апреля 2007 г",
+          "3\t4 марта 2007 г"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 12,
+        "actual": 12,
+        "matched": 12,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0.5,
+        "precision": 1,
+        "f1": 0.6666666666666666,
+        "expected": 2,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "image"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.8950724637681159
+    },
+    {
+      "name": "pavlov_azancheev",
+      "text": {
+        "recall": 0.9980850248946763,
+        "precision": 0.9984674329501916,
+        "f1": 0.9982761923003256,
+        "expected": 2611,
+        "actual": 2610,
+        "matched": 2606,
+        "missing": [
+          "1 декабря 1966 г примечание",
+          "декабря 1966 г примечание л",
+          "1966 г примечание л корпусова",
+          "г примечание л корпусова ученица",
+          "примечание л корпусова ученица м"
+        ]
+      },
+      "headings": {
+        "recall": 0.0625,
+        "precision": 1,
+        "f1": 0.11764705882352941,
+        "expected": 16,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tм павловазанчеев 1888 1963 краткая биография нотное наследие первые исполнители неизвестные письма и документы",
+          "2\ti краткая биография нотное наследие первые исполнители",
+          "2\tii неизвестные письма и документы",
+          "3\tиз письма а максимова а ларину владикавказ 9 января 1946 г",
+          "3\tписьмо м павлова а ларину краснодар итк 1 28 августа 1946 г",
+          "3\tлирический вальс пиши для тенора и фортепиано текст и музыка м с павлова 13 сентября 1946 г",
+          "3\tнотный автограф м павловаазанчеева 12 октября 1946 г оригинал был прислан павловым м иванову после перешёл к е грачёвой затем был подарен мне в маркушевич",
+          "3\tписьмо а максимова а ларину владикавказ 17 ноября 1946 г"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.9112475635724506
+    },
+    {
+      "name": "segovia",
+      "text": {
+        "recall": 0.9596018735362998,
+        "precision": 0.9376430205949656,
+        "f1": 0.9484953703703703,
+        "expected": 1708,
+        "actual": 1748,
+        "matched": 1639,
+        "missing": [
+          "с учениками в и яшнева",
+          "учениками в и яшнева в",
+          "в и яшнева в нижнем",
+          "и яшнева в нижнем ряду",
+          "яшнева в нижнем ряду второй",
+          "в нижнем ряду второй справа",
+          "и яшневым и его учениками",
+          "яшневым и его учениками справа"
+        ]
+      },
+      "headings": {
+        "recall": 0.5,
+        "precision": 1,
+        "f1": 0.6666666666666666,
+        "expected": 4,
+        "actual": 2,
+        "matched": 2,
+        "missing": [
+          "3\tсм также",
+          "2\tтабулатуры и midi"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 0.6,
+        "f1": 0.7499999999999999,
+        "expected": 6,
+        "actual": 10,
+        "matched": 6,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.8181818181818182,
+        "f1": 0.9,
+        "expected": 9,
+        "actual": 11,
+        "matched": 9,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 9,
+        "actual": 9,
+        "matched": 9,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 0.2916666666666667,
+        "f1": 0.45161290322580644,
+        "expected": 7,
+        "actual": 24,
+        "matched": 7,
+        "missing": []
+      },
+      "tableShape": 0.5,
+      "expectedTables": [
+        {
+          "cols": 3,
+          "rows": 3,
+          "header": [
+            "произведение",
+            "табулатура",
+            "аудио midi"
+          ],
+          "cells": [
+            "bretonia",
+            "tab",
+            "escosesa",
+            "tab",
+            "estudio sin luz a jose rubio",
+            "tab",
+            "midi"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 3,
+          "rows": 3,
+          "header": [
+            "",
+            "tab",
+            ""
+          ],
+          "cells": [
+            "bretonia",
+            "tab",
+            "escosesa",
+            "tab",
+            "estudio sin luz a jose rubio",
+            "tab",
+            "midi"
+          ]
+        },
+        {
+          "cols": 5,
+          "rows": 5,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            "mp3"
+          ],
+          "cells": [
+            "joaquin rodrigo andres segovia fantasia para un gentilhombre for guitar orchestra",
+            "i",
+            "villano y recercarre",
+            "4 49",
+            "mp3",
+            "ii",
+            "espanoleta e fanfare de la caballeria de napoles",
+            "9 17",
+            "mp3",
+            "iii",
+            "danza de las hachas",
+            "2 13",
+            "mp3",
+            "iv",
+            "canario",
+            "5 18",
+            "mp3"
+          ]
+        }
+      ],
+      "overall": 0.7714572132616487
+    },
+    {
+      "name": "segovia1",
+      "text": {
+        "recall": 1,
+        "precision": 0.9646987218502739,
+        "f1": 0.9820322180916976,
+        "expected": 1585,
+        "actual": 1643,
+        "matched": 1585,
+        "missing": []
+      },
+      "headings": {
+        "recall": 0.2,
+        "precision": 1,
+        "f1": 0.33333333333333337,
+        "expected": 5,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tвступление",
+          "2\tпосадка",
+          "2\tположение рук правая рука",
+          "2\tположение рук левая рука"
+        ]
+      },
+      "links": {
+        "recall": 0.5,
+        "precision": 0.2,
+        "f1": 0.28571428571428575,
+        "expected": 2,
+        "actual": 5,
+        "matched": 1,
+        "missing": [
+          "http://authors.nm.ru"
+        ]
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.9047619047619048,
+        "f1": 0.9500000000000001,
+        "expected": 19,
+        "actual": 21,
+        "matched": 19,
+        "missing": []
+      },
+      "directives": {
+        "recall": 0,
+        "precision": 0,
+        "f1": 0,
+        "expected": 19,
+        "actual": 0,
+        "matched": 0,
+        "missing": [
+          "image"
+        ]
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.7158001416179854
+    },
+    {
+      "name": "tarrega",
+      "text": {
+        "recall": 0.814773980154355,
+        "precision": 0.8085339168490153,
+        "f1": 0.8116419549697967,
+        "expected": 907,
+        "actual": 914,
+        "matched": 739,
+        "missing": [
+          "интимность богатство красочной палитры именно",
+          "богатство красочной палитры именно франсиско",
+          "красочной палитры именно франсиско тарреге",
+          "палитры именно франсиско тарреге испания",
+          "pdf 2 16 mb capricho",
+          "2 16 mb capricho arabe",
+          "16 mb capricho arabe serenata",
+          "mb capricho arabe serenata para"
+        ]
+      },
+      "headings": {
+        "recall": 0.25,
+        "precision": 1,
+        "f1": 0.4,
+        "expected": 4,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tсборник произведений франсиско тарреги",
+          "2\tмузыка табулатуры и ноты из других изданий",
+          "2\tдополнительные материалы"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 67,
+        "actual": 67,
+        "matched": 67,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.25,
+        "f1": 0.4,
+        "expected": 4,
+        "actual": 16,
+        "matched": 4,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 4,
+        "actual": 4,
+        "matched": 4,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 0.8507462686567164,
+        "precision": 0.7215189873417721,
+        "f1": 0.7808219178082193,
+        "expected": 67,
+        "actual": 79,
+        "matched": 57,
+        "missing": [
+          "1 br zip",
+          "1 br 2 br 3 br 4 br zip br pdf",
+          "1 br 2 br zip",
+          "midi br wma"
+        ]
+      },
+      "tableShape": 0.84375,
+      "expectedTables": [
+        {
+          "cols": 4,
+          "rows": 22,
+          "header": [
+            "произведение",
+            "табулатура",
+            "аудио",
+            "ноты архивы"
+          ],
+          "cells": [
+            "adelita",
+            "tab",
+            "ram",
+            "adelita в исп дэвида рассела",
+            "mp3",
+            "1 br zip",
+            "capricho arabe",
+            "tab",
+            "mp3",
+            "1 br 2 br 3 br 4 br zip br pdf",
+            "danza mora мавританский танец",
+            "midi",
+            "1 br 2 br zip",
+            "malagueña",
+            "midi",
+            "1 br 2 br zip",
+            "endecha prelude",
+            "tab",
+            "midi",
+            "estudio in a",
+            "tab",
+            "midi",
+            "estudio en forma de minueto",
+            "tab",
+            "midi",
+            "etude in em",
+            "tab",
+            "fanfare",
+            "tab",
+            "midi",
+            "grand waltz",
+            "tab",
+            "midi",
+            "la alborada",
+            "tab",
+            "lagrima",
+            "tab",
+            "midi",
+            "1 br zip",
+            "oremus",
+            "tab",
+            "midi",
+            "pavana исп д рассел",
+            "wma",
+            "1 br zip",
+            "marietta mazurka",
+            "tab",
+            "midi",
+            "1 br 2 br zip",
+            "preludio nr 9 in a",
+            "tab",
+            "recuerdos de la alhambra",
+            "tab",
+            "midi br wma",
+            "pdf",
+            "rosita polka",
+            "tab",
+            "midi",
+            "1 br zip",
+            "sueño mazurka",
+            "1 br zip",
+            "tango",
+            "tab",
+            "midi",
+            "valse en re waltz in d",
+            "tab",
+            "midi"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 4,
+          "rows": 32,
+          "header": [
+            "",
+            "tab",
+            "midi",
+            ""
+          ],
+          "cells": [
+            "adelita",
+            "tab",
+            "ram",
+            "adelita в исп дэвида рассела",
+            "mp3",
+            "ноты jpg 1",
+            "zip",
+            "capricho arabe",
+            "tab",
+            "mp3",
+            "ноты jpg 1 2 3 4",
+            "zip",
+            "pdf",
+            "danza mora мавританский танец",
+            "midi",
+            "ноты jpg 1 2",
+            "zip",
+            "malagueña",
+            "midi",
+            "ноты jpg 1 2",
+            "zip",
+            "endecha prelude",
+            "tab",
+            "midi",
+            "estudio in a",
+            "tab",
+            "midi",
+            "estudio en forma de minueto",
+            "tab",
+            "midi",
+            "etude in em",
+            "tab",
+            "fanfare",
+            "tab",
+            "midi",
+            "grand waltz",
+            "tab",
+            "midi",
+            "la alborada",
+            "tab",
+            "lagrima",
+            "tab",
+            "midi",
+            "ноты jpg 1",
+            "zip",
+            "oremus",
+            "tab",
+            "midi",
+            "pavana исп д рассел",
+            "wma",
+            "ноты jpg 1",
+            "zip",
+            "marietta mazurka",
+            "tab",
+            "midi",
+            "ноты jpg 1 2",
+            "zip",
+            "preludio nr 9 in a",
+            "tab",
+            "recuerdos de la alhambra",
+            "tab",
+            "midi",
+            "wma",
+            "ноты jpg",
+            "pdf",
+            "rosita polka",
+            "tab",
+            "midi",
+            "ноты jpg 1",
+            "zip",
+            "sueño mazurka",
+            "ноты jpg 1",
+            "zip",
+            "tango",
+            "tab",
+            "midi",
+            "valse en re waltz in d",
+            "tab",
+            "midi"
+          ]
+        }
+      ],
+      "overall": 0.7749908741621719
+    },
+    {
+      "name": "williams2",
+      "text": {
+        "recall": 0.984736355226642,
+        "precision": 0.971702418986764,
+        "f1": 0.9781759705949918,
+        "expected": 2162,
+        "actual": 2191,
+        "matched": 2129,
+        "missing": [
+          "джон вильямс часть 2 в",
+          "вильямс часть 2 в 1969",
+          "часть 2 в 1969 году",
+          "как подбора репертуара так иего",
+          "подбора репертуара так иего исполнения",
+          "репертуара так иего исполнения несмотря",
+          "так иего исполнения несмотря на",
+          "иего исполнения несмотря на очень"
+        ]
+      },
+      "headings": {
+        "recall": 0.5,
+        "precision": 1,
+        "f1": 0.6666666666666666,
+        "expected": 2,
+        "actual": 1,
+        "matched": 1,
+        "missing": [
+          "2\tаудио"
+        ]
+      },
+      "links": {
+        "recall": 1,
+        "precision": 0.3333333333333333,
+        "f1": 0.5,
+        "expected": 3,
+        "actual": 9,
+        "matched": 3,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 0.8333333333333334,
+        "f1": 0.9090909090909091,
+        "expected": 5,
+        "actual": 6,
+        "matched": 5,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 0.625,
+        "f1": 0.7692307692307693,
+        "expected": 5,
+        "actual": 8,
+        "matched": 5,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.852951625677332
+    }
+  ]
+}

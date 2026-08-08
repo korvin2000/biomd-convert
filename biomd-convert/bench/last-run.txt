@@ -1,0 +1,29 @@
+llm off — fully deterministic
+REVIEW  authors.htm  recall=98.2%  errors=0  reviews=9  tables=0/0  llm=0/1
+REVIEW  barrios.htm  recall=94.9%  errors=1  reviews=5  tables=1/1  llm=0/2
+REVIEW  borislova.htm  recall=99.7%  errors=0  reviews=9  tables=0/1  llm=0/3
+REVIEW  goya2.htm  recall=98.8%  errors=1  reviews=2  tables=0/1  llm=0/1
+REVIEW  jovicic.htm  recall=99.0%  errors=0  reviews=8  tables=0/0  llm=0/2
+REVIEW  kiselev.htm  recall=98.9%  errors=3  reviews=14  tables=2/2  llm=0/5
+REVIEW  new_bach.htm  recall=97.3%  errors=1  reviews=10  tables=1/1  llm=0/2
+REVIEW  new_dyens.htm  recall=100.0%  errors=1  reviews=4  tables=1/1  llm=0/2
+REVIEW  new_karta.htm  recall=96.1%  errors=10  reviews=10  tables=7/6  llm=0/10
+REVIEW  new_kolpakov.htm  recall=98.8%  errors=0  reviews=13  tables=0/1  llm=0/1
+REVIEW  new_lagq2.htm  recall=45.3%  errors=1  reviews=1  tables=0/0  llm=0/1
+REVIEW  new_lendle2.htm  recall=97.9%  errors=1  reviews=9  tables=0/0  llm=0/1
+REVIEW  new_rechin4.htm  recall=99.4%  errors=0  reviews=13  tables=0/0  llm=0/1
+REVIEW  news.htm  recall=96.4%  errors=1  reviews=12  tables=0/0  llm=0/1
+REVIEW  news_2007.htm  recall=100.0%  errors=1  reviews=6  tables=0/0  llm=0/3
+REVIEW  segovia.htm  recall=98.0%  errors=5  reviews=14  tables=2/2  llm=0/4
+REVIEW  segovia1.htm  recall=100.0%  errors=0  reviews=5  tables=0/1  llm=0/1
+REVIEW  tarrega.htm  recall=94.3%  errors=2  reviews=16  tables=1/1  llm=0/2
+REVIEW  williams2.htm  recall=99.8%  errors=0  reviews=15  tables=0/1  llm=0/1
+ok      new_blackmore.htm  recall=99.9%  errors=0  reviews=28  tables=0/0  llm=0/1
+ok      new_geyzel04.htm  recall=99.6%  errors=0  reviews=33  tables=0/0  llm=0/1
+ok      pavlov_azancheev.htm  recall=99.9%  errors=0  reviews=9  tables=0/0  llm=0/1
+
+Converted:      3
+Needs review:   19
+Failed:         0
+Clean share:    13.6%
+LLM:            off — 47 escalation point(s) left as review items

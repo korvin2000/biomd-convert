@@ -1,0 +1,14 @@
+{
+  "profile": "spec-1.6",
+  "layoutFidelity": "faithful",
+  "visual": "always",
+  "lang": "ru",
+  "inputDir": "./fixtures/html",
+  "assetRoot": "./fixtures/html",
+  "expectedDir": "./fixtures/out",
+  "outDir": "./bench/out",
+  "workDir": "./bench/work",
+  "corpus": "./bench/corpus/corpus-profile.json",
+  "jobs": 4,
+  "llm": { "enabled": false }
+}

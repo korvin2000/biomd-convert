@@ -74,5 +74,6 @@ app/.idea/
 package-lock.json
 my-migration/biomd.config.json
 my-migration/
-bench/
 analyze/rendered/
+biomd-convert/bench/out/
+biomd-convert/bench/work/
