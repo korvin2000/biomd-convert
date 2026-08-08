@@ -262,6 +262,37 @@ describe("boilerplate removal", () => {
     expect(remaining).toContain("p");
   });
 
+  it("recognises the same scaffold when one page spells its widths with px", () => {
+    // `news` writes `WIDTH="760px"` in its page frame and no other page in the
+    // corpus does. The attribute takes a number or a percentage, so `760px` is
+    // not even valid and a browser drops it — but it went into the fingerprint
+    // verbatim, so the site's own banner and menu button matched nothing on
+    // that one page and were emitted as content.
+    const pages = ["Первый", "Второй", "Третий"].map((t) => page(t, PROSE));
+    const odd = page("Четвёртый", PROSE).replace(/width="(\d+)"/gu, 'width="$1px"');
+    const profile = corpusOf([...pages, odd]);
+
+    const doc = parseHtml(odd);
+    sanitizeS1(doc.root);
+    dropHead(doc.root);
+    const { removals } = removeBoilerplate(doc.root, profile);
+    expect(removals.length).toBeGreaterThan(0);
+    expect(removals.some((r) => r.text.includes("Четвёртый"))).toBe(false);
+  });
+
+  it("keeps a percentage width apart from a bare number", () => {
+    // `90%` and `90` are genuinely different declarations; only the unit
+    // spelling of a length is noise.
+    const pages = ["Первый", "Второй", "Третий"].map((t) => page(t, PROSE));
+    const percent = page("Четвёртый", PROSE).replace(/width="760"/gu, 'width="90%"');
+    const profile = corpusOf([...pages, percent]);
+    const doc = parseHtml(percent);
+    sanitizeS1(doc.root);
+    dropHead(doc.root);
+    const { removals } = removeBoilerplate(doc.root, profile);
+    expect(removals.every((r) => !r.text.includes("Четвёртый"))).toBe(true);
+  });
+
   it("does nothing without a corpus profile, and says so", async () => {
     const result = await convert(Buffer.from(page("Заголовок", PROSE), "utf8"));
     expect(result.warnings.join(" ")).toMatch(/No corpus profile/u);

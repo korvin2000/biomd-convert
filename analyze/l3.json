@@ -27,13 +27,13 @@
     ]
   },
   "totals": {
-    "findings": 106,
+    "findings": 93,
     "alignmentRows": 278
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 49,
+      "instances": 46,
       "documents": 13
     },
     {
@@ -48,8 +48,8 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 20,
-      "documents": 5
+      "instances": 10,
+      "documents": 4
     }
   ],
   "findings": [
@@ -1135,7 +1135,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[34]/paragraph[1]",
-      "producedLine": 163,
+      "producedLine": 154,
       "referenceLine": 143,
       "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
       "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
@@ -1158,7 +1158,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[34]/paragraph[2]",
-      "producedLine": 165,
+      "producedLine": 156,
       "referenceLine": 145,
       "produced": "Виктор Михайлович ЕФРЕМОВ",
       "reference": "Виктор Михайлович ЕФРЕМОВ",
@@ -1181,7 +1181,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 257,
+      "producedLine": 248,
       "referenceLine": 238,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
@@ -1204,7 +1204,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[61]/align[1]/break[3]",
-      "producedLine": 322,
+      "producedLine": 313,
       "referenceLine": 293,
       "produced": "",
       "reference": "",
@@ -1227,7 +1227,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 342,
+      "producedLine": 333,
       "referenceLine": 310,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
@@ -1250,7 +1250,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 389,
+      "producedLine": 380,
       "referenceLine": 351,
       "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -1273,7 +1273,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[73]/align[1]/paragraph[0]",
-      "producedLine": 406,
+      "producedLine": 397,
       "referenceLine": 365,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -1296,7 +1296,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/lead[1]/paragraph[0]",
-      "producedLine": 11,
+      "producedLine": 3,
       "referenceLine": 4,
       "produced": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходи…",
       "reference": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходи…",
@@ -1313,7 +1313,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/lead[1]/paragraph[1]",
-      "producedLine": 13,
+      "producedLine": 5,
       "referenceLine": 6,
       "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом,…",
       "reference": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом,…",
@@ -1330,7 +1330,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[34]/paragraph[1]",
-      "producedLine": 163,
+      "producedLine": 154,
       "referenceLine": 143,
       "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
       "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
@@ -1347,47 +1347,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[34]/paragraph[2]",
-      "producedLine": 165,
+      "producedLine": 156,
       "referenceLine": 145,
       "produced": "Виктор Михайлович ЕФРЕМОВ",
       "reference": "Виктор Михайлович ЕФРЕМОВ",
       "geometry": {
         "producedContainer": "frame>align",
         "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "993aa8a2",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[34]/image[3]",
-      "producedLine": 148,
-      "referenceLine": 148,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "f329d353",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[36]",
-      "producedLine": 170,
-      "referenceLine": 158,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "frame",
-        "referenceContainer": "(root)"
       }
     },
     {
@@ -1398,7 +1364,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 257,
+      "producedLine": 248,
       "referenceLine": 238,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
@@ -1415,7 +1381,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[61]/align[1]/break[3]",
-      "producedLine": 322,
+      "producedLine": 313,
       "referenceLine": 293,
       "produced": "",
       "reference": "",
@@ -1432,30 +1398,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 342,
+      "producedLine": 333,
       "referenceLine": 310,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "geometry": {
         "producedContainer": "frame",
         "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "9e12fd19",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[63]/image[2]",
-      "producedLine": 180,
-      "referenceLine": 313,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "frame"
       }
     },
     {
@@ -1466,7 +1415,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 389,
+      "producedLine": 380,
       "referenceLine": 351,
       "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -1483,183 +1432,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[73]/align[1]/paragraph[0]",
-      "producedLine": 406,
+      "producedLine": 397,
       "referenceLine": 365,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "geometry": {
         "producedContainer": "frame",
         "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "5c7dbee4",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[20]",
-      "producedLine": 3,
-      "referenceLine": 92,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 0,
-        "referenceRank": 26
-      }
-    },
-    {
-      "id": "1a6aa175",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[23]",
-      "producedLine": 106,
-      "referenceLine": 102,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 27,
-        "referenceRank": 29
-      }
-    },
-    {
-      "id": "16259143",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[25]",
-      "producedLine": 123,
-      "referenceLine": 108,
-      "produced": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
-      "reference": "Журнал \"История гитары в лицах\", № 1 (22) 2018 г.",
-      "geometry": {
-        "producedRank": 32,
-        "referenceRank": 30
-      }
-    },
-    {
-      "id": "5bd88611",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[28]",
-      "producedLine": 134,
-      "referenceLine": 118,
-      "produced": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
-      "reference": "Журнал \"История гитары в лицах\", № 2 (21) 2017 г.",
-      "geometry": {
-        "producedRank": 35,
-        "referenceRank": 33
-      }
-    },
-    {
-      "id": "f7872d1d",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[31]",
-      "producedLine": 145,
-      "referenceLine": 128,
-      "produced": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
-      "reference": "Более 2-х лет пролежали неоконченными три номера журнала \"История гитары в лицах\", отложенные мною в силу различных неб…",
-      "geometry": {
-        "producedRank": 38,
-        "referenceRank": 36
-      }
-    },
-    {
-      "id": "1d3e76be",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[34]/image[3]",
-      "producedLine": 148,
-      "referenceLine": 148,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 39,
-        "referenceRank": 42
-      }
-    },
-    {
-      "id": "f419de03",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[35]",
-      "producedLine": 177,
-      "referenceLine": 155,
-      "produced": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
-      "reference": "Вышел третий-четвертый номер журнала \"История гитары в лицах\" за 2016 год — № 3-4 (18/19) / 2016 — Николай Петрович Мак…",
-      "geometry": {
-        "producedRank": 44,
-        "referenceRank": 43
-      }
-    },
-    {
-      "id": "848d5a65",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[63]/image[2]",
-      "producedLine": 180,
-      "referenceLine": 313,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 45,
-        "referenceRank": 79
-      }
-    },
-    {
-      "id": "248f46b2",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[73]/image[2]",
-      "producedLine": 352,
-      "referenceLine": 368,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 80,
-        "referenceRank": 91
-      }
-    },
-    {
-      "id": "3f89821f",
-      "doc": "news",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[74]",
-      "producedLine": 359,
-      "referenceLine": 375,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 81,
-        "referenceRank": 92
       }
     },
     {
@@ -4299,7 +4078,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 31,
+      "producedLine": 22,
       "referenceLine": 24,
       "text": "\"История гитары в лицах\", 2020-2021",
       "producedAlignment": "center",
@@ -4312,7 +4091,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 39,
+      "producedLine": 30,
       "referenceLine": 32,
       "text": "\"История гитары в лицах\", 2022, № 1-2 (28-29",
       "producedAlignment": "center",
@@ -4325,7 +4104,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 52,
+      "producedLine": 43,
       "referenceLine": 43,
       "text": "С НОВЫМ 2022 ГОДОМ!",
       "producedAlignment": "center",
@@ -4338,7 +4117,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 64,
+      "producedLine": 55,
       "referenceLine": 53,
       "text": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант …",
       "producedAlignment": "center",
@@ -4351,7 +4130,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 67,
+      "producedLine": 58,
       "referenceLine": 56,
       "text": "Юрий Алексеевич СМИРНОВ",
       "producedAlignment": "center",
@@ -4364,7 +4143,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 71,
+      "producedLine": 62,
       "referenceLine": 59,
       "text": "Юрий Алексеевич Смирнов",
       "producedAlignment": "center",
@@ -4377,7 +4156,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 90,
+      "producedLine": 81,
       "referenceLine": 77,
       "text": "Джулиан БРИМ",
       "producedAlignment": "center",
@@ -4390,7 +4169,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 3,
+      "producedLine": 97,
       "referenceLine": 92,
       "text": "",
       "producedAlignment": "center",
@@ -4403,7 +4182,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 106,
+      "producedLine": 107,
       "referenceLine": 102,
       "text": "",
       "producedAlignment": "center",
@@ -4416,7 +4195,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 116,
+      "producedLine": 117,
       "referenceLine": 111,
       "text": "",
       "producedAlignment": "center",
@@ -4429,7 +4208,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 126,
+      "producedLine": 128,
       "referenceLine": 121,
       "text": "",
       "producedAlignment": "center",
@@ -4442,7 +4221,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 137,
+      "producedLine": 139,
       "referenceLine": 131,
       "text": "",
       "producedAlignment": "center",
@@ -4455,7 +4234,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 163,
+      "producedLine": 154,
       "referenceLine": 143,
       "text": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
       "producedAlignment": "center",
@@ -4468,7 +4247,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 165,
+      "producedLine": 156,
       "referenceLine": 145,
       "text": "Виктор Михайлович ЕФРЕМОВ",
       "producedAlignment": "center",
@@ -4481,7 +4260,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 148,
+      "producedLine": 161,
       "referenceLine": 148,
       "text": "",
       "producedAlignment": "center",
@@ -4494,7 +4273,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 170,
+      "producedLine": 171,
       "referenceLine": 158,
       "text": "",
       "producedAlignment": "center",
@@ -4507,7 +4286,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 191,
+      "producedLine": 182,
       "referenceLine": 169,
       "text": "Зайцева Л., Тавровский В. Музей гитары на письменном столе. 2016",
       "producedAlignment": "center",
@@ -4520,7 +4299,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 200,
+      "producedLine": 191,
       "referenceLine": 180,
       "text": "Журнал \"История гитары в лицах\", №2, 2016",
       "producedAlignment": "center",
@@ -4533,7 +4312,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 210,
+      "producedLine": 201,
       "referenceLine": 192,
       "text": "Журнал \"История гитары в лицах\", №1, 2016",
       "producedAlignment": "center",
@@ -4546,7 +4325,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 226,
+      "producedLine": 217,
       "referenceLine": 206,
       "text": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Яд…",
       "producedAlignment": "center",
@@ -4559,7 +4338,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 233,
+      "producedLine": 224,
       "referenceLine": 211,
       "text": "Я. Р. Ковалевская (1922-2016)",
       "producedAlignment": "center",
@@ -4572,7 +4351,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 244,
+      "producedLine": 235,
       "referenceLine": 224,
       "text": "Журнал \"История гитары в лицах\", №2, 2015",
       "producedAlignment": "center",
@@ -4585,7 +4364,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 257,
+      "producedLine": 248,
       "referenceLine": 238,
       "text": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "producedAlignment": "left",
@@ -4598,7 +4377,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 262,
+      "producedLine": 253,
       "referenceLine": 240,
       "text": "Михаил Владимирович КОРНИШИН",
       "producedAlignment": "center",
@@ -4611,7 +4390,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 267,
+      "producedLine": 258,
       "referenceLine": 244,
       "text": "М. В. Корнишин (1978-2015)",
       "producedAlignment": "center",
@@ -4624,7 +4403,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 280,
+      "producedLine": 271,
       "referenceLine": 256,
       "text": "Журнал \"История гитары в лицах\", №1, 2015",
       "producedAlignment": "center",
@@ -4637,7 +4416,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 292,
+      "producedLine": 283,
       "referenceLine": 267,
       "text": "III Региональный конкурс гитаристов «Гранд соло» им. М. М. Елютина",
       "producedAlignment": "center",
@@ -4650,7 +4429,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 311,
+      "producedLine": 302,
       "referenceLine": 284,
       "text": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "producedAlignment": "center",
@@ -4663,7 +4442,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 314,
+      "producedLine": 305,
       "referenceLine": 287,
       "text": "с успешной защитой диссертации на тему:",
       "producedAlignment": "center",
@@ -4676,7 +4455,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 316,
+      "producedLine": 307,
       "referenceLine": 289,
       "text": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И…",
       "producedAlignment": "center",
@@ -4689,7 +4468,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 322,
+      "producedLine": 313,
       "referenceLine": 293,
       "text": "",
       "producedAlignment": "left",
@@ -4702,7 +4481,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 328,
+      "producedLine": 319,
       "referenceLine": 295,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "center",
@@ -4715,7 +4494,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 342,
+      "producedLine": 333,
       "referenceLine": 310,
       "text": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, комп…",
       "producedAlignment": "left",
@@ -4728,7 +4507,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 180,
+      "producedLine": 343,
       "referenceLine": 313,
       "text": "",
       "producedAlignment": "center",
@@ -4741,7 +4520,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 364,
+      "producedLine": 355,
       "referenceLine": 325,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
@@ -4754,7 +4533,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 376,
+      "producedLine": 367,
       "referenceLine": 336,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
@@ -4767,7 +4546,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 389,
+      "producedLine": 380,
       "referenceLine": 351,
       "text": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Моско…",
       "producedAlignment": "left",
@@ -4780,7 +4559,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 406,
+      "producedLine": 397,
       "referenceLine": 365,
       "text": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легенда…",
       "producedAlignment": "left",
@@ -4793,7 +4572,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 352,
+      "producedLine": 399,
       "referenceLine": 368,
       "text": "",
       "producedAlignment": "center",
@@ -4806,7 +4585,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 420,
+      "producedLine": 411,
       "referenceLine": 379,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
@@ -4819,7 +4598,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 437,
+      "producedLine": 428,
       "referenceLine": 394,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "center",

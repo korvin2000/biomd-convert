@@ -66,7 +66,7 @@ export function fingerprint(node: LadomNode): string {
       n.tag,
       id ? `#${id}` : "",
       classes ? `.${classes}` : "",
-      n.attrs["width"] ? `w${n.attrs["width"]}` : "",
+      n.attrs["width"] ? `w${fingerprintLength(n.attrs["width"])}` : "",
       n.attrs["border"] ? `b${n.attrs["border"]}` : "",
     ].join("");
     parts.push(shape);
@@ -74,6 +74,26 @@ export function fingerprint(node: LadomNode): string {
   };
   visit(node, 0);
   return createHash("sha1").update(parts.join(">")).digest("hex").slice(0, 16);
+}
+
+/**
+ * One declared width, however the author spelled it.
+ *
+ * `width="760"` and `width="760px"` are the same scaffold — the second is not
+ * even valid HTML, since the attribute takes a number or a percentage, so a
+ * browser drops it — but hashing them apart makes the same site template
+ * fingerprint as two different structures, and the chrome model is built on
+ * exactly that recurrence. `news` writes every width in its page frame with a
+ * `px` suffix and no other page in the corpus does, so its banner, its menu
+ * button and its rails matched nothing and were emitted as content.
+ *
+ * A percentage keeps its unit: `90%` and `90` are genuinely different
+ * declarations and must stay apart.
+ */
+function fingerprintLength(value: string): string {
+  const trimmed = value.trim().toLowerCase();
+  const numeric = /^(\d+(?:\.\d+)?)(?:px)?$/u.exec(trimmed);
+  return numeric ? (numeric[1] as string) : trimmed;
 }
 
 /** Coarse text signature, for deciding whether repeated structure also repeats content. */
