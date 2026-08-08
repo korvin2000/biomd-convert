@@ -1,10 +1,10 @@
 {
-  "generated": "2026-08-08T18:58:53.499Z",
+  "generated": "2026-08-08T19:23:17.804Z",
   "totals": {
     "findings": 275,
-    "converterDefects": 152,
+    "converterDefects": 147,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 59,
+    "referenceInconsistencies": 64,
     "ambiguous": 64,
     "bySeverity": {
       "critical": 9,
@@ -40,7 +40,7 @@
     {
       "doc": "goya2",
       "findings": 29,
-      "converterDefects": 25,
+      "converterDefects": 20,
       "critical": 0,
       "major": 14,
       "minor": 15
@@ -742,27 +742,6 @@
       }
     },
     {
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "instances": 7,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 7,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[4]/column[1]/image[0]@caption",
-        "produced": null,
-        "reference": "caption: 1.000.000 Platinum"
-      }
-    },
-    {
       "class": "retyped.list-to-table",
       "severity": "major",
       "instances": 2,
@@ -1437,6 +1416,27 @@
       }
     },
     {
+      "class": "image.caption.missing",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 2,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[8]/column[1]/image[0]@caption",
+        "produced": null,
+        "reference": "caption: Francis Goya Plays His Favourite Hits vol. 1"
+      }
+    },
+    {
       "class": "table.cell.hyphenation.mixed",
       "severity": "minor",
       "instances": 2,
@@ -1606,6 +1606,27 @@
         "path": "/table[7]/cell[2][1]",
         "produced": "—",
         "reference": "-"
+      }
+    },
+    {
+      "class": "image.caption.missing.self-echo",
+      "severity": "minor",
+      "instances": 5,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 5,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[4]/column[1]/image[0]@caption",
+        "produced": null,
+        "reference": "caption: 1.000.000 Platinum"
       }
     },
     {
@@ -2176,9 +2197,9 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "4898e2dd",
+      "id": "72f4e95f",
       "doc": "goya2",
-      "class": "image.caption.missing",
+      "class": "image.caption.missing.self-echo",
       "severity": "minor",
       "evidence": "content",
       "op": "delete",
@@ -2187,7 +2208,7 @@
       "referenceLine": 63,
       "produced": null,
       "reference": "caption: 1.000.000 Platinum",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "b65a4200",
@@ -2246,9 +2267,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "f7717378",
+      "id": "c8afb1ca",
       "doc": "goya2",
-      "class": "image.caption.missing",
+      "class": "image.caption.missing.self-echo",
       "severity": "minor",
       "evidence": "content",
       "op": "delete",
@@ -2257,7 +2278,7 @@
       "referenceLine": 283,
       "produced": null,
       "reference": "caption: Best of Francis Goya",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "1605ef60",
@@ -2274,9 +2295,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "25f47b06",
+      "id": "87690540",
       "doc": "goya2",
-      "class": "image.caption.missing",
+      "class": "image.caption.missing.self-echo",
       "severity": "minor",
       "evidence": "content",
       "op": "delete",
@@ -2285,7 +2306,7 @@
       "referenceLine": 516,
       "produced": null,
       "reference": "caption: Collection 2000 / Francis Goya",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "8f8dd370",
@@ -2302,9 +2323,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9afe1216",
+      "id": "210f6bac",
       "doc": "goya2",
-      "class": "image.caption.missing",
+      "class": "image.caption.missing.self-echo",
       "severity": "minor",
       "evidence": "content",
       "op": "delete",
@@ -2313,7 +2334,7 @@
       "referenceLine": 658,
       "produced": null,
       "reference": "caption: Historia De Un Amor",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "e74ee424",
@@ -2330,9 +2351,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "835d2640",
+      "id": "5f399bea",
       "doc": "goya2",
-      "class": "image.caption.missing",
+      "class": "image.caption.missing.self-echo",
       "severity": "minor",
       "evidence": "content",
       "op": "delete",
@@ -2341,7 +2362,7 @@
       "referenceLine": 832,
       "produced": null,
       "reference": "caption: Francis Goya in Moscow",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "85bd2924",

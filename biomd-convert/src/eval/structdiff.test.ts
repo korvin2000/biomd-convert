@@ -121,6 +121,61 @@ describe("blind spots the scalar score folds away", () => {
     expect(classes(got, want)).toContain("image.caption.missing");
   });
 
+  /**
+   * A figure label the owning side also states as a block is an **echo**.
+   *
+   * `homeOf` asks where the *other* side put a block's text, and that question
+   * is ill posed for a caption: a caption and the line it labels are routinely
+   * both present and both correct, so the other side always holds the words and
+   * the answer says nothing. Asked of the **owning** side it is a different and
+   * decidable question — does this document say it twice — and `CLAUDE.md` §5
+   * rules that a visible caption is emitted once, not twice.
+   *
+   * All 7 `image.caption.missing` on `goya2` are this shape: the source names
+   * each album once, in the cell beside its cover; the produced keeps it once;
+   * the reference keeps it *and* echoes it into the caption.
+   *
+   * **False friend, tested below: a caption the converter failed to bind**, where
+   * the reference states the words only in the caption. The owning side does not
+   * echo, no suffix is added, and the finding stays a converter defect.
+   */
+  it("marks a caption the reference also keeps as a block, and reads the direction", () => {
+    const want = "::: columns\n\n::: column\n\n**Памятник Сеговии**\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\ncaption: Памятник Сеговии\n:::\n\n:::\n\n:::\n";
+    const got = "::: columns\n\n::: column\n\n**Памятник Сеговии**\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\n:::\n\n:::\n\n:::\n";
+    expect(classes(got, want)).toContain("image.caption.missing.self-echo");
+    const source = new SourceIndex("<p>Памятник Сеговии</p><img src=a.jpg>");
+    expect(triage("caption: Памятник Сеговии", null, source, "image.caption.missing.self-echo", "content")).toBe("reference-inconsistency");
+  });
+
+  it("counts a label repeated as a line of a run, not only as a whole block", () => {
+    // `goya2` writes a lane as `**Historia de un Amor**` then `1999` in one
+    // hard-break run, so the paragraph key carries the year and only the line
+    // key is the title. A label repeated as a line is repeated just as visibly.
+    const want = "::: columns\n\n::: column\n\n**Historia de un Amor**\\\n1999\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\ncaption: Historia de un Amor\n:::\n\n:::\n\n:::\n";
+    const got = "::: columns\n\n::: column\n\n**Historia de un Amor**\\\n1999\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\n:::\n\n:::\n\n:::\n";
+    expect(classes(got, want)).toContain("image.caption.missing.self-echo");
+  });
+
+  it("leaves an unbound caption a defect — the false friend", () => {
+    // The reference states the words *once*, in the caption. Nothing echoes, so
+    // this is the binding failure it has always been.
+    const want = "::: image\nsrc: a.jpg\ncaption: Андрес Сеговия\n:::\n";
+    const got = "::: image\nsrc: a.jpg\n:::\n\nАндрес Сеговия\n";
+    const found = classes(got, want);
+    expect(found).toContain("image.caption.missing");
+    expect(found).not.toContain("image.caption.missing.self-echo");
+    const source = new SourceIndex("<img src=a.jpg><p>Андрес Сеговия</p>");
+    expect(triage("caption: Андрес Сеговия", null, source, "image.caption.missing", "content")).toBe("converter-defect");
+  });
+
+  it("calls the converter's own duplication a defect — the mirror", () => {
+    const want = "::: columns\n\n::: column\n\n**Памятник Сеговии**\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\n:::\n\n:::\n\n:::\n";
+    const got = "::: columns\n\n::: column\n\n**Памятник Сеговии**\n\n:::\n\n::: column\n\n::: image\nsrc: a.jpg\ncaption: Памятник Сеговии\n:::\n\n:::\n\n:::\n";
+    expect(classes(got, want)).toContain("image.caption.spurious.self-echo");
+    const source = new SourceIndex("<p>Памятник Сеговии</p><img src=a.jpg>");
+    expect(triage(null, "caption: Памятник Сеговии", source, "image.caption.spurious.self-echo", "content")).toBe("converter-defect");
+  });
+
   it("sees a wrong link label under a correct target (foldTarget folds it)", () => {
     expect(classes("[тут](music/x.pdf)\n", "[Часть 1 – PDF](music/x.pdf)\n")).toContain("link.label.content");
   });

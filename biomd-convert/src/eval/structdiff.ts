@@ -670,11 +670,13 @@ function compareDirective(ctx: Context, produced: DirectiveNode, reference: Dire
     const got = produced.props[key];
     const evidence: Evidence = isProseProp(key) || isTargetProp(key) ? "content" : "structure";
     if (want === undefined) {
-      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.spurious`, "minor", evidence, "insert", `${path}@${key}`, quoteProp(key, got), null, undefined, [produced.line, reference.line]));
+      const echo = selfEcho(ctx, "produced", key, got) ? ".self-echo" : "";
+      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.spurious${echo}`, "minor", evidence, "insert", `${path}@${key}`, quoteProp(key, got), null, undefined, [produced.line, reference.line]));
       continue;
     }
     if (got === undefined) {
-      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.missing`, propSeverity(key), evidence, "delete", `${path}@${key}`, null, quoteProp(key, want), undefined, [produced.line, reference.line]));
+      const echo = selfEcho(ctx, "reference", key, want) ? ".self-echo" : "";
+      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.missing${echo}`, propSeverity(key), evidence, "delete", `${path}@${key}`, null, quoteProp(key, want), undefined, [produced.line, reference.line]));
       continue;
     }
     if (got === want) continue;
@@ -978,6 +980,62 @@ function propSeverity(key: string): Severity {
 
 function isProseProp(key: string): boolean {
   return key === "caption" || key === "alt" || key === "title" || key === "active";
+}
+
+/**
+ * Whether the side that carries this figure label **also states it as a block**.
+ *
+ * `homeOf` asks "where did the *other* side put this text". That question is
+ * well posed for a whole block and ill posed for a caption, because a caption
+ * and the line it labels are routinely both present and both correct: the
+ * reference binds `caption: 1.000.000 Platinum` to a cover *and* keeps
+ * `**1.000.000 Platinum**` in the lane beside it. Asked of the other side, the
+ * produced document does hold those words — as the very same lane paragraph —
+ * and the answer says nothing about whether anything was lost.
+ *
+ * So the question is asked of the **owning** side instead, and it is a different
+ * question: does this document say the words twice? When it does, the property
+ * is an echo of a line the document keeps anyway, and the difference between the
+ * two sides is not content but whether to repeat it. `CLAUDE.md` §5 rules on
+ * exactly that — a visible caption is emitted **once, not twice** — so the side
+ * that repeats is the side that moved, and {@link triage} reads the direction.
+ *
+ * Measured: all 7 `image.caption.missing` on `goya2` are this shape. The source
+ * writes each album title once, in the cell beside its cover; the produced
+ * document keeps it once; the reference keeps it *and* echoes it. They were
+ * reported as content the converter lost.
+ *
+ * **`caption` and `alt` only.** They are the figure-label family §5 rules on. A
+ * `nav` `active` echoes its own item by construction and a `frame` `title` names
+ * a region rather than repeating a line, so neither is the same question.
+ *
+ * **False friend: a caption the converter failed to bind.** There the reference
+ * states the text *once*, in the caption, and the produced leaves it loose — so
+ * the owning side does not echo, no suffix is added, and the finding stays the
+ * converter defect it is. That asymmetry is the whole point of asking the owning
+ * side rather than the other one.
+ *
+ * **Where it deliberately stops.** Two of `goya2`'s seven captions merge *two*
+ * blocks — `**Francis Goya Plays His Favourite Hits**` and `**Vol. 1**` are one
+ * `caption: … vol. 1` — and neither the paragraph nor the line index holds the
+ * joined key. Recognising that needs a concatenation search across sibling
+ * blocks, which is a weaker claim about a smaller shape, and reaching for it
+ * here would be chasing the last two findings rather than making the instrument
+ * truer. They stay converter defects and are wrong about it; that is the honest
+ * state, and it is recorded rather than tuned away.
+ */
+function selfEcho(ctx: Context, side: "produced" | "reference", key: string, value: string | undefined): boolean {
+  if (value === undefined) return false;
+  if (key !== "caption" && key !== "alt") return false;
+  const text = homeKey(value);
+  if (text === "") return false;
+  const own = ctx.index[side];
+  // `lines` for the same reason {@link homeOf} consults it: a block boundary on
+  // one side is a line ending on the other, and a label repeated as a *line* of
+  // a longer paragraph is repeated just as visibly. `goya2` writes one album's
+  // lane as `**Historia de un Amor**` and `1999` in a single hard-break run, so
+  // the paragraph key carries the year and only the line key is the title.
+  return own.paragraphs.has(text) || own.lines.has(text);
 }
 
 /**

@@ -197,6 +197,10 @@ export function triage(
   // so an attested insertion is a question rather than an answer. An
   // *unattested* one is invented outright (§16.3).
   if (wanted === null) {
+    // The produced document states these words twice — as a figure label and as
+    // a block of its own. Duplication, and the same answer the `.caption-echo`
+    // case below gives for the same reason.
+    if (cls.endsWith(".self-echo")) return "converter-defect";
     if (/\.(?:caption-echo|in-[a-z]+)$/u.test(cls)) return "converter-defect";
     return producedAttested ? "ambiguous" : "converter-defect";
   }
@@ -204,7 +208,18 @@ export function triage(
 
   // A deletion: the produced document dropped something. Only a defect if the
   // source had it; otherwise the reference added it and §16.3 forbids following.
-  if (got === null) return referenceAttested ? "converter-defect" : "reference-inconsistency";
+  //
+  // Unless the **reference** is the side saying it twice. `.self-echo` means the
+  // reference binds this label to a figure *and* keeps the same line as a block,
+  // where the produced keeps it once — so nothing is missing, and `CLAUDE.md` §5
+  // ("emit a visible caption once, not twice") says the single copy is right.
+  // The mirror of the insertion branch above: whichever side repeats is the side
+  // that moved. Attestation cannot decide it, because the words are attested for
+  // both — the source states them once and neither side invented anything.
+  if (got === null) {
+    if (cls.endsWith(".self-echo")) return "reference-inconsistency";
+    return referenceAttested ? "converter-defect" : "reference-inconsistency";
+  }
 
   // Emphasis is quoted as a `strength:text` list, so it needs the source's own
   // markup rather than a prose test: `<i>4.07</i>` and `— 4.07` carry identical
