@@ -37,10 +37,11 @@ disagree, the repository file wins and this index gets fixed.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: the first refinement iteration is done
-(PROGRESS §21–§22, **five mechanisms**, L1 90.3 → 92.7, L2 745 → 481, L3 287 → 140). The top of the
-ledger is now thin, so the next iteration is probably better spent **document-shaped than
-class-shaped** — `news` (49) and `goya2` (43). Do **not** open the alignment family yet: a third of
-it closed as a side effect of the region work without an alignment rule being touched.
+(PROGRESS §21–§23, **five mechanisms** plus two author adjudications; L1 90.3 → 92.7, L2 745 → 453,
+L3 287 → 110). Next is the **wrapped masthead** (§23.2), now unambiguous. Do **not** open the
+alignment family: a third of it closed as a side effect of the region work with no alignment rule
+touched. After the masthead the ledger is thin enough that a **document-shaped** iteration beats a
+class-shaped one — `news` (49) and `goya2` (43).
 
 ---
 
@@ -63,7 +64,7 @@ it closed as a side effect of the region work without an alignment rule being to
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` — advisory, possibly stale | grep |
 | history, superseded | `CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md` | avoid |
 
-**Never open end to end:** `CONVERTER-PROGRESS.md` (2309 ln, ~47k tokens). Route through
+**Never open end to end:** `CONVERTER-PROGRESS.md` (2846 ln, ~58k tokens). Route through
 [MAP-progress.md](MAP-progress.md); it maps every `##`/`###` to a line range and a one-line summary.
 
 ---

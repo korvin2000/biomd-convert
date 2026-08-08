@@ -2751,3 +2751,96 @@ read rather than a class-shaped one.
 Unchanged and still open from §20.8: the mini-image → glyph map (`glyphs.ts` now
 exists to hold it), wrapped-masthead heading recovery, and the uncalibrated
 0.5–0.95 ambiguous corridor (94 findings).
+
+## 23. Two author adjudications, and the re-baseline they require (2026-08-08)
+
+Both open questions were put to the reference author and both were answered. The
+answers changed two references, so this section is a **re-baseline**, not an
+improvement: no converter code changed between §22 and the numbers below.
+
+| rung | §22 | after the reference corrections |
+|---|---|---|
+| L0 | 406 tests, 0 FAILED | **406 tests**, typecheck clean, 0 FAILED, identity contract green |
+| L1 | 92.7 | **92.7** (`williams2` 98.6 → **99.5**) |
+| L2 | 481 · 300 converter-defect | **453 · 271** |
+| L3 | 140 | **110** |
+| validator | 28 errors | 28 |
+
+`williams2` 35 → **3** converter-defects. `new_blackmore` 8 → **11**, and the
+three new ones are a real converter defect the old reference was hiding.
+
+### 23.1 `williams2`'s one-lane `::: columns` was a mistake in the reference
+
+§21.5 recorded the converter's flattening as a `reference-inconsistency` and put
+the side-by-side to the author. Ruled: **the wrapper was an accidental reference
+mistake, not a layout choice.** The author removed it, and the spec-compliant
+flattened representation is authoritative for this shape.
+
+So §21.5's 31 findings were never a target and are now simply gone. The three
+documents that draw the site's page frame — `new_geyzel04`, `new_bach`,
+`williams2` — now agree with each other and with `BioMD-Reference.md` §2.
+
+**Do not re-investigate this.** It is a human-adjudicated reference correction.
+
+One factual correction to §21.5 while it is being read: the wrapper was properly
+closed. The `git diff` of the author's edit removes two openers *and* their two
+closers; a fence-walk during adjudication reported it as unclosed and that was
+wrong. The arity — one `::: column` where §2 requires ≥2 — was the real defect
+and is what the ruling turned on.
+
+### 23.2 The wrapped masthead is not a reference disagreement — it is two rules
+
+§20.6 and OPEN §3.1 recorded the three mastheads as references contradicting each
+other. **That was a stale index entry, and the fixture on disk contradicted it.**
+`new_blackmore`'s reference does not join its title; it carries two headings at
+two levels, and the author had already corrected it. Verify against
+`fixtures/out/`, never against a summary of it.
+
+Ruled by the author, and it splits into two different shapes:
+
+| document | reference | what it is |
+|---|---|---|
+| `new_blackmore` | `# Ричи Блэкмор Ritchie` + `## Blackmore & Blackmore's Night` | a **title and its subtitle** — two headings, two levels |
+| `new_bach` | `::: align` + `# Иоганн Себастьян` + `# Бах` | **one headline** split across two lines |
+| `new_lagq2` | `::: align` + `# Лос-Анджелесский` + `# гитарный квартет` | the same |
+
+The author's reasoning for the second shape, recorded because it is not derivable
+from the spec: the two lines are *one contextually related heading*. It could be
+joined into a single line, but the renderer displays consecutive `#` lines inside
+an `::: align` across two lines, which is the intended visual — and `#` + `##`
+is **wrong** for it, because that would assert a hierarchy the headline does not
+have. The author also rates it **not critical: a visualisation matter, not a
+correctness one.**
+
+All three are therefore converter defects, and the converter currently gets all
+three wrong in the same direction — it emits one `#` and demotes the rest:
+
+| document | produced |
+|---|---|
+| `new_blackmore` | `# Ричи Блэкмор Ritchie Blackmore & Blackmore's Night` — both headings joined |
+| `new_bach` | `# Иоганн Себастьян`, then `::: align` holding a bare paragraph `Бах` |
+| `new_lagq2` | `# Лос-Анджелесский`, then a bare paragraph `гитарный квартет` |
+
+**The discriminator is source typography, and it is available.** Two masthead
+lines of the *same* prominence are one headline split, and become two `# ` lines
+inside the `::: align`. Two lines of *different* prominence are a title and its
+subtitle, and become `#` + `##`. The false friend for both is the one §20.6
+already named: two headings separated by content are two headings, not one
+wrapped one — the lines must be adjacent inside the same masthead region.
+
+Queued, not built: the author de-prioritised it, and it is a heading-recovery
+rule with its own contract and its own four-rung adjudication.
+
+### 23.3 What this says about the record
+
+Two of the four "reference disagreements" this campaign has recorded turned out
+to be a reference mistake and a stale index entry. Neither survived contact with
+`fixtures/out/`. The standing instruction in `.claude-memory/INDEX.md` — *"where
+this index and a repository file disagree, the repository file wins and this
+index gets fixed"* — earned its place twice in one session; **read the fixture,
+not the summary of the fixture**, before recording a reference as inconsistent.
+
+The two adjudications also confirm the value of asking. §21.5 correctly refused
+to close the finding by special-casing the converter, and refused to edit the
+reference; putting the side-by-side to the author resolved in one exchange what
+no amount of deterministic evidence could have.

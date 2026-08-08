@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-07T23:58:24.459Z",
+  "generated": "2026-08-08T00:29:34.941Z",
   "totals": {
-    "findings": 481,
-    "converterDefects": 300,
+    "findings": 453,
+    "converterDefects": 271,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
-    "ambiguous": 94,
+    "ambiguous": 95,
     "bySeverity": {
-      "critical": 22,
-      "major": 272,
+      "critical": 24,
+      "major": 242,
       "minor": 187
     }
   },
@@ -71,10 +71,10 @@
     },
     {
       "doc": "new_blackmore",
-      "findings": 12,
-      "converterDefects": 8,
-      "critical": 0,
-      "major": 8,
+      "findings": 15,
+      "converterDefects": 11,
+      "critical": 1,
+      "major": 10,
       "minor": 4
     },
     {
@@ -183,43 +183,18 @@
     },
     {
       "doc": "williams2",
-      "findings": 42,
-      "converterDefects": 35,
-      "critical": 0,
-      "major": 35,
+      "findings": 11,
+      "converterDefects": 3,
+      "critical": 1,
+      "major": 3,
       "minor": 7
     }
   ],
   "classes": [
     {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 27,
-      "documents": [
-        "kiselev",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 27,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 405,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
-      }
-    },
-    {
       "class": "align.spurious",
       "severity": "major",
-      "instances": 12,
+      "instances": 9,
       "documents": [
         "borislova",
         "new_karta",
@@ -231,12 +206,12 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 12,
+        "converter-defect": 9,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 288,
+      "rank": 216,
       "example": {
         "doc": "borislova",
         "path": "/align[45]",
@@ -272,53 +247,26 @@
     {
       "class": "align.missing",
       "severity": "major",
-      "instances": 9,
+      "instances": 8,
       "documents": [
         "new_blackmore",
         "new_geyzel04",
         "new_lagq2",
         "new_lendle2",
-        "new_rechin4",
-        "williams2"
+        "new_rechin4"
       ],
       "verdicts": {
-        "converter-defect": 9,
+        "converter-defect": 8,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 162,
+      "rank": 120,
       "example": {
         "doc": "new_blackmore",
-        "path": "/align[87]",
+        "path": "/align[88]",
         "produced": null,
         "reference": "Александр НЕВЕРОВ"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 9,
-      "documents": [
-        "new_lagq2",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 9,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 162,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/align[16]",
-        "produced": "[Назад] [Фото]",
-        "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
       }
     },
     {
@@ -344,6 +292,55 @@
         "path": "/images[85]/image[0]",
         "produced": "Главы 8-9",
         "reference": null
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 7,
+      "documents": [
+        "new_lagq2",
+        "new_lendle2",
+        "news",
+        "pavlov_azancheev",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 105,
+      "example": {
+        "doc": "new_lagq2",
+        "path": "/align[16]",
+        "produced": "[Назад] [Фото]",
+        "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
+      }
+    },
+    {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 8,
+      "documents": [
+        "kiselev",
+        "new_lendle2",
+        "news",
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 8,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 96,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
+        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -417,28 +414,6 @@
         "path": "/align[71]/heading[0]",
         "produced": "ДРУГИЕ АЛЬБОМЫ",
         "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
-      }
-    },
-    {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 11,
-      "documents": [
-        "goya2",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 11,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 66,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
       }
     },
     {
@@ -634,6 +609,29 @@
       }
     },
     {
+      "class": "paragraph.content",
+      "severity": "critical",
+      "instances": 5,
+      "documents": [
+        "news",
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 1,
+        "ambiguous": 2
+      },
+      "rank": 30,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[92]",
+        "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
+        "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
+      }
+    },
+    {
       "class": "heading.containment",
       "severity": "major",
       "instances": 3,
@@ -734,25 +732,24 @@
       }
     },
     {
-      "class": "paragraph.content",
-      "severity": "critical",
-      "instances": 4,
+      "class": "image.containment",
+      "severity": "major",
+      "instances": 6,
       "documents": [
-        "news",
-        "segovia"
+        "goya2"
       ],
       "verdicts": {
-        "converter-defect": 2,
+        "converter-defect": 6,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 1
+        "reference-inconsistency": 0,
+        "ambiguous": 0
       },
-      "rank": 20,
+      "rank": 18,
       "example": {
-        "doc": "news",
-        "path": "/paragraph[92]",
-        "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
-        "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -843,28 +840,6 @@
       }
     },
     {
-      "class": "columns.missing",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "segovia1",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "segovia1",
-        "path": "/align[59]/columns[0]",
-        "produced": null,
-        "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
-      }
-    },
-    {
       "class": "heading.missing.caption-echo",
       "severity": "major",
       "instances": 2,
@@ -884,6 +859,28 @@
         "path": "/heading[46]",
         "produced": null,
         "reference": "ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\""
+      }
+    },
+    {
+      "class": "image.moved",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "tarrega",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "tarrega",
+        "path": "/image[9]",
+        "produced": "Франсиско Таррега",
+        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -991,9 +988,9 @@
       "rank": 12,
       "example": {
         "doc": "new_blackmore",
-        "path": "/align[87]/paragraph[0]",
+        "path": "/align[88]/paragraph[0]",
         "produced": "Александр НЕВЕРОВ",
-        "reference": "Александр НЕВЕРОВ — at /heading[88]"
+        "reference": "Александр НЕВЕРОВ — at /heading[89]"
       }
     },
     {
@@ -1013,9 +1010,9 @@
       "rank": 12,
       "example": {
         "doc": "new_blackmore",
-        "path": "/align[5]/paragraph[0]",
+        "path": "/align[6]/paragraph[0]",
         "produced": "Источники: rock.ru rol.ru blackmore.jsa.ru",
-        "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[5]/list[1]"
+        "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[6]/list[1]"
       }
     },
     {
@@ -1209,6 +1206,27 @@
       }
     },
     {
+      "class": "heading.content",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/heading[1]/text",
+        "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
+        "reference": "Blackmore & Blackmore's Night"
+      }
+    },
+    {
       "class": "nav.active.missing",
       "severity": "minor",
       "instances": 2,
@@ -1313,7 +1331,7 @@
       "rank": 3,
       "example": {
         "doc": "new_blackmore",
-        "path": "/align[5]@position",
+        "path": "/align[6]@position",
         "produced": null,
         "reference": "position: right"
       }
@@ -1340,27 +1358,6 @@
       }
     },
     {
-      "class": "column.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "williams2",
-        "path": "/columns[1]/column[0]",
-        "produced": null,
-        "reference": "align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к…"
-      }
-    },
-    {
       "class": "column.spurious",
       "severity": "major",
       "instances": 1,
@@ -1379,6 +1376,27 @@
         "path": "/columns[20]/column[1]",
         "produced": "align center WMA",
         "reference": null
+      }
+    },
+    {
+      "class": "columns.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "segovia1",
+        "path": "/align[59]/columns[0]",
+        "produced": null,
+        "reference": "column ◀ Андрес Сеговия column Владимир Бобри ▶"
       }
     },
     {
@@ -1403,6 +1421,48 @@
       }
     },
     {
+      "class": "heading.level",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/heading[1]",
+        "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
+        "reference": "Blackmore & Blackmore's Night — h1, reference h2"
+      }
+    },
+    {
+      "class": "heading.missing.absorbed",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_blackmore"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_blackmore",
+        "path": "/heading[0]",
+        "produced": null,
+        "reference": "Ричи Блэкмор Ritchie"
+      }
+    },
+    {
       "class": "image.missing",
       "severity": "major",
       "instances": 1,
@@ -1421,27 +1481,6 @@
         "path": "/images[76]/image[0]",
         "produced": null,
         "reference": "Together / Richard Clayderman & Francis Goya"
-      }
-    },
-    {
-      "class": "image.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "tarrega",
-        "path": "/image[9]",
-        "produced": "Франсиско Таррега",
-        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -1484,27 +1523,6 @@
         "path": "/images[76]",
         "produced": "Together / Richard Clayderman & Francis Goya",
         "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]"
-      }
-    },
-    {
-      "class": "list.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "williams2",
-        "path": "/columns[1]/column[0]/list[11]",
-        "produced": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J…",
-        "reference": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J… — produced at /list[2]"
       }
     },
     {
@@ -1902,7 +1920,7 @@
       "rank": 2,
       "example": {
         "doc": "williams2",
-        "path": "/columns[1]/column[0]/list[11]/item[2]",
+        "path": "/list[12]/item[2]",
         "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
         "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…"
       }
@@ -2325,7 +2343,7 @@
       "rank": 0,
       "example": {
         "doc": "new_blackmore",
-        "path": "/align[5]@active",
+        "path": "/align[6]@active",
         "produced": "active: Источники:",
         "reference": null
       }
@@ -4692,171 +4710,213 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9ead5d1d",
+      "id": "6ee8226f",
+      "doc": "new_blackmore",
+      "class": "heading.missing.absorbed",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/heading[0]",
+      "producedLine": null,
+      "referenceLine": 1,
+      "produced": null,
+      "reference": "Ричи Блэкмор Ritchie",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "10c52594",
+      "doc": "new_blackmore",
+      "class": "heading.level",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/heading[1]",
+      "producedLine": 1,
+      "referenceLine": 3,
+      "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
+      "reference": "Blackmore & Blackmore's Night — h1, reference h2",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4dacc6cb",
+      "doc": "new_blackmore",
+      "class": "heading.content",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/heading[1]/text",
+      "producedLine": 1,
+      "referenceLine": 3,
+      "produced": "Ричи Блэкмор Ritchie Blackmore & Blackmore's Night",
+      "reference": "Blackmore & Blackmore's Night",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "df426d02",
       "doc": "new_blackmore",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/paragraph[4]",
+      "path": "/paragraph[5]",
       "producedLine": 9,
-      "referenceLine": 9,
+      "referenceLine": 11,
       "produced": "(none)",
       "reference": "em:Как говорит сам Ричи Блэкмор, он \"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать …",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "97a6db1f",
+      "id": "74803e18",
       "doc": "new_blackmore",
       "class": "align.active.spurious",
       "severity": "minor",
       "evidence": "content",
       "op": "insert",
-      "path": "/align[5]@active",
+      "path": "/align[6]@active",
       "producedLine": 11,
-      "referenceLine": 11,
+      "referenceLine": 13,
       "produced": "active: Источники:",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "f4fea99d",
+      "id": "2760aa94",
       "doc": "new_blackmore",
       "class": "align.position.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/align[5]@position",
+      "path": "/align[6]@position",
       "producedLine": 11,
-      "referenceLine": 11,
+      "referenceLine": 13,
       "produced": null,
       "reference": "position: right",
       "verdict": "converter-defect"
     },
     {
-      "id": "dda3b3ff",
+      "id": "4248b292",
       "doc": "new_blackmore",
       "class": "retyped.list-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[5]/paragraph[0]",
+      "path": "/align[6]/paragraph[0]",
       "producedLine": 14,
-      "referenceLine": 14,
+      "referenceLine": 16,
       "produced": "Источники: rock.ru rol.ru blackmore.jsa.ru",
-      "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[5]/list[1]",
+      "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[6]/list[1]",
       "verdict": "converter-defect"
     },
     {
-      "id": "c6f700b2",
+      "id": "212bdd93",
       "doc": "new_blackmore",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[7]/paragraph[0]",
+      "path": "/align[8]/paragraph[0]",
       "producedLine": 31,
-      "referenceLine": 28,
+      "referenceLine": 30,
       "produced": "(none)",
       "reference": "em:Ниже на нашей странице собраны \"под одной крышей\" несколько интервью Ричи Блэкмора, опубликованных в российской прессе в марте - апреле 2002 года.",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "f4501580",
+      "id": "7e5806b6",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/heading[9]",
+      "path": "/heading[10]",
       "producedLine": 60,
-      "referenceLine": 53,
+      "referenceLine": 55,
       "produced": "Ричи Блэкмор: «Вcтречайте, скоро буду!»",
-      "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!» — at /paragraph[10]",
+      "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!» — at /paragraph[11]",
       "verdict": "converter-defect"
     },
     {
-      "id": "a2719280",
+      "id": "c8f0c0e3",
       "doc": "new_blackmore",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/paragraph[10]",
+      "path": "/paragraph[11]",
       "producedLine": 62,
-      "referenceLine": 55,
+      "referenceLine": 57,
       "produced": "(none)",
       "reference": "em:Накануне своего приезда в Москву один из главных гитаристов прошлого столетия рассказывает о накладных ногтях, злых менеджерах и добрых старых временах",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "ea6833a6",
+      "id": "7e500a51",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/heading[37]",
+      "path": "/heading[38]",
       "producedLine": 147,
-      "referenceLine": 136,
+      "referenceLine": 138,
       "produced": "Гитарист \"тяжелого\" поведения",
-      "reference": "Гитарист \"тяжелого\" поведения — at /paragraph[38]",
+      "reference": "Гитарист \"тяжелого\" поведения — at /paragraph[39]",
       "verdict": "converter-defect"
     },
     {
-      "id": "84994c28",
+      "id": "f03d2a7e",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/heading[69]",
+      "path": "/heading[70]",
       "producedLine": 241,
-      "referenceLine": 226,
+      "referenceLine": 228,
       "produced": "О вкусах не спорят",
-      "reference": "О вкусах не спорят — at /paragraph[70]",
+      "reference": "О вкусах не спорят — at /paragraph[71]",
       "verdict": "converter-defect"
     },
     {
-      "id": "f890dcfb",
+      "id": "11beb9f4",
       "doc": "new_blackmore",
       "class": "align.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/align[87]",
+      "path": "/align[88]",
       "producedLine": null,
-      "referenceLine": 263,
+      "referenceLine": 265,
       "produced": null,
       "reference": "Александр НЕВЕРОВ",
       "verdict": "converter-defect"
     },
     {
-      "id": "af1d0211",
+      "id": "28875f38",
       "doc": "new_blackmore",
       "class": "retyped.heading2-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[87]/paragraph[0]",
+      "path": "/align[88]/paragraph[0]",
       "producedLine": 277,
-      "referenceLine": 266,
+      "referenceLine": 268,
       "produced": "Александр НЕВЕРОВ",
-      "reference": "Александр НЕВЕРОВ — at /heading[88]",
+      "reference": "Александр НЕВЕРОВ — at /heading[89]",
       "verdict": "converter-defect"
     },
     {
-      "id": "f76a018c",
+      "id": "9a68eaea",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-quote",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/quote[89]",
+      "path": "/quote[90]",
       "producedLine": 281,
-      "referenceLine": 271,
+      "referenceLine": 273,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
-      "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина. — at /paragraph[90]",
+      "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина. — at /paragraph[91]",
       "verdict": "converter-defect"
     },
     {
@@ -8626,27 +8686,13 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "af9d65b4",
+      "id": "8901daf9",
       "doc": "williams2",
       "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/align[2]",
-      "producedLine": 3,
-      "referenceLine": null,
-      "produced": "- 2 -",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a03de9cd",
-      "doc": "williams2",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[2]",
+      "path": "/align[26]",
       "producedLine": 84,
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
@@ -8654,41 +8700,13 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "88dd64a8",
-      "doc": "williams2",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[2]",
-      "producedLine": 91,
-      "referenceLine": null,
-      "produced": "MP3",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "38121014",
-      "doc": "williams2",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[2]",
-      "producedLine": 98,
-      "referenceLine": null,
-      "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cea34048",
+      "id": "98829154",
       "doc": "williams2",
       "class": "paragraph.spurious.in-break-run",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/align[2]/paragraph[0]",
+      "path": "/align[26]/paragraph[0]",
       "producedLine": 87,
       "referenceLine": null,
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
@@ -8696,522 +8714,130 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "8146ed34",
+      "id": "528e5cbb",
       "doc": "williams2",
-      "class": "columns.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[1]",
-      "producedLine": null,
-      "referenceLine": 3,
-      "produced": null,
-      "reference": "column align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привле…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "24ece3e2",
-      "doc": "williams2",
-      "class": "column.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[1]/column[0]",
-      "producedLine": null,
-      "referenceLine": 5,
-      "produced": null,
-      "reference": "align center - 2 - В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "25093e62",
-      "doc": "williams2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[1]/column[0]/align[0]",
-      "producedLine": null,
-      "referenceLine": 7,
-      "produced": null,
-      "reference": "- 2 -",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7a170f60",
-      "doc": "williams2",
-      "class": "paragraph.containment",
+      "class": "image.moved",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
-      "path": "/columns[1]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 6,
-      "referenceLine": 9,
-      "produced": "- 2 -",
-      "reference": "- 2 - — produced at /align[2]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0492327d",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[1]",
-      "producedLine": 9,
-      "referenceLine": 11,
-      "produced": "В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к работе над музыкой…",
-      "reference": "В 1969 году Джон Вильямс познакомился со Стэнли Майерcом – композитором, писавшим музыку для кино, и аранжировщиком, – который привлек его к работе над музыкой… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fa1df9a0",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[2]",
-      "producedLine": 11,
-      "referenceLine": 13,
-      "produced": "Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую режи…",
-      "reference": "Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую режи… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f0f14bd0",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[3]",
-      "producedLine": 19,
-      "referenceLine": 15,
-      "produced": "В последующие годы Джон Вильямс еще не раз принимал участие в записи музыки для кино, а в небольшом австралийском фильме Emma's War (Война Эммы) он выступил уж…",
-      "reference": "В последующие годы Джон Вильямс еще не раз принимал участие в записи музыки для кино, а в небольшом австралийском фильме Emma's War (Война Эммы) он выступил уж… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "245f0857",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[4]",
-      "producedLine": 21,
-      "referenceLine": 17,
-      "produced": "Дружеские и творческие контакты Вильямса со многими зарубежными музыкантами нередко были продиктованы его политической солидарностью с их борьбой за восстановл…",
-      "reference": "Дружеские и творческие контакты Вильямса со многими зарубежными музыкантами нередко были продиктованы его политической солидарностью с их борьбой за восстановл… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "887700e3",
-      "doc": "williams2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/image[5]",
+      "path": "/image[6]",
       "producedLine": 14,
-      "referenceLine": 21,
+      "referenceLine": 17,
       "produced": "",
-      "reference": "produced at /image[2]",
+      "reference": "produced at /image[4]",
       "verdict": "converter-defect"
     },
     {
-      "id": "3cc90e0d",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[6]",
-      "producedLine": 23,
-      "referenceLine": 26,
-      "produced": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен…",
-      "reference": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ea86c67b",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[7]",
-      "producedLine": 25,
-      "referenceLine": 28,
-      "produced": "Запись классической музыки, сначала на пластинки, а позднее на CD-диски, стала, безусловно, важнейшей частью творческой жизни Джона Вильямса. Можно предположит…",
-      "reference": "Запись классической музыки, сначала на пластинки, а позднее на CD-диски, стала, безусловно, важнейшей частью творческой жизни Джона Вильямса. Можно предположит… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0783a74d",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[8]",
-      "producedLine": 27,
-      "referenceLine": 30,
-      "produced": "Важным событием в творческой биографии Джона Вильямса была его встреча с другим, не менее знаменитым британским гитаристом, – Джулианом Бримом (род. 1933).",
-      "reference": "Важным событием в творческой биографии Джона Вильямса была его встреча с другим, не менее знаменитым британским гитаристом, – Джулианом Бримом (род. 1933). — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cdac5fb3",
-      "doc": "williams2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/image[9]",
-      "producedLine": 30,
-      "referenceLine": 33,
-      "produced": "Джулиан Брим и Джон Вильямс",
-      "reference": "Джулиан Брим и Джон Вильямс. — produced at /image[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "49f61a27",
+      "id": "8189ea73",
       "doc": "williams2",
       "class": "image.caption.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/image[9]@caption",
+      "path": "/image[10]@caption",
       "producedLine": 30,
-      "referenceLine": 33,
+      "referenceLine": 29,
       "produced": "caption: Джулиан Брим и Джон Вильямс",
       "reference": "caption: Джулиан Брим и Джон Вильямс.",
       "verdict": "ambiguous"
     },
     {
-      "id": "17a11e5c",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[10]",
-      "producedLine": 36,
-      "referenceLine": 39,
-      "produced": "Брим на восемь лет старше Вильямса. Уже в детские годы он проявил исключительную музыкальную одаренность и когда в возрасте 12 лет состоялся его концертный деб…",
-      "reference": "Брим на восемь лет старше Вильямса. Уже в детские годы он проявил исключительную музыкальную одаренность и когда в возрасте 12 лет состоялся его концертный деб… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b938e697",
-      "doc": "williams2",
-      "class": "list.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/list[11]",
-      "producedLine": 38,
-      "referenceLine": 41,
-      "produced": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J…",
-      "reference": "Together – Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), Together Again – J… — produced at /list[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e4955555",
+      "id": "80555c5e",
       "doc": "williams2",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/list[11]/item[0]",
+      "path": "/list[12]/item[0]",
       "producedLine": 38,
-      "referenceLine": 41,
+      "referenceLine": 37,
       "produced": "strong:Together",
       "reference": "em:Julian Bream and John Williams [RCA RD 83257], в США альбом назывался Julian & John, – вышел в 1972 году (запись сделана в 1971), · strong:Together",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "67f9d709",
+      "id": "2476aeae",
       "doc": "williams2",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/list[11]/item[1]",
+      "path": "/list[12]/item[1]",
       "producedLine": 39,
-      "referenceLine": 42,
+      "referenceLine": 38,
       "produced": "strong:Together Again",
       "reference": "em:Julian Bream and John Williams [RCA RD 80456], в США – Julian & John II, – 1973/1974, · strong:Together Again",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "e5626d2a",
+      "id": "d15a28b3",
       "doc": "williams2",
       "class": "list.item.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/list[11]/item[2]",
+      "path": "/list[12]/item[2]",
       "producedLine": 40,
-      "referenceLine": 43,
+      "referenceLine": 39,
       "produced": "**Julian Bream & John Williams Live** \\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел …",
       "reference": "**Julian Bream & John Williams Live** – *\\[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом выш…",
       "verdict": "converter-defect"
     },
     {
-      "id": "b69bedfd",
+      "id": "12f7e9da",
       "doc": "williams2",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/list[11]/item[2]",
+      "path": "/list[12]/item[2]",
       "producedLine": 40,
-      "referenceLine": 43,
+      "referenceLine": 39,
       "produced": "strong:Julian Bream & John Williams Live",
       "reference": "em:[RCA 03090] - концертные записи, сделанные 15 и 18 октября 1978 года в Бостоне и Нью-Йорке соответственно, альбом вышел весной 1979 года. · strong:Julian Br…",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "eef1bc1a",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[12]",
-      "producedLine": 42,
-      "referenceLine": 45,
-      "produced": "Во второй половине 1960-х годов Вильямсу, похоже, наскучило играть один и тот же репертуар перед одной и той же аудиторией и он начинает искать новые способы т…",
-      "reference": "Во второй половине 1960-х годов Вильямсу, похоже, наскучило играть один и тот же репертуар перед одной и той же аудиторией и он начинает искать новые способы т… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cbfa29ae",
-      "doc": "williams2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/image[13]",
-      "producedLine": 45,
-      "referenceLine": 48,
-      "produced": "Джон Вильямс в 1971 году.",
-      "reference": "Джон Вильямс в 1971 году. — produced at /image[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "90727cb9",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[14]",
-      "producedLine": 51,
-      "referenceLine": 54,
-      "produced": "В апреле 1979 года Джон Вильямс неожиданно для многих стал одним из основателей и участников группы Sky. Когда в начале лета того же года в музыкальных магазин…",
-      "reference": "В апреле 1979 года Джон Вильямс неожиданно для многих стал одним из основателей и участников группы Sky. Когда в начале лета того же года в музыкальных магазин… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0487334f",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[15]",
-      "producedLine": 53,
-      "referenceLine": 56,
-      "produced": "Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и композит…",
-      "reference": "Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и композит… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "afb365e2",
+      "id": "c28cdf81",
       "doc": "williams2",
       "class": "emphasis.span",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/paragraph[15]",
+      "path": "/paragraph[16]",
       "producedLine": 53,
-      "referenceLine": 56,
+      "referenceLine": 52,
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "462124a4",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[16]",
-      "producedLine": 55,
-      "referenceLine": 58,
-      "produced": "Уйдя из Sky Джон Вильямс целиком посвятил себя записям новых дисков – работе, которую он полностью не прерывал никогда: новые записи произведений Альбениса (Ec…",
-      "reference": "Уйдя из Sky Джон Вильямс целиком посвятил себя записям новых дисков – работе, которую он полностью не прерывал никогда: новые записи произведений Альбениса (Ec… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "674ddf06",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[17]",
-      "producedLine": 57,
-      "referenceLine": 60,
-      "produced": "Еще в начале 1970-х годов Джон Вильямс принял для себя решение отказаться от продолжительных туров, особенно если они диктовались не творческими, а финансовыми…",
-      "reference": "Еще в начале 1970-х годов Джон Вильямс принял для себя решение отказаться от продолжительных туров, особенно если они диктовались не творческими, а финансовыми… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b981c717",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[18]",
-      "producedLine": 59,
-      "referenceLine": 62,
-      "produced": "В 1980 году (а это, кстати, годы \"электрической\" карьеры музыканта) Джон Вильямс был награжден Королевой Орденом британской империи (Order of the British Empir…",
-      "reference": "В 1980 году (а это, кстати, годы \"электрической\" карьеры музыканта) Джон Вильямс был награжден Королевой Орденом британской империи (Order of the British Empir… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "205f380d",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[19]",
-      "producedLine": 61,
-      "referenceLine": 64,
-      "produced": "С 1984 по 1990 год Вильямса неоднократно приглашают на крупные музыкальные фестивали. В 1984 году он является артистическим директором Летнего музыкального фес…",
-      "reference": "С 1984 по 1990 год Вильямса неоднократно приглашают на крупные музыкальные фестивали. В 1984 году он является артистическим директором Летнего музыкального фес… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4143618f",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[20]",
-      "producedLine": 63,
-      "referenceLine": 66,
-      "produced": "В 1984 г. важным событием в творческой жизни Вильямса стало исполнение им премьеры Концерта для гитары и гобоя д'амур Vers l'arc-en-ciel Тору Такемицу, – с Сим…",
-      "reference": "В 1984 г. важным событием в творческой жизни Вильямса стало исполнение им премьеры Концерта для гитары и гобоя д'амур Vers l'arc-en-ciel Тору Такемицу, – с Сим… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ac30894e",
-      "doc": "williams2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/image[21]",
-      "producedLine": 66,
-      "referenceLine": 69,
-      "produced": "Джон Вильямс и Пако Пенья",
-      "reference": "Джон Вильямс и Пако Пенья — produced at /image[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "acedf8a3",
-      "doc": "williams2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/image[22]",
-      "producedLine": 73,
-      "referenceLine": 76,
-      "produced": "Джон Вильямс на обложках гитарных журналов.",
-      "reference": "Джон Вильямс на обложках гитарных журналов. — produced at /image[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "30265c3e",
-      "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[23]",
-      "producedLine": 79,
-      "referenceLine": 82,
-      "produced": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
-      "reference": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti… — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4a84a440",
+      "id": "4ecb55c3",
       "doc": "williams2",
       "class": "paragraph.hyphenation.joined",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/paragraph[23]",
+      "path": "/paragraph[24]",
       "producedLine": 79,
-      "referenceLine": 82,
+      "referenceLine": 78,
       "produced": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
       "reference": "1986 год был ознаменован серией успешных гастролей, прошедших по Испании, США и Великобритании (в ходе последних он выступал вместе с Пако Пенья и группой Inti…",
       "verdict": "ambiguous"
     },
     {
-      "id": "c910adf8",
+      "id": "5b2845a7",
       "doc": "williams2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[1]/column[0]/paragraph[24]",
-      "producedLine": 81,
-      "referenceLine": 84,
-      "produced": "К началу биографии",
-      "reference": "К началу биографии — produced at /paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7d35ea16",
-      "doc": "williams2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "paragraph.content",
+      "severity": "critical",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/columns[1]/column[0]/align[25]",
+      "path": "/align[26]/paragraph[0]",
       "producedLine": 94,
-      "referenceLine": 87,
-      "produced": "MP3",
-      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /align[2]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "eda333ea",
-      "doc": "williams2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[1]/column[0]/align[26]",
-      "producedLine": 101,
-      "referenceLine": 93,
-      "produced": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
-      "reference": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org) — at /align[2]/paragraph[0]",
-      "verdict": "converter-defect"
+      "referenceLine": 85,
+      "produced": "[MP3](music/mp/jwlms_bach.mp3)",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** [MP3](music/mp/jwlms_bach.mp3)",
+      "verdict": "ambiguous"
     }
   ]
 }

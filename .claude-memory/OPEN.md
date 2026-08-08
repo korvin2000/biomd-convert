@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21–§22). Facts marked
+Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21–§23). Facts marked
 *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
@@ -11,29 +11,42 @@ Last touched **2026-08-08**, after the first refinement iteration (PROGRESS §21
 ## 1. Where we are, and the exact next step
 
 Reference-guided refinement, 22 documents. **Five mechanisms accepted** — all four rungs improved or
-held on every one, one commit each, full before/after in every message.
+held on every one, one commit each, full before/after in every message — then two author
+adjudications that corrected two references and forced a re-baseline (PROGRESS §23).
 
-**Current state, *measured* 2026-08-08 (PROGRESS §22.4):**
+**Current state, *measured* 2026-08-08 (PROGRESS §23):**
 
 | rung | value |
 |---|---|
 | L0 | 406 tests, typecheck clean, 0 FAILED |
-| L1 | **92.7 %** (was 90.3), clean share **13.6 %** (was 9.1) |
-| L2 | 481 findings — **300 converter-defect** (was 580) · 94 ambiguous · 87 reference-inconsistency |
-| L3 | 140 findings (was 287), identity 0, deterministic |
-| validator | 28 errors (was 23), all `table-header-empty` — see §3.2 and PROGRESS §21.4 |
+| L1 | **92.7 %** (was 90.3), clean share 13.6 % (was 9.1) |
+| L2 | 453 findings — **271 converter-defect** (was 580) · 95 ambiguous · 87 reference-inconsistency |
+| L3 | **110** findings (was 287), identity 0, deterministic |
+| validator | 28 errors (was 23), all `table-header-empty` — PROGRESS §21.4 |
 
 That is the floor. Nothing accepted from here may regress it.
 
-**The top of the ledger is now thin.** After removing `williams2`'s recorded reference-inconsistency
-and the class §22.2 killed, no open class has more than about ten actionable instances. The next
-iteration is probably better spent **document-shaped than class-shaped**: `news` (49 converter-
-defects) and `goya2` (43) are the two biggest and both are long-known regression-corpus documents.
+**Next mechanism: the wrapped masthead** (PROGRESS §23.2). No longer a reference disagreement — the
+author ruled, and all three documents are converter defects. Two shapes, one discriminator:
 
-**Do not open the alignment family as a mechanism yet.** A third of it closed as a *side effect* of
-the region work in §21.2 and §22.1 with no alignment rule touched, and 4 of `align.spurious`'s 12 are
-`williams2` §3.2 while 3 more are the dead class of §22.2. Re-measure it after the next region or
-table change rather than before.
+- two masthead lines of the **same** typographic prominence are *one headline split*, and become two
+  consecutive `# ` lines inside the `::: align` (`new_bach`, `new_lagq2`). Never `#` + `##` — that
+  would assert a hierarchy the headline does not have;
+- two lines of **different** prominence are a *title and its subtitle*, and become `#` + `##`
+  (`new_blackmore`).
+
+False friend, already named in §20.6: two headings separated by content are two headings, not one
+wrapped one — the lines must be adjacent inside the same masthead region. The author rates this
+**not critical, a visualisation matter**, so it is the right size for one iteration rather than a
+priority.
+
+**Do not open the alignment family as a mechanism.** A third of it closed as a *side effect* of the
+region work in §21.2 and §22.1 with no alignment rule touched, and 3 of `align.spurious`'s remaining
+9 are the dead class of §22.2. Re-measure it after the next region or table change, never before.
+
+After that, the ledger is thin enough that a **document-shaped** iteration beats a class-shaped one:
+`news` (49 converter-defects) and `goya2` (43) are the two biggest and both are long-known
+regression-corpus documents.
 
 ---
 
@@ -70,40 +83,31 @@ map. One divergence to settle: the guide maps *next* to `&#9654;` (▶) while `n
 
 ---
 
-## 3. Questions for the user
+## 3. Answered by the reference author — do not re-investigate
 
-### 3.1 A wrapped masthead: one `#` or two? *(carried from §20.6, unchanged)*
+Both questions this iteration raised were put to the author and both were ruled on. The rulings
+changed two fixtures; the numbers in §1 are already re-baselined against them (PROGRESS §23).
 
-`h1-count` is a warning, so two `#` validates; the converter emits exactly one on all 22 and
-`enforceSingleTitle` never fires. Producing the reference shape needs heading recovery to *recognise*
-a two-line title, with the false friend that two `#` separated by content are two titles.
-`new_blackmore` joins its two-part title into one heading while `new_bach` and `new_lagq2` split
-theirs, so the discriminator must come from the **source**, not from the reference set.
+- **`williams2`'s one-lane `::: columns`** was an *accidental reference mistake*, not a layout
+  choice. The author removed it. The flattened, spec-compliant shape is authoritative, and the three
+  page-frame documents now agree with each other. `williams2` 35 → 3 converter-defects.
+- **The wrapped masthead** is two rules, not a reference disagreement — see §1. `new_blackmore`'s
+  reference already carried the two-level correction; OPEN's old §3.1 table said otherwise and was
+  simply stale.
 
-### 3.2 `williams2`'s one-lane `::: columns` — *new, and the one open triage call*
-
-The converter now flattens the page frame to linear flow on all three documents that have a
-non-empty rail. `new_geyzel04`'s and `new_bach`'s references agree. `williams2`'s reference instead
-keeps a `::: columns` containing a **single** `::: column` around the whole article — which
-`BioMD-Reference.md` §2 forbids (`columns` requires ≥2 `column`). The sources are the same construct,
-so no rule produces both.
-
-Recorded as `reference-inconsistency` and **not** chased; it costs `williams2` 31 L2 findings that
-are all the same fact. Confirm the reading, or say the wrapper is wanted and it becomes a rule
-question instead. PROGRESS §21.5.
-
----
+**Both were index errors or reference errors, not converter questions.** Read `fixtures/out/` before
+recording a reference as inconsistent — a summary of a fixture is not a fixture.
 
 ## 4. Open defect classes — *measured* 2026-08-08 over 22 documents
 
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
-| 405 | `paragraph.containment` | 27 | 5 | 19 are `williams2` §3.2 and **not a target**; real remainder 8 |
-| 288 | `align.spurious` | 12 | 8 | 4 are `williams2` §3.2, 3 are the dead class of PROGRESS §22.2. Real remainder ≈5 |
-| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2) |
-| 162 | `align.missing` | 9 | 6 | |
-| 162 | `retyped.paragraph-to-align` | 9 | 6 | |
+| 216 | `align.spurious` | 9 | 8 | 3 are the dead class of PROGRESS §22.2 |
+| 165 | `retyped.paragraph-to-list` | 11 | 5 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
+| 120 | `align.missing` | 8 | 5 | |
 | 120 | `image.spurious` | 8 | 5 | |
+| 105 | `retyped.paragraph-to-align` | 7 | 5 | |
+| 96 | `paragraph.containment` | 8 | 4 | was 141 and ranked first; `williams2`'s 19 are gone with the reference correction |
 | 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts`, sweep it, do not pick it |
 
 Also carried: `image.src.value` (19, all `goya2` — mechanical, single-document) · `borislova`/
@@ -120,7 +124,8 @@ split 2–1 on.
    largest piece of unexamined instrument behaviour. So is the **0.65** reconciliation constant behind
    the `containment` classes.
 2. **The validator does not check `columns` ≥ 2 `column`**, which is a `BioMD-Reference.md` §2 MUST.
-   Found while adjudicating §3.2; recorded, not fixed.
+   Found while adjudicating the `williams2` wrapper (PROGRESS §21.5); recorded, not fixed. Still
+   worth having: the mistake it would have caught was in a hand-written reference.
 3. **L3's renderer is a model of the target, not the target.** Where the real renderer differs in a
    way `read()` does not document, L3 is wrong *in the same direction on both sides*.
 4. **L3 pairs by rendered text, deliberately independent of L2.** A block rewritten past 0.65
