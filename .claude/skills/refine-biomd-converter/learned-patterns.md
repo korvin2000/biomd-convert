@@ -94,6 +94,24 @@ afterwards.
 Long-running commands: `npm run build` before `sh bench/run.sh` before `diff`/`l3`, always in that order.
 `bench/out/` is a generated directory and is not tracked.
 
+## A class that names one document is usually an instrument, not a rule
+
+Three of the five mechanisms in `CONVERTER-PROGRESS.md` §24 had this shape: a defect that appeared
+on **one** page, or on one page more than the others, and whose cause was a shared component
+treating that page differently.
+
+- `news` shipped its whole banner as content because it spells `width="760px"` where every other
+  page writes `760`, and the chrome fingerprint hashed the attribute verbatim.
+- `new_blackmore` lost two of seven article headings because those two sit under a newspaper
+  banner, and `followsImage` counted any block *containing* an image as a picture.
+- `news_2007`'s year bar was ten bracketed links because it sits one lane deeper than `news`'s, and
+  `navFrom` refused every bounded context where the spec forbids only two of them.
+
+The tell is **asymmetry between near-identical pages**. When two documents draw the same construct
+and only one converts correctly, diff the *inputs* to the shared component before writing a rule
+for the failing one — a rule written there would be a special case, and the general fix is usually
+smaller. Diffing the two sources at the point of divergence found all three in minutes.
+
 ## A symmetry argument is not evidence — grep the contracts first
 
 Three times in this campaign the same reasoning produced a real fix: *"this question is answered by evidence
