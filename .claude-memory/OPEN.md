@@ -19,9 +19,9 @@ from PROGRESS §21–§28 predates them.
 
 | rung | value |
 |---|---|
-| L0 | **434 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L0 | **438 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
 | L1 | **94.4 %** |
-| L2 | **275 findings — 152 converter-defect** · 64 ambiguous · 59 reference-inconsistency · 9 critical |
+| L2 | **275 findings — 147 converter-defect** · 64 ambiguous · 64 reference-inconsistency · 9 critical |
 | L3 | **70 findings**, identity 0, deterministic |
 | validator | **13 errors** (was 28). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice — once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
 
@@ -64,12 +64,14 @@ one instrument lie (19) and one missing group (9). `news` still holds 26 defects
 mechanism above 4 — it is the next document to enumerate by node path. `kiselev` (43 findings, 12
 defect) has never been looked at either.
 
-**Cheapest remaining instrument work, and it outranks the findings it closes:** `structdiff` has
-`homeOf` and a `.caption-echo` sub-class, but applies them only to orphan *insertions*, never to a
-property *deletion*. So `goya2`'s 7 `image.caption.missing` read as defects when the reference is
-duplicating the album title it already keeps in `column[0]` — the once-not-twice rule `CLAUDE.md` §5
-states. Same shape as §31.1. Probe also whether `eval/blocks.ts` reads a URL underscore
-(`abmv8_4.txt`) as an emphasis span; if it does, part of `emphasis.span` is an artefact.
+**Done (PROGRESS §32):** the caption echo. `selfEcho` asks the *owning* side whether it states the
+label twice, which is decidable where "where did the other side put it" is not. 5 of `goya2`'s 7
+moved to reference-inconsistency; **2 are deliberately left wrong** — their caption merges two
+sibling blocks (`**…Favourite Hits**` + `**Vol. 1**`) and joining them needs a concatenation search.
+Do not take those two for their own sake.
+
+**Still unprobed, cheap:** whether `eval/blocks.ts` reads a URL underscore (`abmv8_4.txt`) as an
+emphasis span. If it does, part of `emphasis.span` (24 instances, already downgraded) is an artefact.
 
 **Downgraded, do not take on rank alone:** `emphasis.span` (verdicts flip on identical evidence
 across documents; 17 of 24 already reference-inconsistency, and the 7 defects are one *different*

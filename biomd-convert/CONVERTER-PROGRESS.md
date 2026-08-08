@@ -4063,3 +4063,74 @@ checked whether `eval/blocks.ts` reads `abmv8_4.txt` as an emphasis span; if it 
 
 The §30 floor was 431 / 94.4 / 287 · 180 / 85. Of the 28-defect fall, **19 are the instrument
 telling the truth** and 9 are the converter improving; say which is which whenever this is quoted.
+
+## 32. The caption echo: asking the owning side instead of the other one (2026-08-08)
+
+§31.3 left this as the cheapest remaining instrument improvement, worth more than the seven findings
+it closes. It was, and the reason is in the shape of the question rather than in the count.
+
+### 32.1 `homeOf` asks the wrong side about a caption
+
+`homeOf` sub-classifies an orphan by "where did the *other* side put this text", which is the right
+question for a block and an ill-posed one for a figure label. A caption and the line it labels are
+routinely **both present and both correct** — the reference binds `caption: 1.000.000 Platinum` to a
+cover *and* keeps `**1.000.000 Platinum**` in the lane beside it. Asked of the other side, the
+produced document does hold those words, in that same lane paragraph, and the answer says nothing
+about whether anything was lost. `compareDirective` never asked at all, so every absent `caption:`
+was reported as content the converter dropped.
+
+The decidable question is asked of the **owning** side: *does this document say the words twice?*
+`CLAUDE.md` §5 rules on exactly that — a visible caption is emitted **once, not twice** — so the
+side that repeats is the side that moved, and `triage` reads the direction:
+
+| class | who repeats | verdict |
+|---|---|---|
+| `<d>.caption.missing.self-echo` | the reference | `reference-inconsistency` |
+| `<d>.caption.spurious.self-echo` | the converter | `converter-defect` |
+
+The second is the mirror of the `.caption-echo` rule already in `triage`, which has always called
+the converter's own duplication a defect "however attested the words are". Implementing only the
+first half would have been an instrument that excuses one side; both halves are contracted and the
+mirror is tested for firing.
+
+**Restricted to `caption` and `alt`** — the figure-label family §5 rules on. A `nav` `active` echoes
+its own item by construction and a `frame` `title` names a region rather than repeating a line, so
+neither is the same question and neither would have been a truthful hit.
+
+**False friend, tested for non-firing: a caption the converter failed to bind.** There the reference
+states the text *once*, in the caption, and the produced leaves it loose below the figure. The
+owning side does not echo, no suffix is added, and the finding stays the converter defect it is.
+That asymmetry is the entire reason for asking the owning side rather than the other one.
+
+### 32.2 Where it stops, and why that is the honest place
+
+`lines` is consulted as well as `paragraphs`, for the reason `homeOf` consults it — a block boundary
+on one side is a line ending on the other. `goya2` writes one lane as `**Historia de un Amor**` and
+`1999` in a single hard-break run, so the paragraph key carries the year and only the line key is
+the title. A label repeated as a *line* is repeated just as visibly.
+
+**Two of the seven are left wrong on purpose.** Those captions merge two sibling blocks —
+`**Francis Goya Plays His Favourite Hits**` and `**Vol. 1**` are one `caption: … vol. 1` — and
+neither index holds the joined key. Recognising it needs a concatenation search across siblings: a
+weaker claim about a smaller shape, and reaching for it here would have been chasing the last two
+findings rather than making the instrument truer. They remain `converter-defect` and are wrong about
+it. Recorded, not tuned away — the distinction invariant 2 exists to protect.
+
+### 32.3 Measured
+
+| rung | §31 floor | after |
+|---|---|---|
+| L0 | 434 tests, validator 13 | **438**, **13**, 0 FAILED, typecheck clean |
+| L1 | 94.4 % | **94.4 %** |
+| L2 | 275 · 152 defect · 59 ref-inc | **275 · 147 · 64** |
+| L3 | 70 | **70** |
+
+Output byte-identical; `eval/` is diagnostic-only and `convert-core` never imports it. Total
+findings unchanged by construction — this reclassifies, it does not remove. `goya2` 25 → 20 defect
+and **no other document moved**, which is the measurement that says the rule is narrow: five
+instances in one document, and the corpus contains no other caption either side states twice.
+
+**The running total is now three instrument corrections against one converter mechanism this
+campaign** (§31.1 `src`, §32 the echo, versus §31.2 the image row). "Check the instrument before the
+rule" is attested seven times. Both of these were found by adjudicating a *document* rather than a
+ranked class, which is now the method that has paid every time it has been tried.

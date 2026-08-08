@@ -41,10 +41,14 @@ disagree, the repository file wins and this index gets fixed.
 §21–§28 predates the current corpus** (PROGRESS §29.1). Four mechanisms landed since — a linked
 micro-image is now its glyph (§29.3), a synthesized column header gets the house name (§30.2), a
 flattened all-picture row is one `::: images` (§31.2), and `src` is adjudicated as a target rather
-than as layout (§31.1). Current floor: L0 **434 tests / 13 validator errors**, L1 **94.4**,
-L2 **275 · 152 defect**, L3 **70**. One attempt was built and reverted on its measurement (§30.1) —
-read it before touching the alignment family. Next is `segovia1`'s missing four-lane footer region,
-or `news`/`kiselev` document-first, which paid twice in §31.
+than as layout (§31.1), and a figure label the owning side also states as a block is an echo
+(§32.1). Current floor: L0 **438 tests / 13 validator errors**, L1 **94.4**, L2 **275 · 147 defect**,
+L3 **70**. One attempt was built and reverted on its measurement (§30.1) — read it before touching
+the alignment family. Next is `segovia1`'s missing four-lane footer region, or `news`/`kiselev`
+document-first, which has paid every time it has been tried.
+
+> **Three of the last four mechanisms were instrument corrections, not converter fixes.** Quote the
+> defect count with that split or it reads as the conversion improving when it did not.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
