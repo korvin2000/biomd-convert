@@ -27,18 +27,18 @@
     ]
   },
   "totals": {
-    "findings": 97,
-    "alignmentRows": 278
+    "findings": 95,
+    "alignmentRows": 279
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 48,
+      "instances": 47,
       "documents": 14
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 23,
+      "instances": 22,
       "documents": 9
     },
     {
@@ -829,7 +829,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/quote[90]/paragraph[0]",
-      "producedLine": 288,
+      "producedLine": 287,
       "referenceLine": 273,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
       "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
@@ -1277,29 +1277,6 @@
       }
     },
     {
-      "id": "5ab25a6a",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[61]/align[1]/break[3]",
-      "producedLine": 313,
-      "referenceLine": 293,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "167c7fa5",
       "doc": "news",
       "class": "layout.align.mismatch",
@@ -1307,7 +1284,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 333,
+      "producedLine": 328,
       "referenceLine": 310,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
@@ -1330,7 +1307,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 380,
+      "producedLine": 375,
       "referenceLine": 351,
       "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -1353,7 +1330,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[73]/align[1]/paragraph[0]",
-      "producedLine": 397,
+      "producedLine": 392,
       "referenceLine": 365,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -1454,23 +1431,6 @@
       }
     },
     {
-      "id": "a2fe4b39",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[61]/align[1]/break[3]",
-      "producedLine": 313,
-      "referenceLine": 293,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "frame",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
       "id": "e430aede",
       "doc": "news",
       "class": "layout.containment.mismatch",
@@ -1478,7 +1438,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 333,
+      "producedLine": 328,
       "referenceLine": 310,
       "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
       "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
@@ -1495,7 +1455,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 380,
+      "producedLine": 375,
       "referenceLine": 351,
       "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
       "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
@@ -1512,7 +1472,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[73]/align[1]/paragraph[0]",
-      "producedLine": 397,
+      "producedLine": 392,
       "referenceLine": 365,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -1609,7 +1569,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[7]/quote[0]/paragraph[0]",
-      "producedLine": 30,
+      "producedLine": 28,
       "referenceLine": 30,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот…",
       "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот…",
@@ -2638,6 +2598,19 @@
     {
       "doc": "kiselev",
       "producedLine": 259,
+      "referenceLine": 247,
+      "text": "",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "kiselev",
+      "producedLine": 261,
       "referenceLine": 248,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
       "producedAlignment": "right",
@@ -2819,7 +2792,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 224,
+      "producedLine": 223,
       "referenceLine": 211,
       "text": "No. 13 (303) 19 апреля 2002",
       "producedAlignment": "center",
@@ -2832,7 +2805,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 233,
+      "producedLine": 232,
       "referenceLine": 219,
       "text": "",
       "producedAlignment": "center",
@@ -2845,7 +2818,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 283,
+      "producedLine": 282,
       "referenceLine": 268,
       "text": "Александр НЕВЕРОВ",
       "producedAlignment": "right",
@@ -4548,10 +4521,10 @@
     },
     {
       "doc": "news",
-      "producedLine": 313,
+      "producedLine": 312,
       "referenceLine": 293,
       "text": "",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -4561,7 +4534,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 319,
+      "producedLine": 314,
       "referenceLine": 295,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "center",
@@ -4574,7 +4547,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 333,
+      "producedLine": 328,
       "referenceLine": 310,
       "text": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, комп…",
       "producedAlignment": "left",
@@ -4587,7 +4560,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 343,
+      "producedLine": 338,
       "referenceLine": 313,
       "text": "",
       "producedAlignment": "center",
@@ -4600,7 +4573,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 355,
+      "producedLine": 350,
       "referenceLine": 325,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
@@ -4613,7 +4586,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 367,
+      "producedLine": 362,
       "referenceLine": 336,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
@@ -4626,7 +4599,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 380,
+      "producedLine": 375,
       "referenceLine": 351,
       "text": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Моско…",
       "producedAlignment": "left",
@@ -4639,7 +4612,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 397,
+      "producedLine": 392,
       "referenceLine": 365,
       "text": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легенда…",
       "producedAlignment": "left",
@@ -4652,7 +4625,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 399,
+      "producedLine": 394,
       "referenceLine": 368,
       "text": "",
       "producedAlignment": "center",
@@ -4665,7 +4638,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 411,
+      "producedLine": 406,
       "referenceLine": 379,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
@@ -4678,7 +4651,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 428,
+      "producedLine": 423,
       "referenceLine": 394,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "center",
@@ -4782,7 +4755,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 30,
+      "producedLine": 28,
       "referenceLine": 30,
       "text": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойт…",
       "producedAlignment": "right",
@@ -4795,7 +4768,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 145,
+      "producedLine": 143,
       "referenceLine": 142,
       "text": "В.Маркушевич.",
       "producedAlignment": "right",
@@ -4808,7 +4781,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 147,
+      "producedLine": 145,
       "referenceLine": 144,
       "text": "Статья предоставлена автором.",
       "producedAlignment": "right",

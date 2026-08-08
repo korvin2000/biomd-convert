@@ -3088,3 +3088,201 @@ none, though its only source `<hr>` is the footer's and is correctly dropped.
 The mini-image → glyph map remains specified, attested in 10 of 22 references and
 unimplemented; `glyphs.ts` now holds `LINK_GLYPH` and `RULE_GLYPHS`, so it has a
 home and two neighbours.
+
+## 25. `break.missing` was five mechanisms, and one of them was a setext heading (2026-08-08)
+
+The widest class in the ledger — 10 instances, 6 documents, never examined —
+adjudicated instance by instance. It is not a class. It is five unrelated
+mechanisms sharing a name, which is §14.1's and §21.1's pattern for the third
+time. Two were worth building; two are not targets; one is measured and returned
+to the queue.
+
+| rung | §24 | after |
+|---|---|---|
+| L0 | 420 tests, 0 FAILED | **423 tests**, typecheck clean, 0 FAILED |
+| L1 | 93.0 | **93.1** |
+| L2 | 432 · 252 converter-defect | **429 · 250** |
+| L3 | 97, 10 critical | **95, 10 critical** |
+| validator | 28 errors | 28 |
+
+Per document, L2 converter-defects: `kiselev` 17 → **16** (total 56 → 53),
+`news` 46 → **45**, `new_blackmore` 8 → **7**. `pavlov_azancheev` 7 → **8**, and
+that one is a gain — see §25.1. L3: `news` 16 → **14**, no document higher.
+
+### 25.1 One "missing break" was a setext heading, and three parsers read it three ways
+
+`pavlov_azancheev`'s `break.moved` was not a break. The converter was emitting
+
+```
+М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963).\
+(Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).
+-----------------------------------------------------------------------------------------
+```
+
+— a **setext heading**, the only one in the corpus. `mdast-util-to-markdown`
+falls back to setext when a heading of depth < 3 contains a `break`, and
+`headingPhrasing` exists to guarantee it never does. Its docstring states the
+invariant correctly; the implementation folded only *top-level* children, and
+`dropEmphasis` runs afterwards and lifts a `strong`'s children back out. So a
+`<br>` inside the emphasis survived — and `<b>Title<br></b>subtitle` is how this
+era wrote a two-line title with only its first line bold.
+
+**Three readings of one line, which is what makes this a validity defect rather
+than a cosmetic one:** `src/eval/blocks.ts` has no setext case and reads the
+89-hyphen underline as a `thematicBreak`; `src/eval/facts.ts` *does* have one, so
+L1 and L2 disagreed about the same file; `biomd-ast/read()` passes the Markdown
+run through opaquely and warns about nothing; CommonMark makes it an `h2` that
+swallows the line above. `BioMD-Reference.md` §1 lists `#`…`######` and nothing
+else.
+
+`foldBreaks` recurses and copies containers rather than mutating them. It is
+scoped to headings by construction — `liftBreaks` stays the path everywhere
+else, where a break is meaning rather than line-fitting — and the contract
+asserts non-firing there.
+
+The fix cost `pavlov_azancheev` one L2 finding and that is the point: the
+phantom `break.moved` is replaced by `retyped.heading2-to-paragraph`, which is
+**true**. The reference writes that block as `::: align position: center` with a
+bold first line; the converter recovers a `##`. Open, unadjudicated, recorded
+here so it is not rediscovered as a break.
+
+It also gained `new_blackmore` two headings it had been losing to the same fold:
+L1 95.7 → 97.3, head axis 62.5 → 77.8. Nothing on the page suggested a
+connection; only the corpus run found it.
+
+### 25.2 A rule the author drew is a *line*, and it stays in its own block
+
+§24.3 accepted `* * *` and `• • •` on the invariant "the whole **block** and
+nothing else". `<br>` is how this era ended a line inside a block, so a rule
+drawn above a signature shares its `<p>` with the signature —
+`-------------------------<br>Олег Киселев: …` — and no block-level test can see
+it. The reader got `\-------------------------`.
+
+The unit is now the line. The five whole-block dinkuses are the degenerate case
+where every line is one, so the change subsumes §24.3 rather than competing with
+it. The link/image veto moved to the line for the same reason: the signature
+*is* such a line, and asking the question of the block suppressed the rule the
+question was not about.
+
+**Measured alone this made L3 worse** — `kiselev` 4 → 6 — because the recovered
+rule was hoisted out of the `::: align` its source `<p>` belongs to. The second
+half fixes that and is general: **a rule may join an alignment run and never open
+one.** It carries no text, so it cannot nominate an alignment; but `blocksFrom`
+already records the source element's alignment on *every* block that element
+produced, and `alignableRunMember` was discarding it with a blanket
+`thematicBreak` exclusion. `groupAlignedRuns` now emits a run with no
+text-carrying member bare, which is what keeps a lone dinkus at the root and is
+the tested false friend.
+
+The align half acts on its own: it closed `news`'s `break.containment` (a rule
+produced inside a `frame` the reference puts it outside) with no drawn rule
+involved — `news` L2 46 → 45, L3 16 → 14, L1 dirs axis 97.7 → 98.9.
+
+`break.containment` and `break.moved` are both closed, 3 instances, 3 documents.
+
+### 25.3 The three that are not targets, with the evidence
+
+**`authors` ×2 — no source attestation.** Its four biographies are one `<td>` of
+`<p class="t">` siblings; the only `<hr>` on the page is the footer's and is
+correctly dropped. The reference draws `---` after the first entry's press
+clipping and before the last entry, but **not** between the second and third,
+which are the same shape. The vertical gaps rank the three boundaries
+2 `<br>` + `&nbsp;` > 1 `<br>` + `&nbsp;` > margins alone, and the reference
+separates the largest and the *smallest* and skips the middle. No deterministic
+signal orders them that way. Verdict 3/4, not a target.
+
+**`news` ×4 — the reference is inconsistent about the same shape.** Measured by
+listing the 33 content rows of the entry grid against both files (probe in the
+session scratchpad): the author used spacer rows as the entry device but omitted
+them at 8 boundaries. The reference draws `---` at rows 20, 21, 24 and 28 and
+**not** at 18 and 19 — five sibling `<tr>`s of identical shape, `17→18→19→20→21`,
+separated at only the last two. Separating every content-row boundary would close
+4 and open 2; §3340's comment already records that separating every row
+over-emits by ten. Neither device is right and no third one is attested.
+Ambiguous — L4/author territory.
+
+Also measured, and worth keeping: the reference never draws a rule before a
+**framed** notice (rows 4, 6, 17, 23, 26, 33, 40, 43 — eight of eight). The
+frame is its own boundary. The converter already agrees.
+
+**`new_lagq2` ×1 — the blanket rule is killed by 8 counterexamples.** Its
+seventh album sits in a `colspan=2` row because it has no cover art, and the
+lane planner draws its entry separator only before a row with ≥2 populated
+lanes. "A single-populated-cell row after a laned row is an entry boundary" was
+probed corpus-wide (`DBG_SPAN`): the shape occurs **9 times in 5 documents** —
+`new_lendle2` ×4 (album titles that *introduce* the next laned row),
+`kiselev` ×2 (contact lines), `goya2` ×1 (an empty spacer), `news_2007` ×1 (the
+nav title), `new_lagq2` ×1. The references want a rule for **one** of the nine.
+Killed on measurement.
+
+### 25.4 The image-size calibration table, for whoever takes `image.size.value`
+
+21 instances, 4 documents, and it is **not** a threshold to sweep — the errors
+run in both directions and the reference's own labels overlap on width. Built
+from all 22 reference pairs (declared `<img width>` ↔ the token the reference
+chose):
+
+| token | n | min | median | max |
+|---|---:|---:|---:|---:|
+| `small` | 62 | 16 | 150 | 225 |
+| `medium` | 50 | 140 | 280 | 410 |
+| `large` | 10 | 369 | 418 | 420 |
+
+150 px is `small` in five documents (`goya2` ×17, `new_lagq2` ×6, `tarrega`,
+`new_blackmore`, `williams2`) and `medium` in `authors` ×3. `news` calls 225 px
+`small` and 269 px `medium`; `new_lendle2` calls 180 px `medium`. `media.ts`'s
+docstring cites "a 152 px portrait in a 422 px column at `small`" as the
+calibration, and the 22-document table contradicts it.
+
+A share-of-container rule inverts too: `goya2`'s 150 px covers sit in a ~196 px
+lane (share 0.77) and are `small`, while `authors`' 150 px portraits sit in the
+529 px column (share 0.28) and are `medium`. Whatever decides this is a **role**
+— catalogue thumbnail, portrait beside prose, full-width plate — not a width and
+not a ratio. Minor severity, no content or ordering consequence: deferred to the
+closing fine-tuning phase, with the table above so it is not re-derived.
+
+### 25.5 Killed hypotheses added
+
+- **`break.missing` is a class.** It is six documents' worth of five unrelated
+  mechanisms. Ranking by `instances × severity × generality` put it top of the
+  unexamined queue on exactly the property — 6 documents — that turned out to
+  mean "six different causes". Generality is a tiebreaker, not evidence that one
+  mechanism is present.
+- **A single-populated-cell row after a laned row is an entry boundary.** Nine
+  instances across five documents; the references want a rule for one.
+- **`image.size.value` is a threshold in `media.ts` to sweep** (§24.9's own
+  note). The reference's tokens overlap 140–225 px and the errors run both ways;
+  no monotone threshold and no container-share rule reproduces them.
+- **A rule may not sit in an `align`.** `alignableRunMember`'s blanket
+  `thematicBreak` exclusion conflated "cannot nominate an alignment" with
+  "cannot be inside one". `BioMD-Reference.md` §2 allows Markdown in `align`,
+  and the run-level guard (no text-carrying member ⇒ no wrapper) is what the
+  exclusion was actually protecting.
+
+### 25.6 State
+
+**Open, in order**, *measured* after both mechanisms:
+
+| rank | class | inst | docs | note |
+|---:|---|---:|---:|---|
+| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
+| 90 | `emphasis.span` | 34 | 10 | only **9** are converter-defect; widest reach in the ledger |
+| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
+| 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
+| 84 | `image.size.value` | 21 | 4 | **not a threshold** — §25.4 |
+| 84 | `align.missing` | 7 | 4 | `goya2`'s is reference-inconsistency (§24.5) |
+| 84 | `image.spurious` | 7 | 4 | |
+| 63 | `paragraph.containment` | 7 | 3 | |
+| 60 | `retyped.paragraph-to-lead` | 10 | 2 | new to the top ten; never examined |
+| 60 | `break.missing` | 10 | 6 | **decomposed — §25.3.** 7 of 10 are not targets |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+
+`break.missing`'s remaining reachable instances are `new_bach` ×1 (a `---` where
+the right rail folds into the flow) and `segovia` ×1; both unexamined.
+`retyped.paragraph-to-lead` — 10 instances, 2 documents — is the one class in the
+top ten nobody has looked at.
+
+Environment note: `sh bench/run.sh` requires Chromium (`visual: always`). A fresh
+machine needs `npx playwright install chromium` or every document reports "no
+output produced". This repository also carries a multi-pack-index that git 2.45
+cannot read; `git config core.multiPackIndex false` unblocks it locally.

@@ -34,24 +34,28 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 22 cross-grid recurrence | 2652–2753 | recurrence from a sibling grid `22.1:2662` · **one-row table killed again `22.2:2685`** · corpses `22.3:2717` · state + queue `22.4:2728` | **HOT** |
 | 23 author adjudications | 2755–2846 | **`williams2`'s wrapper was a reference mistake `23.1:2772`** · **the wrapped masthead is two rules `23.2:2791`** · read the fixture, not the summary `23.3:2834` | **HOT** |
 | 24 five mechanisms | 2848–3090 | **masthead = containment × typography `24.1:2866`** · **two lossy folds in `normalize` `24.2:2899`** · drawn rule + the byline it exposed `24.3:2918` · **two lying instruments: chrome fingerprint, `followsImage` `24.4:2945`** · **author ruling: a recovered centred `##` keeps no `::: align` `24.5:2981`** · corpses `24.6:3016` · **nav title + `nav` is legal in a `column` `24.8:3033`** · state + queue `24.9:3068` | **HOT** |
+| 25 `break.missing` decomposed | 3092–3288 | **a "missing break" that was a setext heading `25.1:3112`** · **a drawn rule is a line; a rule may join an align run `25.2:3153`** · **the three that are not targets, with the evidence `25.3:3183`** · **image-size calibration table — not a threshold `25.4:3218`** · corpses `25.5:3244` · state + queue `25.6:3262` | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§24 (2848–3090)**, **§23 (2755–2846)** and **§21 (2463–2650)** — the current state, the
+A session resuming cold needs **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and **§21 (2463–2650)** — the current state, the
 author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
 the thing that had to move instead.
 
-## Checkpoint — §24, measured 2026-08-08 over **22 documents**
+## Checkpoint — §25, measured 2026-08-08 over **22 documents**
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | 420 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **93.0 %**, clean share 13.6 % | `sh bench/run.sh` |
-| L2 | 432 findings — **252 converter-defect** · 93 ambiguous · 87 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
-| L3 | **97** findings (10 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| L0 | 423 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **93.1 %**, clean share 13.6 % | `sh bench/run.sh` |
+| L2 | 429 findings — **250 converter-defect** · 92 ambiguous · 87 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **95** findings (10 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
 | validator | 28 errors, all `table-header-empty` (§21.4) | `corpus run -c bench/biomd.config.json` |
+
+`bench/run.sh` needs Chromium — `npx playwright install chromium` on a fresh machine, or every
+document reports "no output produced". §24's figures were 420 / 93.0 / 432 · 252 / 97.
 
 §24 changed the chrome fingerprint, so `bench/corpus/corpus-profile.json` must be rebuilt with
 `corpus scan` after a fresh clone or a corpus change — otherwise the cached profile is from the

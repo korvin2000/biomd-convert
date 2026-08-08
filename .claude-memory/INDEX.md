@@ -36,12 +36,15 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** — see [OPEN.md](OPEN.md) §1. In short: two refinement iterations are done
-(PROGRESS §21–§24, **ten mechanisms** plus three author adjudications; L1 90.3 → 93.0, L2 745 → 432,
-L3 287 → 97). The wrapped masthead is closed, and `align.spurious` fell from 8 / 7 docs to 6 / 5
-without an alignment rule being touched. Next is **`break.missing`** (10 instances, **6 documents**
-— the widest class in the ledger and never examined). **Run `corpus scan` first on a fresh clone**
-— §24.4 changed the chrome fingerprint.
+**Next action** — see [OPEN.md](OPEN.md) §1. In short: three refinement iterations are done
+(PROGRESS §21–§25, **twelve mechanisms** plus three author adjudications; L1 90.3 → 93.1, L2 745 →
+429, L3 287 → 95). `break.missing` — the widest class — was examined and **decomposed into five
+unrelated mechanisms**, two built and three not targets (§25.3). Next is
+**`retyped.paragraph-to-lead`** (10 instances, 2 documents, never examined).
+
+**Three setup traps on a fresh clone:** `npx playwright install chromium` (L1 needs it), `corpus
+scan` (§24.4 changed the chrome fingerprint), and `git config core.multiPackIndex false` (this
+repo's midx is a version git 2.45 rejects).
 
 ---
 
