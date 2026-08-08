@@ -56,6 +56,6 @@ size: small
 ::: align
 position: center
 
-[&#9664;](/#/rechin3) [&#128904;](/#/rechin)
+[&#9664;](/#/rechin3) [&#9679;](/#/rechin)
 
 :::
