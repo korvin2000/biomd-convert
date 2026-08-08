@@ -1,5 +1,5 @@
 {
-  "overall": 0.9297870485323366,
+  "overall": 0.9269403041961911,
   "documents": [
     {
       "name": "authors",
@@ -1216,17 +1216,15 @@
         ]
       },
       "headings": {
-        "recall": 0.5555555555555556,
-        "precision": 0.7142857142857143,
-        "f1": 0.6250000000000001,
+        "recall": 0.7777777777777778,
+        "precision": 0.7777777777777778,
+        "f1": 0.7777777777777778,
         "expected": 9,
-        "actual": 7,
-        "matched": 5,
+        "actual": 9,
+        "matched": 7,
         "missing": [
           "1\tричи блэкмор ritchie",
-          "2\tblackmore blackmore s night",
-          "2\tричи блэкмор вcтречайте скоро буду",
-          "2\tгитарист тяжелого поведения"
+          "2\tblackmore blackmore s night"
         ]
       },
       "links": {
@@ -1270,7 +1268,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9573849760183205
+      "overall": 0.9726627537960983
     },
     {
       "name": "new_dyens",
@@ -1466,10 +1464,10 @@
     {
       "name": "new_karta",
       "text": {
-        "recall": 0.8270142180094787,
+        "recall": 0.8250591016548463,
         "precision": 0.8925831202046036,
-        "f1": 0.8585485854858549,
-        "expected": 422,
+        "f1": 0.8574938574938574,
+        "expected": 423,
         "actual": 391,
         "matched": 349,
         "missing": [
@@ -1503,11 +1501,11 @@
       },
       "images": {
         "recall": 1,
-        "precision": 1,
-        "f1": 1,
-        "expected": 1,
+        "precision": 0,
+        "f1": 0,
+        "expected": 0,
         "actual": 1,
-        "matched": 1,
+        "matched": 0,
         "missing": []
       },
       "directives": {
@@ -1961,7 +1959,7 @@
           ]
         }
       ],
-      "overall": 0.880248101465483
+      "overall": 0.7799316830678837
     },
     {
       "name": "new_kolpakov",
@@ -2124,21 +2122,20 @@
     {
       "name": "new_lendle2",
       "text": {
-        "recall": 0.9278846153846154,
-        "precision": 0.9530864197530864,
-        "f1": 0.9403166869671132,
+        "recall": 0.9831730769230769,
+        "precision": 0.9903147699757869,
+        "f1": 0.9867310012062726,
         "expected": 416,
-        "actual": 405,
-        "matched": 386,
+        "actual": 413,
+        "matched": 409,
         "missing": [
-          "вольфганг лендле дискография frame white",
-          "лендле дискография frame white variations",
-          "дискография frame white variations capricieuses",
-          "frame white variations capricieuses w",
-          "white variations capricieuses w lendle",
-          "capricieuses d apres paganini frame",
-          "d apres paganini frame white",
-          "apres paganini frame white curiosities"
+          "preludio en mi menor frame",
+          "en mi menor frame white",
+          "mi menor frame white heitor",
+          "menor frame white heitor villalobos",
+          "frame white heitor villalobos w",
+          "white heitor villalobos w lendle",
+          "federico moreno torroba madronos 9664"
         ]
       },
       "headings": {
@@ -2169,12 +2166,12 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8064516129032258,
-        "precision": 0.9615384615384616,
-        "f1": 0.8771929824561403,
+        "recall": 0.9354838709677419,
+        "precision": 0.9666666666666667,
+        "f1": 0.9508196721311476,
         "expected": 31,
-        "actual": 26,
-        "matched": 25,
+        "actual": 30,
+        "matched": 29,
         "missing": [
           "frame",
           "align"
@@ -2192,7 +2189,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9607233952448389
+      "overall": 0.9820103584840875
     },
     {
       "name": "new_rechin4",
@@ -2324,10 +2321,10 @@
       },
       "directives": {
         "recall": 0.9772727272727273,
-        "precision": 0.9772727272727273,
-        "f1": 0.9772727272727273,
+        "precision": 1,
+        "f1": 0.9885057471264368,
         "expected": 44,
-        "actual": 44,
+        "actual": 43,
         "matched": 43,
         "missing": [
           "lead"
@@ -2345,7 +2342,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.8781052383250143
+      "overall": 0.8792285403103852
     },
     {
       "name": "news_2007",
