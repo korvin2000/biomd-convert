@@ -3695,3 +3695,149 @@ All movement is `new_karta`: L1 88.0 → **78.0** (img axis 100.0 → **0.0**), 
 an image at that point, so the `::: image` the converter still emits is now a
 true `image.spurious`, and the img axis has nothing to agree with. **This is the
 new floor**; the pre-correction 93.2 / 413 · 238 is not comparable.
+
+---
+
+## 29. A reference revision that closed two ceilings, and the linked-icon mechanism (2026-08-08)
+
+### 29.1 `06eeafb` changed 21 of 22 references, `BioMD-Reference.md`, and added `/new_rules.md`
+
+The author revised the corpus wholesale and wrote down a set of house conventions. **Baseline
+before attribution** applied literally here: the revision moves every rung with no code change at
+all, so every number in §21–§28 is measured against references that no longer exist.
+
+*Measured, no code change, immediately after `06eeafb`:*
+
+| rung | §27/§28 floor | after the revision |
+|---|---|---|
+| L1 | 92.7 % | **93.0 %** |
+| L2 | 417 findings · 241 defect · 13 crit | **335 · 192 · 13** |
+| L3 | 92 | **85** |
+| L0 | 424 tests, 28 validator errors | 424 tests, 28 validator errors |
+
+**Two recorded ceilings closed themselves.** `retyped.paragraph-to-lead` (10 instances, off the
+queue on the §26.2 author ruling) is gone because the revision deleted all eight `::: lead` blocks
+from `new_rechin4` — the ruling is now *in* the corpus. `new_blackmore`'s masthead split point
+(§24.5, recorded as reference-inconsistency after a browser measurement) was corrected to the
+boundary the source draws, so the converter's split is now the reference's. The §24.5 ruling that a
+recovered centred section label gets a bare `##` is likewise now applied in `goya2`, `new_bach`,
+`news_2007` and `segovia1`, which removes the shadow `align.missing`/`heading.containment` pairs
+those documents carried.
+
+This is the second time (after §28) that an author correction has voided a downgrade. The lesson is
+narrower than "re-check everything": **grep the code comments and `OPEN.md` for the documents that
+changed**, because a guard's named false friend can disappear with the reference that motivated it.
+
+`new_rules.md` also states rules the converter does not yet implement — a table-header label
+vocabulary, `==` for long quoted sentences, `_` as a synonym for `*`, no de-hyphenation inside URLs,
+merging consecutive same-alignment `::: align`, dropping an empty trailing table column, and
+`::: signature` rather than `::: nav` for a source list. `BioMD-Reference.md` gained `_` as an
+italic spelling. None of these were taken this iteration; the largest, the header vocabulary, is
+the recorded next step.
+
+### 29.2 Two cheap probes that decided the iteration
+
+**`table.header.cell` — 43 instances, 7 documents, the largest class in the ledger and 0 % defect.**
+Probed three instances rather than surveying. Two facts came out of it. First, the converter is not
+losing a source header: `new_karta`'s source contains no `Композиция`, no `Формат` and no
+`Ноты (TAB)` anywhere, so the *old* references invented those labels exactly as the new ones invent
+`Название`/`Аудиоформат`. All 43 are the synthesized path (`synthesizeHeader`), which means nothing
+attested has to be rewritten — the §16.3 objection to the whole class dissolves. Second, and against
+expectation, **the class fixes no validator error**: the 28 `table-header-empty` errors are
+elsewhere. That killed the priority-2 justification and dropped the candidate to priority 4/5/6.
+
+*A measurement error worth recording, because it cost a wrong statement.* `node dist/cli/index.js
+validate <file>` resolves a laxer profile than the bench config and reports **0 errors** on a file
+that `corpus run` reports one error for. The trustworthy figure is the `errors=` column in
+`bench/last-run.txt`. Total across the corpus: 28, before and after this iteration.
+
+**`image.spurious` — 8 instances, 5 documents, 100 % converter-defect.** Every instance is a
+page-footer navigation icon shipped as `::: image src: ../main/back.gif`, which renders as a broken
+image (no asset tree exists) and asserts that a UI glyph is a photograph. Priority 2 and 4 against
+the header class's 4/5/6, so §1's lexicographic ordering chose it even though it is a fifth the
+size. Direct targets were checked first and **nothing was lost** — a dropped icon leaves an empty
+`<a>` whose href becomes the label, which is why `barrios` already produced
+`[/#/barrios1](/#/barrios1)`, the very form the revised reference adopts.
+
+### 29.3 The mechanism: `dropDecorative` and `runImages` disagreed about what an image is
+
+`isDecorative` had classified `../main/back.gif` as furniture the whole time. `dropDecorative`
+iterates a run's **direct children**; `runImages` **descends through `IMAGE_WRAPPERS`, which
+includes `<a>`**. A navigation icon is always inside the link it operates, so the filter never saw
+it and the grouper always did — one `::: image` per icon, or `::: images columns: 2` for a pair.
+
+The tell, and the reason a name-based hypothesis would have been wrong: `back.gif` **is** in
+`isDecorative`'s name regex and `previous.gif` **is not**, and the two produced identical wrong
+output. When a guard's presence and absence give the same answer, the guard is not the deciding
+code. One instrumented run (`DBG_ICON` in `imageFrom`, printing the call stack) located it in
+minutes; the stack read `imagesFrom ← flushInline`, which is downstream of the filter.
+
+Fifth containment-vs-filter mismatch of the campaign, and the third to be found by instrumenting
+rather than reading.
+
+**What was built.** `ICON_GLYPHS` in `src/convert-core/glyphs.ts` — the guide's 29 entries, keyed on
+the **asset stem**, lower-cased, without directory or extension. The extension cannot be part of the
+key: the guide spells the score icon `score3.gif` and the only page that uses it writes `score3.jpg`.
+`isUiIcon` in `media.ts` names nothing and asks three questions — containment in an `<a href>`,
+icon geometry (≤ 32 px both dimensions, the guide's own figure), and membership in the table.
+`runImages` skips a UI icon; `inlineFrom`'s `img` case emits the glyph, after which the existing
+`<a>` case builds `[glyph](href)` with no further change.
+
+**The label rule is unanimous in the corpus and was read off the data, not chosen:** `alt` when the
+author wrote one, else the mapped glyph, else the pre-existing href fallback. Exactly two of the
+eight icons carry `alt` (`new_geyzel04`'s pair, labelled `Главы 8-9` and `Владимир Вавилов`) and
+their reference uses that text; the other six carry none and their references draw glyphs.
+
+**Recurrence is not required here, and the contract says so.** A pager is drawn once per page —
+`new_karta` has exactly one arrow — so `CLAUDE.md` §5's recurrence requirement, which is a law for
+shapes repeating *within* a document, would refuse every true positive. The recurring evidence is
+cross-document (one shared asset across the site) and is precisely what the table records. The
+named false friend is a linked thumbnail: the size cap does not separate it (a 32 px thumbnail is
+legal) but table membership does, since a thumbnail is article-specific and therefore never a shared
+asset. `../main/km.gif` is the corpus's near-miss — linked, icon-ish, captioned, unlisted — and a
+contract asserts it keeps its `::: image`.
+
+**The ledger verb is `removed`, not `mergedInto`.** Image conservation accounts for source images
+only through `ledger.removals()`, so `mergedInto` left two `new_geyzel04` icons unaccounted and the
+document flipped `ok` → `REVIEW` with its printed counters unchanged. Conservation was right and the
+first verb was wrong: the *asset* does leave the output. The `<a>` is not removed, so its target is
+still required to appear — which keeps target conservation honest.
+
+### 29.4 Measured outcome
+
+| rung | after `06eeafb` | after `55e7a8c` |
+|---|---|---|
+| L0 | 424 tests, 28 validator errors, clean share 13.6 % | **429** tests, **28**, **13.6 %**, 0 FAILED |
+| L1 | 93.0 % | **94.3 %** |
+| L2 | 335 · 192 defect · 13 crit | **322 · 180 · 9** |
+| L3 | 85 | **85** |
+
+`image.spurious`: **8 instances / 5 documents → 0. Closed.** Per document, L1:
+`new_geyzel04` 88.3 → 96.7 · `new_rechin4` 88.6 → 96.2 · `new_karta` 78.1 → 88.5 ·
+`new_lendle2` 98.2 → 99.3 · `segovia1` 97.1 → 98.0. Conservation text recall rose on three
+regression documents (`barrios` 94.9 → 95.5, `segovia` 98.0 → 98.3, `tarrega` 94.3 → 94.6).
+L3 is flat because an inline link label carries no geometry.
+
+**The tradeoff, stated rather than buried.** `barrios`, `tarrega` and `williams2` each gain two L2
+findings with **flat defect counts**. All three are one sub-case — an icon standing beside visible
+text, where the revised reference either substitutes the raw route (`[/#/barrios1](/#/barrios1)`) or
+drops the icon (`[К началу биографии]` for a source that draws `◀` before those words). The guide
+ranks a known mapping above both and puts a raw URL label **last** in its fallback ladder, and `▶`
+renders better than a route the reader cannot use. Classified `visual-improvement` under skill §2.
+Restricting the rule to standalone icons would have kept those three matching, at the cost of a rule
+that treats one asset two ways depending on the text beside it — a special case in a general rule's
+clothing. Two of the six new findings are an instrument artefact: `link.label.content.empty` reports
+`critical` about a label that is `▶`, which is not empty.
+
+### 29.5 What did not get built, and why
+
+- **The unlinked half of the icon map.** `score3` ×10 in `tarrega` sits *inside table cells*, and
+  `tarrega`'s two PDF tables already fail to plan (they ship as bulleted lists). Whether the icon is
+  what blocks the planner is an open edge worth probing **before** the glyph is emitted, because a
+  table recovered is worth more than ten characters. `smile` ×1 in `news_2007` collides with an
+  existing contract that deliberately keeps squarish 15 px emoticons as content.
+- **Two guide/reference divergences**, both decided for the guide (`CLAUDE.md` §2.3 ranks
+  `mini_images_to_md_guide.md` above `fixtures/`, and the guide states known mapping has highest
+  priority), both worth an author confirmation because they are one character each:
+  `h2.gif` → guide `&#9679;` ● vs `new_rechin4`'s `&#128904;`; `smile.gif` → guide `&#9787;` ☻ vs
+  `news_2007`'s `&#128578;` 🙂.

@@ -35,6 +35,9 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | Same prominence across two masthead lines always means two `#` | true across sibling *blocks*, false inside one block: a `<br>` between lines set the same way is a hand-wrap to fit a 458 px cell. `segovia1` and `new_geyzel04` join theirs. The first implementation regressed both plus `goya2` in one run | 24.1 |
 | A masthead written as `<center>` is reachable by heading recovery | `normalize` unwraps `<center>` before recovery runs, so the lines have no box to be lines of. All 22 corpus mastheads use a `<div>`; recorded as a limit, not chased | 24.6 |
 | A guard that fires on nothing should be removed | measure **both paths** first. The masthead-box exclusion is inert measured and load-bearing unmeasured, where a folded `<font size>` is the only evidence there is | 24.6 |
+| `isDecorative`'s filename regex is why nav arrows shipped as pictures | `back.gif` **is** in the regex, `previous.gif` **is not**, and both produced identical wrong output. When a guard's presence and absence give the same answer the guard is not the deciding code — `dropDecorative` reads direct children, `runImages` descends through `<a>`, and an icon is always inside its link | 29.3 |
+| `table.header.cell` is worth taking because it closes the 28 validator errors | it closes none of them. The 28 are elsewhere, and `validate <file>` on its own reports **0** because it resolves a laxer profile than the bench config — read `errors=` in `bench/last-run.txt` | 29.2 |
+| The converter is dropping a source header row on `new_karta` | the source has no header text at all: no `Композиция`, no `Формат`, no `Ноты (TAB)`. The old references invented them exactly as the new ones invent `Название`/`Аудиоформат` | 29.2 |
 
 ## 2. Instrument hypotheses — your own differ/renderer/judge is a first-class suspect
 

@@ -38,10 +38,11 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 26 `lead` ruled a ceiling | 3290–3439 | the class is the whole unbuilt construct `26.1:3307` · **author ruling: `lead` is aesthetic, not structural `26.2:3324`** · **what was measured — typography, length, position `26.3:3343`** · corpses `26.4:3391` · **state + "rank measures what an instrument noticed" `26.5:3413`** | **HOT** |
 | 27 triage first; the tinted panel | 3467–3615 | **the triage table — 4 classes downgraded `27.1:3486`** · **a dead unitless border; occupancy not recurrence `27.2:3530`** · **the length floor, measured and reverted `27.3:3560`** · corpses `27.4:3576` · **state + go document-first on `goya2`/`news` `27.5:3592`** | **HOT** |
 | 28 `new_karta` corrected; re-baseline | 3617–3697 | **the ruling voids §27.1's `image.spurious` downgrade `28.1:3652`** · a glyph always reads unattested `28.2:3672` · **new floor 424 / 92.7 / 417 · 241 / 92 `28.3:3684`** | **HOT** |
+| 29 revision re-baseline; the linked icon | 3701–3843 | **`06eeafb` moved every rung with no code change; two ceilings closed themselves `29.1:3703`** · **two cheap probes chose the smaller class on priority, not size `29.2:3738`** · **`dropDecorative` vs `runImages` — direct children vs descend-through-`<a>` `29.3:3762`** · **new floor 429 / 94.3 / 322 · 180 / 85 `29.4:3806`** · what was held back, and two guide-vs-reference glyphs to confirm `29.5:3832` | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§28 (3617–3697)**, **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
+A session resuming cold needs **§29 (3701–3843)**, **§28 (3617–3697)**, **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
 **§21 (2463–2650)** — the current state, the author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was

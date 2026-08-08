@@ -3,28 +3,37 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after PROGRESS §28. Facts marked
-*measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
+Last touched **2026-08-08**, after the `new_rules.md` reference revision (commit `06eeafb`) and the
+icon→glyph mechanism (`55e7a8c`). Facts marked *measured* were taken then; facts marked *recorded*
+are quoted and have not been re-measured.
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. **One mechanism accepted this iteration** (PROGRESS
-§27) after cheap triage downgraded four of the five top-ranked classes. All four rungs improved;
-`new_lendle2` is the only document that moved.
+Reference-guided refinement, 22 documents. **The author revised 21 of 22 references plus
+`BioMD-Reference.md` in `06eeafb`, and added `/new_rules.md`.** That moved every rung with no code
+change; the numbers below are re-baselined against the revised references, and any figure quoted
+from PROGRESS §21–§28 predates them.
 
-**Current state, *measured* 2026-08-08 (PROGRESS §27):**
+**Current state, *measured* 2026-08-08, after `55e7a8c`:**
 
 | rung | value |
 |---|---|
-| L0 | **424 tests**, typecheck clean, 0 FAILED |
-| L1 | **92.7 %**, clean share 13.6 % |
-| L2 | **417 findings — 241 converter-defect** · 92 ambiguous · 84 reference-inconsistency |
-| L3 | **92 findings** (11 critical), identity 0, deterministic |
-| validator | 28 errors, all `table-header-empty` — PROGRESS §21.4 |
+| L0 | **429 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L1 | **94.3 %** |
+| L2 | **322 findings — 180 converter-defect** · 66 ambiguous · 76 reference-inconsistency · 9 critical |
+| L3 | **85 findings** (11 critical), identity 0, deterministic |
+| validator | **28 errors** — unchanged. Reachable only through `corpus run`'s `errors=` column: `validate <file>` on its own uses a laxer profile and reports **0**, which is how a session mis-stated this once |
 
 That is the floor. Nothing accepted from here may regress it.
+
+**Re-baselining, for attribution.** The reference revision alone (no code change) took L1 92.7 → 93.0,
+L2 417 → 335 findings / 241 → 192 defect, L3 92 → 85. The icon mechanism took it from there to the
+table above. Several §21–§28 ceilings were **corrected by the revision** and closed themselves:
+`retyped.paragraph-to-lead` (the 8 `::: lead` blocks are gone from `new_rechin4`), `new_blackmore`'s
+masthead split point (OPEN §3.2), and the centred-section-label ruling of §24.5 now applied in
+`goya2`, `new_bach`, `news_2007` and `segovia1`.
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) — run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
@@ -32,24 +41,31 @@ That is the floor. Nothing accepted from here may regress it.
 > it. **`corpus scan` is still required after a fresh clone** — §24.4 changed the chrome
 > fingerprint and a cached `bench/corpus/corpus-profile.json` from before it makes `news` regress.
 
-**Next: `image.spurious` — 7 instances, 4 documents, unblocked by the §28 author correction.**
-`new_karta` was the one counterexample that made §27.1 downgrade it; corrected, the corpus is
-consistent that an icon-sized linked gif is never a picture, and the label rule is deterministic
-(glyph when the icon has no `alt`, the `alt` text when it has one, merged when an adjacent link
-shares the href). `mini_images_to_md_guide.md` is normative and `glyphs.ts` is the home. Read
-PROGRESS §28.1 before starting; §28.2 names two things that will not close.
+**`image.spurious` is closed** (`55e7a8c`, 8 instances / 5 documents → 0). See §2.0.
 
-Then, if that stalls: **go document-first, not class-first.** `news` (45 defects) and `goya2` (44) are a third of
-the whole ledger and neither has ever been attacked *as a document*. Enumerate one of them by node
-path, not by class, and look for the shared container defect — that is exactly how §27.2 found
-`new_lendle2`'s missing frame, which took it from third-worst to mid-table in one change.
+**Next: the `new_rules.md` table-header vocabulary — `table.header.cell`, 43 instances, 7 documents.**
+The largest class in the ledger and the widest reach of anything in it. The triage says
+`reference-inconsistency` on all 43 and *that verdict is now stale*: it rests on the header text
+being unattested, which is true — the probe confirmed the source contains no `Композиция`,
+`Формат` or `Ноты (TAB)` anywhere, so the old references invented those too — but `new_rules.md`
+§§11–15 supplies the vocabulary as a house convention, which makes it documented lexical data
+rather than an editorial invention. The converter already synthesizes headers
+(`synthesizeHeader`, `structure.ts`), emitting `""` for the title column and `TAB`/`MIDI`/`🔗` for
+the rest; the change is a label table plus two lookups at one decision point. Priority 4/5/6, not
+1–3 — **it fixes no validator error**: the 28 are elsewhere. Effort low, P(fix) high, regression
+risk low.
 
-**Downgraded in §27.1, do not take on rank alone:** `emphasis.span` (verdicts flip on identical
-evidence across documents; 25 of 34 already reference-inconsistency) · `image.spurious` (five
-different reference treatments of one source shape — **voided by §28, now the top candidate**) ·
-`align.missing`,
-`retyped.paragraph-to-align`, `paragraph.containment` (**shadow classes** — they fire at the same
-node paths as the missing container that causes them, and outrank their own cause).
+Then, if that stalls: **go document-first, not class-first.** `news` (45 defects) and `goya2` (34) are
+a quarter of the whole ledger and neither has ever been attacked *as a document*. Enumerate one of
+them by node path, not by class, and look for the shared container defect — that is exactly how
+§27.2 found `new_lendle2`'s missing frame.
+
+**Downgraded, do not take on rank alone:** `emphasis.span` (verdicts flip on identical evidence
+across documents; 17 of 24 already reference-inconsistency, and the 7 defects are one *different*
+mechanism — `news` keeps only the first `strong` run in a paragraph) · `retyped.paragraph-to-align`
+(now rank 1 at 8 docs, but a **shadow class**: it fires at the same node paths as the missing
+container that causes it) · `align.spurious`, `paragraph.containment` (same) ·
+`retyped.paragraph-to-list` (killed on measurement, §15.2/15.3 — shape overlap is total).
 
 Off the queue entirely: `retyped.paragraph-to-lead` (author ruling §26.2), `image.size.value`
 (§25.4), 7 of `break.missing`'s 10 (§25.3).
@@ -63,7 +79,27 @@ Off the queue entirely: `retyped.paragraph-to-lead` (author ruling §26.2), `ima
 
 ## 2. What this iteration settled
 
-### 2.0 A panel drawn with a background tint is a frame
+### 2.0 A linked micro-image is a control, not a picture
+
+`dropDecorative` inspects a run's **direct children**; `runImages` **descends through `<a>`**. A nav
+arrow is always inside the link it operates, so it was invisible to the filter and visible to the
+grouper, and five footers shipped as `::: image src: ../main/back.gif` — a broken image asserting
+that a UI glyph is a photograph. `isDecorative` had said `true` about it the whole time. Fifth
+containment-vs-filter mismatch of the campaign; the tell was that `previous.gif` (not in the old
+name regex) and `back.gif` (in it) produced *identical* wrong output, which means the regex was
+never the deciding code.
+
+`ICON_GLYPHS` in `glyphs.ts` now carries the guide's 29 entries, keyed on the **asset stem** — the
+guide spells the score icon `score3.gif` and the page that uses it writes `score3.jpg`, so the
+extension cannot be part of the key. Label rule, unanimous in the corpus: `alt` when the author
+wrote one (2 icons), else the mapped glyph (6), else the pre-existing href fallback. Restricted to
+**linked** icons on purpose — see §2.4 for the unlinked half.
+
+Two guide/reference divergences, both decided for the guide (`CLAUDE.md` §2.3 ranks it above
+`fixtures/`), both worth an author confirmation: `h2.gif` → guide `&#9679;` ● vs `new_rechin4`'s
+`&#128904;`; `smile.gif` → guide `&#9787;` ☻ vs `news_2007`'s `&#128578;` 🙂.
+
+### 2.1 A panel drawn with a background tint is a frame
 
 `new_lendle2` writes `border: 1 solid #D5A96F` on five album panels — **unitless**, so Chromium
 drops the shorthand and computes `border-style: none`. The tint (`rgb(252,243,216)` on the page's
@@ -74,7 +110,7 @@ are `colspan="2"` and own their row. Recurrence would invert the answer. The fal
 *ahead* of the `border-style: none` early return — the pre-filter trap, hit twice now. One missing
 frame had been producing 18 defects across five classes. PROGRESS §27.2.
 
-### 2.1 A heading is one line — at every depth
+### 2.2 A heading is one line — at every depth
 
 `headingPhrasing` folded only top-level `break`s, and `dropEmphasis` runs after it and lifts a
 `strong`'s children back out — so `<b>Title<br></b>subtitle` produced the corpus's one **setext
@@ -82,7 +118,7 @@ heading**. `eval/blocks.ts` read the 89-hyphen underline as a thematic break, `e
 as a heading, `read()` warned about nothing, CommonMark made it an `h2` swallowing the line above.
 `foldBreaks` recurses. Fifth instrument-shaped defect of the campaign. PROGRESS §25.1.
 
-### 2.2 A drawn rule is a line, and a rule may join an alignment run
+### 2.3 A drawn rule is a line, and a rule may join an alignment run
 
 §24.3's `* * *` rule keyed on "the whole *block*"; `<br>` is how this era ended a line inside a
 block, so `kiselev`'s `-------------------------<br>Олег Киселев: …` was unreachable and shipped as
@@ -92,12 +128,23 @@ records its source element's alignment on it, and the blanket exclusion in `alig
 hoisted it out of the block it divides. It may now join a run and never open one; a run with no
 text-carrying member is emitted bare. PROGRESS §25.2.
 
-### 2.3 Still open, unchanged: mini-image → glyph
+### 2.4 Still open: the *unlinked* half of the icon map
 
-`mini_images_to_md_guide.md` defines a 29-entry known-icon map; `src/` implements none of it. The
-references use numeric character references in 10 of 22 documents. `glyphs.ts` holds `LINK_GLYPH`
-and `RULE_GLYPHS`, so the map has a home and two neighbours. One divergence to settle: the guide
-maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
+`isUiIcon` requires link containment, so an unlinked known icon is still left to `isDecorative`,
+which drops it. Two shapes remain, and they were held back deliberately because their risk differs
+from the linked case:
+
+- **`score3` ×10, `tarrega`, 32×14, inside table cells.** Emitting `♫` there changes what the cell
+  *contains*, and `tarrega`'s two PDF tables already fail to plan (they ship as bulleted lists —
+  `retyped.list-to-table` ×2, and L1 shape 33.3 %). Whether the icon is what blocks the planner is
+  an untested edge in the graph: **`M1c ? tarrega table collapse`**. Probe that before writing
+  anything, because if it *is* the cause, the table fix is worth far more than the glyph.
+- **`smile` ×1, `news_2007`, 15×15.** `isDecorative` deliberately keeps squarish 15 px emoticons as
+  content, and a contract in `recovery.test.ts` asserts it — but the produced `news_2007` has no
+  smiley at all and the reference has `&#128578;`. One instance; check the contract before touching.
+
+The `&#9658;`/`&#9654;` divergence recorded here previously is **settled**: `06eeafb` changed
+`new_bach` and `new_karta` to `&#9654;`, agreeing with the guide.
 
 ---
 
@@ -120,19 +167,20 @@ maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
    measurements that rule out typography, length and position are in PROGRESS §26.3, so do not
    re-derive them.
 
-## 4. Open defect classes — *measured* 2026-08-08 over 22 documents
+## 4. Open defect classes — *measured* 2026-08-08 over 22 documents, after `55e7a8c`
 
-| rank | class | inst | docs | note |
-|---:|---|---:|---:|---|
-| 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on a hook design (PROGRESS §15.2); 7 are `kiselev` |
-| 90 | `emphasis.span` | 34 | **10** | **downgraded §27.1** — verdicts flip on identical evidence |
-| 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed **twice** |
-| 84 | `image.size.value` | 21 | 4 | **not a threshold** — table in PROGRESS §25.4 |
-| 84 | `image.spurious` | 7 | 4 | **top candidate** — §27.1's downgrade voided by the §28 correction |
-| 84 | `align.missing` | 4 | 3 | **shadow class** §27.1; was 7/4 |
-| ~~60~~ | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue** — author ruling §26.2, visual-only both ways |
-| 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |
-| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+| rank | class | inst | defect | docs | note |
+|---:|---|---:|---:|---:|---|
+| — | `table.header.cell` | **43** | 0 | **7** | **the chosen next step.** Triage verdict stale — see §1 |
+| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **shadow class** — fires where the missing container does |
+| 132 | `retyped.paragraph-to-list` | 11 | 11 | 4 | killed on measurement §15.2/§15.3 — shape overlap total |
+| 72 | `align.spurious` | 6 | 6 | 4 | 3 are the one-row media table §22.2 killed **twice** |
+| 57 | `image.src.value` | 19 | 19 | 1 | all `goya2` — mechanical, single-document |
+| 54 | `retyped.align-to-paragraph` | 6 | 6 | 3 | shadow of the same container family |
+| 42 | `emphasis.span` | 24 | 7 | 6 | downgraded — the 7 defects are a *different* mechanism |
+| 33 | `table.cell.content.edited` | 33 | 0 | 2 | not a target |
+| ~~—~~ | ~~`image.spurious`~~ | ~~8~~ | — | ~~5~~ | **closed** by `55e7a8c` |
+| ~~—~~ | ~~`retyped.paragraph-to-lead`~~ | ~~10~~ | — | ~~2~~ | **closed** — `06eeafb` removed the `::: lead` blocks |
 
 Also carried: `pavlov_azancheev`'s `retyped.heading2-to-paragraph` at `/align[6]/paragraph[0]` is
 new and **unadjudicated** — the reference writes the article title as a centred bold paragraph, the
@@ -142,6 +190,10 @@ is the weakest document at L1 67.9, and PROGRESS §22.2 explains why that is a c
 
 ## 5. Instrument debt — what to distrust, in order
 
+0. **`link.label.content.empty` fires on labels that are not empty.** It reports `critical` when the
+   produced label is `▶` and the reference's is a raw route — 2 instances, `barrios` and `tarrega`,
+   both after `55e7a8c`. The class name states a condition the finding does not meet, and a
+   severity nobody has checked. Fix the class, not the converter.
 1. **`src/eval/blocks.ts` has no setext case and `src/eval/facts.ts` does**, so L1 and L2 disagreed
    about the same file until §25.1 removed the only setext heading. The converter no longer emits
    one, but the L2 blind spot is still there and would misread any that appeared.

@@ -36,12 +36,14 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** — see [OPEN.md](OPEN.md) §1. In short: three refinement iterations are done
-(PROGRESS §21–§26, **twelve mechanisms** plus four author adjudications; L1 90.3 → 93.1, L2 745 →
-429, L3 287 → 95). `break.missing` was **decomposed into five unrelated mechanisms**, two built and
-three not targets (§25.3); `retyped.paragraph-to-lead` is **off the queue** on an author ruling —
-`lead` is aesthetic and a discrepancy either way is not a defect (§26.2). Next is **`emphasis.span`**
-(34 instances / 10 documents, but only 9 are converter-defect — confirm that split first).
+**Next action** — see [OPEN.md](OPEN.md) §1. In short: the author revised **21 of 22 references,
+`BioMD-Reference.md`, and added `/new_rules.md`** in `06eeafb`, so **every number in PROGRESS
+§21–§28 predates the current corpus** (PROGRESS §29.1). Re-baselined and one mechanism accepted:
+L0 429 tests / 28 validator errors, L1 **94.3**, L2 **322 · 180 defect**, L3 **85**.
+`image.spurious` is closed — a linked micro-image is now its glyph (§29.3). Next is the
+**`new_rules.md` table-header vocabulary** (`table.header.cell`, 43 instances / 7 documents, the
+widest reach in the ledger); its `reference-inconsistency` verdict is stale, and the reason is in
+OPEN.md §1.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
@@ -68,7 +70,8 @@ repo's midx is a version git 2.45 rejects).
 | the iteration procedure | `.claude/skills/refine-biomd-converter/SKILL.md` | cheap |
 | harness lessons that cost hours (debug probes, `/dev/null` on Git Bash, NullMeasurer) | `.claude/skills/refine-biomd-converter/learned-patterns.md` | cheap |
 | the human quality record (Russian, per page) | `analyze/analyze.md` (614 ln) + `analyze/design.png` | grep by page name |
-| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` — **specified, attested, not implemented**; see OPEN.md §2.4 | cheap |
+| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` — normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4 | cheap |
+| the author's house conventions, newest ground truth | `/new_rules.md` (repo root) — mostly **not yet implemented**; inventory in PROGRESS §29.1 | cheap |
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` — advisory, possibly stale | grep |
 | history, superseded | `CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md` | avoid |
 
