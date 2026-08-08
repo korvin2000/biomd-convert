@@ -663,6 +663,30 @@ describe("alignment inside a bounded container", () => {
       expect(out).not.toContain("::: align");
     });
   });
+
+  it("keeps a drawn rule inside the aligned block it was drawn in", async () => {
+    // `kiselev` ends with one right-set `<p>` holding a rule and the signature
+    // it divides. Split into two blocks, the rule carries no text, so it cannot
+    // nominate an alignment — but it may join the run its own source block
+    // opened, and hoisting it to the root put it in a different container from
+    // the line below it.
+    const out = await mdMeasured(
+      PROSE + '<p style="text-align: right">-------------------------<br>Олег Киселев: oleg@list.ru</p>',
+    );
+    const align = out.indexOf("::: align");
+    expect(align).toBeGreaterThan(-1);
+    expect(out.indexOf("\n---\n")).toBeGreaterThan(align);
+    expect(out).not.toContain("\\-----");
+  });
+
+  it("does not make an aligned group out of a rule alone", async () => {
+    // False friend: the same alignment on a block with nothing in it. `align`
+    // positions content, and a run whose only member is a divider has none, so
+    // it leaves the run as it entered it.
+    const out = await mdMeasured(PROSE + '<p style="text-align: right">* * *</p>' + PROSE);
+    expect(out).toContain("---");
+    expect(out).not.toContain("::: align");
+  });
 });
 
 describe("alignment", () => {

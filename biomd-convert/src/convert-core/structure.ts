@@ -693,7 +693,10 @@ function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
     // No ledger entry: every member was already recorded as EMITTED by the
     // element it came from, and `runPass` rejects an id it did not declare —
     // this pass regroups blocks, it does not consume source nodes.
-    if (runAlign !== null && run.length > 0) {
+    // A run of nothing but rules has no content to position: `align` would
+    // claim a bounded group where the source drew a divider, so those members
+    // leave the run as they entered it.
+    if (runAlign !== null && run.length > 0 && run.some((block) => blockTextOf(block) !== "")) {
       out.push(makeAlign({ position: runAlign, children: run as BoundedContent[] }));
     } else {
       out.push(...run);
@@ -746,7 +749,14 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   if (block.type === "biomdAlign" || block.type === "biomdFrame") return null;
   // §3.8 tables and §2 headings are positioned by their own construct.
   if (block.type === "table" || block.type === "heading") return null;
-  if (block.type === "thematicBreak") return null;
+  // A rule carries no text, so it can never *nominate* an alignment. The source
+  // block it came from can, and `blocksFrom` records that on every block the
+  // element produced — a `<br>`-separated `<p>` that draws a rule above its
+  // signature is **one** aligned block in the source, and hoisting the rule out
+  // of the run puts it in a different container from the line it divides. So it
+  // may join a run and never open one: `groupAlignedRuns` emits a run with no
+  // text-carrying member bare, which is what keeps a lone rule at the root.
+  if (block.type === "thematicBreak") return align;
   // A list is never a bounded group. §13 enumerates what one is — "a short
   // paragraph, dedication, small heading group, or credit line" — and warns
   // that centred body text is harder to read; across the 13 references **none**
@@ -1664,7 +1674,7 @@ function stripPairedOrnament(text: string): string {
  *
  * ## Rule contract
  *
- * **Invariant.** A block whose *entire* visible content is one ornament
+ * **Invariant.** A *line* whose entire visible content is one ornament
  * repeated — cardinality, not typography, and nothing about size, weight or
  * position. `BioMD-Reference.md` §0 ranks hierarchy and grouping above exact
  * style, and this is the division the page drew between two passages;
@@ -1673,29 +1683,57 @@ function stripPairedOrnament(text: string): string {
  * and the reader gets three escaped asterisks (`\* \* \*`) where the page
  * showed a break.
  *
- * **Recurrence.** Inside the block rather than across the page: one `*` is a
- * footnote marker, three in a row are a dinkus. Requiring the ornament to
- * recur *between* passages would be wrong here — four of the five instances in
- * the corpus are the only one on their page.
+ * **The unit is the line, not the block.** `<br>` is how this era ended a line
+ * inside a block, so a rule the author drew above a signature lives in the same
+ * `<p>` as the signature — `-------------------------<br>Олег Киселев: …` —
+ * and a block-level test cannot see it. The five whole-block dinkuses the
+ * corpus already handled are the degenerate case of the same rule, where every
+ * line happens to be an ornament.
  *
- * **False friends,** all excluded by "the whole block and nothing else":
+ * **Recurrence.** Inside the line rather than across the page: one `*` is a
+ * footnote marker, three in a row are a dinkus. Requiring the ornament to
+ * recur *between* passages would be wrong here — four of the five whole-block
+ * instances in the corpus are the only one on their page.
+ *
+ * **False friends,** all excluded by "the whole line and nothing else":
  * `• Из письма А.Максимова` is a bulleted label, `— Да, — ответил он` is
  * dialogue, `**` around a word is emphasis the inline pass already consumed,
  * and a line mixing two ornaments is decoration rather than a rule.
- * A block carrying a link or an image is content whatever its text looks like.
+ * A line carrying a link or an image is content whatever its text looks like —
+ * asked per line, because the signature beside the rule is exactly such a line
+ * and the block-level form of this question suppressed the whole rule.
  *
  * The glyph list is documented lexical data in `glyphs.ts`; an ornament that
  * is not on it stays a paragraph, which is what every one of them does today.
  */
 function drawnRuleFrom(lines: readonly RunLine[]): BiomdContent[] | null {
   if (lines.length === 0) return null;
-  if (!lines.every((line) => isDrawnRule(lineText(line)))) return null;
-  if (lines.some((line) => line.content.some((c) => c.type === "link" || c.type === "image"))) return null;
+  const isRule = (line: RunLine): boolean =>
+    isDrawnRule(lineText(line)) && !line.content.some((c) => c.type === "link" || c.type === "image");
+  if (!lines.some(isRule)) return null;
+
   // No ledger entry, for `groupAlignedRuns`' reason: the element these lines
   // came from already recorded itself as EMITTED, and `runPass` rejects an id
   // it did not declare. This changes the shape of a block, it does not consume
   // a source node.
-  return lines.map(() => ({ type: "thematicBreak" }) as BiomdContent);
+  const out: BiomdContent[] = [];
+  let segment: RunLine[] = [];
+  const flush = (): void => {
+    if (segment.length === 0) return;
+    const paragraph = paragraphFromLines(segment);
+    if (paragraph) out.push(paragraph);
+    segment = [];
+  };
+  for (const line of lines) {
+    if (isRule(line)) {
+      flush();
+      out.push({ type: "thematicBreak" } as BiomdContent);
+      continue;
+    }
+    segment.push(line);
+  }
+  flush();
+  return out.length > 0 ? out : null;
 }
 
 /** Lines → one paragraph, with each interior break classified. */
