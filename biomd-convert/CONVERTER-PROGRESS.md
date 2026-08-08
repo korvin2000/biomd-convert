@@ -3743,8 +3743,9 @@ losing a source header: `new_karta`'s source contains no `Композиция`,
 `Ноты (TAB)` anywhere, so the *old* references invented those labels exactly as the new ones invent
 `Название`/`Аудиоформат`. All 43 are the synthesized path (`synthesizeHeader`), which means nothing
 attested has to be rewritten — the §16.3 objection to the whole class dissolves. Second, and against
-expectation, **the class fixes no validator error**: the 28 `table-header-empty` errors are
-elsewhere. That killed the priority-2 justification and dropped the candidate to priority 4/5/6.
+expectation, the class appeared to fix no validator error, which dropped it to priority 4/5/6.
+**That second finding was wrong and §30.2 corrects it** — it closes 15 of the 28. The claim was
+*inferred* from a standalone `validate` run, never measured against `corpus run`.
 
 *A measurement error worth recording, because it cost a wrong statement.* `node dist/cli/index.js
 validate <file>` resolves a laxer profile than the bench config and reports **0 errors** on a file
@@ -3841,3 +3842,121 @@ clothing. Two of the six new findings are an instrument artefact: `link.label.co
   priority), both worth an author confirmation because they are one character each:
   `h2.gif` → guide `&#9679;` ● vs `new_rechin4`'s `&#128904;`; `smile.gif` → guide `&#9787;` ☻ vs
   `news_2007`'s `&#128578;` 🙂.
+
+---
+
+## 30. A reverted alignment rule, and the column vocabulary (2026-08-08)
+
+Two attempts this iteration. The first was reverted on its own measurement; the second landed and
+corrected a wrong number in §29.2. Both are recorded, because the reverted one is the more
+instructive.
+
+### 30.1 Killed: a word-less block may open an alignment run because it carries a target
+
+**The hypothesis.** After §29 turned four footer pagers from `::: image` into paragraphs, they lost
+the centring the image directive had been carrying, and `retyped.paragraph-to-align` rose to rank 1
+(8 instances, 8 documents — the widest reach in the ledger). Probing all eight showed 7 of 8 have
+*identical text on both sides* and differ only in their container, so the label was one coherent
+mechanism rather than the shadow class §27.1 had recorded.
+
+**Two causes, separated by instrumentation, not by reading.** `DBG_ALIGN` at the decision point in
+`alignableRunMember`, one run each on `new_karta` and `tarrega`:
+
+- `new_karta` — `align=center`, `bounded=true`, **`label=false`**. Rejected by
+  `isAlignableLabelText`, which requires a letter or a digit; `▶` has neither.
+- `tarrega` — `align=justify`. Rejected four lines earlier, and `justify` is the page default this
+  corpus computes almost everywhere (`CLAUDE.md` §4). A different question, left alone.
+
+**The fix, and why it looked safe.** `isAlignableLabelText`'s named false friend is a rule the
+author drew out of punctuation (`* * *`, `— — —`). A pager row is distinguishable from one by
+*relational* evidence rather than a character class — it carries a link, and a drawn rule never
+does. So the guard was left untouched and an alternative added beside it: a word-less block may
+join a run when `carriesTarget(block)`. A character test could not have done this job anyway, since
+`●` is itself a member of `RULE_GLYPHS`.
+
+Both contracts passed, including non-firing on `* * *`.
+
+**What the corpus said.** L2 322 → 324, defects flat at 180, L3 85 → **87**, L1 94.3 → 94.2.
+`new_karta` and `new_lendle2` each lost a defect as intended; `segovia1` gained **two**, and L3's
+containment and alignment classes each rose by one.
+
+**Why: the real false friend was never `* * *`.** `segovia1`'s footer is a four-cell table row —
+`◀`, *Андрес Сеговия*, *Владимир Бобри*, `▶` — which the reference writes as `::: columns
+columns: 4`. Two of those four cells are word-less glyphs, so the new rule made them alignable, and
+`groupAlignedRuns` swept **all four into one `::: align`**, collapsing the lanes. Four
+`align.spurious`, a `columns.missing`, four `retyped.paragraph-to-column`, and a displaced frame.
+A structural loss (priority 3) on a regression-corpus document, which outranks the two defects
+fixed, so the change was reverted whole and the floor restored exactly.
+
+**The lesson, and why no guard was added instead.** `segovia1` already carried `columns.missing`
+*before* this change: the four-lane region is not being recognised, and the loose blocks that
+result are a **symptom of that upstream failure**. Guarding the alignment rule against them would
+have cemented the missing region and hidden it from every instrument — the exact move `CLAUDE.md`
+§5 and §10.2/§16.4 forbid. The reachable mechanism here is the missing `columns` region, not the
+alignment.
+
+Recorded as killed: *a word-less block may open an alignment run because it carries a target.*
+Falsifier: `segovia1`'s lane cells are word-less glyphs, and admitting them merges four lanes into
+one. Reopens only on the `columns` region being recovered first.
+
+### 30.2 The column vocabulary — and the number §29.2 got wrong
+
+`/new_rules.md` states the label vocabulary outright: `Название` for the column that indexes the
+records, `Аудиоформат` for a column of resource links, and a synonym list folding `TAB`, `MIDI`,
+`Формат MP3`, `Ноты (TAB)` and the rest onto the second. `column-labels.ts` holds it as
+language-tagged data under invariant 5; `synthesizeHeader` consults it at the decision point it
+already had, and an unrecognised label passes through untouched.
+
+**§16.3 is not engaged, and §29.2's probe is why.** Every affected table has *no source header at
+all* — `new_karta`'s source contains no `Композиция`, no `Формат`, no `Ноты (TAB)` — so the old
+references invented their labels exactly as the new ones do. Only the synthesized path is touched;
+a table whose source names its columns never reaches this code.
+
+**A standing contract was superseded, not deleted.** `data-table.test.ts` asserted `LINK_GLYPH` for
+a resource column and an **empty** leading column, on the grounds that naming it would be
+invention, citing `analyze/analyze.md` on three pages and sixteen references. `06eeafb` replaced
+all sixteen and the author wrote the rule down. The contract now states the new rule *and* why the
+old one was right about the corpus it was written against — an author ruling is the one thing that
+legitimately retires a named decision, and it is worth being able to see that it happened.
+
+**Measured.**
+
+| rung | before | after |
+|---|---|---|
+| L0 | 429 tests, **28** validator errors | **431**, **13**, 0 FAILED, clean share 13.6 % |
+| L1 | 94.3 | **94.4** |
+| L2 | 322 · 180 defect · 9 crit | **287 · 180 · 9** |
+| L3 | 85 | **85** |
+
+`table.header.cell` 43 → **8**, all `reference-inconsistency`, none a defect. Per document:
+`new_karta` 30 → 13 · `kiselev` 48 → 43 · `new_dyens` 10 → 6 · `tarrega` 11 → 8 · `barrios` 5 → 2 ·
+`new_bach` 3 → 1. **No document got worse.** Validator errors fell on seven documents:
+`barrios` 1→0, `kiselev` 3→1, `new_bach` 1→0, `new_dyens` 1→0, `new_karta` 10→3, `segovia` 5→3,
+`tarrega` 2→1.
+
+**§29.2 is corrected.** It recorded that this class "fixes no validator error", which dropped it
+from priority 2 to 4/5/6 and is why the icon mechanism was taken first. It closes **15 of the 28**.
+The claim was *inferred* from the standalone `validate <file>` reporting zero — a laxer profile
+than the bench config — and never checked against `corpus run`'s `errors=` column, which is the
+only trustworthy source. The ordering decision it influenced was still correct on other grounds,
+but the number was not measured and should not have been written.
+
+**A conservation figure that fell with no content change.** `new_karta`'s text recall goes
+96.1 → 91.9. The A/B of the produced file is **seven changed lines, every one a header row**.
+Recall is a shingle-based similarity measure, so three invented header words per table break every
+shingle straddling the header boundary — the effect KILLED.md already records for legitimate block
+splits, arriving here from the other direction.
+
+### 30.3 Residual, and what is next
+
+The 8 remaining `table.header.cell` are all `reference-inconsistency` and split three ways:
+`new_bach` wants `Произведение` where the convention (and rule 14) folds it to `Название`; four
+columns hold a single link and so miss `isLinkColumn`'s recurrence gate of two, staying empty; and
+`segovia`'s MP3 track table wants an empty leading column where the rule now writes `Название`.
+None is worth a rule.
+
+The author also corrected `new_rechin4`'s `h2.gif` to `&#9679;` and `news_2007`'s `smile.gif` to
+`&#9787;` (commit `3097a48`), so **there are no remaining guide-vs-reference conflicts** in the icon
+family. Neither moved a rung: L2 folds numeric character references before comparing, and
+`news_2007`'s smiley sits in a paragraph the converter does not emit at all — which is its own,
+larger, unexamined defect.

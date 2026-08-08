@@ -38,12 +38,11 @@ disagree, the repository file wins and this index gets fixed.
 
 **Next action** — see [OPEN.md](OPEN.md) §1. In short: the author revised **21 of 22 references,
 `BioMD-Reference.md`, and added `/new_rules.md`** in `06eeafb`, so **every number in PROGRESS
-§21–§28 predates the current corpus** (PROGRESS §29.1). Re-baselined and one mechanism accepted:
-L0 429 tests / 28 validator errors, L1 **94.3**, L2 **322 · 180 defect**, L3 **85**.
-`image.spurious` is closed — a linked micro-image is now its glyph (§29.3). Next is the
-**`new_rules.md` table-header vocabulary** (`table.header.cell`, 43 instances / 7 documents, the
-widest reach in the ledger); its `reference-inconsistency` verdict is stale, and the reason is in
-OPEN.md §1.
+§21–§28 predates the current corpus** (PROGRESS §29.1). Two mechanisms landed since — a linked
+micro-image is now its glyph (§29.3), and a synthesized column header gets the house name (§30.2).
+Current floor: L0 **431 tests / 13 validator errors**, L1 **94.4**, L2 **287 · 180 defect**,
+L3 **85**. One attempt was built and reverted on its measurement (§30.1) — read it before touching
+the alignment family. Next is `segovia1`'s missing four-lane footer region.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
@@ -70,12 +69,12 @@ repo's midx is a version git 2.45 rejects).
 | the iteration procedure | `.claude/skills/refine-biomd-converter/SKILL.md` | cheap |
 | harness lessons that cost hours (debug probes, `/dev/null` on Git Bash, NullMeasurer) | `.claude/skills/refine-biomd-converter/learned-patterns.md` | cheap |
 | the human quality record (Russian, per page) | `analyze/analyze.md` (614 ln) + `analyze/design.png` | grep by page name |
-| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` — normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4 | cheap |
-| the author's house conventions, newest ground truth | `/new_rules.md` (repo root) — mostly **not yet implemented**; inventory in PROGRESS §29.1 | cheap |
+| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` — normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4. No reference conflicts remain | cheap |
+| the author's house conventions, newest ground truth | `/new_rules.md` (repo root) — the column vocabulary is built (`column-labels.ts`); the rest is **not yet implemented**, inventory in PROGRESS §29.1 | cheap |
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` — advisory, possibly stale | grep |
 | history, superseded | `CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md` | avoid |
 
-**Never open end to end:** `CONVERTER-PROGRESS.md` (3090 ln, ~62k tokens). Route through
+**Never open end to end:** `CONVERTER-PROGRESS.md` (3962 ln, ~78k tokens). Route through
 [MAP-progress.md](MAP-progress.md); it maps every `##`/`###` to a line range and a one-line summary.
 
 ---

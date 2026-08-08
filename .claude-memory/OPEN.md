@@ -3,8 +3,8 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the `new_rules.md` reference revision (commit `06eeafb`) and the
-icon→glyph mechanism (`55e7a8c`). Facts marked *measured* were taken then; facts marked *recorded*
+Last touched **2026-08-08**, after the column vocabulary (`f5665c4`), one reverted attempt
+(§30.1), and the author's icon corrections (`3097a48`). Facts marked *measured* were taken then; facts marked *recorded*
 are quoted and have not been re-measured.
 
 ---
@@ -16,15 +16,15 @@ Reference-guided refinement, 22 documents. **The author revised 21 of 22 referen
 change; the numbers below are re-baselined against the revised references, and any figure quoted
 from PROGRESS §21–§28 predates them.
 
-**Current state, *measured* 2026-08-08, after `55e7a8c`:**
+**Current state, *measured* 2026-08-08, after `f5665c4`:**
 
 | rung | value |
 |---|---|
-| L0 | **429 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
-| L1 | **94.3 %** |
-| L2 | **322 findings — 180 converter-defect** · 66 ambiguous · 76 reference-inconsistency · 9 critical |
+| L0 | **431 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L1 | **94.4 %** |
+| L2 | **287 findings — 180 converter-defect** · 67 ambiguous · 40 reference-inconsistency · 9 critical |
 | L3 | **85 findings** (11 critical), identity 0, deterministic |
-| validator | **28 errors** — unchanged. Reachable only through `corpus run`'s `errors=` column: `validate <file>` on its own uses a laxer profile and reports **0**, which is how a session mis-stated this once |
+| validator | **13 errors** (was 28). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice — once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
 
 That is the floor. Nothing accepted from here may regress it.
 
@@ -41,19 +41,19 @@ masthead split point (OPEN §3.2), and the centred-section-label ruling of §24.
 > it. **`corpus scan` is still required after a fresh clone** — §24.4 changed the chrome
 > fingerprint and a cached `bench/corpus/corpus-profile.json` from before it makes `news` regress.
 
-**`image.spurious` is closed** (`55e7a8c`, 8 instances / 5 documents → 0). See §2.0.
+**Closed since the last entry:** `image.spurious` 8/5 → 0 (`55e7a8c`, §2.0) · `table.header.cell`
+43/7 → 8, none a defect (`f5665c4`, PROGRESS §30.2) · the two guide-vs-reference glyph conflicts,
+corrected by the author in `3097a48` — **the icon family now has no open question**.
 
-**Next: the `new_rules.md` table-header vocabulary — `table.header.cell`, 43 instances, 7 documents.**
-The largest class in the ledger and the widest reach of anything in it. The triage says
-`reference-inconsistency` on all 43 and *that verdict is now stale*: it rests on the header text
-being unattested, which is true — the probe confirmed the source contains no `Композиция`,
-`Формат` or `Ноты (TAB)` anywhere, so the old references invented those too — but `new_rules.md`
-§§11–15 supplies the vocabulary as a house convention, which makes it documented lexical data
-rather than an editorial invention. The converter already synthesizes headers
-(`synthesizeHeader`, `structure.ts`), emitting `""` for the title column and `TAB`/`MIDI`/`🔗` for
-the rest; the change is a label table plus two lookups at one decision point. Priority 4/5/6, not
-1–3 — **it fixes no validator error**: the 28 are elsewhere. Effort low, P(fix) high, regression
-risk low.
+**Next: `segovia1`'s missing four-lane footer region — `columns.missing`.** Chosen because §30.1
+demonstrated it rather than because of its rank. The footer is a four-cell row (`◀`, *Андрес
+Сеговия*, *Владимир Бобри*, `▶`) the reference writes as `::: columns / columns: 4`; the converter
+produces four loose blocks. Everything else wrong with that footer is downstream of it — an
+alignment rule that tried to position those loose blocks merged all four lanes into one and had to
+be reverted, which is the clearest evidence in the campaign that this region is the cause and not
+a symptom. `segovia1` is third-worst at 11 findings / 10 defect / 2 critical and this is most of
+it. Probe first whether the same shape exists elsewhere (`new_geyzel04`'s and `new_rechin4`'s
+footers are *not* tables, so they are a different mechanism).
 
 Then, if that stalls: **go document-first, not class-first.** `news` (45 defects) and `goya2` (34) are
 a quarter of the whole ledger and neither has ever been attacked *as a document*. Enumerate one of
@@ -95,9 +95,19 @@ extension cannot be part of the key. Label rule, unanimous in the corpus: `alt` 
 wrote one (2 icons), else the mapped glyph (6), else the pre-existing href fallback. Restricted to
 **linked** icons on purpose — see §2.4 for the unlinked half.
 
-Two guide/reference divergences, both decided for the guide (`CLAUDE.md` §2.3 ranks it above
-`fixtures/`), both worth an author confirmation: `h2.gif` → guide `&#9679;` ● vs `new_rechin4`'s
-`&#128904;`; `smile.gif` → guide `&#9787;` ☻ vs `news_2007`'s `&#128578;` 🙂.
+The two guide/reference divergences this raised (`h2.gif`, `smile.gif`) were **decided for the
+guide and then confirmed by the author** in `3097a48`, which changed both references to match. The
+icon family has no open question left. Neither correction moved a rung: L2 folds numeric character
+references before comparing.
+
+### 2.0b A synthesized column header gets the house name
+
+`/new_rules.md` supplies the vocabulary; `column-labels.ts` holds it as language-tagged data;
+`synthesizeHeader` consults it. §16.3 is not engaged because these tables have **no source header
+at all** — the old references invented `Композиция` exactly as the new ones write `Название`. This
+retired a standing contract (`LINK_GLYPH` for a resource column, an empty leading column) on the
+author's ruling; `data-table.test.ts` records why the old one was right about the corpus it was
+written against. **Validator errors 28 → 13**, L2 322 → 287, no document worse. PROGRESS §30.2.
 
 ### 2.1 A panel drawn with a background tint is a frame
 
@@ -134,17 +144,14 @@ text-carrying member is emitted bare. PROGRESS §25.2.
 which drops it. Two shapes remain, and they were held back deliberately because their risk differs
 from the linked case:
 
-- **`score3` ×10, `tarrega`, 32×14, inside table cells.** Emitting `♫` there changes what the cell
-  *contains*, and `tarrega`'s two PDF tables already fail to plan (they ship as bulleted lists —
-  `retyped.list-to-table` ×2, and L1 shape 33.3 %). Whether the icon is what blocks the planner is
-  an untested edge in the graph: **`M1c ? tarrega table collapse`**. Probe that before writing
-  anything, because if it *is* the cause, the table fix is worth far more than the glyph.
+- **`score3` ×10, `tarrega`, 32×14, inside table cells.** The edge *"does the icon block the
+  planner?"* is **probed and dead**: the icons are in the big music table, which converts fine, not
+  in the two PDF tables that fail. `tarrega`'s `retyped.list-to-table` ×2 is a separate, unexplained
+  mechanism (L1 shape 33.3 %) and the icon has nothing to do with it.
 - **`smile` ×1, `news_2007`, 15×15.** `isDecorative` deliberately keeps squarish 15 px emoticons as
-  content, and a contract in `recovery.test.ts` asserts it — but the produced `news_2007` has no
-  smiley at all and the reference has `&#128578;`. One instance; check the contract before touching.
-
-The `&#9658;`/`&#9654;` divergence recorded here previously is **settled**: `06eeafb` changed
-`new_bach` and `new_karta` to `&#9654;`, agreeing with the guide.
+  content and a contract asserts it — yet the produced `news_2007` has no smiley, because the whole
+  paragraph containing it is absent from the output. That missing paragraph is the real defect and
+  it has never been examined. The reference now writes `&#9787;`, matching the guide.
 
 ---
 
@@ -171,8 +178,8 @@ The `&#9658;`/`&#9654;` divergence recorded here previously is **settled**: `06e
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
-| — | `table.header.cell` | **43** | 0 | **7** | **the chosen next step.** Triage verdict stale — see §1 |
-| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **shadow class** — fires where the missing container does |
+| ~~—~~ | ~~`table.header.cell`~~ | ~~43~~ | 0 | ~~7~~ | **closed to 8** by `f5665c4`; the 8 residuals are all reference-inconsistency |
+| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **7 of 8 are container-only.** A rule for it was built and **reverted** — PROGRESS §30.1. Do not retry without the `columns` region first |
 | 132 | `retyped.paragraph-to-list` | 11 | 11 | 4 | killed on measurement §15.2/§15.3 — shape overlap total |
 | 72 | `align.spurious` | 6 | 6 | 4 | 3 are the one-row media table §22.2 killed **twice** |
 | 57 | `image.src.value` | 19 | 19 | 1 | all `goya2` — mechanical, single-document |
