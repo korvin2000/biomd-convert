@@ -41,8 +41,6 @@ typings/
 
 .scratch/
 .biomd-work/
-corpus/
-
 
 # Optional eslint cache
 .eslintcache
