@@ -1,5 +1,5 @@
 {
-  "overall": 0.9441103186781578,
+  "overall": 0.9441574934676126,
   "documents": [
     {
       "name": "authors",
@@ -413,15 +413,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9794520547945206,
-        "precision": 0.9794520547945206,
-        "f1": 0.9794520547945206,
+        "recall": 1,
+        "precision": 0.9798657718120806,
+        "f1": 0.9898305084745762,
         "expected": 146,
-        "actual": 146,
-        "matched": 143,
-        "missing": [
-          "images"
-        ]
+        "actual": 149,
+        "matched": 146,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -435,7 +433,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9903918696797233
+      "overall": 0.9914297150477288
     },
     {
       "name": "jovicic",

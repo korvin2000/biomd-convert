@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T18:23:47.635Z",
+  "generated": "2026-08-08T18:58:53.499Z",
   "totals": {
-    "findings": 287,
-    "converterDefects": 180,
+    "findings": 275,
+    "converterDefects": 152,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 40,
-    "ambiguous": 67,
+    "referenceInconsistencies": 59,
+    "ambiguous": 64,
     "bySeverity": {
       "critical": 9,
-      "major": 142,
-      "minor": 136
+      "major": 136,
+      "minor": 130
     }
   },
   "perDocument": [
@@ -39,11 +39,11 @@
     },
     {
       "doc": "goya2",
-      "findings": 41,
-      "converterDefects": 34,
+      "findings": 29,
+      "converterDefects": 25,
       "critical": 0,
-      "major": 20,
-      "minor": 21
+      "major": 14,
+      "minor": 15
     },
     {
       "doc": "jovicic",
@@ -136,7 +136,7 @@
     {
       "doc": "news",
       "findings": 59,
-      "converterDefects": 45,
+      "converterDefects": 26,
       "critical": 3,
       "major": 37,
       "minor": 19
@@ -265,27 +265,6 @@
         "path": "/align[45]",
         "produced": "WMA",
         "reference": null
-      }
-    },
-    {
-      "class": "image.src.value",
-      "severity": "major",
-      "instances": 19,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 19,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 57,
-      "example": {
-        "doc": "news",
-        "path": "/image[7]@src",
-        "produced": "src: main/magazines/IGvL_2020_2021.jpg",
-        "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
       }
     },
     {
@@ -456,6 +435,27 @@
       }
     },
     {
+      "class": "image.position.missing",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[72]/image[0]@position",
+        "produced": null,
+        "reference": "position: center"
+      }
+    },
+    {
       "class": "paragraph.spurious.in-paragraph",
       "severity": "major",
       "instances": 3,
@@ -475,6 +475,28 @@
         "path": "/paragraph[16]",
         "produced": "Music by:",
         "reference": null
+      }
+    },
+    {
+      "class": "image.size.missing",
+      "severity": "minor",
+      "instances": 8,
+      "documents": [
+        "borislova",
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 8,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 16,
+      "example": {
+        "doc": "borislova",
+        "path": "/images[6]/image[0]@size",
+        "produced": null,
+        "reference": "size: medium"
       }
     },
     {
@@ -498,27 +520,6 @@
         "path": "/paragraph[5]",
         "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
         "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
-      }
-    },
-    {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
       }
     },
     {
@@ -718,69 +719,6 @@
       }
     },
     {
-      "class": "image.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]/image[0]",
-        "produced": null,
-        "reference": "Together / Richard Clayderman & Francis Goya"
-      }
-    },
-    {
-      "class": "images.columns.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]@columns",
-        "produced": null,
-        "reference": "columns: 2"
-      }
-    },
-    {
-      "class": "images.moved",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]",
-        "produced": "Together / Richard Clayderman & Francis Goya",
-        "reference": "image photo/g/goya/goya_cleiderman.jpg center medium Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center medium Maria Padilha — produced at /image[77]"
-      }
-    },
-    {
       "class": "paragraph.hyphenation.unjoined",
       "severity": "minor",
       "instances": 3,
@@ -885,69 +823,6 @@
         "doc": "new_lendle2",
         "path": "/frame[10]@position",
         "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "images.position.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
-      "class": "images.size.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]@size",
-        "produced": "size: medium",
-        "reference": null
-      }
-    },
-    {
-      "class": "images.src.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]@src",
-        "produced": "src: photo/g/goya/goya_cleiderman.jpg",
         "reference": null
       }
     },
@@ -1096,6 +971,27 @@
         "path": "/heading[1]",
         "produced": null,
         "reference": "Путь к циклу"
+      }
+    },
+    {
+      "class": "image.containment",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[50]/column[1]/image[1]",
+        "produced": "",
+        "reference": "produced at /image[51]"
       }
     },
     {
@@ -1541,27 +1437,6 @@
       }
     },
     {
-      "class": "image.size.missing",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "borislova"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 2,
-      "example": {
-        "doc": "borislova",
-        "path": "/images[6]/image[0]@size",
-        "produced": null,
-        "reference": "size: medium"
-      }
-    },
-    {
       "class": "table.cell.hyphenation.mixed",
       "severity": "minor",
       "instances": 2,
@@ -1668,6 +1543,27 @@
       }
     },
     {
+      "class": "image.src.value",
+      "severity": "major",
+      "instances": 19,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 19,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "news",
+        "path": "/image[7]@src",
+        "produced": "src: main/magazines/IGvL_2020_2021.jpg",
+        "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+      }
+    },
+    {
       "class": "table.header.cell",
       "severity": "major",
       "instances": 8,
@@ -1753,27 +1649,6 @@
         "path": "/frame[47]/align[1]/paragraph[0]",
         "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
         "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks"
-      }
-    },
-    {
-      "class": "images.caption.spurious",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 3
-      },
-      "rank": 0,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[76]@caption",
-        "produced": "caption: Together / Richard Clayderman & Francis Goya",
-        "reference": null
       }
     },
     {
@@ -2469,339 +2344,171 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4cc72b07",
+      "id": "85bd2924",
       "doc": "goya2",
-      "class": "images.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[72]",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": "Bahia Lady / Goya & Carmina 1990",
-      "reference": "image photo/g/goya/goya_carmina2a.jpg center medium Bahia Lady / Goya & Carmina 1990 image photo/g/goya/fr_goya1.jpg center medium Francis Goya — produced at /image[73]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bc99a837",
-      "doc": "goya2",
-      "class": "images.caption.spurious",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/images[72]@caption",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": "caption: Bahia Lady / Goya & Carmina 1990",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "71fc6a3e",
-      "doc": "goya2",
-      "class": "images.columns.missing",
+      "class": "image.position.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/images[72]@columns",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": null,
-      "reference": "columns: 2",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e82542e9",
-      "doc": "goya2",
-      "class": "images.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[72]@position",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "71efae89",
-      "doc": "goya2",
-      "class": "images.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[72]@size",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "25f1708b",
-      "doc": "goya2",
-      "class": "images.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[72]@src",
-      "producedLine": 1152,
-      "referenceLine": 1141,
-      "produced": "src: photo/g/goya/goya_carmina2a.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b650118a",
-      "doc": "goya2",
-      "class": "image.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/images[72]/image[0]",
-      "producedLine": null,
+      "path": "/images[72]/image[0]@position",
+      "producedLine": 1155,
       "referenceLine": 1144,
       "produced": null,
-      "reference": "Bahia Lady / Goya & Carmina 1990",
+      "reference": "position: center",
       "verdict": "converter-defect"
     },
     {
-      "id": "41eacf0d",
+      "id": "70479928",
       "doc": "goya2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[72]/image[1]",
-      "producedLine": 1159,
-      "referenceLine": 1151,
-      "produced": "Francis Goya",
-      "reference": "Francis Goya — produced at /image[73]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a5e73ef5",
-      "doc": "goya2",
-      "class": "images.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[74]",
-      "producedLine": 1168,
-      "referenceLine": 1162,
-      "produced": "Festival Latino / Goya & Carmina 1994",
-      "reference": "image photo/g/goya/goya_carmina4a.jpg center medium Festival Latino / Goya & Carmina 1994 image photo/g/goya/goya_gondwana1.jpg center medium Francis Goya / Go… — produced at /image[75]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e13d7173",
-      "doc": "goya2",
-      "class": "images.caption.spurious",
+      "class": "image.size.missing",
       "severity": "minor",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/images[74]@caption",
-      "producedLine": 1168,
-      "referenceLine": 1162,
-      "produced": "caption: Festival Latino / Goya & Carmina 1994",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "02c33cd0",
-      "doc": "goya2",
-      "class": "images.columns.missing",
-      "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/images[74]@columns",
-      "producedLine": 1168,
-      "referenceLine": 1162,
+      "path": "/images[72]/image[0]@size",
+      "producedLine": 1155,
+      "referenceLine": 1144,
       "produced": null,
-      "reference": "columns: 2",
+      "reference": "size: medium",
       "verdict": "converter-defect"
     },
     {
-      "id": "559d960b",
+      "id": "18f32845",
       "doc": "goya2",
-      "class": "images.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[74]@position",
-      "producedLine": 1168,
-      "referenceLine": 1162,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1150254b",
-      "doc": "goya2",
-      "class": "images.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[74]@size",
-      "producedLine": 1168,
-      "referenceLine": 1162,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a541a49b",
-      "doc": "goya2",
-      "class": "images.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[74]@src",
-      "producedLine": 1168,
-      "referenceLine": 1162,
-      "produced": "src: photo/g/goya/goya_carmina4a.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0a852814",
-      "doc": "goya2",
-      "class": "image.missing",
+      "class": "image.position.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/images[74]/image[0]",
-      "producedLine": null,
+      "path": "/images[72]/image[1]@position",
+      "producedLine": 1160,
+      "referenceLine": 1151,
+      "produced": null,
+      "reference": "position: center",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "203f879d",
+      "doc": "goya2",
+      "class": "image.size.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[72]/image[1]@size",
+      "producedLine": 1160,
+      "referenceLine": 1151,
+      "produced": null,
+      "reference": "size: medium",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "a79c8d1a",
+      "doc": "goya2",
+      "class": "image.position.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[74]/image[0]@position",
+      "producedLine": 1172,
       "referenceLine": 1165,
       "produced": null,
-      "reference": "Festival Latino / Goya & Carmina 1994",
+      "reference": "position: center",
       "verdict": "converter-defect"
     },
     {
-      "id": "13248e23",
+      "id": "bfbfdf06",
       "doc": "goya2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[74]/image[1]",
-      "producedLine": 1175,
-      "referenceLine": 1172,
-      "produced": "Francis Goya / Gondwana",
-      "reference": "Francis Goya / Gondwana — produced at /image[75]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cdc63233",
-      "doc": "goya2",
-      "class": "images.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[76]",
-      "producedLine": 1184,
-      "referenceLine": 1183,
-      "produced": "Together / Richard Clayderman & Francis Goya",
-      "reference": "image photo/g/goya/goya_cleiderman.jpg center medium Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center medium Maria Padilha — produced at /image[77]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "15eba069",
-      "doc": "goya2",
-      "class": "images.caption.spurious",
+      "class": "image.size.missing",
       "severity": "minor",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/images[76]@caption",
-      "producedLine": 1184,
-      "referenceLine": 1183,
-      "produced": "caption: Together / Richard Clayderman & Francis Goya",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "4ed5dd32",
-      "doc": "goya2",
-      "class": "images.columns.missing",
-      "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/images[76]@columns",
-      "producedLine": 1184,
-      "referenceLine": 1183,
+      "path": "/images[74]/image[0]@size",
+      "producedLine": 1172,
+      "referenceLine": 1165,
       "produced": null,
-      "reference": "columns: 2",
+      "reference": "size: medium",
       "verdict": "converter-defect"
     },
     {
-      "id": "7bad35f5",
+      "id": "5be23d43",
       "doc": "goya2",
-      "class": "images.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[76]@position",
-      "producedLine": 1184,
-      "referenceLine": 1183,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3a38d655",
-      "doc": "goya2",
-      "class": "images.size.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[76]@size",
-      "producedLine": 1184,
-      "referenceLine": 1183,
-      "produced": "size: medium",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2e44c233",
-      "doc": "goya2",
-      "class": "images.src.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/images[76]@src",
-      "producedLine": 1184,
-      "referenceLine": 1183,
-      "produced": "src: photo/g/goya/goya_cleiderman.jpg",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "284f607c",
-      "doc": "goya2",
-      "class": "image.missing",
+      "class": "image.position.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
-      "path": "/images[76]/image[0]",
-      "producedLine": null,
+      "path": "/images[74]/image[1]@position",
+      "producedLine": 1177,
+      "referenceLine": 1172,
+      "produced": null,
+      "reference": "position: center",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b72b8343",
+      "doc": "goya2",
+      "class": "image.size.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[74]/image[1]@size",
+      "producedLine": 1177,
+      "referenceLine": 1172,
+      "produced": null,
+      "reference": "size: medium",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "8ca0d238",
+      "doc": "goya2",
+      "class": "image.position.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[76]/image[0]@position",
+      "producedLine": 1189,
       "referenceLine": 1186,
       "produced": null,
-      "reference": "Together / Richard Clayderman & Francis Goya",
+      "reference": "position: center",
       "verdict": "converter-defect"
     },
     {
-      "id": "db306ede",
+      "id": "ffef4d54",
       "doc": "goya2",
-      "class": "image.containment",
+      "class": "image.size.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[76]/image[0]@size",
+      "producedLine": 1189,
+      "referenceLine": 1186,
+      "produced": null,
+      "reference": "size: medium",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "cd41de19",
+      "doc": "goya2",
+      "class": "image.position.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "move",
-      "path": "/images[76]/image[1]",
-      "producedLine": 1191,
+      "op": "delete",
+      "path": "/images[76]/image[1]@position",
+      "producedLine": 1194,
       "referenceLine": 1193,
-      "produced": "Maria Padilha",
-      "reference": "Maria Padilha — produced at /image[77]",
+      "produced": null,
+      "reference": "position: center",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "cc4a4de9",
+      "doc": "goya2",
+      "class": "image.size.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/images[76]/image[1]@size",
+      "producedLine": 1194,
+      "referenceLine": 1193,
+      "produced": null,
+      "reference": "size: medium",
       "verdict": "converter-defect"
     },
     {
@@ -4545,98 +4252,98 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[7]@src",
       "producedLine": 22,
       "referenceLine": 24,
       "produced": "src: main/magazines/IGvL_2020_2021.jpg",
       "reference": "src: /../main/magazines/IGvL_2020_2021.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "af4d7b84",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[8]@src",
       "producedLine": 30,
       "referenceLine": 32,
       "produced": "src: main/magazines/IGvL_28_29_2022_ttl350.jpg",
       "reference": "src: /../main/magazines/IGvL_28_29_2022_ttl350.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "e55c84b3",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/frame[12]/image[2]@src",
       "producedLine": 62,
       "referenceLine": 59,
       "produced": "src: main/smirnov_ua.jpg",
       "reference": "src: /../main/smirnov_ua.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "014008c2",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[20]@src",
       "producedLine": 97,
       "referenceLine": 92,
       "produced": "src: main/magazines/IGvL_23_2019_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_23_2019_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "ea91be84",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[23]@src",
       "producedLine": 107,
       "referenceLine": 102,
       "produced": "src: main/magazines/IGvL_24_2019_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_24_2019_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "0259611a",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[26]@src",
       "producedLine": 117,
       "referenceLine": 111,
       "produced": "src: main/magazines/IGvL_22_2018_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_22_2018_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "f6cd916b",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[29]@src",
       "producedLine": 128,
       "referenceLine": 121,
       "produced": "src: main/magazines/IGvL_21_2017_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_21_2017_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "5798a280",
@@ -4671,14 +4378,14 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[32]@src",
       "producedLine": 139,
       "referenceLine": 131,
       "produced": "src: main/magazines/IGvL_20_2017_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_20_2017_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "176d5403",
@@ -4713,28 +4420,28 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[36]@src",
       "producedLine": 171,
       "referenceLine": 158,
       "produced": "src: main/magazines/IGvL_18_19_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_18_19_2016_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "1866be08",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[39]@src",
       "producedLine": 182,
       "referenceLine": 169,
       "produced": "src: main/kniga_mg.jpg",
       "reference": "src: /../main/kniga_mg.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "e75b7c8c",
@@ -4755,14 +4462,14 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[42]@src",
       "producedLine": 191,
       "referenceLine": 180,
       "produced": "src: main/magazines/IGvL_17_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_17_2016_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "d11e91a7",
@@ -4783,14 +4490,14 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[45]@src",
       "producedLine": 201,
       "referenceLine": 192,
       "produced": "src: main/magazines/IGvL_16_2016_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_16_2016_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "1693de49",
@@ -4853,14 +4560,14 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[50]@src",
       "producedLine": 235,
       "referenceLine": 224,
       "produced": "src: main/magazines/IGvL_15_2015_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_15_2015_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "569bd8d0",
@@ -4881,28 +4588,28 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[55]@src",
       "producedLine": 271,
       "referenceLine": 256,
       "produced": "src: main/magazines/IGvL_14_2015_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_14_2015_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "b67a6d03",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[58]@src",
       "producedLine": 283,
       "referenceLine": 267,
       "produced": "src: main/elutin_konkurs.jpg",
       "reference": "src: /../main/elutin_konkurs.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "cb234a04",
@@ -5007,28 +4714,28 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[66]@src",
       "producedLine": 350,
       "referenceLine": 325,
       "produced": "src: main/magazines/IGvL_13_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_13_2014_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "00c10c01",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[69]@src",
       "producedLine": 362,
       "referenceLine": 336,
       "produced": "src: main/magazines/IGvL_11_12_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_11_12_2014_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "298d2ef0",
@@ -5105,28 +4812,28 @@
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/frame[73]/image[2]@src",
       "producedLine": 394,
       "referenceLine": 368,
       "produced": "src: main/paco_de_lucia.jpg",
       "reference": "src: /../main/paco_de_lucia.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "c382b4a4",
       "doc": "news",
       "class": "image.src.value",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
       "path": "/image[76]@src",
       "producedLine": 406,
       "referenceLine": 379,
       "produced": "src: main/magazines/IGvL_10_2014_ttl225.jpg",
       "reference": "src: /../main/magazines/IGvL_10_2014_ttl225.jpg",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "b3afc5f7",

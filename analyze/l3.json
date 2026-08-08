@@ -27,29 +27,29 @@
     ]
   },
   "totals": {
-    "findings": 85,
-    "alignmentRows": 276
+    "findings": 70,
+    "alignmentRows": 273
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 37,
-      "documents": 11
-    },
-    {
-      "class": "layout.align.mismatch",
-      "instances": 22,
-      "documents": 7
+      "instances": 31,
+      "documents": 10
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 15,
+      "instances": 12,
       "documents": 3
     },
     {
       "class": "layout.order.mismatch",
       "instances": 11,
       "documents": 5
+    },
+    {
+      "class": "layout.align.mismatch",
+      "instances": 16,
+      "documents": 6
     }
   ],
   "findings": [
@@ -68,246 +68,6 @@
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "quote"
-      }
-    },
-    {
-      "id": "304e2c1c",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[72]/image[0]",
-      "producedLine": 1152,
-      "referenceLine": 1144,
-      "produced": "Bahia Lady / Goya & Carmina 1990",
-      "reference": "Bahia Lady / Goya & Carmina 1990",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "keyword+box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "020845d3",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[72]/image[1]",
-      "producedLine": 1159,
-      "referenceLine": 1151,
-      "produced": "Francis Goya",
-      "reference": "Francis Goya",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "right",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "b878b226",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[74]/image[0]",
-      "producedLine": 1168,
-      "referenceLine": 1165,
-      "produced": "Festival Latino / Goya & Carmina 1994",
-      "reference": "Festival Latino / Goya & Carmina 1994",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "keyword+box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "63d631b9",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[74]/image[1]",
-      "producedLine": 1175,
-      "referenceLine": 1172,
-      "produced": "Francis Goya / Gondwana",
-      "reference": "Francis Goya / Gondwana",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "right",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "2926a03e",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[76]/image[0]",
-      "producedLine": 1184,
-      "referenceLine": 1186,
-      "produced": "Together / Richard Clayderman & Francis Goya",
-      "reference": "Together / Richard Clayderman & Francis Goya",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "keyword+box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "68835d00",
-      "doc": "goya2",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/images[76]/image[1]",
-      "producedLine": 1191,
-      "referenceLine": 1193,
-      "produced": "Maria Padilha",
-      "reference": "Maria Padilha",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "right",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "box",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "c942f923",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[72]/image[0]",
-      "producedLine": 1152,
-      "referenceLine": 1144,
-      "produced": "Bahia Lady / Goya & Carmina 1990",
-      "reference": "Bahia Lady / Goya & Carmina 1990",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
-      }
-    },
-    {
-      "id": "acaf79dc",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[72]/image[1]",
-      "producedLine": 1159,
-      "referenceLine": 1151,
-      "produced": "Francis Goya",
-      "reference": "Francis Goya",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
-      }
-    },
-    {
-      "id": "f1054acb",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[74]/image[0]",
-      "producedLine": 1168,
-      "referenceLine": 1165,
-      "produced": "Festival Latino / Goya & Carmina 1994",
-      "reference": "Festival Latino / Goya & Carmina 1994",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
-      }
-    },
-    {
-      "id": "2a4df000",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[74]/image[1]",
-      "producedLine": 1175,
-      "referenceLine": 1172,
-      "produced": "Francis Goya / Gondwana",
-      "reference": "Francis Goya / Gondwana",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
-      }
-    },
-    {
-      "id": "34a7e315",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[76]/image[0]",
-      "producedLine": 1184,
-      "referenceLine": 1186,
-      "produced": "Together / Richard Clayderman & Francis Goya",
-      "reference": "Together / Richard Clayderman & Francis Goya",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
-      }
-    },
-    {
-      "id": "4088b8e1",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[76]/image[1]",
-      "producedLine": 1191,
-      "referenceLine": 1193,
-      "produced": "Maria Padilha",
-      "reference": "Maria Padilha",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "images"
       }
     },
     {
@@ -461,57 +221,6 @@
       "geometry": {
         "producedLane": 1,
         "referenceLane": 5
-      }
-    },
-    {
-      "id": "f360d07c",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[72]/image[1]",
-      "producedLine": 1159,
-      "referenceLine": 1151,
-      "produced": "Francis Goya",
-      "reference": "Francis Goya",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "44469220",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[74]/image[1]",
-      "producedLine": 1175,
-      "referenceLine": 1172,
-      "produced": "Francis Goya / Gondwana",
-      "reference": "Francis Goya / Gondwana",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "ad04a781",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/images[76]/image[1]",
-      "producedLine": 1191,
-      "referenceLine": 1193,
-      "produced": "Maria Padilha",
-      "reference": "Maria Padilha",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
       }
     },
     {
@@ -2167,23 +1876,10 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1152,
-      "referenceLine": 1144,
-      "text": "Bahia Lady / Goya & Carmina 1990",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
-      "sourceProse": "justify",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[2]/center[1]/table[1]/tbody[1]/tr[1]/td[1]"
-    },
-    {
-      "doc": "goya2",
-      "producedLine": 1159,
+      "producedLine": 1160,
       "referenceLine": 1151,
       "text": "Francis Goya",
-      "producedAlignment": "center",
+      "producedAlignment": "right",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "-webkit-center",
       "sourceAlignment": "center",
@@ -2193,23 +1889,10 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1168,
-      "referenceLine": 1165,
-      "text": "Festival Latino / Goya & Carmina 1994",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "justify",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[2]/center[1]/table[1]/tbody[1]/tr[2]/td[1]/p[2]/b[1]/font[1]/b[1]/a[1]"
-    },
-    {
-      "doc": "goya2",
-      "producedLine": 1175,
+      "producedLine": 1177,
       "referenceLine": 1172,
       "text": "Francis Goya / Gondwana",
-      "producedAlignment": "center",
+      "producedAlignment": "right",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "-webkit-center",
       "sourceAlignment": "center",
@@ -2219,23 +1902,10 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1184,
-      "referenceLine": 1186,
-      "text": "Together / Richard Clayderman & Francis Goya",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "justify",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[2]/center[1]/table[1]/tbody[1]/tr[3]/td[1]/p[2]/b[1]/font[1]/a[1]"
-    },
-    {
-      "doc": "goya2",
-      "producedLine": 1191,
+      "producedLine": 1194,
       "referenceLine": 1193,
       "text": "Maria Padilha",
-      "producedAlignment": "center",
+      "producedAlignment": "right",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "-webkit-center",
       "sourceAlignment": "center",

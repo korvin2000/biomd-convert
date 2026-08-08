@@ -668,7 +668,7 @@ function compareDirective(ctx: Context, produced: DirectiveNode, reference: Dire
   for (const key of [...keys].sort()) {
     const want = reference.props[key];
     const got = produced.props[key];
-    const evidence: Evidence = isProseProp(key) ? "content" : "structure";
+    const evidence: Evidence = isProseProp(key) || isTargetProp(key) ? "content" : "structure";
     if (want === undefined) {
       ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.spurious`, "minor", evidence, "insert", `${path}@${key}`, quoteProp(key, got), null, undefined, [produced.line, reference.line]));
       continue;
@@ -684,7 +684,7 @@ function compareDirective(ctx: Context, produced: DirectiveNode, reference: Dire
       const kind = classifyText(got, want);
       ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.${kind.suffix}`, kind.severity, "content", "substitute", `${path}@${key}`, quoteProp(key, got), quoteProp(key, want), undefined, [produced.line, reference.line]));
     } else {
-      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.value`, propSeverity(key), "structure", "substitute", `${path}@${key}`, quoteProp(key, got), quoteProp(key, want), undefined, [produced.line, reference.line]));
+      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.value`, propSeverity(key), evidence, "substitute", `${path}@${key}`, quoteProp(key, got), quoteProp(key, want), undefined, [produced.line, reference.line]));
     }
   }
   compareSequence(ctx, produced.children, reference.children, path);
@@ -978,6 +978,31 @@ function propSeverity(key: string): Severity {
 
 function isProseProp(key: string): boolean {
   return key === "caption" || key === "alt" || key === "title" || key === "active";
+}
+
+/**
+ * A property whose value is a **target** — a URL, not a layout decision.
+ *
+ * `BioMD-Reference.md` §0 puts targets second in its precedence ladder, right
+ * behind content, and §16.3 names `href`/`src` in the same breath as text among
+ * the things a converter may not fabricate. Giving them `structure` evidence
+ * routed them past {@link triage}'s attestation test entirely, on the rule that
+ * "layout structure is always actionable" — which is true of a lane or a
+ * separator and false of a URL, the one property class §16.3 protects by name.
+ *
+ * Measured: all 19 `image.src.value` findings on `news` were reported as
+ * converter defects for a `/../` prefix that occurs in **no** source and in
+ * exactly one of the 22 references. The produced side is the source verbatim;
+ * following the reference would have been inventing a target.
+ *
+ * **`src` only, and deliberately not `link`.** An asset path is carried through
+ * verbatim, so the source attests it or nothing does. A `link` is a *route*:
+ * `links.ts` rewrites `../menu.htm` to `/#/menu`, so neither side of a link
+ * finding can ever appear in the source and an attestation test would answer
+ * "unattested" about a correct value. Route policy is structural and stays so.
+ */
+function isTargetProp(key: string): boolean {
+  return key === "src";
 }
 
 function quoteProp(key: string, value: string | undefined): string {

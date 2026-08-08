@@ -45,11 +45,28 @@ export class SourceIndex {
   private readonly folded: string;
   private readonly tokens: Set<string>;
   private readonly emphasized: string;
+  private readonly raw: string;
 
   constructor(html: string) {
     this.folded = fold(stripTags(html));
     this.tokens = new Set(this.folded.split(" ").filter((w) => w.length > 0));
     this.emphasized = fold(stripTags(emphasisRuns(html)));
+    this.raw = html.toLowerCase();
+  }
+
+  /**
+   * Whether an asset path occurs in the source **unfolded**.
+   *
+   * A URL lives in an attribute, which {@link stripTags} discards, and it is
+   * made of exactly the characters {@link fold} erases — `/`, `.`, `_`. Folded,
+   * `/../main/x.jpg` and `main/x.jpg` are the same string, which is the one
+   * comparison that must not succeed here: the whole question about a target is
+   * whether it points where the source pointed. So this reads the decoded HTML
+   * as-is, case-insensitively, and nothing else.
+   */
+  hasTarget(value: string): boolean {
+    const needle = value.trim().toLowerCase();
+    return needle.length > 0 && this.raw.includes(needle);
   }
 
   /**
@@ -157,6 +174,13 @@ export function triage(
 
   const wanted = referenceSpan === null ? null : stripLabel(referenceSpan);
   const got = producedSpan === null ? null : stripLabel(producedSpan);
+
+  // An asset path is decided against the raw source, before every test below.
+  // `fold()` erases `/`, `.` and `_`, which is all a URL is made of, so the
+  // generic path answers "the two sides carry the same content" about two
+  // different destinations — and `stripTags` has already thrown the attribute
+  // away, so neither side is ever attested by the folded index.
+  if (/\.src\.(?:value|missing|spurious)$/u.test(cls)) return triageTarget(wanted, got, source);
   const referenceAttested = wanted !== null && wanted.trim() !== "" && source.hasSpan(wanted);
   const producedAttested = got !== null && got.trim() !== "" && source.hasSpan(got);
 
@@ -227,6 +251,23 @@ export function triage(
   const coverage = source.wordCoverage(wanted);
   if (coverage >= 0.95) return "ambiguous";
   if (coverage <= 0.5) return "reference-inconsistency";
+  return "ambiguous";
+}
+
+/**
+ * Decide a `src` difference by which destination the source actually names.
+ *
+ * The two-sided question of {@link triage}, asked about a target: whichever
+ * side the source states is the side that is right, and §16.3 forbids following
+ * a reference to a path the page never contained. Both sides attested means the
+ * converter chose a different picture the source does show — a real difference
+ * no text test can adjudicate, and `ambiguous` is what verdict 4 is for.
+ */
+function triageTarget(wanted: string | null, got: string | null, source: SourceIndex): Verdict {
+  const referenceAttested = wanted !== null && source.hasTarget(wanted);
+  const producedAttested = got !== null && source.hasTarget(got);
+  if (producedAttested && !referenceAttested) return "reference-inconsistency";
+  if (referenceAttested && !producedAttested) return "converter-defect";
   return "ambiguous";
 }
 
