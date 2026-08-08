@@ -3479,13 +3479,64 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
 
   rows.forEach((row, index) => {
     if (index > 0 && separateAt(index)) out.push(markDerivedRule());
-    out.push(...row);
+    out.push(...(imageRowFrom(row) ?? row));
   });
 
   if (!alreadyLedgered) ctx.ledger.push(mergedInto(el.id, nextId(ctx, "flow")));
   // Entry labels only become visible once the lanes are back in reading order,
   // so the promotion has to run on the flattened region rather than per cell.
   return bindCaptions(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx), ctx);
+}
+
+/**
+ * `::: images` for a flattened grid row that is nothing but pictures.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** *Containment and cardinality*: one grid row whose cells lower
+ * to two or more `image` blocks and to nothing else — no words, no list, no
+ * second construct. The author drew those cells side by side; flattening them
+ * loses only the fact that they were a row, and §8's "two or more adjacent
+ * source images forming one visual row" is exactly that fact. No name, class,
+ * size or filename is read.
+ *
+ * **Recurrence does not apply, and the contract says so.** A gallery row is a
+ * row whether the page draws one or six, and `goya2` draws three. `CLAUDE.md`
+ * §5's recurrence requirement governs shapes inferred from typography inside a
+ * document; here the grouping is *declared* by the markup — the cells share a
+ * `<tr>` — so adjacency needs no corroboration. This is the same reason
+ * {@link isUiIcon} states an exemption.
+ *
+ * **False friend: a record row.** `goya2`'s album grid pairs a title cell with
+ * its cover cell, and `williams2` pairs a track with its link — one image plus
+ * something else. `every(isStandaloneImage)` refuses both, which is why the
+ * test is on the *whole* row rather than on the images in it. A row holding one
+ * picture is likewise not a row of pictures.
+ *
+ * **Why here and not in {@link imagesFrom}.** That path reads an inline run —
+ * images separated by whitespace inside one `<p>`. This corpus draws the other
+ * half of its plates as a table row per plate, which never reaches it: the grid
+ * is classified, fails to plan as records, and arrives at linear flow with the
+ * row structure already resolved. Both are the same construct in the two
+ * spellings FrontPage offered.
+ */
+function imageRowFrom(row: readonly BiomdContent[]): BiomdContent[] | null {
+  if (row.length < 2) return null;
+  if (!row.every(isStandaloneImage)) return null;
+  const children = row.map((image) =>
+    makeGroupedImage({
+      src: image.src,
+      ...(image.alt === undefined ? {} : { alt: image.alt }),
+      ...(image.caption === undefined ? {} : { caption: image.caption }),
+      ...(image.link === undefined ? {} : { link: image.link }),
+      ...(image.frame === undefined ? {} : { frame: image.frame }),
+    }),
+  );
+  return [makeImages({ columns: groupColumnsFor(children.length), children })];
+}
+
+function isStandaloneImage(block: BiomdContent): block is BiomdImageNode {
+  return block.type === "biomdImage" && block.standalone;
 }
 
 /**

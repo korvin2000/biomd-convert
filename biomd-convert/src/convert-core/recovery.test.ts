@@ -989,6 +989,55 @@ describe("inconclusive table classification", () => {
 });
 
 /**
+ * A flattened grid row that is nothing but pictures is one visual row.
+ *
+ * **Invariant.** Containment and cardinality only: a row whose cells lower to
+ * two or more standalone `image` blocks and to nothing else. The `<tr>` is the
+ * adjacency evidence §8 asks for, declared by the author rather than inferred,
+ * which is why recurrence does not apply — a gallery row is a row whether the
+ * page draws one or six.
+ *
+ * **False friend: a record row**, a picture beside the words about it. That is
+ * the shape of `goya2`'s album grid and `williams2`'s track list, and testing
+ * the *whole* row rather than the images in it is what separates them.
+ *
+ * `goya2` draws its "ДРУГИЕ АЛЬБОМЫ" plates as three such rows; the converter
+ * shipped six loose `::: image` blocks where the reference groups each pair.
+ */
+describe("an all-picture row keeps its row", () => {
+  const plate = (a: string, b: string) =>
+    `<table width="95%"><tr>` +
+    `<td width="50%"><p align="center"><img src="${a}" width="150" height="147"></td>` +
+    `<td width="50%"><p align="center"><img src="${b}" width="150" height="150"></td>` +
+    `</tr></table>`;
+
+  it("groups a row of two pictures into `::: images`", async () => {
+    const out = await md(PROSE + plate("photo/a.jpg", "photo/b.jpg") + PROSE);
+    expect(out).toContain("::: images");
+    expect(out).toContain("columns: 2");
+    expect(out).toContain("src: photo/a.jpg");
+    expect(out).toContain("src: photo/b.jpg");
+  });
+
+  it("does not group a picture beside its words — the false friend", async () => {
+    const record =
+      `<table width="95%"><tr>` +
+      `<td width="50%"><p align="center"><b>1.000.000 Platinum</b></td>` +
+      `<td width="50%"><p align="center"><img src="photo/a.jpg" width="150" height="150"></td>` +
+      `</tr></table>`;
+    const out = await md(PROSE + record + PROSE);
+    expect(out).not.toContain("::: images");
+    expect(out).toContain("src: photo/a.jpg");
+  });
+
+  it("does not group a row that shows one picture", async () => {
+    const single = `<table width="95%"><tr><td><p align="center"><img src="photo/a.jpg" width="150" height="150"></td></tr></table>`;
+    const out = await md(PROSE + single + PROSE);
+    expect(out).not.toContain("::: images");
+  });
+});
+
+/**
  * A catalog is evidenced by the pairing, not by the column widths.
  *
  * **Invariant.** Every content row of a two-column grid sets a bare picture
