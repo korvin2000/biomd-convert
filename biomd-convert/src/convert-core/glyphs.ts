@@ -6,9 +6,8 @@
  * table does not have an entry for what it is looking at. Nothing here names a
  * document, a class, an id or a filename.
  *
- * The wider icon → glyph map that `mini_images_to_md_guide.md` specifies (29
- * entries, keyed on the site's shared asset paths) belongs here too and is not
- * built yet; this module exists so it has a home when it is.
+ * The wider icon → glyph map `mini_images_to_md_guide.md` specifies lives here
+ * too — `ICON_GLYPHS`, below.
  */
 
 /**
@@ -37,6 +36,81 @@
  * character references before comparing, so the two spellings compare equal.
  */
 export const LINK_GLYPH = "\u{1F517}";
+
+/**
+ * What a shared UI icon stood for — `mini_images_to_md_guide.md`'s known-icon map.
+ *
+ * A 1998 template drew its controls as tiny GIFs: a back arrow, a forward
+ * arrow, a home mark, a letter tab. They are text-equivalents, not article
+ * media, and the guide is normative for the family (`CLAUDE.md` §2.3), which is
+ * also what makes this table *lexical data* rather than detector literals under
+ * invariant 5 — the same standing as `RULE_GLYPHS` below and the border palette.
+ * `isUiIcon` names nothing; it asks this table.
+ *
+ * **Keyed on the asset stem**, lower-cased, without directory or extension. The
+ * guide sanctions ignoring case and suffixes, and the corpus requires it: the
+ * same score icon is spelled `score3.gif` in the guide and `score3.jpg` on the
+ * page that uses it. A stem is still specific enough to be wrong safely — an
+ * unlisted icon simply keeps whatever the pipeline does with it today.
+ *
+ * `mark` carries the guide's `***А-К***` forms: a bitmap letter or letter range
+ * is replaced by *styled text*, not by a character, so the emphasis has to
+ * survive as structure. Emitting `"***А-К***"` as a text node would serialize
+ * escaped, which is the trap the `LINK_GLYPH` note above records.
+ */
+export interface IconGlyph {
+  /** The replacement, as characters — never as a numeric character reference. */
+  readonly text: string;
+  /** `letter` renders as `***text***`; the default renders as-is. */
+  readonly mark?: "letter";
+}
+
+const ICON_GLYPHS: ReadonlyMap<string, IconGlyph> = new Map([
+  ["reply", { text: "↩" }], // ↩ reply / return
+  ["www", { text: "↗" }], // ↗ external link
+  ["up", { text: "▲" }], // ▲ up / previous level
+  ["kkk", { text: "▲" }], // ▲ up / previous level
+  ["smile", { text: "☻" }], // ☻
+  ["score3", { text: "♫" }], // ♫ sheet music
+  ["sad", { text: "☹" }], // ☹
+  ["previous", { text: "◀" }], // ◀ previous / backward
+  ["back", { text: "◀" }], // ◀ back / return
+  ["next", { text: "▶" }], // ▶ next / forward
+  ["forward", { text: "▶" }], // ▶ next / forward
+  ["go", { text: "▶" }], // ▶ next / forward
+  ["new", { text: "★" }], // ★ newly added
+  ["h1", { text: "⌂" }], // ⌂ home
+  ["h2", { text: "●" }], // ● current page / selected item
+  ["kk", { text: "▪" }], // ▪ small square marker
+  ["bggb1", { text: "■" }], // ■ square marker
+  ["v", { text: "В", mark: "letter" }], // В
+  ["p", { text: "Р", mark: "letter" }], // Р
+  ["o", { text: "О", mark: "letter" }], // О
+  ["n", { text: "Н", mark: "letter" }], // Н
+  ["m", { text: "М", mark: "letter" }], // М
+  ["k", { text: "К", mark: "letter" }], // К
+  ["c", { text: "С", mark: "letter" }], // С
+  ["c1", { text: "С", mark: "letter" }], // С
+  ["ja", { text: "Я", mark: "letter" }], // Я
+  ["ak", { text: "А-К", mark: "letter" }], // А-К
+  ["ls", { text: "Л-С", mark: "letter" }], // Л-С
+  ["ty", { text: "Т-Я", mark: "letter" }], // Т-Я
+]);
+
+/**
+ * The glyph a shared asset path stands for, or `null` when it is not a known icon.
+ *
+ * Query and fragment are dropped before the stem is taken, as the guide allows.
+ * Returning `null` is the graceful degradation invariant 5 requires: an asset
+ * this table has never heard of is left exactly as it was.
+ */
+export function iconGlyphFor(src: string): IconGlyph | null {
+  const path = src.split(/[?#]/u)[0] ?? "";
+  const file = path.slice(path.lastIndexOf("/") + 1);
+  const dot = file.lastIndexOf(".");
+  const stem = (dot > 0 ? file.slice(0, dot) : file).toLowerCase();
+  return stem === "" ? null : (ICON_GLYPHS.get(stem) ?? null);
+}
 
 /**
  * Characters this era drew a horizontal rule with, when it had no `<hr>`.

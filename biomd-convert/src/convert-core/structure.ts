@@ -41,7 +41,7 @@ import {
   cellText,
   planDataTable,
 } from "./data-table.js";
-import { LINK_GLYPH, RULE_GLYPHS, isDrawnRule } from "./glyphs.js";
+import { LINK_GLYPH, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -63,6 +63,7 @@ import {
   groupColumnsFor,
   imageWidthOf,
   isDecorative,
+  isUiIcon,
   sizeTokenFor,
 } from "./media.js";
 
@@ -2187,6 +2188,28 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
           ctx.ledger.push(removed(node.id, "image without a source"));
           break;
         }
+        // A known control keeps its meaning and loses its bitmap: the enclosing
+        // `<a>` case below turns `[glyph](href)` out of it. `alt` outranks the
+        // table when the author wrote one — it is the visible thing the icon
+        // stood for on this page, where the glyph is only what the asset means
+        // site-wide, and the corpus is unanimous: the two icons carrying `alt`
+        // are labelled with it and the six without are drawn as glyphs.
+        const icon = isUiIcon(node) ? iconGlyphFor(src) : null;
+        if (icon) {
+          // `removed`, not `mergedInto`: the *asset* really does leave the
+          // output, and the images conservation ledger accounts only for
+          // removals. Recording it any other way makes a page whose icons
+          // became glyphs look like a page that lost two pictures — which is
+          // what it did look like, until conservation said so on `new_geyzel04`.
+          // The `<a>` is not removed, so its target is still required to appear.
+          ctx.ledger.push(removed(node.id, "UI icon replaced by its glyph (mini_images_to_md_guide)"));
+          const alt = (node.attrs["alt"] ?? "").replace(/\s+/gu, " ").trim();
+          if (alt !== "") out.push({ type: "text", value: alt });
+          else if (icon.mark === "letter") {
+            out.push({ type: "strong", children: [{ type: "emphasis", children: [{ type: "text", value: icon.text }] }] });
+          } else out.push({ type: "text", value: icon.text });
+          break;
+        }
         if (isDecorative(node)) {
           ctx.ledger.push(removed(node.id, "decorative image (spacer, icon, rule or nav glyph)"));
           break;
@@ -2338,7 +2361,15 @@ function runImages(nodes: readonly LadomNode[]): LadomNode[] {
   for (const node of nodes) {
     if (node.kind !== "element") continue;
     if (node.tag === "img") {
-      out.push(node);
+      // A nav arrow is a control, not a picture, so a run containing one is not
+      // a figure and two of them are not a plate. This has to be asked *here*
+      // rather than in `dropDecorative`: that pass looks at the run's direct
+      // children, this one descends through `<a>`, and an icon is always
+      // wrapped in the link it operates. The two disagreeing is what shipped
+      // five footers as `::: image src: ../main/back.gif` — a broken image
+      // where the source drew an arrow, and the fifth containment-vs-filter
+      // mismatch of this campaign (`learned-patterns.md`).
+      if (!isUiIcon(node)) out.push(node);
       continue;
     }
     if (IMAGE_WRAPPERS.has(node.tag) && textOf(node).trim() === "") {

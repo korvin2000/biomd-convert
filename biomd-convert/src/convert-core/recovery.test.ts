@@ -11,8 +11,8 @@ import { convert } from "./pipeline.js";
 import { ALIGN_LABEL_MAX_CHARS, foldBreaks, isAlignableLabelText, isDateLabel } from "./structure.js";
 import type { Classification } from "./classify.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
-import { isDrawnRule } from "./glyphs.js";
-import { groupColumnsFor, isDecorative, sizeTokenFor } from "./media.js";
+import { iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import { groupColumnsFor, isDecorative, isUiIcon, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
 import { parseHtml } from "../ladom/parse.js";
 import type { Measurer, MeasureResult } from "../ladom/measure.js";
@@ -274,6 +274,75 @@ describe("media", () => {
       ["a/smile.gif", false],
       ["a/portrait.jpg", false],
     ]);
+  });
+
+  /**
+   * Rule contract — a linked micro-image that a known asset table recognises is
+   * a control, and becomes its glyph rather than a picture.
+   *
+   * *Invariant:* containment in an `<a href>`, icon geometry in both dimensions,
+   * and a hit in `glyphs.ts`'s documented table. No filename, class or id is
+   * named here or in `isUiIcon`; the table is the lexical data invariant 5
+   * requires, and an unlisted asset degrades to the old behaviour.
+   *
+   * *Recurrence:* deliberately not required. A pager is drawn once per page —
+   * `new_karta` has exactly one arrow — so the recurrence that licenses this is
+   * cross-document (one shared asset, every page) and is what the table records.
+   *
+   * *False friend:* a linked thumbnail, and the corpus's own near-miss — a
+   * linked, icon-ish site badge that carries a caption and is not in the table.
+   * Both must keep their image.
+   */
+  it("turns a linked known icon into its glyph and leaves a linked thumbnail alone", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><a href="karta2.htm"><img src="../main/next.gif" width="16" height="16"></a></p>' +
+        '<p align="center"><a href="rechin3.htm"><img src="../main/back.gif" width="11" height="11"></a>&nbsp;' +
+        '<a href="rechin.htm"><img src="../main/h2.gif" width="16" height="16"></a></p>',
+    );
+    expect(out).toContain("[▶](/#/karta2)");
+    expect(out).toContain("[◀](/#/rechin3)");
+    expect(out).toContain("[●](/#/rechin)");
+    // The pair no longer reads as a plate of two pictures.
+    expect(out).not.toContain("::: images");
+    expect(out).not.toContain("main/back.gif");
+  });
+
+  it("labels a known icon with its `alt` when the author wrote one", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><a href="geyzel_03.htm">' +
+        '<img src="../main/previous.gif" width="16" height="16" alt="Главы 8-9"></a></p>',
+    );
+    expect(out).toContain("[Главы 8-9](/#/geyzel_03)");
+    expect(out).not.toContain("◀");
+  });
+
+  it("does not fire on a linked thumbnail or on an unlisted linked badge", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><a href="http://www.km.ru"><img src="../main/km.gif" width="28" height="28"' +
+        ' alt="Источник: Большая энциклопедия"></a></p>' +
+        '<p align="center"><a href="photo/big.jpg"><img src="photo/thumb.jpg" width="30" height="30"' +
+        ' alt="Сеговия"></a></p>',
+    );
+    expect(out).toContain("src: ../main/km.gif");
+    expect(out).toContain("src: photo/thumb.jpg");
+  });
+
+  it("leaves an unlinked known icon to the decorative filter", () => {
+    const doc = parseHtml('<body><img src="../main/score3.jpg" width="32" height="14"></body>');
+    const img = [...walkElements(doc.root)].find((e) => e.tag === "img");
+    expect(img && isUiIcon(img)).toBe(false);
+  });
+
+  it("keys the icon table on the stem, ignoring case, directory and extension", () => {
+    // The guide spells the score icon `.gif`; the page that uses it writes `.jpg`.
+    expect(iconGlyphFor("/main/score3.gif")?.text).toBe("♫");
+    expect(iconGlyphFor("../MAIN/Score3.JPG?v=2")?.text).toBe("♫");
+    expect(iconGlyphFor("photo/s/segovia3.jpg")).toBeNull();
+    expect(iconGlyphFor("")).toBeNull();
+    expect(iconGlyphFor("/main/ak.gif")).toEqual({ text: "А-К", mark: "letter" });
   });
 
   it("groups two adjacent images into one row", () => {

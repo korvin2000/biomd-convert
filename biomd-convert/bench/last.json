@@ -1,5 +1,5 @@
 {
-  "overall": 0.9269403041961911,
+  "overall": 0.942532573321905,
   "documents": [
     {
       "name": "authors",
@@ -66,20 +66,20 @@
       "name": "barrios",
       "text": {
         "recall": 0.9882525697503671,
-        "precision": 0.9897058823529412,
-        "f1": 0.9889786921381337,
+        "precision": 0.9911634756995582,
+        "f1": 0.9897058823529413,
         "expected": 681,
-        "actual": 680,
+        "actual": 679,
         "matched": 673,
         "missing": [
-          "мангори жизнь и творчество 128279",
-          "жизнь и творчество 128279 complete",
-          "и творчество 128279 complete historical",
-          "творчество 128279 complete historical recordings",
-          "128279 complete historical recordings 1913",
+          "мангори жизнь и творчество barrios1",
+          "жизнь и творчество barrios1 complete",
+          "и творчество barrios1 complete historical",
+          "творчество barrios1 complete historical recordings",
+          "barrios1 complete historical recordings 1913",
           "de navidad traditional tab название",
-          "navidad traditional tab название 128279",
-          "traditional tab название 128279 128279"
+          "navidad traditional tab название аудиоформат",
+          "traditional tab название аудиоформат аудиоформат"
         ]
       },
       "headings": {
@@ -134,8 +134,8 @@
           "rows": 27,
           "header": [
             "название",
-            "128279",
-            "128279"
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "choro da saudade nostalgic choro",
@@ -280,7 +280,7 @@
           ]
         }
       ],
-      "overall": 0.9966936076414401
+      "overall": 0.9969117647058824
     },
     {
       "name": "borislova",
@@ -292,12 +292,12 @@
         "actual": 1764,
         "matched": 1760,
         "missing": [
-          "1 65 mb wma песня",
-          "65 mb wma песня 128279",
-          "mb wma песня 128279 запись",
-          "wma песня 128279 запись предоставлена",
-          "песня 128279 запись предоставлена автором",
-          "128279 запись предоставлена автором и"
+          "1 65 mb wma название",
+          "65 mb wma название аудиоформат",
+          "mb wma название аудиоформат запись",
+          "wma название аудиоформат запись предоставлена",
+          "название аудиоформат запись предоставлена автором",
+          "аудиоформат запись предоставлена автором и"
         ]
       },
       "headings": {
@@ -354,8 +354,8 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "песня",
-            "128279"
+            "название",
+            "аудиоформат"
           ],
           "cells": [
             "estrelluvio dedicada a josé luis vega 4 46 1 65 mb",
@@ -416,12 +416,12 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9795918367346939,
-        "precision": 0.9863013698630136,
-        "f1": 0.9829351535836177,
-        "expected": 147,
+        "recall": 0.9794520547945206,
+        "precision": 0.9794520547945206,
+        "f1": 0.9794520547945206,
+        "expected": 146,
         "actual": 146,
-        "matched": 144,
+        "matched": 143,
         "missing": [
           "images"
         ]
@@ -438,7 +438,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.990740179558633
+      "overall": 0.9903918696797233
     },
     {
       "name": "jovicic",
@@ -504,21 +504,21 @@
     {
       "name": "kiselev",
       "text": {
-        "recall": 0.9838187702265372,
+        "recall": 0.985945945945946,
         "precision": 0.9891540130151844,
-        "f1": 0.9864791779340183,
-        "expected": 927,
+        "f1": 0.987547374120195,
+        "expected": 925,
         "actual": 922,
         "matched": 912,
         "missing": [
           "исп о киселев wma название",
-          "о киселев wma название произведения",
-          "киселев wma название произведения 128279",
-          "wma название произведения 128279 128279",
-          "название произведения 128279 128279 музыкальные",
-          "произведения 128279 128279 музыкальные файлы",
-          "128279 128279 музыкальные файлы и",
-          "128279 музыкальные файлы и ноты"
+          "о киселев wma название аудиоформат",
+          "киселев wma название аудиоформат аудиоформат",
+          "wma название аудиоформат аудиоформат музыкальные",
+          "название аудиоформат аудиоформат музыкальные файлы",
+          "аудиоформат аудиоформат музыкальные файлы и",
+          "аудиоформат музыкальные файлы и ноты",
+          "завтрак на траве mp3 название"
         ]
       },
       "headings": {
@@ -550,11 +550,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.9444444444444444,
-        "f1": 0.9714285714285714,
-        "expected": 17,
+        "precision": 0.8888888888888888,
+        "f1": 0.9411764705882353,
+        "expected": 16,
         "actual": 18,
-        "matched": 17,
+        "matched": 16,
         "missing": []
       },
       "tableCells": {
@@ -572,9 +572,9 @@
           "cols": 3,
           "rows": 13,
           "header": [
-            "название произведения",
-            "128279",
-            "128279"
+            "название",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "десять музыкальных этюдов для гитары исп о киселев",
@@ -610,8 +610,8 @@
           "cols": 2,
           "rows": 26,
           "header": [
-            "название части",
-            "формат"
+            "название",
+            "аудиоформат"
           ],
           "cells": [
             "джазсюита 2001 александру виницкому одному из моих любимых композиторов",
@@ -762,35 +762,35 @@
           ]
         }
       ],
-      "overall": 0.9847532771897294
+      "overall": 0.9820485259615487
     },
     {
       "name": "new_bach",
       "text": {
-        "recall": 0.9937923250564334,
-        "precision": 0.9943534726143421,
-        "f1": 0.9940728196443693,
+        "recall": 0.9932279909706546,
+        "precision": 0.9943502824858758,
+        "f1": 0.9937888198757764,
         "expected": 1772,
-        "actual": 1771,
-        "matched": 1761,
+        "actual": 1770,
+        "matched": 1760,
         "missing": [
           "musical offering duet tab произведение",
-          "offering duet tab произведение табулатура",
-          "duet tab произведение табулатура midi",
-          "tab произведение табулатура midi см",
-          "произведение табулатура midi см также",
-          "табулатура midi см также о",
-          "произведениях и с баха 9658",
-          "и с баха 9658 источник"
+          "offering duet tab произведение аудиоформат",
+          "duet tab произведение аудиоформат аудиоформат",
+          "tab произведение аудиоформат аудиоформат см",
+          "произведение аудиоформат аудиоформат см также",
+          "аудиоформат аудиоформат см также о",
+          "аудиоформат см также о лютневых",
+          "произведениях и с баха 9654"
         ]
       },
       "headings": {
         "recall": 1,
-        "precision": 0.8888888888888888,
-        "f1": 0.9411764705882353,
-        "expected": 8,
+        "precision": 1,
+        "f1": 1,
+        "expected": 9,
         "actual": 9,
-        "matched": 8,
+        "matched": 9,
         "missing": []
       },
       "links": {
@@ -812,15 +812,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.888888888888889,
-        "expected": 5,
+        "f1": 1,
+        "expected": 4,
         "actual": 4,
         "matched": 4,
-        "missing": [
-          "align"
-        ]
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -838,8 +836,8 @@
           "rows": 82,
           "header": [
             "произведение",
-            "табулатура",
-            "midi"
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "air on the g string air from bwv 1068 arr wilhelmi 2 versions",
@@ -1198,7 +1196,7 @@
           ]
         }
       ],
-      "overall": 0.9812283818410232
+      "overall": 0.9981366459627329
     },
     {
       "name": "new_blackmore",
@@ -1216,16 +1214,13 @@
         ]
       },
       "headings": {
-        "recall": 0.7777777777777778,
-        "precision": 0.7777777777777778,
-        "f1": 0.7777777777777778,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 9,
         "actual": 9,
-        "matched": 7,
-        "missing": [
-          "1\tричи блэкмор ritchie",
-          "2\tblackmore blackmore s night"
-        ]
+        "matched": 9,
+        "missing": []
       },
       "links": {
         "recall": 1,
@@ -1268,7 +1263,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9726627537960983
+      "overall": 0.9948849760183206
     },
     {
       "name": "new_dyens",
@@ -1281,13 +1276,13 @@
         "matched": 519,
         "missing": [
           "mp3 libra sonatine midi название",
-          "libra sonatine midi название 128279",
-          "sonatine midi название 128279 128279",
-          "midi название 128279 128279 128279",
-          "название 128279 128279 128279 дискография",
-          "128279 128279 128279 дискография 1",
-          "128279 128279 дискография 1 танго",
-          "128279 дискография 1 танго и"
+          "libra sonatine midi название аудиоформат",
+          "sonatine midi название аудиоформат аудиоформат",
+          "midi название аудиоформат аудиоформат аудиоформат",
+          "название аудиоформат аудиоформат аудиоформат дискография",
+          "аудиоформат аудиоформат аудиоформат дискография 1",
+          "аудиоформат аудиоформат дискография 1 танго",
+          "аудиоформат дискография 1 танго и"
         ]
       },
       "headings": {
@@ -1342,9 +1337,9 @@
           "rows": 5,
           "header": [
             "название",
-            "128279",
-            "128279",
-            "128279"
+            "аудиоформат",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "tango en skaï",
@@ -1429,23 +1424,21 @@
       },
       "images": {
         "recall": 1,
-        "precision": 0.3333333333333333,
-        "f1": 0.5,
+        "precision": 1,
+        "f1": 1,
         "expected": 1,
-        "actual": 3,
+        "actual": 1,
         "matched": 1,
         "missing": []
       },
       "directives": {
-        "recall": 0.8,
-        "precision": 0.5714285714285714,
-        "f1": 0.6666666666666666,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 5,
-        "actual": 7,
-        "matched": 4,
-        "missing": [
-          "align"
-        ]
+        "actual": 5,
+        "matched": 5,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -1459,17 +1452,17 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.8833333333333333
+      "overall": 0.9666666666666666
     },
     {
       "name": "new_karta",
       "text": {
-        "recall": 0.8250591016548463,
-        "precision": 0.8925831202046036,
-        "f1": 0.8574938574938574,
-        "expected": 423,
+        "recall": 0.8357487922705314,
+        "precision": 0.8849104859335039,
+        "f1": 0.8596273291925466,
+        "expected": 414,
         "actual": 391,
-        "matched": 349,
+        "matched": 346,
         "missing": [
           "аудио нот и табулатур frame",
           "нот и табулатур frame white",
@@ -1477,8 +1470,8 @@
           "табулатур frame white поскольку биографические",
           "frame white поскольку биографические страницы",
           "white поскольку биографические страницы сайта",
-          "gif 1 gif 2 композиция",
-          "1 gif 2 композиция формат"
+          "gif 1 gif 2 название",
+          "1 gif 2 название аудиоформат"
         ]
       },
       "headings": {
@@ -1501,19 +1494,19 @@
       },
       "images": {
         "recall": 1,
-        "precision": 0,
-        "f1": 0,
+        "precision": 1,
+        "f1": 1,
         "expected": 0,
-        "actual": 1,
+        "actual": 0,
         "matched": 0,
         "missing": []
       },
       "directives": {
         "recall": 0.8333333333333334,
-        "precision": 0.5,
-        "f1": 0.625,
+        "precision": 0.5555555555555556,
+        "f1": 0.6666666666666667,
         "expected": 6,
-        "actual": 10,
+        "actual": 9,
         "matched": 5,
         "missing": [
           "frame"
@@ -1538,10 +1531,10 @@
           "cols": 4,
           "rows": 3,
           "header": [
-            "композиция",
-            "формат",
-            "128279",
-            "128279"
+            "название",
+            "аудиоформат",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "samba ticotico no fuba",
@@ -1560,8 +1553,8 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "композиция",
-            "формат"
+            "название",
+            "аудиоформат"
           ],
           "cells": [
             "el puerto da suite iberia arr sergio abreu duo",
@@ -1572,9 +1565,9 @@
           "cols": 3,
           "rows": 4,
           "header": [
-            "название произведения",
-            "ноты tab",
-            "midi"
+            "название",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "eight lessons",
@@ -1591,9 +1584,9 @@
           "cols": 3,
           "rows": 2,
           "header": [
-            "композиция",
-            "ноты tab",
-            "midi"
+            "название",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "la regalona habanera",
@@ -1606,9 +1599,9 @@
           "cols": 3,
           "rows": 12,
           "header": [
-            "произведение",
-            "ноты tab",
-            "аудио midi wma"
+            "название",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "celebre serenata espanola cadiz arranged miguel llobet",
@@ -1645,7 +1638,7 @@
           "rows": 3,
           "header": [
             "название",
-            "формат"
+            "аудиоформат"
           ],
           "cells": [
             "isle of the sun",
@@ -1660,9 +1653,9 @@
           "cols": 3,
           "rows": 27,
           "header": [
-            "название произведения",
-            "таблатура",
-            "midi mp3"
+            "название",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "choro da saudade nostalgic choro",
@@ -1733,8 +1726,8 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "название произведения",
-            "формат"
+            "название",
+            "аудиоформат"
           ],
           "cells": [
             "heitor villalobos prelude no 3 in a minor",
@@ -1746,8 +1739,8 @@
           "rows": 2,
           "header": [
             "название",
-            "табы",
-            "midi"
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "aubade",
@@ -1959,7 +1952,7 @@
           ]
         }
       ],
-      "overall": 0.7799316830678837
+      "overall": 0.8847383912441572
     },
     {
       "name": "new_kolpakov",
@@ -2158,19 +2151,19 @@
       },
       "images": {
         "recall": 1,
-        "precision": 0.8333333333333334,
-        "f1": 0.9090909090909091,
+        "precision": 1,
+        "f1": 1,
         "expected": 5,
-        "actual": 6,
+        "actual": 5,
         "matched": 5,
         "missing": []
       },
       "directives": {
         "recall": 0.9354838709677419,
-        "precision": 0.9666666666666667,
-        "f1": 0.9508196721311476,
+        "precision": 1,
+        "f1": 0.9666666666666666,
         "expected": 31,
-        "actual": 30,
+        "actual": 29,
         "matched": 29,
         "missing": [
           "frame",
@@ -2189,7 +2182,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9820103584840875
+      "overall": 0.9926859670285484
     },
     {
       "name": "new_rechin4",
@@ -2211,13 +2204,16 @@
         ]
       },
       "headings": {
-        "recall": 1,
+        "recall": 0.7142857142857143,
         "precision": 0.8333333333333334,
-        "f1": 0.9090909090909091,
-        "expected": 5,
+        "f1": 0.7692307692307692,
+        "expected": 7,
         "actual": 6,
         "matched": 5,
-        "missing": []
+        "missing": [
+          "2\tпуть к циклу",
+          "2\t24 прелюдии и фуги для гитары"
+        ]
       },
       "links": {
         "recall": 1,
@@ -2230,23 +2226,22 @@
       },
       "images": {
         "recall": 1,
-        "precision": 0.3333333333333333,
-        "f1": 0.5,
+        "precision": 1,
+        "f1": 1,
         "expected": 1,
-        "actual": 3,
+        "actual": 1,
         "matched": 1,
         "missing": []
       },
       "directives": {
-        "recall": 0.23076923076923078,
-        "precision": 0.5,
-        "f1": 0.3157894736842105,
-        "expected": 13,
-        "actual": 6,
+        "recall": 0.75,
+        "precision": 1,
+        "f1": 0.8571428571428571,
+        "expected": 4,
+        "actual": 3,
         "matched": 3,
         "missing": [
-          "nav",
-          "lead"
+          "nav"
         ]
       },
       "tableCells": {
@@ -2261,7 +2256,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.8717522523243347
+      "overall": 0.9619015766841854
     },
     {
       "name": "news",
@@ -2389,15 +2384,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9545454545454546,
+        "recall": 1,
         "precision": 0.875,
-        "f1": 0.9130434782608695,
-        "expected": 22,
+        "f1": 0.9333333333333333,
+        "expected": 21,
         "actual": 24,
         "matched": 21,
-        "missing": [
-          "align"
-        ]
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2411,7 +2404,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.8848910461633791
+      "overall": 0.8869200316706255
     },
     {
       "name": "pavlov_azancheev",
@@ -2479,12 +2472,12 @@
     {
       "name": "segovia",
       "text": {
-        "recall": 0.9754145225843339,
-        "precision": 0.9815880322209436,
-        "f1": 0.9784915400057356,
-        "expected": 1749,
-        "actual": 1738,
-        "matched": 1706,
+        "recall": 0.9753722794959908,
+        "precision": 0.9804260218767991,
+        "f1": 0.977892621303474,
+        "expected": 1746,
+        "actual": 1737,
+        "matched": 1703,
         "missing": [
           "жизнь четырем главным задачам 1",
           "четырем главным задачам 1 отделение",
@@ -2552,8 +2545,8 @@
           "rows": 3,
           "header": [
             "название",
-            "табулатура",
-            "аудио midi"
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "bretonia",
@@ -2569,11 +2562,11 @@
           "cols": 5,
           "rows": 4,
           "header": [
-            "трек",
-            "тип",
-            "название",
-            "длительность",
-            "формат"
+            "",
+            "",
+            "",
+            "",
+            "mp3"
           ],
           "cells": [
             "i",
@@ -2645,18 +2638,27 @@
           ]
         }
       ],
-      "overall": 0.9467594814119484
+      "overall": 0.9465798058012698
     },
     {
       "name": "segovia1",
       "text": {
-        "recall": 1,
-        "precision": 1,
-        "f1": 1,
-        "expected": 1643,
+        "recall": 0.9915100060642814,
+        "precision": 0.9951308581862447,
+        "f1": 0.9933171324422843,
+        "expected": 1649,
         "actual": 1643,
-        "matched": 1643,
-        "missing": []
+        "matched": 1635,
+        "missing": [
+          "суть педагогических принципов сеговии frame",
+          "педагогических принципов сеговии frame gold",
+          "принципов сеговии frame gold внимание",
+          "сеговии frame gold внимание частичное",
+          "frame gold внимание частичное или",
+          "gold внимание частичное или полное",
+          "subject техника андреса сеговии columns",
+          "техника андреса сеговии columns 4"
+        ]
       },
       "headings": {
         "recall": 1,
@@ -2669,30 +2671,31 @@
       },
       "links": {
         "recall": 1,
-        "precision": 0.6666666666666666,
-        "f1": 0.8,
-        "expected": 4,
+        "precision": 1,
+        "f1": 1,
+        "expected": 6,
         "actual": 6,
-        "matched": 4,
+        "matched": 6,
         "missing": []
       },
       "images": {
         "recall": 1,
-        "precision": 0.9047619047619048,
-        "f1": 0.9500000000000001,
+        "precision": 1,
+        "f1": 1,
         "expected": 19,
-        "actual": 21,
+        "actual": 19,
         "matched": 19,
         "missing": []
       },
       "directives": {
-        "recall": 0.8846153846153846,
-        "precision": 0.92,
-        "f1": 0.9019607843137256,
+        "recall": 0.7692307692307693,
+        "precision": 0.8695652173913043,
+        "f1": 0.8163265306122449,
         "expected": 26,
-        "actual": 25,
-        "matched": 23,
+        "actual": 23,
+        "matched": 20,
         "missing": [
+          "frame",
           "columns",
           "column"
         ]
@@ -2709,17 +2712,17 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9551960784313726
+      "overall": 0.9796277927939098
     },
     {
       "name": "tarrega",
       "text": {
-        "recall": 0.9733924611973392,
-        "precision": 0.9755555555555555,
-        "f1": 0.9744728079911209,
-        "expected": 902,
-        "actual": 900,
-        "matched": 878,
+        "recall": 0.9623893805309734,
+        "precision": 0.9688195991091314,
+        "f1": 0.9655937846836848,
+        "expected": 904,
+        "actual": 898,
+        "matched": 870,
         "missing": [
           "гитары недоступных другим инструментам он",
           "недоступных другим инструментам он принадлежал",
@@ -2761,13 +2764,15 @@
         "missing": []
       },
       "directives": {
-        "recall": 1,
+        "recall": 0.8,
         "precision": 1,
-        "f1": 1,
-        "expected": 4,
+        "f1": 0.888888888888889,
+        "expected": 5,
         "actual": 4,
         "matched": 4,
-        "missing": []
+        "missing": [
+          "align"
+        ]
       },
       "tableCells": {
         "recall": 0.6991150442477876,
@@ -2793,7 +2798,7 @@
           "cols": 2,
           "rows": 6,
           "header": [
-            "",
+            "название",
             ""
           ],
           "cells": [
@@ -2815,7 +2820,7 @@
           "cols": 2,
           "rows": 11,
           "header": [
-            "",
+            "название",
             ""
           ],
           "cells": [
@@ -2848,9 +2853,9 @@
           "rows": 32,
           "header": [
             "название",
-            "128279",
-            "128279",
-            "128279"
+            "аудиоформат",
+            "аудиоформат",
+            "аудиоформат"
           ],
           "cells": [
             "adelita",
@@ -3028,7 +3033,7 @@
           ]
         }
       ],
-      "overall": 0.8848269614449552
+      "overall": 0.8710521433416134
     },
     {
       "name": "williams2",
@@ -3070,11 +3075,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.9,
-        "f1": 0.9473684210526316,
-        "expected": 9,
+        "precision": 1,
+        "f1": 1,
+        "expected": 10,
         "actual": 10,
-        "matched": 9,
+        "matched": 10,
         "missing": []
       },
       "tableCells": {
@@ -3089,7 +3094,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9947368421052631
+      "overall": 1
     }
   ]
 }

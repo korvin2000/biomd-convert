@@ -16,6 +16,7 @@
  * the decisions are testable without a browser and reproducible without one.
  */
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
+import { iconGlyphFor } from "./glyphs.js";
 
 export type ImageSizeToken = "small" | "medium" | "large" | "full";
 export type ImagePositionToken = "left" | "right" | "center" | "full";
@@ -126,6 +127,66 @@ export function isDecorative(el: LadomNode): boolean {
   }
   return false;
 }
+
+/**
+ * A control drawn as a picture — `mini_images_to_md_guide.md`'s UI icon.
+ *
+ * **Invariant.** Three independent signals, none of them a name this function
+ * knows: *containment* — the image is inside an `<a href>`, so it is a control
+ * and not article media; *geometry* — it is icon-sized in both dimensions, so it
+ * cannot be depicting anything; *asset identity* — its stem is in the documented
+ * icon table, which is lexical data (`glyphs.ts`) and degrades to `false` for an
+ * asset it has never seen. The guide asks for two agreeing UI signals before
+ * calling an unknown image an icon; requiring a table hit is stricter than that
+ * and is what makes the rule safe to run without a caption check.
+ *
+ * **Recurrence does not apply, and saying so is part of the contract.** A page
+ * has one footer, and its pager is drawn once or twice — `new_karta` has exactly
+ * one nav arrow on the page. `CLAUDE.md` §5's recurrence requirement is a design
+ * law for shapes that repeat *within* a document; here the recurring evidence is
+ * cross-document (the same shared asset on every page of the site), which is
+ * what the table records. Requiring within-page recurrence would refuse every
+ * true positive in the corpus.
+ *
+ * **False friend: a linked thumbnail.** A small content image whose link points
+ * at a larger scan is the shape the guide warns about, and the size cap alone
+ * does not separate them — a 32 px thumbnail is legal. Table membership does:
+ * a thumbnail is article-specific, so it is never a shared asset, so it is never
+ * in the table. `../main/km.gif` is the corpus's near-miss — a linked, icon-ish
+ * site badge that carries a real caption and is *not* in the table, and it must
+ * keep its `::: image`.
+ *
+ * The `<a>` requirement is deliberate and narrower than the guide. An *unlinked*
+ * known icon — the score marks that stand in front of a table cell's links — is
+ * a different sub-mechanism with a different risk: it lands inside table cells
+ * and can move table planning. It is left to `isDecorative` for now.
+ */
+export function isUiIcon(el: LadomNode): boolean {
+  if (el.tag !== "img") return false;
+  if (iconGlyphFor(el.attrs["src"] ?? "") === null) return false;
+
+  const w = imageWidthOf(el);
+  const h = imageHeightOf(el);
+  if (w === undefined || h === undefined) return false;
+  if (w > ICON_MAX_PX || h > ICON_MAX_PX) return false;
+
+  for (let cur = el.parent; cur; cur = cur.parent) {
+    if (cur.tag === "a") return (cur.attrs["href"] ?? "") !== "";
+  }
+  return false;
+}
+
+/**
+ * How big a control is allowed to be.
+ *
+ * The guide's own figure — "typically `<=32×32` px or similarly icon-sized". It
+ * is a ceiling rather than a discriminator: every icon in the corpus measures
+ * 11×11 or 16×16, so the result is flat for anything from 16 to well past 32 and
+ * the exact number does no work. That flatness is the shape a limit should have
+ * (`learned-patterns.md`); a cliff here would mean the size was masking a
+ * missing exclusion.
+ */
+const ICON_MAX_PX = 32;
 
 /**
  * A caption for one image, from the source only.
