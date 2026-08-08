@@ -32,6 +32,9 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | An mdast `html` node is a way to emit a character reference | it serializes correctly and then trips `raw-html` **and** `table-cell-block-content`, both correctly. Emit the character; fold the spelling in the instrument | 21.4 |
 | A one-row media record licenses a one-row table | reopened legitimately once §21.4 removed the emitter blocker §17.4 killed it on — then killed again on better evidence. The shape occurs **three times corpus-wide** and the references split **2–1**, with `williams2` (regression corpus) writing `::: align`. `new_kolpakov`'s row is not even covered: its third cell is an unlinked `(1,7 Mb)` | 22.2 |
 | The alignment family is its own mechanism | a third of it closed as a *side effect* of the region work in §21.2 and §22.1, with no alignment rule touched. Read it **after** the region and table families settle | 22.3 |
+| Same prominence across two masthead lines always means two `#` | true across sibling *blocks*, false inside one block: a `<br>` between lines set the same way is a hand-wrap to fit a 458 px cell. `segovia1` and `new_geyzel04` join theirs. The first implementation regressed both plus `goya2` in one run | 24.1 |
+| A masthead written as `<center>` is reachable by heading recovery | `normalize` unwraps `<center>` before recovery runs, so the lines have no box to be lines of. All 22 corpus mastheads use a `<div>`; recorded as a limit, not chased | 24.6 |
+| A guard that fires on nothing should be removed | measure **both paths** first. The masthead-box exclusion is inert measured and load-bearing unmeasured, where a folded `<font size>` is the only evidence there is | 24.6 |
 
 ## 2. Instrument hypotheses — your own differ/renderer/judge is a first-class suspect
 
@@ -50,6 +53,9 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | An instrument's own key may fold differently from the rest of the instrument | `homeKey` split on hyphens while `similarityTokens` joined them → a class asserting content loss for text one function over could see | 14.3 |
 | `paragraph.missing` reports missing paragraphs | all ten had their text in the produced document. A class reporting content loss where none exists outranked every real class | 14.1 |
 | `conservation.text.recall` is a content-loss measure | it is built on word shingles, so a legitimate block split breaks every straddling shingle. 45.3 % recall with **zero** words, links or images missing | 16.2 |
+| A structural fingerprint may hash a declared length verbatim | `width="760"` and `width="760px"` split one site template into two shapes, so `news`'s banner, menu button and rails matched nothing and shipped as content. Normalizing the length cost L3 13 findings on its own | 24.4 |
+| A block containing a picture is a picture, for the caption guard | `followsImage` read a dated newspaper banner as "a photograph above" and cost two article titles their heading. A picture **with its own words** has already said what it is | 24.4 |
+| Folding a presentational wrapper onto its parent is lossless | twice wrong: a partial cover asserts a size of text it never covered, and where the parent is measured the folded value is shadowed by the parent's own computed size and disappears | 24.2 |
 
 ## 3. Standing method traps
 

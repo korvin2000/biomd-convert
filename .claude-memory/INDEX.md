@@ -36,12 +36,13 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** — see [OPEN.md](OPEN.md) §1. In short: the first refinement iteration is done
-(PROGRESS §21–§23, **five mechanisms** plus two author adjudications; L1 90.3 → 92.7, L2 745 → 453,
-L3 287 → 110). Next is the **wrapped masthead** (§23.2), now unambiguous. Do **not** open the
-alignment family: a third of it closed as a side effect of the region work with no alignment rule
-touched. After the masthead the ledger is thin enough that a **document-shaped** iteration beats a
-class-shaped one — `news` (49) and `goya2` (43).
+**Next action** — see [OPEN.md](OPEN.md) §1. In short: two refinement iterations are done
+(PROGRESS §21–§24, **nine mechanisms** plus two author adjudications; L1 90.3 → 92.9, L2 745 → 440,
+L3 287 → 97). The wrapped masthead is closed. Next is **`align.spurious`** (8 instances, 7
+documents): §22.3's deferral of the alignment family has expired now that the region and table
+families have settled and the class is still there. **Run `corpus scan` first on a fresh clone** —
+§24.4 changed the chrome fingerprint. Two questions are waiting on the reference author
+([OPEN.md](OPEN.md) §3).
 
 ---
 

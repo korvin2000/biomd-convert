@@ -2844,3 +2844,192 @@ The two adjudications also confirm the value of asking. §21.5 correctly refused
 to close the finding by special-casing the converter, and refused to edit the
 reference; putting the side-by-side to the author resolved in one exchange what
 no amount of deterministic evidence could have.
+
+## 24. Four mechanisms: the wrapped masthead, the drawn rule, and two instruments that were lying (2026-08-08)
+
+One iteration, four accepted changes, one commit each with the measured
+before/after on every rung in the message. Nothing regressed on any document.
+
+| rung | §23 | after |
+|---|---|---|
+| L0 | 406 tests, 0 FAILED | **418 tests**, typecheck clean, 0 FAILED |
+| L1 | 92.7 | **92.9** |
+| L2 | 453 · 271 converter-defect | **440 · 258** |
+| L3 | 110, 20 critical | **97, 10 critical** |
+| validator | 28 errors | 28 |
+
+Per document, L2 converter-defects: `new_bach` 5 → **2**, `new_lagq2` 9 → **6**,
+`new_blackmore` 11 → **8**, `pavlov_azancheev` 9 → **7**, `segovia` 14 → **13**,
+`tarrega` 6 → **5**, `news` 49 → **48**. `goya2` 43 → 44 and `new_bach` gained one
+finding of its own; both are explained in §24.4.
+
+### 24.1 The wrapped masthead is containment × typography
+
+§23.2's author ruling settled the *levels*. Building it produced the rest of the
+rule, because the ruling's two cases are two cells of a four-cell table and the
+corpus fills all four. The two questions are **containment** — did the author
+draw the lines as separate blocks, or hand-wrap one block with `<br>` to fit the
+458 px cell — and **typography** — are the lines set the same way as each other:
+
+| lines are | set | representation | attested by |
+|---|---|---|---|
+| separate blocks | the same | consecutive `#` inside the box's `::: align` | `new_bach`, `new_lagq2` |
+| separate blocks | differently | `#`, then the smaller line as its own block | `goya2`, `new_karta` |
+| one block, `<br>` | the same | one joined `#` — the break is a hand-wrap | `segovia1`, `new_geyzel04` |
+| one block, `<br>` | differently | `#` then `##` — a title and its subtitle | `new_blackmore` |
+
+Only rows 1 and 4 are new; rows 2 and 3 are what the converter already did, and
+are now attested rather than accidental. **The first implementation claimed rows
+1 and 2 and regressed `segovia1`, `new_geyzel04` and `goya2` in one run** — the
+containment half was found by that regression, not by reading the sources.
+
+`markWrappedMasthead` in `headings.ts`. The masthead *box* is the outermost
+ancestor of the title candidate reachable without crossing a layout cell whose
+whole text is still headline-sized; that cap is what excludes two headings with
+an article between them (§20.6's false friend). `SAME_SIZE_TOLERANCE` swept over
+22 documents: L1 92.8 at 0, 0.10 and 0.30, 92.7 at 0.35 — flat across the whole
+plausible range with the cliff exactly where a third of a size stops counting as
+a difference. A limit, not a discriminator.
+
+`enforceSingleTitle` now treats **adjacent** `#` lines as one title. Titles
+separated by content are still competing titles and still demoted. §20.6 recorded
+the guard as inert; it stopped being inert the moment a document legitimately
+wanted two.
+
+### 24.2 Two folds that destroyed the evidence they were recording
+
+The `<br>` half of the masthead needed the typography of *part* of a line, and
+`normalize` was throwing it away twice over.
+
+`annotate` folded a presentational wrapper's `size` onto its **parent** and then
+unwrapped the wrapper. Where the wrapper covered only part of the parent that
+fold is simply false — it asserts a size of text the wrapper never covered — and
+the unwrap then erased where the distinction began and ended. A wrapper that is a
+partial cover is now **kept**, carrying the evidence on itself. Measured alone:
+**no change on any rung**, on any of the 22.
+
+Keeping *full* covers as well was implemented and measured: it costs
+`new_lagq2`'s `## ДИСКОГРАФИЯ` and `### The Best of the L.A.G.Q` and
+`new_lendle2`'s `## Дискография`, because the kept `<font>` becomes the innermost
+carrier of the text and reports the smaller size the whole label is set in.
+`textFontPx` reads the folded value instead, and is scoped to run-to-run
+comparison for exactly that reason: block *ranking* keeps `effectiveFontPx`.
+
+### 24.3 A rule the author drew, and the byline it exposed
+
+`* * *` and `• • •` between two passages are the dinkus this era used where it
+had no `<hr>` it liked. Kept as a paragraph the construct is lost and the reader
+gets `\* \* \*`. The invariant is **cardinality, not typography**: one ornament
+repeated at least three times and nothing else in the block, no link, no image.
+That is what excludes every false friend the corpus contains — `• Из письма
+А.Максимова` is a bulleted label, a lone `*` is a footnote marker. `RULE_GLYPHS`
+is lexical data in `glyphs.ts`; an unlisted ornament stays a paragraph.
+
+Closed `retyped.paragraph-to-break`: **5 instances, 5 documents, all regression
+corpus**.
+
+It immediately exposed a defect that was already open in two others.
+`promoteSectionAfterRule` reads the short line under an author-drawn rule as a
+section label, and with one more rule on the page `Владимир МАРКУШЕВИЧ` became
+`## Владимир МАРКУШЕВИЧ`. `new_blackmore` already did the same to `Александр
+НЕВЕРОВ`. The rule's own docstring names the discriminator: the line it is for
+"carries no weight, no size and no centring … its position is the whole
+evidence", so a block carrying its **own** positional evidence is answering a
+different question. A short line set **right** of the column is a credit
+(`BioMD-Reference.md` §3 has a directive for the shape) and both references write
+these as `::: align position: right`.
+
+Only `right`. Excluding every distinctively aligned block was measured and costs
+`borislova` the centred discography label the rule was built for.
+
+### 24.4 Two instruments that were lying, and what they hid
+
+**The chrome fingerprint hashed the raw `width` attribute.** `news` writes every
+width in its page frame with a `px` suffix — which the attribute does not accept,
+so a browser drops it — and no other page in the corpus does. Its banner, menu
+button and side rails therefore matched no recurring structure and were emitted
+as content: the document opened with the site's strapline and `album.gif` instead
+of `# Новости`. The chrome model *is* a recurrence model, so anything splitting
+one recurring shape into two is a defect in the instrument's own terms.
+Normalizing the length before hashing (a percentage keeps its unit) cost L3 13
+findings on its own: **106 → 93**. Requires `corpus scan`.
+
+**`followsImage` returned true for any preceding sibling containing an image
+anywhere inside it.** It decides caption against section label, and the picture
+has to be one still looking for its words. `new_blackmore` sets each reprinted
+interview under a small table holding the paper's date and a linked masthead
+image; two of seven article titles read as captions of a newspaper logo. `goya2`
+lost `ДРУГИЕ АЛЬБОМЫ` the same way. A preceding block carrying a picture **and
+its own visible text** has already said what it is.
+`retyped.paragraph-to-heading2` 6 instances / 4 documents → **4 / 3**, and L3's
+critical `layout.order.mismatch` halved, 20 → 10.
+
+It also raised L2 by two, and both are worth recording rather than absorbing:
+
+- **`goya2`'s reference wraps the recovered `## ДРУГИЕ АЛЬБОМЫ` in an `::: align
+  position: center`.** `alignedGroup` and `alignableRunMember` both decline
+  headings, and correctly — §2 positions a heading by its own construct — so
+  recovering the heading trades one `retyped.paragraph-to-heading2` for an
+  `align.missing` plus a `heading.containment`. **Open question for the author**,
+  because the references disagree with each other about it (see §24.5).
+- **`new_bach` writes six chapter titles as `<p ALIGN="CENTER">…</p>`**,
+  byte-identical shapes in one series. Its reference makes five `##` and the
+  sixth an `::: align` holding plain text. The converter now treats all six
+  alike. Verdict 3, `reference-inconsistency`; the source attests the produced
+  side and nothing attests the reference's exception.
+
+### 24.5 What the references disagree about — for the author
+
+One source shape, `<p align="center">SHORT LABEL</p>` above its own body, is
+written three ways across two references:
+
+| document | source | reference |
+|---|---|---|
+| `new_bach` ×5 | `<p ALIGN="CENTER">Веймарский период (1708-17)</p>` | `## Веймарский период (1708-17)` |
+| `new_bach` ×1 | `<p ALIGN="CENTER">Годы странствий (1703-08)</p>` | `::: align` + plain text, no heading |
+| `goya2` ×1 | `<p align="center">ДРУГИЕ АЛЬБОМЫ</p>` | `::: align` + `## ДРУГИЕ АЛЬБОМЫ` |
+
+The converter currently emits a bare `##` for all of them, which is internally
+consistent and matches the majority reading. The question is whether a recovered
+centred section label **keeps its `::: align`**, as `goya2` has it. It is the same
+construct the masthead rule already emits for a split headline, so the answer is
+a reusable rule, not a per-document choice.
+
+Second, smaller: `new_blackmore`'s reference splits its masthead
+`# Ричи Блэкмор Ritchie` / `## Blackmore & Blackmore's Night`. Measured in the
+browser, the source renders `Ричи Блэкмор` at 26.7 px and `Ritchie Blackmore &
+Blackmore's Night` at 16 px as **two line boxes**, so the reference moves one word
+across a boundary the source draws twice — a `<br>` and a font-size change. The
+produced split is `# Ричи Блэкмор` / `## Ritchie Blackmore & Blackmore's Night`.
+Recorded as `reference-inconsistency`; two minor `heading.content.edited` remain.
+
+### 24.6 Killed hypotheses added
+
+- **An inert guard should not be shipped.** True, and the measurement has to
+  cover both paths. The masthead-box exclusion in the section loop fires on
+  nothing across the 22 documents *measured*; it was removed on that evidence and
+  a contract immediately failed, because **unmeasured** the folded `<font size>`
+  is all the evidence there is and `goya2`'s `(дискография)` gets promoted. A
+  guard that holds the measured and unmeasured paths together is not inert.
+- **A masthead written as `<center>` is reachable by this rule.** It is not:
+  `normalize` unwraps `<center>` before heading recovery runs, so the lines have
+  no box to be lines of. All 22 mastheads in the corpus use a `<div>`; recorded
+  as a known limit rather than chased.
+- **Same prominence across two masthead lines always means two `#`.** No — that
+  is true across sibling *blocks* and false inside one block, where a `<br>`
+  between lines set the same way is a hand-wrap. Killed by `segovia1` and
+  `new_geyzel04`, whose references join theirs.
+
+### 24.7 State
+
+**Open, in order.** (a) The `::: align` around a recovered section label — §24.5,
+blocked on the author. (b) `align.spurious` (8 instances, 7 documents) is now the
+top-ranked class, and §22.3's advice to read the alignment family only after the
+region and table families settle has been honoured for three iterations; the
+region work is done and it is still there. (c) `retyped.paragraph-to-list` (11, 5)
+remains blocked on the hook design of §15.2. (d) `image.spurious` (7, 4) and
+`image.size.value` (21, 4 — 16 of them `goya2`). (e) `break.missing` (10, **6
+documents**, the widest class in the ledger) is the entry-separator family: the
+references draw a `---` at structural boundaries the converter's derived-rule
+logic does not reach. (f) The mini-image → glyph map is still specified,
+attested and unimplemented; `glyphs.ts` now holds two of its neighbours.

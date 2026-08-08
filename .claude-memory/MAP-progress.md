@@ -33,26 +33,31 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 21 four mechanisms | 2463–2650 | **a class that was three mechanisms `21.1:2480`** · **the page frame `21.2:2496`** · **§19.4 answered: the CATALOG gate, not the contract `21.3:2532`** · **table headers without invention `21.4:2550`** · `williams2` reference-inconsistency `21.5:2590` · corpses `21.6:2609` · state + queue `21.7:2626` | **HOT** |
 | 22 cross-grid recurrence | 2652–2753 | recurrence from a sibling grid `22.1:2662` · **one-row table killed again `22.2:2685`** · corpses `22.3:2717` · state + queue `22.4:2728` | **HOT** |
 | 23 author adjudications | 2755–2846 | **`williams2`'s wrapper was a reference mistake `23.1:2772`** · **the wrapped masthead is two rules `23.2:2791`** · read the fixture, not the summary `23.3:2834` | **HOT** |
+| 24 four mechanisms | 2848–3035 | **masthead = containment × typography `24.1:2866`** · **two lossy folds in `normalize` `24.2:2899`** · drawn rule + the byline it exposed `24.3:2918` · **two lying instruments: chrome fingerprint, `followsImage` `24.4:2945`** · **open author question: `::: align` around a recovered `##` `24.5:2981`** · corpses `24.6:3006` · state + queue `24.7:3023` | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§23 (2755–2846)**, **§22 (2652–2753)** and **§21 (2463–2650)** — the current state, what
-the five accepted mechanisms were, and the queue. Add §19.2 (2198–2216) for the corpus roles and
+A session resuming cold needs **§24 (2848–3035)**, **§23 (2755–2846)** and **§21 (2463–2650)** — the current state, the
+author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
 the thing that had to move instead.
 
-## Checkpoint — §23, measured 2026-08-08 over **22 documents**
+## Checkpoint — §24, measured 2026-08-08 over **22 documents**
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | 406 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **92.7 %**, clean share 13.6 % | `sh bench/run.sh` |
-| L2 | 453 findings — **271 converter-defect** · 95 ambiguous · 87 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
-| L3 | **110** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| L0 | 418 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **92.9 %**, clean share 13.6 % | `sh bench/run.sh` |
+| L2 | 440 findings — **258 converter-defect** · 95 ambiguous · 87 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **97** findings (10 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
 | validator | 28 errors, all `table-header-empty` (§21.4) | `corpus run -c bench/biomd.config.json` |
 
-Two references were corrected by their author in §23, so §22's 481 / 140 are not comparable with
-these either — the gap is the corrections, not code. Superseded: §20.8's 388 / 90.3 / 745 / 287 was
-the same 22 documents before this iteration.
+§24 changed the chrome fingerprint, so `bench/corpus/corpus-profile.json` must be rebuilt with
+`corpus scan` after a fresh clone or a corpus change — otherwise the cached profile is from the
+old fingerprint and `news` regresses.
+
+Superseded: §23's 406 / 92.7 / 453 · 271 / 110 was the same 22 documents before this iteration.
+Two references were corrected by their author in §23, so §22's 481 / 140 are not comparable, and
+§20.8's 388 / 90.3 / 745 / 287 predates those corrections.
 §19.1's 369 / 93.8 / 314 / 82 was the **13**-document corpus and is not comparable at all.
