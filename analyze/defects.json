@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-08T01:18:44.153Z",
+  "generated": "2026-08-08T01:37:29.125Z",
   "totals": {
-    "findings": 447,
-    "converterDefects": 265,
+    "findings": 440,
+    "converterDefects": 258,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
     "ambiguous": 95,
     "bySeverity": {
       "critical": 23,
-      "major": 235,
+      "major": 228,
       "minor": 189
     }
   },
@@ -63,18 +63,18 @@
     },
     {
       "doc": "new_bach",
-      "findings": 9,
-      "converterDefects": 3,
+      "findings": 8,
+      "converterDefects": 2,
       "critical": 1,
-      "major": 3,
+      "major": 2,
       "minor": 5
     },
     {
       "doc": "new_blackmore",
-      "findings": 14,
-      "converterDefects": 10,
+      "findings": 12,
+      "converterDefects": 8,
       "critical": 0,
-      "major": 8,
+      "major": 6,
       "minor": 6
     },
     {
@@ -151,18 +151,18 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 14,
-      "converterDefects": 9,
+      "findings": 12,
+      "converterDefects": 7,
       "critical": 0,
-      "major": 11,
+      "major": 9,
       "minor": 3
     },
     {
       "doc": "segovia",
-      "findings": 29,
-      "converterDefects": 14,
+      "findings": 28,
+      "converterDefects": 13,
       "critical": 1,
-      "major": 18,
+      "major": 17,
       "minor": 10
     },
     {
@@ -175,10 +175,10 @@
     },
     {
       "doc": "tarrega",
-      "findings": 20,
-      "converterDefects": 6,
+      "findings": 19,
+      "converterDefects": 5,
       "critical": 2,
-      "major": 9,
+      "major": 8,
       "minor": 9
     },
     {
@@ -194,24 +194,23 @@
     {
       "class": "align.spurious",
       "severity": "major",
-      "instances": 9,
+      "instances": 8,
       "documents": [
         "borislova",
         "new_karta",
         "new_kolpakov",
         "news",
         "news_2007",
-        "pavlov_azancheev",
         "segovia1",
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 9,
+        "converter-defect": 8,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 216,
+      "rank": 168,
       "example": {
         "doc": "borislova",
         "path": "/align[45]",
@@ -272,7 +271,7 @@
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 7,
+      "instances": 6,
       "documents": [
         "new_lagq2",
         "new_lendle2",
@@ -281,41 +280,17 @@
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 7,
+        "converter-defect": 6,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 105,
+      "rank": 90,
       "example": {
         "doc": "new_lagq2",
         "path": "/align[16]",
         "produced": "[Назад] [Фото]",
         "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[17]"
-      }
-    },
-    {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 8,
-      "documents": [
-        "kiselev",
-        "new_lendle2",
-        "news",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 8,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 96,
-      "example": {
-        "doc": "kiselev",
-        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -343,55 +318,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "new_blackmore",
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 84,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[88]",
-        "produced": null,
-        "reference": "Александр НЕВЕРОВ"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "new_bach",
-        "news",
-        "pavlov_azancheev",
-        "segovia",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 75,
-      "example": {
-        "doc": "new_bach",
-        "path": "/break[2]",
-        "produced": "* * *",
-        "reference": "*** — at /paragraph[3]"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "instances": 6,
@@ -413,6 +339,29 @@
         "path": "/align[71]/heading[0]",
         "produced": "ДРУГИЕ АЛЬБОМЫ",
         "reference": "ДРУГИЕ АЛЬБОМЫ — at /align[71]/paragraph[1]"
+      }
+    },
+    {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 7,
+      "documents": [
+        "kiselev",
+        "new_lendle2",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 7,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 63,
+      "example": {
+        "doc": "kiselev",
+        "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
+        "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
+        "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — produced at /align[13]/paragraph[1]"
       }
     },
     {
@@ -515,6 +464,29 @@
       }
     },
     {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "new_geyzel04",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/align[84]",
+        "produced": null,
+        "reference": "Главы 8-9 | Владимир Вавилов"
+      }
+    },
+    {
       "class": "retyped.align-to-paragraph",
       "severity": "major",
       "instances": 6,
@@ -538,6 +510,29 @@
       }
     },
     {
+      "class": "retyped.paragraph-to-quote",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "borislova",
+        "new_blackmore",
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 54,
+      "example": {
+        "doc": "borislova",
+        "path": "/quote[4]",
+        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
+        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
+      }
+    },
+    {
       "class": "paragraph.spurious.in-table",
       "severity": "major",
       "instances": 5,
@@ -558,29 +553,6 @@
         "path": "/align[45]/paragraph[0]",
         "produced": "WMA",
         "reference": null
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "borislova",
-        "new_blackmore",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 45,
-      "example": {
-        "doc": "borislova",
-        "path": "/quote[4]",
-        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
-        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
       }
     },
     {
@@ -948,28 +920,6 @@
       }
     },
     {
-      "class": "retyped.heading2-to-paragraph",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_blackmore",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[88]/paragraph[0]",
-        "produced": "Александр НЕВЕРОВ",
-        "reference": "Александр НЕВЕРОВ — at /heading[89]"
-      }
-    },
-    {
       "class": "retyped.list-to-paragraph",
       "severity": "major",
       "instances": 2,
@@ -1310,6 +1260,48 @@
         "path": "/align[13]@position",
         "produced": "position: right",
         "reference": "position: center"
+      }
+    },
+    {
+      "class": "break.containment",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/break[40]",
+        "produced": "---",
+        "reference": "--- — produced at /frame[61]/break[1]"
+      }
+    },
+    {
+      "class": "break.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "pavlov_azancheev",
+        "path": "/break[48]",
+        "produced": "-----------------------------------------------------------------------------------------",
+        "reference": "--- — produced at /break[7]"
       }
     },
     {
@@ -1691,6 +1683,27 @@
       }
     },
     {
+      "class": "retyped.heading2-to-paragraph",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/align[1]/paragraph[0]",
+        "produced": "Путь к циклу 24 прелюдии и фуги для гитары",
+        "reference": "Путь к циклу 24 прелюдии и фуги для гитары — at /heading[1]"
+      }
+    },
+    {
       "class": "retyped.list-to-quote",
       "severity": "major",
       "instances": 1,
@@ -1708,7 +1721,7 @@
         "doc": "segovia",
         "path": "/quote[13]",
         "produced": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение…",
-        "reference": "\"Я посвятил свою жизнь четырем главным задачам: 1. отделение гитары от бездумных увеселений фольк-лорного типа; 2. обеспечение ее репертуаром высокого качества… — at /list[16]"
+        "reference": "\"Я посвятил свою жизнь четырем главным задачам: 1. отделение гитары от бездумных увеселений фольк-лорного типа; 2. обеспечение ее репертуаром высокого качества… — at /list[14]"
       }
     },
     {
@@ -4469,20 +4482,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "0c168547",
-      "doc": "new_bach",
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/break[2]",
-      "producedLine": 11,
-      "referenceLine": 10,
-      "produced": "* * *",
-      "reference": "*** — at /paragraph[3]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "9abce920",
       "doc": "new_bach",
       "class": "paragraph.hyphenation.joined",
@@ -4749,34 +4748,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "11beb9f4",
-      "doc": "new_blackmore",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[88]",
-      "producedLine": null,
-      "referenceLine": 265,
-      "produced": null,
-      "reference": "Александр НЕВЕРОВ",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "28875f38",
-      "doc": "new_blackmore",
-      "class": "retyped.heading2-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[88]/paragraph[0]",
-      "producedLine": 279,
-      "referenceLine": 268,
-      "produced": "Александр НЕВЕРОВ",
-      "reference": "Александр НЕВЕРОВ — at /heading[89]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "9a68eaea",
       "doc": "new_blackmore",
       "class": "retyped.paragraph-to-quote",
@@ -4784,7 +4755,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/quote[90]",
-      "producedLine": 283,
+      "producedLine": 288,
       "referenceLine": 273,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
       "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина. — at /paragraph[91]",
@@ -6695,17 +6666,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "bb1eaf34",
+      "id": "f3368e6c",
       "doc": "news",
-      "class": "retyped.paragraph-to-break",
+      "class": "break.containment",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
+      "op": "move",
       "path": "/break[40]",
       "producedLine": 322,
       "referenceLine": 175,
-      "produced": "* * *",
-      "reference": "--- — at /frame[61]/paragraph[1]",
+      "produced": "---",
+      "reference": "--- — produced at /frame[61]/break[1]",
       "verdict": "converter-defect"
     },
     {
@@ -7493,20 +7464,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "5416ef86",
-      "doc": "pavlov_azancheev",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[4]",
-      "producedLine": 16,
-      "referenceLine": null,
-      "produced": "Владимир МАРКУШЕВИЧ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "781875ea",
       "doc": "pavlov_azancheev",
       "class": "paragraph.spurious.in-break-run",
@@ -7563,20 +7520,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4c15ebf5",
-      "doc": "pavlov_azancheev",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[5]/paragraph[0]",
-      "producedLine": 19,
-      "referenceLine": 17,
-      "produced": "Владимир МАРКУШЕВИЧ",
-      "reference": "Владимир МАРКУШЕВИЧ — produced at /align[4]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "b1d6b231",
       "doc": "pavlov_azancheev",
       "class": "retyped.paragraph-to-align",
@@ -7587,21 +7530,21 @@
       "producedLine": 22,
       "referenceLine": 20,
       "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[4]",
+      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /paragraph[7]",
       "verdict": "converter-defect"
     },
     {
-      "id": "8ed822b9",
+      "id": "d0159487",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.paragraph-to-quote",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[7]",
+      "path": "/align[7]/quote[0]",
       "producedLine": 30,
-      "referenceLine": 27,
+      "referenceLine": 30,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
-      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[5]/paragraph[1]",
+      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[7]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {
@@ -7675,17 +7618,17 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "1b2a3d29",
+      "id": "590ec4c6",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-break",
+      "class": "break.moved",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
+      "op": "move",
       "path": "/break[48]",
-      "producedLine": 13,
+      "producedLine": 24,
       "referenceLine": 137,
-      "produced": "• • •",
-      "reference": "--- — at /paragraph[4]",
+      "produced": "-----------------------------------------------------------------------------------------",
+      "reference": "--- — produced at /break[7]",
       "verdict": "converter-defect"
     },
     {
@@ -7783,21 +7726,7 @@
       "producedLine": 46,
       "referenceLine": 48,
       "produced": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение…",
-      "reference": "\"Я посвятил свою жизнь четырем главным задачам: 1. отделение гитары от бездумных увеселений фольк-лорного типа; 2. обеспечение ее репертуаром высокого качества… — at /list[16]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d39be084",
-      "doc": "segovia",
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/break[14]",
-      "producedLine": 51,
-      "referenceLine": 54,
-      "produced": "* * *",
-      "reference": "--- — at /paragraph[16]",
+      "reference": "\"Я посвятил свою жизнь четырем главным задачам: 1. отделение гитары от бездумных увеселений фольк-лорного типа; 2. обеспечение ее репертуаром высокого качества… — at /list[14]",
       "verdict": "converter-defect"
     },
     {
@@ -8261,20 +8190,6 @@
       "produced": "Деятельность Франсиско Тарреги представляется особенно значительной в период общего упадка гитарного искусства в начале ХХ века. Таррега показал широчайшие воз…",
       "reference": "Деятельность Франсиско Тарреги представляется особенно значительной в период общего упадка гитарного искусства в начале ХХ века. Таррега показал широчайшие воз…",
       "verdict": "ambiguous"
-    },
-    {
-      "id": "67d9dea4",
-      "doc": "tarrega",
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/break[6]",
-      "producedLine": 21,
-      "referenceLine": 21,
-      "produced": "* * *",
-      "reference": "*** — at /paragraph[7]",
-      "verdict": "converter-defect"
     },
     {
       "id": "40c2a16b",

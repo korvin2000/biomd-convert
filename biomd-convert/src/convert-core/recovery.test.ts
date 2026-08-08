@@ -11,6 +11,7 @@ import { convert } from "./pipeline.js";
 import { ALIGN_LABEL_MAX_CHARS, isAlignableLabelText, isDateLabel } from "./structure.js";
 import type { Classification } from "./classify.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
+import { isDrawnRule } from "./glyphs.js";
 import { groupColumnsFor, isDecorative, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
 import { parseHtml } from "../ladom/parse.js";
@@ -323,6 +324,51 @@ describe("outline", () => {
     levels.forEach((level, i) => {
       if (i > 0) expect(level).toBeLessThanOrEqual((levels[i - 1] as number) + 1);
     });
+  });
+
+  it("reads a run of one repeated ornament as the rule the author drew", async () => {
+    // Cardinality, not typography: three of the same ornament and nothing else
+    // in the block. `CLAUDE.md` invariant 4 puts drawing a separator outside
+    // §16.3 — a rule invents no text — and as a paragraph it renders as three
+    // escaped asterisks where the page showed a division.
+    expect(isDrawnRule("* * *")).toBe(true);
+    expect(isDrawnRule("***")).toBe(true);
+    expect(isDrawnRule("• • •")).toBe(true);
+    expect(isDrawnRule("— — —")).toBe(true);
+    // False friends, every one of them a real line in this corpus.
+    expect(isDrawnRule("*")).toBe(false); // a footnote marker
+    expect(isDrawnRule("* *")).toBe(false); // two markers, not a dinkus
+    expect(isDrawnRule("• Из письма А.Максимова")).toBe(false); // a bulleted label
+    expect(isDrawnRule("* — примечание")).toBe(false); // a marker and its note
+    expect(isDrawnRule("*-*")).toBe(false); // two ornaments mixed is decoration
+    const out = await md(`${PROSE}<p align="center">* * *</p>${PROSE}`);
+    expect(out).toMatch(/^(-{3,}|\*{3,})$/mu);
+    expect(out).not.toContain("\\* \\* \\*");
+  });
+
+  it("does not read a rule as introducing a byline set right of the column", async () => {
+    // A short line under a rule is a section label — that is the only evidence
+    // `promoteSectionAfterRule` has. A line the author set *right* carries its
+    // own positional evidence and it says the opposite: a credit closes what
+    // precedes it. Both `pavlov_azancheev` and `new_blackmore` write one, and
+    // both references keep it an `::: align position: right`.
+    const out = await mdMeasured(
+      `${PROSE}<p align="center">* * *</p>` +
+        `<p style="text-align: right">Владимир МАРКУШЕВИЧ</p>${PROSE}${PROSE}`,
+    );
+    expect(out).not.toContain("## Владимир МАРКУШЕВИЧ");
+    expect(out).toContain("Владимир МАРКУШЕВИЧ");
+  });
+
+  it("still reads a rule as introducing a centred section label", async () => {
+    // The other half of the same decision, and the line the rule was built for:
+    // `borislova`'s discography label is centred, so excluding every
+    // distinctively aligned block would cost it.
+    const out = await mdMeasured(
+      `${PROSE}<p align="center">* * *</p>` +
+        `<p style="text-align: center">Надя Борислова: ПРОИЗВЕДЕНИЯ ДЛЯ ГИТАРЫ</p>${PROSE}${PROSE}`,
+    );
+    expect(out).toMatch(/^#{2,3} Надя Борислова: ПРОИЗВЕДЕНИЯ ДЛЯ ГИТАРЫ$/mu);
   });
 
   it("makes the label above a menu the menu's title rather than a heading", async () => {

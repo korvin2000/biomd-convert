@@ -37,3 +37,59 @@
  * character references before comparing, so the two spellings compare equal.
  */
 export const LINK_GLYPH = "\u{1F517}";
+
+/**
+ * Characters this era drew a horizontal rule with, when it had no `<hr>`.
+ *
+ * A typesetter's dinkus. The author centres a short line of one repeated
+ * ornament between two passages — `* * *`, `• • •`, `— — —` — and means the
+ * separator `<hr>` would have drawn. Emitting it as a paragraph keeps the
+ * characters and loses the construct: the reader sees three literal asterisks,
+ * escaped, where the page showed a division.
+ *
+ * The list is lexical data, not detector literals, and the rule that consults
+ * it degrades the obvious way — an ornament that is not listed simply stays a
+ * paragraph, which is what happens today for all of them. What makes a run of
+ * these a rule is **repetition and nothing else in the block**, which is
+ * decided by the rule, not here: one `*` is a footnote marker and `• Из письма`
+ * is a bulleted label.
+ */
+export const RULE_GLYPHS = new Set([
+  "*", // asterisk — the printer's asterism, by far the commonest here
+  "•", // • bullet
+  "·", // · middle dot
+  "●", // ● black circle
+  "▪", // ▪ black small square
+  "◦", // ◦ white bullet
+  "—", // — em dash
+  "–", // – en dash
+  "-", // hyphen-minus
+  "_", // low line
+  "~", // tilde
+  "=", // equals
+  "─", // ─ box drawings light horizontal
+]);
+
+/**
+ * How many ornaments make a rule.
+ *
+ * Two is an ellipsis mid-sentence or a pair of markers; three is the dinkus.
+ * Every instance in the corpus is exactly three, and the references draw a
+ * separator for each of them.
+ */
+export const MIN_RULE_GLYPHS = 3;
+
+/**
+ * True when a block's whole visible text is a rule the author drew.
+ *
+ * Pure and exported so the contract can be tested on the text alone. The
+ * caller supplies the second half of the invariant — that this text is *all*
+ * the block contains, and that the block carries no link or image.
+ */
+export function isDrawnRule(text: string): boolean {
+  const compact = [...text.replace(/\s+/gu, "")];
+  if (compact.length < MIN_RULE_GLYPHS) return false;
+  const first = compact[0] as string;
+  if (!RULE_GLYPHS.has(first)) return false;
+  return compact.every((c) => c === first);
+}

@@ -28,7 +28,7 @@
   },
   "totals": {
     "findings": 106,
-    "alignmentRows": 277
+    "alignmentRows": 278
   },
   "classes": [
     {
@@ -39,7 +39,7 @@
     {
       "class": "layout.align.mismatch",
       "instances": 21,
-      "documents": 9
+      "documents": 8
     },
     {
       "class": "layout.lane.mismatch",
@@ -742,46 +742,6 @@
       }
     },
     {
-      "id": "e25f048d",
-      "doc": "new_blackmore",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[88]/paragraph[0]",
-      "producedLine": 279,
-      "referenceLine": 268,
-      "produced": "Александр НЕВЕРОВ",
-      "reference": "Александр НЕВЕРОВ",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "right",
-        "producedRaw": "start",
-        "referenceRaw": "right",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "e4af951a",
-      "doc": "new_blackmore",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[88]/paragraph[0]",
-      "producedLine": 279,
-      "referenceLine": 268,
-      "produced": "Александр НЕВЕРОВ",
-      "reference": "Александр НЕВЕРОВ",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
       "id": "6fb56591",
       "doc": "new_blackmore",
       "class": "layout.containment.mismatch",
@@ -789,7 +749,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/quote[90]/paragraph[0]",
-      "producedLine": 283,
+      "producedLine": 288,
       "referenceLine": 273,
       "produced": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
       "reference": "На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
@@ -1237,6 +1197,29 @@
       }
     },
     {
+      "id": "5ab25a6a",
+      "doc": "news",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[61]/align[1]/break[3]",
+      "producedLine": 322,
+      "referenceLine": 293,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
       "id": "167c7fa5",
       "doc": "news",
       "class": "layout.align.mismatch",
@@ -1419,6 +1402,23 @@
       "referenceLine": 238,
       "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
       "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
+      "geometry": {
+        "producedContainer": "frame",
+        "referenceContainer": "frame>align"
+      }
+    },
+    {
+      "id": "a2fe4b39",
+      "doc": "news",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[61]/align[1]/break[3]",
+      "producedLine": 322,
+      "referenceLine": 293,
+      "produced": "",
+      "reference": "",
       "geometry": {
         "producedContainer": "frame",
         "referenceContainer": "frame>align"
@@ -1625,7 +1625,7 @@
       "reference": "",
       "geometry": {
         "producedRank": 45,
-        "referenceRank": 78
+        "referenceRank": 79
       }
     },
     {
@@ -1641,8 +1641,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 79,
-        "referenceRank": 90
+        "producedRank": 80,
+        "referenceRank": 91
       }
     },
     {
@@ -1658,8 +1658,8 @@
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 80,
-        "referenceRank": 91
+        "producedRank": 81,
+        "referenceRank": 92
       }
     },
     {
@@ -1852,8 +1852,8 @@
       "produced": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
       "reference": "В истории Испании не было артиста, который бы так ак-тивно пропагандировал испан-скую музыку по всему миру. Как-то раз,…",
       "geometry": {
-        "producedRank": 31,
-        "referenceRank": 30
+        "producedRank": 32,
+        "referenceRank": 31
       }
     },
     {
@@ -1960,8 +1960,8 @@
       "produced": "Франсиско Таррега",
       "reference": "Франсиско Таррега",
       "geometry": {
-        "producedRank": 7,
-        "referenceRank": 9
+        "producedRank": 8,
+        "referenceRank": 10
       }
     },
     {
@@ -2986,10 +2986,10 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 279,
+      "producedLine": 283,
       "referenceLine": 268,
       "text": "Александр НЕВЕРОВ",
-      "producedAlignment": "left",
+      "producedAlignment": "right",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "right",
       "sourceAlignment": "right",
@@ -4686,6 +4686,19 @@
       "sourceProse": "left",
       "sourceDistinctive": false,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[35]/td[1]"
+    },
+    {
+      "doc": "news",
+      "producedLine": 322,
+      "referenceLine": 293,
+      "text": "",
+      "producedAlignment": "left",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
     },
     {
       "doc": "news",

@@ -41,7 +41,7 @@ import {
   cellText,
   planDataTable,
 } from "./data-table.js";
-import { LINK_GLYPH } from "./glyphs.js";
+import { LINK_GLYPH, isDrawnRule } from "./glyphs.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -821,6 +821,18 @@ function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): Biom
     const node = out[i] as BiomdContent;
     if (node.type !== "paragraph") continue;
     if (node.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) continue;
+    // False friend: the byline. A short line set **right** of the column is a
+    // credit — `BioMD-Reference.md` §3 has a directive for exactly that shape
+    // — and a credit closes what precedes it rather than introducing what
+    // follows, which is the opposite of what this rule claims. `Александр
+    // НЕВЕРОВ` and `Владимир МАРКУШЕВИЧ` both stand right of the column under
+    // a rule and both references write them `::: align position: right`.
+    //
+    // Only `right`, not "distinctively aligned". Centred is the *other* way
+    // this era wrote a section label, and `borislova`'s `Надя Борислова:
+    // ПРОИЗВЕДЕНИЯ ДЛЯ ГИТАРЫ (1989-2002)` — the line this rule was built for
+    // — is centred. Excluding centring too was measured and costs it.
+    if (ctx.blockAlign.get(node) === "right") continue;
     const text = phrasingText(node.children).replace(/\s+/gu, " ").trim();
     if (text.length < 6 || text.length > 90) continue;
     if (/[.!?]\s/u.test(text) || /[,;]$/u.test(text)) continue;
@@ -1367,6 +1379,14 @@ function blocksFromGroup(
     return out;
   }
 
+  // A rule the author drew with punctuation because the era gave them no `<hr>`
+  // they liked. See `drawnRuleFrom`.
+  const drawn = drawnRuleFrom(rest);
+  if (drawn) {
+    out.push(...drawn);
+    return out;
+  }
+
   const paragraph = paragraphFromLines(rest);
   if (paragraph) {
     // Remember, rather than decide: whether this is a caption depends on what
@@ -1570,6 +1590,45 @@ function joinItemLines(item: readonly RunLine[]): PhrasingContent[] {
     children.push(...line.content);
   });
   return trimEdgeBreaks(collapseAdjacentText(children));
+}
+
+/**
+ * A separator the author drew out of punctuation, e.g. `* * *`.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A block whose *entire* visible content is one ornament
+ * repeated — cardinality, not typography, and nothing about size, weight or
+ * position. `BioMD-Reference.md` §0 ranks hierarchy and grouping above exact
+ * style, and this is the division the page drew between two passages;
+ * `CLAUDE.md` invariant 4 puts drawing a separator explicitly outside §16.3,
+ * because a rule invents no text. Kept as a paragraph the construct is lost
+ * and the reader gets three escaped asterisks (`\* \* \*`) where the page
+ * showed a break.
+ *
+ * **Recurrence.** Inside the block rather than across the page: one `*` is a
+ * footnote marker, three in a row are a dinkus. Requiring the ornament to
+ * recur *between* passages would be wrong here — four of the five instances in
+ * the corpus are the only one on their page.
+ *
+ * **False friends,** all excluded by "the whole block and nothing else":
+ * `• Из письма А.Максимова` is a bulleted label, `— Да, — ответил он` is
+ * dialogue, `**` around a word is emphasis the inline pass already consumed,
+ * and a line mixing two ornaments is decoration rather than a rule.
+ * A block carrying a link or an image is content whatever its text looks like.
+ *
+ * The glyph list is documented lexical data in `glyphs.ts`; an ornament that
+ * is not on it stays a paragraph, which is what every one of them does today.
+ */
+function drawnRuleFrom(lines: readonly RunLine[]): BiomdContent[] | null {
+  if (lines.length === 0) return null;
+  if (!lines.every((line) => isDrawnRule(lineText(line)))) return null;
+  if (lines.some((line) => line.content.some((c) => c.type === "link" || c.type === "image"))) return null;
+  // No ledger entry, for `groupAlignedRuns`' reason: the element these lines
+  // came from already recorded itself as EMITTED, and `runPass` rejects an id
+  // it did not declare. This changes the shape of a block, it does not consume
+  // a source node.
+  return lines.map(() => ({ type: "thematicBreak" }) as BiomdContent);
 }
 
 /** Lines → one paragraph, with each interior break classified. */
