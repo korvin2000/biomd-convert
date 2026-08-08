@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T04:54:38.057Z",
+  "generated": "2026-08-08T05:20:37.141Z",
   "totals": {
-    "findings": 413,
-    "converterDefects": 238,
+    "findings": 417,
+    "converterDefects": 241,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 83,
+    "referenceInconsistencies": 84,
     "ambiguous": 92,
     "bySeverity": {
-      "critical": 15,
-      "major": 211,
-      "minor": 187
+      "critical": 16,
+      "major": 213,
+      "minor": 188
     }
   },
   "perDocument": [
@@ -95,11 +95,11 @@
     },
     {
       "doc": "new_karta",
-      "findings": 28,
-      "converterDefects": 7,
-      "critical": 0,
-      "major": 26,
-      "minor": 2
+      "findings": 32,
+      "converterDefects": 10,
+      "critical": 1,
+      "major": 28,
+      "minor": 3
     },
     {
       "doc": "new_kolpakov",
@@ -216,6 +216,31 @@
       }
     },
     {
+      "class": "image.spurious",
+      "severity": "major",
+      "instances": 8,
+      "documents": [
+        "new_geyzel04",
+        "new_karta",
+        "new_lendle2",
+        "new_rechin4",
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 8,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 120,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/images[85]/image[0]",
+        "produced": "Главы 8-9",
+        "reference": null
+      }
+    },
+    {
       "class": "emphasis.span",
       "severity": "minor",
       "instances": 36,
@@ -243,6 +268,31 @@
         "path": "/heading[10]/text",
         "produced": "(none)",
         "reference": "strong:Ричи Блэкмор: «Вcтречайте, скоро буду!»"
+      }
+    },
+    {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2",
+        "new_geyzel04",
+        "new_karta",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 90,
+      "example": {
+        "doc": "goya2",
+        "path": "/align[71]",
+        "produced": null,
+        "reference": "ДРУГИЕ АЛЬБОМЫ"
       }
     },
     {
@@ -295,48 +345,25 @@
       }
     },
     {
-      "class": "image.spurious",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 84,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/images[85]/image[0]",
-        "produced": "Главы 8-9",
-        "reference": null
-      }
-    },
-    {
       "class": "break.missing",
       "severity": "minor",
-      "instances": 10,
+      "instances": 11,
       "documents": [
         "authors",
         "new_bach",
+        "new_karta",
         "new_lagq2",
         "news",
         "pavlov_azancheev",
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 10,
+        "converter-defect": 11,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 60,
+      "rank": 77,
       "example": {
         "doc": "authors",
         "path": "/break[4]",
@@ -364,30 +391,6 @@
         "path": "/lead[5]",
         "produced": "И ещё одна мечта, которая вдохновляла – Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их в…",
         "reference": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их… — at /paragraph[9]"
-      }
-    },
-    {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "goya2",
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 60,
-      "example": {
-        "doc": "goya2",
-        "path": "/align[71]",
-        "produced": null,
-        "reference": "ДРУГИЕ АЛЬБОМЫ"
       }
     },
     {
@@ -2096,6 +2099,30 @@
       }
     },
     {
+      "class": "paragraph.missing.unattested",
+      "severity": "critical",
+      "instances": 4,
+      "documents": [
+        "new_geyzel04",
+        "new_karta",
+        "new_lendle2",
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 4,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/align[84]/paragraph[0]",
+        "produced": null,
+        "reference": "Главы 8-9 | Владимир Вавилов"
+      }
+    },
+    {
       "class": "hardbreak.missing",
       "severity": "major",
       "instances": 3,
@@ -2114,29 +2141,6 @@
         "path": "/frame[47]/align[1]/paragraph[0]",
         "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
         "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks"
-      }
-    },
-    {
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "instances": 3,
-      "documents": [
-        "new_geyzel04",
-        "new_lendle2",
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 3,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/align[84]/paragraph[0]",
-        "produced": null,
-        "reference": "Главы 8-9 | Владимир Вавилов"
       }
     },
     {
@@ -4958,6 +4962,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "f513cd53",
+      "doc": "new_karta",
+      "class": "image.spurious",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/image[25]",
+      "producedLine": 161,
+      "referenceLine": null,
+      "produced": "",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
       "id": "048384a7",
       "doc": "new_karta",
       "class": "paragraph.spurious.in-table",
@@ -5306,6 +5324,48 @@
       "produced": "",
       "reference": "MIDI — column 2",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "0bc46981",
+      "doc": "new_karta",
+      "class": "align.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/align[23]",
+      "producedLine": null,
+      "referenceLine": 146,
+      "produced": null,
+      "reference": "►",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "13bccc2a",
+      "doc": "new_karta",
+      "class": "paragraph.missing.unattested",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "delete",
+      "path": "/align[23]/paragraph[0]",
+      "producedLine": null,
+      "referenceLine": 149,
+      "produced": null,
+      "reference": "►",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "d60e7bb1",
+      "doc": "new_karta",
+      "class": "break.missing",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/break[24]",
+      "producedLine": null,
+      "referenceLine": 152,
+      "produced": null,
+      "reference": "---",
+      "verdict": "converter-defect"
     },
     {
       "id": "8eb706b0",

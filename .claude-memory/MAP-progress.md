@@ -37,22 +37,23 @@ Legend — **HOT** read often · **REF** on demand · **HIST** superseded, avoid
 | 25 `break.missing` decomposed | 3092–3288 | **a "missing break" that was a setext heading `25.1:3112`** · **a drawn rule is a line; a rule may join an align run `25.2:3153`** · **the three that are not targets, with the evidence `25.3:3183`** · **image-size calibration table — not a threshold `25.4:3218`** · corpses `25.5:3244` · state + queue `25.6:3262` | **HOT** |
 | 26 `lead` ruled a ceiling | 3290–3439 | the class is the whole unbuilt construct `26.1:3307` · **author ruling: `lead` is aesthetic, not structural `26.2:3324`** · **what was measured — typography, length, position `26.3:3343`** · corpses `26.4:3391` · **state + "rank measures what an instrument noticed" `26.5:3413`** | **HOT** |
 | 27 triage first; the tinted panel | 3467–3615 | **the triage table — 4 classes downgraded `27.1:3486`** · **a dead unitless border; occupancy not recurrence `27.2:3530`** · **the length floor, measured and reverted `27.3:3560`** · corpses `27.4:3576` · **state + go document-first on `goya2`/`news` `27.5:3592`** | **HOT** |
+| 28 `new_karta` corrected; re-baseline | 3617–3697 | **the ruling voids §27.1's `image.spurious` downgrade `28.1:3652`** · a glyph always reads unattested `28.2:3672` · **new floor 424 / 92.7 / 417 · 241 / 92 `28.3:3684`** | **HOT** |
 
 ## Read-this-first set
 
-A session resuming cold needs **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
+A session resuming cold needs **§28 (3617–3697)**, **§27 (3467–3615)**, **§26 (3290–3439)**, **§25 (3092–3288)**, **§24 (2848–3090)**, **§23 (2755–2846)** and
 **§21 (2463–2650)** — the current state, the author adjudications, and the queue. Add §19.2 (2198–2216) for the corpus roles and
 §16.6–16.7 (1904–1930) for the archetype map. Before touching table routing read §18.3 (2098–2138)
 and §21.3 (2532–2549) together: the first killed a fallback, the second is why the classification was
 the thing that had to move instead.
 
-## Checkpoint — §27, measured 2026-08-08 over **22 documents**
+## Checkpoint — §28, measured 2026-08-08 over **22 documents**
 
 | rung | value | reproduce with |
 |---|---|---|
 | L0 | 424 tests, typecheck clean, 0 FAILED | `npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **93.2 %**, clean share 13.6 % | `sh bench/run.sh` |
-| L2 | 413 findings — **238 converter-defect** · 92 ambiguous · 83 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L1 | **92.7 %**, clean share 13.6 % | `sh bench/run.sh` |
+| L2 | 417 findings — **241 converter-defect** · 92 ambiguous · 84 reference-inconsistency | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
 | L3 | **92** findings (11 critical), identity 0, deterministic | `l3 -c bench/biomd.config.json` |
 | validator | 28 errors, all `table-header-empty` (§21.4) | `corpus run -c bench/biomd.config.json` |
 

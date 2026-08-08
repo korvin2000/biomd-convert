@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history — history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after PROGRESS §27. Facts marked
+Last touched **2026-08-08**, after PROGRESS §28. Facts marked
 *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 ---
@@ -19,8 +19,8 @@ Reference-guided refinement, 22 documents. **One mechanism accepted this iterati
 | rung | value |
 |---|---|
 | L0 | **424 tests**, typecheck clean, 0 FAILED |
-| L1 | **93.2 %**, clean share 13.6 % |
-| L2 | **413 findings — 238 converter-defect** · 92 ambiguous · 83 reference-inconsistency |
+| L1 | **92.7 %**, clean share 13.6 % |
+| L2 | **417 findings — 241 converter-defect** · 92 ambiguous · 84 reference-inconsistency |
 | L3 | **92 findings** (11 critical), identity 0, deterministic |
 | validator | 28 errors, all `table-header-empty` — PROGRESS §21.4 |
 
@@ -32,14 +32,22 @@ That is the floor. Nothing accepted from here may regress it.
 > it. **`corpus scan` is still required after a fresh clone** — §24.4 changed the chrome
 > fingerprint and a cached `bench/corpus/corpus-profile.json` from before it makes `news` regress.
 
-**Next: go document-first, not class-first.** `news` (45 defects) and `goya2` (44) are a third of
+**Next: `image.spurious` — 7 instances, 4 documents, unblocked by the §28 author correction.**
+`new_karta` was the one counterexample that made §27.1 downgrade it; corrected, the corpus is
+consistent that an icon-sized linked gif is never a picture, and the label rule is deterministic
+(glyph when the icon has no `alt`, the `alt` text when it has one, merged when an adjacent link
+shares the href). `mini_images_to_md_guide.md` is normative and `glyphs.ts` is the home. Read
+PROGRESS §28.1 before starting; §28.2 names two things that will not close.
+
+Then, if that stalls: **go document-first, not class-first.** `news` (45 defects) and `goya2` (44) are a third of
 the whole ledger and neither has ever been attacked *as a document*. Enumerate one of them by node
 path, not by class, and look for the shared container defect — that is exactly how §27.2 found
 `new_lendle2`'s missing frame, which took it from third-worst to mid-table in one change.
 
 **Downgraded in §27.1, do not take on rank alone:** `emphasis.span` (verdicts flip on identical
 evidence across documents; 25 of 34 already reference-inconsistency) · `image.spurious` (five
-different reference treatments of one source shape) · `align.missing`,
+different reference treatments of one source shape — **voided by §28, now the top candidate**) ·
+`align.missing`,
 `retyped.paragraph-to-align`, `paragraph.containment` (**shadow classes** — they fire at the same
 node paths as the missing container that causes them, and outrank their own cause).
 
@@ -120,7 +128,7 @@ maps *next* to `&#9654;` (▶) while `new_bach` uses `&#9658;` (►).
 | 90 | `emphasis.span` | 34 | **10** | **downgraded §27.1** — verdicts flip on identical evidence |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed **twice** |
 | 84 | `image.size.value` | 21 | 4 | **not a threshold** — table in PROGRESS §25.4 |
-| 84 | `image.spurious` | 7 | 4 | **downgraded §27.1** — five reference treatments of one shape |
+| 84 | `image.spurious` | 7 | 4 | **top candidate** — §27.1's downgrade voided by the §28 correction |
 | 84 | `align.missing` | 4 | 3 | **shadow class** §27.1; was 7/4 |
 | ~~60~~ | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue** — author ruling §26.2, visual-only both ways |
 | 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |

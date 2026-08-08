@@ -3613,3 +3613,85 @@ should triage `goya2` and `news` document-first** — take the worst document,
 enumerate its findings by node path rather than by class, and look for the
 shared container defect the way §27.2 found `new_lendle2`'s. `new_lendle2` went
 from third-worst to mid-table on one mechanism found exactly that way.
+
+## 28. Reference correction: `new_karta`'s nav glyph — re-baseline (2026-08-08)
+
+Author correction to `fixtures/out/new_karta.bio.md`, in two steps, with no code
+change. **§27.1's downgrade of `image.spurious` is void** — see below.
+
+The document ended with
+
+```
+::: image
+src: main/next.gif
+position: center
+size: small
+link: /#/karta2
+:::
+```
+
+for a 16×16 `next.gif` inside an `<a>`. The author confirms this was a mistake in
+the reference and replaced it with the glyph, matching `new_bach` and `segovia`:
+
+```
+::: align
+position: center
+
+[&#9658;](/#/karta2)
+
+:::
+```
+
+An intermediate revision carried `new_bach`'s prose with it — `*См. также:* \[ О
+ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ]`, byte-identical to `new_bach`'s block but for
+the href — which `new_karta.htm` does not contain (0 occurrences of `ЛЮТНЕВЫХ`
+and of `См. также`; `new_bach.htm` has one). L2 flagged it independently as
+`paragraph.missing.unattested`. Raised and corrected the same session; recorded
+only so the intermediate state is not mistaken for evidence.
+
+### 28.1 What the ruling unlocks
+
+`new_karta` was the **single counterexample** that made §27.1 downgrade
+`image.spurious`: it kept a 16×16 linked `next.gif` as an `::: image` while
+`new_bach` and `segovia` glyphed the identical asset, so the negative control was
+indistinguishable from the positives. With it corrected the corpus is consistent
+on the core claim — **an icon-sized linked gif is never a picture** — and the
+remaining references differ only in the *label*, deterministically:
+
+| shape | label | attested by |
+|---|---|---|
+| icon, no `alt` | the glyph from the icon map | `new_bach`, `segovia`, `new_karta`, `new_rechin4` |
+| icon with `alt` | the `alt` text as the link label | `new_geyzel04` |
+| icon beside a text link sharing its href | merged into that link's label | `segovia1` |
+
+`mini_images_to_md_guide.md` is normative for this family and its 29-entry map is
+sanctioned lexical data (`CLAUDE.md` §2); `glyphs.ts` is its home. **7 instances,
+4 documents, now with consistent references behind them.** This is the strongest
+open candidate.
+
+### 28.2 Two things to know before taking it
+
+- **A glyph will always read as unattested.** `paragraph.missing.unattested` on
+  `/align[23]/paragraph[0]` persists on the corrected reference, because `►`
+  stands for an *image* and L2's attestation check is word coverage over source
+  *text*. Expected instrument behaviour, not a defect, and not closable.
+- **`new_karta` is now the only reference ending in `---`**, and its source's only
+  `<hr>` is the footer's `<hr width="35%">` — chrome that every document drops.
+  `break.missing` at `/break[24]` is therefore a `low`-confidence reference
+  expectation with no source attestation. It invents no text, so it is not a §16.3
+  matter; flagged, not chased.
+
+### 28.3 Re-baseline — reference edit only, no code changed
+
+| rung | §27 | after the correction |
+|---|---|---|
+| L0 | 424 tests, 0 FAILED | 424 tests, typecheck clean, 0 FAILED |
+| L1 | 93.2 | **92.7** |
+| L2 | 413 · 238 | **417 · 241** |
+| L3 | 92 | 92 |
+
+All movement is `new_karta`: L1 88.0 → **78.0** (img axis 100.0 → **0.0**), L2
+28/7 → **32/10**. The drop is honest and expected — the reference no longer holds
+an image at that point, so the `::: image` the converter still emits is now a
+true `image.spurious`, and the img axis has nothing to agree with. **This is the
+new floor**; the pre-correction 93.2 / 413 · 238 is not comparable.

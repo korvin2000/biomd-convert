@@ -143,9 +143,11 @@ active: А Бартоли
 
 :::
 
-::: image
-src: main/next.gif
+::: align
 position: center
-size: small
-link: /#/karta2
+
+[&#9658;](/#/karta2)
+
 :::
+
+---
