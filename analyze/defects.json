@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-08T01:50:24.352Z",
+  "generated": "2026-08-08T02:05:32.127Z",
   "totals": {
-    "findings": 440,
-    "converterDefects": 258,
+    "findings": 432,
+    "converterDefects": 252,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 87,
-    "ambiguous": 95,
+    "ambiguous": 93,
     "bySeverity": {
-      "critical": 22,
-      "major": 228,
-      "minor": 190
+      "critical": 20,
+      "major": 224,
+      "minor": 188
     }
   },
   "perDocument": [
@@ -135,19 +135,19 @@
     },
     {
       "doc": "news",
-      "findings": 62,
-      "converterDefects": 48,
-      "critical": 4,
-      "major": 41,
+      "findings": 59,
+      "converterDefects": 46,
+      "critical": 3,
+      "major": 39,
       "minor": 17
     },
     {
       "doc": "news_2007",
-      "findings": 17,
-      "converterDefects": 9,
-      "critical": 1,
-      "major": 6,
-      "minor": 10
+      "findings": 12,
+      "converterDefects": 5,
+      "critical": 0,
+      "major": 4,
+      "minor": 8
     },
     {
       "doc": "pavlov_azancheev",
@@ -192,55 +192,52 @@
   ],
   "classes": [
     {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 8,
-      "documents": [
-        "borislova",
-        "new_karta",
-        "new_kolpakov",
-        "news",
-        "news_2007",
-        "segovia1",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 8,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 168,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
-        "reference": null
-      }
-    },
-    {
       "class": "retyped.paragraph-to-list",
       "severity": "major",
-      "instances": 11,
+      "instances": 10,
       "documents": [
         "jovicic",
         "kiselev",
         "new_rechin4",
-        "news_2007",
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 11,
+        "converter-defect": 10,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 165,
+      "rank": 120,
       "example": {
         "doc": "jovicic",
         "path": "/columns[12]/column[0]/list[2]",
         "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
         "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[12]/column[0]/paragraph[3]"
+      }
+    },
+    {
+      "class": "align.spurious",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "borislova",
+        "new_karta",
+        "new_kolpakov",
+        "segovia1",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 90,
+      "example": {
+        "doc": "borislova",
+        "path": "/align[45]",
+        "produced": "WMA",
+        "reference": null
       }
     },
     {
@@ -897,28 +894,6 @@
       }
     },
     {
-      "class": "nav.title.missing",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "news",
-        "path": "/nav[100]@title",
-        "produced": null,
-        "reference": "title: Архив новостей"
-      }
-    },
-    {
       "class": "paragraph.spurious.in-list",
       "severity": "major",
       "instances": 2,
@@ -1175,50 +1150,6 @@
       }
     },
     {
-      "class": "nav.active.missing",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "new_rechin4",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 4,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/nav[2]@active",
-        "produced": null,
-        "reference": "active: 3"
-      }
-    },
-    {
-      "class": "nav.position.spurious",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "new_rechin4",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 4,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/nav[2]@position",
-        "produced": "position: center",
-        "reference": null
-      }
-    },
-    {
       "class": "image.caption.content.edited",
       "severity": "minor",
       "instances": 4,
@@ -1449,6 +1380,27 @@
         "path": "/images[76]",
         "produced": "Together / Richard Clayderman & Francis Goya",
         "reference": "image photo/g/goya/goya_cleiderman.jpg center small Together / Richard Clayderman & Francis Goya image photo/g/goya/goya_.jpg center small Maria Padilha — produced at /image[77]"
+      }
+    },
+    {
+      "class": "link.inline.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news_2007",
+        "path": "/nav[14]/list[0]/item[2]/link[0]",
+        "produced": null,
+        "reference": "[2007]()"
       }
     },
     {
@@ -1978,6 +1930,48 @@
       }
     },
     {
+      "class": "nav.active.missing",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/nav[2]@active",
+        "produced": null,
+        "reference": "active: 3"
+      }
+    },
+    {
+      "class": "nav.position.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/nav[2]@position",
+        "produced": "position: center",
+        "reference": null
+      }
+    },
+    {
       "class": "paragraph.hyphenation.unjoined",
       "severity": "minor",
       "instances": 1,
@@ -2229,28 +2223,6 @@
         "path": "/paragraph[8]/link[0]",
         "produced": "www.abcguitars.com",
         "reference": "www.abc-guitars.com"
-      }
-    },
-    {
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "instances": 2,
-      "documents": [
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 2
-      },
-      "rank": 0,
-      "example": {
-        "doc": "news",
-        "path": "/align[100]/paragraph[0]",
-        "produced": "• Архив новостей •",
-        "reference": null
       }
     },
     {
@@ -6344,20 +6316,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "7d307e8b",
-      "doc": "news",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[100]",
-      "producedLine": 468,
-      "referenceLine": null,
-      "produced": "• Архив новостей •",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "1f11f63e",
       "doc": "news",
       "class": "paragraph.spurious.in-paragraph",
@@ -6426,20 +6384,6 @@
       "produced": "Александр Петрович Мартынов",
       "reference": null,
       "verdict": "converter-defect"
-    },
-    {
-      "id": "dd79f8d8",
-      "doc": "news",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/align[100]/paragraph[0]",
-      "producedLine": 471,
-      "referenceLine": null,
-      "produced": "• Архив новостей •",
-      "reference": null,
-      "verdict": "ambiguous"
     },
     {
       "id": "acaaf0d7",
@@ -7198,48 +7142,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "c651fa9f",
-      "doc": "news",
-      "class": "nav.title.missing",
-      "severity": "major",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/nav[100]@title",
-      "producedLine": 475,
-      "referenceLine": 435,
-      "produced": null,
-      "reference": "title: Архив новостей",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "39b7dc93",
-      "doc": "news_2007",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]",
-      "producedLine": 145,
-      "referenceLine": null,
-      "produced": "• Архив новостей •",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "326adad4",
-      "doc": "news_2007",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/align[14]/paragraph[0]",
-      "producedLine": 148,
-      "referenceLine": null,
-      "produced": "• Архив новостей •",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
       "id": "c9f0f096",
       "doc": "news_2007",
       "class": "retyped.heading2-to-align",
@@ -7394,59 +7296,17 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "5227b1cf",
+      "id": "557e69ce",
       "doc": "news_2007",
-      "class": "nav.active.missing",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/nav[14]@active",
-      "producedLine": 152,
-      "referenceLine": 98,
-      "produced": null,
-      "reference": "active: 2007",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ecbdfc40",
-      "doc": "news_2007",
-      "class": "nav.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[14]@position",
-      "producedLine": 152,
-      "referenceLine": 98,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c57c4a4b",
-      "doc": "news_2007",
-      "class": "nav.title.missing",
-      "severity": "major",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/nav[14]@title",
-      "producedLine": 152,
-      "referenceLine": 98,
-      "produced": null,
-      "reference": "title: Архив новостей",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "531c40f9",
-      "doc": "news_2007",
-      "class": "retyped.paragraph-to-list",
+      "class": "link.inline.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/nav[14]/list[0]",
-      "producedLine": 155,
-      "referenceLine": 102,
-      "produced": "[Последние ] [2008–2010 ] [ 2007 ] [2006 ] [2005 ] [2004 ] [2003 ] [2-е полугодие 2002 ] [1-е полугодие 2002 ] [2001 ]",
-      "reference": "Последние 2008–2010 2007 2006 2005 2004 2003 2-е полугодие 2002 1-е полугодие 2002 2001 — at /nav[14]/paragraph[1]",
+      "op": "delete",
+      "path": "/nav[14]/list[0]/item[2]/link[0]",
+      "producedLine": 151,
+      "referenceLine": 104,
+      "produced": null,
+      "reference": "[2007]()",
       "verdict": "converter-defect"
     },
     {

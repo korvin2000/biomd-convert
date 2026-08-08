@@ -326,6 +326,37 @@ describe("outline", () => {
     });
   });
 
+  it("titles a menu with the decorated label the page set above it", async () => {
+    // §11 puts the label a page puts above its menu in `nav`'s `title`. The
+    // existing branch takes a *recovered heading*; `news` and `news_2007` set
+    // theirs in a tinted centred cell of its own, where no typographic rule
+    // reaches it, so it arrives as an aligned paragraph instead. Position is
+    // the evidence either way. The matched bullets are decoration — symmetry
+    // is what says so, and a leading marker alone still means a list item.
+    const out = await mdMeasured(
+      `${PROSE}<p style="text-align: center">&#8226; Архив новостей &#8226;</p>` +
+        '<p style="text-align: center">[<a href="a.htm">2007</a> ] ' +
+        '[<a href="b.htm">2006</a> ] [<a href="c.htm">2005</a> ]</p>',
+    );
+    expect(out).toContain("::: nav");
+    expect(out).toContain("title: Архив новостей");
+    expect(out).not.toContain("• Архив новостей •");
+  });
+
+  it("false friend: a sentence above a menu is not its title", async () => {
+    // Absorbing one would move body text into a directive property, which is
+    // the worst direction this rule can fail in.
+    const sentence = "Ниже собраны ссылки на все выпуски архива нашего проекта за прошедшие годы.";
+    const out = await mdMeasured(
+      `${PROSE}<p style="text-align: center">${sentence}</p>` +
+        '<p style="text-align: center">[<a href="a.htm">2007</a> ] ' +
+        '[<a href="b.htm">2006</a> ] [<a href="c.htm">2005</a> ]</p>',
+    );
+    expect(out).toContain("::: nav");
+    expect(out).not.toContain(`title: ${sentence}`);
+    expect(out).toContain(sentence);
+  });
+
   it("recovers a section label that follows a banner carrying its own words", async () => {
     // The caption guard asks whether a picture stands above the label, and it
     // has to mean a picture still looking for its words. `new_blackmore` sets

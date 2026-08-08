@@ -41,7 +41,7 @@ import {
   cellText,
   planDataTable,
 } from "./data-table.js";
-import { LINK_GLYPH, isDrawnRule } from "./glyphs.js";
+import { LINK_GLYPH, RULE_GLYPHS, isDrawnRule } from "./glyphs.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -1305,6 +1305,21 @@ function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] 
       }
     }
 
+    // The same §11 rule where typography never reached the label. `news` and
+    // `news_2007` set theirs in a bordered, tinted, centred cell of its own
+    // above the year bar, and it recovers as an aligned paragraph rather than a
+    // heading — so the heading branch above never sees it and the bar loses the
+    // only words that say what it is. Position is the evidence in both cases;
+    // which construct the label happened to land in is not.
+    if (next !== undefined && next.type === "biomdNav" && next.title === undefined) {
+      const title = navTitleFrom(node);
+      if (title !== null) {
+        out.push({ ...next, title });
+        i += 1;
+        continue;
+      }
+    }
+
     out.push(node);
   }
   return out;
@@ -1593,6 +1608,58 @@ function joinItemLines(item: readonly RunLine[]): PhrasingContent[] {
 }
 
 /**
+ * The label a block carries, when that label can title the menu below it.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The block immediately above a `nav`, holding one short line of
+ * words and nothing else — no link, no image, no second block. `nav`'s
+ * `title` is where §11 puts it, and as a loose paragraph the label reads as a
+ * stray line between two sections instead of naming the bar under it.
+ *
+ * **False friend.** A sentence that happens to precede a menu. Absorbing one
+ * would move body text into a directive property, which is the worst direction
+ * this rule can fail in, so it is refused on three counts at once: length, word
+ * count and terminal punctuation.
+ *
+ * The `::: align` a centred label arrives in is unwrapped rather than refused —
+ * `nav` carries its own presentation, and a label that is centred *because* it
+ * titles a centred bar says nothing further.
+ */
+function navTitleFrom(node: BiomdContent): string | null {
+  let candidate: BiomdContent = node;
+  if (candidate.type === "biomdAlign") {
+    const inner = candidate.children.filter((c) => c.type !== "thematicBreak");
+    if (inner.length !== 1) return null;
+    candidate = inner[0] as BiomdContent;
+  }
+  if (candidate.type !== "paragraph") return null;
+  if (candidate.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) return null;
+  const text = stripPairedOrnament(phrasingText(candidate.children).replace(/\s+/gu, " ").trim());
+  if (text.length < 4 || text.length > 60) return null;
+  if (text.split(/\s+/u).filter(Boolean).length > 8) return null;
+  if (/[.!?]/u.test(text)) return null;
+  return text;
+}
+
+/**
+ * Drop an ornament the page hung on both ends of a label.
+ *
+ * `• Архив новостей •` is `Архив новостей` with a bullet either side, the way
+ * this era underlined a heading it had no heading tag for. Symmetry is the
+ * evidence and it is what keeps the rule off a label that merely *starts* with
+ * a marker: `stripLabelGlyphs` owns that case and answers it differently,
+ * because a leading bullet is a list marker and a matched pair is decoration.
+ */
+function stripPairedOrnament(text: string): string {
+  const chars = [...text];
+  const first = chars[0];
+  const last = chars[chars.length - 1];
+  if (chars.length < 3 || first === undefined || first !== last || !RULE_GLYPHS.has(first)) return text;
+  return chars.slice(1, -1).join("").trim();
+}
+
+/**
  * A separator the author drew out of punctuation, e.g. `* * *`.
  *
  * ## Rule contract
@@ -1663,7 +1730,16 @@ function paragraphFromLines(lines: readonly RunLine[]): Paragraph | null {
 function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
   // Nav is not permitted inside `align`, `frame` or a bounded column (§4.1), and
   // silently dropping it there would lose every link in it.
-  if (ctx.boundedDepth > 0) return null;
+  // §4.1 forbids `nav` inside a `frame`, and §2 forbids `align` wrapping one.
+  // It does **not** forbid a `column`: `column→Markdown+leaf+align+nav` is in
+  // the nesting table, and the side rail a menu arrives in *is* a lane.
+  // `navFromGrid` already draws that line and says why; this path refused every
+  // bounded context instead, so `news_2007`'s year bar — the same bar `news`
+  // emits as a `nav`, one lane deeper — came out as ten bracketed links in a
+  // paragraph. The `align` half needs no guard here: `alignedGroup` refuses
+  // inner content containing a `nav`, and `isBounded` keeps one out of
+  // `groupAlignedRuns`' runs.
+  if (ctx.frameDepth > 0) return null;
 
   const links: LadomNode[] = [];
   /** The one plain-text item §11 allows: the page you are already on. */
