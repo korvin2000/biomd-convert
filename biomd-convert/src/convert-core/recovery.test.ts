@@ -77,12 +77,17 @@ class InlineAlignMeasurer implements Measurer {
       // stylesheet at all. Leaving it out made the subordination rule
       // untestable end-to-end while looking like the rule being wrong.
       const uaItalic = el.tag === "i" || el.tag === "em";
-      if (align || style || border || uaItalic) {
+      // A background is painted by the `bgcolor` attribute as often as by CSS
+      // here, and the frame rule compares an element's against its ancestors'.
+      const declaredBg = /background-color:\s*(#[0-9a-f]{3,8}|rgba?\([^)]*\))/iu.exec(declared)?.[1];
+      const bg = declaredBg ?? el.attrs["bgcolor"];
+      if (align || style || border || uaItalic || bg) {
         el.style = {
           ...NEUTRAL_STYLE,
           ...(uaItalic ? { fontStyle: "italic" } : {}),
           ...(align ? { textAlign: (align[1] as string).toLowerCase() } : {}),
           ...(style ? { fontStyle: (style[1] as string).toLowerCase() } : {}),
+          ...(bg ? { backgroundColor: bg.toLowerCase() } : {}),
           ...(border ?? {}),
         };
       }
@@ -647,6 +652,36 @@ describe("alignment inside a bounded container", () => {
     expect(out).toContain("::: frame");
     expect(out).toContain("::: align");
     expect(out.indexOf("::: frame")).toBeLessThan(out.indexOf("::: align"));
+  });
+
+  it("frames a tinted panel that spans its row, and not a tinted lane cell", async () => {
+    // `new_lendle2` writes `border: 1 solid #D5A96F` on five album panels — a
+    // unitless width, so Chromium drops the whole shorthand and computes
+    // `border-style: none`. The tint is the only evidence left.
+    const panel = await mdMeasured(
+      PROSE +
+        '<div style="background-color: #F7E7AF"><table border="0" width="90%"><tr>' +
+        '<td width="100%" colspan="2" style="background-color: #FCF3D8">Variations capricieuses</td>' +
+        "</tr><tr>" +
+        '<td width="50%">Niccolo Paganini: Caprice Nr. 24, and other works of the period</td>' +
+        '<td width="50%">Wolfgang Lendle plays the caprices on a modern instrument</td>' +
+        "</tr></table></div>" +
+        PROSE,
+    );
+    expect(panel).toContain("::: frame");
+
+    // False friend, and it is the whole rule: `goya2` tints fifteen cells the
+    // same way, two to a row, and its reference frames none of them. A lane
+    // cell is not a panel however it is coloured.
+    const lanes = await mdMeasured(
+      PROSE +
+        '<div style="background-color: #F7E7AF"><table border="0" width="90%"><tr>' +
+        '<td width="50%" style="background-color: #F5E29E">Francis Goya Plays His Favourite</td>' +
+        '<td width="50%" style="background-color: #F5E29E">Best of Francis Goya, a compilation</td>' +
+        "</tr></table></div>" +
+        PROSE,
+    );
+    expect(lanes).not.toContain("::: frame");
   });
 
   it("still leaves a real caption to its figure", () => {

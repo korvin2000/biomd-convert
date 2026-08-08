@@ -90,20 +90,31 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   const style = el.style;
   const inline = el.attrs["style"] ?? "";
 
+  // The tint path is tried wherever the border path declines, and "no border at
+  // all" is the commonest way it declines — so it cannot sit behind the
+  // `border-style: none` return below. That return is a *pre-filter*, and a
+  // pre-filter is part of the rule: with the fallback behind it, none of the
+  // five `new_lendle2` panels reached the new code and it looked like the rule
+  // being wrong rather than never being called.
+  const tinted = (): FrameEvidence | null => {
+    const tint = tintedPanelPalette(el);
+    return tint ? applyFrameGuards(el, documentTextLength, tint, `${tint} panel spanning a grid row`) : null;
+  };
+
   let width = 0;
   let color: string | undefined;
   if (style) {
     width = Math.min(style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth);
-    if (style.borderStyle === "none" || style.borderStyle === "hidden") return null;
+    if (style.borderStyle === "none" || style.borderStyle === "hidden") return tinted();
     color = style.borderColor;
   } else {
     const decl = BORDER_DECL.exec(inline);
-    if (!decl) return null;
+    if (!decl) return tinted();
     const parts = (decl[1] as string).trim().split(/\s+/u);
     width = Number.parseFloat(parts[0] ?? "0");
     color = parts.find((p) => p.startsWith("#") || p in NAMED);
   }
-  if (!Number.isFinite(width) || width < 2) return null;
+  if (!Number.isFinite(width) || width < 2) return tinted();
 
   // There used to be a test here rejecting a border whose computed colour
   // equalled the element's text colour, on the grounds that an *undeclared*
@@ -127,14 +138,99 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
 
   const palette = paletteFor(color);
   if (!palette) return null;
+  return applyFrameGuards(el, documentTextLength, palette, `${width}px ${palette} border around a bounded notice`);
+}
 
+/**
+ * The guards every frame answers, whatever drew it.
+ *
+ * The 20-character floor separates a notice from a table's cell grid, and it
+ * costs one real panel: `new_lendle2`'s `Heitor Villa-Lobos` is 18 characters,
+ * so four of its five panels are framed and the fifth is not.
+ *
+ * **Dropping the floor for the tint path was measured and reverted.** The
+ * argument was good — `spansItsRow` is a stronger occupancy statement than a
+ * length — and it did close the fifth panel and the `layout.order.mismatch`
+ * that the gap creates (L3 92 → 90, critical 11 → 10). But the same floor is
+ * the only thing keeping the *menu label* cells out: `news` and `news_2007`
+ * each set `• Архив новостей •` in a spanning tinted cell, and both gained a
+ * spurious frame (9 → 10 and 1 → 2). A box the author did not draw, on two
+ * regression-corpus documents, outranks two L3 findings on one. L1 93.2 → 93.1
+ * and L2 413 · 238 → 418 · 241 agreed.
+ */
+function applyFrameGuards(
+  el: LadomNode,
+  documentTextLength: number,
+  palette: FramePalette,
+  reason: string,
+  minText = 20,
+): FrameEvidence | null {
   const text = textOf(el).trim();
-  if (text.length < 20) return null;
+  if (text.length < minText) return null;
   // The page shell is bordered too, and it contains the article.
   if (documentTextLength > 0 && text.length > documentTextLength * 0.6) return null;
   if (hasDescendantTable(el)) return null;
+  return { frame: palette, reason };
+}
 
-  return { frame: palette, reason: `${width}px ${palette} border around a bounded notice` };
+/**
+ * A panel the author drew with a background tint rather than a border.
+ *
+ * ## Rule contract
+ *
+ * **Why this path exists.** The border is often not there. `new_lendle2` writes
+ * `border: 1 solid #D5A96F` on five album panels — a **unitless** width, so the
+ * whole shorthand is invalid and Chromium computes `border-style: none` and
+ * width 0. Measured, not assumed: all five report `none`/0/0/0/0. What the
+ * reader still sees is the *background* — `rgb(252,243,216)` against the page's
+ * `rgb(247,231,175)` — and its reference writes `frame: white` five times,
+ * which is exactly what {@link paletteFor} returns for that tint. A tint that
+ * differs from the nearest painted ancestor is the same construct as a border.
+ *
+ * **Invariant: the panel spans its whole row.** This is what makes it a panel
+ * rather than a cell. It is not a refinement — it is the entire rule, because
+ * the false friend is enormous.
+ *
+ * **False friend, measured.** `goya2` tints **fifteen** cells exactly this way
+ * — `bgcolor="#F5E29E"` with dead unitless top/bottom borders — and its
+ * reference frames **none** of them. They are `width="50%"` *lane* cells, two
+ * to a catalogue row, and framing them would put a box round every album title
+ * in the corpus's worst document. `new_lendle2`'s five are `colspan="2"
+ * width="100%"` and occupy a row of their own. Recurrence cannot separate these
+ * — `goya2` recurs fifteen times and `new_lendle2` five — so this rule
+ * deliberately does **not** use it; occupancy is the evidence instead.
+ *
+ * A cell that is alone in its row spans it too, so both forms are accepted, and
+ * a cell that shares its row with a sibling is refused however it is tinted.
+ */
+function tintedPanelPalette(el: LadomNode): FramePalette | null {
+  if (el.tag !== "td" && el.tag !== "th") return null;
+  const background = el.style?.backgroundColor;
+  if (!background || background === "transparent" || /rgba\([^)]*,\s*0\s*\)/u.test(background)) return null;
+  if (!spansItsRow(el)) return null;
+
+  // A tint is only a panel where the page is not already that colour.
+  let ancestor = el.parent;
+  while (ancestor) {
+    const behind = ancestor.style?.backgroundColor;
+    if (behind && behind !== "transparent" && !/rgba\([^)]*,\s*0\s*\)/u.test(behind)) {
+      if (behind === background) return null;
+      break;
+    }
+    ancestor = ancestor.parent;
+  }
+  if (!ancestor) return null;
+
+  return paletteFor(background);
+}
+
+/** True when this cell covers every column of the row it sits in. */
+function spansItsRow(el: LadomNode): boolean {
+  const span = Number.parseInt(el.attrs["colspan"] ?? "", 10);
+  if (Number.isFinite(span) && span > 1) return true;
+  const row = el.parent;
+  if (!row || row.kind !== "element" || row.tag !== "tr") return false;
+  return row.children.filter((c) => c.kind === "element" && (c.tag === "td" || c.tag === "th")).length === 1;
 }
 
 function hasDescendantTable(el: LadomNode): boolean {
