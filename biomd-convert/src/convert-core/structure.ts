@@ -42,6 +42,7 @@ import {
   planDataTable,
 } from "./data-table.js";
 import { LINK_GLYPH, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import { MEDIA_COLUMN_LABEL, TITLE_COLUMN_LABEL, canonicalColumnLabel } from "./column-labels.js";
 import { type LinkProfile, rewriteTarget } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -2837,11 +2838,30 @@ function synthesizeHeader(plan: LogicalTablePlan, ctx: Ctx): TableRow | null {
     const column = plan.body.map((r) => r.cells[band] as PlannedCell);
     const label = dominantLabel(column);
     if (label) {
-      row.children.push({ type: "tableCell", children: [{ type: "text", value: label }] });
+      // A transcribed label still goes through the house vocabulary: the
+      // author folds `TAB`, `MIDI` and `Ноты (TAB)` onto one name because the
+      // format is already visible in every cell, so repeating it in the header
+      // names the column after one of its values. Unlisted labels pass through.
+      const value = canonicalColumnLabel(label) ?? label;
+      row.children.push({ type: "tableCell", children: [{ type: "text", value }] });
       continue;
     }
     if (isLinkColumn(column)) {
-      row.children.push({ type: "tableCell", children: [{ type: "text", value: LINK_GLYPH }] });
+      // `/new_rules.md`: "не пытаться угадывать содержимое колонки, содержащей
+      // много ссылок на ресурсы … использовать обобщающее название". A named
+      // column reads as a column; `LINK_GLYPH` reads as a symbol the reader has
+      // to decode, and it is what all seven affected references abandoned in
+      // `06eeafb`. `LINK_GLYPH` is kept for the case this one does not cover.
+      row.children.push({ type: "tableCell", children: [{ type: "text", value: MEDIA_COLUMN_LABEL }] });
+      continue;
+    }
+    // The leading column of a record matrix holds the record's name. It is the
+    // one column whose role is fixed by position rather than by content, which
+    // is why it can be named without guessing: whatever the rows are, the thing
+    // they are indexed by is in front. Later unnamed columns get no such
+    // licence and stay empty, with the review item that has always been raised.
+    if (band === 0 && columnHasText(column)) {
+      row.children.push({ type: "tableCell", children: [{ type: "text", value: TITLE_COLUMN_LABEL }] });
       continue;
     }
     unlabelled += 1;
@@ -2879,6 +2899,11 @@ function isLinkColumn(column: readonly PlannedCell[]): boolean {
     linked += 1;
   }
   return linked >= 2;
+}
+
+/** Whether a column says anything at all — an all-blank column names nothing. */
+function columnHasText(column: readonly PlannedCell[]): boolean {
+  return column.some((cell) => !cell.isEmpty && cellText(cell).trim() !== "");
 }
 
 /** A link label is a label, not a sentence — `contentKind`'s limit, shared. */

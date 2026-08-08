@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-08T17:29:42.197Z",
+  "generated": "2026-08-08T18:23:47.635Z",
   "totals": {
-    "findings": 322,
+    "findings": 287,
     "converterDefects": 180,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 76,
-    "ambiguous": 66,
+    "referenceInconsistencies": 40,
+    "ambiguous": 67,
     "bySeverity": {
       "critical": 9,
-      "major": 177,
+      "major": 142,
       "minor": 136
     }
   },
@@ -23,10 +23,10 @@
     },
     {
       "doc": "barrios",
-      "findings": 5,
+      "findings": 2,
       "converterDefects": 0,
       "critical": 1,
-      "major": 3,
+      "major": 0,
       "minor": 1
     },
     {
@@ -55,18 +55,18 @@
     },
     {
       "doc": "kiselev",
-      "findings": 48,
+      "findings": 43,
       "converterDefects": 12,
       "critical": 0,
-      "major": 15,
+      "major": 10,
       "minor": 33
     },
     {
       "doc": "new_bach",
-      "findings": 3,
+      "findings": 1,
       "converterDefects": 0,
       "critical": 0,
-      "major": 3,
+      "major": 1,
       "minor": 0
     },
     {
@@ -79,10 +79,10 @@
     },
     {
       "doc": "new_dyens",
-      "findings": 10,
+      "findings": 6,
       "converterDefects": 0,
       "critical": 0,
-      "major": 4,
+      "major": 0,
       "minor": 6
     },
     {
@@ -95,10 +95,10 @@
     },
     {
       "doc": "new_karta",
-      "findings": 31,
+      "findings": 13,
       "converterDefects": 8,
       "critical": 0,
-      "major": 29,
+      "major": 11,
       "minor": 2
     },
     {
@@ -175,10 +175,10 @@
     },
     {
       "doc": "tarrega",
-      "findings": 11,
+      "findings": 8,
       "converterDefects": 5,
       "critical": 1,
-      "major": 9,
+      "major": 6,
       "minor": 1
     },
     {
@@ -1514,7 +1514,7 @@
       "example": {
         "doc": "kiselev",
         "path": "/table[14]",
-        "produced": "MP3 ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу работу MP3 — • Прогул…",
+        "produced": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу рабо…",
         "reference": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP3… — 3 columns, reference has 2"
       }
     },
@@ -1646,33 +1646,6 @@
       }
     },
     {
-      "class": "table.header.cell",
-      "severity": "major",
-      "instances": 43,
-      "documents": [
-        "barrios",
-        "kiselev",
-        "new_bach",
-        "new_dyens",
-        "new_karta",
-        "segovia",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 43,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "barrios",
-        "path": "/table[13]/header[0]",
-        "produced": "",
-        "reference": "Название — column 0"
-      }
-    },
-    {
       "class": "table.cell.content.edited",
       "severity": "minor",
       "instances": 33,
@@ -1692,6 +1665,30 @@
         "path": "/table[14]/cell[0][1]",
         "produced": "—",
         "reference": ""
+      }
+    },
+    {
+      "class": "table.header.cell",
+      "severity": "major",
+      "instances": 8,
+      "documents": [
+        "new_bach",
+        "new_karta",
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 7,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "new_bach",
+        "path": "/table[26]/header[0]",
+        "produced": "Название",
+        "reference": "Произведение — column 0"
       }
     },
     {
@@ -2105,48 +2102,6 @@
       "referenceLine": 28,
       "produced": "▶",
       "reference": "/#/barrios1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "07eee891",
-      "doc": "barrios",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[0]",
-      "producedLine": 80,
-      "referenceLine": 80,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "46ef2ee3",
-      "doc": "barrios",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[1]",
-      "producedLine": 80,
-      "referenceLine": 80,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "524a79e4",
-      "doc": "barrios",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[2]",
-      "producedLine": 80,
-      "referenceLine": 80,
-      "produced": "MIDI",
-      "reference": "Аудиоформат — column 2",
       "verdict": "reference-inconsistency"
     },
     {
@@ -3004,48 +2959,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "6484f662",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/header[0]",
-      "producedLine": 111,
-      "referenceLine": 111,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ac4a7b96",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/header[1]",
-      "producedLine": 111,
-      "referenceLine": 111,
-      "produced": "MP3",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "bb010749",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/header[2]",
-      "producedLine": 111,
-      "referenceLine": 111,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "403ae2c1",
       "doc": "kiselev",
       "class": "table.cell.hyphenation.mixed",
@@ -3111,37 +3024,9 @@
       "path": "/table[14]",
       "producedLine": 180,
       "referenceLine": 169,
-      "produced": "MP3 ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу работу MP3 — • Прогул…",
+      "produced": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу рабо…",
       "reference": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP3… — 3 columns, reference has 2",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "f90d7c49",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/header[0]",
-      "producedLine": 180,
-      "referenceLine": 169,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "fc0b9a5b",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/header[1]",
-      "producedLine": 180,
-      "referenceLine": 169,
-      "produced": "MP3",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "5b7ca08c",
@@ -3587,36 +3472,8 @@
       "path": "/table[26]/header[0]",
       "producedLine": 66,
       "referenceLine": 66,
-      "produced": "",
+      "produced": "Название",
       "reference": "Произведение — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "262b6154",
-      "doc": "new_bach",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[26]/header[1]",
-      "producedLine": 66,
-      "referenceLine": 66,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "e7333313",
-      "doc": "new_bach",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[26]/header[2]",
-      "producedLine": 66,
-      "referenceLine": 66,
-      "produced": "MIDI",
-      "reference": "Аудиоформат — column 2",
       "verdict": "reference-inconsistency"
     },
     {
@@ -3771,62 +3628,6 @@
       "referenceLine": 280,
       "produced": "(none)",
       "reference": "em:На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "3173b862",
-      "doc": "new_dyens",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[7]/header[0]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "adff1996",
-      "doc": "new_dyens",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[7]/header[1]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "df7ee549",
-      "doc": "new_dyens",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[7]/header[2]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "bc515d68",
-      "doc": "new_dyens",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[7]/header[3]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 3",
       "verdict": "reference-inconsistency"
     },
     {
@@ -4040,62 +3841,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "5e505b2c",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[5]/header[0]",
-      "producedLine": 29,
-      "referenceLine": 34,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "d969d27c",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[5]/header[1]",
-      "producedLine": 29,
-      "referenceLine": 34,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "a714c57b",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[5]/header[2]",
-      "producedLine": 29,
-      "referenceLine": 34,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "8449baea",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[5]/header[3]",
-      "producedLine": 29,
-      "referenceLine": 34,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 3",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "7f110c6b",
       "doc": "new_karta",
       "class": "retyped.align-to-table",
@@ -4108,62 +3853,6 @@
       "produced": "El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA",
       "reference": "Название Аудиоформат El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA — at /align[8]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "945b94a0",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[9]/header[0]",
-      "producedLine": 48,
-      "referenceLine": 50,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ad060d40",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[9]/header[1]",
-      "producedLine": 48,
-      "referenceLine": 50,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "a8a1f2df",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[9]/header[2]",
-      "producedLine": 48,
-      "referenceLine": 50,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "a4ed3571",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[11]/header[0]",
-      "producedLine": 57,
-      "referenceLine": 59,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "3692b9c3",
@@ -4222,118 +3911,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "a24d591f",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[0]",
-      "producedLine": 64,
-      "referenceLine": 67,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b77b874d",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[1]",
-      "producedLine": 64,
-      "referenceLine": 67,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "451d050a",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[13]/header[2]",
-      "producedLine": 64,
-      "referenceLine": 67,
-      "produced": "MIDI",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "07ce05f5",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[15]/header[0]",
-      "producedLine": 81,
-      "referenceLine": 84,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "4db31b07",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[15]/header[1]",
-      "producedLine": 81,
-      "referenceLine": 84,
-      "produced": "MP3",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "da076213",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[17]/header[0]",
-      "producedLine": 89,
-      "referenceLine": 92,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "51054971",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[17]/header[1]",
-      "producedLine": 89,
-      "referenceLine": 92,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "fc6c707e",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[17]/header[2]",
-      "producedLine": 89,
-      "referenceLine": 92,
-      "produced": "MIDI",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "90146f04",
       "doc": "new_karta",
       "class": "retyped.column-to-table",
@@ -4346,34 +3923,6 @@
       "produced": "Heitor Villa-Lobos - Prelude No 3 in A Minor",
       "reference": "Название Аудиоформат Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]/column[0]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "4fe30646",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[21]/header[0]",
-      "producedLine": 144,
-      "referenceLine": 130,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b02b21aa",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[21]/header[1]",
-      "producedLine": 144,
-      "referenceLine": 130,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "20f055ed",
@@ -4880,7 +4429,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "5ebee17d",
+      "id": "2c52d3bd",
       "doc": "new_rechin4",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
@@ -4890,7 +4439,7 @@
       "producedLine": 52,
       "referenceLine": 56,
       "produced": "◀ ●",
-      "reference": "◀ 🞈 — at /paragraph[21]",
+      "reference": "◀ ● — at /paragraph[21]",
       "verdict": "converter-defect"
     },
     {
@@ -6112,34 +5661,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "fe16451b",
-      "doc": "segovia",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[42]/header[0]",
-      "producedLine": 156,
-      "referenceLine": 163,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "c5da7199",
-      "doc": "segovia",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[42]/header[1]",
-      "producedLine": 156,
-      "referenceLine": 163,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "661b8666",
       "doc": "segovia",
       "class": "table.header.cell",
@@ -6166,6 +5687,34 @@
       "produced": null,
       "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "4de241b9",
+      "doc": "segovia",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[44]/header[0]",
+      "producedLine": 162,
+      "referenceLine": 171,
+      "produced": "Название",
+      "reference": "column 0",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "e7579151",
+      "doc": "segovia",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[44]/header[4]",
+      "producedLine": 162,
+      "referenceLine": 171,
+      "produced": "Аудиоформат",
+      "reference": "MP3 — column 4",
+      "verdict": "ambiguous"
     },
     {
       "id": "400438ea",
@@ -6376,48 +5925,6 @@
       "produced": "1. Preludio No 20 Chopin .................................................. A. y T. 391 2. Preludio No 3 ......................................................…",
       "reference": "Название - 1. Preludio No 20 Chopin A. y T. 391 2. Preludio No 3 A. y T. 392 3. Preludio No 4 A. y T. 392 4. Preludio No 5 A. y T. 392 5. Preludio No 6 Chopin … — at /list[21]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "b53f95e1",
-      "doc": "tarrega",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[22]/header[0]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "265c41b3",
-      "doc": "tarrega",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[22]/header[1]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "TAB",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ad5c31f4",
-      "doc": "tarrega",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[22]/header[2]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "MIDI",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "60ec36e5",

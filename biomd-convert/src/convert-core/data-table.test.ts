@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { materializeGrid } from "../ladom/grid.js";
 import { parseHtml } from "../ladom/parse.js";
 import { findFirst } from "../ladom/types.js";
+import { canonicalColumnLabel } from "./column-labels.js";
 import { inferColumnBands, isInlineable, planDataTable } from "./data-table.js";
 import { convert } from "./pipeline.js";
 
@@ -178,33 +179,44 @@ describe("end to end", () => {
 });
 
 /**
- * A column the source never named still gets a header.
+ * A column the source never named gets the house name for what it holds.
  *
  * **Invariant.** `BioMD-Reference.md` §1 (Tables): every GFM column MUST have a
- * header. Transcribing a recurring label is preferred because it is attested;
- * where there is none, a column whose every populated cell is a short anchor is
- * a links column, and the link symbol says that and nothing more. Cardinality,
- * containment and homogeneity down the column — no href pattern, no filename,
- * no vocabulary of format names.
+ * header. A column whose every populated cell is a short anchor is a resource
+ * column — cardinality, containment and homogeneity down the column, no href
+ * pattern and no filename. The leading column is the one whose role is fixed by
+ * *position*: whatever the rows are, the thing they are indexed by is in front.
+ * Both names come from `column-labels.ts`, which is language-tagged data.
  *
- * **Why it matters more than the label.** The header used to be all-or-nothing:
- * if no column had a recurring label the whole table was abandoned, and a
- * five-record score matrix came out as twenty loose aligned paragraphs with
- * three work titles read as quotations. `analyze/analyze.md` asks for exactly
- * this symbol on three separate pages, and the references write it sixteen
- * times across six documents.
+ * **This supersedes the previous contract, on an author ruling.** Until
+ * `06eeafb` this described emitting `LINK_GLYPH` for a resource column and
+ * leaving the leading column *empty*, on the grounds that naming it would be
+ * invention (§16.3) — and cited `analyze/analyze.md` asking for the symbol on
+ * three pages and sixteen references writing it. The author then replaced every
+ * one of those sixteen and stated the vocabulary directly in `/new_rules.md`
+ * ("не пытаться угадывать … использовать обобщающее название"). §16.3 is not
+ * engaged: the probe in PROGRESS §29.2 confirmed these tables have **no source
+ * header at all** — the old references invented `Композиция` and `Ноты (TAB)`
+ * exactly as the new ones name `Название` — so nothing attested is rewritten,
+ * and a column name is not factual text about the subject.
+ *
+ * **Why the header matters more than the label.** It used to be all-or-nothing:
+ * with no recurring label the whole table was abandoned, and a five-record score
+ * matrix came out as twenty loose aligned paragraphs with three work titles read
+ * as quotations.
  *
  * **Recurrence requirement.** Two linked cells in the column.
  *
  * **False friend**, tested for non-firing: a column of prose that contains a
- * link. A label is not a sentence, and the length limit is the separator.
+ * link. A label is not a sentence, and the length limit is the separator — such
+ * a column is named neither a resource column nor anything else.
  */
 describe("a header for a column the source never labelled", () => {
   const linkRow = (work: string, a: string, b: string) =>
     `<tr><td>${work}</td><td><a href="${a}">${a.slice(-3).toUpperCase()}</a></td>` +
     `<td><a href="${b}">${b.slice(-3).toUpperCase()}</a></td></tr>`;
 
-  it("heads an unnamed links column with the link symbol", async () => {
+  it("names the resource columns and the column that indexes them", async () => {
     // Mixed format tokens down each column, so no column has a dominant label —
     // `new_dyens` in miniature, where the table used to vanish entirely.
     const html =
@@ -214,13 +226,33 @@ describe("a header for a column the source never labelled", () => {
       linkRow("Libra Sonatine", "zip/libra.zip", "gif/libra.gif") +
       "</table></body></html>";
     const result = await convert(Buffer.from(html, "utf8"));
-    expect(result.markdown).toMatch(/^\|.*\|$/mu);
-    expect(result.markdown.split("\u{1F517}")).toHaveLength(3);
-    // The subject column stays empty: naming it would be invention (§16.3).
-    expect(result.markdown).toMatch(/^\|\s*\|/mu);
+    expect(result.markdown).toContain("| Название | Аудиоформат | Аудиоформат |");
+    expect(result.markdown).not.toContain("\u{1F517}");
   });
 
-  it("does not call a prose column a links column — non-firing", async () => {
+  it("folds a transcribed format token onto the house name", async () => {
+    // Here every cell in a column repeats `TAB`, so `dominantLabel` transcribes
+    // it — and the format is already visible in each cell, so heading the column
+    // with it names the column after one of its own values.
+    const html =
+      "<html><body><table border=\"0\">" +
+      "<tr><td>Adelita</td><td><a href=\"a.txt\">TAB</a></td></tr>" +
+      "<tr><td>Capricho</td><td><a href=\"b.txt\">TAB</a></td></tr>" +
+      "<tr><td>Recuerdos</td><td><a href=\"c.txt\">TAB</a></td></tr>" +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toContain("| Название | Аудиоформат |");
+  });
+
+  it("passes an unrecognised label through untouched — graceful degradation", () => {
+    expect(canonicalColumnLabel("Ноты (TAB)")).toBe("Аудиоформат");
+    expect(canonicalColumnLabel("  midi  ")).toBe("Аудиоформат");
+    expect(canonicalColumnLabel("Произведение")).toBe("Название");
+    expect(canonicalColumnLabel("Длительность")).toBeNull();
+    expect(canonicalColumnLabel("")).toBeNull();
+  });
+
+  it("does not call a prose column a resource column — non-firing", async () => {
     const sentence = (name: string, href: string) =>
       `<tr><td>${name}</td><td>Подробнее об этой записи можно прочитать в <a href="${href}">обзоре</a>, ` +
       "опубликованном в журнале в том же году.</td></tr>";
@@ -232,5 +264,6 @@ describe("a header for a column the source never labelled", () => {
       "</table></body></html>";
     const result = await convert(Buffer.from(html, "utf8"));
     expect(result.markdown).not.toContain("\u{1F517}");
+    expect(result.markdown).not.toContain("Аудиоформат");
   });
 });
