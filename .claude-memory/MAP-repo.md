@@ -1,7 +1,12 @@
-# MAP-repo — where everything lives
+# MAP-repo -- where everything lives
 
 Module roles are quoted from each file's own header comment (verified 2026-08-08); the "rules that
 live here" column is from `CONVERTER-PROGRESS.md` and is the part to re-check after a refactor.
+
+- [1. Repository tree](#1-repository-tree)
+- [2. `src/` -- 70 files, four layers](#2-src----70-files-four-layers)
+- [3. `src/cli/index.ts` -- the commands](#3-srccliindexts----the-commands)
+- [4. Two harness facts that invalidate tests silently](#4-two-harness-facts-that-invalidate-tests-silently)
 
 ## 1. Repository tree
 
@@ -50,9 +55,9 @@ claude-project/
    └─ src/                          see §2
 ```
 
-## 2. `src/` — 70 files, four layers
+## 2. `src/` -- 70 files, four layers
 
-### `ladom/` — HTML → Layout-Annotated DOM (the evidence layer)
+### `ladom/` -- HTML → Layout-Annotated DOM (the evidence layer)
 
 | file | role | note |
 |---|---|---|
@@ -60,29 +65,29 @@ claude-project/
 | `quarantine.ts` | server-side markup quarantine, **before** parsing | |
 | `parse.ts` | HTML → LADOM (parse5) | |
 | `sanitize.ts` | S1 pre-render: behaviour out, **layout evidence untouched** | |
-| `measure.ts` | Stage 3 — Chromium measurement | `NullMeasurer` leaves `style` undefined; see §4 |
-| `normalize.ts` | Stage 4 — normalize / desugar | must not unwrap a bordered single cell |
+| `measure.ts` | Stage 3 -- Chromium measurement | `NullMeasurer` leaves `style` undefined; see §4 |
+| `normalize.ts` | Stage 4 -- normalize / desugar | must not unwrap a bordered single cell |
 | `grid.ts` | table grid materialization (physical occupancy) | |
-| `style.ts` | **computed-style folding** — `foldTextAlign`, `isCenteredAlign`, `proseAlign`, `isDistinctiveAlign` | the one definition; `l3/geometry.ts` delegates to it. **Fold; never compare a computed value raw** |
+| `style.ts` | **computed-style folding** -- `foldTextAlign`, `isCenteredAlign`, `proseAlign`, `isDistinctiveAlign` | the one definition; `l3/geometry.ts` delegates to it. **Fold; never compare a computed value raw** |
 | `types.ts` | the LADOM types | |
 
-### `convert-core/` — LADOM → BioMD AST (the rules). **Must never import `eval/` or `l3/`.**
+### `convert-core/` -- LADOM → BioMD AST (the rules). **Must never import `eval/` or `l3/`.**
 
 | file | role | rules that live here |
 |---|---|---|
 | `pipeline.ts` | the conversion pipeline | pass ordering |
-| `corpus.ts` | Stage 0 — corpus pass (fingerprints, chrome model, lexicon) | |
-| `boilerplate.ts` | boilerplate removal — the corpus pass cashing in | site chrome, masthead repeats |
+| `corpus.ts` | Stage 0 -- corpus pass (fingerprints, chrome model, lexicon) | |
+| `boilerplate.ts` | boilerplate removal -- the corpus pass cashing in | site chrome, masthead repeats |
 | `structure.ts` | **structure recovery, the biggest file** | `layoutFrom` (lanes/`::: columns`), region routing, `estimatePosition`, `laneColumnsOf` (occupancy is measured on **lowered** content, §21.2a), `pageRailColumns` (§21.2b), `synthesizeHeader`/`isLinkColumn` (§21.4) |
-| `classify.ts` | table classification — Tier 1 gates, Tier 2 scored | CATALOG: the width gate `ratio 0.45–0.55` + `imageDensity > 0.3`, **and** `picturePairedRows === 1` with a two-row recurrence requirement (§21.3) |
-| `glyphs.ts` | lexical data — symbols the target cannot draw | `LINK_GLYPH`; the home the unbuilt 29-entry icon map needs (OPEN §2.4) |
+| `classify.ts` | table classification -- Tier 1 gates, Tier 2 scored | CATALOG: the width gate `ratio 0.45–0.55` + `imageDensity > 0.3`, **and** `picturePairedRows === 1` with a two-row recurrence requirement (§21.3) |
+| `glyphs.ts` | lexical data -- symbols the target cannot draw | `LINK_GLYPH`; the home the unbuilt 29-entry icon map needs (OPEN §2.4) |
 | `data-table.ts` | physical grid → semantic record matrix | `planDataTable` (`minRows: 2`), `dominantLabel`, `tableFromPlan` |
 | `media.ts` | what an `<img>` *means*, apart from where it sits | decorative filter (rendered geometry, never filename), size calibration against the article content box, caption binding, `::: images` grouping |
 | `frames.ts` | semantic frames + bounded alignment | `framedCell`, `alignedGroup`, `groupAlignedRuns`, `ALIGN_LABEL_MAX_CHARS = 400`, `alignableRunMember` (lists excluded) |
-| `lines.ts` | break-run segmentation — the pass that made lines visible | WRAP vs LINEATION, `enumeratedItems` |
+| `lines.ts` | break-run segmentation -- the pass that made lines visible | WRAP vs LINEATION, `enumeratedItems` |
 | `headings.ts` | heading recovery from typography | the four recurrence detectors (§4.3) |
 | `prominence.ts` | typographic prominence off whatever evidence exists | `bodyProminenceOf`, `contentIsSubordinated`, `subordinationRecursIn` |
-| `links.ts` | link and target policy — pure, unit-tested against the guide's example table | adjacent-anchor merge, `resourceLink` |
+| `links.ts` | link and target policy -- pure, unit-tested against the guide's example table | adjacent-anchor merge, `resourceLink` |
 | `dehyphenate.ts` | seven-rule cascade + lexicon + oracle; defaults to PRESERVE | **the pre-filter is part of the rule** (§13.2) |
 | `lexicon.ts` | corpus lexicon | a same-corpus lexicon cannot vouch for a single occurrence |
 | `text-ops.ts` | text operations | audited reversible edits |
@@ -92,32 +97,32 @@ claude-project/
 
 **Test files are where previous sessions recorded what they tried.** Grep them before building:
 `recovery.test.ts` (behavioural contracts, the stand-in measurer + `mdMeasured()`), `lanes.test.ts`
-(lane detection — note there is **no** `lanes.ts`; the code is `structure.ts`), `data-table.test.ts`,
+(lane detection -- note there is **no** `lanes.ts`; the code is `structure.ts`), `data-table.test.ts`,
 `dehyphenate.test.ts`, `shaping.test.ts`, `pipeline.test.ts`, `regression.test.ts`.
 
-### `biomd-ast/` — the typed target
+### `biomd-ast/` -- the typed target
 
 `types.ts` (BioMD Lite 1.6 AST) · `builders.ts` (validating constructors) · `serialize.ts` (AST →
-`.bio.md`) · `read.ts` (`.bio.md` → directive skeleton; **documents the target renderer's quirks** —
+`.bio.md`) · `read.ts` (`.bio.md` → directive skeleton; **documents the target renderer's quirks** --
 `PROPERTY_HEADER_DIRECTIVES` asymmetry, `columns.divider` promoted to a synthetic first column) ·
 `validate.ts` (grammar + conformance + lint) · `profile.ts` (what the consuming renderer supports) ·
 `downgrade.ts` (deterministic downgrades) · `conformance.test.ts` (asserts the quirks).
 
-### `eval/` (L2) and `l3/` (L3) — diagnostic only
+### `eval/` (L2) and `l3/` (L3) -- diagnostic only
 
 `eval/blocks.ts` (`.bio.md` → typed line-numbered block tree) · `eval/structdiff.ts`
-(Needleman–Wunsch sibling alignment + **global** reconciliation → typed findings; stored
+(Needleman-Wunsch sibling alignment + **global** reconciliation → typed findings; stored
 backpointers, hyphen-folding `similarityTokens`, `homeOf`/`homeKey` sub-classification) ·
 `eval/triage.ts` (three-way backing against the decoded `.htm`; `PRESENTATIONAL` vs structural) ·
-`eval/rollup.ts` (ledger, ranked `instances × severity × generality`) · `eval/score.ts` (**L1 only —
+`eval/rollup.ts` (ledger, ranked `instances × severity × generality`) · `eval/score.ts` (**L1 only --
 never tune**) · `eval/facts.ts` · `eval/report.ts`.
 
 `l3/render.ts` (deterministic `.bio.md` → HTML, **one entry point, no side parameter**) ·
-`l3/geometry.ts` (row bands, reading ranks, lanes, alignment folding — delegates to `ladom/style.ts`)
+`l3/geometry.ts` (row bands, reading ranks, lanes, alignment folding -- delegates to `ladom/style.ts`)
 · `l3/probe.ts` (Chromium, same flags/viewport/offline routing as `ladom/measure.ts`) ·
 `l3/compare.ts` (three surfaces → findings + alignment evidence table).
 
-### `llm/` — hooks, **non-authoritative by contract**
+### `llm/` -- hooks, **non-authoritative by contract**
 
 `hooks.ts` holds the three production hooks: **`table.classify`**, **`table.records`**,
 **`text.segment`** (WRAP / PARAGRAPH / LINEATION / SPACING). `hook.ts` runtime · `budget.ts` ·
@@ -127,7 +132,7 @@ A hook proposes; a deterministic check accepts or rejects; the rejection path is
 still yields sane output. **Adjudicate with LLM off**; measure any LLM-on delta as a separate labelled
 run. Keep the production hook path and any L4 judge path strictly separate.
 
-## 3. `src/cli/index.ts` — the commands
+## 3. `src/cli/index.ts` -- the commands
 
 `convert` · `corpus scan` · `corpus run` · `eval` · `validate` · `inspect` · `diff` (L2) · `render`
 (writes `analyze/rendered/`) · `l3` · `config`.
@@ -138,9 +143,9 @@ Two counts that are **not comparable**: `corpus run`'s per-file `errors=` column
 ## 4. Two harness facts that invalidate tests silently
 
 - **`convert()` falls back to `NullMeasurer`**, which leaves `el.style` undefined on purpose. Any rule
-  keyed on computed style — alignment, frames, subordination — **cannot be exercised by a plain `md()`
+  keyed on computed style -- alignment, frames, subordination -- **cannot be exercised by a plain `md()`
   test**. Use `mdMeasured()` in `recovery.test.ts`; extend the stand-in only with properties the
   element actually declares.
 - **This is Git Bash on Windows**: `/dev/null` creates a file named `nul` in the working directory.
   Write probe output to the session scratchpad. Edit source with `Edit`, never with a multi-line
-  `node -e` regex — one has already swallowed a loop body here.
+  `node -e` regex -- one has already swallowed a loop body here.

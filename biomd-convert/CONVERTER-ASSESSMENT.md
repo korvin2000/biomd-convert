@@ -1,5 +1,24 @@
 # BioMD converter: implementation assessment and development plan
 
+> **Historical.** A point-in-time assessment (216 tests, 82.33% similarity, 15 validation errors --
+> all superseded). Routed as "avoid" from `CLAUDE.md` §2 and `.claude-memory/INDEX.md` §2: current
+> measured state lives in `CONVERTER-PROGRESS.md` (route via `MAP-progress.md`), not here. Kept for
+> its central falsified hypothesis -- the "missing semantic IR" diagnosis in §4.1, recorded as killed
+> in `.claude-memory/KILLED.md` §1 ("most loss was four local misreadings in the existing lowering
+> path") -- because `CONVERTER-PROGRESS.md` §3 shows the pattern recurring and future sessions need
+> the full argument this summary can't carry.
+
+- [1. Executive conclusion](#1-executive-conclusion)
+- [2. Scope, authority, and evidence](#2-scope-authority-and-evidence)
+- [3. What is implemented well](#3-what-is-implemented-well)
+- [4. Principal architectural shortcomings](#4-principal-architectural-shortcomings)
+- [5. LLM integration: good infrastructure, insufficient authority](#5-llm-integration-good-infrastructure-insufficient-authority)
+- [6. Specific correctness problems and proposed fixes](#6-specific-correctness-problems-and-proposed-fixes)
+- [7. Evaluation methodology](#7-evaluation-methodology)
+- [8. Phased implementation plan](#8-phased-implementation-plan)
+- [9. Files most likely to require revision](#9-files-most-likely-to-require-revision)
+- [10. Final assessment](#10-final-assessment)
+
 ## 1. Executive conclusion
 
 The current converter is a sound **compiler skeleton**, but not yet the semantic/layout recovery system described by `BioMD-Reference.md`, `html-to-biomd_guide.md`, and `html-to-biomd_ext_guide.md`.
@@ -21,7 +40,7 @@ This is visible in the 13 reference pairs:
 | Separators | 11 | 85 | 74 fewer net |
 | Hard line breaks | 841 | 202 | 639 extra |
 
-A clean deterministic conversion with Chromium measurement produced an official weighted similarity of **82.33%** against the 13 references. Per-axis document scores reveal the same structural gap: heading F1 ranges from 11.8% to 66.7%; several directive scores are 0–26%; and every file remains `conversion-review-required`. The fresh run's mean source-conservation recall is **97.79%**, including two files at 100%, but the corpus has **0% clean share**, 27 unresolved LLM escalation points, and 15 validation errors. High recall is therefore not evidence of conversion quality.
+A clean deterministic conversion with Chromium measurement produced an official weighted similarity of **82.33%** against the 13 references. Per-axis document scores reveal the same structural gap: heading F1 ranges from 11.8% to 66.7%; several directive scores are 0-26%; and every file remains `conversion-review-required`. The fresh run's mean source-conservation recall is **97.79%**, including two files at 100%, but the corpus has **0% clean share**, 27 unresolved LLM escalation points, and 15 validation errors. High recall is therefore not evidence of conversion quality.
 
 **Priority decision:** do not tune more thresholds in the current direct lowering path first. Add the missing semantic planning layer, relation recovery, break segmentation, media binding, and typed LLM operation boundary. Threshold tuning before those changes will optimize the wrong representation.
 
@@ -31,11 +50,11 @@ A clean deterministic conversion with Chromium measurement produced an official 
 
 ### 2.1 Authorities studied
 
-1. `BioMD-Reference.md` — normative syntax and preservation model.
-2. `html-to-biomd_guide.md` — migration rules and ABC link policy.
-3. `html-to-biomd_ext_guide.md` — detailed preprocessing, semantic transformation, and verification procedure.
-4. `htm-to-md_utility_plan.md` — intended implementation architecture, including semantic IR and LLM hook catalogue.
-5. `how_to_fix_table_parsing_and_reconstruction.md` — prior table failure analysis.
+1. `BioMD-Reference.md` -- normative syntax and preservation model.
+2. `html-to-biomd_guide.md` -- migration rules and ABC link policy.
+3. `html-to-biomd_ext_guide.md` -- detailed preprocessing, semantic transformation, and verification procedure.
+4. `htm-to-md_utility_plan.md` -- intended implementation architecture, including semantic IR and LLM hook catalogue.
+5. `how_to_fix_table_parsing_and_reconstruction.md` -- prior table failure analysis.
 
 The governing preservation order is content/targets, hierarchy and order, meaningful relationships, coarse emphasis/alignment, then discard pixel-level styling. The converter must preserve author wording, emit exactly one `#`, classify every table, preserve captions and media relationships, prefer Markdown, and use only legal BioMD directives.
 
@@ -409,7 +428,7 @@ Use deterministic rules when evidence is decisive. Escalate when:
 - final structure differs sharply from archetype/reference expectations;
 - conservation or validator failures persist after deterministic repair.
 
-For high-risk actions—chrome removal, content reorder, target change, text operation—require higher confidence or dual-pass agreement. LLMs must never test URLs, invent missing captions, silently edit wording, or rewrite resource identity.
+For high-risk actions--chrome removal, content reorder, target change, text operation--require higher confidence or dual-pass agreement. LLMs must never test URLs, invent missing captions, silently edit wording, or rewrite resource identity.
 
 ### 5.4 Persist LLM evidence
 
@@ -434,31 +453,31 @@ Redact secrets; record model identity, hook/prompt version, cache key, tokens, l
 
 ## 6. Specific correctness problems and proposed fixes
 
-### P0 — Output can be invalid and still be written
+### P0 -- Output can be invalid and still be written
 
 Examples in retained reports: no H1 (`goya2`), heading level skip (`news`), empty table header (`barrios`), overlong physical line (`williams2`). Pipeline state becomes review-required, but the output remains present in `out`.
 
 **Fix:** separate candidate output from publishable output. `corpus run` may retain candidate BioMD under work artifacts, but only atomically promote to `out` when grammar/conservation policy passes or an explicit reviewed override exists.
 
-### P0 — Conservation reports count expected output assets as “extra”
+### P0 -- Conservation reports count expected output assets as "extra"
 
 Several reports list all output targets/images as unexpected while missing is empty. Source inventories are collected after normalization and chrome removal, while emitted structures may retain items accounted under transformed/removed ancestors. This makes the multiset comparison noisy and can mask real defects.
 
 **Fix:** use stable target/media symbol-table entries captured before destructive passes. Every transform carries identity forward. Compare symbol IDs first, normalized targets second. Distinguish invented, duplicated, moved, intentionally removed, and source-preserved.
 
-### P0 — H1 must be a planning invariant
+### P0 -- H1 must be a planning invariant
 
 Do not wait for the validator to discover zero/multiple H1. Resolve title before section roles. If the source title is visually split (`Френсис Гойя` + `дискография`), permit title plus italic subtitle or bounded aligned heading according to evidence, but emit one H1.
 
-### P0 — `<br>` classification must precede Markdown construction
+### P0 -- `<br>` classification must precede Markdown construction
 
 Hard-break serialization should be impossible without a break decision. This single change will improve paragraphs, lists, track grids, news entries, line-length errors, and dehyphenation.
 
-### P1 — Image caption/group/size recovery
+### P1 -- Image caption/group/size recovery
 
 Make media binding a first-class pass. Calibrate token mapping against content width and reference fixtures. Child images inside `images` should omit ignored `position`/`size` properties.
 
-### P1 — Catalog/news/roster archetypes
+### P1 -- Catalog/news/roster archetypes
 
 Add page-specific but reusable schemas:
 
@@ -470,25 +489,25 @@ Add page-specific but reusable schemas:
 
 These are domain roles, not filename rules.
 
-### P1 — Table planner needs hybrid decomposition
+### P1 -- Table planner needs hybrid decomposition
 
 A `HYBRID` table cannot simply fall through to generic layout. Split nested semantic groups, classify each, and preserve the relationship between cover, title, track list, and resources.
 
-### P1 — Alignment/frame/signature recovery
+### P1 -- Alignment/frame/signature recovery
 
 Use bounded groups only. Paragraph-wide `text-align:justify` is ordinary prose and must not become `align`. Center/right becomes semantic only when the block is short, bounded, and distinct from surrounding prose. Border/background becomes `frame` only when it groups a meaningful notice, not when it styles a photograph or page shell.
 
-### P2 — Better title/heading model
+### P2 -- Better title/heading model
 
 Cluster relative typography within a page and role patterns across the corpus. Add date, person-name, album-label, and resource-section detectors. Enforce logical hierarchy and avoid headings inside nav/columns when the target grammar disallows or renders them poorly.
 
-### P2 — Profile and visual-mode honesty
+### P2 -- Profile and visual-mode honesty
 
 Config says visual `always`, but `createMeasurer()` silently returns `NullMeasurer` when Playwright or Chromium is unavailable. In `always` mode, silent downgrade contradicts user intent.
 
 **Fix:** `always` should fail the job or at least mark it review-required with a prominent machine-readable diagnostic. `auto` may degrade. Persist `measured`, viewport, stylesheet failures, node match ratio, and asset-resolution warnings.
 
-### P2 — Complete job artifacts
+### P2 -- Complete job artifacts
 
 The intended work layout includes decoded, repaired, measured, normalized, classified, IR, decisions, screenshots, and audit artifacts. Checked work directories retain only source, output, and validation report. Retain the intermediate evidence needed to reproduce misclassification.
 
@@ -538,7 +557,7 @@ Current evaluator strengths: multiset precision/recall penalizes duplication; ta
 
 Partition by archetype and failure class, not randomly:
 
-- 15–20 biographies;
+- 15-20 biographies;
 - 10 rosters/multi-entry pages;
 - 10 news pages;
 - 15 discography/catalog pages;
@@ -616,7 +635,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 ## 8. Phased implementation plan
 
-### Phase 0 — Reproducible baseline
+### Phase 0 -- Reproducible baseline
 
 1. Restore dependency installation and run `npm test`, typecheck, official `biomd eval`, and a clean corpus conversion.
 2. Persist full evaluator JSON and per-job resolver stats.
@@ -626,7 +645,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 **Exit:** every baseline claim can be reproduced from a clean checkout; no stale checked-in output is mistaken for current behavior.
 
-### Phase 1 — Semantic IR and invariants
+### Phase 1 -- Semantic IR and invariants
 
 1. Add region/block/media/target IR and relation graph.
 2. Move ledger accounting to stable symbol IDs.
@@ -636,7 +655,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 **Exit:** direct LADOM→AST lowering no longer owns semantic decisions.
 
-### Phase 2 — Breaks, roles, and archetypes
+### Phase 2 -- Breaks, roles, and archetypes
 
 1. Implement break-run segmentation and list reconstruction.
 2. Add title/subtitle/lead/heading/date/person/album/note/signature role classifiers.
@@ -645,7 +664,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 **Exit:** heading, paragraph, list, separator, and hard-break axes meet archetype targets.
 
-### Phase 3 — Media and layout recovery
+### Phase 3 -- Media and layout recovery
 
 1. Detect content box and calibrate image tokens.
 2. Bind captions, click targets, frames, and alt text.
@@ -656,7 +675,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 **Exit:** media/group/size/position and catalog/news order targets pass.
 
-### Phase 4 — Final audit and safe repair
+### Phase 4 -- Final audit and safe repair
 
 1. Implement `document.plan` for globally ambiguous pages.
 2. Implement typed `review.audit` and `repair.patch`.
@@ -666,7 +685,7 @@ A perceptual screenshot diff can triage changes, but DOM/ARIA/layout facts shoul
 
 **Exit:** LLM assistance reduces review rate without weakening conservation or deterministic reproducibility.
 
-### Phase 5 — Production rollout
+### Phase 5 -- Production rollout
 
 1. Shadow-convert the full 1,000-page corpus.
 2. Cluster unresolved reviews by failure signature.
@@ -711,4 +730,4 @@ The correct strategy is therefore:
 5. validate every proposed change against hard invariants and multi-axis reference metrics;
 6. publish only clean outputs and preserve all evidence needed to audit the rest.
 
-That path directly addresses the observed failures—image size/position, missing captions/groups, wrong or absent directives, centering/style loss, headings, news/catalog order, and excess hard breaks—without surrendering content integrity or determinism to free-form model generation.
+That path directly addresses the observed failures--image size/position, missing captions/groups, wrong or absent directives, centering/style loss, headings, news/catalog order, and excess hard breaks--without surrendering content integrity or determinism to free-form model generation.

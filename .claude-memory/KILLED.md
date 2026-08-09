@@ -1,4 +1,4 @@
-# KILLED — falsified hypotheses and standing traps
+# KILLED -- falsified hypotheses and standing traps
 
 **A killed hypothesis reopens on new measurement only, never on argument** (`CLAUDE.md` §3.4).
 Re-deriving these across sessions is the main tax on work of this length. `§` = section in
@@ -13,7 +13,7 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | Font size proves subordination | on an archive page the longest blocks *are* the quotes, so `bodyProminenceOf` measures them and the comparison inverts | 12.3 |
 | A majority test against a page baseline works | a dominant construct disqualifies itself. Ask for **contrast**, not majority | 12.3 |
 | A computed colour testifies to authorial intent | `#000000` declared and inherited are the same value; read the declaration | 13.4 |
-| `<blockquote>` is evidence of a quotation | in this corpus it is an indent as often as a quotation — wrong on ~half the corpus | 14.3 |
+| `<blockquote>` is evidence of a quotation | in this corpus it is an indent as often as a quotation -- wrong on ~half the corpus | 14.3 |
 | A page-level recurrence gate substitutes for content evidence | `subordinationRecurs` is **true** on both pages that must not quote | 14.3 |
 | A record list can be told from verse by shape | measured over 78 runs: line count, line length, variance and lineation **all overlap**. `borislova`'s poems and `kiselev`'s track lists are the same shape | 15.2/15.3 |
 | `retyped.paragraph-to-list` and `paragraph.spurious.in-break-run` are one mechanism | shared substrate (`<br>` runs), nothing else. One is a missing detector, the other was an instrument over-claim | 15.3 |
@@ -23,42 +23,42 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 | A null alignment baseline is repaired by dropping the length threshold | unrestricted weighted majority on that page is `left`, so centred blocks stay distinctive and nothing changes | 17.4 |
 | An empty `::: column` is degraded output | `goya2`'s reference **keeps five**; dropping them shifts 30 records out of alignment. Correct and incorrect shapes are byte-identical | 18.2/18.5 |
 | A failed DATA table should be reconsidered as a layout region | symmetric with the UNKNOWN path, **measurably worse** (L1 93.8 → 93.6, three regression documents changed), and already refused by a named contract in `recovery.test.ts` | 18.3 |
-| CATALOG's near-equal-lane gate is over-fitted *and is the cause* | over-fitted: probably. The cause of `new_lagq2`: no — widening it reaches `barrios` (0.67) and `news_2007` (0.27) | 18.5 |
-| Centre alignment cannot be admitted (4 guards tried) | it could — the false friend was a **symptom** of collapsed lanes upstream. §10.1 gave those documents their lanes back and spurious aligns fell 15 → 4 | 10.2 |
+| CATALOG's near-equal-lane gate is over-fitted *and is the cause* | over-fitted: probably. The cause of `new_lagq2`: no -- widening it reaches `barrios` (0.67) and `news_2007` (0.27) | 18.5 |
+| Centre alignment cannot be admitted (4 guards tried) | it could -- the false friend was a **symptom** of collapsed lanes upstream. §10.1 gave those documents their lanes back and spurious aligns fell 15 → 4 | 10.2 |
 | A corpus-level `.chrome` sub-class by cross-document text recurrence | fires on **nothing** across the 13; removed rather than shipped on the argument that it would fire on the other ~987 | 8.3 |
-| `paragraph.containment` is the missing-lane mechanism | 91 of its 141 instances were the **opposite** defect — spurious lanes wrapping prose. Grouping the class by the *direction* of its findings falsified it in one query | 21.1 |
+| `paragraph.containment` is the missing-lane mechanism | 91 of its 141 instances were the **opposite** defect -- spurious lanes wrapping prose. Grouping the class by the *direction* of its findings falsified it in one query | 21.1 |
 | A narrow flank beside a dominant column is a page rail | killed **before it was written**: `new_blackmore`'s reference lanes measure 29/71 with the *text* in the narrow one, so the rule would have cemented its 3 open `column.missing`. Flanked on **both** sides is the discriminator; width alone is not | 21.6 |
-| An all-empty table header is a different question from an empty header cell | it is the same answer repeated. Treating it as a special case aborted the whole table and cost two record matrices — `new_dyens` came out as 20 loose aligned paragraphs | 21.4 |
+| An all-empty table header is a different question from an empty header cell | it is the same answer repeated. Treating it as a special case aborted the whole table and cost two record matrices -- `new_dyens` came out as 20 loose aligned paragraphs | 21.4 |
 | An mdast `html` node is a way to emit a character reference | it serializes correctly and then trips `raw-html` **and** `table-cell-block-content`, both correctly. Emit the character; fold the spelling in the instrument | 21.4 |
-| A one-row media record licenses a one-row table | reopened legitimately once §21.4 removed the emitter blocker §17.4 killed it on — then killed again on better evidence. The shape occurs **three times corpus-wide** and the references split **2–1**, with `williams2` (regression corpus) writing `::: align`. `new_kolpakov`'s row is not even covered: its third cell is an unlinked `(1,7 Mb)` | 22.2 |
+| A one-row media record licenses a one-row table | reopened legitimately once §21.4 removed the emitter blocker §17.4 killed it on -- then killed again on better evidence. The shape occurs **three times corpus-wide** and the references split **2-1**, with `williams2` (regression corpus) writing `::: align`. `new_kolpakov`'s row is not even covered: its third cell is an unlinked `(1,7 Mb)` | 22.2 |
 | The alignment family is its own mechanism | a third of it closed as a *side effect* of the region work in §21.2 and §22.1, with no alignment rule touched. Read it **after** the region and table families settle | 22.3 |
 | Same prominence across two masthead lines always means two `#` | true across sibling *blocks*, false inside one block: a `<br>` between lines set the same way is a hand-wrap to fit a 458 px cell. `segovia1` and `new_geyzel04` join theirs. The first implementation regressed both plus `goya2` in one run | 24.1 |
 | A masthead written as `<center>` is reachable by heading recovery | `normalize` unwraps `<center>` before recovery runs, so the lines have no box to be lines of. All 22 corpus mastheads use a `<div>`; recorded as a limit, not chased | 24.6 |
 | A guard that fires on nothing should be removed | measure **both paths** first. The masthead-box exclusion is inert measured and load-bearing unmeasured, where a folded `<font size>` is the only evidence there is | 24.6 |
-| `isDecorative`'s filename regex is why nav arrows shipped as pictures | `back.gif` **is** in the regex, `previous.gif` **is not**, and both produced identical wrong output. When a guard's presence and absence give the same answer the guard is not the deciding code — `dropDecorative` reads direct children, `runImages` descends through `<a>`, and an icon is always inside its link | 29.3 |
-| ~~`table.header.cell` closes no validator error~~ | **this entry was itself wrong** — it closes **15 of the 28**. The mistake was inferring from `validate <file>` (a laxer profile, reports 0) instead of measuring `errors=` in `bench/last-run.txt`. Kept as a corpse of the *method*, not the claim: never quote a validator figure from anywhere but `corpus run` | 29.2 / 30.2 |
-| A word-less block may open an alignment run because it carries a target | the false friend was never `* * *`. `segovia1`'s footer is a four-cell lane row whose outer two cells are bare glyphs; making them alignable swept **all four lanes into one `::: align`**. L2 322→324, L3 85→**87**, and a structural loss on a regression document. The loose blocks are a *symptom* of the missing `columns` region — guarding against them downstream would cement it | 30.1 |
+| `isDecorative`'s filename regex is why nav arrows shipped as pictures | `back.gif` **is** in the regex, `previous.gif` **is not**, and both produced identical wrong output. When a guard's presence and absence give the same answer the guard is not the deciding code -- `dropDecorative` reads direct children, `runImages` descends through `<a>`, and an icon is always inside its link | 29.3 |
+| ~~`table.header.cell` closes no validator error~~ | **this entry was itself wrong** -- it closes **15 of the 28**. The mistake was inferring from `validate <file>` (a laxer profile, reports 0) instead of measuring `errors=` in `bench/last-run.txt`. Kept as a corpse of the *method*, not the claim: never quote a validator figure from anywhere but `corpus run` | 29.2 / 30.2 |
+| A word-less block may open an alignment run because it carries a target | the false friend was never `* * *`. `segovia1`'s footer is a four-cell lane row whose outer two cells are bare glyphs; making them alignable swept **all four lanes into one `::: align`**. L2 322→324, L3 85→**87**, and a structural loss on a regression document. The loose blocks are a *symptom* of the missing `columns` region -- guarding against them downstream would cement it | 30.1 |
 | The converter is dropping a source header row on `new_karta` | the source has no header text at all: no `Композиция`, no `Формат`, no `Ноты (TAB)`. The old references invented them exactly as the new ones invent `Название`/`Аудиоформат` | 29.2 |
 
-## 2. Instrument hypotheses — your own differ/renderer/judge is a first-class suspect
+## 2. Instrument hypotheses -- your own differ/renderer/judge is a first-class suspect
 
 | claim | what killed it | § |
 |---|---|---|
 | Sibling alignment alone can adjudicate a document | containment defects are invisible to it; one `goya2` mechanism defect appeared as 42 unrelated `paragraph.spurious` until reconciliation went global | 6.5 |
 | Two paragraphs with no shared vocabulary are one rewritten paragraph | they are a deletion **and** an insertion with different owning rules; collapsing them hides the deletion | 6.5 |
 | Traceback can re-derive the fill's decision by float equality | one ulp fell through every branch, `j` walked past zero, infinite hang on `goya2`. Store backpointers | 6.5 |
-| Similarity may tokenize without folding intra-word hyphens | a paragraph scored **zero** against its own de-hyphenated self — the blind spot sat exactly on the defect the class exists to raise | 6.5 |
-| Structural findings can be triaged by text attestation | put `columns.missing` (43 inst, 5 docs) in the *ceiling* list — the largest reachable class in the corpus | 6.5 |
+| Similarity may tokenize without folding intra-word hyphens | a paragraph scored **zero** against its own de-hyphenated self -- the blind spot sat exactly on the defect the class exists to raise | 6.5 |
+| Structural findings can be triaged by text attestation | put `columns.missing` (43 inst, 5 docs) in the *ceiling* list -- the largest reachable class in the corpus | 6.5 |
 | `structure` evidence is safe for any placement finding | correct for layout; **wrong** for anything claiming how the same content is *set*. A block boundary vs a line ending is presentation | 15.3 |
-| A directive's own name and properties are evidence about the source | `align center Francis Goya in Moscow` appears in no document, so every spurious directive read as unattested — and every *missing* one as reference editorializing | 11.2 |
-| Source attestation can adjudicate hyphenation | the source contains the hyphen either way — *that is the artifact*. The class reported "the reference is right" 24 times out of 24 on evidence that says nothing | 13.3 |
+| A directive's own name and properties are evidence about the source | `align center Francis Goya in Moscow` appears in no document, so every spurious directive read as unattested -- and every *missing* one as reference editorializing | 11.2 |
+| Source attestation can adjudicate hyphenation | the source contains the hyphen either way -- *that is the artifact*. The class reported "the reference is right" 24 times out of 24 on evidence that says nothing | 13.3 |
 | A pairwise "same row?" test can be handed to `Array.sort` | not transitive → implementation-defined permutation; it manufactured a finding where both ranks were **equal** | 7.6 |
 | Textless blocks (`---`) can be paired ordinally | one extra rule near the top shifted every rule after it; on `news`, 26 of 32 order findings *were the rules*. Pair by **anchors** | 9.3 |
 | An instrument's own key may fold differently from the rest of the instrument | `homeKey` split on hyphens while `similarityTokens` joined them → a class asserting content loss for text one function over could see | 14.3 |
 | `paragraph.missing` reports missing paragraphs | all ten had their text in the produced document. A class reporting content loss where none exists outranked every real class | 14.1 |
 | `conservation.text.recall` is a content-loss measure | it is built on word shingles, so a legitimate block split breaks every straddling shingle. 45.3 % recall with **zero** words, links or images missing | 16.2 |
 | A structural fingerprint may hash a declared length verbatim | `width="760"` and `width="760px"` split one site template into two shapes, so `news`'s banner, menu button and rails matched nothing and shipped as content. Normalizing the length cost L3 13 findings on its own | 24.4 |
-| `navFrom` must refuse every bounded context | §2 forbids `nav` in a `frame` and `align` wrapping one; a `column` is explicitly allowed (`column→Markdown+leaf+align+nav`). `news_2007`'s year bar came out as ten bracketed links because of it. **Measured**, not argued from symmetry — the nav contracts in `recovery.test.ts` and `lanes.test.ts` were grepped first and still pass | 24.8 |
+| `navFrom` must refuse every bounded context | §2 forbids `nav` in a `frame` and `align` wrapping one; a `column` is explicitly allowed (`column→Markdown+leaf+align+nav`). `news_2007`'s year bar came out as ten bracketed links because of it. **Measured**, not argued from symmetry -- the nav contracts in `recovery.test.ts` and `lanes.test.ts` were grepped first and still pass | 24.8 |
 | A block containing a picture is a picture, for the caption guard | `followsImage` read a dated newspaper banner as "a photograph above" and cost two article titles their heading. A picture **with its own words** has already said what it is | 24.4 |
 | Folding a presentational wrapper onto its parent is lossless | twice wrong: a partial cover asserts a size of text it never covered, and where the parent is measured the folded value is shadowed by the parent's own computed size and disappears | 24.2 |
 
@@ -70,7 +70,7 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 - **A shared evidence set is only shared where it is recorded.** `ctx.subordinated` covers element
   children, not inline runs, so two consumers saw nothing on the one page the rule was for. Check what
   *populates* a set before keying a second rule on it. (§14.3)
-- **A symmetry argument is not evidence — grep the contracts first.** "This question is answered by
+- **A symmetry argument is not evidence -- grep the contracts first.** "This question is answered by
   evidence on one path and by construction on another" produced three real fixes and one revert. An
   asymmetry with a named false friend and a test is a decision, not an oversight. (§18.3)
 - **A false friend that exists only because an earlier stage failed is a symptom.** Guarding against it

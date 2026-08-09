@@ -19,13 +19,13 @@ on, `spec-1.6`, `layoutFidelity: faithful`, and **LLM off**. The bench workspace
 | Weighted similarity to `fixtures/out` | **82.33 %** | **87.61 %** |
 | Unit tests | 216 pass | 239 pass |
 | Validation errors across the corpus | 15 | 14 |
-| — of which structural (`h1-count`, `heading-skips-level`) | 2 | **0** |
+| -- of which structural (`h1-count`, `heading-skips-level`) | 2 | **0** |
 | Image `src` conservation | 100 % recall, 21 spurious | 100 % recall, **3** spurious |
-| Image size tokens (`full`/`large`/`medium`/`small`) | 16 / 32 / … / … | 0 / 9 / 48 / 38 |
-| Reference size tokens | — | 0 / 17 / 45 / 33 |
+| Image size tokens (`full`/`large`/`medium`/`small`) | 16 / 32 / ... / ... | 0 / 9 / 48 / 38 |
+| Reference size tokens | -- | 0 / 17 / 45 / 33 |
 | Phantom "extra target" conservation reports | several hundred | **0** |
 
-Per document — **stale, does not reproduce; see §6.1 for the measured values.** The
+Per document -- **stale, does not reproduce; see §6.1 for the measured values.** The
 aggregate above is trustworthy; this breakdown is not. Re-measure before citing it.
 
 | file | before | after | Δ |
@@ -50,9 +50,9 @@ aggregate above is trustworthy; this breakdown is not. Re-measure before citing 
 
 Reproduced exactly: the 82.33 % baseline, the 216 passing tests, the 15
 validation errors, the 0 % clean share, and the 27 unresolved escalation points.
-Its architectural reading of the front half — decoding, parse5 repair, Chromium
+Its architectural reading of the front half -- decoding, parse5 repair, Chromium
 measurement, the physical occupancy grid, the typed AST/serializer/validator,
-the ledger, the transport layer — is correct and none of it needed changing.
+the ledger, the transport layer -- is correct and none of it needed changing.
 
 Its diagnosis of the *symptoms* was also right: no captions, no `align`, no
 `frame`, no `images`, far too few headings, far too many hard breaks, image
@@ -67,12 +67,12 @@ from a small number of *local, identifiable* defects, each of which is a
 one-place fix in the existing lowering path:
 
 - the serializer was configured with `resourceLink: false`, so every link whose
-  label equalled its href — the whole "sources" section of a legacy page —
+  label equalled its href -- the whole "sources" section of a legacy page --
   serialized as a `<https://…>` autolink, which is not a construct the BioMD
   renderer recognises. One line. **+0.4 points.**
 - `flushInline()` looked for `<img>` among the run's *direct children*, so
-  `<a href=big><img src=thumb>` — the most common standalone figure in this
-  corpus — never became `::: image`. **+0.4 points**, and 19 of segovia1's
+  `<a href=big><img src=thumb>` -- the most common standalone figure in this
+  corpus -- never became `::: image`. **+0.4 points**, and 19 of segovia1's
   19 image directives.
 - `collapseAdjacentText()` trimmed breaks at the edges of *every* inline run,
   including nested ones, so the break in `<b>1989<br></b>` was deleted before
@@ -93,7 +93,7 @@ collected to be read correctly.
 promotion targets ignore it.** A measurable share of the remaining gap is
 editorial work the human migrator did and no rule may do:
 
-- **9 of the 34 still-missing headings do not occur in the source at all** —
+- **9 of the 34 still-missing headings do not occur in the source at all** --
   `## Избранные записи`, `## Ноты и медиаматериалы`, `## Аудио`,
   `## Полное собрание сочинений`. They were invented to give a page an outline.
 - reference prose is copyedited: `гитарист виртуоз` → `гитарист-виртуоз`,
@@ -105,7 +105,7 @@ editorial work the human migrator did and no rule may do:
 
 So a target of "heading F1 ≥ 95 % corpus-wide" is not reachable against this
 reference set by any deterministic converter, and reaching it by other means
-would mean inventing text — which §16.3 forbids. **The target should be stated
+would mean inventing text -- which §16.3 forbids. **The target should be stated
 against the source-backed subset**, and the invented-heading cases are precisely
 where an LLM hook has something to contribute that a rule does not.
 
@@ -140,8 +140,8 @@ all *lines*, and before this pass nothing could see a line.
 
 ### 4.2 Media binding (§4.7)
 
-- size tokens are computed against the **article content box** — the first
-  quartile of the widths of blocks carrying real prose — not the nearest
+- size tokens are computed against the **article content box** -- the first
+  quartile of the widths of blocks carrying real prose -- not the nearest
   measured ancestor. The token distribution now tracks the reference set
   (0 `full` / 9 `large` / 48 `medium` / 38 `small` against 0/17/45/33); it was
   16 `full` / 32 `large`.
@@ -185,7 +185,7 @@ already been written. Both structural validation errors are now zero.
 
 ### 4.5 `frame` and `align` (§4.2, §4.8)
 
-`borderColor` was added to the measured style — it was the one piece of
+`borderColor` was added to the measured style -- it was the one piece of
 evidence §12 needs that measurement was not collecting. A cell with a ≥2 px
 border in a colour the author *chose* (a border colour equal to the text colour
 is the CSS default, not a choice) becomes `::: frame` with the mapped palette,
@@ -193,7 +193,7 @@ downgraded to a blockquote on a profile that cannot draw it. `normalize()` no
 longer unwraps a single-cell table whose cell carries that border.
 
 `::: align` is emitted only inside a `column`, only for a wholly-bold short
-label, and never inside a `frame` — the shape of a record card's title over its
+label, and never inside a `frame` -- the shape of a record card's title over its
 cover. Scoping it this narrowly is what stopped it from wrapping captions and
 obituary lines.
 
@@ -203,7 +203,7 @@ obituary lines.
 (`[1995](x)[-2002](x)` → `[1995-2002](x)`); `visual: always` now fails the run
 instead of silently substituting `NullMeasurer`.
 
-`layoutFrom()` was the cause of the assessment's second P0 — "conservation
+`layoutFrom()` was the cause of the assessment's second P0 -- "conservation
 reports count expected output assets as extra". The lane attempt walks every
 cell, and when it does not yield two usable columns it fell through to the
 flow path *without rolling back*, leaving that whole region's links and images
@@ -217,28 +217,28 @@ Spurious conservation reports across the corpus: **0**, was several hundred.
 
 **Deterministically reachable (est. +3 to +4 points):**
 
-1. **Catalog row-pattern segmentation** — 114 of the 127 still-missing
+1. **Catalog row-pattern segmentation** -- 114 of the 127 still-missing
    directives are `columns`/`column`, essentially all in `goya2`, whose
    reference emits one `columns` pair per album (label | cover) and one per
    track range, separated by `---`. `layoutFrom()` still emits one persistent
    lane per physical column. This is the assessment's §4.3 and its diagnosis is
    correct.
-2. **Table continuation rows** — `tarrega` scores 78 on cells because a "Ноты"
+2. **Table continuation rows** -- `tarrega` scores 78 on cells because a "Ноты"
    row continues the work above it and should merge into that row's fourth
    column, not become a row of its own. `data-table.ts` already has the
    machinery; the merge predicate is what is missing.
-3. **Empty table headers** — 12 of the 14 remaining validation errors. The
+3. **Empty table headers** -- 12 of the 14 remaining validation errors. The
    source states no column model; §16.3 forbids inventing one. This is exactly
    what the existing `table.records` hook is for, and it already resolves all
    12 when the LLM is enabled.
 
-**Not deterministically reachable — hook territory:**
+**Not deterministically reachable -- hook territory:**
 
 4. inventing an outline for a page that has none (9 headings);
 5. copyediting: typographic quotes and dashes, expanding `(1913-42)`,
    dropping `г.` before a city;
 6. de-hyphenating a wrap artifact that left no newline behind
-   (`классиче-ской`) — the corpus lexicon can attest the joined form, but the
+   (`классиче-ской`) -- the corpus lexicon can attest the joined form, but the
    references are themselves inconsistent about this, so it is invisible to the
    metric and should be decided on output quality, not on score.
 
@@ -250,7 +250,7 @@ also the cheapest possible stand-in for the assessment's page-archetype model.
 
 ---
 
-## 6. Iteration 0 — the evaluation ladder replaces the scalar (2026-08-06)
+## 6. Iteration 0 -- the evaluation ladder replaces the scalar (2026-08-06)
 
 No converter rule was changed in this phase. Everything below is instrumentation,
 measurement and the defect ledger that now decides what work happens. The
@@ -279,7 +279,7 @@ Two things cost time once and should not cost it again:
   news 84.8 · news_2007 74.1 · pavlov_azancheev 92.7 · segovia 94.5 ·
   segovia1 94.6 · tarrega 81.5 · williams2 97.2. Both sets average to 87.6 and two
   entries (goya2, barrios) agree exactly, so the aggregate is trustworthy and the
-  breakdown is stale. **§1's per-document column is historical — re-measure before
+  breakdown is stale. **§1's per-document column is historical -- re-measure before
   citing any number from it.**
 
 ### 6.2 Why the scalar score could not be the instrument
@@ -288,18 +288,18 @@ Verified from the code, and the reason L2 exists. `src/eval/score.ts` averages s
 F1 axes; each of the following is invisible to it **by construction**, and each is where the
 remaining defects live:
 
-- `eval/facts.ts:36` — `directives: Map<string, number>`, name → count. **Every directive
+- `eval/facts.ts:36` -- `directives: Map<string, number>`, name → count. **Every directive
   property is invisible**: an `::: image` with the wrong `size`, `position`, `caption` or
   `link` scores identically to a correct one.
-- `links` and `images` fold through `foldTarget` — **a correct target under a wrong label
+- `links` and `images` fold through `foldTarget` -- **a correct target under a wrong label
   scores perfect**.
-- `TableFacts` carries `cols`, `rows`, `header[]`, `cells[]` as flat multisets — **which cell
+- `TableFacts` carries `cols`, `rows`, `header[]`, `cells[]` as flat multisets -- **which cell
   sits in which row and column is invisible**, as is per-column alignment.
 - text is a word-3-gram multiset over `normalizeForCompare`
   (`convert-core/conservation.ts:102`), which lowercases, strips soft hyphens and folds
-  intra-word hyphens — so **block order, blank-line structure, hard breaks, emphasis, case and
+  intra-word hyphens -- so **block order, blank-line structure, hard breaks, emphasis, case and
   typography are invisible**, and de-hyphenation quality is invisible by construction.
-- headings carry level (`facts.ts:132`, `level\tlabel`) but as a multiset — **position, order
+- headings carry level (`facts.ts:132`, `level\tlabel`) but as a multiset -- **position, order
   and nesting are invisible**.
 - nothing measures containment (an image inside vs outside a `::: column`), `---` separators,
   list nesting, or block ordering.
@@ -312,7 +312,7 @@ back to a scalar fails the suite.
 | module | role |
 |---|---|
 | `src/eval/blocks.ts` | `.bio.md` → typed, line-numbered block tree; resolves what `biomd-ast/read()` leaves as opaque Markdown runs |
-| `src/eval/structdiff.ts` | Needleman–Wunsch sibling alignment + global reconciliation → typed findings |
+| `src/eval/structdiff.ts` | Needleman-Wunsch sibling alignment + global reconciliation → typed findings |
 | `src/eval/triage.ts` | three-way source backing against the decoded `.htm` |
 | `src/eval/rollup.ts` | defect ledger, ranked by `instances × severity × generality` |
 | `src/eval/structdiff.test.ts` | 24 contracts: identity, determinism, one test per scalar blind spot, classification, triage |
@@ -325,11 +325,11 @@ Corpus roll-up regenerates `analyze/defects.json`:
 cd biomd-convert && node dist/cli/index.js diff -c bench/biomd.config.json --json ../analyze/defects.json
 ```
 
-Held to two properties, asserted in the test file: **identity** — the same
+Held to two properties, asserted in the test file: **identity** -- the same
 document on both sides yields zero findings, over all thirteen references; and
-**determinism** — same inputs, byte-identical findings.
+**determinism** -- same inputs, byte-identical findings.
 
-### 6.4 The ledger — `analyze/defects.json`, 707 findings
+### 6.4 The ledger -- `analyze/defects.json`, 707 findings
 
 598 source-backed · 77 ambiguous · 32 ceiling. 97 critical · 325 major · 285 minor.
 80 classes over 13 documents.
@@ -348,7 +348,7 @@ document on both sides yields zero findings, over all thirteen references; and
 | `paragraph.hyphenation` | 19 | 7 | 98 |
 
 Ceiling, correctly separated and excluded from targets: `table.header.cell` (21, 4
-documents — precisely §5.3's empty-header hook territory),
+documents -- precisely §5.3's empty-header hook territory),
 `table.cell.typography.dash` (4), `table.cell.content.empty` (2).
 
 ### 6.5 Confirmed instrument defects
@@ -358,16 +358,16 @@ of bug, not an instance, and each is fixed at the class level.
 
 1. **Alignment traceback reconstructed its path by float equality** against the
    cost matrix. A one-ulp disagreement fell through every branch, the fallback
-   decremented `j` past zero, and the walk never terminated — an infinite hang on
+   decremented `j` past zero, and the walk never terminated -- an infinite hang on
    `goya2`. Replaced with stored backpointers; the fill's decision is now recorded
    rather than re-derived.
 2. **Similarity tokenized without folding intra-word hyphens.** A paragraph scored
    **zero** against its own de-hyphenated self, so the aligner refused to pair
    them and the `hyphenation` class the instrument exists to raise could never
-   fire — the blind spot sitting exactly on top of the defect.
+   fire -- the blind spot sitting exactly on top of the defect.
 3. **Triage tested structural findings by text attestation.** That put
-   `columns.missing` (43 instances, 5 documents) — the largest deterministically
-   reachable class in the corpus, named as reachable in §5.1 — in the *ceiling*
+   `columns.missing` (43 instances, 5 documents) -- the largest deterministically
+   reachable class in the corpus, named as reachable in §5.1 -- in the *ceiling*
    list. `BioMD-Reference.md` §16.3 forbids inventing **text**; wrapping text that
    is already present in a `::: columns`, splitting a lane, drawing a `---` or
    reading a size off geometry invents nothing. Every finding now carries
@@ -375,13 +375,13 @@ of bug, not an instance, and each is fixed at the class level.
 
 **Killed hypotheses.** Two readings were falsified during this phase and should not
 be re-derived: that a document's blocks can be adjudicated by *sibling* alignment
-alone — containment defects are invisible to it by construction, and on `goya2` one
+alone -- containment defects are invisible to it by construction, and on `goya2` one
 mechanism defect appeared as 42 unrelated `paragraph.spurious` findings until
 reconciliation was made global; and that two paragraphs with no shared vocabulary
-should be reported as one rewritten paragraph — they are a deletion and an
+should be reported as one rewritten paragraph -- they are a deletion and an
 insertion with different owning rules, and collapsing them hides the deletion.
 
-### 6.6 L5 calibration — L2 against the human record
+### 6.6 L5 calibration -- L2 against the human record
 
 Agreement is high: every per-page complaint in `analyze/analyze.md` maps onto an
 emitted class.
@@ -399,7 +399,7 @@ emitted class.
 | segovia, authors: caption truncated or taken from the wrong block | `image.caption.content` |
 | kiselev, jovicic: song lists shown as quotes | `retyped.quote-to-list` |
 | kiselev: table read as 3 columns, should be 2 | `table.geometry.cols` |
-| kiselev, barrios, tarrega, segovia: guessed table headers wrong | `table.header.cell` — triaged as **ceiling** |
+| kiselev, barrios, tarrega, segovia: guessed table headers wrong | `table.header.cell` -- triaged as **ceiling** |
 | goya2: one lane per column instead of one pair per album | `columns.missing`, `column.missing`, `break.missing`, `paragraph.containment`, `retyped.paragraph-to-column` |
 | borislova: 2-column table at the end not recognised | `table.missing` |
 | barrios: one table per disc | `table.*`, `columns.*` |
@@ -409,12 +409,12 @@ emitted class.
 
 Confirmed by probe, not by reading: **4 `paragraph.spurious` findings repeat
 verbatim a `caption:` already bound in the same document** (williams2 ×2, segovia,
-news) — exactly the defect `analyze.md` names for williams2 items 5/6/8.
+news) -- exactly the defect `analyze.md` names for williams2 items 5/6/8.
 
-### 6.7 Known instrument weaknesses — what to distrust first
+### 6.7 Known instrument weaknesses -- what to distrust first
 
 - **The `ambiguous` band is set, not calibrated.** Triage routes a finding to
-  `ambiguous` on a word-coverage corridor of 0.5–0.95. Those bounds were chosen.
+  `ambiguous` on a word-coverage corridor of 0.5-0.95. Those bounds were chosen.
   77 findings sit in that band and none of them has been checked by hand.
 - **Global reconciliation pairs at similarity ≥ 0.65.** The 38
   `paragraph.containment` findings depend on that constant, and the stability of
@@ -423,7 +423,7 @@ news) — exactly the defect `analyze.md` names for williams2 items 5/6/8.
   reads as the migrator's intent, and whether the produced layout is visually
   equal to or better than the source, are L3/L4 questions. L2 silence is not
   evidence of quality.
-- **Two requests in `analyze.md` are proposals, not reference-attested defects** —
+- **Two requests in `analyze.md` are proposals, not reference-attested defects** --
   replacing a bare URL label with a link glyph, and abstracting guessed table
   headers. Check `fixtures/out/` before treating either as work.
 
@@ -434,13 +434,13 @@ kiselev, tarrega, williams2, jovicic. **Holdout: barrios, news_2007, segovia1,
 authors.**
 
 Stated honestly: `analyze/analyze.md` is one file covering all thirteen pages and
-has been read in full. This is a **tuning** holdout — no rule is designed against
+has been read in full. This is a **tuning** holdout -- no rule is designed against
 holdout output and no holdout measurement is taken until the rule and its tests
-are written — not an *unseen* holdout. Rotate it each round and report both sides.
+are written -- not an *unseen* holdout. Rotate it each round and report both sides.
 
 ---
 
-## 7. L3 — built and calibrated (2026-08-06)
+## 7. L3 -- built and calibrated (2026-08-06)
 
 The phase gate is cleared. L3 renders `.bio.md` to HTML, probes the rendered
 geometry in Chromium, and adjudicates three surfaces against each other: source
@@ -472,7 +472,7 @@ cd biomd-convert && node dist/cli/index.js l3 -c bench/biomd.config.json --json 
 the three surfaces of any document are one click apart.
 
 **Implementation note on placement.** `CLAUDE.md` names `tools/render-biomd.ts`.
-The renderer itself lives in `src/l3/` — `tsconfig` has `rootDir: src`, so a
+The renderer itself lives in `src/l3/` -- `tsconfig` has `rootDir: src`, so a
 `tools/` implementation would be neither typechecked, tested, nor built, and L2
 set the precedent by living in `src/eval/`. `tools/render-biomd.ts` is the
 runnable surface and contains no rendering logic, so there is exactly one
@@ -492,7 +492,7 @@ renderer, which is the invariant that matters.
 reproduces the *consequences*, because rendering the author's intent instead
 would hide the corruption:
 
-- a `divider:` or `columns:` line inside `::: columns` is **not** a property —
+- a `divider:` or `columns:` line inside `::: columns` is **not** a property --
   the target promotes it to a synthetic first column, shifting every real column
   one track right. Rendered as such, outlined in red, `data-quirk` set. This is
   the layout consequence of the asymmetry `conformance.test.ts` already asserts,
@@ -504,18 +504,18 @@ would hide the corruption:
 Three contracts assert the corruption is reproduced. A contributor "fixing" the
 renderer to be more correct will fail them.
 
-### 7.4 Calibration against the human record — L3 finds what `analyze.md` names
+### 7.4 Calibration against the human record -- L3 finds what `analyze.md` names
 
 | `analyze.md` complaint | L3 finding | localized to |
 |---|---|---|
-| williams2 1 — `**- 2 -**` must be centred | `layout.align.mismatch`, referenceAlign `center` | ref line 9 |
-| williams2 4 — `changes1.jpg` appears too early | `layout.order.mismatch` | ref 30 → produced 13 |
-| williams2 9 — Bach/MP3 line right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 98 |
-| williams2 10 — closing credit right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 104 |
-| tarrega 2 — `tarrega1.jpg` misplaced | `layout.order.mismatch` | ref 21 → produced 117 |
-| tarrega 3 — multi-block region wrongly a blockquote | 7 × `layout.containment.mismatch`, `quote` → `(root)` | ref 45, 46, 48, 51, 54, 65, 82 |
-| goya2 — one lane per column, not one pair per album | 35 × `layout.containment.mismatch`, `(root)` → `columns>column` | per block |
-| kiselev/jovicic — song lists shown as quotes | `quote` ↔ `(root)` containment | per block |
+| williams2 1 -- `**- 2 -**` must be centred | `layout.align.mismatch`, referenceAlign `center` | ref line 9 |
+| williams2 4 -- `changes1.jpg` appears too early | `layout.order.mismatch` | ref 30 → produced 13 |
+| williams2 9 -- Bach/MP3 line right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 98 |
+| williams2 10 -- closing credit right-aligned | `layout.align.mismatch`, referenceAlign `right` | ref line 104 |
+| tarrega 2 -- `tarrega1.jpg` misplaced | `layout.order.mismatch` | ref 21 → produced 117 |
+| tarrega 3 -- multi-block region wrongly a blockquote | 7 × `layout.containment.mismatch`, `quote` → `(root)` | ref 45, 46, 48, 51, 54, 65, 82 |
+| goya2 -- one lane per column, not one pair per album | 35 × `layout.containment.mismatch`, `(root)` → `columns>column` | per block |
+| kiselev/jovicic -- song lists shown as quotes | `quote` ↔ `(root)` containment | per block |
 
 Every geometry-decidable complaint in the sampled pages maps to a finding with a
 line number on both sides.
@@ -523,16 +523,16 @@ line number on both sides.
 **Two findings L3 produced that no other rung can.**
 
 1. **A defect in the reference set.** `pavlov_azancheev.bio.md` ended with an
-   `::: align position: right` that was never closed — the file finished on a
-   `---` — so the target would have swallowed the closing credit and the
+   `::: align position: right` that was never closed -- the file finished on a
+   `---` -- so the target would have swallowed the closing credit and the
    trailing rule into the right-aligned region. Invisible to L2 by construction:
    both sides go through the same reader, the identical mis-parse happens twice
    and cancels. Corrected in the reference on 2026-08-06. A regression test now
    asserts no reference leaves a fence open.
 2. **`williams2` loses half its text measure, and L2 reports nothing.** The
    produced document wraps the whole article in a `::: columns` with **two**
-   `::: column` children — prose in lane 1, the source's right-hand menu left as
-   loose links in lane 2 — so every paragraph renders at **328 px instead of
+   `::: column` children -- prose in lane 1, the source's right-hand menu left as
+   loose links in lane 2 -- so every paragraph renders at **328 px instead of
    672 px**. The reference's `::: columns` has one child and renders at full
    measure. L2's 24 findings for `williams2` contain **zero** `column`/`columns`
    classes. §9 lists "forcing a narrow text measure" and "recreating page
@@ -549,7 +549,7 @@ line number on both sides.
 | `layout.lane.mismatch` | 25 | 7 | major |
 | `layout.order.mismatch` | 24 | 9 | critical |
 
-The containment findings are not noise — they decompose exactly onto the known
+The containment findings are not noise -- they decompose exactly onto the known
 families: 35 `(root)`→`columns>column` (the catalog-row task, §8.2), 49 into an
 `align` wrapper (the alignment task, §8.1), 22 `quote` ↔ `(root)` (the blockquote
 anomaly `analyze.md` names for tarrega, kiselev and jovicic), 6 → `images`,
@@ -557,11 +557,11 @@ anomaly `analyze.md` names for tarrega, kiselev and jovicic), 6 → `images`,
 
 ### 7.6 One instrument defect found and fixed at the class level
 
-`readingOrder` — a pairwise "same row?" test — is **not transitive**: A shares a
+`readingOrder` -- a pairwise "same row?" test -- is **not transitive**: A shares a
 row with B and B with C while A and C do not overlap. Handed to
 `Array.prototype.sort`, it yields an implementation-defined permutation, and two
 such sorts can disagree for reasons that have nothing to do with the documents.
-It manufactured one finding whose produced and reference ranks were **equal** — a
+It manufactured one finding whose produced and reference ranks were **equal** -- a
 block reported as having moved past itself.
 
 Replaced with `rowBands()` + `readingRanks()`: boxes are swept top to bottom and
@@ -570,7 +570,7 @@ transitive, permutation-invariant order. Comparing against the anchor rather tha
 the band's running extent is what stops one tall cell absorbing the page. Three
 contracts, including permutation invariance. Equal-rank findings: 0 of 24.
 
-### 7.7 Stated limitations — what to distrust in L3
+### 7.7 Stated limitations -- what to distrust in L3
 
 - **No asset tree, so picture boxes are token-derived.** Every image 404s by
   construction. A figure's box comes from its `size` token and a fixed 4:3 aspect
@@ -579,7 +579,7 @@ contracts, including permutation invariance. Equal-rank findings: 0 of 24.
   are outside its reach.
 - **The renderer is a model of the target, not the target.** It is built from the
   spec and from `read()`. Where the real renderer differs in a way `read()` does
-  not document, L3 is wrong in the same direction on both sides — the most
+  not document, L3 is wrong in the same direction on both sides -- the most
   dangerous error class, because a comparison cannot reveal it.
 - **7 of 151 alignment rows have no source node.** Pairing is by rendered text,
   then image basename, then containment. A row without a source node carries no
@@ -588,14 +588,14 @@ contracts, including permutation invariance. Equal-rank findings: 0 of 24.
 - **Pairing is by rendered text, deliberately independent of L2.** L3 must be
   able to disagree with L2; that is the value of a separate rung. The cost is
   that a block whose text the migrator rewrote past 0.65 similarity is unpaired,
-  and unpaired blocks yield no L3 finding — presence remains L2's question.
+  and unpaired blocks yield no L3 finding -- presence remains L2's question.
 - **One viewport by default.** 1024 px, the era's design target and what
   `ladom/measure.ts` uses. `--width` re-runs at any other; nothing yet asserts a
   finding is stable across widths.
 
 ---
 
-## 8. Next phase — three ranked classes, hypotheses pre-registered
+## 8. Next phase -- three ranked classes, hypotheses pre-registered
 
 #1 is closed for `right` and deferred for `center` (§8.1); #2 is closed, and
 exposed one further mechanism that is recorded and reverted (§8.2, §8.2a); #3 is
@@ -608,13 +608,13 @@ Measured effect of the phase, all four rungs, from the Iteration 0 checkpoint:
 | checkpoint | 263 tests | 87.6 | 598 | not built |
 | now | **307 tests** | **89.1** | **501** | **230**, identity 0 |
 
-### 8.1 Alignment family — hypotheses now measured, mechanism identified
+### 8.1 Alignment family -- hypotheses now measured, mechanism identified
 
 **In progress.** L3's alignment evidence table decides all three pre-registered
 hypotheses by counting. The inventory below is the reference measured against
 itself (so it is the complete reference-side picture, uncontaminated by
 produced-side gaps): `analyze/l3-reference-alignment.json`, **163 blocks the
-reference aligns distinctively** — 128 `center`, 35 `right`.
+reference aligns distinctively** -- 128 `center`, 35 `right`.
 
 Source computed `text-align`, verbatim, for those 163 blocks:
 
@@ -642,26 +642,26 @@ Cross-tabulated against what the reference wanted:
 The prose baseline is `left` on twelve documents and `justify` on `goya2`, so
 "distinctive" is well defined per page and no page is centred throughout.
 
-**H1 — confirmed as evidence, falsified as a code claim.** 65 of 163 source nodes
+**H1 -- confirmed as evidence, falsified as a code claim.** 65 of 163 source nodes
 compute `-webkit-center`; an `=== "center"` test misses every one, so the vendor
-fold is genuinely load-bearing — 40 % of the family and 57 % of the centre cases.
+fold is genuinely load-bearing -- 40 % of the family and 57 % of the centre cases.
 But the two sites PROGRESS named were **already folding it**: `prominence.ts`'s
 measured branch and `alignedGroup` both tested `=== "center" || === "-webkit-center"`.
 Of the two sites said to be broken, `prominence.ts`'s ancestor walk was genuinely
 under-detecting (it runs only when unmeasured), and `structure.ts`'s
 `estimatePosition` read `text-align` into a branch that **returned `"center"`
-either way** — a dead comparison that looked like a rule. So H1 did not explain
+either way** -- a dead comparison that looked like a rule. So H1 did not explain
 the open findings, and PROGRESS §8.1 was pointing at the wrong line.
 
-**H2 — confirmed, and smaller than the headline.** 35 of 163 want `right`; only
+**H2 -- confirmed, and smaller than the headline.** 35 of 163 want `right`; only
 **14** have a source node that computes `right`. A `right` path is real work but
 reaches 14 blocks, not 35.
 
-**H3 — confirmed, and it is 21 % of the family.** 34 of 163 rows are not
+**H3 -- confirmed, and it is 21 % of the family.** 34 of 163 rows are not
 distinctive in the source (or have no source node): the migrator aligned blocks
 the source does not align. Ceiling, excluded from targets.
 
-**H4 — the actual mechanism, found by reading the gate rather than the keyword.**
+**H4 -- the actual mechanism, found by reading the gate rather than the keyword.**
 `alignedGroup()` reads the evidence correctly and then discards it. `::: align`
 is emitted only when *all* of: inside a `column` (`boundedDepth > 0`), not inside
 a `frame`, text ≤ 120 chars, no `columns`/`column`/`nav` child, not all images,
@@ -673,7 +673,7 @@ and it is a *widening on relational evidence*, not a keyword fix.
 
 **Change made (2026-08-06), first increment.**
 
-1. `ladom/style.ts` — `foldTextAlign()` / `isCenteredAlign()`, one definition,
+1. `ladom/style.ts` -- `foldTextAlign()` / `isCenteredAlign()`, one definition,
    in `ladom` because both `convert-core` and `l3` need it and neither may
    import the other. It folds vendor prefixes, `start`/`end`, and returns `null`
    for anything that is not evidence rather than defaulting. `prominence.ts` and
@@ -683,7 +683,7 @@ and it is a *widening on relational evidence*, not a keyword fix.
    `analyze.md` names `**- 2 -**` on `williams2` as a block that must be centred
    and the reference centres it, so the human record decides it (L5). Relaxed to
    "a letter *or a digit*", which admits `- 2 -` and every bare year label and
-   still rejects the false friend the guard exists for — a rule drawn out of
+   still rejects the false friend the guard exists for -- a rule drawn out of
    punctuation (`* * *`), which belongs to the break family. Extracted as
    `isAlignableLabelText()` so the contract is testable without reproducing a
    two-lane region.
@@ -699,27 +699,27 @@ Measured effect, all four rungs, LLM off:
 | L3 findings | 235 | **233** |
 | L3 `layout.align.mismatch` | 61 | **60** |
 
-`williams2` now emits `::: align / position: center / **- 2 -**` — `analyze.md`
+`williams2` now emits `::: align / position: center / **- 2 -**` -- `analyze.md`
 williams2 item 1, closed. `align.spurious` did not rise. Small, but every rung
 moved the same way, which is the property a change has to have before the larger
 gate widening is worth attempting.
 
-*Remaining in this family:* the H4 widening — ~115 centre and 14 right blocks
+*Remaining in this family:* the H4 widening -- ~115 centre and 14 right blocks
 whose evidence is present and whose gate rejects them.
 
 **Closed for `right`; `center` deferred with a stated falsifier.**
 
 The count above was wrong and the measurement corrected it: the actionable set is
-**39**, not ~129 — the larger figure was the whole reference inventory rather than
+**39**, not ~129 -- the larger figure was the whole reference inventory rather than
 the produced/reference *mismatches*. All 39 are under the §6 length limit, only 9
-are bold, and 31 sit in the main content column at top level — so both halves of
+are bold, and 31 sit in the main content column at top level -- so both halves of
 `alignedGroup()`'s gate (the `isWhollyStrongBlocks` bold requirement and the
 `boundedDepth > 0` scope) reject them.
 
 The seam was also wrong. The references **group**: `segovia1` puts three right-set
 paragraphs in one directive and `pavlov_azancheev` two. One directive per element
 renders the same and is a different document, and L2 compares documents. So the
-rule is a run over siblings — `groupAlignedRuns()` — carrying its contract in the
+rule is a run over siblings -- `groupAlignedRuns()` -- carrying its contract in the
 source: invariant relational against `proseAlignOf()`, recurrence supplied by the
 length-weighted baseline rather than by repetition, three named false friends.
 
@@ -733,28 +733,28 @@ was tried first and rejected by L2: source-backed 596 -> 602, `align.spurious`
 +11 (ten of them centred) against 8 closed. Restricted to `right`: 596 -> **593**,
 L1 87.7 -> 88.4, L3 233 -> 212 with `layout.align.mismatch` 60 -> 47. The
 asymmetry is structural, which is why it should hold beyond the 13: **right is
-deliberate — nothing inherits it**; centre is ambient — inherited from centred
+deliberate -- nothing inherits it**; centre is ambient -- inherited from centred
 containers, free on a caption, and how a layout lane is filled.
 
 *Falsifier:* a page whose centred blocks are neither captions, nor inherited, nor
-lane content. `goya2` may be one — it holds 7 `align.missing`, all centred.
+lane content. `goya2` may be one -- it holds 7 `align.missing`, all centred.
 
 *Blocker for centre:* `borislova` and `jovicic` put centred content in the
 reading flow that the references put in `::: column`. Four guards were tried
-against this and all measured worse than no guard — `tableDepth <= 1` (L1 88.2),
+against this and all measured worse than no guard -- `tableDepth <= 1` (L1 88.2),
 a multi-lane-region flag (88.3), a link-only-run guard (removes correct aligns on
 `kiselev`/`segovia1`), and container-relative distinctiveness (L2 601). None can
 work at that seam: by the time the run pass sees the cells, the region is gone.
 §8.2 fixed the region for `goya2`; `borislova` and `jovicic` still fail it, so
 centre stays deferred.
 
-### 8.2 Catalog row-pattern segmentation — **closed**
+### 8.2 Catalog row-pattern segmentation -- **closed**
 
 `layoutFrom()` built one `::: column` per *grid column*, concatenating every
 row's cell into it. That preserves the two-lane look and destroys every
 horizontal pairing: `goya2`'s 36x2 discography became two 34-entry lanes, so the
 first album's title sat 33 entries above its own cover. The references split the
-other way — **34 `::: columns` regions and 68 lanes on `goya2`; the converter
+other way -- **34 `::: columns` regions and 68 lanes on `goya2`; the converter
 emitted 1 and 2.**
 
 The six classes named as candidates *were* one mechanism, and it was this one.
@@ -775,7 +775,7 @@ Row-wise segmentation, per class: `column.missing` 25 -> 8 · `columns.containme
 16 -> 3 · `retyped.paragraph-to-column` 20 -> 7 · `retyped.paragraph-to-columns`
 19 -> 8 · `columns.position.spurious` 18 -> 5 · `paragraph.spurious` 62 -> 48 ·
 `column.containment` 9 -> 3 · `columns.missing` 9 -> 4. Only `goya2` (85.4 ->
-91.4, directives 43.9 -> 92.3) and `barrios` (80.3 -> 82.0) moved on L1 — with
+91.4, directives 43.9 -> 92.3) and `barrios` (80.3 -> 82.0) moved on L1 -- with
 `rows === 1` the new construction is identical to the old, so a genuine
 article-beside-sidebar layout is untouched. That is the generalization argument,
 and it is structural rather than empirical.
@@ -783,28 +783,28 @@ and it is structural rather than empirical.
 The separator closed `break.missing` 64 -> 36 (`goya2` 35 -> 7). L3 rose 214 ->
 230, entirely `layout.order.mismatch`: produced draws 33 rules where the
 reference draws 35, so every later block sits two ranks early. That is the same
-residue L2 reports as the remaining `break.missing`, counted a second way — not
+residue L2 reports as the remaining `break.missing`, counted a second way -- not
 a new class.
 
 **Remaining in this family:** 7 separators on `goya2`, and `break.missing` 24 on
 `news`, which is a dated-entry list rather than a catalog grid and so is a
 different mechanism that has not been examined.
 
-### 8.2a Enumerated break-runs -> lists — mechanism found, **change reverted**
+### 8.2a Enumerated break-runs -> lists -- mechanism found, **change reverted**
 
 Exposed by 8.2: with the lanes correct, `retyped.paragraph-to-list` went 5 -> 32
 (`goya2` 29, `kiselev` 2, `segovia` 1). Each lane holds a `<br>`-separated track
-run that the reference writes as a bullet list — unordered on purpose, since an
+run that the reference writes as a bullet list -- unordered on purpose, since an
 ordered list renumbers and `01.` is content.
 
 A detector was written (`enumeratedItems()` in `lines.ts`: ordinals must ascend,
 three items minimum, the run must *open* with one, unnumbered lines attach to the
-item above) and it worked — 178 list items emitted, `retyped.paragraph-to-list`
+item above) and it worked -- 178 list items emitted, `retyped.paragraph-to-list`
 32 -> 3.
 
 **Reverted anyway: L2 source-backed 528 -> 600.** The cost is not new
 differences, it is new *findings* for differences that already existed inside one
-large paragraph — chiefly `list.item.content.edited` (+48) and `emphasis.span`
+large paragraph -- chiefly `list.item.content.edited` (+48) and `emphasis.span`
 (+37), which are one reference editorial repeated 25 times: the source writes
 `<i>4.07</i>` at the end of a track line and the reference writes `— 4.07`.
 Reproducing that is a fixture-specific typographic rewrite; not reproducing it
@@ -812,19 +812,19 @@ costs a finding per track.
 
 **What blocks it is a triage question, not converter work.** Those findings are
 `evidence: "structure"`, and `triage.ts:76` returns `source-backed` for every
-structural finding unconditionally. That rule is right for layout — it is what
-stopped the first ledger burying `columns.missing` in the ceiling — but an
+structural finding unconditionally. That rule is right for layout -- it is what
+stopped the first ledger burying `columns.missing` in the ceiling -- but an
 emphasis span deleted by the reference is not layout. Settling it means changing
 an instrument, which invariant 2 permits only as an isolated declared step with
 both sides re-baselined, never as a side effect of a converter change. Land the
 detector after that, not before.
 
-### 8.3 `paragraph.spurious` refined — **instrument work done, residue named**
+### 8.3 `paragraph.spurious` refined -- **instrument work done, residue named**
 
 50 instances across 11 documents, and unactionable as one class: the only thing
 they shared was "the reference has no paragraph here". `structdiff.ts` now asks
-one further question of every spurious produced block — **which construct owns
-this text on the reference side** — and the answer names the owning mechanism.
+one further question of every spurious produced block -- **which construct owns
+this text on the reference side** -- and the answer names the owning mechanism.
 
 No literals: the index is built from the reference document under comparison and
 the key is the text itself, folded to words, so an escape (`01\.`), a bullet
@@ -835,30 +835,30 @@ document.
 |---|---:|---:|---|
 | `paragraph.spurious.unattested` | 32 | 10 | no reference construct holds the text |
 | `paragraph.spurious.caption-echo` | 7 | 4 | bound as `::: image` `caption:` *and* left below the figure |
-| `paragraph.spurious.in-nav` | 5 | 1 | a `::: nav` item label — the menu was not recognised |
-| `paragraph.spurious.in-list` | 3 | 2 | a list item — a `<br>` run that should have been a list (§8.2a) |
+| `paragraph.spurious.in-nav` | 5 | 1 | a `::: nav` item label -- the menu was not recognised |
+| `paragraph.spurious.in-list` | 3 | 2 | a list item -- a `<br>` run that should have been a list (§8.2a) |
 | `paragraph.spurious.in-table` / `.in-align` / `.in-quote` | 1 each | 1 | a flattened record matrix, the alignment family, a quote |
 
 The same refinement applies to every `*.spurious` class, so `heading.spurious`
 (8), `image.spurious` (7), `align.spurious` (4), `quote.spurious` and
 `break.spurious` are now split the same way.
 
-**Totals are identical before and after — 613 findings, 501 source-backed.** The
+**Totals are identical before and after -- 613 findings, 501 source-backed.** The
 instrument renames, it does not re-score (invariant 2). 18 of the 50 moved from
 an unactionable class into a named mechanism; the rest is honestly labelled as
 residue rather than hidden behind a tolerance.
 
 **Killed here:** a corpus-level `.chrome` sub-class, splitting `.unattested` by
-cross-document recurrence of the text (≥3 documents) — the only literal-free test
+cross-document recurrence of the text (≥3 documents) -- the only literal-free test
 for site chrome available. It fires on **nothing** across the 13, so it was
 removed rather than shipped on the argument that it would fire on the other ~987.
 
-**Remaining, and not started:** the triage thresholds are still uncalibrated —
-the 0.5–0.95 `ambiguous` word-coverage corridor (80 findings unchecked) and the
+**Remaining, and not started:** the triage thresholds are still uncalibrated --
+the 0.5-0.95 `ambiguous` word-coverage corridor (80 findings unchecked) and the
 0.65 reconciliation constant. §8.2a adds a third, sharper question to that queue:
 `triage.ts:76` returns `source-backed` for *every* `evidence: "structure"`
-finding unconditionally. That is right for layout — it is what stopped the first
-ledger burying `columns.missing` in the ceiling — but an emphasis span the
+finding unconditionally. That is right for layout -- it is what stopped the first
+ledger burying `columns.missing` in the ceiling -- but an emphasis span the
 reference deleted is not layout, and until it is settled the enumerated-list rule
 cannot be landed.
 
@@ -870,13 +870,13 @@ under them. Only `converter-defect` is work.
 ### 9.1 Three corrections to `triage()`
 
 1. **`evidence: "structure"` returned actionable unconditionally.** Right for
-   layout — wrapping, splitting and separating invent no text — and wrong for
+   layout -- wrapping, splitting and separating invent no text -- and wrong for
    *presentation*. An emphasis span and a hard break are claims about how content
    is spelled, and go through attestation.
 2. **Only the reference side was tested.** When the produced side is attested and
    the reference side is not, the reference is what moved.
 3. **`emphasis.span` folds to identical words on both sides**, so no prose test
-   can decide it. `SourceIndex` now indexes the source's own `<i>`/`<b>` runs —
+   can decide it. `SourceIndex` now indexes the source's own `<i>`/`<b>` runs --
    the one piece of presentation the source states outright.
 
 A fourth followed from re-baselining: when **both sides fold to the same
@@ -895,7 +895,7 @@ the reference keeps the text, so emitting it twice is duplication, not a questio
 | before | 613 | 501 | 80 | 32 |
 | after | 613 | 400 | 139 | 74 |
 
-Findings unchanged — the instrument re-verdicts, it does not add or remove.
+Findings unchanged -- the instrument re-verdicts, it does not add or remove.
 
 `acceptable-alternative` is **never** returned by `triage()`, by design: it means
 visually equal or better, and a text test cannot see a rendering. It is reachable
@@ -913,22 +913,22 @@ over the reference, and **neither requires converter work**.
   25 instances on `goya2`, and the same shape recurs on other discography pages.
 - **List item numbering.** Reference `- 01. Love Story`, produced
   `- 01\. Love Story`. **The escape stays.** The reference's form is ambiguous
-  CommonMark — a reader may take `01.` as opening a nested ordered list — and the
+  CommonMark -- a reader may take `01.` as opening a nested ordered list -- and the
   two parse to identical text. ~380 items on `goya2` alone.
 
-### 9.3 L3 rule pairing — the instrument debt, cleared
+### 9.3 L3 rule pairing -- the instrument debt, cleared
 
 L3 rose 230 → 310 across three accepted converter changes while L2 fell. The
 cause was the instrument, not the converter: a `---` carries no text, so every
 rule on a page has the same pair key, and both pairing passes fell back to
-**ordinal** order — produced rule 12 against reference rule 12. One extra rule
+**ordinal** order -- produced rule 12 against reference rule 12. One extra rule
 near the top shifted every rule after it, and each shift was reported as a move.
 On `news`, 26 of 32 order findings *were the rules*.
 
 Textless blocks are now held out of both passes and paired in a third, by their
 **anchors**: two rules correspond when the nearest already-paired block above
 each is the same pair. That is the only claim a rule can make, and it is the one
-a reader checks — is there a line between this entry and the next.
+a reader checks -- is there a line between this entry and the next.
 
 L3 **310 → 260**, `layout.order.mismatch` **75 → 29**. Identity still 0 over all
 13, output still byte-identical across runs.
@@ -939,18 +939,18 @@ L3 **310 → 260**, `layout.order.mismatch` **75 → 29**. Identity still 0 over
 |---|---|
 | L0 | 317 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 89.1 |
-| L2 | 679 findings — **390 converter-defect** · 178 ambiguous · 111 reference-inconsistency |
+| L2 | 679 findings -- **390 converter-defect** · 178 ambiguous · 111 reference-inconsistency |
 | L3 | 260 findings, identity 0, deterministic |
 
 **Next, in order.** (a) `borislova` and `jovicic` emit 0 `::: columns` where the
-references have 2 and 1 — traced to their inner 1×2 record-card grids never
+references have 2 and 1 -- traced to their inner 1×2 record-card grids never
 reaching `layoutFrom`, and this is also the blocker for centre alignment.
 (b) Centre alignment, once (a) lands. (c) `news` still draws 30 rules to the
-reference's 25. (d) The 0.5–0.95 ambiguous corridor and the 0.65 reconciliation
+reference's 25. (d) The 0.5-0.95 ambiguous corridor and the 0.65 reconciliation
 constant remain uncalibrated, now over 178 ambiguous findings.
 
 
-## 10. Structural recovery — the region family closed (2026-08-06)
+## 10. Structural recovery -- the region family closed (2026-08-06)
 
 Four changes, each measured separately. All four rungs moved together, which had
 not happened before in this campaign.
@@ -968,7 +968,7 @@ not happened before in this campaign.
 `borislova` and `jovicic` emitted 0 `::: columns` where the references have 2
 and 1. The cause was **routing**, not lane detection: a table the classifier
 could not type went to `dataRegionFrom(requireEvidence: true)`, and when that
-abstained it fell straight to linear flow — so the lane path was never asked.
+abstained it fell straight to linear flow -- so the lane path was never asked.
 Both documents are the same shape, a 1×2 grid holding a text lane beside its
 cover, classified UNKNOWN because there is no header row to plan from.
 
@@ -976,11 +976,11 @@ An abstention now hands the region to `layoutFrom`, which decides on its own
 evidence and falls back to the same flow when there are no lanes. `jovicic`
 reached **100.0** on L1; `news_2007` 74.1 → 87.6; `kiselev` 94.2 → 97.0.
 
-### 10.2 Centre alignment — the false friend was a symptom
+### 10.2 Centre alignment -- the false friend was a symptom
 
 `center` had been held back because L2 rejected it (596 → 602). The asymmetry was
-real but never about position: centre is *ambient* — inherited, free on a
-caption, and how a lane is filled — so on a page whose lanes had collapsed to
+real but never about position: centre is *ambient* -- inherited, free on a
+caption, and how a lane is filled -- so on a page whose lanes had collapsed to
 flow, every lane cell looked like a centred block. §10.1 gave those documents
 their lanes back and the ambiguity went with them: spurious aligns 15 → 4.
 
@@ -989,7 +989,7 @@ because an earlier stage failed is not a false friend, it is a symptom. Guarding
 against it at the later stage would have cemented the upstream defect and hidden
 it from every instrument.
 
-Accepted on rendered evidence — L3 `layout.align.mismatch` 52 → 48 — against L2
+Accepted on rendered evidence -- L3 `layout.align.mismatch` 52 → 48 -- against L2
 +4, of which two are `goya2` findings where the reference *joined* two source
 lines into one title.
 
@@ -997,7 +997,7 @@ lines into one title.
 
 `goya2` emitted 29 `::: columns` against 34. The five missing rows are the albums
 with no cover art: the second cell is genuinely empty, the row produced one
-column, and the whole row fell out of the lane region — five titles running
+column, and the whole row fell out of the lane region -- five titles running
 full-width while thirty sat in a half-width track.
 
 **Lane detection.** An occasionally-empty lane and a permanently-empty spacer are
@@ -1020,7 +1020,7 @@ trailing incomplete row ragged; do not pad it with empty columns" governs a
 *trailing* row of a multi-child grid, where padding invents a track the source
 never had; here the source itself has the empty cell.
 
-L2 fell 59 on this change alone, because the region indices stopped shifting —
+L2 fell 59 on this change alone, because the region indices stopped shifting --
 that shift had been mispairing whole subtrees on `goya2` and producing
 `retyped.paragraph-to-align`, `list.containment` and `paragraph.containment`
 findings for blocks that were already correct.
@@ -1029,17 +1029,17 @@ findings for blocks that were already correct.
 
 A 1998 page routinely puts the caption in the picture's `alt` *and* on a visible
 line beneath it. Both are the caption and §7 gives an image one, so the line was
-printed twice — once inside the figure, once under it. The evidence is
+printed twice -- once inside the figure, once under it. The evidence is
 *repetition*, not a length or a position: equality after folding case, spacing
 and a trailing period, plus one abbreviation form (every word but the last equal,
-the last pair in a prefix relation — `в 1971 г.` under `в 1971 году.`).
+the last pair in a prefix relation -- `в 1971 г.` under `в 1971 году.`).
 Deliberately not a similarity score, which would start absorbing paragraphs that
 merely mention what the picture shows.
 
 4 of the 7 findings closed. The remaining 3 are **not** caption echoes: the
 sub-classifier indexes headings, lists, tables, quotes and directives but not
 plain reference *paragraphs*, so a block the reference keeps as a paragraph falls
-through to whatever construct does hold its text — an image caption. That is an
+through to whatever construct does hold its text -- an image caption. That is an
 instrument imprecision, not converter work.
 
 ### 10.5 State and ranking
@@ -1048,7 +1048,7 @@ instrument imprecision, not converter work.
 |---|---|
 | L0 | 328 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 90.9 |
-| L2 | 583 findings — **297 converter-defect** · 165 ambiguous · 121 reference-inconsistency |
+| L2 | 583 findings -- **297 converter-defect** · 165 ambiguous · 121 reference-inconsistency |
 | L3 | 196 findings, identity 0, deterministic |
 
 `goya2` fell from 127 converter defects to 61 and is no longer the worst
@@ -1058,12 +1058,12 @@ Top classes now: `paragraph.containment` (25, 7 docs) · `retyped.paragraph-to-a
 (14, 6) · `paragraph.missing` (7 of 13, 7 docs) · `paragraph.hyphenation` (16 of
 21, 8 docs) · `image.size.value` (23, 5).
 
-**Open, in order.** (a) `news` — 4 spurious + 3 moved + 1 containment rules, an
+**Open, in order.** (a) `news` -- 4 spurious + 3 moved + 1 containment rules, an
 *ordering* difference around a framed obituary rather than a count problem.
 (b) The `.unattested` sub-classifier should index reference paragraphs.
 (c) A directive's own name and property values are quoted into the span triage
-attests against, so any spurious directive reads as unattested — this is what
-mis-verdicts `goya2`'s `Vol. 1`. (d) The 0.5–0.95 corridor, now over 165
+attests against, so any spurious directive reads as unattested -- this is what
+mis-verdicts `goya2`'s `Vol. 1`. (d) The 0.5-0.95 corridor, now over 165
 ambiguous findings.
 
 ## 11. The references moved, and four rules followed them (2026-08-06)
@@ -1078,7 +1078,7 @@ ceiling is now reachable, and **`barrios` has no converter defect left at all.**
 | | L0 | L1 | L2 converter-defect | L3 |
 |---|---|---|---|---|
 | §10 close | 328 | 90.9 | 297 | 196 |
-| references revised (no code change) | 327 | **92.7** | **258** | — |
+| references revised (no code change) | 327 | **92.7** | **258** | -- |
 | caption precedence | 332 | 92.8 | 251 | 168 |
 | two L2 blind spots | 335 | 92.8 | *(instrument)* | 168 |
 | align in bounded containers | 337 | 92.9 | 248 | **121** |
@@ -1086,8 +1086,8 @@ ceiling is now reachable, and **`barrios` has no converter defect left at all.**
 
 ### 11.1 The line the reader sees outranks `alt`
 
-§6.1 keeps `alt` and `caption` apart — one describes the picture for a reader
-who cannot see it, the other is visible editorial text — and §6.4 shows a figure
+§6.1 keeps `alt` and `caption` apart -- one describes the picture for a reader
+who cannot see it, the other is visible editorial text -- and §6.4 shows a figure
 carrying both. The binder took whichever arrived first, which was always `alt`.
 `authors` therefore captioned a scan `Заметка о проекте…` while printing the
 three lines the author actually wrote as a loose paragraph underneath: the
@@ -1095,15 +1095,15 @@ caption wrong and the text duplicated at once.
 
 A standalone image now binds the *run* of caption-eligible blocks under it and
 replaces an alt-derived caption. A run, because `segovia`'s 1936 photographs
-caption in three lines — a bold title, who is in the picture, where it was
-taken — and taking only the first orphaned the other two. Lines join with a
+caption in three lines -- a bold title, who is in the picture, where it was
+taken -- and taking only the first orphaned the other two. Lines join with a
 space; a first line set wholly in bold takes an em dash before the detail under
 it, read off the inline tree rather than off whether the pipeline happened to
 lift that line to a heading, which depends on context the caption does not have.
 
 This subsumed the older "same caption stated twice" rule and fixed what that one
 got wrong: it kept `alt`'s wording, so `williams2` read `в 1971 г.` where the
-visible line — and the reference — say `в 1971 году.`
+visible line -- and the reference -- say `в 1971 году.`
 
 ### 11.2 Two things a finding was allowed to claim and should not have been
 
@@ -1114,7 +1114,7 @@ after, so every move was a verdict changing rather than a diff changing).
 quoted for a directive opened with its name and every property value, and triage
 looks a span up in the source HTML. `align center Francis Goya in Moscow`
 appears in no document anyone has written, so every spurious directive read as
-unattested and was called a defect — and every *missing* one was written off as
+unattested and was called a defect -- and every *missing* one was written off as
 reference editorializing for the same reason, which was the larger error. Split
 from `blockText`, which also drives pairing and where the name and properties
 genuinely belong: they are what makes two directives the same directive.
@@ -1124,8 +1124,8 @@ lists, tables, quotes, navs and captions but not plain paragraphs, so a produced
 orphan whose text the reference also keeps as prose fell through to whatever
 construct did hold it. `.in-paragraph` says what is actually wrong: nothing was
 retyped, so this is placement. It is asked *before* the others, because a
-reference may hold one text twice — `news` writes an obituary's subject as a
-bold paragraph *and* captions the photograph below it with the same name — and
+reference may hold one text twice -- `news` writes an obituary's subject as a
+bold paragraph *and* captions the photograph below it with the same name -- and
 "did it stay what it was" is a different question from "what did it become".
 
 ### 11.3 `align` belongs in a bounded container, and three things blocked it
@@ -1135,34 +1135,34 @@ alone puts eight inside frames. The pass reached none of them.
 
 1. **The guard was right, its scope was not.** A region detector reads the
    produced shape back, so a pass that fires mid-speculation changes what is
-   being speculated about — that is how `jovicic` and `borislova` once lost
+   being speculated about -- that is how `jovicic` and `borislova` once lost
    every column they had. The pass now runs a second time on the container's
    *committed* children, where nothing is speculative any more.
 2. **A bounded container's own alignment is the evidence.** Alignment is
    recorded for element children only, on the stated grounds that an inline
    run's alignment is its parent's. True in the page flow; false at a boundary.
    A framed notice is one `<p>` of `<br>`-separated lines, so every block in it
-   arrived with no alignment recorded, and the one fact that mattered — this
-   notice is centred and the page is not — was the only thing not written down.
+   arrived with no alignment recorded, and the one fact that mattered -- this
+   notice is centred and the page is not -- was the only thing not written down.
 3. **A caption veto read a candidacy as a fact.** `captionEligible` marks a
    block whose typography *would* let it be a caption. As an unconditional veto
    it blocked every centred line in every framed notice: an obituary's opening
    sentence carries exactly a caption's typography and stands *above* the
    photograph, so it never becomes one. The test is now positional.
 
-Making it positional inverted a related case — a figure and its caption as two
+Making it positional inverted a related case -- a figure and its caption as two
 rows of a one-column table, where the caption is lowered alone and gets wrapped
 before any picture is in sight. `bindCaptions` unwraps a single-position `align`
 whose contents are all caption candidates: **the alignment was never wrong, it
 was premature.**
 
-`layout.align.mismatch` 49 → 23 and `layout.containment.mismatch` 81 → 60 — the
+`layout.align.mismatch` 49 → 23 and `layout.containment.mismatch` 81 → 60 -- the
 *rendered* layout, which is the question this family exists to answer.
 
 ### 11.4 A menu written as a table
 
 `navFrom` reads an inline run of links. The other half of this era's menus are a
-table with one row per item — the only other way FrontPage offered — and that
+table with one row per item -- the only other way FrontPage offered -- and that
 half never reached it. A menu is neither a record matrix nor a layout, so
 `williams2`'s discography came out as five one-item regions with `---` between
 them, and §11's "a prominent side menu normally moves directly below the title"
@@ -1174,7 +1174,7 @@ minimum. False friends, each tested for non-firing: a two-column score grid (a
 row is a work *and* its tablature), a figure over its caption (no links), a
 stack of citations (the cell is a sentence around the link), repeated
 destinations. A label split across two anchors sharing one destination is one
-item. A lane holding nothing but a menu is not a lane and folds into the flow —
+item. A lane holding nothing but a menu is not a lane and folds into the flow --
 `CLAUDE.md` §5, §11 and the reference all agree.
 
 `williams2` 97.4 → 99.1, directives 74.1 → 90.9.
@@ -1185,7 +1185,7 @@ item. A lane holding nothing but a menu is not a lane and folds into the flow �
 it, so until now every contract in this family was stated against its helpers
 and no rule could be exercised past them. The stand-in in `recovery.test.ts`
 fills in `text-align` only where the element declares it and leaves everything
-else to the attribute heuristics — a double that changed unrelated decisions
+else to the attribute heuristics -- a double that changed unrelated decisions
 would be a second, worse cascade rather than a stand-in for measurement.
 
 ### 11.6 State and ranking
@@ -1194,7 +1194,7 @@ would be a second, worse cascade rather than a stand-in for measurement.
 |---|---|
 | L0 | 343 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 93.1 |
-| L2 | 356 findings — **230 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
+| L2 | 356 findings -- **230 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
 | L3 | 121 findings, identity 0, deterministic |
 
 Per document, converter defects: `news` 63 · `goya2` 43 · `pavlov_azancheev` 20 ·
@@ -1208,14 +1208,14 @@ Top classes: `paragraph.missing` (11, 6 docs, critical) · `paragraph.hyphenatio
 
 **Open, in order.** (a) `ALIGN_LABEL_MAX_CHARS = 120` is a single-block absolute
 threshold of exactly the kind §5 warns about, and it is now the binding
-constraint on four `news` obituaries — the opening sentence cannot join its own
+constraint on four `news` obituaries -- the opening sentence cannot join its own
 name, so the name is wrapped alone. 16 of 55 reference `align` bodies exceed
 120 characters. Replace it with relational evidence rather than a bigger number.
-(b) `retyped.paragraph-to-quote`, 15 instances in 2 documents — `news_2007`'s
+(b) `retyped.paragraph-to-quote`, 15 instances in 2 documents -- `news_2007`'s
 reference dropped the `> ` it used to carry, so this may be largely closed
 already and wants re-measuring before any work. (c) `image.size.value` (21) and
 `image.src.value` (17, all `goya2`) are single-document or mechanical.
-(d) The 0.5–0.95 ambiguous corridor, still uncalibrated, now over 72 findings.
+(d) The 0.5-0.95 ambiguous corridor, still uncalibrated, now over 72 findings.
 
 ## 12. The label ceiling, and a rule that had to be measured twice (2026-08-06)
 
@@ -1230,11 +1230,11 @@ already and wants re-measuring before any work. (c) `image.size.value` (21) and
 `ALIGN_LABEL_MAX_CHARS` separated a label from an article, and the comment
 claiming every reference block sat comfortably under 120 had never been checked
 against the references: 15 of the 75 blocks they place inside an `::: align`
-exceed it, and the longest is 300 — `news`'s obituary of 26 February 2014. At
+exceed it, and the longest is 300 -- `news`'s obituary of 26 February 2014. At
 120 a notice could not take its own opening sentence, so the name below it was
 wrapped alone.
 
-Raising it alone made L3 *worse*, 121 → 152. The sweep said why — the curve was
+Raising it alone made L3 *worse*, 121 → 152. The sweep said why -- the curve was
 a **cliff at 300→400, not a trend**, so the number was never the mechanism:
 
 | cap | L1 | L2 defect | L3 |
@@ -1245,18 +1245,18 @@ a **cliff at 300→400, not a trend**, so the number was never the mechanism:
 | 400 | 93.2 | 232 | **152** |
 
 `segovia`'s discography is 24 items and ~350 characters, and
-`alignableRunMember` excluded tables and headings but not **lists** — so the
+`alignableRunMember` excluded tables and headings but not **lists** -- so the
 first cap large enough to admit a real notice centred a whole discography. §13
 enumerates what a bounded group is ("a short paragraph, dedication, small
 heading group, or credit line") and warns that centred body text is harder to
 read; across the 13 references **none of 499 list items** sits inside an
 `::: align`.
 
-With lists excluded the sweep is flat from 300 upward — 93.2 / 231 / 113 at 300,
+With lists excluded the sweep is flat from 300 upward -- 93.2 / 231 / 113 at 300,
 400 and 600 alike. That is the right shape for the number: a ceiling against
 wrapping an article, not a discriminator. 98 of the 153 top-level paragraphs in
 the references are shorter than 400, so at this value it discriminates nothing.
-The load-bearing evidence is and always was relational — a block is alignable
+The load-bearing evidence is and always was relational -- a block is alignable
 because its computed alignment differs from the page's own prose, measured
 length-weighted over every prose block on the page.
 
@@ -1266,32 +1266,32 @@ insensitivity above means the exact figure no longer matters.
 ### 12.2 A document the source set apart, and two traps in measuring it
 
 §3.5 permits a block quote for material "the source deliberately subordinates to
-the main prose — shown by combined evidence such as a consistently smaller font
+the main prose -- shown by combined evidence such as a consistently smaller font
 *plus* deeper indentation or separate alignment, never by font size alone".
 `pavlov_azancheev` is an archive of letters and poems; the reference quotes 34
 lines and the converter emitted every one as prose.
 
-`.t8` against `.t` looked like three concordant signals — italic, 10 pt against
+`.t8` against `.t` looked like three concordant signals -- italic, 10 pt against
 11 pt, inset 25 against 15. Two of the three do not survive measurement.
 
 **Indentation is not rendered.** The stylesheets write `margin-left: 25` with no
 unit, which is invalid CSS, and Chromium drops it. Every block on the page
 computes an inset of **0**, quoted letters included. The indent is in the source
-and not on the page, and the first version of this rule — built on §3.5's
-indentation, faithfully — could never fire on any page in the corpus.
+and not on the page, and the first version of this rule -- built on §3.5's
+indentation, faithfully -- could never fire on any page in the corpus.
 
 **The quotes define the baseline.** `bodyProminenceOf` samples the longest
 blocks, and on an archive page the longest blocks *are* the letters. Body
 prominence comes out as the quoted matter's own 10 pt and the article's 11 pt
 headnotes measure as *larger*: size reports the opposite of the truth. The same
-trap caught the first italic test, asked as a majority — 8 italic long blocks
+trap caught the first italic test, asked as a majority -- 8 italic long blocks
 against 4 upright made the page "italic", and the quotes disqualified
 themselves. The test is **contrast**, not majority: a page with *no* upright
 prose is one where italic carries no information, and that is the only case the
 guard needs to catch.
 
 What survives is the one signal the reader sees. Recurrence carries the rule, as
-§5 requires — and the corpus separates cleanly:
+§5 requires -- and the corpus separates cleanly:
 
 | document | wholly-italic blocks | reference quoted lines |
 |---|---|---|
@@ -1303,8 +1303,8 @@ What survives is the one signal the reader sees. Recurrence carries the rule, as
 
 Requiring **two** selects exactly the two documents the references quote and
 excludes the two single-block credit lines. An italic *phrase* inside a
-paragraph never qualifies — a `<p>` wrapping `<i>` computes upright — which is
-§3.5's own "do not turn … ordinary dialogue fragments … into a block quote".
+paragraph never qualifies -- a `<p>` wrapping `<i>` computes upright -- which is
+§3.5's own "do not turn ... ordinary dialogue fragments ... into a block quote".
 
 `pavlov_azancheev` emits 34 quoted lines against the reference's 34;
 `retyped.paragraph-to-quote` 14 → 3 there, and the class is no longer ranked.
@@ -1326,7 +1326,7 @@ paragraph never qualifies — a `<p>` wrapping `<i>` computes upright — which 
 |---|---|
 | L0 | 349 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 93.2 |
-| L2 | 346 findings — **220 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
+| L2 | 346 findings -- **220 converter-defect** · 72 ambiguous · 54 reference-inconsistency |
 | L3 | 99 findings, identity 0, deterministic |
 
 Per document, converter defects: `news` 65 · `goya2` 43 · `segovia` 17 ·
@@ -1338,7 +1338,7 @@ Top classes: `paragraph.missing` (14, 6 docs, critical) · `paragraph.hyphenatio
 (23, 9) · `align.spurious.unattested` (8, 5) · `retyped.paragraph-to-align`
 (7, 5) · `image.size.value` (21, 4) · `paragraph.containment` (7, 4).
 
-**Open, in order.** (a) `paragraph.missing` is now the clear top class — 14
+**Open, in order.** (a) `paragraph.missing` is now the clear top class -- 14
 instances over 6 documents, critical, and content loss rather than layout, so it
 outranks everything else by construction. (b) `paragraph.hyphenation`, 23
 instances over 9 documents, is the widest class in the ledger and mechanical:
@@ -1347,7 +1347,7 @@ the source soft-hyphenates across line breaks (`ак-тивно`, `испан-с
 `retyped.paragraph-to-align` are the same family, 15 between them, and now that
 the region and menu work has settled they should be re-read together.
 (d) `image.size.value` (21, 4 docs) is a threshold question in `media.ts`.
-(e) The 0.5–0.95 ambiguous corridor, still uncalibrated, at 72 findings.
+(e) The 0.5-0.95 ambiguous corridor, still uncalibrated, at 72 findings.
 
 ## 13. Frames, and a module that had nothing to do (2026-08-06)
 
@@ -1368,7 +1368,7 @@ reference frames all nine; the converter framed three.
 **The colour test asked two questions at once.** It rejected a border whose
 *computed* colour equalled the element's text colour, reasoning that an
 undeclared border colour inherits from `color` and a default is not a choice.
-But "did the author draw a border?" is answered by the border — a declared
+But "did the author draw a border?" is answered by the border -- a declared
 style and a width of 2 px or more, which is what separates a notice from a
 table's cell grid. "Which palette?" is the only question the colour answers,
 and there the computed value is exactly right: a border left to inherit black
@@ -1377,14 +1377,14 @@ and there the computed value is exactly right: a border left to inherit black
 Asked together it got both wrong. Six of the nine notices write `border: 4px
 solid #000000` on black text, which computes identically to a colourless
 `border-style: solid`, so a declared colour was read as a default. The three
-that survived did so only because `class="t2"` tints their text `#333328` — a
+that survived did so only because `class="t2"` tints their text `#333328` -- a
 stylesheet accident, not a fact about frames.
 
 **And the false friend had moved.** The one block the test existed to protect,
 `news_2007`'s festival announcement, is framed by the revised reference: it
 declares `border-style: solid` and a background tint, and the reference writes
 `frame: black` where it once wrote `>`. With the test removed, frame counts
-match the references **exactly on all thirteen documents** — 9 on `news`, 1 on
+match the references **exactly on all thirteen documents** -- 9 on `news`, 1 on
 `news_2007`, 0 elsewhere, none gained anywhere.
 
 **Only the catalog path asked about frames.** `layoutFrom` lowered its cells
@@ -1395,8 +1395,8 @@ routing through it is the whole fix.
 
 ### 13.2 The de-hyphenation module had been running on nothing
 
-`dehyphenate.ts` — seven-rule cascade, lexicon, oracle interface, audited
-reversible operations — has been wired into the pipeline since it was written
+`dehyphenate.ts` -- seven-rule cascade, lexicon, oracle interface, audited
+reversible operations -- has been wired into the pipeline since it was written
 and had almost nothing to do. Its candidate pattern, and decisively the cheap
 pre-filter in `dehyphenateDocument` that gates it, required a **newline after
 the hyphen**.
@@ -1406,7 +1406,7 @@ corpus was typed the other way: the hyphen was inserted to break the word in
 *the author's* browser at *their* window width, and the text then kept flowing.
 `Укра-ина` and `Владимиро-вич` sit mid-line in the source with the newline
 somewhere else entirely. Widening the pattern alone changed nothing at all,
-because the pre-filter had already skipped the node — two hours of measurement
+because the pre-filter had already skipped the node -- two hours of measurement
 that a single instrumented run would have found in ten minutes.
 
 Dropping the requirement sends every hyphenated word in the corpus through the
@@ -1415,7 +1415,7 @@ PRESERVE and asks about compounds first: rule 3 settles `Римский-Корс
 `Переяслав-Хмельницкий` before any frequency evidence is consulted.
 
 **Rule 5 needed a recurrence requirement.** It preserves when the hyphenated
-form is attested and the joined one is not — but the lexicon is built by
+form is attested and the joined one is not -- but the lexicon is built by
 scanning the same corpus, so a wrap artifact is indexed as a hyphenated word
 like any other and one attestation is the defect vouching for itself.
 `Борис-лавовна` and `монас-тырь` are attested once each and are both wraps;
@@ -1434,7 +1434,7 @@ Every one of the 14 is a correct Russian word the reference failed to join. The
 references join some wraps and keep others; there is no rule behind which.
 
 **Source attestation cannot adjudicate this class.** The source contains the
-hyphen either way — that *is* the artifact being reported — so the hyphenated
+hyphen either way -- that *is* the artifact being reported -- so the hyphenated
 side is attested by construction and the joined side never is, whichever side
 did the joining. The undivided class therefore reported "the reference is
 right" 24 times out of 24, on evidence that says nothing.
@@ -1443,11 +1443,11 @@ The class now names the direction, word by word rather than block by block
 (a paragraph long enough to carry one wrap usually carries several, and asking
 "does this block contain a hyphen" answered yes on both sides for 14 of 16):
 
-- `.unjoined` — the reference joined and this did not. **Work.**
-- `.joined` — this joined and the reference did not. Needs a dictionary the
+- `.unjoined` -- the reference joined and this did not. **Work.**
+- `.joined` -- this joined and the reference did not. Needs a dictionary the
   project has not installed; every instance in the corpus is correct, and the
-  instrument cannot know that. **`ambiguous`** — which is what verdict 4 is for.
-- `.mixed` — both directions in one block, so at least one real under-join.
+  instrument cannot know that. **`ambiguous`** -- which is what verdict 4 is for.
+- `.mixed` -- both directions in one block, so at least one real under-join.
   **Work.** Calling it ambiguous would let a defect hide behind a correct join
   that happens to share a paragraph.
 
@@ -1474,7 +1474,7 @@ better than the reference.
 |---|---|
 | L0 | 356 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 93.3 |
-| L2 | 321 findings — **191 converter-defect** · 80 ambiguous · 50 reference-inconsistency |
+| L2 | 321 findings -- **191 converter-defect** · 80 ambiguous · 50 reference-inconsistency |
 | L3 | 89 findings, identity 0, deterministic |
 
 Per document, converter defects: `news` 46 · `goya2` 43 · `kiselev` 17 ·
@@ -1488,19 +1488,19 @@ Top classes: `paragraph.missing` (10, 6 docs, critical) · `paragraph.containmen
 `retyped.align-to-paragraph` (6, 3).
 
 **Open, in order.** (a) `paragraph.missing`, still top at 10 over 6 documents
-and still content loss, but no longer one mechanism — the survivors are an
+and still content loss, but no longer one mechanism -- the survivors are an
 attribution line merged into its quote (`borislova`), a label above a list
 (`kiselev`), a date in a column (`news_2007`) and two on `segovia`. Each wants
 its own look. (b) `image.size.value` (21) and `image.src.value` (19, all
-`goya2`) are the largest remaining blocks and both mechanical — `src` is one
+`goya2`) are the largest remaining blocks and both mechanical -- `src` is one
 path-resolution rule, `size` a threshold in `media.ts`. (c) The alignment
 residue, `align.spurious` and the two `retyped.*-align` classes, 16 between
 them across 5 documents, now that the region, menu and frame work has settled.
 (d) `frame`'s `title:` property is unused: `news` puts `ПОЗДРАВЛЯЕМ` in it and
-the converter emits a heading inside the frame instead — one instance corpus-
-wide, so recorded rather than acted on. (e) The 0.5–0.95 ambiguous corridor,
+the converter emits a heading inside the frame instead -- one instance corpus-
+wide, so recorded rather than acted on. (e) The 0.5-0.95 ambiguous corridor,
 still uncalibrated, now at 80 findings and growing as classes are refined into
-it — the single largest piece of unexamined instrument behaviour left.
+it -- the single largest piece of unexamined instrument behaviour left.
 
 ## 14. A phantom top class, and a tag that was never evidence (2026-08-06)
 
@@ -1512,8 +1512,8 @@ it — the single largest piece of unexamined instrument behaviour left.
 
 ### 14.1 `paragraph.missing` contained no missing paragraphs
 
-The ledger's top class — rank 300, `critical`, 10 instances, 6 documents,
-content evidence — was followed down, and every one of the ten had its text
+The ledger's top class -- rank 300, `critical`, 10 instances, 6 documents,
+content evidence -- was followed down, and every one of the ten had its text
 sitting in the produced document: three as a line inside a hard-break run the
 reference had split into blocks, four as a whole paragraph under a different
 parent, one as a table cell, two absorbed into a longer block. **Zero were
@@ -1522,14 +1522,14 @@ outranked every class reporting a real defect.
 
 The cause was an asymmetry the file had already half-fixed. `homeOf`
 sub-classifies a *produced* orphan by the construct owning its text on the
-reference side — built because `paragraph.spurious` was "50 instances with
+reference side -- built because `paragraph.spurious` was "50 instances with
 nothing in common". The mirror question was never asked, so a reference orphan
 was reported bare at `missingSeverity`: critical, content, which reads as prose
 that was lost.
 
 Presence is a fact both sides can be asked about, and it now decides the
-severity. Text present on the other side is a **placement** finding — `major`,
-`structure` — because the defect is which container holds it. Only `.unattested`
+severity. Text present on the other side is a **placement** finding -- `major`,
+`structure` -- because the defect is which container holds it. Only `.unattested`
 is content, and there `critical` is the truth.
 
 Two folding gaps surfaced while measuring, the same blind spot one function
@@ -1548,17 +1548,17 @@ coincidence, so its minimum was read off the sweep rather than assumed:
 
 | min words | attributed |
 |---|---|
-| 1 | 10 — a bare `ПОЗДРАВЛЯЕМ` matches any sentence containing it |
-| 2 | 9 — `news_2007`'s footer chrome matches inside the page's own heading |
-| 3 | 8 — every full name, no bare label |
-| 4-6 | 5 — three obituary subjects stop being found in the notices naming them |
+| 1 | 10 -- a bare `ПОЗДРАВЛЯЕМ` matches any sentence containing it |
+| 2 | 9 -- `news_2007`'s footer chrome matches inside the page's own heading |
+| 3 | 8 -- every full name, no bare label |
+| 4-6 | 5 -- three obituary subjects stop being found in the notices naming them |
 
 A trend, not a plateau, so the number does real work; 3 is where it admits every
 three-part name and no single label. The false friend is tested for non-firing.
 
 **The instances did not move, and that is the evidence this was truthfulness
 rather than accounting**: 321 findings before, 321 after, none added, none lost.
-Nine changed verdict and all nine moved *up* — `paragraph.spurious.unattested`
+Nine changed verdict and all nine moved *up* -- `paragraph.spurious.unattested`
 [ambiguous/critical] became `.in-break-run` or `.absorbed`
 [converter-defect/major], duplications the instrument had been filing as "the
 reference may have deleted it". Corpus critical count 37 to 13.
@@ -1568,7 +1568,7 @@ reference may have deleted it". Corpus critical count 37 to 13.
 Following the re-ranked ledger to `paragraph.containment` found three
 mechanisms, and the largest was one wrapper: `tarrega` emitted **33** quoted
 lines against the reference's **0**, a single `<blockquote>` swallowing a
-nine-block score catalogue — headings, lists and all — and producing eight
+nine-block score catalogue -- headings, lists and all -- and producing eight
 findings alone. `kiselev` emitted **29** against **0**, six indented track lists.
 
 §12.2 built a §3.5-grounded subordination test for the CSS path. The tag path
@@ -1579,21 +1579,21 @@ Two hypotheses died before the third was written:
 
 | hypothesis | falsifier |
 |---|---|
-| the tag is never evidence — make it transparent | `segovia` 11 quoted lines to **0**. The reference wants 17. |
-| the tag is evidence, merely ungated — require `subordinationRecurs` | `recurs` is **true** on `kiselev` and `tarrega` too. It separates nothing. |
+| the tag is never evidence -- make it transparent | `segovia` 11 quoted lines to **0**. The reference wants 17. |
+| the tag is evidence, merely ungated -- require `subordinationRecurs` | `recurs` is **true** on `kiselev` and `tarrega` too. It separates nothing. |
 
-What separates them is the content, on §3.5's own evidence and nothing else —
+What separates them is the content, on §3.5's own evidence and nothing else --
 `segovia` 1/1 subordinated children, `kiselev` 0/1, `tarrega` 0/4.
 
 **The evidence had to be read off the source element, not the produced blocks.**
 `blocksFrom` records subordination for element children only, deliberately: an
 inline run's *alignment* is its container's and says nothing about the run.
-Italic is not like that — `<i>` is written around this run and nothing else —
+Italic is not like that -- `<i>` is written around this run and nothing else --
 and `segovia` writes `<blockquote><i>…</i></blockquote>`, so its paragraph is
 born from an inline flush and never enters `ctx.subordinated`. Asking the
 produced set answered no on the one page whose blockquotes the reference quotes.
-`subordinationRecursIn` had the identical blind spot — it counts `p` and `div`
-only — and scored those two regions as nothing. Both now call one shared
+`subordinationRecursIn` had the identical blind spot -- it counts `p` and `div`
+only -- and scored those two regions as nothing. Both now call one shared
 `contentIsSubordinated`.
 
 `InlineAlignMeasurer` gained the one UA default the rule needs: `<i>` and `<em>`
@@ -1601,14 +1601,14 @@ compute italic without declaring it. Without it the positive contract could not
 be exercised end-to-end, and the rule looked wrong.
 
 The old contract *"still quotes a genuine short quotation"* asserted that the
-tag is enough — the belief this iteration falsified. Unmeasured input now
+tag is enough -- the belief this iteration falsified. Unmeasured input now
 flattens rather than asserting an unevidenced quotation; no text is lost either
 way, and the positive contract moved to `mdMeasured`, where computed style
 exists.
 
 `tarrega` 12 to 6 defects, L1 81.5 to 88.5. **`kiselev` holds at 17**: its track
 lists were two defects stacked, and removing the quote exposed the list recovery
-underneath — `retyped.quote-to-list` (6) became `retyped.paragraph-to-list`,
+underneath -- `retyped.quote-to-list` (6) became `retyped.paragraph-to-list`,
 which is now the top-ranked class.
 
 ### 14.3 Killed hypotheses added
@@ -1633,7 +1633,7 @@ which is now the top-ranked class.
 |---|---|
 | L0 | 368 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 93.8 |
-| L2 | 314 findings — **194 converter-defect** · 70 ambiguous · 50 reference-inconsistency |
+| L2 | 314 findings -- **194 converter-defect** · 70 ambiguous · 50 reference-inconsistency |
 | L3 | 82 findings, identity 0, deterministic |
 
 Per document, converter defects: `news` 49 · `goya2` 45 · `kiselev` 17 ·
@@ -1650,11 +1650,11 @@ Top classes: `retyped.paragraph-to-list` (10, 4 docs) · `image.size.value`
 top: a `<br>`-separated run of parallel short lines is a list, and `kiselev`'s
 six track lists are the clearest instance now that the quote no longer hides
 them. `paragraph.spurious.in-break-run` (6, 3) is very likely the same mechanism
-seen from the other side — check before treating them separately.
+seen from the other side -- check before treating them separately.
 (b) `image.src.value` (19, all `goya2`) and `image.size.value` (21, 4 docs),
 both mechanical: one path-resolution rule and one threshold in `media.ts`.
-(c) The alignment residue — `align.spurious`, `retyped.paragraph-to-align`,
-`retyped.align-to-paragraph` — 16 across 5 documents. (d) `borislova` and
+(c) The alignment residue -- `align.spurious`, `retyped.paragraph-to-align`,
+`retyped.align-to-paragraph` -- 16 across 5 documents. (d) `borislova` and
 `jovicic` want a quote the recurrence gate declines to give (1 subordinated
 region each; `MIN_SUBORDINATED_BLOCKS` is 2). §12.2 chose that gate deliberately
 and it is the right shape, so this is a ceiling until a second signal exists.
@@ -1670,7 +1670,7 @@ largest piece of unexamined instrument behaviour.
 
 §14.4 guessed that `retyped.paragraph-to-list` (10, 4 docs) and
 `paragraph.spurious.in-break-run` (6, 3 docs) were one general mechanism seen
-from two sides — both are about how a `<br>` run is segmented. Tested, they are
+from two sides -- both are about how a `<br>` run is segmented. Tested, they are
 not, and only one of them is work.
 
 ### 15.1 The over-split class was the reference merging, six times out of six
@@ -1686,21 +1686,21 @@ the source:
 | `williams2` | the track and its link are two separate `<td>` | one paragraph, two lines |
 
 Six for six the produced side is attested by an actual paragraph element and the
-reference is not. The reference's merge renders as a wall of text — `pavlov`'s
-letter loses the break between its two mailing addresses — so this is not even
+reference is not. The reference's merge renders as a wall of text -- `pavlov`'s
+letter loses the break between its two mailing addresses -- so this is not even
 an acceptable alternative in the reference's favour.
 
 **The instrument said "defect" because of §14.1.** Giving placement findings
 `structure` evidence stopped them claiming content loss, which was right, but
 `structure` short-circuits triage to `converter-defect` without ever running the
-attestation test. That is correct for a lane, a wrapper or a separator — §16.3
-constrains text, not layout — and wrong for this class, because a block boundary
+attestation test. That is correct for a lane, a wrapper or a separator -- §16.3
+constrains text, not layout -- and wrong for this class, because a block boundary
 against a line ending is the **hard-break question one level out**, and
 `CLAUDE.md` §4 puts hard breaks with presentation, to be attested like content.
 
 `.in-break-run` joins `PRESENTATIONAL`. The two directions then separate the way
 the existing triage logic already handles insertions and deletions, with no
-special case: a *spurious* block whose text the source attests is `ambiguous` —
+special case: a *spurious* block whose text the source attests is `ambiguous` --
 the instrument cannot know whether the reference merged deliberately; a
 *missing* block whose text the source attests stays `converter-defect`, because
 there the reference asserts a boundary the produced document lacks.
@@ -1725,12 +1725,12 @@ reference does with the same text:
 
 | | runs | lines | line length min/med/max |
 |---|---|---|---|
-| reference makes a **list** | 9 | 2–19 | 11 / 30 / 85 |
-| reference keeps a **paragraph** | 69 | 2–11 | 4 / 30 / 2109 |
+| reference makes a **list** | 9 | 2-19 | 11 / 30 / 85 |
+| reference keeps a **paragraph** | 69 | 2-11 | 4 / 30 / 2109 |
 
-`kiselev`'s track lists are 3–9 lines of 11–85 characters. `borislova`'s poems
-are 4–9 lines of 10–36 characters, thirteen of them, and the reference keeps
-every one as a paragraph — as §3.5 and the `text.segment` hook both require,
+`kiselev`'s track lists are 3-9 lines of 11-85 characters. `borislova`'s poems
+are 4-9 lines of 10-36 characters, thirteen of them, and the reference keeps
+every one as a paragraph -- as §3.5 and the `text.segment` hook both require,
 since verse is lineation and never a list. Line count, line length, length
 variance and lineation all overlap completely. A rule on any of them converts
 `borislova`'s poetry into bullet lists.
@@ -1740,7 +1740,7 @@ Two candidate mechanisms remain, both recorded rather than built:
 - **Indent under a label.** All six `kiselev` runs sit in
   `<blockquote style="margin-left: 25">` under an album title, and after §14.2
   made the tag transparent that containment is free evidence. It separates
-  cleanly on this corpus — but *only* on `kiselev`, so it is six instances in
+  cleanly on this corpus -- but *only* on `kiselev`, so it is six instances in
   one document, which `CLAUDE.md` §5 names as the wrong target however many
   instances it has, and its false friend would be untested. `jovicic`'s run is
   not indented at all; it is a `<br><br>`-delimited group inside `<p class="cd">`.
@@ -1750,7 +1750,7 @@ Two candidate mechanisms remain, both recorded rather than built:
   today. Distinguishing "independent records" from "one utterance in lines" is
   semantic interpretation of the content, which is §6's definition of hook
   territory rather than rule territory. It would need the deterministic
-  acceptance check named before it is built — the obvious candidate being that
+  acceptance check named before it is built -- the obvious candidate being that
   accepting an `ITEM` verdict may only change block *type*, never text, never
   line count, and never fire where the run is verse by §3.5's evidence.
 
@@ -1761,12 +1761,12 @@ recorded.
 ### 15.3 Killed hypotheses added
 
 - **`retyped.paragraph-to-list` and `paragraph.spurious.in-break-run` are one
-  mechanism.** They share a substrate — `<br>` run segmentation — and nothing
+  mechanism.** They share a substrate -- `<br>` run segmentation -- and nothing
   else. One is a missing detector; the other was an instrument over-claim. A
   shared substrate is not a shared mechanism.
 - **`structure` evidence is safe for any placement finding.** It bypasses
-  attestation by design. That is correct for layout — lanes, wrappers,
-  separators — and wrong for any class whose claim is about how the same content
+  attestation by design. That is correct for layout -- lanes, wrappers,
+  separators -- and wrong for any class whose claim is about how the same content
   is *set*. A block boundary against a line ending is presentation.
 - **A record list can be told from verse by shape.** Measured across 78 runs in
   the 13 references: line count, line length, variance and lineation all
@@ -1778,7 +1778,7 @@ recorded.
 |---|---|
 | L0 | 369 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 93.8 |
-| L2 | 314 findings — **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency |
+| L2 | 314 findings -- **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency |
 | L3 | 82 findings, identity 0, deterministic |
 
 Per document, converter defects: `news` 49 · `goya2` 43 · `kiselev` 17 ·
@@ -1787,10 +1787,10 @@ Per document, converter defects: `news` 49 · `goya2` 43 · `kiselev` 17 ·
 **`barrios` 0**.
 
 **Open, in order.** (a) `image.src.value` (19, all `goya2`) and
-`image.size.value` (21, 4 docs) — the largest remaining blocks and both
+`image.size.value` (21, 4 docs) -- the largest remaining blocks and both
 mechanical: one path-resolution rule, one threshold in `media.ts`.
-(b) The alignment residue — `align.spurious`, `retyped.paragraph-to-align`,
-`retyped.align-to-paragraph` — 16 across 5 documents. (c)
+(b) The alignment residue -- `align.spurious`, `retyped.paragraph-to-align`,
+`retyped.align-to-paragraph` -- 16 across 5 documents. (c)
 `retyped.paragraph-to-list`, open with its evidence in §15.2 and blocked on a
 hook design rather than on measurement. (d) The ambiguous corridor, now 76
 findings, still uncalibrated.
@@ -1799,10 +1799,10 @@ findings, still uncalibrated.
 from this point; the next work is generalization measured on unseen pages, not
 further tuning against these.
 
-## 16. Blind generalization check — 10 unseen pages (2026-08-06)
+## 16. Blind generalization check -- 10 unseen pages (2026-08-06)
 
 Ten new sources landed in `fixtures/html/` with no references. Converted with the
-frozen rule set, no reference read, **no `corpus scan`** — rebuilding the lexicon
+frozen rule set, no reference read, **no `corpus scan`** -- rebuilding the lexicon
 from 23 files would have changed behaviour on the 13 and destroyed the test.
 
 **Regression first: the 13 outputs are byte-identical with the 10 new inputs
@@ -1818,7 +1818,7 @@ present.** No cross-contamination through the shared corpus profile.
 | links lost (`conservation.targets.missing`) | **0 on all 10** |
 | images lost (`conservation.images.missing`) | **0 on all 10** |
 | words lost | **0 on all 10** |
-| diagnostic error *codes* | only `table-header-empty`, `complexity-budget`, `line-too-long` — the same three the 13 produce |
+| diagnostic error *codes* | only `table-header-empty`, `complexity-budget`, `line-too-long` -- the same three the 13 produce |
 | review escalation *kinds* | same categories as the 13; "no decisive evidence either way" dominates both |
 
 Every one of the ten got exactly **one `# ` masthead**. Encoding detection, chrome
@@ -1828,11 +1828,11 @@ already produced.
 
 ### 16.2 `conservation.text.recall` is not a content-loss measure
 
-`new_lagq2` reported **45.3 %** recall — worse than anything in the 13 — with
+`new_lagq2` reported **45.3 %** recall -- worse than anything in the 13 -- with
 **zero** words, links or images missing. The metric is built on word shingles,
 and every shingle straddling a block boundary breaks when the converter splits a
 run. `lagq2`'s source writes each track as its own unclosed `<p class="t">`, the
-converter emits each as its own paragraph — faithfully — and the shingles
+converter emits each as its own paragraph -- faithfully -- and the shingles
 spanning title into track list all miss.
 
 The number therefore measures *how similar the block structure stayed*, not how
@@ -1844,8 +1844,8 @@ loss.
 
 ### 16.3 One genuinely new archetype: the per-composer media catalogue
 
-`new_karta` and `new_karta5` are a combined audio/score catalogue — "сводный
-каталог аудио, нот и табулатур" — and they are the **multi-column media/score
+`new_karta` and `new_karta5` are a combined audio/score catalogue -- "сводный
+каталог аудио, нот и табулатур" -- and they are the **multi-column media/score
 table** archetype at a scale the 13 never showed. Measured in the browser at
 1024 px, `new_karta5` renders 21 multi-column tables:
 
@@ -1853,17 +1853,17 @@ table** archetype at a scale the 13 never showed. Measured in the browser at
 |---|---|---|---|---|---|---|---|
 | tables | **12** | 2 | 2 | 2 | 1 | 1 | 1 |
 
-Twelve of the twenty-one are **single-row** — one composer, one work, one format
+Twelve of the twenty-one are **single-row** -- one composer, one work, one format
 link (title cell 405 px left-aligned, link cell 45 px centred). The table path
 classifies them DATA and then refuses them: 7 × "classified DATA but not
 representable as a table (too-small)", 3 × "unrepresentable", 1 × "too-many".
 Corpus-wide the new set emits **8 of 28** DATA-classified tables as tables, and
-the shortfall is concentrated here — `new_karta5` 4/15, `new_karta` 3/6.
+the shortfall is concentrated here -- `new_karta5` 4/15, `new_karta` 3/6.
 
 What the rows become instead is `::: align position: center` around the title and
 the link as separate paragraphs. `new_karta5` carries **39 `::: align`**
 directives, more than any of the 13 (`goya2` has 26), and L3's source-backing
-column reports **21 of them with no distinctive source alignment at all** — the
+column reports **21 of them with no distinctive source alignment at all** -- the
 title cell computes `start`, not centre.
 
 The fix direction is already sanctioned: §5's corpus facts say "vertically
@@ -1874,30 +1874,30 @@ pairing.
 
 ### 16.4 A false friend for §12.2, and it is a symptom
 
-`new_dyens` emits three block quotes — `Tango En Skaï`, `Valse En Skaï`,
+`new_dyens` emits three block quotes -- `Tango En Skaï`, `Valse En Skaï`,
 `Libra Sonatine`. All three are **work titles in a media table**, and §3.5
-excludes them by name: "do not turn titles … into a block quote".
+excludes them by name: "do not turn titles ... into a block quote".
 
-The page has exactly one `<blockquote>` in the source — the biography paragraph —
+The page has exactly one `<blockquote>` in the source -- the biography paragraph --
 and §14.2's rule correctly declined it. These three came from §12.2's
 italic-recurrence rule: the title column is `<p class="l">`, the stylesheet sets
 that italic, three of them recur, and `groupSubordinatedRuns` wraps each.
 
 **The root cause is upstream.** The media table was not emitted as a table
 (`tables=0/1`), so its title cell was lowered as loose prose and only then met a
-rule that reads computed italic. §5's own instruction applies — "check the
+rule that reads computed italic. §5's own instruction applies -- "check the
 routing and grouping stages above it first: a false friend that exists only
-because an earlier stage failed is a symptom" — so this is the same defect as
+because an earlier stage failed is a symptom" -- so this is the same defect as
 §16.3, seen one stage later. Guarding the quote rule against italic titles would
 cement the table failure and hide it.
 
 ### 16.5 Two smaller findings
 
-- **`new_rechin4`** — 2 × `line-too-long` (4156 and 2850 characters against a
+- **`new_rechin4`** -- 2 × `line-too-long` (4156 and 2850 characters against a
   2200 ceiling) and only 11 paragraphs for a 33 KB source. Under-segmentation:
   whole sections are landing in single paragraphs. The only validation *error*
   class the new set raises that the 13 raise just once.
-- **`new_geyzel04`** — nesting depth 4 against a budget of 3, and 48 review items
+- **`new_geyzel04`** -- nesting depth 4 against a budget of 3, and 48 review items
   ("no decisive evidence either way"), three times the highest in the 13
   (`segovia` 19). Volume, not kind.
 
@@ -1908,27 +1908,27 @@ cement the table failure and hide it.
 | `new_bach`, `new_blackmore`, `new_kolpakov`, `new_lendle2` | masthead + prose with bound figures | known |
 | `new_dyens`, `new_lagq2` | prose + multi-column media/score table | known shape, table path declines |
 | `new_geyzel04`, `new_rechin4` | long-form prose, deep nesting | known, at new depth/length |
-| `new_karta`, `new_karta5` | **per-composer media catalogue** — many one-row tables | **new scale of a known archetype** |
+| `new_karta`, `new_karta5` | **per-composer media catalogue** -- many one-row tables | **new scale of a known archetype** |
 
 None announced itself as wholly unmapped. The one that stresses the catalog is
 the catalogue page, and it stresses a *guard* rather than a missing detector.
 
 ### 16.7 What this says about generalization
 
-The deterministic front half — encoding, chrome, masthead, figures, links,
-conservation — generalizes. The emitter generalizes absolutely: 10/10 with zero
+The deterministic front half -- encoding, chrome, masthead, figures, links,
+conservation -- generalizes. The emitter generalizes absolutely: 10/10 with zero
 `read()` warnings and zero validation warnings.
 
 What does not generalize is **one guard and one threshold**: the minimum size a
 DATA table must reach to be emitted as a table. Every high-value defect in this
 blind set traces to it, including the §12.2 false friend, which exists only
-downstream of it. That is a better outcome than a scattered failure — it is one
+downstream of it. That is a better outcome than a scattered failure -- it is one
 mechanism, it is already described in `CLAUDE.md` §5's corpus facts, and it can
 be measured on `new_karta5` without touching the 13.
 
 Outputs preserved before any comparison, for the reference step.
 
-## 17. Blind improvement phase — two hypotheses, both falsified (2026-08-06)
+## 17. Blind improvement phase -- two hypotheses, both falsified (2026-08-06)
 
 Worked from the 10 unseen sources, the current output, `BioMD-Reference.md` and
 the existing rules only. No reference was opened. **No rule shipped**, and the
@@ -1937,41 +1937,41 @@ the evidence killed them, which is cheaper now than after they were built.
 
 | rung | before | after |
 |---|---|---|
-| L0 / L1 / L2 / L3 | 369 · 93.8 · 188 · 82 | unchanged — no code change survives |
-| the 13 outputs | — | byte-identical |
-| the 10 blind outputs | — | byte-identical to the §16 baseline |
+| L0 / L1 / L2 / L3 | 369 · 93.8 · 188 · 82 | unchanged -- no code change survives |
+| the 13 outputs | -- | byte-identical |
+| the 10 blind outputs | -- | byte-identical to the §16 baseline |
 
 ### 17.1 Killed: "a one-row table in a region that writes records is a record row"
 
 §16.3 named the `minRows: 2` guard in `planDataTable` as the single mechanism
-behind the largest defect in the blind set — `new_karta5` emits 4 of 15
+behind the largest defect in the blind set -- `new_karta5` emits 4 of 15
 DATA-classified tables, and 12 of its 21 multi-column tables are single-row.
 
 A rule was designed to §5 and measured before being trusted: a one-row table is
 a record when, **in the same region**, at least two multi-row tables were already
 accepted as data, and no cell of the candidate exceeds the largest cell those
 accepted rows contain. Three relations, no literal, no absolute number. The
-firing set was measured first and was tight — `new_karta5` 8, `new_karta` 1,
-`kiselev` 1 — and the false friend separated cleanly:
+firing set was measured first and was tight -- `new_karta5` 8, `new_karta` 1,
+`kiselev` 1 -- and the false friend separated cleanly:
 
 | document | candidate's widest cell | peers' widest cell | verdict |
 |---|---|---|---|
 | `kiselev` (album header, a layout container) | **1303** | 189 | reject |
 | `new_karta` | 51 | 72 | accept |
-| `new_karta5` | 7–31 | 80 | accept |
+| `new_karta5` | 7-31 | 80 | accept |
 
 Implemented, it fired exactly as measured and the 13 stayed byte-identical. It
 still emitted **no** table, and the reason falsifies the premise rather than the
 implementation: `tableFromPlan` cannot synthesize a header for a one-row table,
 because `dominantLabel` needs a label recurring across three body rows. That is
-correct behaviour, not a bug — and the column counts say why:
+correct behaviour, not a bug -- and the column counts say why:
 
 ```
 new_karta5 accepted tables:  2x2  4x10  7x2  11x7  20x8  4x4  2x2  3x4
 ```
 
 **There is no column schema.** Each record is a work title followed by however
-many format links that work happens to have — arity 1 to 9. These are not rows
+many format links that work happens to have -- arity 1 to 9. These are not rows
 of a matrix that the guard is wrongly splitting; they are variable-arity records
 that a table cannot express without inventing a header, which §16.3 forbids. The
 `too-small` rejection is a symptom; the classifier calling them DATA is the
@@ -1992,10 +1992,10 @@ across all 23 documents `new_karta5` is the only page with **zero** of them:
 |---|---|---|---|
 | `new_karta5` | 302 | **0** | **null** |
 | `new_karta` | 198 | 1 | justify |
-| every other document | 35–302 | 5–32 | justify |
+| every other document | 35-302 | 5-32 | justify |
 
 With no baseline, `isDistinctiveAlign` falls back to "centre and right are
-distinctive on their own", so on a catalogue page — short entries throughout —
+distinctive on their own", so on a catalogue page -- short entries throughout --
 nearly every block qualifies and `new_karta5` collects 39 `::: align`
 directives, more than any of the 13.
 
@@ -2014,7 +2014,7 @@ Left open with the measurement recorded.
 ### 17.3 A stale line in `CLAUDE.md` §4
 
 §4's third corpus fact reads: "`prominence.ts:132` and `structure.ts:1809` handle
-this; **`prominence.ts:138` and `structure.ts:1437` do not** — a live
+this; **`prominence.ts:138` and `structure.ts:1437` do not** -- a live
 inconsistency, not a style preference."
 
 Measured: it is closed. Every comparison now folds through
@@ -2023,7 +2023,7 @@ and exists to prevent its reintroduction. The remaining `=== "center"`
 comparisons are on already-folded values or on raw HTML attributes, where they
 are correct. The line numbers have also drifted.
 
-Flagged rather than edited — `CLAUDE.md` is the constitution and the correction
+Flagged rather than edited -- `CLAUDE.md` is the constitution and the correction
 is the user's to make.
 
 ### 17.4 Killed hypotheses added
@@ -2033,7 +2033,7 @@ is the user's to make.
   rejects something, check that the accepted alternative is expressible before
   treating the guard as the defect.
 - **Recurrence among accepted peers licenses a one-row table.** The evidence is
-  sound and the rule fires exactly where measured — and it still cannot produce
+  sound and the rule fires exactly where measured -- and it still cannot produce
   output, because a one-row table has no recurring label to name its columns. A
   rule must be checked against what the *emitter* can express, not only against
   what the detector can justify.
@@ -2044,7 +2044,7 @@ is the user's to make.
 
 ### 17.5 What the reference step should settle
 
-1. What `new_karta`/`new_karta5`'s variable-arity records should become — table
+1. What `new_karta`/`new_karta5`'s variable-arity records should become -- table
    with supplied labels, definition-style flow, or paired lines. This is the
    single highest-value question in the new set and deduction cannot answer it.
 2. Whether `::: align` belongs around a catalogue entry at all on a page whose
@@ -2052,7 +2052,7 @@ is the user's to make.
 3. Whether `new_rechin4`'s two over-long lines are under-segmentation or faithful
    long paragraphs.
 
-## 18. Second blind pass — broadened search, four more hypotheses dead (2026-08-06)
+## 18. Second blind pass -- broadened search, four more hypotheses dead (2026-08-06)
 
 A bounded second blind pass across all 10 unseen sources and their outputs,
 searching the objective classes: lost/duplicated/invented content, degraded
@@ -2060,24 +2060,24 @@ BioMD, routing and containment, collapsed neighbour relationships,
 image/caption and record-field associations. No reference was opened.
 
 **Accepted converter changes: zero.** One documentation correction shipped.
-L0 369 · L1 93.8 · L2 188 · L3 82 — unchanged; the 13 and the 10 blind outputs
+L0 369 · L1 93.8 · L2 188 · L3 82 -- unchanged; the 13 and the 10 blind outputs
 byte-identical.
 
 ### 18.1 What the sweep found, and what survived scrutiny
 
 | signal | instances | verdict |
 |---|---|---|
-| duplicated blocks in output | 1 (`new_lagq2`) | **not a defect** — the source really carries that track twice |
+| duplicated blocks in output | 1 (`new_lagq2`) | **not a defect** -- the source really carries that track twice |
 | caption echoed as a paragraph | 0 in the new set | clean; caption binding generalizes |
-| empty `::: column` lanes | 5 over 4 docs | **not objectively wrong** — see 18.2 |
+| empty `::: column` lanes | 5 over 4 docs | **not objectively wrong** -- see 18.2 |
 | `::: align` around a single paragraph | 62 over 9 docs | not new-set-specific: `goya2` has 25 in its *reference* |
 | one-item lists | 4, one document | too narrow to carry a rule |
-| collapsed two-lane album records | `new_lagq2` | real, and the fix is forbidden — see 18.3 |
+| collapsed two-lane album records | `new_lagq2` | real, and the fix is forbidden -- see 18.3 |
 
 ### 18.2 Killed: "an empty `::: column` is degraded output"
 
 Five spurious-looking empty lanes across `news_2007`, `williams2`,
-`new_geyzel04` and `new_karta` — four documents, and two of them in the
+`new_geyzel04` and `new_karta` -- four documents, and two of them in the
 regression corpus where a reference can adjudicate. It looked like a clean
 candidate until both sides were read:
 
@@ -2090,7 +2090,7 @@ candidate until both sides were read:
 `goya2`'s reference *keeps* the trailing empty lane, and for a reason the code
 already documents: five albums have no cover art, and dropping the lane would
 shift every index after them out of alignment with the thirty that do. The
-shape that is correct on `goya2` and wrong on `news_2007` is byte-identical —
+shape that is correct on `goya2` and wrong on `news_2007` is byte-identical --
 what separates them is whether a sibling `::: columns` group puts content in
 that lane. For the two *new* documents there is no way to tell blind which kind
 they are, and guessing would break `goya2`.
@@ -2099,7 +2099,7 @@ they are, and guessing would break `goya2`.
 
 The best-founded candidate of the pass, and the most instructive failure.
 
-`new_lagq2` is seven album records — cover beside tracklist — and the produced
+`new_lagq2` is seven album records -- cover beside tracklist -- and the produced
 output has **zero** `::: columns`: the two-lane relationship is flattened
 entirely. Traced through measured geometry:
 
@@ -2109,9 +2109,9 @@ entirely. Traced through measured geometry:
 | `new_lendle2` | 10×2 | 0.50 | 0.33 | CATALOG | lanes |
 | `new_lagq2` | 7×2 | **0.37** | 0.46 | **DATA 0.50** | flattened |
 
-Two mechanisms were separated before writing code. The first — that CATALOG's
-tier-1 gate demands lanes of near-equal width (0.45–0.55) and a 150 px cover
-beside a tracklist has no reason to be 50/50 — is true but not the cause:
+Two mechanisms were separated before writing code. The first -- that CATALOG's
+tier-1 gate demands lanes of near-equal width (0.45-0.55) and a 150 px cover
+beside a tracklist has no reason to be 50/50 -- is true but not the cause:
 widening it would also catch `barrios` (0.67) and `news_2007` (0.27), both in
 the regression corpus.
 
@@ -2120,13 +2120,13 @@ as a layout region ("not a data table is not 'not a region'"); a DATA verdict
 that cannot be *planned* falls straight to linear flow, so the one classification
 that says "this grid is structured" is the only one never asked whether its
 columns are lanes. That is the identical shape as §13.1's frames and §14.2's
-subordination — a question answered by evidence on one path and by construction
-on the other — and it was implemented on that reasoning.
+subordination -- a question answered by evidence on one path and by construction
+on the other -- and it was implemented on that reasoning.
 
 **It was already considered and deliberately rejected.** `recovery.test.ts`
-carries the contract *"leaves a DATA verdict on the flow path — the false
+carries the contract *"leaves a DATA verdict on the flow path -- the false
 friend"*, with the rationale stated outright: "losing a table to lanes is the
-defect this reconsideration could otherwise introduce." The corpus agreed —
+defect this reconsideration could otherwise introduce." The corpus agreed --
 L1 **93.8 → 93.6**, with `borislova`, `goya2` and `williams2` all changed.
 Reverted.
 
@@ -2143,7 +2143,7 @@ sites. Measured, it is closed: every comparison folds through
 `isCenteredAlign`/`foldTextAlign`, `src/ladom/style.ts` documents the split and
 exists to prevent its return, and the remaining `=== "center"` comparisons are
 on already-folded values or raw HTML attributes where they are correct. The
-line numbers had also drifted. Replaced with the standing rule — fold, never
+line numbers had also drifted. Replaced with the standing rule -- fold, never
 compare a computed value raw.
 
 ### 18.5 Killed hypotheses added
@@ -2157,7 +2157,7 @@ compare a computed value raw.
   cause of the one document that misses it; widening it reaches two regression
   documents.
 - **A block appearing twice in the output is duplication.** Check the *stripped*
-  source text, not the raw HTML — markup splits an occurrence and makes a
+  source text, not the raw HTML -- markup splits an occurrence and makes a
   faithful conversion look like invention.
 
 ### 18.6 State
@@ -2169,10 +2169,10 @@ The open questions for the reference cycle are those of §17.5, plus: whether
 `new_lagq2`'s album records should be two-lane regions at all, given that the
 one mechanism which would produce them is forbidden by a tested contract. If
 the reference gives them `::: columns`, the contract and the CATALOG gate both
-need revisiting together — and that is a reference-guided decision, not a blind
+need revisiting together -- and that is a reference-guided decision, not a blind
 one.
 
-## 19. Handoff — the blind phase is closed; the reference-guided phase starts here
+## 19. Handoff -- the blind phase is closed; the reference-guided phase starts here
 
 Everything above this section is done. **Do not repeat it.** The bootstrap, the
 four instrument rungs, the L5 calibration, the two blind passes over the 10 new
@@ -2185,7 +2185,7 @@ picks this up starts at §19.2.
 |---|---|---|
 | L0 | 369 tests, typecheck clean, 0 FAILED conversions | `npx tsc -p tsconfig.json --noEmit && npm test` |
 | L1 | **93.8** | `sh bench/run.sh` |
-| L2 | 314 findings — **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency | `node dist/cli/index.js diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L2 | 314 findings -- **188 converter-defect** · 76 ambiguous · 50 reference-inconsistency | `node dist/cli/index.js diff -c bench/biomd.config.json --json ../analyze/defects.json` |
 | L3 | 82 findings, identity 0, deterministic | `node dist/cli/index.js l3 -c bench/biomd.config.json` |
 
 Branch `main`, tree clean apart from `.claude/settings.local.json`. The 10 new
@@ -2200,13 +2200,13 @@ across both blind passes.
 | set | members | role |
 |---|---|---|
 | **regression corpus** | the original **13** pairs | never regress. L0/L1/L2/L3 as in §19.1 are the floor |
-| **refinement set** | **9** new pairs — every `new_*` except `new_karta5` | where the work happens |
+| **refinement set** | **9** new pairs -- every `new_*` except `new_karta5` | where the work happens |
 | **holdout** | **`new_karta5`** | untouched. Do not read, diff, score or tune against it |
 
 **Holdout mechanism, decided and requiring no code change:** keep
 `new_karta5.bio.md` *outside* `fixtures/out/`. `diff`, `l3` and `eval` skip any
-document with no reference file — that is already how the 10 blind pages behaved
-— so the holdout stays genuinely unseen while `corpus run` still converts the
+document with no reference file -- that is already how the 10 blind pages behaved
+-- so the holdout stays genuinely unseen while `corpus run` still converts the
 `.htm` and still reports its conservation and validation. Verify after placing
 the references that the instruments report **22** documents, not 23.
 
@@ -2222,17 +2222,17 @@ more than tuning on it.
    9 documents joined the comparison.
 2. **Classify and rank** the new defects with `diff --json`, by
    `instances × severity × generality`, keeping the 13 and the 9 visible
-   separately — a class that appears only in the new set is a generalization
+   separately -- a class that appears only in the new set is a generalization
    finding; one that spans both is a rule finding and outranks it.
 3. **Take `new_lagq2` early**, out of rank order, because it is the one document
-   whose reference can settle a question that is otherwise undecidable — see
+   whose reference can settle a question that is otherwise undecidable -- see
    §19.4. After that, follow the ranking.
 4. One general mechanism per iteration, `CLAUDE.md` §5 contract, full four-rung
    acceptance, commit with measured before/after.
 
 ### 19.4 The one question `new_lagq2` settles, and the contract in its way
 
-`new_lagq2` is seven album records — cover beside tracklist — and the converter
+`new_lagq2` is seven album records -- cover beside tracklist -- and the converter
 emits **zero** `::: columns` for them. §18.3 traced why, and the answer is a
 routing asymmetry rather than a threshold:
 
@@ -2244,21 +2244,21 @@ routing asymmetry rather than a threshold:
 
 Reconsidering it was implemented and **reverted**: L1 **93.8 → 93.6**, with
 `borislova`, `goya2` and `williams2` all changed. And it is refused outright by
-an existing contract —
+an existing contract --
 
-> `src/convert-core/recovery.test.ts` → *"leaves a DATA verdict on the flow path —
+> `src/convert-core/recovery.test.ts` → *"leaves a DATA verdict on the flow path --
 > the false friend"*: "A region the classifier *did* type as records must not be
 > quietly promoted to columns by the same fallback: losing a table to lanes is
 > the defect this reconsideration could otherwise introduce."
 
 **If `new_lagq2`'s reference gives those records `::: columns`, that contract and
-the CATALOG width gate have to be revisited together** — the contract forbids the
+the CATALOG width gate have to be revisited together** -- the contract forbids the
 only mechanism that would produce them. If the reference flattens them too, the
 contract stands and the current output is right. Either answer closes a question
 that deduction could not.
 
 **The CATALOG width-gate uncertainty.** `classify.ts`'s tier-1 CATALOG gate
-requires two lanes of near-equal width, `ratio` in 0.45–0.55, plus
+requires two lanes of near-equal width, `ratio` in 0.45-0.55, plus
 `imageDensity > 0.3`. Measured:
 
 | document | grid | ratio | imgDensity | class |
@@ -2268,7 +2268,7 @@ requires two lanes of near-equal width, `ratio` in 0.45–0.55, plus
 | `new_lagq2` | 7×2 | **0.37** | 0.46 | DATA 0.50 |
 
 A 150 px cover beside a tracklist has no reason to be 50/50, so the band is
-probably over-fitted — but it is **not** the cause of `new_lagq2`, and widening it
+probably over-fitted -- but it is **not** the cause of `new_lagq2`, and widening it
 reaches `barrios` (0.67) and `news_2007` (0.27), both in the regression corpus.
 Do not widen it on its own; decide it together with §19.4's contract question.
 
@@ -2287,23 +2287,23 @@ looked like degraded output. They are not:
 dropping the lane shifts every index out of alignment with the thirty that do.
 The correct and the incorrect shape are byte-identical; what separates them is
 whether a sibling `::: columns` group puts content in that lane. `news_2007` and
-`williams2` are open defects with reference backing — they are legitimate targets
+`williams2` are open defects with reference backing -- they are legitimate targets
 in the reference-guided phase, and any rule must keep `goya2`'s five.
 
 **`new_lagq2`'s "duplicated" track is in the source twice.** `FALLA - El Amor
 Brujo` appears on two albums. A raw-HTML search finds one occurrence because
 markup splits the other; the *stripped* text has both. Not invention, not
-duplication — do not chase it. Search stripped source text, never raw HTML, when
+duplication -- do not chase it. Search stripped source text, never raw HTML, when
 testing a conservation claim.
 
 ### 19.6 Where the numbers and the rules live
 
-- measured state, killed hypotheses, open queue — this file
-- binding law, the ladder, triage, rule contracts — `CLAUDE.md`
-- normative syntax — `BioMD-Reference.md`
-- generated defect ledger — `analyze/defects.json`
-- the procedure for an iteration — `.claude/skills/refine-biomd-converter/SKILL.md`
-- harness lessons that cost hours to learn — the sibling `learned-patterns.md`
+- measured state, killed hypotheses, open queue -- this file
+- binding law, the ladder, triage, rule contracts -- `CLAUDE.md`
+- normative syntax -- `BioMD-Reference.md`
+- generated defect ledger -- `analyze/defects.json`
+- the procedure for an iteration -- `.claude/skills/refine-biomd-converter/SKILL.md`
+- harness lessons that cost hours to learn -- the sibling `learned-patterns.md`
 
 Start the next phase with `/refine-biomd-converter`.
 
@@ -2312,7 +2312,7 @@ Start the next phase with `/refine-biomd-converter`.
 Two separate things happened here and they are reported separately, because
 conflating them is how a re-baseline gets mistaken for a regression.
 
-### 20.1 Baseline first — the nine references joined, no code changed
+### 20.1 Baseline first -- the nine references joined, no code changed
 
 §19.3 step 1, executed. The nine `new_*` references were placed in
 `fixtures/out/`, the holdout parked outside `fixtures/` entirely, and all four
@@ -2322,7 +2322,7 @@ rungs re-run **before** a line of code was touched.
 |---|---|---|
 | L0 | 369 tests, typecheck clean, 0 FAILED | 369 tests, typecheck clean, **0 FAILED** |
 | L1 | 93.8 | **90.3** |
-| L2 | 314 findings — 188 converter-defect | **746 findings — 581 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes |
+| L2 | 314 findings -- 188 converter-defect | **746 findings -- 581 converter-defect** · 81 ambiguous · 84 reference-inconsistency, 116 classes |
 | L3 | 82 | **287** |
 
 **Every one of those movements is nine documents joining the comparison.** The
@@ -2331,7 +2331,7 @@ the mistake §19.3 exists to prevent.
 
 Worst new documents by L1: `new_kolpakov` 67.9 · `new_dyens` 68.5 ·
 `new_karta` 78.3. Best: `new_lendle2` 96.1 · `new_bach` 96.8. `new_lagq2`
-reports `recall=45.3%` with zero words, links or images missing — §16.2 again,
+reports `recall=45.3%` with zero words, links or images missing -- §16.2 again,
 and still not a loss.
 
 ### 20.2 The implementation was stricter than the format, in six places
@@ -2344,16 +2344,16 @@ renderer belongs in a `TargetProfile`; every other narrowing is a defect.
 
 | what was refused | what the reference says | now |
 |---|---|---|
-| a four-track `::: columns` | §2 "≥2 `column`", §3 "`columns: 2|3|4`" | 2–4 children; the bounds are the reference's own |
+| a four-track `::: columns` | §2 "≥2 `column`", §3 "`columns: 2|3|4`" | 2-4 children; the bounds are the reference's own |
 | the `columns: 2|3|4` property | §3, optional | representable and validated; **emission profile-gated**, because the target does not strip a property header inside `columns` (§7.3's quirk, identical to `divider`) |
 | palette tokens on a picture `frame:` | §3 `curl / none / mat / black / white / red / gold` | accepted; `shadow` and `oval` kept as legacy so older documents read back unchanged |
-| a title wrapped over two `#` lines | §6 — one `#` is "a corpus convention, not a syntax requirement" | `h1-count` is a **warning** |
+| a title wrapped over two `#` lines | §6 -- one `#` is "a corpus convention, not a syntax requirement" | `h1-count` is a **warning** |
 | a heading level skip | §6 asks for a preserved hierarchy, not an unbroken sequence | `heading-skips-level` is a **warning** |
 | nesting depth 4 | §3 allows `align` inside a `column`, so `columns > column > align > image` is ordinary | budget raised 3 → 4 |
 | a line over 2200 characters | the reference states no ceiling | `line-too-long` is a **warning**, kept as an under-segmentation detector |
 
-**The severity split now follows §0.** `MUST` — a parser, renderer, value,
-nesting or path constraint — is an error; `SHOULD` and `MAY` are warnings,
+**The severity split now follows §0.** `MUST` -- a parser, renderer, value,
+nesting or path constraint -- is an error; `SHOULD` and `MAY` are warnings,
 however strong the preference. Three checks were errors on preferences the
 reference states as conventions, which made conforming documents fail and taught
 every consumer of the `errors=` column to distrust it.
@@ -2361,47 +2361,47 @@ every consumer of the `errors=` column to distrust it.
 ### 20.3 `align` containing `frame`: legal, pointless, and neither rejected nor rewritten
 
 `new_karta`'s reference nests a `::: frame` inside an `::: align`. The user
-settled it: not a rule violation, but the inversion is what makes sense — a
+settled it: not a rule violation, but the inversion is what makes sense -- a
 frame occupies the full width of its container, so an `align` around one has no
 slack to work with, while `frame` wrapping `align` is exactly "a bordered notice
 with centred contents".
 
 `BioMD-Reference.md` §2 now records this, and it constrains implementations in
 both directions: a validator MAY advise, MUST NOT reject, and **MUST NOT
-rewrite**. `makeAlign` already accepted it — the `BoundedContent` comment
-claiming otherwise was describing a check that never existed — and the validator
+rewrite**. `makeAlign` already accepted it -- the `BoundedContent` comment
+claiming otherwise was describing a check that never existed -- and the validator
 now emits `align-wraps-frame` at warning severity, with the inverted shape tested
 for non-firing.
 
-### 20.4 `---` and `***` are one construct — an instrument correction
+### 20.4 `---` and `***` are one construct -- an instrument correction
 
 Declared as an isolated instrument change under invariant 2. §1 of the reference
 now states the equivalence outright: `---`, `***` and `___` are three spellings
 of one thematic break, and the difference MUST NOT be reported.
 
 `structdiff.ts` was reporting it, as `separator.spelling`. One instance across
-the 22 documents — three references write `***` at least once while every
-produced document writes `---` — and it is precisely the "invisible Markdown
+the 22 documents -- three references write `***` at least once while every
+produced document writes `---` -- and it is precisely the "invisible Markdown
 difference" the project objective names as something not to chase. Removed;
 `break.missing` and `break.spurious` are untouched and tested for non-firing,
 because a separator that is absent or added is a claim about the document rather
 than about how it is typed.
 
-### 20.5 Measured effect — output byte-identical, no rung regressed
+### 20.5 Measured effect -- output byte-identical, no rung regressed
 
 | | before (§20.1 baseline) | after |
 |---|---|---|
 | L0 typecheck | clean | clean |
 | L0 tests | 369 | **388** (+19 contracts) |
 | L0 FAILED conversions | 0 | **0** |
-| **`bench/out/` bytes** | — | **identical, all 22 documents** |
+| **`bench/out/` bytes** | -- | **identical, all 22 documents** |
 | L1 overall | 90.3 | **90.3** |
 | L1 clean share | 4.5 % (1 of 22) | **9.1 % (2 of 22)** |
 | L2 findings / converter-defect | 746 / 581 | **745 / 580** |
 | L3 findings | 287 | **287** |
 
 The only L2 movement is the one `separator.spelling` finding, which is the
-instrument correction and nothing else — no other class moved by a single
+instrument correction and nothing else -- no other class moved by a single
 instance. Conversion quality cannot have changed, because the conversion did not
 change: every output byte is the same.
 
@@ -2413,12 +2413,12 @@ depth 4 against a budget of 3", and the budget was the thing that was wrong.
 ### 20.6 What was deliberately *not* changed, with the measurement that decided it
 
 **`enforceSingleTitle` was left alone.** §6 no longer requires a single `#`, so
-the guard is no longer mandatory — but it never fires: **0 title repairs across
+the guard is no longer mandatory -- but it never fires: **0 title repairs across
 23 manifests, and all 22 produced documents already emit exactly one `#`.**
 Relaxing it would therefore change nothing measurable and could not be falsified.
 
 The two references that write a wrapped masthead as two `#` lines inside an
-`::: align` — `new_bach`, `new_lagq2` — are not blocked by that guard. They need
+`::: align` -- `new_bach`, `new_lagq2` -- are not blocked by that guard. They need
 *heading recovery* to recognise a title split across two lines, which is a rule
 change with its own contract, its own false friend (two `#` separated by content
 are two titles, not one wrapped one) and its own four-rung adjudication. It is
@@ -2427,7 +2427,7 @@ refinement work, not a permissions fix, and it is queued as such.
 ### 20.7 Killed hypotheses added
 
 - **A type union can carry a per-container nesting rule.** `BoundedContent`
-  claimed to exclude `columns` and `nav`; it never did — `BlockContent` is
+  claimed to exclude `columns` and `nav`; it never did -- `BlockContent` is
   augmented with every directive. The three containers forbid *different* things,
   so the constraint is only statable per container, which is where it already
   lived. A comment asserting a check that does not exist is worse than no check.
@@ -2445,19 +2445,19 @@ refinement work, not a permissions fix, and it is queued as such.
 |---|---|
 | L0 | 388 tests, typecheck clean, 0 FAILED conversions |
 | L1 | 90.3 over 22 documents |
-| L2 | 745 findings — **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency |
+| L2 | 745 findings -- **580 converter-defect** · 81 ambiguous · 84 reference-inconsistency |
 | L3 | 287 findings, identity 0, deterministic |
 
-**Open, in order.** (a) `new_lagq2` — its reference gives the seven album records
+**Open, in order.** (a) `new_lagq2` -- its reference gives the seven album records
 6 `::: columns` / 12 `::: column` and the converter emits **zero**, so §19.4's
 question is answered *yes* and the `recovery.test.ts` DATA-path contract and the
 CATALOG width gate must now be revisited **together**. Take it first, out of rank
 order. (b) `new_karta` answers §17.5 Q1: variable-arity records become GFM tables
-with supplied labels, the unnamed link columns headed with a link glyph — which
+with supplied labels, the unnamed link columns headed with a link glyph -- which
 also makes the two `analyze.md` requests L5 filed as "proposals" reference-attested
 work. (c) The mini-image → glyph family: specified in `mini_images_to_md_guide.md`,
 attested in 10 of 22 references (25 glyph instances), and entirely absent from
-`src/`. (d) Wrapped-masthead heading recovery (§20.6). (e) The 0.5–0.95 ambiguous
+`src/`. (d) Wrapped-masthead heading recovery (§20.6). (e) The 0.5-0.95 ambiguous
 corridor, still uncalibrated, now over 81 findings.
 
 ## 21. Four mechanisms, and the page frame was three of them (2026-08-08)
@@ -2477,7 +2477,7 @@ Per document, converter-defects: `new_dyens` 34 → **0** · `new_lagq2` 84 → 
 · `new_karta` 60 → **7** · `new_geyzel04` 92 → **7** · `new_bach` 42 → **5** ·
 `williams2` 4 → **35** (a recorded reference-inconsistency, §21.5).
 
-### 21.1 `paragraph.containment` was not one mechanism — it was three
+### 21.1 `paragraph.containment` was not one mechanism -- it was three
 
 141 instances over 7 documents, ranked first, and the standing hypothesis was
 that it was the missing-lane story. Grouping the findings by *what moved where*
@@ -2495,7 +2495,7 @@ of its findings before believing a single explanation of it.**
 
 ### 21.2 The page frame, and why it produced two different defects
 
-Every one of the 22 documents draws the same site template — a one-row,
+Every one of the 22 documents draws the same site template -- a one-row,
 three-column band, measured `[116, 529, 115]` in a 760 px row: an empty margin
 cell, the article, and a decorated rail. On nineteen documents the rail is empty
 and `layoutFrom` correctly emits one lane and flattens. On three it is not:
@@ -2511,7 +2511,7 @@ Two mechanisms, both accepted:
 **(a) Lane occupancy was measured on the wrong input.** `laneColumnsOf` read the
 *source* grid while the region was assembled from the *lowered* blocks. A cell
 holding nothing but a menu is source-occupied and lane-empty, because
-`layoutFrom` folds a `nav` out of the lane by design — `navFromGrid`'s own header
+`layoutFrom` folds a `nav` out of the lane by design -- `navFromGrid`'s own header
 says "`layoutFrom` folds the resulting lane away", and it did not. The emptied
 rail contributed a `::: column`, and that column was the second one keeping the
 region alive. `laneColumnsOf` now takes an occupancy predicate; the default still
@@ -2522,17 +2522,17 @@ stay skipped rather than counting as empty lanes. Treating them alike added five
 spurious regions to `new_lendle2` and two to `news_2007` in an intermediate
 version, and L1 caught it at 90.2 before anything else did.
 
-**(b) `pageRailColumns` — the rails are decoration, by geometry and position.**
+**(b) `pageRailColumns` -- the rails are decoration, by geometry and position.**
 The row's middle column is the widest and both outer columns are far narrower.
 Keying on what the flanks *are* rather than on what they hold is what makes one
 rule cover a rail with a menu, a rail with a badge, and twenty empty ones.
-`MAX_RAIL_SHARE` swept 0.3 – 0.9: L1 is 92.6 at every value, because the corpus
+`MAX_RAIL_SHARE` swept 0.3 - 0.9: L1 is 92.6 at every value, because the corpus
 measures 0.22 for both real rails and 1.00 for the nearest non-rail.
 
 ### 21.3 `new_lagq2` answered §19.4: the CATALOG gate was wrong, the contract was not
 
 The tier-1 CATALOG gate asked for two lanes of near-equal width plus an image
-density. A 150 px cover beside a tracklist has no reason to be 50/50 —
+density. A 150 px cover beside a tracklist has no reason to be 50/50 --
 `new_lagq2` splits **37/63**, missed the gate, scored DATA at tier 2, and a DATA
 verdict that cannot be planned falls straight to linear flow.
 
@@ -2551,21 +2551,21 @@ routing, was the thing that was wrong.
 
 `synthesizeHeader` was all-or-nothing: a column with no recurring label got an
 empty header cell, but if *no* column had one it returned null and the whole
-table was abandoned. The ledger said so in plain words — "classified DATA but not
+table was abandoned. The ledger said so in plain words -- "classified DATA but not
 representable as a table (no source header row and the classifier abstained);
-emitted as flow" — and the cost was the matrix. `new_dyens`'s five score records
+emitted as flow" -- and the cost was the matrix. `new_dyens`'s five score records
 came out as twenty loose `::: align` blocks with three work titles read as
 quotations, which is the false friend §16.4 traced to exactly this.
 
-A blank header row is not conformant either: `BioMD-Reference.md` §1 (Tables) —
+A blank header row is not conformant either: `BioMD-Reference.md` §1 (Tables) --
 "Every GFM table column MUST have a header". So the fix is the header the
 references write. `isLinkColumn` asks whether every populated cell of a column is
 a short anchor, and such a column is headed with U+1F517 LINK SYMBOL.
 
 That is not invention, and the human record settles it rather than the references
 doing so alone: `analyze/analyze.md` asks for this symbol in the same words on
-three separate pages — *"&#128279; просто показывает символ ссылки (Link) — он
-универсальный"* — and the references write it 16 times across six documents.
+three separate pages -- *"&#128279; просто показывает символ ссылки (Link) -- он
+универсальный"* -- and the references write it 16 times across six documents.
 A symbol for "link" asserts nothing the source does not already state by holding
 the link. The **subject** column stays empty: `Название`, `Композиция` and
 `Формат` appear nowhere in any source, so naming it would be §16.3 invention, and
@@ -2579,7 +2579,7 @@ numeric character references. `CLAUDE.md` §4 already lists entity decoding amon
 what L2 adjudicates and it did not, so the link glyph against the references'
 `&#128279;` read as a difference for output that was exactly right. The fold
 changes a character's *spelling*, never which character it is, so the typography
-blind spot next door is untouched — `«` versus `"` is still a finding, and the
+blind spot next door is untouched -- `«` versus `"` is still a finding, and the
 contract asserts that `&#9654;` still differs from `&#128279;`.
 
 **Validator errors 23 → 28**, and the increase is honest rather than hidden: all
@@ -2587,7 +2587,7 @@ of it is `table-header-empty` on the subject column of tables that previously di
 not exist at all, less one on `kiselev` that the glyph filled. The column has no
 attested name; the alternative to the error is losing the records.
 
-### 21.5 `williams2` — a reference-inconsistency, recorded not chased
+### 21.5 `williams2` -- a reference-inconsistency, recorded not chased
 
 `williams2` went 4 → 35 converter-defects, and every one of them is the same
 fact: its reference wraps the whole article in a `::: columns` containing
@@ -2595,10 +2595,10 @@ fact: its reference wraps the whole article in a `::: columns` containing
 
 - `BioMD-Reference.md` §2 requires `columns` to have **≥2 `column`** children, so
   the reference's region is not conformant. (Our own validator does not check
-  this — recorded as instrument debt, not fixed here.)
+  this -- recorded as instrument debt, not fixed here.)
 - The two other documents whose source frame is byte-identical in the relevant
-  respect — `new_geyzel04`, `new_bach`, both rails holding a folded menu or badge
-  — have references with **no** `columns` at all.
+  respect -- `new_geyzel04`, `new_bach`, both rails holding a folded menu or badge
+  -- have references with **no** `columns` at all.
 - `layoutFrom`'s own long-standing comment already says a one-lane region "would
   claim a layout the author did not draw".
 
@@ -2609,7 +2609,7 @@ rather than closed by a special case.
 ### 21.6 Killed hypotheses added
 
 - **`paragraph.containment` is the missing-lane mechanism.** 91 of its 141
-  instances were the opposite defect — spurious lanes wrapping prose. Grouping by
+  instances were the opposite defect -- spurious lanes wrapping prose. Grouping by
   the direction of the move falsified it in one query.
 - **A narrow flank beside a dominant column is a page rail.** Falsified *before*
   it was written: `new_blackmore`'s reference lanes measure **29/71** with the
@@ -2625,7 +2625,7 @@ rather than closed by a special case.
 
 ### 21.7 State and queue
 
-**Open, in order** — re-ranked over 22 documents after the four changes:
+**Open, in order** -- re-ranked over 22 documents after the four changes:
 
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
@@ -2639,8 +2639,8 @@ rather than closed by a special case.
 The alignment family is now the largest actionable thing in the corpus (33
 instances across three classes and 9 documents) and is the natural next
 mechanism. Also still open and unchanged from §20.8: the mini-image → glyph map
-(c) — `glyphs.ts` now exists to hold it — wrapped-masthead heading recovery (d),
-and the uncalibrated 0.5–0.95 ambiguous corridor (e), now 94 findings.
+(c) -- `glyphs.ts` now exists to hold it -- wrapped-masthead heading recovery (d),
+and the uncalibrated 0.5-0.95 ambiguous corridor (e), now 94 findings.
 
 `new_blackmore`'s three `column.missing` findings are open by *decision*: their
 grids are one row each, so the pairing gate's recurrence requirement excludes
@@ -2671,8 +2671,8 @@ grid.
 `pipeline.ts`'s classification loop where every grid is already in hand. The gate
 accepts **two paired rows in the grid, or one paired row plus a picture-paired
 sibling elsewhere on the page.** That honours `CLAUDE.md` §5's recurrence
-requirement rather than relaxing it — the shape must still repeat with content
-between occurrences — and the false friend stays refused: one picture beside one
+requirement rather than relaxing it -- the shape must still repeat with content
+between occurrences -- and the false friend stays refused: one picture beside one
 line with nothing like it on the page is a figure over its caption, and belongs
 to `media.ts`.
 
@@ -2685,19 +2685,19 @@ the first time.
 ### 22.2 The one-row record table: killed again, and now for a better reason
 
 Three documents put a single media record in a one-row grid and the converter
-flattens all three into `::: align` blocks — `borislova`'s `WMA`, `new_karta`'s
+flattens all three into `::: align` blocks -- `borislova`'s `WMA`, `new_karta`'s
 `WMA`, `new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`. Those account for most of
 the `align.spurious` class, and `new_kolpakov` is the corpus's weakest document
 at L1 67.9 with `tables=0/1`.
 
 §17.4 killed "recurrence among accepted peers licenses a one-row table" on a
 *measured* blocker: "`tableFromPlan` cannot synthesize a header from one row".
-§21.4 removed that blocker, so the hypothesis was legitimately reopenable — new
+§21.4 removed that blocker, so the hypothesis was legitimately reopenable -- new
 measurement, not argument.
 
-It was reopened, measured, and is dead again. A predicate for the shape — a
-one-row grid of 2–4 columns whose first cell carries words and whose others hold
-a single short anchor each — matches **exactly three grids in the corpus**:
+It was reopened, measured, and is dead again. A predicate for the shape -- a
+one-row grid of 2-4 columns whose first cell carries words and whose others hold
+a single short anchor each -- matches **exactly three grids in the corpus**:
 
 | document | grid | reference emits |
 |---|---|---|
@@ -2705,9 +2705,9 @@ a single short anchor each — matches **exactly three grids in the corpus**:
 | `new_karta` | 1×4 | a table |
 | **`williams2`** | 1×2 | **`::: align`**, text and `[MP3]` on two lines |
 
-The references disagree 2–1 on structurally identical input, and the dissenter is
+The references disagree 2-1 on structurally identical input, and the dissenter is
 in the regression corpus. `new_kolpakov`'s row is not even covered by the
-predicate — its third cell is `(1,7 Mb)`, an unlinked size annotation, and
+predicate -- its third cell is `(1,7 Mb)`, an unlinked size annotation, and
 widening the predicate to admit it also admits every two-cell layout row.
 
 So: three instances, no majority to follow, a regression-corpus document on the
@@ -2719,7 +2719,7 @@ stands. Recorded rather than shipped.
 - **A one-row media record licenses a one-row table.** Reopened legitimately once
   §21.4 removed the emitter blocker §17.4 killed it on, then killed again on
   better evidence: the shape occurs three times corpus-wide and the references
-  split 2–1, with `williams2` — regression corpus — writing `::: align`.
+  split 2-1, with `williams2` -- regression corpus -- writing `::: align`.
 - **The alignment family is its own mechanism.** A third of it closed as a side
   effect of the region work in §21.2 and §22.1 without an alignment rule being
   touched. Read the family *after* the region and table families have settled,
@@ -2727,7 +2727,7 @@ stands. Recorded rather than shipped.
 
 ### 22.4 State and queue
 
-**Open, in order** — *measured* 2026-08-08 over 22 documents:
+**Open, in order** -- *measured* 2026-08-08 over 22 documents:
 
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
@@ -2743,14 +2743,14 @@ Two observations for whoever takes the next iteration. First, **the top of the
 ledger is now thin**: after removing `williams2`'s reference-inconsistency and
 §22.2's dead class, no open class has more than about ten actionable instances,
 and the largest single-document concentration left is `goya2`'s 16
-`image.size.value` — a `media.ts` threshold, which the sweep discipline covers.
+`image.size.value` -- a `media.ts` threshold, which the sweep discipline covers.
 Second, the two biggest remaining *documents* are `news` (49) and `goya2` (43),
 both regression corpus and both long-known; they are worth a document-shaped
 read rather than a class-shaped one.
 
 Unchanged and still open from §20.8: the mini-image → glyph map (`glyphs.ts` now
 exists to hold it), wrapped-masthead heading recovery, and the uncalibrated
-0.5–0.95 ambiguous corridor (94 findings).
+0.5-0.95 ambiguous corridor (94 findings).
 
 ## 23. Two author adjudications, and the re-baseline they require (2026-08-08)
 
@@ -2777,18 +2777,18 @@ mistake, not a layout choice.** The author removed it, and the spec-compliant
 flattened representation is authoritative for this shape.
 
 So §21.5's 31 findings were never a target and are now simply gone. The three
-documents that draw the site's page frame — `new_geyzel04`, `new_bach`,
-`williams2` — now agree with each other and with `BioMD-Reference.md` §2.
+documents that draw the site's page frame -- `new_geyzel04`, `new_bach`,
+`williams2` -- now agree with each other and with `BioMD-Reference.md` §2.
 
 **Do not re-investigate this.** It is a human-adjudicated reference correction.
 
 One factual correction to §21.5 while it is being read: the wrapper was properly
 closed. The `git diff` of the author's edit removes two openers *and* their two
 closers; a fence-walk during adjudication reported it as unclosed and that was
-wrong. The arity — one `::: column` where §2 requires ≥2 — was the real defect
+wrong. The arity -- one `::: column` where §2 requires ≥2 -- was the real defect
 and is what the ruling turned on.
 
-### 23.2 The wrapped masthead is not a reference disagreement — it is two rules
+### 23.2 The wrapped masthead is not a reference disagreement -- it is two rules
 
 §20.6 and OPEN §3.1 recorded the three mastheads as references contradicting each
 other. **That was a stale index entry, and the fixture on disk contradicted it.**
@@ -2800,24 +2800,24 @@ Ruled by the author, and it splits into two different shapes:
 
 | document | reference | what it is |
 |---|---|---|
-| `new_blackmore` | `# Ричи Блэкмор Ritchie` + `## Blackmore & Blackmore's Night` | a **title and its subtitle** — two headings, two levels |
+| `new_blackmore` | `# Ричи Блэкмор Ritchie` + `## Blackmore & Blackmore's Night` | a **title and its subtitle** -- two headings, two levels |
 | `new_bach` | `::: align` + `# Иоганн Себастьян` + `# Бах` | **one headline** split across two lines |
 | `new_lagq2` | `::: align` + `# Лос-Анджелесский` + `# гитарный квартет` | the same |
 
 The author's reasoning for the second shape, recorded because it is not derivable
 from the spec: the two lines are *one contextually related heading*. It could be
 joined into a single line, but the renderer displays consecutive `#` lines inside
-an `::: align` across two lines, which is the intended visual — and `#` + `##`
+an `::: align` across two lines, which is the intended visual -- and `#` + `##`
 is **wrong** for it, because that would assert a hierarchy the headline does not
 have. The author also rates it **not critical: a visualisation matter, not a
 correctness one.**
 
-All three are therefore converter defects, and the converter currently gets all
-three wrong in the same direction — it emits one `#` and demotes the rest:
+All three are therefore converter defects, and at this point in the campaign the converter gets all
+three wrong in the same direction -- it emits one `#` and demotes the rest:
 
 | document | produced |
 |---|---|
-| `new_blackmore` | `# Ричи Блэкмор Ritchie Blackmore & Blackmore's Night` — both headings joined |
+| `new_blackmore` | `# Ричи Блэкмор Ritchie Blackmore & Blackmore's Night` -- both headings joined |
 | `new_bach` | `# Иоганн Себастьян`, then `::: align` holding a bare paragraph `Бах` |
 | `new_lagq2` | `# Лос-Анджелесский`, then a bare paragraph `гитарный квартет` |
 
@@ -2826,7 +2826,7 @@ lines of the *same* prominence are one headline split, and become two `# ` lines
 inside the `::: align`. Two lines of *different* prominence are a title and its
 subtitle, and become `#` + `##`. The false friend for both is the one §20.6
 already named: two headings separated by content are two headings, not one
-wrapped one — the lines must be adjacent inside the same masthead region.
+wrapped one -- the lines must be adjacent inside the same masthead region.
 
 Queued, not built: the author de-prioritised it, and it is a heading-recovery
 rule with its own contract and its own four-rung adjudication.
@@ -2835,9 +2835,9 @@ rule with its own contract and its own four-rung adjudication.
 
 Two of the four "reference disagreements" this campaign has recorded turned out
 to be a reference mistake and a stale index entry. Neither survived contact with
-`fixtures/out/`. The standing instruction in `.claude-memory/INDEX.md` — *"where
+`fixtures/out/`. The standing instruction in `.claude-memory/INDEX.md` -- *"where
 this index and a repository file disagree, the repository file wins and this
-index gets fixed"* — earned its place twice in one session; **read the fixture,
+index gets fixed"* -- earned its place twice in one session; **read the fixture,
 not the summary of the fixture**, before recording a reference as inconsistent.
 
 The two adjudications also confirm the value of asking. §21.5 correctly refused
@@ -2867,27 +2867,27 @@ finding of its own; both are explained in §24.4.
 
 §23.2's author ruling settled the *levels*. Building it produced the rest of the
 rule, because the ruling's two cases are two cells of a four-cell table and the
-corpus fills all four. The two questions are **containment** — did the author
+corpus fills all four. The two questions are **containment** -- did the author
 draw the lines as separate blocks, or hand-wrap one block with `<br>` to fit the
-458 px cell — and **typography** — are the lines set the same way as each other:
+458 px cell -- and **typography** -- are the lines set the same way as each other:
 
 | lines are | set | representation | attested by |
 |---|---|---|---|
 | separate blocks | the same | consecutive `#` inside the box's `::: align` | `new_bach`, `new_lagq2` |
 | separate blocks | differently | `#`, then the smaller line as its own block | `goya2`, `new_karta` |
-| one block, `<br>` | the same | one joined `#` — the break is a hand-wrap | `segovia1`, `new_geyzel04` |
-| one block, `<br>` | differently | `#` then `##` — a title and its subtitle | `new_blackmore` |
+| one block, `<br>` | the same | one joined `#` -- the break is a hand-wrap | `segovia1`, `new_geyzel04` |
+| one block, `<br>` | differently | `#` then `##` -- a title and its subtitle | `new_blackmore` |
 
 Only rows 1 and 4 are new; rows 2 and 3 are what the converter already did, and
 are now attested rather than accidental. **The first implementation claimed rows
-1 and 2 and regressed `segovia1`, `new_geyzel04` and `goya2` in one run** — the
+1 and 2 and regressed `segovia1`, `new_geyzel04` and `goya2` in one run** -- the
 containment half was found by that regression, not by reading the sources.
 
 `markWrappedMasthead` in `headings.ts`. The masthead *box* is the outermost
 ancestor of the title candidate reachable without crossing a layout cell whose
 whole text is still headline-sized; that cap is what excludes two headings with
 an article between them (§20.6's false friend). `SAME_SIZE_TOLERANCE` swept over
-22 documents: L1 92.8 at 0, 0.10 and 0.30, 92.7 at 0.35 — flat across the whole
+22 documents: L1 92.8 at 0, 0.10 and 0.30, 92.7 at 0.35 -- flat across the whole
 plausible range with the cliff exactly where a third of a size stops counting as
 a difference. A limit, not a discriminator.
 
@@ -2903,7 +2903,7 @@ The `<br>` half of the masthead needed the typography of *part* of a line, and
 
 `annotate` folded a presentational wrapper's `size` onto its **parent** and then
 unwrapped the wrapper. Where the wrapper covered only part of the parent that
-fold is simply false — it asserts a size of text the wrapper never covered — and
+fold is simply false -- it asserts a size of text the wrapper never covered -- and
 the unwrap then erased where the distinction began and ended. A wrapper that is a
 partial cover is now **kept**, carrying the evidence on itself. Measured alone:
 **no change on any rung**, on any of the 22.
@@ -2921,7 +2921,7 @@ comparison for exactly that reason: block *ranking* keeps `effectiveFontPx`.
 had no `<hr>` it liked. Kept as a paragraph the construct is lost and the reader
 gets `\* \* \*`. The invariant is **cardinality, not typography**: one ornament
 repeated at least three times and nothing else in the block, no link, no image.
-That is what excludes every false friend the corpus contains — `• Из письма
+That is what excludes every false friend the corpus contains -- `• Из письма
 А.Максимова` is a bulleted label, a lone `*` is a footnote marker. `RULE_GLYPHS`
 is lexical data in `glyphs.ts`; an unlisted ornament stays a paragraph.
 
@@ -2933,7 +2933,7 @@ It immediately exposed a defect that was already open in two others.
 section label, and with one more rule on the page `Владимир МАРКУШЕВИЧ` became
 `## Владимир МАРКУШЕВИЧ`. `new_blackmore` already did the same to `Александр
 НЕВЕРОВ`. The rule's own docstring names the discriminator: the line it is for
-"carries no weight, no size and no centring … its position is the whole
+"carries no weight, no size and no centring ... its position is the whole
 evidence", so a block carrying its **own** positional evidence is answering a
 different question. A short line set **right** of the column is a credit
 (`BioMD-Reference.md` §3 has a directive for the shape) and both references write
@@ -2945,8 +2945,8 @@ Only `right`. Excluding every distinctively aligned block was measured and costs
 ### 24.4 Two instruments that were lying, and what they hid
 
 **The chrome fingerprint hashed the raw `width` attribute.** `news` writes every
-width in its page frame with a `px` suffix — which the attribute does not accept,
-so a browser drops it — and no other page in the corpus does. Its banner, menu
+width in its page frame with a `px` suffix -- which the attribute does not accept,
+so a browser drops it -- and no other page in the corpus does. Its banner, menu
 button and side rails therefore matched no recurring structure and were emitted
 as content: the document opened with the site's strapline and `album.gif` instead
 of `# Новости`. The chrome model *is* a recurrence model, so anything splitting
@@ -2968,7 +2968,7 @@ It also raised L2 by two, and both are worth recording rather than absorbing:
 
 - **`goya2`'s reference wraps the recovered `## ДРУГИЕ АЛЬБОМЫ` in an `::: align
   position: center`.** `alignedGroup` and `alignableRunMember` both decline
-  headings, and correctly — §2 positions a heading by its own construct — so
+  headings, and correctly -- §2 positions a heading by its own construct -- so
   recovering the heading trades one `retyped.paragraph-to-heading2` for an
   `align.missing` plus a `heading.containment`. **Open question for the author**,
   because the references disagree with each other about it (see §24.5).
@@ -2978,7 +2978,7 @@ It also raised L2 by two, and both are worth recording rather than absorbing:
   alike. Verdict 3, `reference-inconsistency`; the source attests the produced
   side and nothing attests the reference's exception.
 
-### 24.5 What the references disagree about — for the author
+### 24.5 What the references disagree about -- for the author
 
 One source shape, `<p align="center">SHORT LABEL</p>` above its own body, is
 written three ways across two references:
@@ -2989,7 +2989,7 @@ written three ways across two references:
 | `new_bach` ×1 | `<p ALIGN="CENTER">Годы странствий (1703-08)</p>` | `::: align` + plain text, no heading |
 | `goya2` ×1 | `<p align="center">ДРУГИЕ АЛЬБОМЫ</p>` | `::: align` + `## ДРУГИЕ АЛЬБОМЫ` |
 
-The converter currently emits a bare `##` for all of them, which is internally
+At this point in the campaign the converter emits a bare `##` for all of them, which is internally
 consistent and matches the majority reading. The question is whether a recovered
 centred section label **keeps its `::: align`**, as `goya2` has it. It is the same
 construct the masthead rule already emits for a split headline, so the answer is
@@ -3000,16 +3000,16 @@ The heading level carries the structure and `BioMD-Reference.md` §2 positions a
 heading by its own construct; the wrapper is for a *split headline*, where it is
 what makes consecutive `#` lines one heading, and for nothing else. So the
 converter's current output is authoritative for all three cases and **no code
-changes**. The two findings §24.4 recorded as open on `goya2` —
+changes**. The two findings §24.4 recorded as open on `goya2` --
 `align.missing` at `/align[71]` and `heading.containment` at
-`/align[71]/heading[0]` — are `reference-inconsistency`, verdict 3, and are not
+`/align[71]/heading[0]` -- are `reference-inconsistency`, verdict 3, and are not
 targets. Do not re-investigate.
 
 Second, smaller: `new_blackmore`'s reference splits its masthead
 `# Ричи Блэкмор Ritchie` / `## Blackmore & Blackmore's Night`. Measured in the
 browser, the source renders `Ричи Блэкмор` at 26.7 px and `Ritchie Blackmore &
 Blackmore's Night` at 16 px as **two line boxes**, so the reference moves one word
-across a boundary the source draws twice — a `<br>` and a font-size change. The
+across a boundary the source draws twice -- a `<br>` and a font-size change. The
 produced split is `# Ричи Блэкмор` / `## Ritchie Blackmore & Blackmore's Night`.
 Recorded as `reference-inconsistency`; two minor `heading.content.edited` remain.
 
@@ -3025,7 +3025,7 @@ Recorded as `reference-inconsistency`; two minor `heading.content.edited` remain
   `normalize` unwraps `<center>` before heading recovery runs, so the lines have
   no box to be lines of. All 22 mastheads in the corpus use a `<div>`; recorded
   as a known limit rather than chased.
-- **Same prominence across two masthead lines always means two `#`.** No — that
+- **Same prominence across two masthead lines always means two `#`.** No -- that
   is true across sibling *blocks* and false inside one block, where a `<br>`
   between lines set the same way is a hand-wrap. Killed by `segovia1` and
   `new_geyzel04`, whose references join theirs.
@@ -3037,11 +3037,11 @@ Recorded as `reference-inconsistency`; two minor `heading.content.edited` remain
 emitted as a loose centred paragraph above the year bar.
 
 **The label above a menu titles it.** §11 already says so and the existing branch
-already implemented it — for a *recovered heading*. Both news pages set theirs in
+already implemented it -- for a *recovered heading*. Both news pages set theirs in
 a tinted, bordered, centred cell of its own, where no typographic rule reaches
 it, so it arrived as an aligned paragraph and the branch never saw it. Position
 is the evidence in both cases; which construct the label happened to land in is
-not. The matched bullets are decoration, and **symmetry** is what says so — which
+not. The matched bullets are decoration, and **symmetry** is what says so -- which
 is what keeps the rule off a label that merely *starts* with a marker, since a
 leading bullet is a list marker and `stripLabelGlyphs` answers that case
 differently. False friend, tested: a sentence above a menu, refused on length,
@@ -3050,10 +3050,10 @@ body text into a directive property.
 
 **`navFrom` refused every bounded context.** `BioMD-Reference.md` §2 forbids
 `nav` inside a `frame` and forbids `align` wrapping one; it does **not** forbid a
-`column` — `column→Markdown+leaf+align+nav` is in the nesting table, and the side
+`column` -- `column→Markdown+leaf+align+nav` is in the nesting table, and the side
 rail a menu arrives in *is* a lane. `navFromGrid` already draws that line and its
-header says why. So `news_2007`'s year bar — the same bar `news` emits as a
-`nav`, one lane deeper — came out as ten bracketed links in a paragraph.
+header says why. So `news_2007`'s year bar -- the same bar `news` emits as a
+`nav`, one lane deeper -- came out as ten bracketed links in a paragraph.
 
 The third instrument-shaped defect of the iteration, and the one most at risk of
 being reasoned into rather than measured: §18.3's trap is exactly "these two
@@ -3074,15 +3074,15 @@ containing a `nav`, and `isBounded` keeps one out of `groupAlignedRuns`' runs.
 | 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
 | 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
-| 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts` — sweep it |
+| 84 | `image.size.value` | 21 | 4 | 16 are `goya2`; a threshold in `media.ts` -- sweep it |
 | 84 | `align.missing` | 7 | 4 | `goya2`'s is ruled reference-inconsistency (§24.5) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 60 | `break.missing` | 10 | **6** | widest in the ledger; the entry-separator family |
-| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` -- mechanical, single-document |
 
 `break.missing` is the widest class left and has never been examined: the
 references draw a `---` at structural boundaries the derived-rule logic in
-`decomposeFrom` does not reach — `authors` wants two and the converter emits
+`decomposeFrom` does not reach -- `authors` wants two and the converter emits
 none, though its only source `<hr>` is the footer's and is correctly dropped.
 
 The mini-image → glyph map remains specified, attested in 10 of 22 references and
@@ -3091,7 +3091,7 @@ home and two neighbours.
 
 ## 25. `break.missing` was five mechanisms, and one of them was a setext heading (2026-08-08)
 
-The widest class in the ledger — 10 instances, 6 documents, never examined —
+The widest class in the ledger -- 10 instances, 6 documents, never examined --
 adjudicated instance by instance. It is not a class. It is five unrelated
 mechanisms sharing a name, which is §14.1's and §21.1's pattern for the third
 time. Two were worth building; two are not targets; one is measured and returned
@@ -3107,7 +3107,7 @@ to the queue.
 
 Per document, L2 converter-defects: `kiselev` 17 → **16** (total 56 → 53),
 `news` 46 → **45**, `new_blackmore` 8 → **7**. `pavlov_azancheev` 7 → **8**, and
-that one is a gain — see §25.1. L3: `news` 16 → **14**, no document higher.
+that one is a gain -- see §25.1. L3: `news` 16 → **14**, no document higher.
 
 ### 25.1 One "missing break" was a setext heading, and three parsers read it three ways
 
@@ -3119,12 +3119,12 @@ that one is a gain — see §25.1. L3: `news` 16 → **14**, no document higher.
 -----------------------------------------------------------------------------------------
 ```
 
-— a **setext heading**, the only one in the corpus. `mdast-util-to-markdown`
+-- a **setext heading**, the only one in the corpus. `mdast-util-to-markdown`
 falls back to setext when a heading of depth < 3 contains a `break`, and
 `headingPhrasing` exists to guarantee it never does. Its docstring states the
 invariant correctly; the implementation folded only *top-level* children, and
 `dropEmphasis` runs afterwards and lifts a `strong`'s children back out. So a
-`<br>` inside the emphasis survived — and `<b>Title<br></b>subtitle` is how this
+`<br>` inside the emphasis survived -- and `<b>Title<br></b>subtitle` is how this
 era wrote a two-line title with only its first line bold.
 
 **Three readings of one line, which is what makes this a validity defect rather
@@ -3132,12 +3132,12 @@ than a cosmetic one:** `src/eval/blocks.ts` has no setext case and reads the
 89-hyphen underline as a `thematicBreak`; `src/eval/facts.ts` *does* have one, so
 L1 and L2 disagreed about the same file; `biomd-ast/read()` passes the Markdown
 run through opaquely and warns about nothing; CommonMark makes it an `h2` that
-swallows the line above. `BioMD-Reference.md` §1 lists `#`…`######` and nothing
+swallows the line above. `BioMD-Reference.md` §1 lists `#`...`######` and nothing
 else.
 
 `foldBreaks` recurses and copies containers rather than mutating them. It is
-scoped to headings by construction — `liftBreaks` stays the path everywhere
-else, where a break is meaning rather than line-fitting — and the contract
+scoped to headings by construction -- `liftBreaks` stays the path everywhere
+else, where a break is meaning rather than line-fitting -- and the contract
 asserts non-firing there.
 
 The fix cost `pavlov_azancheev` one L2 finding and that is the point: the
@@ -3154,8 +3154,8 @@ connection; only the corpus run found it.
 
 §24.3 accepted `* * *` and `• • •` on the invariant "the whole **block** and
 nothing else". `<br>` is how this era ended a line inside a block, so a rule
-drawn above a signature shares its `<p>` with the signature —
-`-------------------------<br>Олег Киселев: …` — and no block-level test can see
+drawn above a signature shares its `<p>` with the signature --
+`-------------------------<br>Олег Киселев: …` -- and no block-level test can see
 it. The reader got `\-------------------------`.
 
 The unit is now the line. The five whole-block dinkuses are the degenerate case
@@ -3164,7 +3164,7 @@ it. The link/image veto moved to the line for the same reason: the signature
 *is* such a line, and asking the question of the block suppressed the rule the
 question was not about.
 
-**Measured alone this made L3 worse** — `kiselev` 4 → 6 — because the recovered
+**Measured alone this made L3 worse** -- `kiselev` 4 → 6 -- because the recovered
 rule was hoisted out of the `::: align` its source `<p>` belongs to. The second
 half fixes that and is general: **a rule may join an alignment run and never open
 one.** It carries no text, so it cannot nominate an alignment; but `blocksFrom`
@@ -3176,13 +3176,13 @@ the tested false friend.
 
 The align half acts on its own: it closed `news`'s `break.containment` (a rule
 produced inside a `frame` the reference puts it outside) with no drawn rule
-involved — `news` L2 46 → 45, L3 16 → 14, L1 dirs axis 97.7 → 98.9.
+involved -- `news` L2 46 → 45, L3 16 → 14, L1 dirs axis 97.7 → 98.9.
 
 `break.containment` and `break.moved` are both closed, 3 instances, 3 documents.
 
 ### 25.3 The three that are not targets, with the evidence
 
-**`authors` ×2 — no source attestation.** Its four biographies are one `<td>` of
+**`authors` ×2 -- no source attestation.** Its four biographies are one `<td>` of
 `<p class="t">` siblings; the only `<hr>` on the page is the footer's and is
 correctly dropped. The reference draws `---` after the first entry's press
 clipping and before the last entry, but **not** between the second and third,
@@ -3191,25 +3191,25 @@ which are the same shape. The vertical gaps rank the three boundaries
 separates the largest and the *smallest* and skips the middle. No deterministic
 signal orders them that way. Verdict 3/4, not a target.
 
-**`news` ×4 — the reference is inconsistent about the same shape.** Measured by
+**`news` ×4 -- the reference is inconsistent about the same shape.** Measured by
 listing the 33 content rows of the entry grid against both files (probe in the
 session scratchpad): the author used spacer rows as the entry device but omitted
 them at 8 boundaries. The reference draws `---` at rows 20, 21, 24 and 28 and
-**not** at 18 and 19 — five sibling `<tr>`s of identical shape, `17→18→19→20→21`,
+**not** at 18 and 19 -- five sibling `<tr>`s of identical shape, `17→18→19→20→21`,
 separated at only the last two. Separating every content-row boundary would close
 4 and open 2; §3340's comment already records that separating every row
 over-emits by ten. Neither device is right and no third one is attested.
-Ambiguous — L4/author territory.
+Ambiguous -- L4/author territory.
 
 Also measured, and worth keeping: the reference never draws a rule before a
-**framed** notice (rows 4, 6, 17, 23, 26, 33, 40, 43 — eight of eight). The
+**framed** notice (rows 4, 6, 17, 23, 26, 33, 40, 43 -- eight of eight). The
 frame is its own boundary. The converter already agrees.
 
-**`new_lagq2` ×1 — the blanket rule is killed by 8 counterexamples.** Its
+**`new_lagq2` ×1 -- the blanket rule is killed by 8 counterexamples.** Its
 seventh album sits in a `colspan=2` row because it has no cover art, and the
 lane planner draws its entry separator only before a row with ≥2 populated
 lanes. "A single-populated-cell row after a laned row is an entry boundary" was
-probed corpus-wide (`DBG_SPAN`): the shape occurs **9 times in 5 documents** —
+probed corpus-wide (`DBG_SPAN`): the shape occurs **9 times in 5 documents** --
 `new_lendle2` ×4 (album titles that *introduce* the next laned row),
 `kiselev` ×2 (contact lines), `goya2` ×1 (an empty spacer), `news_2007` ×1 (the
 nav title), `new_lagq2` ×1. The references want a rule for **one** of the nine.
@@ -3217,7 +3217,7 @@ Killed on measurement.
 
 ### 25.4 The image-size calibration table, for whoever takes `image.size.value`
 
-21 instances, 4 documents, and it is **not** a threshold to sweep — the errors
+21 instances, 4 documents, and it is **not** a threshold to sweep -- the errors
 run in both directions and the reference's own labels overlap on width. Built
 from all 22 reference pairs (declared `<img width>` ↔ the token the reference
 chose):
@@ -3237,7 +3237,7 @@ calibration, and the 22-document table contradicts it.
 A share-of-container rule inverts too: `goya2`'s 150 px covers sit in a ~196 px
 lane (share 0.77) and are `small`, while `authors`' 150 px portraits sit in the
 529 px column (share 0.28) and are `medium`. Whatever decides this is a **role**
-— catalogue thumbnail, portrait beside prose, full-width plate — not a width and
+-- catalogue thumbnail, portrait beside prose, full-width plate -- not a width and
 not a ratio. Minor severity, no content or ordering consequence: deferred to the
 closing fine-tuning phase, with the table above so it is not re-derived.
 
@@ -3245,13 +3245,13 @@ closing fine-tuning phase, with the table above so it is not re-derived.
 
 - **`break.missing` is a class.** It is six documents' worth of five unrelated
   mechanisms. Ranking by `instances × severity × generality` put it top of the
-  unexamined queue on exactly the property — 6 documents — that turned out to
+  unexamined queue on exactly the property -- 6 documents -- that turned out to
   mean "six different causes". Generality is a tiebreaker, not evidence that one
   mechanism is present.
 - **A single-populated-cell row after a laned row is an entry boundary.** Nine
   instances across five documents; the references want a rule for one.
 - **`image.size.value` is a threshold in `media.ts` to sweep** (§24.9's own
-  note). The reference's tokens overlap 140–225 px and the errors run both ways;
+  note). The reference's tokens overlap 140-225 px and the errors run both ways;
   no monotone threshold and no container-share rule reproduces them.
 - **A rule may not sit in an `align`.** `alignableRunMember`'s blanket
   `thematicBreak` exclusion conflated "cannot nominate an alignment" with
@@ -3269,17 +3269,17 @@ closing fine-tuning phase, with the table above so it is not re-derived.
 | 90 | `emphasis.span` | 34 | 10 | only **9** are converter-defect; widest reach in the ledger |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
 | 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
-| 84 | `image.size.value` | 21 | 4 | **not a threshold** — §25.4 |
+| 84 | `image.size.value` | 21 | 4 | **not a threshold** -- §25.4 |
 | 84 | `align.missing` | 7 | 4 | `goya2`'s is reference-inconsistency (§24.5) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 63 | `paragraph.containment` | 7 | 3 | |
 | 60 | `retyped.paragraph-to-lead` | 10 | 2 | new to the top ten; never examined |
-| 60 | `break.missing` | 10 | 6 | **decomposed — §25.3.** 7 of 10 are not targets |
-| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+| 60 | `break.missing` | 10 | 6 | **decomposed -- §25.3.** 7 of 10 are not targets |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` -- mechanical, single-document |
 
 `break.missing`'s remaining reachable instances are `new_bach` ×1 (a `---` where
 the right rail folds into the flow) and `segovia` ×1; both unexamined.
-`retyped.paragraph-to-lead` — 10 instances, 2 documents — is the one class in the
+`retyped.paragraph-to-lead` -- 10 instances, 2 documents -- is the one class in the
 top ten nobody has looked at.
 
 Environment note: `sh bench/run.sh` requires Chromium (`visual: always`). A fresh
@@ -3307,21 +3307,21 @@ must produce.
 ### 26.1 The class is the whole construct, not a regression in one
 
 All **10** `::: lead` in the 22 references are these 10 findings: 9 in
-`new_rechin4`, 1 in `news`. `convert-core` emits `::: lead` **never** — the
+`new_rechin4`, 1 in `news`. `convert-core` emits `::: lead` **never** -- the
 directive is built in `biomd-ast/builders.ts`, typed, serialized and validated,
 and no pass has ever produced one.
 
 What made this look like a live mechanism was a **docstring for a function that
 does not exist**, sitting immediately above `enforceSingleTitle`'s: *"Promote the
 first substantial paragraph to `::: lead` when the source marked it as an
-introduction. Deliberately conservative…"*. A reader — and the previous
-session's queue entry — takes that as a shipped, conservative pass being
+introduction. Deliberately conservative..."*. A reader -- and the previous
+session's queue entry -- takes that as a shipped, conservative pass being
 outvoted, rather than as an unbuilt construct. It is now replaced by the finding
 below. **This is the third orphaned specification found in this campaign**, after
 the mini-image glyph map and `frame`'s unused `title:`; the pattern is a written
 policy with no call site, and it costs a session every time.
 
-### 26.2 The author's ruling — authoritative, do not re-investigate
+### 26.2 The author's ruling -- authoritative, do not re-investigate
 
 > *"A decision regarding `::: lead` should be made in two situations: if every
 > paragraph in the document begins with a specifically highlighted bold or
@@ -3329,7 +3329,7 @@ policy with no call site, and it costs a session every time.
 > the second case, a long text with such paragraphs becomes visually more
 > appealing and easier to read. The decision to use `::: lead` was made purely
 > for aesthetic reasons, rather than on the basis of HTML structure. It was
-> purely my human decision."* — 2026-08-08
+> purely my human decision."* -- 2026-08-08
 
 Both criteria are judgements about the **finished page**, and the second is a
 readability decision the source cannot state. This is the same shape as §24.5's
@@ -3342,13 +3342,13 @@ confirmed and went further:
 > reflected in the others. This is purely a visual adjustment and is not
 > critical. If it is applied and there is a discrepancy with the reference, it is
 > a visual improvement and should not adversely affect the metrics or evaluation
-> criteria."* — 2026-08-08
+> criteria."* -- 2026-08-08
 
 So the ruling is **symmetric, and it is the operative one**: `lead` is a visual
 nicety, and a discrepancy in *either* direction is not a fidelity defect.
 
-- Not emitting `lead` where a reference has one — the present state, all 10
-  findings — is **not a target**.
+- Not emitting `lead` where a reference has one -- the present state, all 10
+  findings -- is **not a target**.
 - Emitting `lead` where a reference has none is likewise **not a regression**,
   provided it is a visual improvement. Any future `lead` rule is therefore
   judged on rendered quality (L3, the browser), never on agreement with
@@ -3356,7 +3356,7 @@ nicety, and a discrepancy in *either* direction is not a fidelity defect.
   in either direction.
 
 `new_rechin4` ×9 is the "long paragraphs" case; `news` ×1 is a genuine editorial
-intro. §16.3 is not the barrier — a directive wrapper invents no text — but
+intro. §16.3 is not the barrier -- a directive wrapper invents no text -- but
 `CLAUDE.md` §5's rule contract is: there is no invariant to key on, and now no
 metric that would confirm one if there were.
 
@@ -3370,7 +3370,7 @@ through the real Chromium measurer:
   **13.33 px, weight 400, upright, `rgb(51,51,40)`**, differing only in a
   `text-align` that occurs in both. Different class, identical rendering. The
   second licence is therefore unavailable, and the first is a judgement.
-- `new_rechin4`'s four `<p class="t">` blocks are the entire prose of the page —
+- `new_rechin4`'s four `<p class="t">` blocks are the entire prose of the page --
   17596, 3819, 3591 and 1498 characters, split at `<br><br>` into the 9
   paragraphs the reference wraps. All compute **14.67 px / 400 / justify**. With
   9 of 9 wrapped there is no unwrapped prose to contrast against; the construct
@@ -3382,12 +3382,12 @@ top-level body paragraph by whether it sits inside a `lead`:
 
 | | n | min | p25 | median | p90 | max |
 |---|---:|---:|---:|---:|---:|---:|
-| inside `lead` | 11 | 220 | 612 | 839 | — | 4164 |
+| inside `lead` | 11 | 220 | 612 | 839 | -- | 4164 |
 | plain | 570 | 7 | 46 | 139 | 695 | 3136 |
 
 The distributions overlap through the whole of the `lead` range. **29 plain
-paragraphs in 15 documents exceed 900 characters** — `williams2` 3136,
-`williams2` 1665, `segovia` 1587, `jovicic` 1354 — all longer than seven of the
+paragraphs in 15 documents exceed 900 characters** -- `williams2` 3136,
+`williams2` 1665, `segovia` 1587, `jovicic` 1354 -- all longer than seven of the
 nine `new_rechin4` leads. And `news`'s two leads are **413 and 220**, shorter
 than a plain 1303-character paragraph on the same page, so length is
 *anti*-correlated with `lead` there. No paragraph-level threshold exists.
@@ -3396,14 +3396,14 @@ than a plain 1303-character paragraph on the same page, so length is
 length: `new_rechin4` **839**; then `authors` 631, `new_kolpakov` 605,
 `williams2` 540, `jovicic` 540, `new_dyens` 498, `new_bach` 334, and down to
 `new_karta` 17. Any threshold in (631, 839] selects `new_rechin4` and nothing
-else — a single-instance discriminator with the nearest negative analogue 1.33×
+else -- a single-instance discriminator with the nearest negative analogue 1.33×
 away, which §12.1's sweep lesson calls a cliff rather than a mechanism. Its
 payoff would be **rewrapping an entire document body**, the largest blast radius
 in the pipeline, on the other ~987 pages, from one supporting document.
 
 **Criterion (a) is not exercised by this corpus.** No document wraps in `lead`
-because of highlighted initials. The drop-cap shape does occur — `new_lagq2`'s
-`**R**ecital` and `***T***he Best of the L.A.G.Q`, `new_lendle2`'s album titles —
+because of highlighted initials. The drop-cap shape does occur -- `new_lagq2`'s
+`**R**ecital` and `***T***he Best of the L.A.G.Q`, `new_lendle2`'s album titles --
 but on *labels*, not on every paragraph, and neither reference uses `lead`. So
 the criterion has zero positive instances and its false friend is already in the
 corpus. Nothing to build against.
@@ -3419,19 +3419,19 @@ corpus. Nothing to build against.
 - **`lead` is recoverable from paragraph length.** 29 plain paragraphs in 15
   documents are longer than most `lead` paragraphs; `news`'s leads are shorter
   than its own plain prose.
-- **`lead` is recoverable from a positional signal** — prose between the title
+- **`lead` is recoverable from a positional signal** -- prose between the title
   and the page's first author-drawn `<hr>`. Fires on `kiselev`, `new_bach` and
   `new_lagq2` as well, where the references write a plain paragraph. It also
   cannot satisfy §5's recurrence requirement, since there is at most one lead per
   page by definition.
 - **A hook should take it.** §6 puts judgement in a hook, and the skill warns
-  against parking a broad class for want of an elegant rule — but this is one
+  against parking a broad class for want of an elegant rule -- but this is one
   aesthetic decision per document, the author has stated it is not derived from
   the source, and no acceptance check for "this reads better wrapped" can be
   written. A hook needs a deterministic check that can reject it; this has none.
 - **The 10 findings are a gap to close.** They are not. The author's symmetric
   ruling (§26.2) makes `lead` a visual nicety in both directions, so closing
-  them would move an instrument without improving the conversion — and a rule
+  them would move an instrument without improving the conversion -- and a rule
   that emitted `lead` correctly by the author's criteria would still show as 10
   findings plus new ones. This class can never reach zero and should not be
   scored.
@@ -3444,31 +3444,31 @@ class:
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
 | 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
-| 90 | `emphasis.span` | 34 | 10 | only **9** are converter-defect — verify the split first |
+| 90 | `emphasis.span` | 34 | 10 | only **9** are converter-defect -- verify the split first |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
 | 90 | `retyped.paragraph-to-align` | 6 | 5 | mostly inside `frame` / `columns` |
-| 84 | `image.size.value` | 21 | 4 | **not a threshold** — §25.4 |
+| 84 | `image.size.value` | 21 | 4 | **not a threshold** -- §25.4 |
 | 84 | `align.missing` | 7 | 4 | `goya2`'s is reference-inconsistency (§24.5) |
 | 84 | `image.spurious` | 7 | 4 | |
 | 63 | `paragraph.containment` | 7 | 3 | |
-| 60 | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue — §26.2. Visual-only in both directions, author-ruled; never score it** |
+| 60 | ~~`retyped.paragraph-to-lead`~~ | 10 | 2 | **off the queue -- §26.2. Visual-only in both directions, author-ruled; never score it** |
 | 60 | `break.missing` | 10 | 6 | decomposed (§25.3); 7 of 10 not targets |
-| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` -- mechanical, single-document |
 
-Three of the last four classes examined — `break.missing`, `image.size.value`,
-`retyped.paragraph-to-lead` — turned out to be ceilings, instrument artefacts or
+Three of the last four classes examined -- `break.missing`, `image.size.value`,
+`retyped.paragraph-to-lead` -- turned out to be ceilings, instrument artefacts or
 several mechanisms rather than one actionable defect. **The ledger's rank column
 is measuring how much an instrument noticed, not how much work is available**,
 and at this stage of the campaign the top of the queue is increasingly made of
 things that cannot be closed. The next class taken should be adjudicated on two
-or three instances *before* any survey work, and `emphasis.span` — where only 9
-of 34 instances are converter-defect — should have that split confirmed first.
+or three instances *before* any survey work, and `emphasis.span` -- where only 9
+of 34 instances are converter-defect -- should have that split confirmed first.
 
 ## 27. Cheap triage first: five classes downgraded, one mechanism found outside them (2026-08-08)
 
 Ranking by finding count stopped. §25 and §26 both ended with a top-ranked class
-that could not be closed, so this iteration began with **cheap triage** — two or
-three instances per class, no surveys, no code — across the five highest-ranked
+that could not be closed, so this iteration began with **cheap triage** -- two or
+three instances per class, no surveys, no code -- across the five highest-ranked
 unresolved classes. Four were downgraded in about twenty minutes. The mechanism
 that was actually worth building **ranked fifteenth by finding count** and was
 not among the five.
@@ -3493,13 +3493,13 @@ not among the five.
 | `paragraph.containment` | 7 | 7 | 3 | 2 | shadow of others | **dissolve** |
 | `image.spurious` | 7 | 7 | 4 | 1 | contested | **downgrade** |
 
-**`emphasis.span` — the label is not reliable.** Of 34, 25 are already
+**`emphasis.span` -- the label is not reliable.** Of 34, 25 are already
 `reference-inconsistency`, and the 9 remaining split into three unrelated
 mechanisms: 3 are emphasis inside a *heading* that `dropEmphasis` strips by a
 documented decision, 4 are `news` paragraphs inside `frame>align` that are
 entangled with a containment mismatch at the same node, 2 are emphasis
 *segmentation* inside long paragraphs. Decisively: the **same source shape is
-labelled differently in different documents** — `new_lagq2`'s `strong:*T` drop
+labelled differently in different documents** -- `new_lagq2`'s `strong:*T` drop
 cap is `converter-defect` while `new_lendle2`'s `strong:*Variations
 capricieuses` is `reference-inconsistency`. A class whose verdict flips on
 identical evidence cannot be worked.
@@ -3510,20 +3510,20 @@ paths* as each other and as `frame.moved`. They are downstream shadows: when a
 container is missing, L2 reports the container, its position property, the
 alignment inside it, the containment of every block beneath it, and the emphasis
 of those blocks. On `new_lendle2` that is **18 findings in five classes from one
-missing `frame`** — 21 of the document's 23. Ranking by class hides this
+missing `frame`** -- 21 of the document's 23. Ranking by class hides this
 completely; the shadows outrank their own cause.
 
-**`image.spurious` — contested by the references.** All 7 are small linked
-navigation gifs (11–16 px inside an `<a>`). One source shape gets **five
+**`image.spurious` -- contested by the references.** All 7 are small linked
+navigation gifs (11-16 px inside an `<a>`). One source shape gets **five
 different reference treatments**: `new_karta` keeps `main/next.gif` as a full
 `::: image` with `size: small`; `new_bach` and `segovia` write the glyph
 `&#9658;`/`▶`; `new_geyzel04` writes the `alt` text as a link label;
 `new_rechin4` writes two glyphs in an `::: align`; `segovia1` merges the glyph
 into the adjacent link's label inside `::: columns`. `new_karta`'s 16 px linked
 `next.gif` is byte-identical in shape to `new_geyzel04`'s and is kept as an
-image — so the negative control is indistinguishable from the positives. One
-sub-claim is clean and was verified — **no reference ever groups icon-sized
-images into `::: images`**, and the converter does it twice — but fixing only
+image -- so the negative control is indistinguishable from the positives. One
+sub-claim is clean and was verified -- **no reference ever groups icon-sized
+images into `::: images`**, and the converter does it twice -- but fixing only
 that turns the group into two standalone `::: image` blocks, which the reference
 still does not have, so it closes nothing. Not built.
 
@@ -3534,7 +3534,7 @@ rank 15) plus its four shadows.
 
 `new_lendle2` writes `border: 1 solid #D5A96F` on five album panels. **The width
 is unitless, so the whole shorthand is invalid** and Chromium computes
-`border-style: none`, width 0 — measured on all five, the same trap
+`border-style: none`, width 0 -- measured on all five, the same trap
 `learned-patterns.md` records for `margin-left: 25`. `frameEvidenceFor` reads
 borders only, so it saw nothing and emitted zero frames against the reference's
 five.
@@ -3544,12 +3544,12 @@ page's `rgb(247,231,175)`. `paletteFor` already maps that to `white`, which is
 exactly what the reference names five times. A tint differing from the nearest
 painted ancestor is the same construct as a border.
 
-**The invariant is occupancy — not colour, and not recurrence.** `goya2` tints
+**The invariant is occupancy -- not colour, and not recurrence.** `goya2` tints
 **fifteen** cells identically, with the same dead unitless borders, and its
 reference frames none: they are `width="50%"` *lane* cells, two to a catalog
 row. `new_lendle2`'s five are `colspan="2" width="100%"` and own their row.
-Recurrence is useless here and would invert the answer — `goya2` recurs fifteen
-times to `new_lendle2`'s five — so the contract states occupancy instead and
+Recurrence is useless here and would invert the answer -- `goya2` recurs fifteen
+times to `new_lendle2`'s five -- so the contract states occupancy instead and
 tests the `goya2` shape for non-firing.
 
 **The fallback had to move ahead of the `border-style: none` early return.**
@@ -3565,7 +3565,7 @@ critical: `layout.order.mismatch` 10 → 11, the pairing artefact of four produc
 frames against five reference ones.
 
 Dropping the floor for the tint path was implemented and measured. The argument
-was sound — `spansItsRow` is a stronger occupancy claim than a character count —
+was sound -- `spansItsRow` is a stronger occupancy claim than a character count --
 and it worked: fifth panel emitted, L3 **92 → 90**, critical **11 → 10**. But
 the same floor is the only thing keeping the *menu-label* cells out. `news` and
 `news_2007` each set `• Архив новостей •` in a spanning tinted cell and each
@@ -3592,32 +3592,32 @@ regression-corpus documents, outranks two L3 findings on one.
 ### 27.5 State
 
 **Open, in order.** The ranking below is by finding count because that is what
-the ledger computes, but §27.1 is the reason it must not be followed blindly —
+the ledger computes, but §27.1 is the reason it must not be followed blindly --
 **read the shadows column first.**
 
 | rank | class | inst | docs | note |
 |---:|---|---:|---:|---|
 | 120 | `retyped.paragraph-to-list` | 10 | 4 | blocked on the hook design of §15.2; 7 are `kiselev` |
-| 90 | `emphasis.span` | 34 | 10 | **downgraded §27.1** — verdicts unstable across documents |
+| 90 | `emphasis.span` | 34 | 10 | **downgraded §27.1** -- verdicts unstable across documents |
 | 90 | `align.spurious` | 6 | 5 | 3 are the one-row media table §22.2 killed twice |
-| 84 | `image.size.value` | 21 | 4 | not a threshold — §25.4 |
-| 84 | `image.spurious` | 7 | 4 | **downgraded §27.1** — five reference treatments of one shape |
-| 84 | `align.missing` | 4 | 3 | **shadow class** — down from 7/4 |
-| 57 | `image.src.value` | 19 | 1 | all `goya2` — mechanical, single-document |
+| 84 | `image.size.value` | 21 | 4 | not a threshold -- §25.4 |
+| 84 | `image.spurious` | 7 | 4 | **downgraded §27.1** -- five reference treatments of one shape |
+| 84 | `align.missing` | 4 | 3 | **shadow class** -- down from 7/4 |
+| 57 | `image.src.value` | 19 | 1 | all `goya2` -- mechanical, single-document |
 
 The two biggest documents are now `news` (45 defects) and `goya2` (44), and
 together they are a third of the ledger. Neither has been attacked as a
 *document*; every pass at them so far has come through a class. **Given that
 three of the last four class-led attempts closed nothing, the next iteration
-should triage `goya2` and `news` document-first** — take the worst document,
+should triage `goya2` and `news` document-first** -- take the worst document,
 enumerate its findings by node path rather than by class, and look for the
 shared container defect the way §27.2 found `new_lendle2`'s. `new_lendle2` went
 from third-worst to mid-table on one mechanism found exactly that way.
 
-## 28. Reference correction: `new_karta`'s nav glyph — re-baseline (2026-08-08)
+## 28. Reference correction: `new_karta`'s nav glyph -- re-baseline (2026-08-08)
 
 Author correction to `fixtures/out/new_karta.bio.md`, in two steps, with no code
-change. **§27.1's downgrade of `image.spurious` is void** — see below.
+change. **§27.1's downgrade of `image.spurious` is void** -- see below.
 
 The document ended with
 
@@ -3642,9 +3642,9 @@ position: center
 :::
 ```
 
-An intermediate revision carried `new_bach`'s prose with it — `*См. также:* \[ О
+An intermediate revision carried `new_bach`'s prose with it -- `*См. также:* \[ О
 ЛЮТНЕВЫХ ПРОИЗВЕДЕНИЯХ И.С.БАХА ]`, byte-identical to `new_bach`'s block but for
-the href — which `new_karta.htm` does not contain (0 occurrences of `ЛЮТНЕВЫХ`
+the href -- which `new_karta.htm` does not contain (0 occurrences of `ЛЮТНЕВЫХ`
 and of `См. также`; `new_bach.htm` has one). L2 flagged it independently as
 `paragraph.missing.unattested`. Raised and corrected the same session; recorded
 only so the intermediate state is not mistaken for evidence.
@@ -3655,7 +3655,7 @@ only so the intermediate state is not mistaken for evidence.
 `image.spurious`: it kept a 16×16 linked `next.gif` as an `::: image` while
 `new_bach` and `segovia` glyphed the identical asset, so the negative control was
 indistinguishable from the positives. With it corrected the corpus is consistent
-on the core claim — **an icon-sized linked gif is never a picture** — and the
+on the core claim -- **an icon-sized linked gif is never a picture** -- and the
 remaining references differ only in the *label*, deterministically:
 
 | shape | label | attested by |
@@ -3676,12 +3676,12 @@ open candidate.
   stands for an *image* and L2's attestation check is word coverage over source
   *text*. Expected instrument behaviour, not a defect, and not closable.
 - **`new_karta` is now the only reference ending in `---`**, and its source's only
-  `<hr>` is the footer's `<hr width="35%">` — chrome that every document drops.
+  `<hr>` is the footer's `<hr width="35%">` -- chrome that every document drops.
   `break.missing` at `/break[24]` is therefore a `low`-confidence reference
   expectation with no source attestation. It invents no text, so it is not a §16.3
   matter; flagged, not chased.
 
-### 28.3 Re-baseline — reference edit only, no code changed
+### 28.3 Re-baseline -- reference edit only, no code changed
 
 | rung | §27 | after the correction |
 |---|---|---|
@@ -3691,7 +3691,7 @@ open candidate.
 | L3 | 92 | 92 |
 
 All movement is `new_karta`: L1 88.0 → **78.0** (img axis 100.0 → **0.0**), L2
-28/7 → **32/10**. The drop is honest and expected — the reference no longer holds
+28/7 → **32/10**. The drop is honest and expected -- the reference no longer holds
 an image at that point, so the `::: image` the converter still emits is now a
 true `image.spurious`, and the img axis has nothing to agree with. **This is the
 new floor**; the pre-correction 93.2 / 413 · 238 is not comparable.
@@ -3704,7 +3704,7 @@ new floor**; the pre-correction 93.2 / 413 · 238 is not comparable.
 
 The author revised the corpus wholesale and wrote down a set of house conventions. **Baseline
 before attribution** applied literally here: the revision moves every rung with no code change at
-all, so every number in §21–§28 is measured against references that no longer exist.
+all, so every number in §21-§28 is measured against references that no longer exist.
 
 *Measured, no code change, immediately after `06eeafb`:*
 
@@ -3717,7 +3717,7 @@ all, so every number in §21–§28 is measured against references that no longe
 
 **Two recorded ceilings closed themselves.** `retyped.paragraph-to-lead` (10 instances, off the
 queue on the §26.2 author ruling) is gone because the revision deleted all eight `::: lead` blocks
-from `new_rechin4` — the ruling is now *in* the corpus. `new_blackmore`'s masthead split point
+from `new_rechin4` -- the ruling is now *in* the corpus. `new_blackmore`'s masthead split point
 (§24.5, recorded as reference-inconsistency after a browser measurement) was corrected to the
 boundary the source draws, so the converter's split is now the reference's. The §24.5 ruling that a
 recovered centred section label gets a bare `##` is likewise now applied in `goya2`, `new_bach`,
@@ -3728,7 +3728,7 @@ This is the second time (after §28) that an author correction has voided a down
 narrower than "re-check everything": **grep the code comments and `OPEN.md` for the documents that
 changed**, because a guard's named false friend can disappear with the reference that motivated it.
 
-`new_rules.md` also states rules the converter does not yet implement — a table-header label
+`new_rules.md` also states rules the converter does not yet implement -- a table-header label
 vocabulary, `==` for long quoted sentences, `_` as a synonym for `*`, no de-hyphenation inside URLs,
 merging consecutive same-alignment `::: align`, dropping an empty trailing table column, and
 `::: signature` rather than `::: nav` for a source list. `BioMD-Reference.md` gained `_` as an
@@ -3737,14 +3737,14 @@ the recorded next step.
 
 ### 29.2 Two cheap probes that decided the iteration
 
-**`table.header.cell` — 43 instances, 7 documents, the largest class in the ledger and 0 % defect.**
+**`table.header.cell` -- 43 instances, 7 documents, the largest class in the ledger and 0 % defect.**
 Probed three instances rather than surveying. Two facts came out of it. First, the converter is not
 losing a source header: `new_karta`'s source contains no `Композиция`, no `Формат` and no
 `Ноты (TAB)` anywhere, so the *old* references invented those labels exactly as the new ones invent
 `Название`/`Аудиоформат`. All 43 are the synthesized path (`synthesizeHeader`), which means nothing
-attested has to be rewritten — the §16.3 objection to the whole class dissolves. Second, and against
+attested has to be rewritten -- the §16.3 objection to the whole class dissolves. Second, and against
 expectation, the class appeared to fix no validator error, which dropped it to priority 4/5/6.
-**That second finding was wrong and §30.2 corrects it** — it closes 15 of the 28. The claim was
+**That second finding was wrong and §30.2 corrects it** -- it closes 15 of the 28. The claim was
 *inferred* from a standalone `validate` run, never measured against `corpus run`.
 
 *A measurement error worth recording, because it cost a wrong statement.* `node dist/cli/index.js
@@ -3752,11 +3752,11 @@ validate <file>` resolves a laxer profile than the bench config and reports **0 
 that `corpus run` reports one error for. The trustworthy figure is the `errors=` column in
 `bench/last-run.txt`. Total across the corpus: 28, before and after this iteration.
 
-**`image.spurious` — 8 instances, 5 documents, 100 % converter-defect.** Every instance is a
+**`image.spurious` -- 8 instances, 5 documents, 100 % converter-defect.** Every instance is a
 page-footer navigation icon shipped as `::: image src: ../main/back.gif`, which renders as a broken
 image (no asset tree exists) and asserts that a UI glyph is a photograph. Priority 2 and 4 against
 the header class's 4/5/6, so §1's lexicographic ordering chose it even though it is a fifth the
-size. Direct targets were checked first and **nothing was lost** — a dropped icon leaves an empty
+size. Direct targets were checked first and **nothing was lost** -- a dropped icon leaves an empty
 `<a>` whose href becomes the label, which is why `barrios` already produced
 `[/#/barrios1](/#/barrios1)`, the very form the revised reference adopts.
 
@@ -3765,7 +3765,7 @@ size. Direct targets were checked first and **nothing was lost** — a dropped i
 `isDecorative` had classified `../main/back.gif` as furniture the whole time. `dropDecorative`
 iterates a run's **direct children**; `runImages` **descends through `IMAGE_WRAPPERS`, which
 includes `<a>`**. A navigation icon is always inside the link it operates, so the filter never saw
-it and the grouper always did — one `::: image` per icon, or `::: images columns: 2` for a pair.
+it and the grouper always did -- one `::: image` per icon, or `::: images columns: 2` for a pair.
 
 The tell, and the reason a name-based hypothesis would have been wrong: `back.gif` **is** in
 `isDecorative`'s name regex and `previous.gif` **is not**, and the two produced identical wrong
@@ -3776,10 +3776,10 @@ minutes; the stack read `imagesFrom ← flushInline`, which is downstream of the
 Fifth containment-vs-filter mismatch of the campaign, and the third to be found by instrumenting
 rather than reading.
 
-**What was built.** `ICON_GLYPHS` in `src/convert-core/glyphs.ts` — the guide's 29 entries, keyed on
+**What was built.** `ICON_GLYPHS` in `src/convert-core/glyphs.ts` -- the guide's 29 entries, keyed on
 the **asset stem**, lower-cased, without directory or extension. The extension cannot be part of the
 key: the guide spells the score icon `score3.gif` and the only page that uses it writes `score3.jpg`.
-`isUiIcon` in `media.ts` names nothing and asks three questions — containment in an `<a href>`,
+`isUiIcon` in `media.ts` names nothing and asks three questions -- containment in an `<a href>`,
 icon geometry (≤ 32 px both dimensions, the guide's own figure), and membership in the table.
 `runImages` skips a UI icon; `inlineFrom`'s `img` case emits the glyph, after which the existing
 `<a>` case builds `[glyph](href)` with no further change.
@@ -3789,20 +3789,20 @@ author wrote one, else the mapped glyph, else the pre-existing href fallback. Ex
 eight icons carry `alt` (`new_geyzel04`'s pair, labelled `Главы 8-9` and `Владимир Вавилов`) and
 their reference uses that text; the other six carry none and their references draw glyphs.
 
-**Recurrence is not required here, and the contract says so.** A pager is drawn once per page —
-`new_karta` has exactly one arrow — so `CLAUDE.md` §5's recurrence requirement, which is a law for
+**Recurrence is not required here, and the contract says so.** A pager is drawn once per page --
+`new_karta` has exactly one arrow -- so `CLAUDE.md` §5's recurrence requirement, which is a law for
 shapes repeating *within* a document, would refuse every true positive. The recurring evidence is
 cross-document (one shared asset across the site) and is precisely what the table records. The
 named false friend is a linked thumbnail: the size cap does not separate it (a 32 px thumbnail is
 legal) but table membership does, since a thumbnail is article-specific and therefore never a shared
-asset. `../main/km.gif` is the corpus's near-miss — linked, icon-ish, captioned, unlisted — and a
+asset. `../main/km.gif` is the corpus's near-miss -- linked, icon-ish, captioned, unlisted -- and a
 contract asserts it keeps its `::: image`.
 
 **The ledger verb is `removed`, not `mergedInto`.** Image conservation accounts for source images
 only through `ledger.removals()`, so `mergedInto` left two `new_geyzel04` icons unaccounted and the
 document flipped `ok` → `REVIEW` with its printed counters unchanged. Conservation was right and the
 first verb was wrong: the *asset* does leave the output. The `<a>` is not removed, so its target is
-still required to appear — which keeps target conservation honest.
+still required to appear -- which keeps target conservation honest.
 
 ### 29.4 Measured outcome
 
@@ -3820,13 +3820,13 @@ regression documents (`barrios` 94.9 → 95.5, `segovia` 98.0 → 98.3, `tarrega
 L3 is flat because an inline link label carries no geometry.
 
 **The tradeoff, stated rather than buried.** `barrios`, `tarrega` and `williams2` each gain two L2
-findings with **flat defect counts**. All three are one sub-case — an icon standing beside visible
+findings with **flat defect counts**. All three are one sub-case -- an icon standing beside visible
 text, where the revised reference either substitutes the raw route (`[/#/barrios1](/#/barrios1)`) or
 drops the icon (`[К началу биографии]` for a source that draws `◀` before those words). The guide
 ranks a known mapping above both and puts a raw URL label **last** in its fallback ladder, and `▶`
 renders better than a route the reader cannot use. Classified `visual-improvement` under skill §2.
 Restricting the rule to standalone icons would have kept those three matching, at the cost of a rule
-that treats one asset two ways depending on the text beside it — a special case in a general rule's
+that treats one asset two ways depending on the text beside it -- a special case in a general rule's
 clothing. Two of the six new findings are an instrument artefact: `link.label.content.empty` reports
 `critical` about a label that is `▶`, which is not empty.
 
@@ -3855,21 +3855,21 @@ instructive.
 
 **The hypothesis.** After §29 turned four footer pagers from `::: image` into paragraphs, they lost
 the centring the image directive had been carrying, and `retyped.paragraph-to-align` rose to rank 1
-(8 instances, 8 documents — the widest reach in the ledger). Probing all eight showed 7 of 8 have
+(8 instances, 8 documents -- the widest reach in the ledger). Probing all eight showed 7 of 8 have
 *identical text on both sides* and differ only in their container, so the label was one coherent
 mechanism rather than the shadow class §27.1 had recorded.
 
 **Two causes, separated by instrumentation, not by reading.** `DBG_ALIGN` at the decision point in
 `alignableRunMember`, one run each on `new_karta` and `tarrega`:
 
-- `new_karta` — `align=center`, `bounded=true`, **`label=false`**. Rejected by
+- `new_karta` -- `align=center`, `bounded=true`, **`label=false`**. Rejected by
   `isAlignableLabelText`, which requires a letter or a digit; `▶` has neither.
-- `tarrega` — `align=justify`. Rejected four lines earlier, and `justify` is the page default this
+- `tarrega` -- `align=justify`. Rejected four lines earlier, and `justify` is the page default this
   corpus computes almost everywhere (`CLAUDE.md` §4). A different question, left alone.
 
 **The fix, and why it looked safe.** `isAlignableLabelText`'s named false friend is a rule the
 author drew out of punctuation (`* * *`, `— — —`). A pager row is distinguishable from one by
-*relational* evidence rather than a character class — it carries a link, and a drawn rule never
+*relational* evidence rather than a character class -- it carries a link, and a drawn rule never
 does. So the guard was left untouched and an alternative added beside it: a word-less block may
 join a run when `carriesTarget(block)`. A character test could not have done this job anyway, since
 `●` is itself a member of `RULE_GLYPHS`.
@@ -3880,8 +3880,8 @@ Both contracts passed, including non-firing on `* * *`.
 `new_karta` and `new_lendle2` each lost a defect as intended; `segovia1` gained **two**, and L3's
 containment and alignment classes each rose by one.
 
-**Why: the real false friend was never `* * *`.** `segovia1`'s footer is a four-cell table row —
-`◀`, *Андрес Сеговия*, *Владимир Бобри*, `▶` — which the reference writes as `::: columns
+**Why: the real false friend was never `* * *`.** `segovia1`'s footer is a four-cell table row --
+`◀`, *Андрес Сеговия*, *Владимир Бобри*, `▶` -- which the reference writes as `::: columns
 columns: 4`. Two of those four cells are word-less glyphs, so the new rule made them alignable, and
 `groupAlignedRuns` swept **all four into one `::: align`**, collapsing the lanes. Four
 `align.spurious`, a `columns.missing`, four `retyped.paragraph-to-column`, and a displaced frame.
@@ -3891,7 +3891,7 @@ fixed, so the change was reverted whole and the floor restored exactly.
 **The lesson, and why no guard was added instead.** `segovia1` already carried `columns.missing`
 *before* this change: the four-lane region is not being recognised, and the loose blocks that
 result are a **symptom of that upstream failure**. Guarding the alignment rule against them would
-have cemented the missing region and hidden it from every instrument — the exact move `CLAUDE.md`
+have cemented the missing region and hidden it from every instrument -- the exact move `CLAUDE.md`
 §5 and §10.2/§16.4 forbid. The reachable mechanism here is the missing `columns` region, not the
 alignment.
 
@@ -3899,7 +3899,7 @@ Recorded as killed: *a word-less block may open an alignment run because it carr
 Falsifier: `segovia1`'s lane cells are word-less glyphs, and admitting them merges four lanes into
 one. Reopens only on the `columns` region being recovered first.
 
-### 30.2 The column vocabulary — and the number §29.2 got wrong
+### 30.2 The column vocabulary -- and the number §29.2 got wrong
 
 `/new_rules.md` states the label vocabulary outright: `Название` for the column that indexes the
 records, `Аудиоформат` for a column of resource links, and a synonym list folding `TAB`, `MIDI`,
@@ -3908,7 +3908,7 @@ language-tagged data under invariant 5; `synthesizeHeader` consults it at the de
 already had, and an unrecognised label passes through untouched.
 
 **§16.3 is not engaged, and §29.2's probe is why.** Every affected table has *no source header at
-all* — `new_karta`'s source contains no `Композиция`, no `Формат`, no `Ноты (TAB)` — so the old
+all* -- `new_karta`'s source contains no `Композиция`, no `Формат`, no `Ноты (TAB)` -- so the old
 references invented their labels exactly as the new ones do. Only the synthesized path is touched;
 a table whose source names its columns never reaches this code.
 
@@ -3916,7 +3916,7 @@ a table whose source names its columns never reaches this code.
 a resource column and an **empty** leading column, on the grounds that naming it would be
 invention, citing `analyze/analyze.md` on three pages and sixteen references. `06eeafb` replaced
 all sixteen and the author wrote the rule down. The contract now states the new rule *and* why the
-old one was right about the corpus it was written against — an author ruling is the one thing that
+old one was right about the corpus it was written against -- an author ruling is the one thing that
 legitimately retires a named decision, and it is worth being able to see that it happened.
 
 **Measured.**
@@ -3936,15 +3936,15 @@ legitimately retires a named decision, and it is worth being able to see that it
 
 **§29.2 is corrected.** It recorded that this class "fixes no validator error", which dropped it
 from priority 2 to 4/5/6 and is why the icon mechanism was taken first. It closes **15 of the 28**.
-The claim was *inferred* from the standalone `validate <file>` reporting zero — a laxer profile
-than the bench config — and never checked against `corpus run`'s `errors=` column, which is the
+The claim was *inferred* from the standalone `validate <file>` reporting zero -- a laxer profile
+than the bench config -- and never checked against `corpus run`'s `errors=` column, which is the
 only trustworthy source. The ordering decision it influenced was still correct on other grounds,
 but the number was not measured and should not have been written.
 
 **A conservation figure that fell with no content change.** `new_karta`'s text recall goes
 96.1 → 91.9. The A/B of the produced file is **seven changed lines, every one a header row**.
 Recall is a shingle-based similarity measure, so three invented header words per table break every
-shingle straddling the header boundary — the effect KILLED.md already records for legitimate block
+shingle straddling the header boundary -- the effect KILLED.md already records for legitimate block
 splits, arriving here from the other direction.
 
 ### 30.3 Residual, and what is next
@@ -3958,12 +3958,12 @@ None is worth a rule.
 The author also corrected `new_rechin4`'s `h2.gif` to `&#9679;` and `news_2007`'s `smile.gif` to
 `&#9787;` (commit `3097a48`), so **there are no remaining guide-vs-reference conflicts** in the icon
 family. Neither moved a rung: L2 folds numeric character references before comparing, and
-`news_2007`'s smiley sits in a paragraph the converter does not emit at all — which is its own,
+`news_2007`'s smiley sits in a paragraph the converter does not emit at all -- which is its own,
 larger, unexamined defect.
 
 ## 31. A holistic sweep: one lying property class, one missing group (2026-08-08)
 
-A single pass asked three questions at once — which rules the reference revision made obsolete,
+A single pass asked three questions at once -- which rules the reference revision made obsolete,
 which are correct but improvable, and what could be corrected immediately. Two mechanisms landed.
 Both were found by **adjudicating the two heaviest documents rather than the ranked classes**:
 `news` (45 defects) and `goya2` (34) held 44 % of the ledger between them and neither had ever been
@@ -3973,7 +3973,7 @@ attacked as a document (§27.5 said so; this is that step).
 
 `compareDirective` assigned `content` evidence to prose properties (`caption`, `alt`, `title`,
 `active`) and `structure` to everything else. `triage` returns `converter-defect` for structural
-evidence **unconditionally**, on the rule that layout is always actionable — which is right for a
+evidence **unconditionally**, on the rule that layout is always actionable -- which is right for a
 lane, a wrapper or a separator, and wrong for a URL. `BioMD-Reference.md` §0 ranks targets second
 behind content and §16.3 names `href`/`src` outright, so the one property class §16.3 protects by
 name was the one class routed past the attestation test.
@@ -3986,13 +3986,13 @@ was verbatim-correct and following the reference would have invented a target.
 Two things had to move together. `isTargetProp` is `src` **only**: an asset path is carried through
 verbatim, whereas `links.ts` rewrites `../menu.htm` to `/#/menu`, so neither side of a `link`
 finding can ever appear in the source and attestation would answer "unattested" about a correct
-value. And attestation for a target reads the **raw decoded HTML** — `stripTags` throws attributes
+value. And attestation for a target reads the **raw decoded HTML** -- `stripTags` throws attributes
 away and `fold` erases `/`, `.` and `_`, which is all a URL is made of, so the folded index called
 two different destinations the same content.
 
 L2 287 → 275 findings, **180 → 152 converter-defect**, 40 → 59 reference-inconsistency. Output
 byte-identical; L0, L1 and L3 unmoved. **This is an instrument correction and not a conversion
-improvement** — it removes work that never existed, which is worth more than closing it would have
+improvement** -- it removes work that never existed, which is worth more than closing it would have
 been, but it must never be reported as the converter getting better.
 
 ### 31.2 A flattened grid row that is nothing but pictures is one row
@@ -4001,15 +4001,15 @@ been, but it must never be reported as the converter getting better.
 plan as records, `layoutFrom`'s lane attempt rolls back, and `decomposeFrom` shipped **six loose
 `::: image` blocks** where the reference groups each pair as `::: images columns: 2`.
 
-Both existing `::: images` paths (`figureOf`, `imagesFrom`) read an *inline* run — images inside one
+Both existing `::: images` paths (`figureOf`, `imagesFrom`) read an *inline* run -- images inside one
 `<p>`. This corpus draws the other half of its plates as a row per plate, which reached neither.
 `imageRowFrom` asks §8's question of a flattened row instead: two or more standalone images and
 nothing else.
 
-**Recurrence does not apply and the contract says so** — the `<tr>` is adjacency *declared* by the
+**Recurrence does not apply and the contract says so** -- the `<tr>` is adjacency *declared* by the
 author, not inferred from typography, so it needs no corroboration; same exemption as `isUiIcon`.
-The **false friend is a record row**, a picture beside the words about it — `goya2`'s own album grid
-and `williams2`'s track list — refused by testing the *whole* row rather than the images in it, and
+The **false friend is a record row**, a picture beside the words about it -- `goya2`'s own album grid
+and `williams2`'s track list -- refused by testing the *whole* row rather than the images in it, and
 tested for non-firing. `recovery.test.ts` was grepped first (`learned-patterns.md`: a symmetry
 argument is not evidence): no contract governed this path, so the asymmetry was an oversight and
 not a decision, unlike the DATA→lanes case §18.3 killed.
@@ -4027,7 +4027,7 @@ Only `goya2`'s output changed, so the whole L3 fall of 15 is its. Produced `::: 
 frame`; `makeGroupedImage` throws on either. So those 12 are `reference-quirk` and emitting them
 would be a conformance violation. Net −12 findings, −9 defects, and the *structure* is now identical.
 
-### 31.3 What the sweep measured and did not build — reach figures, so nobody re-derives them
+### 31.3 What the sweep measured and did not build -- reach figures, so nobody re-derives them
 
 `/new_rules.md` still holds six unimplemented author rules (§29.1). Their reach, **measured** over
 the 22 pairs this pass, which is the number that decides whether any is worth a rule:
@@ -4035,15 +4035,15 @@ the 22 pairs this pass, which is the number that decides whether any is worth a 
 | rule | measured reach | verdict |
 |---|---|---|
 | drop an empty trailing table column | **0** tables, either side | no reach in this corpus |
-| `_` ≡ `*` italic | **0** real spans — every `_` match in `fixtures/out/` is a filename underscore inside a URL | not a class; but see the risk below |
-| merge consecutive same-alignment `::: align` | the **references keep 5 such pairs unmerged** (`goya2`, `new_geyzel04`, `new_karta`, `williams2` ×2) against 8 the converter has and they do not | the rule is permissive ("можно"), not mandatory — a blanket merge breaks 5 agreements to fix 8 |
+| `_` ≡ `*` italic | **0** real spans -- every `_` match in `fixtures/out/` is a filename underscore inside a URL | not a class; but see the risk below |
+| merge consecutive same-alignment `::: align` | the **references keep 5 such pairs unmerged** (`goya2`, `new_geyzel04`, `new_karta`, `williams2` ×2) against 8 the converter has and they do not | the rule is permissive ("можно"), not mandatory -- a blanket merge breaks 5 agreements to fix 8 |
 | URL integrity, no line split in a link label | **0** instances on either side | already correct |
-| `::: signature` for a source list rather than `::: nav` | 1 document (`new_kolpakov` — the reference writes `signature`, the converter `nav`); `new_blackmore` emits a `nav` the reference has none of, `new_rechin4` the reverse | small but real, vocabulary is stated outright |
-| `==` for a long quoted sentence | 6 spans, 3 documents (`jovicic` 1, `new_blackmore` 1, `new_rechin4` 4) — and 2 of `new_rechin4`'s are **under** the stated 64-character floor and are not in quotes, so the rule as written does not explain its own corpus | needs the author; also needs the triage half of rule 18 |
+| `::: signature` for a source list rather than `::: nav` | 1 document (`new_kolpakov` -- the reference writes `signature`, the converter `nav`); `new_blackmore` emits a `nav` the reference has none of, `new_rechin4` the reverse | small but real, vocabulary is stated outright |
+| `==` for a long quoted sentence | 6 spans, 3 documents (`jovicic` 1, `new_blackmore` 1, `new_rechin4` 4) -- and 2 of `new_rechin4`'s are **under** the stated 64-character floor and are not in quotes, so the rule as written does not explain its own corpus | needs the author; also needs the triage half of rule 18 |
 
 `goya2`'s 7 `image.caption.missing` are **not work**: the reference keeps the album title in
 `column[0]` *and* repeats it as the cover's `caption` in `column[1]`. The source states it once and
-`CLAUDE.md` §5 says to emit a visible caption once, not twice. Triage cannot see this — it is a
+`CLAUDE.md` §5 says to emit a visible caption once, not twice. Triage cannot see this -- it is a
 whole-document echo question, and `structdiff` already has the machinery (`homeOf`, the
 `.caption-echo` sub-class) but applies it only to orphan insertions, never to a property deletion.
 That is the cheapest remaining instrument improvement and it is worth more than the 7 findings.
@@ -4058,7 +4058,7 @@ checked whether `eval/blocks.ts` reads `abmv8_4.txt` as an emphasis span; if it 
 |---|---|
 | L0 | **434 tests**, typecheck clean, 0 FAILED, validator **13**, clean share 13.6 % |
 | L1 | **94.4 %** |
-| L2 | **275 findings — 152 converter-defect** · 64 ambiguous · 59 reference-inconsistency · 9 critical |
+| L2 | **275 findings -- 152 converter-defect** · 64 ambiguous · 59 reference-inconsistency · 9 critical |
 | L3 | **70 findings**, identity 0, deterministic |
 
 The §30 floor was 431 / 94.4 / 287 · 180 / 85. Of the 28-defect fall, **19 are the instrument
@@ -4073,14 +4073,14 @@ it closes. It was, and the reason is in the shape of the question rather than in
 
 `homeOf` sub-classifies an orphan by "where did the *other* side put this text", which is the right
 question for a block and an ill-posed one for a figure label. A caption and the line it labels are
-routinely **both present and both correct** — the reference binds `caption: 1.000.000 Platinum` to a
+routinely **both present and both correct** -- the reference binds `caption: 1.000.000 Platinum` to a
 cover *and* keeps `**1.000.000 Platinum**` in the lane beside it. Asked of the other side, the
 produced document does hold those words, in that same lane paragraph, and the answer says nothing
 about whether anything was lost. `compareDirective` never asked at all, so every absent `caption:`
 was reported as content the converter dropped.
 
 The decidable question is asked of the **owning** side: *does this document say the words twice?*
-`CLAUDE.md` §5 rules on exactly that — a visible caption is emitted **once, not twice** — so the
+`CLAUDE.md` §5 rules on exactly that -- a visible caption is emitted **once, not twice** -- so the
 side that repeats is the side that moved, and `triage` reads the direction:
 
 | class | who repeats | verdict |
@@ -4093,7 +4093,7 @@ the converter's own duplication a defect "however attested the words are". Imple
 first half would have been an instrument that excuses one side; both halves are contracted and the
 mirror is tested for firing.
 
-**Restricted to `caption` and `alt`** — the figure-label family §5 rules on. A `nav` `active` echoes
+**Restricted to `caption` and `alt`** -- the figure-label family §5 rules on. A `nav` `active` echoes
 its own item by construction and a `frame` `title` names a region rather than repeating a line, so
 neither is the same question and neither would have been a truthful hit.
 
@@ -4104,17 +4104,17 @@ That asymmetry is the entire reason for asking the owning side rather than the o
 
 ### 32.2 Where it stops, and why that is the honest place
 
-`lines` is consulted as well as `paragraphs`, for the reason `homeOf` consults it — a block boundary
+`lines` is consulted as well as `paragraphs`, for the reason `homeOf` consults it -- a block boundary
 on one side is a line ending on the other. `goya2` writes one lane as `**Historia de un Amor**` and
 `1999` in a single hard-break run, so the paragraph key carries the year and only the line key is
 the title. A label repeated as a *line* is repeated just as visibly.
 
-**Two of the seven are left wrong on purpose.** Those captions merge two sibling blocks —
-`**Francis Goya Plays His Favourite Hits**` and `**Vol. 1**` are one `caption: … vol. 1` — and
+**Two of the seven are left wrong on purpose.** Those captions merge two sibling blocks --
+`**Francis Goya Plays His Favourite Hits**` and `**Vol. 1**` are one `caption: … vol. 1` -- and
 neither index holds the joined key. Recognising it needs a concatenation search across siblings: a
 weaker claim about a smaller shape, and reaching for it here would have been chasing the last two
 findings rather than making the instrument truer. They remain `converter-defect` and are wrong about
-it. Recorded, not tuned away — the distinction invariant 2 exists to protect.
+it. Recorded, not tuned away -- the distinction invariant 2 exists to protect.
 
 ### 32.3 Measured
 
@@ -4126,7 +4126,7 @@ it. Recorded, not tuned away — the distinction invariant 2 exists to protect.
 | L3 | 70 | **70** |
 
 Output byte-identical; `eval/` is diagnostic-only and `convert-core` never imports it. Total
-findings unchanged by construction — this reclassifies, it does not remove. `goya2` 25 → 20 defect
+findings unchanged by construction -- this reclassifies, it does not remove. `goya2` 25 → 20 defect
 and **no other document moved**, which is the measurement that says the rule is narrow: five
 instances in one document, and the corpus contains no other caption either side states twice.
 

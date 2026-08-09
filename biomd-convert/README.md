@@ -3,14 +3,19 @@
 Converts legacy, malformed, mostly-Russian HTML into **BioMD Lite 1.6**
 (`.bio.md`). Implements [`htm-to-md_utility_plan.md`](../htm-to-md_utility_plan.md).
 
-**No API key required.** The converter is deterministic-first — it repairs,
+**No API key required.** The converter is deterministic-first -- it repairs,
 measures, classifies and emits without any model involvement. Two decisions
 escalate to a model when one is configured: what an ambiguous table *is*, and
 what to call a column the source never named. Both are counted and reported
 whether or not a gateway exists, so `escalation point(s)` in a run tells you
 exactly how much turning the LLM on would do before you spend anything.
 
-📖 **[Getting started](docs/GETTING-STARTED.md)** · **[Configuration](docs/CONFIGURATION.md)** · **[FAQ](docs/FAQ.md)** · **[Corpus profile](docs/CORPUS-PROFILE.md)**
+**[Getting started](docs/GETTING-STARTED.md)** · **[Configuration](docs/CONFIGURATION.md)** · **[FAQ](docs/FAQ.md)** · **[Corpus profile](docs/CORPUS-PROFILE.md)**
+
+- [Install](#install) · [Use it in three commands](#use-it-in-three-commands) · [Commands](#commands) · [Why Chromium](#why-chromium)
+- [Optional: an LLM gateway](#optional-an-llm-gateway) · [Measuring conversion quality](#measuring-conversion-quality)
+- [What it produces](#what-it-produces) · [Layout](#layout) · [The parts that carry the design](#the-parts-that-carry-the-design)
+- [Target profiles](#target-profiles) · [Tests](#tests) · [Deviations from the plan](#deviations-from-the-plan)
 
 ---
 
@@ -44,10 +49,10 @@ LLM:            off — 19 escalation point(s) left as review items
 `tables=a/b` is the structural conservation audit: `b` regions were classified
 as data, `a` of them became Markdown tables. Text recall cannot see the
 difference between a table and the same words spilled into paragraphs, so
-structure is counted separately — a `0/1` there is a silent loss at 100% recall.
+structure is counted separately -- a `0/1` there is a silent loss at 100% recall.
 
-**`corpus scan` is not optional in practice.** Site chrome — the banner, the top
-menu, the counter — is not recognisable from one page; what identifies it is
+**`corpus scan` is not optional in practice.** Site chrome -- the banner, the top
+menu, the counter -- is not recognisable from one page; what identifies it is
 that it is identical on every page. Without a profile the converter says so and
 keeps it.
 
@@ -65,7 +70,7 @@ of them mirror a config setting.
 | `biomd config show` | Effective settings **and where each came from** |
 | `biomd config set-key <gw>` | Store an API key outside the repository |
 | `biomd config test [--full]` | Verify a gateway really works |
-| `biomd inspect <file>` | Encoding, server-side code, parse errors — no conversion |
+| `biomd inspect <file>` | Encoding, server-side code, parse errors -- no conversion |
 | `biomd corpus scan [dir]` | Stage 0: chrome model + corpus lexicon |
 | `biomd convert <file>` | Convert one page, with a full report |
 | `biomd corpus run [dir]` | Convert a directory, resumable |
@@ -77,7 +82,7 @@ Every command takes `--help`.
 
 ## Why Chromium
 
-The converter renders each page to read *actual* geometry — real column widths,
+The converter renders each page to read *actual* geometry -- real column widths,
 real box positions. That is how it tells a data table from a layout scaffold,
 and `<td width="45%">` does not tell you: two cells declaring the same width
 routinely render differently, and two with no width attribute at all often
@@ -89,7 +94,7 @@ classification is materially weaker. One 150 MB download, once.
 ## Optional: an LLM gateway
 
 The converter never calls a provider API directly; it speaks the
-OpenAI-compatible protocol to a gateway you choose. **OpenRouter works** —
+OpenAI-compatible protocol to a gateway you choose. **OpenRouter works** --
 base URL `https://openrouter.ai/api/v1` (not the `/chat/completions` endpoint).
 
 ```bash
@@ -109,7 +114,7 @@ biomd corpus run --llm assist
 biomd corpus run --replay          # re-run offline from the decision cache
 ```
 
-If a run reports calls that resolved nothing, it now says why — a mistyped model
+If a run reports calls that resolved nothing, it now says why -- a mistyped model
 id, an expired key and an exhausted budget all produce the same "0 resolved"
 line and only the reason distinguishes them. The transport also degrades
 `json_schema` → `tools` → `json_object` on its own: `response_format` is
@@ -120,14 +125,14 @@ Every decision is cached on the *resolved* model identity, so a second run over
 the same corpus costs nothing and produces byte-identical output. Budgets are
 reserved before a request is built, and a budget refusal, a dead gateway or a
 malformed reply all degrade to "the deterministic answer stands, and the item
-stays flagged" — a model can never fail a conversion.
+stays flagged" -- a model can never fail a conversion.
 
 Full details, LiteLLM setup, budgets and the R1/R2/R3 transport rules:
 **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**.
 
 ## Measuring conversion quality
 
-`biomd eval` scores produced output against hand-written reference documents —
+`biomd eval` scores produced output against hand-written reference documents --
 what a person decided the conversion *should* look like. It needs a reference
 set, which you write yourself: for a handful of pages, the conversion you would
 have produced by hand, named after the source (`barrios.htm` → `barrios.bio.md`).
@@ -194,13 +199,13 @@ the hardest guessing problem into a lookup.
 **Ordering is load-bearing in four places**, each a bug that was found by
 running the pipeline rather than reading it:
 
-1. Quarantine before parsing, preserving offsets — otherwise every provenance
+1. Quarantine before parsing, preserving offsets -- otherwise every provenance
    span shifts.
-2. Measurement before `<head>` is dropped and before normalize — those discard
+2. Measurement before `<head>` is dropped and before normalize -- those discard
    the evidence being measured.
-3. De-hyphenation before whitespace normalization — collapsing `\n` destroys the
+3. De-hyphenation before whitespace normalization -- collapsing `\n` destroys the
    wrap evidence a join decision rests on.
-4. S1 before reading text in the corpus pass — a `<style>` body is a text node,
+4. S1 before reading text in the corpus pass -- a `<style>` body is a text node,
    so otherwise the lexicon learns `font-family` and `sans-serif` and feeds them
    back as hyphenation evidence.
 
@@ -211,7 +216,7 @@ the only component that emits a `:::`.
 
 The rule that keeps this honest: **the converter may narrow what it emits, never
 what it accepts.** A narrowing that is a claim about the consuming renderer
-belongs in a target profile; anything else is a defect, and three of them were —
+belongs in a target profile; anything else is a defect, and three of them were --
 a four-track `columns`, the palette tokens on a picture `frame:`, and a page
 title wrapped over two `#` lines were all refused by this codebase and all
 permitted by the format.
@@ -226,14 +231,14 @@ shingles, link and image multisets, in vs out; content may be absent only where
 the ledger records a `REMOVED(reason)`. Separately, every region classified as
 data must have produced a table. Both halves are needed: the consuming renderer
 discards what it does not understand *without an error*, so nothing downstream
-notices a loss — and text recall alone cannot tell a table from the same words
+notices a loss -- and text recall alone cannot tell a table from the same words
 spilled into twenty-seven paragraphs.
 
 **Three table representations, kept apart.** The repaired tree, the *physical*
 occupancy grid (span coverage, origin cells), and the *semantic* record matrix.
-Legacy tables routinely use more physical slots than they have columns — a
+Legacy tables routinely use more physical slots than they have columns -- a
 FrontPage discography declares nine slots per row in a stable `7 + 1 + 1`
-pattern and has three columns — so the semantic width is inferred from the
+pattern and has three columns -- so the semantic width is inferred from the
 dominant complete-row partition, and several physical cells inside one band
 become one semantic cell. Requiring the two to be equal is what used to make
 whole tables disappear.
@@ -251,10 +256,10 @@ drifted. That divergence is data, not hardcoded behaviour
 
 | Construct | `renderer-current` (default) | `spec-1.6` |
 |---|---|---|
-| `::: frame` | not emitted — degrades to a blockquote or titled section | emitted |
-| `::: signature` | not emitted — degrades to paragraphs | emitted |
-| `columns` → `divider` | **never emitted** — the target parses the property line as content, producing a bogus first column | emitted |
-| `columns` → `columns: 2\|3\|4` | **never emitted** — same defect, separate property: no property header inside `columns` is stripped | emitted |
+| `::: frame` | not emitted -- degrades to a blockquote or titled section | emitted |
+| `::: signature` | not emitted -- degrades to paragraphs | emitted |
+| `columns` → `divider` | **never emitted** -- the target parses the property line as content, producing a bogus first column | emitted |
+| `columns` → `columns: 2\|3\|4` | **never emitted** -- same defect, separate property: no property header inside `columns` is stripped | emitted |
 | leading-zero list markers | loss recorded | preserved |
 
 A profile flag is the *only* legitimate reason to emit less than the reference
@@ -266,11 +271,11 @@ compatibility table cannot quietly go stale.
 ## Tests
 
 ```bash
-npm test          # 209 tests
+npm test          # count grows over time; the runner prints the current total
 npm run typecheck
 ```
 
-Chromium-dependent tests skip cleanly when the browser is absent — the pipeline
+Chromium-dependent tests skip cleanly when the browser is absent -- the pipeline
 must work without it, so skipping is correct rather than a hidden failure.
 
 ## Deviations from the plan
@@ -283,6 +288,6 @@ must work without it, so skipping is correct rather than a hidden failure.
   dependency.
 - **parse5 directly rather than via `rehype-parse`.** It already yields source
   locations and a spec tree.
-- **PostCSS dropped.** Always-on measurement removed the need —
+- **PostCSS dropped.** Always-on measurement removed the need --
   `getComputedStyle` resolves the cascade, legacy attributes and inline styles
   in one step.
