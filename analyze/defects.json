@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-08T19:23:17.804Z",
+  "generated": "2026-08-09T20:20:18.952Z",
   "totals": {
-    "findings": 275,
-    "converterDefects": 147,
+    "findings": 269,
+    "converterDefects": 141,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 64,
     "ambiguous": 64,
     "bySeverity": {
-      "critical": 9,
-      "major": 136,
+      "critical": 8,
+      "major": 131,
       "minor": 130
     }
   },
@@ -167,10 +167,10 @@
     },
     {
       "doc": "segovia1",
-      "findings": 11,
-      "converterDefects": 10,
-      "critical": 2,
-      "major": 8,
+      "findings": 5,
+      "converterDefects": 4,
+      "critical": 1,
+      "major": 3,
       "minor": 1
     },
     {
@@ -244,45 +244,22 @@
       }
     },
     {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "borislova",
-        "new_karta",
-        "new_kolpakov",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 72,
-      "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
-        "reference": null
-      }
-    },
-    {
       "class": "retyped.align-to-paragraph",
       "severity": "major",
-      "instances": 6,
+      "instances": 8,
       "documents": [
         "goya2",
         "kiselev",
-        "news"
+        "news",
+        "segovia1"
       ],
       "verdicts": {
-        "converter-defect": 6,
+        "converter-defect": 8,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 54,
+      "rank": 96,
       "example": {
         "doc": "goya2",
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
@@ -337,6 +314,29 @@
         "path": "/heading[70]/text",
         "produced": "(none)",
         "reference": "strong:О вкусах не спорят"
+      }
+    },
+    {
+      "class": "align.spurious",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "borislova",
+        "new_karta",
+        "new_kolpakov"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 36,
+      "example": {
+        "doc": "borislova",
+        "path": "/align[45]",
+        "produced": "WMA",
+        "reference": null
       }
     },
     {
@@ -544,27 +544,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-column",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "segovia1",
-        "path": "/columns[59]/column[1]",
-        "produced": "◀",
-        "reference": "◀ — at /paragraph[60]"
-      }
-    },
-    {
       "class": "frame.moved",
       "severity": "major",
       "instances": 2,
@@ -763,27 +742,6 @@
       }
     },
     {
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "instances": 2,
-      "documents": [
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "segovia1",
-        "path": "/columns[59]/paragraph[0]",
-        "produced": null,
-        "reference": "columns: 4"
-      }
-    },
-    {
       "class": "frame.position.spurious",
       "severity": "minor",
       "instances": 2,
@@ -887,27 +845,6 @@
         "path": "/columns[20]/column[1]",
         "produced": "align center WMA",
         "reference": null
-      }
-    },
-    {
-      "class": "columns.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "segovia1",
-        "path": "/columns[59]",
-        "produced": null,
-        "reference": "columns: 4 column ◀ column Андрес Сеговия column Владимир Бобри column ▶"
       }
     },
     {
@@ -1863,6 +1800,27 @@
         "path": "/columns[11]/column[1]/paragraph[0]",
         "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abcguitars.com](…",
         "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…"
+      }
+    },
+    {
+      "class": "paragraph.missing.unattested",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 1,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "segovia1",
+        "path": "/frame[57]/paragraph[0]",
+        "produced": null,
+        "reference": "frame: gold"
       }
     },
     {
@@ -5445,34 +5403,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "400438ea",
-      "doc": "segovia1",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[60]",
-      "producedLine": 237,
-      "referenceLine": null,
-      "produced": "Андрес Сеговия",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1fad3860",
-      "doc": "segovia1",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[60]",
-      "producedLine": 244,
-      "referenceLine": null,
-      "produced": "Владимир Бобри",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "4f04ad7a",
       "doc": "segovia1",
       "class": "frame.moved",
@@ -5515,87 +5445,31 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "e3c773a4",
+      "id": "f8c486dc",
       "doc": "segovia1",
-      "class": "columns.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/columns[59]",
-      "producedLine": null,
-      "referenceLine": 234,
-      "produced": null,
-      "reference": "columns: 4 column ◀ column Андрес Сеговия column Владимир Бобри column ▶",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f04aff3d",
-      "doc": "segovia1",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[59]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 235,
-      "produced": null,
-      "reference": "columns: 4",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ee82bf58",
-      "doc": "segovia1",
-      "class": "retyped.paragraph-to-column",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[59]/column[1]",
-      "producedLine": 234,
-      "referenceLine": 237,
-      "produced": "◀",
-      "reference": "◀ — at /paragraph[60]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19eb8b06",
-      "doc": "segovia1",
-      "class": "retyped.paragraph-to-column",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[2]",
-      "producedLine": 240,
-      "referenceLine": 241,
+      "path": "/columns[59]/column[2]/paragraph[0]",
+      "producedLine": 246,
+      "referenceLine": 242,
       "produced": "Андрес Сеговия",
-      "reference": "Андрес Сеговия — at /align[60]/paragraph[0]",
+      "reference": "Андрес Сеговия — at /columns[59]/column[2]/align[1]",
       "verdict": "converter-defect"
     },
     {
-      "id": "f6d3c813",
+      "id": "e1e37cb3",
       "doc": "segovia1",
-      "class": "retyped.paragraph-to-column",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/columns[59]/column[3]",
-      "producedLine": 250,
-      "referenceLine": 245,
-      "produced": "▶",
-      "reference": "Владимир Бобри — at /paragraph[60]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c931ea67",
-      "doc": "segovia1",
-      "class": "retyped.paragraph-to-column",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[4]",
-      "producedLine": 247,
-      "referenceLine": 249,
+      "path": "/columns[59]/column[3]/paragraph[0]",
+      "producedLine": 257,
+      "referenceLine": 246,
       "produced": "Владимир Бобри",
-      "reference": "▶ — at /align[60]/paragraph[0]",
+      "reference": "Владимир Бобри — at /columns[59]/column[3]/align[1]",
       "verdict": "converter-defect"
     },
     {

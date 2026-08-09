@@ -1,5 +1,5 @@
 {
-  "overall": 0.9441574934676126,
+  "overall": 0.9446640073846084,
   "documents": [
     {
       "name": "authors",
@@ -2620,12 +2620,12 @@
     {
       "name": "segovia1",
       "text": {
-        "recall": 0.9915100060642814,
-        "precision": 0.9951308581862447,
-        "f1": 0.9933171324422843,
+        "recall": 0.9927228623408126,
+        "precision": 0.9951367781155015,
+        "f1": 0.9939283545840923,
         "expected": 1649,
-        "actual": 1643,
-        "matched": 1635,
+        "actual": 1645,
+        "matched": 1637,
         "missing": [
           "суть педагогических принципов сеговии frame",
           "педагогических принципов сеговии frame gold",
@@ -2633,8 +2633,8 @@
           "сеговии frame gold внимание частичное",
           "frame gold внимание частичное или",
           "gold внимание частичное или полное",
-          "subject техника андреса сеговии columns",
-          "техника андреса сеговии columns 4"
+          "андреса сеговии columns 4 9664",
+          "сеговии columns 4 9664 андрес"
         ]
       },
       "headings": {
@@ -2665,16 +2665,14 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.7692307692307693,
-        "precision": 0.8695652173913043,
-        "f1": 0.8163265306122449,
+        "recall": 0.9615384615384616,
+        "precision": 0.8928571428571429,
+        "f1": 0.9259259259259259,
         "expected": 26,
-        "actual": 23,
-        "matched": 20,
+        "actual": 28,
+        "matched": 25,
         "missing": [
-          "frame",
-          "columns",
-          "column"
+          "frame"
         ]
       },
       "tableCells": {
@@ -2689,7 +2687,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9796277927939098
+      "overall": 0.9907710989678202
     },
     {
       "name": "tarrega",

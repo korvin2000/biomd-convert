@@ -164,9 +164,12 @@ function makeHandlers(profile: TargetProfile): Record<string, AnyHandler> {
 
     biomdColumns: ((node: BiomdColumns, _p: unknown, state: State, info: unknown) => {
       const exit = enter(state, node);
-      // `divider` is only reachable when the profile permits it; makeColumns()
-      // refuses to set it otherwise.
+      // `columns` and `divider` are only reachable when the profile permits
+      // them; makeColumns() refuses to set either otherwise.
       const props: Prop[] = [];
+      if (node.columns !== undefined && profile.supports.columnsProperty) {
+        props.push(["columns", String(node.columns)]);
+      }
       if (node.divider === true && profile.supports.columnsDivider) props.push(["divider", "true"]);
       const out = assemble("columns", props, flowNodes(state, node.children as unknown as Nodes[], info));
       exit();

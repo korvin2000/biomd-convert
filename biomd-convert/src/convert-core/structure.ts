@@ -15,6 +15,7 @@ import {
   type BiomdContent,
   type BiomdRoot,
   type BoundedContent,
+  type ColumnsCount,
   type DowngradeRecord,
   type TargetProfile,
   downgradeNotice,
@@ -27,6 +28,7 @@ import {
   makeImages,
   makeLead,
   makeNav,
+  resolveColumnsCount,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
 import { type GridCell, type TableGrid, rowCells } from "../ladom/grid.js";
@@ -2708,6 +2710,19 @@ function dataRegionFrom(
   const detail = planned.detail || "no source header row and the classifier abstained";
 
   if (classification.class === "DATA") {
+    // A row of nothing but links is a pager, not an abandoned record matrix.
+    // `segovia1`'s `◀ | Андрес Сеговия | Владимир Бобри | ▶` scores DATA on
+    // grid regularity and per-column homogeneity — the same evidence a real
+    // record row gives — but `planDataTable` can never plan it: it carries no
+    // data to put in a body under a header, only navigation. `layoutFrom` is
+    // the right next question, the same one the UNKNOWN branch below already
+    // asks for an inconclusive verdict — asked first, so a pager is recorded
+    // by what it becomes rather than by the record-matrix attempt it never
+    // was. A title-bearing record row (`borislova`, `new_kolpakov`,
+    // `new_karta`'s single-track tables) fails `isBareLinkRow` on its very
+    // first cell and falls through to the DATA-abandonment path unchanged.
+    if (isBareLinkRow(grid)) return layoutFrom(grid, ctx, el, classification);
+
     // A DATA verdict that cannot be expressed as a table is a classification
     // finding, not a formatting detail: rows and columns are about to be lost.
     ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
@@ -2971,11 +2986,55 @@ function spaceNode(): LadomNode {
 }
 
 /**
+ * A single-row table where every occupied cell is exactly one link — a pager:
+ * `◀ | Андрес Сеговия | Владимир Бобри | ▶`, the previous/current/next strip
+ * this era draws as a table row rather than as inline text.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Whole-cell equality between the cell's own text and its one
+ * anchor's text — the cell must be the link and nothing else. This mirrors
+ * {@link navFromGrid}'s "the cell must be the link and nothing else" test,
+ * oriented as a row instead of a column stack; an icon-only cell (no text on
+ * either side of the comparison) passes the same way an icon-only nav item
+ * would, which is why it is not also required here as `navFromGrid` requires
+ * of its own linked items.
+ *
+ * **False friend, tested for non-firing:** a single-row resource record —
+ * title beside a format link (`borislova`'s `"Estrelluvio" … | WMA`,
+ * `new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`, `new_karta`'s single-track
+ * tables). The title cell holds prose and carries no link at all, so it fails
+ * `links === 1` on its first cell and the row is never mistaken for a pager.
+ *
+ * **Recurrence.** Not required: a page draws exactly one previous/next strip,
+ * so the shape occurs once per page by construction (`CLAUDE.md` §5's stated
+ * exemption for a construct that cannot repeat within a document). The
+ * per-cell containment test carries the whole burden of proof instead.
+ */
+function isBareLinkRow(grid: TableGrid): boolean {
+  if (grid.rows !== 1) return false;
+  const cells = rowCells(grid, 0).filter((cell) => !cell.isEmpty);
+  if (cells.length === 0) return false;
+  return cells.every((cell) => {
+    if (cell.links !== 1) return false;
+    const anchors = [...walkElements(cell.node)].filter((node) => node.tag === "a");
+    const anchor = anchors[0];
+    if (anchors.length !== 1 || !anchor) return false;
+    const linkText = textOf(anchor).replace(/\s+/gu, " ").trim();
+    const cellText = cell.text.replace(/\s+/gu, " ").trim();
+    return linkText === cellText;
+  });
+}
+
+/**
  * A layout or catalog region.
  *
  * Under `simplified` this flattens to linear reading order. `columns` is
- * emitted only under `faithful`, and only for a genuine two- or three-lane
- * structure — never to imitate a width.
+ * emitted only under `faithful`, and only for a genuine lane structure —
+ * never to imitate a width. Capped at three lanes, except a bare-link pager
+ * row ({@link isBareLinkRow}), which `BioMD-Reference.md` §3's `columns:
+ * 2|3|4` and `segovia1`'s `◀ | name | name | ▶` footer both attest up to
+ * four.
  */
 function layoutFrom(
   grid: TableGrid,
@@ -2983,7 +3042,8 @@ function layoutFrom(
   el: LadomNode,
   classification: Classification,
 ): BiomdContent[] {
-  if (ctx.options.layoutFidelity === "faithful" && grid.cols >= 2 && grid.cols <= 3 && grid.rows >= 1) {
+  const maxLanes = isBareLinkRow(grid) ? 4 : 3;
+  if (ctx.options.layoutFidelity === "faithful" && grid.cols >= 2 && grid.cols <= maxLanes && grid.rows >= 1) {
     // Speculative, so it has to be undoable. A lane attempt that turns out not
     // to produce two usable columns still walked every cell, and its links,
     // images and ledger entries stayed behind — the conservation gate then
@@ -3094,7 +3154,13 @@ function layoutFrom(
         // Layout, not text — §16.3 constrains invented *content*, and drawing a
         // separator invents none.
         if (lanedRows > 0) regions.push(markDerivedRule());
-        regions.push(makeColumns({ children: columns, profile: ctx.options.profile }));
+        // Reference §3: the legacy form may omit `columns:` for 2–3 children,
+        // but a 4-lane group has no legacy spelling, so the count is the only
+        // way a reader learns the arity. `resolveColumnsCount` omits it again
+        // under a profile that cannot render the property line safely.
+        const resolvedCount = resolveColumnsCount(ctx.options.profile, columns.length as ColumnsCount);
+        ctx.downgrades.push(...resolvedCount.transforms);
+        regions.push(makeColumns({ children: columns, profile: ctx.options.profile, columns: resolvedCount.columns }));
         lanedRows += 1;
         regions.push(...folded);
         continue;

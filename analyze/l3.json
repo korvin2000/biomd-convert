@@ -27,7 +27,7 @@
     ]
   },
   "totals": {
-    "findings": 70,
+    "findings": 68,
     "alignmentRows": 273
   },
   "classes": [
@@ -38,8 +38,8 @@
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 12,
-      "documents": 3
+      "instances": 10,
+      "documents": 2
     },
     {
       "class": "layout.order.mismatch",
@@ -1108,7 +1108,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 240,
+      "producedLine": 249,
       "referenceLine": 242,
       "produced": "Андрес Сеговия",
       "reference": "Андрес Сеговия",
@@ -1131,7 +1131,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 247,
+      "producedLine": 260,
       "referenceLine": 246,
       "produced": "Владимир Бобри",
       "reference": "Владимир Бобри",
@@ -1205,12 +1205,12 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 240,
+      "producedLine": 249,
       "referenceLine": 242,
       "produced": "Андрес Сеговия",
       "reference": "Андрес Сеговия",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "columns>column>align",
         "referenceContainer": "columns>column"
       }
     },
@@ -1222,47 +1222,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 247,
+      "producedLine": 260,
       "referenceLine": 246,
       "produced": "Владимир Бобри",
       "reference": "Владимир Бобри",
       "geometry": {
-        "producedContainer": "align",
+        "producedContainer": "columns>column>align",
         "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "1397f4f3",
-      "doc": "segovia1",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 240,
-      "referenceLine": 242,
-      "produced": "Андрес Сеговия",
-      "reference": "Андрес Сеговия",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 3
-      }
-    },
-    {
-      "id": "571a2304",
-      "doc": "segovia1",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 247,
-      "referenceLine": 246,
-      "produced": "Владимир Бобри",
-      "reference": "Владимир Бобри",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 4
       }
     },
     {
@@ -4684,7 +4650,7 @@
     },
     {
       "doc": "segovia1",
-      "producedLine": 240,
+      "producedLine": 249,
       "referenceLine": 242,
       "text": "Андрес Сеговия",
       "producedAlignment": "center",
@@ -4697,7 +4663,7 @@
     },
     {
       "doc": "segovia1",
-      "producedLine": 247,
+      "producedLine": 260,
       "referenceLine": 246,
       "text": "Владимир Бобри",
       "producedAlignment": "center",

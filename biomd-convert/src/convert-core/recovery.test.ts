@@ -989,6 +989,83 @@ describe("inconclusive table classification", () => {
 });
 
 /**
+ * A single-row table where every cell is nothing but a link is a pager, not
+ * an abandoned record matrix — even when the classifier calls it DATA.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Whole-cell equality between a cell's own text and its one
+ * anchor's text: the cell must be the link and nothing else. `segovia1`'s
+ * `◀ | Андрес Сеговия | Владимир Бобри | ▶` scores DATA on grid regularity
+ * and per-column homogeneity — the same evidence a real record row gives —
+ * but has no header to plan a table from, because it carries no data, only
+ * navigation. `planDataTable` abandons it outright (`grid.rows < minRows`),
+ * and an abandoned DATA verdict used to fall straight to linear flow without
+ * ever asking whether the row had lanes.
+ *
+ * **False friend, tested for non-firing:** a single-row resource record —
+ * title beside a format link, the shape `borislova`, `new_kolpakov` and
+ * `new_karta`'s single-track discography rows all share. The title cell
+ * holds prose and carries no link at all, so it fails `links === 1` on its
+ * first cell and the row is never mistaken for a pager.
+ *
+ * **Recurrence.** Deliberately not required — a page draws exactly one
+ * previous/next strip, so the shape occurs once per page by construction
+ * (`CLAUDE.md` §5's stated exemption). The per-cell containment test carries
+ * the whole burden of proof instead, the same way the icon-glyph table's
+ * "recurrence is cross-document" contract does above.
+ */
+describe("a row of nothing but links is a pager, not an abandoned record", () => {
+  const pager =
+    '<table width="60" border="0" cellspacing="0" cellpadding="0"><tr>' +
+    '<td width="11"><a href="segovia.htm"><img src="../main/back.gif" width="11" height="11"></a></td>' +
+    '<td><a href="segovia.htm">Андрес Сеговия</a></td>' +
+    '<td><a href="bobri.htm">Владимир Бобри</a></td>' +
+    '<td width="11"><a href="bobri.htm"><img src="../main/forward.gif" width="11" height="11"></a></td>' +
+    "</tr></table>";
+
+  const record =
+    '<table width="300" border="0" cellspacing="0" cellpadding="0"><tr>' +
+    '<td width="85%">&quot;Estrelluvio&quot; (Dedicada a Jos&eacute; Luis Vega)</td>' +
+    '<td width="15%"><a href="music/wma/estrelluvio.wma">WMA</a></td>' +
+    "</tr></table>";
+
+  async function convertWith(cls: Classification["class"], html: string): Promise<Awaited<ReturnType<typeof convert>>> {
+    const doc = parseHtml(html);
+    const inner = [...walkElements(doc.root)].filter((e) => e.tag === "table");
+    const target = inner[inner.length - 1];
+    const classifications = new Map([
+      [target!.id, { class: cls, confidence: 0.4, tier: 4 as const, reason: "forced by test" }],
+    ]);
+    return convert(Buffer.from(html, "utf8"), { profile: SPEC, layoutFidelity: "faithful", classifications });
+  }
+
+  it("reconsiders a four-cell bare-link row as a layout, not as flow", async () => {
+    const result = await convertWith("DATA", page(PROSE + pager));
+    expect(result.markdown).toContain("::: columns");
+    expect(result.markdown).toContain("columns: 4");
+    expect(result.markdown).toContain("::: column");
+  });
+
+  it("leaves a title-bearing record row on the flow path — the false friend", async () => {
+    const result = await convertWith("DATA", page(PROSE + record));
+    expect(result.markdown).not.toContain("::: columns");
+  });
+
+  it("caps an ordinary layout region at three lanes — the count stays four only for a pager", async () => {
+    // Four bare prose cells (no links at all) are not a pager either: the
+    // lane cap only widens for the shape this rule names, not for every
+    // four-column region a classifier abstains on.
+    const plain =
+      '<table width="400" border="0"><tr>' +
+      "<td>one</td><td>two</td><td>three</td><td>four</td>" +
+      "</tr></table>";
+    const result = await convertWith("UNKNOWN", page(PROSE + plain));
+    expect(result.markdown).not.toContain("::: columns");
+  });
+});
+
+/**
  * A flattened grid row that is nothing but pictures is one visual row.
  *
  * **Invariant.** Containment and cardinality only: a row whose cells lower to

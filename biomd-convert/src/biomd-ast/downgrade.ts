@@ -10,7 +10,7 @@
 import type { BlockContent, Paragraph } from "mdast";
 import type { TargetProfile } from "./profile.js";
 import { makeFrame, makeSignature } from "./builders.js";
-import type { BiomdContent, BoundedContent, FramePalette } from "./types.js";
+import type { BiomdContent, BoundedContent, ColumnsCount, FramePalette } from "./types.js";
 
 export interface Downgrade<T> {
   /** Content to emit. */
@@ -23,7 +23,7 @@ export interface Downgrade<T> {
 }
 
 export interface DowngradeRecord {
-  construct: "frame" | "signature" | "columns.divider" | "leading-zero-marker";
+  construct: "frame" | "signature" | "columns.divider" | "columns.count" | "leading-zero-marker";
   profile: string;
   /** Human-readable statement of what the reader loses. */
   effect: string;
@@ -123,6 +123,35 @@ export function resolveDivider(
         construct: "columns.divider",
         profile: profile.id,
         effect: "meaningful column separator omitted; emitting it would corrupt the rendered layout",
+      },
+    ],
+  };
+}
+
+/**
+ * Whether the declared track count can be represented.
+ *
+ * Native: `columns: N`. Reference §3's legacy form may omit it for 2–3
+ * children, so below 4 the property stays optional and is never emitted —
+ * matching what the converter already did before a 4-lane group existed. A
+ * 4-child group has no legacy spelling, so the count is the only way a reader
+ * learns the track arity; downgrading it hits the same renderer bug
+ * {@link resolveDivider} does — the property line is not stripped and would
+ * show up as a bogus first column — so there is no safe partial emission.
+ */
+export function resolveColumnsCount(
+  profile: TargetProfile,
+  count: ColumnsCount,
+): { columns: ColumnsCount | undefined; transforms: DowngradeRecord[] } {
+  if (count < 4) return { columns: undefined, transforms: [] };
+  if (profile.supports.columnsProperty) return { columns: count, transforms: [] };
+  return {
+    columns: undefined,
+    transforms: [
+      {
+        construct: "columns.count",
+        profile: profile.id,
+        effect: `${count}-column track count omitted; the renderer does not strip the property line and would show it as a bogus first column`,
       },
     ],
   };
