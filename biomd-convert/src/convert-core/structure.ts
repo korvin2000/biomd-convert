@@ -821,8 +821,17 @@ function blockTextOf(block: BiomdContent): string {
  * follows. `Надя Борислова: ПРОИЗВЕДЕНИЯ ДЛЯ ГИТАРЫ (1989–2002)` carries no
  * weight, no size and no centring, so no typographic rule can see it; its
  * position is the whole evidence.
+ *
+ * **Not inside a record region.** `headingLineOf` already declines there —
+ * "every card opens with a bold line: the album title above its track list
+ * ... only the article's own flow gets headings from a line" — and this
+ * function shares the same evidence gap: a plain label without weight or
+ * centring is exactly what a catalog's own field labels look like too. Two
+ * levels of `<table>` and not one, because the page frame itself is a table,
+ * so ordinary top-level prose already sits at depth 1.
  */
-function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+export function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  if (ctx.tableDepth >= 2) return [...nodes];
   const out = [...nodes];
   for (let i = 1; i < out.length - 1; i += 1) {
     const rule = out[i - 1] as BiomdContent;
@@ -896,8 +905,17 @@ function blockTextLength(node: BiomdContent): number {
  * the body, so no typographic rule reaches them — the only evidence is that a
  * list starts on the next line. Recurrence guards it: one label above one list
  * is a sentence introducing an enumeration, three are a page's section model.
+ *
+ * **Not inside a record region**, the same exclusion `headingLineOf` and
+ * {@link promoteSectionAfterRule} both make and for the same reason:
+ * `kiselev`'s six album titles each sit directly above that album's own
+ * track list — recovered as a `list` by {@link listFromBlockquoteRun}, not
+ * authored as a `<ul>` — and six is recurrence enough to satisfy this rule's
+ * own floor of two. A record's own field label is not a document section,
+ * however many times the record repeats.
  */
-function promoteLabelBeforeList(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+export function promoteLabelBeforeList(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  if (ctx.tableDepth >= 2) return [...nodes];
   const candidates: number[] = [];
   nodes.forEach((node, index) => {
     if (node.type !== "paragraph") return;
@@ -1622,6 +1640,59 @@ function joinItemLines(item: readonly RunLine[]): PhrasingContent[] {
 }
 
 /**
+ * A native `<blockquote>` around one flat run of parallel lines is a record
+ * list, not a quotation this era's markup happens to indent the same way.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Containment, not shape: the blockquote's *only* lowered
+ * content is a single `paragraph`, and `quotesItsContent` has already
+ * declined it. `kiselev`'s six album track lists are exactly this — each
+ * `<blockquote style="margin-left: 25">` holds one `<p class="cdk">` of
+ * `<br>`-joined "title <i>duration</i>" lines and nothing else.
+ *
+ * **Why not shape.** §15.2 measured line count, line length and variance
+ * across every multi-line run in the 13 references and found total overlap
+ * between a genuine list (`kiselev`'s tracks) and verse that must stay a
+ * paragraph (`borislova`'s poems) — neither is a usable discriminator. What
+ * separates them is containment the shape signal cannot see: `kiselev`
+ * writes the run inside a real `<blockquote>`; `borislova`'s poems sit in a
+ * plain `<p class="it">`, never inside `<blockquote>` at all.
+ *
+ * **False friend, tested for non-firing:** `segovia`'s two quoted anecdotes
+ * are the same shape one level up — `<blockquote><i><p class="c">…</p></i>
+ * </blockquote>`, `<br>`-joined dialogue lines — but they are wholly italic,
+ * so `quotesItsContent` claims them first and this function never sees them.
+ * Every other blockquote in the 22-document corpus (the whole-article
+ * wrapper on 13 pages, `tarrega`'s multi-paragraph PDF-track blockquote,
+ * `new_rechin4`'s pagination-strip-plus-prose blockquote) lowers to *more*
+ * than one block, failing the single-paragraph gate before the question of
+ * content is even asked.
+ *
+ * **Recurrence.** Not required by the invariant, which is containment — but
+ * measured recurring six times on `kiselev`'s own page (a title paragraph
+ * followed by an indented blockquote, six albums running), which is what
+ * makes the shape decidable at all rather than a single credit line.
+ */
+function listFromBlockquoteRun(inner: readonly BiomdContent[]): List | null {
+  if (inner.length !== 1) return null;
+  const only = inner[0];
+  if (!only || only.type !== "paragraph") return null;
+  const lines = splitLines(only.children).filter((line) => lineText(line).trim() !== "");
+  if (lines.length < 2) return null;
+  return {
+    type: "list",
+    ordered: false,
+    spread: false,
+    children: lines.map((line) => ({
+      type: "listItem",
+      spread: false,
+      children: [{ type: "paragraph", children: trimEdgeBreaks(collapseAdjacentText(line.content)) }],
+    })),
+  };
+}
+
+/**
  * The label a block carries, when that label can title the menu below it.
  *
  * ## Rule contract
@@ -1973,6 +2044,11 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
       if (quoted && inner.length > 0) {
         ctx.ledger.push(emitted(el.id, nextId(ctx, "quote")));
         return [{ type: "blockquote", children: inner }];
+      }
+      const recordList = quoted ? null : listFromBlockquoteRun(inner);
+      if (recordList) {
+        ctx.ledger.push(emitted(el.id, nextId(ctx, "list")));
+        return [recordList];
       }
       if (inner.length > 0) ctx.ledger.push(emitted(el.id, nextId(ctx, "block")));
       else ctx.ledger.push(removed(el.id, "no content after conversion"));

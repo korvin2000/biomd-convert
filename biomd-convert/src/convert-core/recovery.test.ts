@@ -7,8 +7,15 @@
  * implementation of the same recovery still passes.
  */
 import { describe, expect, it } from "vitest";
+import type { List, Paragraph } from "mdast";
 import { convert } from "./pipeline.js";
-import { ALIGN_LABEL_MAX_CHARS, foldBreaks, isAlignableLabelText, isDateLabel } from "./structure.js";
+import {
+  ALIGN_LABEL_MAX_CHARS,
+  foldBreaks,
+  isAlignableLabelText,
+  isDateLabel,
+  promoteLabelBeforeList,
+} from "./structure.js";
 import type { Classification } from "./classify.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
 import { iconGlyphFor, isDrawnRule } from "./glyphs.js";
@@ -19,6 +26,7 @@ import type { Measurer, MeasureResult } from "../ladom/measure.js";
 import type { LadomDocument, ResolvedStyle } from "../ladom/types.js";
 import { foldTextAlign, isCenteredAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { resolveProfile } from "../biomd-ast/index.js";
+import type { BiomdContent } from "../biomd-ast/index.js";
 import { walkElements } from "../ladom/types.js";
 
 /** A minimal page with the era's shell, so chrome removal has something to do. */
@@ -630,16 +638,44 @@ describe("a blockquote is quoted matter only when the source set it apart", () =
     expect(out).toMatch(/^> \*?По дороге/mu);
   });
 
-  it("flattens an upright indent, however many of them the page has", async () => {
-    // `kiselev` indents six track lists this way and the reference emits lists.
+  it("reads an upright indent of parallel lines as a list, not a quote", async () => {
+    // `kiselev` indents six track lists this way, each line ended with `<br>`,
+    // and the reference emits lists — a run flattened here used to lose the
+    // structure entirely (`retyped.paragraph-to-list`, PROGRESS §34).
     const out = await mdMeasured(
       PROSE +
-        "<blockquote><p>Игра 0'52\" Колыбельная 0'53\"</p></blockquote>" +
+        "<blockquote><p>Игра 0'52\"<br>Колыбельная 0'53\"</p></blockquote>" +
         PROSE +
-        "<blockquote><p>Прелюдия 1'43\" Листопад 1'20\"</p></blockquote>" +
+        "<blockquote><p>Прелюдия 1'43\"<br>Листопад 1'20\"</p></blockquote>" +
         PROSE,
     );
     expect(out).not.toMatch(/^>/mu);
+    expect(out).toContain("- Игра 0'52\"");
+    expect(out).toContain("- Колыбельная 0'53\"");
+  });
+
+  it("does not read a single-line indent as a list — recurrence still applies", async () => {
+    // One line has nothing to be parallel *with*. `listFromBlockquoteRun`'s own
+    // floor (`lines.length < 2`), independent of the page-level gate above.
+    const out = await mdMeasured(
+      PROSE + "<blockquote><p>Записано в студии в 1993 году.</p></blockquote>" + PROSE,
+    );
+    expect(out).not.toContain("- Записано");
+    expect(out).toContain("Записано в студии в 1993 году.");
+  });
+
+  it("does not read a multi-block indent as a list — the false friend", async () => {
+    // A caption-and-credit pair, or any indent whose content is more than one
+    // flat paragraph, is not this shape: `listFromBlockquoteRun` requires the
+    // blockquote's *entire* lowered content to be exactly one paragraph.
+    const out = await mdMeasured(
+      PROSE +
+        "<blockquote><p>Игра 0'52\"<br>Колыбельная 0'53\"</p><p>Записано в 1984 году.</p></blockquote>" +
+        PROSE +
+        "<blockquote><p>Прелюдия 1'43\"<br>Листопад 1'20\"</p><p>Записано в 1986 году.</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toContain("- Игра");
     expect(out).toContain("Игра 0'52\"");
   });
 
@@ -685,6 +721,49 @@ describe("a blockquote is quoted matter only when the source set it apart", () =
     );
     expect(out).not.toMatch(/^>/mu);
     expect(out).toContain("маленький оркестр");
+  });
+
+  it("does not promote a record's own title above its recovered list to a heading", () => {
+    // The other half of PROGRESS §34: `promoteLabelBeforeList` and
+    // `promoteSectionAfterRule` see the same "label directly above a list"
+    // shape `listFromBlockquoteRun` now produces, and neither originally
+    // excluded a record region the way `headingLineOf` already does. Six
+    // album titles above six recovered lists satisfy `promoteLabelBeforeList`'s
+    // own recurrence floor of two, so the guard has to be the same
+    // `ctx.tableDepth >= 2` exclusion, not recurrence.
+    //
+    // Unit-level, not `md()`: reproducing `ctx.tableDepth >= 2` through real
+    // markup depends on how many page-frame tables the classifier collapses
+    // before the walk reaches content, which is corpus-profile-sensitive and
+    // not what this contract is about. `lanes.test.ts` sets the precedent for
+    // a partial `as unknown as …` context carrying only the fields read.
+    const label = (text: string): Paragraph => ({ type: "paragraph", children: [{ type: "text", value: text }] });
+    const trackList: List = {
+      type: "list",
+      ordered: false,
+      spread: false,
+      children: [{ type: "listItem", spread: false, children: [label("Игра 0'52\"")] }],
+    };
+    const nodes: BiomdContent[] = [
+      label("Детская сюита"),
+      trackList,
+      label("Осенняя сюита"),
+      trackList,
+    ];
+    const ctxAt = (tableDepth: number): Parameters<typeof promoteLabelBeforeList>[1] =>
+      ({ tableDepth, recoveredHeadings: new Set(), blockAlign: new Map() }) as unknown as Parameters<
+        typeof promoteLabelBeforeList
+      >[1];
+
+    const inRecord = promoteLabelBeforeList(nodes, ctxAt(2));
+    expect(inRecord.every((n) => n.type !== "heading")).toBe(true);
+
+    // False friend, tested the other way: the exact same shape at the
+    // article's own top level (`ДИСКОГРАФИЯ` above a `<ul>`, `See also:`
+    // above a related-pages list) must still promote — the guard is scoped
+    // to record regions, not disabled outright.
+    const atTopLevel = promoteLabelBeforeList(nodes, ctxAt(1));
+    expect(atTopLevel.filter((n) => n.type === "heading")).toHaveLength(2);
   });
 });
 

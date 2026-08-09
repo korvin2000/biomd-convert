@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-09T20:20:18.952Z",
+  "generated": "2026-08-09T21:01:58.000Z",
   "totals": {
-    "findings": 269,
-    "converterDefects": 141,
+    "findings": 263,
+    "converterDefects": 135,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 64,
     "ambiguous": 64,
     "bySeverity": {
       "critical": 8,
-      "major": 131,
+      "major": 125,
       "minor": 130
     }
   },
@@ -55,10 +55,10 @@
     },
     {
       "doc": "kiselev",
-      "findings": 43,
-      "converterDefects": 12,
+      "findings": 37,
+      "converterDefects": 6,
       "critical": 0,
-      "major": 10,
+      "major": 4,
       "minor": 33
     },
     {
@@ -220,30 +220,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "instances": 11,
-      "documents": [
-        "jovicic",
-        "kiselev",
-        "new_rechin4",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 11,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 132,
-      "example": {
-        "doc": "jovicic",
-        "path": "/columns[11]/column[0]/list[2]",
-        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
-        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
-      }
-    },
-    {
       "class": "retyped.align-to-paragraph",
       "severity": "major",
       "instances": 8,
@@ -265,6 +241,30 @@
         "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
         "produced": "Francis Goya Plays His Favourite Hits",
         "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-list",
+      "severity": "major",
+      "instances": 5,
+      "documents": [
+        "jovicic",
+        "kiselev",
+        "new_rechin4",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 60,
+      "example": {
+        "doc": "jovicic",
+        "path": "/columns[11]/column[0]/list[2]",
+        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
+        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
       }
     },
     {
@@ -2558,90 +2558,6 @@
       "referenceLine": 17,
       "produced": "Том I Клубника со сливками (1984-1993) Том II Рок-н-ролл для тех, ком у за 30 (1986-1994) Том III По мягкому ковру опавших листьев (1995-1996) Том IV Времена г…",
       "reference": "Том I Клубника со сливками (1984-1993)\\ Том II Рок-н-ролл для тех, ком у за 30 (1986-1994)\\ Том III По мягкому ковру опавших листьев (1995-1996)\\ Том IV Времен… — at /paragraph[7]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "684583c5",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[3]",
-      "producedLine": 49,
-      "referenceLine": 49,
-      "produced": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\"",
-      "reference": "Игра 0'52\" Колыбельная 0'53\" Сон 1'43\" Утро 1'33\" — at /columns[7]/column[0]/paragraph[4]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3d186387",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[5]",
-      "producedLine": 56,
-      "referenceLine": 56,
-      "produced": "Прелюдия 1'43\" Сентиментальная прогулка 1'33\" Дождь за окном 1'12\" Листопад 1'20\"",
-      "reference": "Прелюдия 1'43\" Сентиментальная прогулка 1'33\" Дождь за окном 1'12\" Листопад 1'20\" — at /columns[7]/column[0]/paragraph[6]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7dffad2a",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[7]",
-      "producedLine": 63,
-      "referenceLine": 63,
-      "produced": "\"Ностальгия\" памяти А. Тарковского (1992) 2'06\" \"Соната\" памяти Д. Чимарозо (1986) 1'50\" \"Былина\" Петру Панину (1986) 2'08\" \"Банальный экспромт\" Елене (1987) 3…",
-      "reference": "\"Ностальгия\" памяти А. Тарковского (1992) 2'06\" \"Соната\" памяти Д. Чимарозо (1986) 1'50\" \"Былина\" Петру Панину (1986) 2'08\" \"Банальный экспромт\" Елене (1987) 3… — at /columns[7]/column[0]/paragraph[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8524c0cf",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[9]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "Прелюдия (1992) 1'40\" Песня с вариацией (1992) 2'40\" Танец (1988) 1'54\"",
-      "reference": "Прелюдия (1992) 1'40\" Песня с вариацией (1992) 2'40\" Танец (1988) 1'54\" — at /columns[7]/column[0]/paragraph[10]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0080b6e1",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[11]",
-      "producedLine": 81,
-      "referenceLine": 81,
-      "produced": "Александр Долгих (1989) 1'51\" Андрей Власов (1990) 1'35\" Сергей Быстров (1991) 2'00\" Автопортрет (1989) 1'48\"",
-      "reference": "Александр Долгих (1989) 1'51\" Андрей Власов (1990) 1'35\" Сергей Быстров (1991) 2'00\" Автопортрет (1989) 1'48\" — at /columns[7]/column[0]/paragraph[12]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3259119a",
-      "doc": "kiselev",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[7]/column[0]/list[13]",
-      "producedLine": 88,
-      "referenceLine": 88,
-      "produced": "Прощаясь с детством (1993) 1'55\" Танец скорпиона (1990) 1'08\" Старомодный этюд (1990) 1'33\" Клубника со сливками (1993) 1'15\" Танец стеклянных шаров на новогод…",
-      "reference": "Прощаясь с детством (1993) 1'55\" Танец скорпиона (1990) 1'08\" Старомодный этюд (1990) 1'33\" Клубника со сливками (1993) 1'15\" Танец стеклянных шаров на новогод… — at /columns[7]/column[0]/paragraph[14]",
       "verdict": "converter-defect"
     },
     {
