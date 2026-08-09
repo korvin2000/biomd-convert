@@ -4134,3 +4134,125 @@ instances in one document, and the corpus contains no other caption either side 
 campaign** (§31.1 `src`, §32 the echo, versus §31.2 the image row). "Check the instrument before the
 rule" is attested seven times. Both of these were found by adjudicating a *document* rather than a
 ranked class, which is now the method that has paid every time it has been tried.
+
+## 33. `segovia1`'s footer: a pager is not an abandoned record matrix (2026-08-09)
+
+§30.1's killed hypothesis named the reachable mechanism and said reopen only after the `columns`
+region was recovered. This is that recovery, and it needed a different upstream fix than the one
+OPEN.md's frontier entry guessed at.
+
+### 33.1 What was hypothesised, and what was actually true
+
+The frontier read `segovia1`'s footer as a `layoutFrom` gap: `grid.cols >= 2 && grid.cols <= 3`
+caps lane detection at three, and the footer is four cells (`◀ | Андрес Сеговия | Владимир Бобри |
+▶`). Widening the cap looked sufficient. **It was not reached at all.** `DBG_COLS` at
+`tableRegionFrom`'s classification switch, one run over the whole corpus, showed the footer scores
+**DATA** — grid regularity and per-column homogeneity, the same evidence a real record row gives —
+and `dataRegionFrom`'s DATA branch calls `decomposeFrom` directly on any planning failure, never
+`layoutFrom`. `planDataTable`'s `minRows: 2` fails a one-row table before it can even infer column
+bands, so the region never got as far as the cap that looked like the problem. Fifth
+containment-vs-filter mismatch of the campaign by this count, and the sixth time "check the
+instrument before the rule" has paid.
+
+The same sweep found the same DATA-classification ceiling on three more single-row tables:
+`borislova`'s `"Estrelluvio" … | WMA`, `new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`, and
+`new_karta`'s `El Puerto, da Suite Iberia … | WMA` — all title-beside-a-format-link, all wanting a
+**table** with a synthesized header (`| Название | Аудиоформат |`), not `::: columns`. A blind
+"retry `layoutFrom` on any DATA failure" would have fixed `segovia1` and wrongly turned these three
+into lanes instead — `layoutFrom`'s existing lane test happily reads a title lane beside a link lane
+as two occupied columns. `williams2` carries the same title-plus-link shape and its current output
+(two `::: align` blocks, no table) already matches the reference exactly, so it is the regression
+floor a careless fix would have broken. No deterministic invariant separating `williams2` from the
+other three was found in the time budgeted for it; that question is parked, not solved (§33.4).
+
+### 33.2 The rule: a row of nothing but links is a pager
+
+**Invariant.** Whole-cell equality between a cell's own text and its one anchor's text — the cell
+must be the link and nothing else — mirrors `navFromGrid`'s existing "the cell must be the link and
+nothing else" test, oriented as a row instead of a column stack. An icon-only cell (no text on
+either side of the comparison) passes the same way an icon-only nav item would.
+
+**False friend, tested for non-firing:** the title-plus-link record row above. The title cell holds
+prose and carries no link at all, so it fails `links === 1` on its first cell before the row shape
+is ever compared, and is never mistaken for a pager. `isBareLinkRow`'s own test file adds a third
+control: four plain-text cells with no links at all, on a table forced to `UNKNOWN`, stays off the
+lane path too — the cap widens for the named shape, not for every four-column region a classifier
+abstains on.
+
+**Recurrence.** Deliberately not required, matching the icon-glyph table's existing contract for
+the same reason: a page draws exactly one previous/next strip, so the shape occurs once per page by
+construction (`CLAUDE.md` §5's stated exemption for a construct that cannot repeat within a
+document). The per-cell containment test carries the whole burden of proof instead.
+
+**Wiring, two call sites.** `dataRegionFrom`'s DATA branch checks `isBareLinkRow` *before* recording
+the classification abandonment, and retries via `layoutFrom` on a hit — the same next question the
+adjacent UNKNOWN branch already asks, asked first so a pager is recorded by what it becomes rather
+than by a record-matrix attempt it never made. `layoutFrom`'s own lane cap stays `<= 3` for every
+other region and widens to `<= 4` only when `isBareLinkRow` holds, so `new_karta`'s own four-column
+UNKNOWN single-track table (title-plus-link again, already flattening to the same flow both before
+and after this change) is untouched — confirmed by corpus-wide `DBG_COLS`, not argument: `segovia1`
+is the only DATA/UNKNOWN table at `rows=1, cols=4` in the corpus.
+
+### 33.3 A second, unrelated gap the fix exposed: `biomdColumns` never serialized its own count
+
+Once `layoutFrom` could plan four lanes, `makeColumns` was called with `columns: 4` — the builder
+and validator already supported the property (`COLUMNS_COUNTS = [2, 3, 4]`, unconditionally, since
+before this campaign) — but the serializer's `biomdColumns` handler only ever emitted `divider`; it
+had no case for `columns` at all, unlike `biomdImages`' handler four lines above it in the same
+file. Nothing had ever asked for a `columns:` count before: every existing lane region has 2 or 3
+children, and `BioMD-Reference.md` §3's legacy form may omit the property there, so the omission was
+always correct until now. `resolveColumnsCount` (new, `downgrade.ts`, mirroring `resolveDivider`'s
+shape) omits the property under a profile that cannot render it — `columnsProperty: false` on
+`renderer-current` — for the same reason `resolveDivider` does: the line is not stripped and becomes
+a bogus first column, so partial emission is unsafe. Found by comparing the produced `::: columns`
+block against the reference byte for byte, not by reasoning about the pipeline.
+
+### 33.4 Left alone: the nested `align` inside a bare-link column
+
+`layoutFrom`'s per-cell lowering already ran `groupAlignedRunsCommitted` on every column's content
+before this change, and it is untouched. `segovia1`'s "Андрес Сеговия" and "Владимир Бобри" cells
+compute `center` against the page's `justify` prose baseline, so each is wrapped in its own `::: align
+position: center` inside its `::: column` — matching the **already-documented, deliberately
+unguarded residue** at `groupAlignedRuns`'s own doc comment ("One link-only centred back-link on
+`segovia1`. 'Link-only' cannot be the guard: `kiselev`'s right-set contact block is link-only too and
+the reference wraps it."). This is the same known trade-off persisting through an improved container,
+not a new defect this change introduced — it previously showed as `align.spurious` on a loose
+top-level block and now shows as `retyped.align-to-paragraph` on a column's child, net **fewer**
+findings either way. Not reopened; no new evidence changes the standing decision.
+
+### 33.5 Measured
+
+| rung | §32 floor | after |
+|---|---|---|
+| L0 | 438 tests, validator 13 | **441**, **13**, 0 FAILED, typecheck clean |
+| L1 | 94.4 % | **94.5 %** |
+| L2 | 275 · 147 defect · 64 ref-inc · 9 crit | **269 · 141 · 64 · 8** |
+| L3 | 70 | **68** |
+
+Only `segovia1` moved on every rung (L2 11 → 5 findings, 10 → 4 defect, 2 → 1 critical; L1
+per-document 98.0 → 99.1; L3 10 → 5 on `--doc segovia1 -v`). Every other of the 22 documents is
+byte-for-byte identical in `bench/last-run.txt`'s `recall=`/`errors=`/`reviews=`/`tables=` columns,
+confirmed by direct comparison, not by the aggregate holding still. `columns.missing` and
+`retyped.paragraph-to-column` (4 instances) are fully closed; `align.spurious` closed 2 of 6.
+`retyped.align-to-paragraph` rose 6 → 8 — the known residue from §33.4, not a new mechanism.
+`segovia1`'s remaining critical finding (`frame.moved` on the unrelated "ВНИМАНИЕ!" gold-frame
+region) is untouched. Determinism checked directly: converting `segovia1.htm` twice byte-compares
+identical. Corpus-wide validator errors unchanged at 13 (summed from `corpus run`'s `errors=`
+column, per `CLAUDE.md`'s standing caution about that figure).
+
+Contracts: `recovery.test.ts` — "a row of nothing but links is a pager, not an abandoned record"
+(three cases: the pager fires, the title-plus-link record does not, four link-less cells on a forced
+`UNKNOWN` do not either).
+
+### 33.6 What is next
+
+`new_kolpakov`, `borislova` and `new_karta`'s single-track discography rows want a table with a
+synthesized header from a single body row — `planDataTable`'s `minRows: 2` blocks all three, the
+same ceiling `segovia1` hit, but the fix is not symmetric: `williams2` shares the exact
+title-plus-link shape and must **not** gain a table, and no deterministic signal separating it from
+the other three was found in this session's budget. Before spending more on it: probe whether the
+difference is structural (recurrence of the *shape* elsewhere on `williams2`'s own page, position
+relative to a discography section heading, or something else measurable) or is a `reference-quirk`
+this corpus is simply inconsistent about — cheaply, on these four documents only, before any rule is
+designed. `new_karta`'s and `kiselev`'s document-first enumeration (OPEN.md) and `news`'s 26 defects
+with no single mechanism above 4 remain untouched and are still live candidates.

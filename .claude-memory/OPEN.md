@@ -3,8 +3,8 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-08**, after the holistic sweep (`da7246e`, `486e9c9`, PROGRESS §31). Facts
-marked *measured* were taken then; facts marked *recorded* are quoted and have not been re-measured.
+Last touched **2026-08-09**, after `segovia1`'s footer (PROGRESS §33). Facts marked *measured* were
+taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. What this iteration settled](#2-what-this-iteration-settled)
@@ -22,15 +22,15 @@ Reference-guided refinement, 22 documents. **The author revised 21 of 22 referen
 change; the numbers below are re-baselined against the revised references, and any figure quoted
 from PROGRESS §21-§28 predates them.
 
-**Current state, *measured* 2026-08-08, after `486e9c9`:**
+**Current state, *measured* 2026-08-09, after `segovia1`'s footer (PROGRESS §33):**
 
 | rung | value |
 |---|---|
-| L0 | **438 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
-| L1 | **94.4 %** |
-| L2 | **275 findings -- 147 converter-defect** · 64 ambiguous · 64 reference-inconsistency · 9 critical |
-| L3 | **70 findings**, identity 0, deterministic |
-| validator | **13 errors** (was 28). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice -- once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
+| L0 | **441 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L1 | **94.5 %** |
+| L2 | **269 findings -- 141 converter-defect** · 64 ambiguous · 64 reference-inconsistency · 8 critical |
+| L3 | **68 findings**, identity 0, deterministic |
+| validator | **13 errors** (unchanged). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice -- once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
 
 That is the floor. Nothing accepted from here may regress it.
 
@@ -51,25 +51,33 @@ masthead split point (OPEN §3.2), and the centred-section-label ruling of §24.
 43/7 → 8, none a defect (`f5665c4`, PROGRESS §30.2) · the two guide-vs-reference glyph conflicts,
 corrected by the author in `3097a48` -- **the icon family now has no open question** ·
 `goya2`'s `images.*` cluster 18 → 0 (`da7246e`, PROGRESS §31.2) · `image.src.value` 19 defects → 0,
-by fixing the instrument, not the converter (`486e9c9`, PROGRESS §31.1).
+by fixing the instrument, not the converter (`486e9c9`, PROGRESS §31.1) · `columns.missing` (1 → 0)
+and `retyped.paragraph-to-column` (4 → 0) on `segovia1`, PROGRESS §33.
 
-> **Of the last 28-defect fall, 19 are the instrument telling the truth and 9 are the converter
-> improving.** Never quote the drop without that split.
+> **Of the 28-defect fall through §31, 19 were the instrument telling the truth and 9 the converter
+> improving.** Never quote a drop without checking the split.
 
-**Next: `segovia1`'s missing four-lane footer region -- `columns.missing`.** Chosen because §30.1
-demonstrated it rather than because of its rank. The footer is a four-cell row (`◀`, *Андрес
-Сеговия*, *Владимир Бобри*, `▶`) the reference writes as `::: columns / columns: 4`; the converter
-produces four loose blocks. Everything else wrong with that footer is downstream of it -- an
-alignment rule that tried to position those loose blocks merged all four lanes into one and had to
-be reverted, which is the clearest evidence in the campaign that this region is the cause and not
-a symptom. `segovia1` is third-worst at 11 findings / 10 defect / 2 critical and this is most of
-it. Probe first whether the same shape exists elsewhere (`new_geyzel04`'s and `new_rechin4`'s
-footers are *not* tables, so they are a different mechanism).
+**Next: `new_kolpakov`/`borislova`/`new_karta`'s single-track discography rows, or `news`/`kiselev`
+document-first.** `segovia1`'s footer (PROGRESS §33) turned out to be a DATA-classification ceiling,
+not the `layoutFrom` column cap the frontier guessed -- `dataRegionFrom`'s DATA branch never retried
+`layoutFrom` on a planning failure, only the adjacent UNKNOWN branch did. Fixed for a **bare-link
+row** (a pager: every cell is exactly one link, nothing else). The same sweep found three more
+single-row tables hitting the identical `planDataTable` `minRows: 2` ceiling, but wanting the
+*opposite* shape -- a table with a synthesized header, not `::: columns` -- because their cells carry
+a title (prose, no link) beside a format link: `borislova`'s `"Estrelluvio" … | WMA`,
+`new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`, `new_karta`'s `El Puerto, da Suite Iberia … | WMA`.
+**Do not build this next without solving the `williams2` false friend first**: it shares the exact
+title-plus-link shape and its current output (two `::: align` blocks) already matches the reference,
+so a naive "relax `minRows` when a title cell is present" rule regresses a regression-corpus
+document. No deterministic separator was found in the budget spent probing it (§33.6) -- try source
+recurrence of the shape elsewhere on `williams2`'s own page, or position relative to a discography
+heading, before designing a rule; it may be `reference-quirk` the corpus is simply inconsistent
+about, in which case say so rather than force a rule.
 
-**Document-first is now attested twice.** PROGRESS §31 did it on `news` and `goya2` and both paid:
-one instrument lie (19) and one missing group (9). `news` still holds 26 defects and no single
-mechanism above 4 -- it is the next document to enumerate by node path. `kiselev` (43 findings, 12
-defect) has never been looked at either.
+**Document-first is attested three times now** (`news`/`goya2` in §31, `segovia1` in §33) and has
+paid every time. `news` still holds 26 defects and no single mechanism above 4 -- it is the next
+document to enumerate by node path if the discography-row question above is parked. `kiselev` (43
+findings, 12 defect) has never been looked at either.
 
 **Done (PROGRESS §32):** the caption echo. `selfEcho` asks the *owning* side whether it states the
 label twice, which is decidable where "where did the other side put it" is not. 5 of `goya2`'s 7
@@ -77,8 +85,16 @@ moved to reference-inconsistency; **2 are deliberately left wrong** -- their cap
 sibling blocks (`**…Favourite Hits**` + `**Vol. 1**`) and joining them needs a concatenation search.
 Do not take those two for their own sake.
 
-**Still unprobed, cheap:** whether `eval/blocks.ts` reads a URL underscore (`abmv8_4.txt`) as an
-emphasis span. If it does, part of `emphasis.span` (24 instances, already downgraded) is an artefact.
+**Probed, negative (PROGRESS §33 session):** `eval/blocks.ts`'s emphasis-span regex does **not**
+read a URL underscore as emphasis on any of the 22 references or `bench/out` -- every `_`-delimited
+match found (`new_blackmore` 1, `new_dyens` 3) is a genuine `_..._` italic span. `emphasis.span`'s
+downgrade stands on its original grounds, not on this; the class is not an instrument artefact via
+this mechanism.
+
+**A second gap the `segovia1` fix exposed and closed in the same pass:** `biomdColumns`'s serializer
+never emitted its own `columns:` count -- only `divider`. Never needed before (every existing lane
+region has 2-3 children, which Reference §3's legacy form omits the property for). `resolveColumnsCount`
+(new, `downgrade.ts`) mirrors `resolveDivider`'s profile-gated omission. PROGRESS §33.3.
 
 **Downgraded, do not take on rank alone:** `emphasis.span` (verdicts flip on identical evidence
 across documents; 17 of 24 already reference-inconsistency, and the 7 defects are one *different*
@@ -212,20 +228,22 @@ but 2 of `new_rechin4`'s 4 are under the stated 64-character floor and are not i
 rule as written does not explain its own corpus, and its second half asks the *instrument* to ignore
 the difference. Ask the author before building either.
 
-## 4. Open defect classes -- *measured* 2026-08-08 over 22 documents, after `486e9c9`
+## 4. Open defect classes -- *measured* 2026-08-09 over 22 documents, after PROGRESS §33
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
 | ~~--~~ | ~~`table.header.cell`~~ | ~~43~~ | 0 | ~~7~~ | **closed to 8** by `f5665c4`; the 8 residuals are all reference-inconsistency |
-| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **7 of 8 are container-only.** A rule for it was built and **reverted** -- PROGRESS §30.1. Do not retry without the `columns` region first |
+| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **A different mechanism from `segovia1`'s** (§30.1/§33): those 8 pagers lost centring when a `::: image` became a paragraph, not a missing `columns` region. Untouched by §33. A rule for it was built and **reverted** -- PROGRESS §30.1 |
 | 132 | `retyped.paragraph-to-list` | 11 | 11 | 4 | killed on measurement §15.2/§15.3 -- shape overlap total |
-| 72 | `align.spurious` | 6 | 6 | 4 | 3 are the one-row media table §22.2 killed **twice** |
+| 96 | `retyped.align-to-paragraph` | 8 | 8 | 4 | 6→8: `segovia1`'s 2 new instances are the known, deliberately-unguarded nested-align residue (PROGRESS §33.4), not a new mechanism |
 | ~~--~~ | ~~`image.src.value`~~ | 19 | **0** | 1 | **all `news`, not `goya2` as this table said.** Now reference-inconsistency: the `/../` prefix is in no source and 1 of 22 references |
-| 54 | `retyped.align-to-paragraph` | 6 | 6 | 3 | shadow of the same container family |
-| 42 | `emphasis.span` | 24 | 7 | 6 | downgraded -- the 7 defects are a *different* mechanism |
+| 42 | `emphasis.span` | 24 | 7 | 6 | downgraded -- the 7 defects are a *different* mechanism. Probed for a URL-underscore artefact and cleared (session 2026-08-09) |
+| 36 | `align.spurious` | 4 | 4 | 3 | 2 of `segovia1`'s 6 **closed** by PROGRESS §33; the rest are the one-row media table §22.2 killed **twice** |
 | 33 | `table.cell.content.edited` | 33 | 0 | 2 | not a target |
 | ~~--~~ | ~~`image.spurious`~~ | ~~8~~ | -- | ~~5~~ | **closed** by `55e7a8c` |
 | ~~--~~ | ~~`retyped.paragraph-to-lead`~~ | ~~10~~ | -- | ~~2~~ | **closed** -- `06eeafb` removed the `::: lead` blocks |
+| ~~--~~ | ~~`columns.missing`~~ | ~~1~~ | -- | ~~1~~ | **closed** -- `segovia1`'s footer, PROGRESS §33 |
+| ~~--~~ | ~~`retyped.paragraph-to-column`~~ | ~~4~~ | -- | ~~1~~ | **closed** -- same fix |
 
 Also carried: `pavlov_azancheev`'s `retyped.heading2-to-paragraph` at `/align[6]/paragraph[0]` is
 new and **unadjudicated** -- the reference writes the article title as a centred bold paragraph, the

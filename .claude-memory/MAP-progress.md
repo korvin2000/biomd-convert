@@ -4,7 +4,7 @@ Thousands of lines and growing every iteration -- `wc -l` it before trusting a s
 **Never read it whole.** Find the row, then `Read(file_path, offset=<start>, limit=<len>)`.
 
 The file is **append-only**: new `##` sections land at the end, so every range below stays valid.
-Regenerate with `grep -n "^## \|^### " biomd-convert/CONVERTER-PROGRESS.md`. Row table verified 2026-08-08;
+Regenerate with `grep -n "^## \|^### " biomd-convert/CONVERTER-PROGRESS.md`. Row table verified 2026-08-09;
 rows added after that date are current by construction (append-only).
 
 Legend -- **HOT** read often · **REF** on demand · **HIST** superseded, avoid unless doing archaeology.
@@ -43,6 +43,7 @@ Legend -- **HOT** read often · **REF** on demand · **HIST** superseded, avoid 
 | 30 a revert, and the column vocabulary | 3848-3962 | **KILLED: a word-less block may open an align run because it carries a target -- `segovia1`'s lane cells merged four lanes into one `30.1:3854`** · **the column vocabulary; §16.3 not engaged; a superseded contract `30.2:3902`** · **new floor 431 / 94.4 / 287 · 180 / 85, validator 28 → 13 `30.2`** · residual + no guide-vs-reference conflicts left `30.3:3950` | **HOT** |
 | 31 a holistic sweep | 3964-4065 | **`src` adjudicated as layout -- 19 phantom defects `31.1:3968`** · **a flattened all-picture row is one `::: images` `31.2:3993`** · **`/new_rules.md` reach measured; 4 of 6 have zero reach `31.3:4021`** · **new floor 434 / 94.4 / 275 · 152 / 70 `31.4:4055`** | **HOT** |
 | 32 the caption echo | 4067-4136 | **`homeOf` asks the wrong side about a caption; ask the *owning* side `32.1:4071`** · **two left wrong on purpose -- a caption merging two blocks `32.2:4103`** · **275 · 147 / 438 / 70; three instrument corrections to one converter mechanism `32.3:4117`** | **HOT** |
+| 33 `segovia1`'s footer, a pager | 4138-4258 | **the hypothesis was wrong; the real ceiling is DATA-classification, not the `layoutFrom` cap `33.1:4142`** · **the rule: a row of nothing but links is a pager `33.2:4159`** · **serializer never emitted `biomdColumns`' own `columns:` count `33.3:4182`** · **known residue left alone -- nested `align` in a bare-link column `33.4:4195`** · **new floor 441 / 94.5 / 269 · 141 / 68 `33.5:4207`** · **next: `williams2` false friend blocks the discography-row fix `33.6:4232`** | **HOT** |
 
 ## Read-this-first set
 
