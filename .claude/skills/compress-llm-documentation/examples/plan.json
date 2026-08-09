@@ -1,0 +1,34 @@
+{
+  "mode": "medium",
+  "targets": ["root-before.md"],
+  "new_files": [],
+  "released_anchors": [
+    "develop",
+    "orders-api/",
+    "├── src/",
+    "├── tests/",
+    "├── scripts/",
+    "└── alembic/",
+    "│   ├── api/          # FastAPI routers",
+    "│   ├── models/       # SQLAlchemy models",
+    "│   ├── services/     # business logic",
+    "│   └── db/           # session management",
+    "│   ├── unit/",
+    "│   └── integration/",
+    "https://img.shields.io/badge/build-passing-green",
+    "https://img.shields.io/badge/python-3.12-blue",
+    "0.115", "2.0", "2.9", "1.13", "8.3", "0.6", "1.11", "3.12-blue"
+  ],
+  "released_reason": {
+    "develop": "Dated conditional: the source states the develop branch was abandoned in Aug 2025. Historical, no operational effect. Rule 1.11 - proven stale, not merely old.",
+    "orders-api/": "Directory tree is a derivable inventory. Repository overviews measurably do not help agents find files, and the vendor trim tool cuts exactly this category.",
+    "https://img.shields.io/badge/build-passing-green": "Decorative badge. Cost per glyph, no instruction content.",
+    "https://img.shields.io/badge/python-3.12-blue": "Decorative badge.",
+    "0.115": "Dependency versions pinned in prose with no owner or refresh path. Rule 1.7 would replace them with a query instruction, but the source names no manifest or lockfile - so they are removed and the absence is recorded as a GAP rather than pointed at an invented path.",
+    "3.12-blue": "Python version, from the decorative badge URL."
+  },
+  "notes": [
+    "The directory-tree fence lines are released as one group; each line is listed individually because verify.py compares fenced content line by line.",
+    "Two prohibitions are reported as unmatched and both are accounted for: '4 spaces / never tabs' is deleted under E-GATE, because the ruff config enforces it and is now named as the authority in the Commands table; the develop-branch line is the dated conditional released above."
+  ]
+}
