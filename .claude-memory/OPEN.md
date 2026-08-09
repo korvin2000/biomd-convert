@@ -3,8 +3,8 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-09**, after `segovia1`'s footer (PROGRESS §33). Facts marked *measured* were
-taken then; facts marked *recorded* are quoted and have not been re-measured.
+Last touched **2026-08-09**, after `kiselev`'s track lists (PROGRESS §34). Facts marked *measured*
+were taken then; facts marked *recorded* are quoted and have not been re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. What this iteration settled](#2-what-this-iteration-settled)
@@ -22,13 +22,13 @@ Reference-guided refinement, 22 documents. **The author revised 21 of 22 referen
 change; the numbers below are re-baselined against the revised references, and any figure quoted
 from PROGRESS §21-§28 predates them.
 
-**Current state, *measured* 2026-08-09, after `segovia1`'s footer (PROGRESS §33):**
+**Current state, *measured* 2026-08-09, after `kiselev`'s track lists (PROGRESS §34):**
 
 | rung | value |
 |---|---|
-| L0 | **441 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
+| L0 | **444 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 % |
 | L1 | **94.5 %** |
-| L2 | **269 findings -- 141 converter-defect** · 64 ambiguous · 64 reference-inconsistency · 8 critical |
+| L2 | **263 findings -- 135 converter-defect** · 64 ambiguous · 64 reference-inconsistency · 8 critical |
 | L3 | **68 findings**, identity 0, deterministic |
 | validator | **13 errors** (unchanged). Reachable **only** through `corpus run`'s `errors=` column: `validate <file>` on its own resolves a laxer profile and reports **0**. A session mis-stated this twice -- once as "no errors exist", once as "the header class closes none of them" (it closed 15). Never quote a validator figure from anywhere else |
 
@@ -52,32 +52,61 @@ masthead split point (OPEN §3.2), and the centred-section-label ruling of §24.
 corrected by the author in `3097a48` -- **the icon family now has no open question** ·
 `goya2`'s `images.*` cluster 18 → 0 (`da7246e`, PROGRESS §31.2) · `image.src.value` 19 defects → 0,
 by fixing the instrument, not the converter (`486e9c9`, PROGRESS §31.1) · `columns.missing` (1 → 0)
-and `retyped.paragraph-to-column` (4 → 0) on `segovia1`, PROGRESS §33.
+and `retyped.paragraph-to-column` (4 → 0) on `segovia1`, PROGRESS §33 · `kiselev`'s six album track
+lists, `retyped.paragraph-to-list` 7 → 1 (the residual is a separate, unrelated instance), PROGRESS
+§34 -- `kiselev` 12 → 6 defect overall.
 
 > **Of the 28-defect fall through §31, 19 were the instrument telling the truth and 9 the converter
 > improving.** Never quote a drop without checking the split.
 
-**Next: `new_kolpakov`/`borislova`/`new_karta`'s single-track discography rows, or `news`/`kiselev`
-document-first.** `segovia1`'s footer (PROGRESS §33) turned out to be a DATA-classification ceiling,
-not the `layoutFrom` column cap the frontier guessed -- `dataRegionFrom`'s DATA branch never retried
-`layoutFrom` on a planning failure, only the adjacent UNKNOWN branch did. Fixed for a **bare-link
-row** (a pager: every cell is exactly one link, nothing else). The same sweep found three more
-single-row tables hitting the identical `planDataTable` `minRows: 2` ceiling, but wanting the
-*opposite* shape -- a table with a synthesized header, not `::: columns` -- because their cells carry
-a title (prose, no link) beside a format link: `borislova`'s `"Estrelluvio" … | WMA`,
-`new_kolpakov`'s `Венгерка | WMA | (1,7 Mb)`, `new_karta`'s `El Puerto, da Suite Iberia … | WMA`.
-**Do not build this next without solving the `williams2` false friend first**: it shares the exact
-title-plus-link shape and its current output (two `::: align` blocks) already matches the reference,
-so a naive "relax `minRows` when a title cell is present" rule regresses a regression-corpus
-document. No deterministic separator was found in the budget spent probing it (§33.6) -- try source
-recurrence of the shape elsewhere on `williams2`'s own page, or position relative to a discography
-heading, before designing a rule; it may be `reference-quirk` the corpus is simply inconsistent
-about, in which case say so rather than force a rule.
+**Parked, with evidence: the `borislova`/`new_kolpakov`/`new_karta` discography-row fix.** Probed
+`williams2` vs. the other three properly (2026-08-09 session) before touching code, per the standing
+instruction. Checked and ruled out as a discriminator: title length, 2- vs 3-column count, width
+ratio, `<td>`/`<p>` class names, blockquote nesting depth (`borislova` double-nests, `new_kolpakov`
+and `williams2` both single-nest -- doesn't split the pair it needs to), whether the piece is named
+elsewhere in the document's own prose, and **rendered geometry** measured live in the browser over
+`fixtures/html/*.htm` (`.claude/launch.json`'s `fixtures` server): `williams2` and `borislova` render
+near-identically -- a narrow, shrink-to-fit, title-dominant line (87 % / 85 % title share), not a
+grid -- while `new_kolpakov` renders balanced (50 % title share) and `new_karta` renders
+title-dominant (68 %) like the other two despite wanting a table. No axis tried splits "wants a
+table" {`borislova`, `new_kolpakov`, `new_karta`} from "wants `align`" {`williams2`} cleanly.
 
-**Document-first is attested three times now** (`news`/`goya2` in §31, `segovia1` in §33) and has
-paid every time. `news` still holds 26 defects and no single mechanism above 4 -- it is the next
-document to enumerate by node path if the discography-row question above is parked. `kiselev` (43
-findings, 12 defect) has never been looked at either.
+**But this is not corpus noise -- `analyze.md` backs both sides directly**, which is stronger
+evidence than the reference alone and settles that a real distinction was intended, even though its
+mechanism is not visible in the DOM:
+- `analyze.md:590`, `borislova.htm`: *"не распознана таблица в конце страницы из 1 записи с 2
+  колонками, содержащая песню и ссылку на нее"* -- the human reviewer explicitly names this a
+  **missing table**, 1 record × 2 columns.
+- `analyze.md:68-74`, `williams2.htm`, item 9: the human reviewer's own proposed fix is
+  `::: align position: right` wrapping the text *and* the MP3 link together -- **explicitly not a
+  table**.
+
+`analyze.md` has no entry for `new_kolpakov` or `new_karta` at all -- both are `new_*` refinement-set
+pages, outside the 13 documents the human pass covered, so their "wants a table" reading is
+reference-only (medium confidence) where `borislova`'s is doubly attested (high).
+
+**Verdict: downgraded, not dropped.** Real distinction, no deterministic invariant found this
+session, small reach (3 documents, one finding class each). A hook is the honest next step if this
+is ever taken -- the acceptance check would be nameable (the same `isBareLinkRow`-shaped test,
+inverted: a title cell with no link beside a format-vocabulary link) -- but 3 documents does not
+currently outrank `news`'s 26 defects with no single mechanism above 4. Reopens on new measurement:
+a fifth instance that breaks the 2-2 split evenly, or a batched question actually put to the author.
+
+**Done (PROGRESS §34): `kiselev`'s six album track lists.** A native `<blockquote>` around one flat
+`<br>`-run is a record list when `quotesItsContent` has declined it and the blockquote's *entire*
+lowered content is exactly one paragraph (`listFromBlockquoteRun`) -- containment the shape-based
+§15.2 discriminator could never see, tested against every other blockquote in the corpus. Exposed a
+second bug: `promoteLabelBeforeList`/`promoteSectionAfterRule` had no `ctx.tableDepth >= 2` guard
+(the record-region exclusion `headingLineOf` already had), so the newly-recovered lists made them
+promote the album titles to headings the reference does not want. Both fixed together. `kiselev`
+12 → 6 defect; every other document byte-identical. `retyped.paragraph-to-list`'s one residual
+(`kiselev`'s "Том I/Том II…" volume list) is a separate mechanism, §15.2 says so, not this one.
+
+**Next: `news` document-first.** Attested four times now (`news`/`goya2` in §31, `segovia1` in §33,
+`kiselev` in §34) and has paid every time it has been tried. `news` holds 26 defects and no single
+mechanism above 4 -- it is the only major document never enumerated by node path. `kiselev`'s own
+residue (`retyped.align-to-paragraph` ×2, `table.cell.hyphenation.mixed` ×2, `table.geometry.cols`
+×1) is smaller and already understood; not worth a dedicated pass on its own.
 
 **Done (PROGRESS §32):** the caption echo. `selfEcho` asks the *owning* side whether it states the
 label twice, which is decidable where "where did the other side put it" is not. 5 of `goya2`'s 7
@@ -228,14 +257,14 @@ but 2 of `new_rechin4`'s 4 are under the stated 64-character floor and are not i
 rule as written does not explain its own corpus, and its second half asks the *instrument* to ignore
 the difference. Ask the author before building either.
 
-## 4. Open defect classes -- *measured* 2026-08-09 over 22 documents, after PROGRESS §33
+## 4. Open defect classes -- *measured* 2026-08-09 over 22 documents, after PROGRESS §34
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
 | ~~--~~ | ~~`table.header.cell`~~ | ~~43~~ | 0 | ~~7~~ | **closed to 8** by `f5665c4`; the 8 residuals are all reference-inconsistency |
-| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **A different mechanism from `segovia1`'s** (§30.1/§33): those 8 pagers lost centring when a `::: image` became a paragraph, not a missing `columns` region. Untouched by §33. A rule for it was built and **reverted** -- PROGRESS §30.1 |
-| 132 | `retyped.paragraph-to-list` | 11 | 11 | 4 | killed on measurement §15.2/§15.3 -- shape overlap total |
-| 96 | `retyped.align-to-paragraph` | 8 | 8 | 4 | 6→8: `segovia1`'s 2 new instances are the known, deliberately-unguarded nested-align residue (PROGRESS §33.4), not a new mechanism |
+| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **A different mechanism from `segovia1`'s** (§30.1/§33): those 8 pagers lost centring when a `::: image` became a paragraph, not a missing `columns` region. Untouched by §33/§34. A rule for it was built and **reverted** -- PROGRESS §30.1 |
+| 96 | `retyped.align-to-paragraph` | 8 | 8 | 4 | 6→8 at §33 (`segovia1`'s 2 are the known, deliberately-unguarded nested-align residue, PROGRESS §33.4); unchanged by §34 |
+| 60 | `retyped.paragraph-to-list` | 5 | 5 | 4 | 11→5: `kiselev`'s six album track lists **closed** by PROGRESS §34.2. The residual 5 (4 docs) include `kiselev`'s own separate "Том I/Том II…" volume list, §15.2's named third mechanism -- not this one |
 | ~~--~~ | ~~`image.src.value`~~ | 19 | **0** | 1 | **all `news`, not `goya2` as this table said.** Now reference-inconsistency: the `/../` prefix is in no source and 1 of 22 references |
 | 42 | `emphasis.span` | 24 | 7 | 6 | downgraded -- the 7 defects are a *different* mechanism. Probed for a URL-underscore artefact and cleared (session 2026-08-09) |
 | 36 | `align.spurious` | 4 | 4 | 3 | 2 of `segovia1`'s 6 **closed** by PROGRESS §33; the rest are the one-row media table §22.2 killed **twice** |

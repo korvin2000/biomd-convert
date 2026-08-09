@@ -4256,3 +4256,113 @@ relative to a discography section heading, or something else measurable) or is a
 this corpus is simply inconsistent about — cheaply, on these four documents only, before any rule is
 designed. `new_karta`'s and `kiselev`'s document-first enumeration (OPEN.md) and `news`'s 26 defects
 with no single mechanism above 4 remain untouched and are still live candidates.
+
+## 34. `kiselev`'s track lists: a blockquote is a record list, not just a quote (2026-08-09)
+
+Two things this iteration, found by document-first enumeration on `kiselev` (43 findings, 12 defect
+— attested as never looked at, OPEN.md). Both are about the same construct: a native `<blockquote>`
+the source uses for something other than a quotation.
+
+### 34.1 First: probed `williams2` against the parked discography-row candidate
+
+Before touching code, probed §33.6's parked question properly rather than building on a guess.
+Checked and ruled out as a discriminator between `williams2` (wants `::: align`, must not gain a
+table) and `borislova`/`new_kolpakov`/`new_karta` (want a table): title length, 2- vs 3-column
+count, width ratio, `<td>`/`<p>` class names, blockquote nesting depth, whether the piece is named
+elsewhere in the document's own prose, and rendered geometry measured live in the browser over
+`fixtures/html/*.htm` (`.claude/launch.json`'s `fixtures` server) — `williams2` and `borislova`
+render near-identically, a narrow shrink-to-fit title-dominant line, not a grid.
+
+**Not corpus noise — `analyze.md` backs both sides directly**, stronger evidence than the reference
+alone: `analyze.md:590` on `borislova.htm` names the Estrelluvio/WMA row an unrecognised **table**,
+1 record × 2 columns, in so many words; `analyze.md:68-74` on `williams2.htm` gives the human
+reviewer's own fix for the BWV996/MP3 line as `::: align position: right` — explicitly not a table.
+`analyze.md` has no entry for `new_kolpakov` or `new_karta` (both post-date the human pass), so their
+reading is reference-only.
+
+**Verdict: real distinction, no deterministic invariant found, downgraded rather than forced.** Small
+reach (3 documents, one finding class each) does not currently outrank other candidates; a hook is
+the honest next step if ever taken, with a nameable acceptance check (title cell with no link beside
+a format-vocabulary link). Recorded in `.claude-memory/OPEN.md` so it is not re-probed from scratch.
+
+### 34.2 A native `<blockquote>` around one flat run of lines is a record list
+
+`kiselev` indents six album track lists this way — `<blockquote style="margin-left: 25">` holding
+one `<p class="cdk">` of `<br>`-joined "title *duration*" lines, immediately under the album's own
+title paragraph — and the reference emits each as a bullet list. §15.2 (2026-08-06) had already
+measured that shape (line count, length, variance) cannot separate this from verse that must stay a
+paragraph — `borislova`'s poems are the same shape and the reference keeps every one — and parked
+two candidates: an indent-under-a-label heuristic (rejected then as "six instances in one document")
+and an `ITEM` hook kind (rejected as needing an acceptance check nobody had named).
+
+**What closes it: containment the shape signal cannot see.** `borislova`'s poems sit in a plain
+`<p class="it">`, never inside an actual `<blockquote>` element at all — checked directly against
+the source, not inferred. `segovia`'s two quoted anecdotes are the same construct one level up
+(`<blockquote><i><p class="c">…</p></i></blockquote>`) but are wholly italic, so `quotesItsContent`
+already claims them as quotes before this question is asked. Every other blockquote in the
+22-document corpus — the whole-article wrapper on 13 pages, `tarrega`'s multi-paragraph PDF-track
+blockquote, `new_rechin4`'s pagination-strip-plus-prose blockquote — lowers to *more* than one block,
+which is the actual gate: `listFromBlockquoteRun` fires only when a non-quoted blockquote's entire
+lowered content is exactly one paragraph. Recurrence is not required by the invariant (containment
+carries the whole burden of proof) but is what makes it decidable in the first place — six instances
+on one page, not one.
+
+`§15.2`'s "six instances in one document, the wrong target" objection no longer applies: it worried
+about a single-document *shape* rule, and this is a single-document *containment* fact used as
+evidence, tested for non-firing against every other blockquote the corpus has.
+
+### 34.3 Second, exposed by the first: two heading-recovery passes had no record-region guard
+
+Turning the blockquote's paragraph into a `list` gave `promoteLabelBeforeList` ("a short label
+directly above a list is that list's heading") exactly the sibling shape it looks for — six album
+titles each immediately above their own recovered list, satisfying its own recurrence floor of two —
+and it promoted every one to `###`, which the reference does not want (the titles stay plain
+paragraphs). `promoteSectionAfterRule` restated one of them at `##` through its own, unrelated
+"paragraph after a rule" evidence, chained after the first.
+
+**Already-named, just not applied here.** `headingLineOf` already declines inside a record region —
+"every card opens with a bold line: the album title above its track list … only the article's own
+flow gets headings from a line" — gated on `ctx.tableDepth >= 2` (two levels of `<table>`, because
+the page frame itself is one, so ordinary top-level prose already sits at depth 1). Neither
+`promoteLabelBeforeList` nor `promoteSectionAfterRule` carried the same guard, because neither had
+ever been exercised from inside a table-derived region before this session's list mechanism gave
+them the shape to fire on. Same guard, same threshold, added to both — no new constant.
+
+### 34.4 Measured
+
+| rung | §33 floor | after |
+|---|---|---|
+| L0 | 441 tests, validator 13 | **444**, **13**, 0 FAILED, typecheck clean |
+| L1 | 94.5 % | **94.5 %** |
+| L2 | 269 · 141 defect · 64 ambiguous · 64 ref-inc · 8 crit | **263 · 135 · 64 · 64 · 8** |
+| L3 | 68 | **68** |
+
+Only `kiselev` moved: L2 12 → 6 defect (`retyped.paragraph-to-list` 7 → 1 — the one residual is the
+unrelated "Том I/Том II…" volume list §15.2 names as a separate mechanism; the six album lists are
+fully closed), L1 per-document headings precision 0.25 → 1.0 (2 expected, 2 actual, matched 2), L3
+10 → 2 on `--doc kiselev -v` (the residual pair is the pre-existing `retyped.align-to-paragraph`
+contact-block residue, untouched). Every other of the 22 documents is identical in `corpus run`'s
+per-document columns, confirmed by direct comparison. Determinism checked directly. Corpus-wide
+validator errors unchanged at 13.
+
+Contracts: `recovery.test.ts`, `"a blockquote is quoted matter only when the source set it apart"` —
+rewrote the stale "flattens an upright indent" case (it asserted the wrong outcome as of this
+session) to assert the list, added the single-line floor and the multi-block false friend, and a
+unit-level case for `promoteLabelBeforeList`'s new guard (`lanes.test.ts`'s partial-`Ctx` precedent,
+not `md()` — reproducing `ctx.tableDepth >= 2` through real markup depends on corpus-profile-driven
+page-frame collapsing this contract is not about).
+
+**Running total: four instrument-adjacent corrections and two converter mechanisms this campaign**
+(§31.1 `src`, §32 the caption echo, §33.3 the `columns:` count serializer gap as instrument-adjacent
+findings; §33.2 the pager and §34.2/§34.3 the record list as converter mechanisms). Both of this
+session's converter fixes were found by adjudicating a *document* rather than a ranked class —
+document-first is now attested four times (`news`/`goya2` §31, `segovia1` §33, `kiselev` §34) and has
+paid every time.
+
+### 34.5 What is next
+
+`news` (26 defects, no single mechanism above 4) and `kiselev`'s own residual four classes
+(`retyped.align-to-paragraph` ×2, `table.cell.hyphenation.mixed` ×2, `table.geometry.cols` ×1, plus
+the "Том I…" volume-list instance) are the nearest remaining work. The parked discography-row
+question (§34.1) stays parked — small reach, no invariant, real distinction — until either a fifth
+instance breaks the 2-2 split or the author is asked directly.

@@ -38,21 +38,22 @@ disagree, the repository file wins and this index gets fixed.
 
 **Next action** -- see [OPEN.md](OPEN.md) §1. In short: the author revised **21 of 22 references,
 `BioMD-Reference.md`, and added `/new_rules.md`** in `06eeafb`, so **every number in PROGRESS
-§21-§28 predates the current corpus** (PROGRESS §29.1). Six mechanisms landed since -- a linked
+§21-§28 predates the current corpus** (PROGRESS §29.1). Seven mechanisms landed since -- a linked
 micro-image is now its glyph (§29.3), a synthesized column header gets the house name (§30.2), a
 flattened all-picture row is one `::: images` (§31.2), `src` is adjudicated as a target rather
 than as layout (§31.1), a figure label the owning side also states as a block is an echo
-(§32.1), and a single-row table of nothing but links is a pager, not an abandoned record matrix
-(§33.2). Current floor: L0 **441 tests / 13 validator errors**, L1 **94.5**, L2 **269 · 141 defect**,
+(§32.1), a single-row table of nothing but links is a pager, not an abandoned record matrix
+(§33.2), and a native `<blockquote>` around one flat run of lines is a record list (§34.2).
+Current floor: L0 **444 tests / 13 validator errors**, L1 **94.5**, L2 **263 · 135 defect**,
 L3 **68**. One attempt was built and reverted on its measurement (§30.1) -- read it before touching
-`retyped.paragraph-to-align`, a *different* mechanism from `segovia1`'s that §33 left untouched.
-Next is `borislova`/`new_kolpakov`/`new_karta`'s single-track discography rows -- same
-`planDataTable` ceiling `segovia1` hit, opposite fix (a table, not `columns`) -- blocked on finding
-what distinguishes them from `williams2`'s identical shape, which must not change (§33.6). Otherwise
-`news`/`kiselev` document-first, which has paid every time it has been tried.
+`retyped.paragraph-to-align`, a *different* mechanism from `segovia1`'s that §33/§34 left untouched.
+The `borislova`/`new_kolpakov`/`new_karta` discography-row question is **parked with evidence**
+(§34.1, OPEN.md §1): real distinction (`analyze.md` backs both `borislova` and `williams2` directly),
+no deterministic invariant found, small reach -- do not re-probe from scratch, only reopen on new
+measurement. Next is `news` document-first, attested four times now and has paid every time.
 
-> **Three of the last four mechanisms were instrument corrections, not converter fixes.** Quote the
-> defect count with that split or it reads as the conversion improving when it did not.
+> **Three of the last five mechanisms were instrument corrections, not converter fixes; two were not.**
+> Quote the defect count with that split or it reads as the conversion improving when it did not.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
