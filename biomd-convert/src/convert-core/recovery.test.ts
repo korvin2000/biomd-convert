@@ -232,6 +232,32 @@ describe("break-run segmentation", () => {
     ]);
   });
 
+  it("folds a break out of a link label, and leaves the one after the link", async () => {
+    // `goya2` writes `<a href="#26">…Francis Goya&nbsp;<br></a><br>` — a break
+    // inside the label and a second one after it. `analyze-2.md` rules that a
+    // link label is one line; the break outside is the division between two
+    // contents entries and stays.
+    const out = await md(
+      PROSE +
+        '<p><a href="a.htm">Галерея инструментальной музыки. Francis Goya&nbsp;<br></a><br>' +
+        '<a href="b.htm">Другие альбомы</a></p>' +
+        PROSE,
+    );
+    expect(out).toContain("[Галерея инструментальной музыки. Francis Goya](/#/a)");
+    // The label is one line — no hard break and no trailing space inside it.
+    expect(out).not.toMatch(/\[[^\]\n]*\\\n/u);
+    // False friend: the break between the two entries is meaning, and survives.
+    expect(out).toMatch(/\\\n\[Другие альбомы\]/u);
+  });
+
+  it("puts a space where an interior label break was, so two words cannot fuse", async () => {
+    // No source in this corpus writes one — every `<br>` inside an `<a>` here
+    // sits at an edge — so this states what the rule does with the case the
+    // other ~987 pages may hold.
+    const out = await md(PROSE + '<p><a href="a.htm">Первая<br>вторая</a></p>' + PROSE);
+    expect(out).toContain("[Первая вторая](/#/a)");
+  });
+
   it("never splits a link around a break", () => {
     const lifted = liftBreaks([
       { type: "link", url: "/x", children: [{ type: "text", value: "a" }, { type: "break" }, { type: "text", value: "b" }] },

@@ -1,5 +1,5 @@
 {
-  "overall": 0.9647809393099375,
+  "overall": 0.966335083694964,
   "documents": [
     {
       "name": "authors",
@@ -396,15 +396,13 @@
         "missing": []
       },
       "links": {
-        "recall": 0.9615384615384616,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9803921568627451,
+        "f1": 1,
         "expected": 26,
-        "actual": 25,
-        "matched": 25,
-        "missing": [
-          "#26"
-        ]
+        "actual": 26,
+        "matched": 26,
+        "missing": []
       },
       "images": {
         "recall": 1,
@@ -436,7 +434,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9951950148144134
+      "overall": 0.9981361912850016
     },
     {
       "name": "jovicic",
@@ -1971,17 +1969,14 @@
         "missing": []
       },
       "links": {
-        "recall": 0.5,
-        "precision": 1,
-        "f1": 0.6666666666666666,
+        "recall": 0.875,
+        "precision": 0.875,
+        "f1": 0.875,
         "expected": 8,
-        "actual": 4,
-        "matched": 4,
+        "actual": 8,
+        "matched": 7,
         "missing": [
-          "http://www.russianguitar.net",
-          "http://www.talismanmusic.org",
-          "http://www.masstusovka.com",
-          "http://www.barynya.com/romen"
+          "http://www.russianguitar.net"
         ]
       },
       "images": {
@@ -2046,7 +2041,7 @@
           ]
         }
       ],
-      "overall": 0.9386342943854324
+      "overall": 0.9698842943854324
     },
     {
       "name": "new_lagq2",

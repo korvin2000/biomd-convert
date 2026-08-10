@@ -2040,7 +2040,7 @@ function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
       type: "listItem",
       spread: false,
       children: [
-        { type: "paragraph", children: [{ type: "link", url, children: inlineFrom(entry.node.children, ctx) }] },
+        { type: "paragraph", children: [{ type: "link", url, children: oneLineLabel(inlineFrom(entry.node.children, ctx)) }] },
       ],
     };
   });
@@ -2265,6 +2265,68 @@ export function foldBreaks(nodes: readonly PhrasingContent[]): PhrasingContent[]
   });
 }
 
+/**
+ * A link label is one line.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The construct, not the document: `[label](target)` is one
+ * line of inline content, so a `<br>` written inside an `<a>` divides nothing a
+ * reader can act on. `analyze-2.md` states it outright — *"ссылка … всегда идет
+ * в 1 строку и имеет формат `[видимое-название](ссылка)`"* — and this is the
+ * rule `liftBreaks` has always applied when a break reached it inside a link
+ * ("a link is a single destination; splitting it would invent a second one").
+ * Asked at construction instead, so the two paths that build a link from an
+ * `<a>` cannot disagree: `goya2`'s contents entry and `new_kolpakov`'s four
+ * publisher links reach the serializer without passing through `liftBreaks`.
+ *
+ * **Not a general break rule, and `foldBreaks`' own note says why.** A break in
+ * running text is meaning; only a construct that is a single line by definition
+ * may fold one. A heading is such a construct; so is a link label. Nothing else
+ * here may call this.
+ *
+ * **Recurrence.** Not applicable: a label carries at most one edge break by
+ * construction. The corpus states the shape rather than repeating it — seven of
+ * the 22 sources write `<br>` inside an `<a>`, and **no reference anywhere**
+ * contains a break inside a link label.
+ *
+ * **False friend, tested for non-firing:** the break *after* a link, which is
+ * the line division the author drew between two entries and is untouched — the
+ * same `<a>` in `goya2` is followed by a second `<br>` outside it, and that one
+ * is the entry boundary.
+ *
+ * An interior break becomes a space rather than nothing, so two words can never
+ * fuse. Every instance this corpus has is at an edge, where the trim removes it
+ * entirely.
+ */
+function oneLineLabel(nodes: readonly PhrasingContent[]): PhrasingContent[] {
+  return trimRunEdges(foldBreaks(nodes));
+}
+
+/** Whitespace off the outer edges of an inline run, at whatever depth it sits. */
+function trimRunEdges(nodes: readonly PhrasingContent[]): PhrasingContent[] {
+  const trimAt = (list: readonly PhrasingContent[], edge: "start" | "end"): PhrasingContent[] => {
+    const out = [...list];
+    const order = edge === "start" ? [...out.keys()] : [...out.keys()].reverse();
+    for (const i of order) {
+      const node = out[i] as PhrasingContent;
+      if (node.type === "text") {
+        const value = edge === "start" ? node.value.replace(/^\s+/u, "") : node.value.replace(/\s+$/u, "");
+        out[i] = { ...node, value };
+        // A node emptied by the trim cannot hold the edge; the next one does.
+        if (value !== "") break;
+        continue;
+      }
+      const children = (node as { children?: unknown }).children;
+      if (!Array.isArray(children) || children.length === 0) break;
+      out[i] = { ...node, children: trimAt(children as PhrasingContent[], edge) } as PhrasingContent;
+      break;
+    }
+    return out.filter((n) => n.type !== "text" || n.value !== "");
+  };
+  return trimAt(trimAt(nodes, "start"), "end");
+}
+
 function dropEmphasis(nodes: readonly PhrasingContent[]): PhrasingContent[] {
   const out: PhrasingContent[] = [];
   for (const node of nodes) {
@@ -2372,7 +2434,7 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         if (rewritten.warning) ctx.warnings.push(`${node.id}: ${rewritten.warning}`);
         ctx.targets.push(rewritten.href);
         ctx.ledger.push(emitted(node.id, nextId(ctx, "link")));
-        const label = inlineFrom(node.children, ctx);
+        const label = oneLineLabel(inlineFrom(node.children, ctx));
         // `<a href=x><img src=forward.gif></a>` — the label was a glyph, and
         // the glyph is gone. An empty `[](x)` is not a link a reader can see
         // or a screen reader can announce; the destination is the only
@@ -2835,9 +2897,10 @@ function navFromGrid(grid: TableGrid, ctx: Ctx, el: LadomNode): BiomdContent[] |
   // contents concatenate into the label, so `<a>1995</a><a>-2002</a>` becomes
   // `[1995-2002](…)` rather than two items or a link nested in a link.
   const items: ListItem[] = cellNodes.map((cell, index) => {
-    const label = [...walkElements(cell)]
+    const rawLabel = [...walkElements(cell)]
       .filter((node) => node.tag === "a")
       .flatMap((anchor) => inlineFrom(anchor.children, ctx));
+    const label = oneLineLabel(rawLabel);
     return {
       type: "listItem",
       spread: false,
