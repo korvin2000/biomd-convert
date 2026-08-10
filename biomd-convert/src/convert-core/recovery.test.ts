@@ -1841,6 +1841,47 @@ describe("an announced run of equally indented lines is a list", () => {
     expect(out).not.toContain("- (S Wonder)");
   });
 
+  it("absorbs a numbered line the source closed the paragraph before", async () => {
+    // `goya2`: `<p>01…08</p><p>09. Promise Me</p>` — the run continues and the
+    // block boundary is the 1998 authoring slip `analyze-2.md` names. The
+    // source's own counter is the whole evidence.
+    const split =
+      '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' + '<p class="t">04. Be<br></p>';
+    const out = await md(PROSE + split + PROSE);
+    expect(out).toContain("- 04\\. Be");
+    expect(out).not.toMatch(/^04\\?\. Be/mu);
+  });
+
+  it("leaves the next album's track list alone — the false friend", async () => {
+    // The commonest shape on the same page: a second run restarting at 01.
+    // 1 is not the successor of 3, so the two lists stay two lists.
+    const restart =
+      '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' +
+      '<p class="t">01. Song Sung Blue<br>02. Hello Again<br>03. Natacha</p>';
+    const out = await md(PROSE + restart + PROSE);
+    const first = out.indexOf("03\\. Sacrifice");
+    const second = out.indexOf("01\\. Song Sung Blue");
+    expect(first).toBeGreaterThan(-1);
+    expect(second).toBeGreaterThan(first);
+    // Two lists, and the serializer alternates the bullet marker to keep them
+    // apart — which is only possible because they were never merged.
+    expect(out.slice(first, second)).toMatch(/\n\s*\n/u);
+    expect(out).toMatch(/^[*+] 01\\\. Song Sung Blue/mu);
+  });
+
+  it("leaves a number that is not the successor alone — the second false friend", async () => {
+    const aside = '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' + '<p class="t">07. See also</p>';
+    const out = await md(PROSE + aside + PROSE);
+    expect(out).not.toContain("- 07\\. See also");
+  });
+
+  it("leaves a differently punctuated run alone — the third false friend", async () => {
+    const repunctuated =
+      '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' + '<p class="t">04) Be</p>';
+    const out = await md(PROSE + repunctuated + PROSE);
+    expect(out).not.toContain("- 04) Be");
+  });
+
   it("leaves a uniformly indented letter alone — nothing to be subordinate to", async () => {
     // `pavlov_azancheev`: every line indented alike, no unindented lead-in.
     const letter =

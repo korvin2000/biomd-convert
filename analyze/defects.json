@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T07:57:40.552Z",
+  "generated": "2026-08-10T08:03:25.194Z",
   "totals": {
-    "findings": 159,
-    "converterDefects": 85,
+    "findings": 157,
+    "converterDefects": 83,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 46,
     "ambiguous": 28,
     "bySeverity": {
       "critical": 4,
-      "major": 74,
+      "major": 72,
       "minor": 81
     }
   },
@@ -39,10 +39,10 @@
     },
     {
       "doc": "goya2",
-      "findings": 20,
-      "converterDefects": 6,
+      "findings": 18,
+      "converterDefects": 4,
       "critical": 0,
-      "major": 13,
+      "major": 11,
       "minor": 7
     },
     {
@@ -731,27 +731,6 @@
       }
     },
     {
-      "class": "list.item.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[10]/column[0]/list[0]/item[8]",
-        "produced": null,
-        "reference": "09. Promise Me"
-      }
-    },
-    {
       "class": "nav.moved",
       "severity": "major",
       "instances": 1,
@@ -853,27 +832,6 @@
         "doc": "news",
         "path": "/frame[58]/align[2]/paragraph[3]",
         "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
-        "reference": null
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-list",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[10]/column[0]/paragraph[1]",
-        "produced": "09. Promise Me",
         "reference": null
       }
     },
@@ -1734,20 +1692,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "481dd861",
-      "doc": "goya2",
-      "class": "paragraph.spurious.in-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[10]/column[0]/paragraph[1]",
-      "producedLine": 184,
-      "referenceLine": null,
-      "produced": "09. Promise Me",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "09df3623",
       "doc": "goya2",
       "class": "paragraph.spurious.in-break-run",
@@ -1755,7 +1699,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
-      "producedLine": 348,
+      "producedLine": 347,
       "referenceLine": null,
       "produced": "1988",
       "reference": null,
@@ -1769,25 +1713,11 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/columns[40]/column[0]/align[0]/paragraph[1]",
-      "producedLine": 661,
+      "producedLine": 660,
       "referenceLine": null,
       "produced": "1999",
       "reference": null,
       "verdict": "ambiguous"
-    },
-    {
-      "id": "ef148075",
-      "doc": "goya2",
-      "class": "list.item.missing",
-      "severity": "major",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[10]/column[0]/list[0]/item[8]",
-      "producedLine": null,
-      "referenceLine": 183,
-      "produced": null,
-      "reference": "09. Promise Me",
-      "verdict": "converter-defect"
     },
     {
       "id": "3a2d6fd3",
@@ -1797,7 +1727,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 209,
+      "producedLine": 208,
       "referenceLine": 211,
       "produced": "Francis Goya Plays His Favourite Hits",
       "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]",
@@ -1811,7 +1741,7 @@
       "evidence": "content",
       "op": "delete",
       "path": "/columns[12]/column[1]/image[0]@caption",
-      "producedLine": 227,
+      "producedLine": 226,
       "referenceLine": 221,
       "produced": null,
       "reference": "caption: Francis Goya Plays His Favourite Hits vol. 2",
@@ -1825,7 +1755,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[20]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 338,
+      "producedLine": 337,
       "referenceLine": 336,
       "produced": "This Is Francis Goya",
       "reference": "This Is Francis Goya 1988 — at /columns[20]/column[0]/align[0]",
@@ -1839,7 +1769,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/columns[40]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 651,
+      "producedLine": 650,
       "referenceLine": 645,
       "produced": "Historia de un Amor",
       "reference": "Historia de un Amor 1999 — at /columns[40]/column[0]/align[0]",
@@ -1853,7 +1783,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[0]@position",
-      "producedLine": 1154,
+      "producedLine": 1153,
       "referenceLine": 1138,
       "produced": null,
       "reference": "position: center",
@@ -1867,7 +1797,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[0]@size",
-      "producedLine": 1154,
+      "producedLine": 1153,
       "referenceLine": 1138,
       "produced": null,
       "reference": "size: medium",
@@ -1881,7 +1811,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[1]@position",
-      "producedLine": 1159,
+      "producedLine": 1158,
       "referenceLine": 1145,
       "produced": null,
       "reference": "position: center",
@@ -1895,7 +1825,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[1]@size",
-      "producedLine": 1159,
+      "producedLine": 1158,
       "referenceLine": 1145,
       "produced": null,
       "reference": "size: medium",
@@ -1909,7 +1839,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[0]@position",
-      "producedLine": 1171,
+      "producedLine": 1170,
       "referenceLine": 1159,
       "produced": null,
       "reference": "position: center",
@@ -1923,7 +1853,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[0]@size",
-      "producedLine": 1171,
+      "producedLine": 1170,
       "referenceLine": 1159,
       "produced": null,
       "reference": "size: medium",
@@ -1937,7 +1867,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[1]@position",
-      "producedLine": 1176,
+      "producedLine": 1175,
       "referenceLine": 1166,
       "produced": null,
       "reference": "position: center",
@@ -1951,7 +1881,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[1]@size",
-      "producedLine": 1176,
+      "producedLine": 1175,
       "referenceLine": 1166,
       "produced": null,
       "reference": "size: medium",
@@ -1965,7 +1895,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[0]@position",
-      "producedLine": 1188,
+      "producedLine": 1187,
       "referenceLine": 1180,
       "produced": null,
       "reference": "position: center",
@@ -1979,7 +1909,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[0]@size",
-      "producedLine": 1188,
+      "producedLine": 1187,
       "referenceLine": 1180,
       "produced": null,
       "reference": "size: medium",
@@ -1993,7 +1923,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[1]@position",
-      "producedLine": 1193,
+      "producedLine": 1192,
       "referenceLine": 1187,
       "produced": null,
       "reference": "position: center",
@@ -2007,7 +1937,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[1]@size",
-      "producedLine": 1193,
+      "producedLine": 1192,
       "referenceLine": 1187,
       "produced": null,
       "reference": "size: medium",

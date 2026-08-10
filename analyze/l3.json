@@ -27,7 +27,7 @@
     ]
   },
   "totals": {
-    "findings": 61,
+    "findings": 52,
     "alignmentRows": 275
   },
   "classes": [
@@ -38,7 +38,7 @@
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 12,
+      "instances": 3,
       "documents": 2
     },
     {
@@ -71,159 +71,6 @@
       }
     },
     {
-      "id": "6724c674",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[0]",
-      "producedLine": 190,
-      "referenceLine": 189,
-      "produced": "10. Hello Again",
-      "reference": "10. Hello Again",
-      "geometry": {
-        "producedLane": 10,
-        "referenceLane": 11
-      }
-    },
-    {
-      "id": "819ca978",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]",
-      "producedLine": 190,
-      "referenceLine": 189,
-      "produced": "10. Hello Again 11. Secret Love 12. When You Tell Me That You Love Me 13. Winds Of Time 14. Bridge Over Troubled Water …",
-      "reference": "10. Hello Again 11. Secret Love 12. When You Tell Me That You Love Me 13. Winds Of Time 14. Bridge Over Troubled Water …",
-      "geometry": {
-        "producedLane": 9,
-        "referenceLane": 10
-      }
-    },
-    {
-      "id": "f27b6374",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[1]",
-      "producedLine": 191,
-      "referenceLine": 190,
-      "produced": "11. Secret Love",
-      "reference": "11. Secret Love",
-      "geometry": {
-        "producedLane": 11,
-        "referenceLane": 12
-      }
-    },
-    {
-      "id": "9db1fb30",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[2]",
-      "producedLine": 192,
-      "referenceLine": 191,
-      "produced": "12. When You Tell Me That You Love Me",
-      "reference": "12. When You Tell Me That You Love Me",
-      "geometry": {
-        "producedLane": 12,
-        "referenceLane": 13
-      }
-    },
-    {
-      "id": "f6536e59",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[3]",
-      "producedLine": 193,
-      "referenceLine": 192,
-      "produced": "13. Winds Of Time",
-      "reference": "13. Winds Of Time",
-      "geometry": {
-        "producedLane": 13,
-        "referenceLane": 14
-      }
-    },
-    {
-      "id": "67abdbc9",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[4]",
-      "producedLine": 194,
-      "referenceLine": 193,
-      "produced": "14. Bridge Over Troubled Water",
-      "reference": "14. Bridge Over Troubled Water",
-      "geometry": {
-        "producedLane": 14,
-        "referenceLane": 15
-      }
-    },
-    {
-      "id": "7e38b94c",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[5]",
-      "producedLine": 195,
-      "referenceLine": 194,
-      "produced": "15. Sorry Seems To Be The Hardest",
-      "reference": "15. Sorry Seems To Be The Hardest",
-      "geometry": {
-        "producedLane": 15,
-        "referenceLane": 16
-      }
-    },
-    {
-      "id": "111307fb",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[10]/column[1]/list[0]/item[6]",
-      "producedLine": 196,
-      "referenceLine": 195,
-      "produced": "16. Love On The Rock",
-      "reference": "16. Love On The Rock",
-      "geometry": {
-        "producedLane": 16,
-        "referenceLane": 17
-      }
-    },
-    {
-      "id": "818b7525",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[22]/column[1]/list[0]/item[8]",
-      "producedLine": 386,
-      "referenceLine": 377,
-      "produced": "18. Who pays the ferryman (I Marcopoulos)",
-      "reference": "18. Who pays the ferryman (I Marcopoulos)",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 19
-      }
-    },
-    {
       "id": "b0ba68cc",
       "doc": "goya2",
       "class": "layout.lane.mismatch",
@@ -231,7 +78,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 669,
+      "producedLine": 668,
       "referenceLine": 794,
       "produced": "",
       "reference": "",
@@ -248,7 +95,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 809,
+      "producedLine": 808,
       "referenceLine": 802,
       "produced": "",
       "reference": "",
@@ -265,13 +112,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[16]/column[1]/image[0]",
-      "producedLine": 227,
+      "producedLine": 226,
       "referenceLine": 281,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 78,
-        "referenceRank": 99
+        "producedRank": 79,
+        "referenceRank": 100
       }
     },
     {
@@ -282,13 +129,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[17]",
-      "producedLine": 236,
+      "producedLine": 235,
       "referenceLine": 290,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 80,
-        "referenceRank": 100
+        "producedRank": 81,
+        "referenceRank": 101
       }
     },
     {
@@ -299,13 +146,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[24]/column[1]/image[0]",
-      "producedLine": 286,
+      "producedLine": 285,
       "referenceLine": 402,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 101,
-        "referenceRank": 148
+        "producedRank": 102,
+        "referenceRank": 149
       }
     },
     {
@@ -316,13 +163,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[25]",
-      "producedLine": 295,
+      "producedLine": 294,
       "referenceLine": 411,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 102,
-        "referenceRank": 149
+        "producedRank": 103,
+        "referenceRank": 150
       }
     },
     {
@@ -333,13 +180,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[32]/column[1]/image[0]",
-      "producedLine": 411,
+      "producedLine": 410,
       "referenceLine": 513,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 150,
-        "referenceRank": 191
+        "producedRank": 151,
+        "referenceRank": 192
       }
     },
     {
@@ -350,13 +197,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[33]",
-      "producedLine": 420,
+      "producedLine": 419,
       "referenceLine": 522,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 151,
-        "referenceRank": 192
+        "producedRank": 152,
+        "referenceRank": 193
       }
     },
     {
@@ -367,13 +214,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[40]/column[1]/image[0]",
-      "producedLine": 522,
+      "producedLine": 521,
       "referenceLine": 654,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 193,
-        "referenceRank": 256
+        "producedRank": 194,
+        "referenceRank": 257
       }
     },
     {
@@ -384,13 +231,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[41]",
-      "producedLine": 531,
+      "producedLine": 530,
       "referenceLine": 663,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 194,
-        "referenceRank": 257
+        "producedRank": 195,
+        "referenceRank": 258
       }
     },
     {
@@ -401,13 +248,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[0]/list[0]/item[4]",
-      "producedLine": 794,
+      "producedLine": 793,
       "referenceLine": 779,
       "produced": "05. Stenka Rasin",
       "reference": "05. Stenka Rasin",
       "geometry": {
-        "producedRank": 309,
-        "referenceRank": 308
+        "producedRank": 310,
+        "referenceRank": 309
       }
     },
     {
@@ -418,13 +265,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 669,
+      "producedLine": 668,
       "referenceLine": 794,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 258,
-        "referenceRank": 307
+        "producedRank": 259,
+        "referenceRank": 308
       }
     },
     {
@@ -435,13 +282,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[52]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 834,
+      "producedLine": 833,
       "referenceLine": 820,
       "produced": "Francis Goya in Moscow",
       "reference": "Francis Goya in Moscow",
       "geometry": {
-        "producedRank": 320,
-        "referenceRank": 318
+        "producedRank": 321,
+        "referenceRank": 319
       }
     },
     {
@@ -452,13 +299,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[52]/column[1]/image[0]",
-      "producedLine": 815,
+      "producedLine": 814,
       "referenceLine": 827,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 310,
-        "referenceRank": 319
+        "producedRank": 311,
+        "referenceRank": 320
       }
     },
     {
@@ -469,13 +316,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": 842,
+      "producedLine": 841,
       "referenceLine": 1082,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 321,
-        "referenceRank": 425
+        "producedRank": 322,
+        "referenceRank": 426
       }
     },
     {
@@ -486,13 +333,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[69]",
-      "producedLine": 851,
+      "producedLine": 850,
       "referenceLine": 1091,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 322,
-        "referenceRank": 427
+        "producedRank": 323,
+        "referenceRank": 428
       }
     },
     {
@@ -1395,7 +1242,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 212,
+      "producedLine": 211,
       "referenceLine": 211,
       "text": "Francis Goya Plays His Favourite Hits",
       "producedAlignment": "center",
@@ -1408,7 +1255,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 219,
+      "producedLine": 218,
       "referenceLine": 213,
       "text": "Vol. 2",
       "producedAlignment": "center",
@@ -1421,7 +1268,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 278,
+      "producedLine": 277,
       "referenceLine": 273,
       "text": "Best of Francis Goya",
       "producedAlignment": "center",
@@ -1434,7 +1281,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 227,
+      "producedLine": 226,
       "referenceLine": 281,
       "text": "",
       "producedAlignment": "center",
@@ -1447,7 +1294,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 341,
+      "producedLine": 340,
       "referenceLine": 336,
       "text": "This Is Francis Goya 1988",
       "producedAlignment": "center",
@@ -1460,7 +1307,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 402,
+      "producedLine": 401,
       "referenceLine": 393,
       "text": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "producedAlignment": "center",
@@ -1473,7 +1320,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 286,
+      "producedLine": 285,
       "referenceLine": 402,
       "text": "",
       "producedAlignment": "center",
@@ -1486,7 +1333,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 462,
+      "producedLine": 461,
       "referenceLine": 453,
       "text": "The Very Best of Francis Goya (Diamond Star Collection)",
       "producedAlignment": "center",
@@ -1499,7 +1346,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 514,
+      "producedLine": 513,
       "referenceLine": 505,
       "text": "Collection 2000 / Francis Goya",
       "producedAlignment": "center",
@@ -1512,7 +1359,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 411,
+      "producedLine": 410,
       "referenceLine": 513,
       "text": "",
       "producedAlignment": "center",
@@ -1525,7 +1372,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 578,
+      "producedLine": 577,
       "referenceLine": 569,
       "text": "Magic Moments",
       "producedAlignment": "center",
@@ -1538,7 +1385,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 589,
+      "producedLine": 588,
       "referenceLine": 580,
       "text": "Latin Romance",
       "producedAlignment": "center",
@@ -1551,7 +1398,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 654,
+      "producedLine": 653,
       "referenceLine": 645,
       "text": "Historia de un Amor 1999",
       "producedAlignment": "center",
@@ -1564,7 +1411,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 522,
+      "producedLine": 521,
       "referenceLine": 654,
       "text": "",
       "producedAlignment": "center",
@@ -1577,7 +1424,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 720,
+      "producedLine": 719,
       "referenceLine": 705,
       "text": "The Romantic Guitar of Francis Goya",
       "producedAlignment": "center",
@@ -1590,7 +1437,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 774,
+      "producedLine": 773,
       "referenceLine": 759,
       "text": "Moscow Nights",
       "producedAlignment": "center",
@@ -1603,7 +1450,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 669,
+      "producedLine": 668,
       "referenceLine": 794,
       "text": "",
       "producedAlignment": "center",
@@ -1616,7 +1463,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 809,
+      "producedLine": 808,
       "referenceLine": 802,
       "text": "",
       "producedAlignment": "center",
@@ -1629,7 +1476,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 834,
+      "producedLine": 833,
       "referenceLine": 820,
       "text": "Francis Goya in Moscow",
       "producedAlignment": "center",
@@ -1642,7 +1489,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 815,
+      "producedLine": 814,
       "referenceLine": 827,
       "text": "",
       "producedAlignment": "center",
@@ -1655,7 +1502,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 889,
+      "producedLine": 888,
       "referenceLine": 874,
       "text": "Francis Goya / Rendez-vous",
       "producedAlignment": "center",
@@ -1668,7 +1515,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 900,
+      "producedLine": 899,
       "referenceLine": 885,
       "text": "Golden Collection 8 Francis Goya",
       "producedAlignment": "center",
@@ -1681,7 +1528,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 964,
+      "producedLine": 963,
       "referenceLine": 948,
       "text": "Noche Latina / Francis Goya & Carmina 1993",
       "producedAlignment": "center",
@@ -1694,7 +1541,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1017,
+      "producedLine": 1016,
       "referenceLine": 1000,
       "text": "Symphony of Love",
       "producedAlignment": "center",
@@ -1707,7 +1554,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1028,
+      "producedLine": 1027,
       "referenceLine": 1011,
       "text": "Together / Peter Weekers & Francis Goya",
       "producedAlignment": "center",
@@ -1720,7 +1567,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1088,
+      "producedLine": 1087,
       "referenceLine": 1071,
       "text": "Галерея инструментальной музыки. Francis Goya",
       "producedAlignment": "center",
@@ -1733,7 +1580,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1091,
+      "producedLine": 1090,
       "referenceLine": 1074,
       "text": "Grand Records, 2001",
       "producedAlignment": "center",
@@ -1746,7 +1593,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 842,
+      "producedLine": 841,
       "referenceLine": 1082,
       "text": "",
       "producedAlignment": "center",
@@ -1759,7 +1606,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1159,
+      "producedLine": 1158,
       "referenceLine": 1145,
       "text": "Francis Goya",
       "producedAlignment": "right",
@@ -1772,7 +1619,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1176,
+      "producedLine": 1175,
       "referenceLine": 1166,
       "text": "Francis Goya / Gondwana",
       "producedAlignment": "right",
@@ -1785,7 +1632,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 1193,
+      "producedLine": 1192,
       "referenceLine": 1187,
       "text": "Maria Padilha",
       "producedAlignment": "right",

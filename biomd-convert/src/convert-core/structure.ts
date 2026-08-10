@@ -424,13 +424,112 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   return bindCaptions(
     groupAlignedRuns(
       groupSubordinatedRuns(
-        promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(out, ctx), ctx), ctx),
+        promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx),
         ctx,
       ),
       ctx,
     ),
     ctx,
   );
+}
+
+/** The ordinal a line announces itself with — `09.` or `9)` — if it does. */
+function announcedNumber(text: string): { value: number; delimiter: string } | null {
+  const m = /^\s*(\d{1,3})([.)])\s/u.exec(text);
+  if (!m) return null;
+  return { value: Number.parseInt(m[1] as string, 10), delimiter: m[2] as string };
+}
+
+/**
+ * Where an enumerated list has got to, if it is enumerated at all.
+ *
+ * Every item must announce a number, with one delimiter throughout, ascending
+ * by exactly one. Two items minimum: a single numbered line is a line that
+ * happens to start with a digit, and the sequence is the whole evidence.
+ */
+function enumeratedRunOf(list: List): { last: number; delimiter: string } | null {
+  if (list.children.length < 2) return null;
+  let previous: number | null = null;
+  let delimiter: string | null = null;
+  for (const item of list.children) {
+    const announced = announcedNumber(blockTextOf(item as unknown as BiomdContent).trim());
+    if (!announced) return null;
+    if (delimiter === null) delimiter = announced.delimiter;
+    else if (announced.delimiter !== delimiter || announced.value !== previous! + 1) return null;
+    previous = announced.value;
+  }
+  return delimiter === null || previous === null ? null : { last: previous, delimiter };
+}
+
+/**
+ * A numbered run the source split in two is one run.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Arithmetic on the author's own numbering, and nothing else: a
+ * block immediately after an enumerated list, announcing the *successor* of that
+ * list's last number with the same delimiter, is that list's next item. No
+ * document, tag, class, margin or wording is consulted — the source's own
+ * counter says the run continues, and the block boundary between them is the
+ * 1998 authoring slip `analyze-2.md` names ("Человеческая ошибка, присутствует
+ * в оригинале — я исправил"). `goya2` closes one `<p>` after `08. Sound Of
+ * Silence` and opens another for `09. Promise Me`.
+ *
+ * **Recurrence** is internal and required twice over: the list must hold at
+ * least two items and they must ascend by one, so a single line beginning with
+ * a digit can never open a run to be continued.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - **the next album's track list**, which restarts at `01.` — the commonest
+ *     shape on this very page, and excluded because 1 is not the successor of
+ *     16;
+ *   - **a numbered aside** — a footnote or a reference that begins with a digit
+ *     but not with the next one;
+ *   - **a differently punctuated run** — `07.` followed by `08)` is a second
+ *     list, not a continuation of the first.
+ *
+ * Measured over the 22 documents: exactly **one** paragraph follows an
+ * enumerated list beginning with any number at all, and it is the wanted one.
+ * The corpus offers no negative instance, which is why the false friends above
+ * are constructed rather than cited.
+ *
+ * The list is **mutated** rather than rebuilt: `ctx.blockAlign`,
+ * `ctx.subordinated` and `ctx.captionEligible` are keyed by block identity, and
+ * a copy would silently drop this block out of all three.
+ */
+function absorbContinuedItems(blocks: readonly BiomdContent[]): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  for (const block of blocks) {
+    const previous = out[out.length - 1];
+    const run = previous?.type === "list" ? enumeratedRunOf(previous) : null;
+    const continued = run && previous?.type === "list" ? continuingItems(block, run) : null;
+    if (continued && previous?.type === "list") {
+      previous.children.push(...continued);
+      continue;
+    }
+    out.push(block);
+  }
+  return out;
+}
+
+/** The items `block` contributes to `run`, or null when it does not continue it. */
+function continuingItems(block: BiomdContent, run: { last: number; delimiter: string }): ListItem[] | null {
+  const continues = (text: string, expected: number): boolean => {
+    const announced = announcedNumber(text.trim());
+    return announced !== null && announced.value === expected && announced.delimiter === run.delimiter;
+  };
+  if (block.type === "paragraph") {
+    return continues(blockTextOf(block), run.last + 1) ? [{ type: "listItem", spread: false, children: [block] }] : null;
+  }
+  // The slip can also close the `<p>` mid-run and leave several lines behind,
+  // which lower to a list of their own rather than to a paragraph.
+  if (block.type === "list") {
+    const tail = enumeratedRunOf(block);
+    if (!tail || tail.delimiter !== run.delimiter) return null;
+    const first = announcedNumber(blockTextOf(block.children[0] as unknown as BiomdContent).trim());
+    return first?.value === run.last + 1 ? [...block.children] : null;
+  }
+  return null;
 }
 
 /**
