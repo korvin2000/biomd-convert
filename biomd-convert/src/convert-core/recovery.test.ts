@@ -1920,6 +1920,46 @@ describe("an announced run of equally indented lines is a list", () => {
     expect(out).not.toContain("- (S Wonder)");
   });
 
+  /**
+   * ## Rule contract — a hand-drawn bullet is the list it was drawing
+   *
+   * **Invariant.** Two or more adjacent blocks opening with the *same* mark
+   * from `LIST_BULLETS`. The marks are lexical data that degrade to nothing on
+   * no-match; the evidence is that one repeats across siblings.
+   *
+   * **Recurrence is the rule, not a gate on it** — one bulleted line is a
+   * label, which `RULE_GLYPHS`' own note already names as the false friend.
+   *
+   * Measured: no reference anywhere leaves a bullet-opened line a paragraph.
+   */
+  it("makes a list of adjacent blocks the author bulleted by hand", async () => {
+    // `segovia`: two `<p>` each opening `•` where the page meant `<ul>`.
+    // `analyze.md` asks for exactly this conversion, by name.
+    const out = await md(
+      PROSE +
+        '<p class="t">• Владимир Бобри о технических приемах Сеговии</p>' +
+        '<p class="t">• Денис Кольвах "Техника Сеговии"</p>' +
+        PROSE,
+    );
+    expect(out).toContain("- Владимир Бобри о технических приемах Сеговии");
+    expect(out).toContain('- Денис Кольвах "Техника Сеговии"');
+    expect(out).not.toMatch(/^•/mu);
+  });
+
+  it("leaves one bulleted line a label — the false friend", async () => {
+    const out = await md(PROSE + '<p class="t">• Из письма А.Максимова</p>' + PROSE);
+    expect(out).not.toContain("- Из письма А.Максимова");
+  });
+
+  it("breaks the run where the mark changes — the second false friend", async () => {
+    // Two different marks are two authors' habits meeting, not one list.
+    const out = await md(
+      PROSE + '<p class="t">• Первый пункт списка</p><p class="t">· Второй пункт списка</p>' + PROSE,
+    );
+    expect(out).not.toContain("- Первый пункт списка");
+    expect(out).not.toContain("- Второй пункт списка");
+  });
+
   it("absorbs a numbered line the source closed the paragraph before", async () => {
     // `goya2`: `<p>01…08</p><p>09. Promise Me</p>` — the run continues and the
     // block boundary is the 1998 authoring slip `analyze-2.md` names. The

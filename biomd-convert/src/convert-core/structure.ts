@@ -43,7 +43,7 @@ import {
   cellText,
   planDataTable,
 } from "./data-table.js";
-import { LINK_GLYPH, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
 import { canonicalColumnLabel } from "./column-labels.js";
 import { type LinkProfile, rewriteTarget, siteRelativeAsset } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
@@ -424,13 +424,113 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   return bindCaptions(
     groupAlignedRuns(
       groupSubordinatedRuns(
-        promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx),
+        groupBulletedItems(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx)),
         ctx,
       ),
       ctx,
     ),
     ctx,
   );
+}
+
+/**
+ * Blocks the author bulleted by hand are the list they were drawing.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Two or more *adjacent* blocks whose visible text opens with
+ * the **same** mark from {@link LIST_BULLETS}. The mark is lexical data that
+ * degrades to nothing on no-match; the evidence is that it repeats across
+ * siblings, which is what a list is. Nothing about the document, the words, the
+ * length or the typography — `segovia` writes two `<p>`s each opening `•` where
+ * it means `<ul><li>`, and `analyze.md` asks for exactly this conversion.
+ *
+ * **Recurrence** is the rule rather than a gate on it: one bulleted line is a
+ * **label**, which is the false friend `RULE_GLYPHS`' own note already names
+ * (`• Из письма А.Максимова`), and a run of two is the smallest thing that can
+ * be a list at all. Tested for non-firing.
+ *
+ * **Second false friend, also tested: the drawn divider.** `• • •` alone on a
+ * line is a rule, and it never reaches here — `drawnRuleFrom` consumes it
+ * earlier, and it would fail this test anyway because a divider's text is
+ * nothing *but* marks.
+ *
+ * **Third: two different marks.** `•` under `·` is two authors' habits meeting,
+ * not one list, so the run breaks where the mark changes.
+ *
+ * Measured over the 22 documents: **no reference anywhere** leaves a
+ * bullet-opened line as a paragraph, and the produced side had exactly two,
+ * both on `segovia` and both wanted as items.
+ */
+function groupBulletedItems(blocks: readonly BiomdContent[]): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  let run: Paragraph[] = [];
+  let mark: string | null = null;
+
+  const flush = (): void => {
+    if (run.length >= 2) {
+      out.push({
+        type: "list",
+        ordered: false,
+        spread: true,
+        children: run.map((paragraph) => ({
+          type: "listItem" as const,
+          spread: false,
+          children: [stripLeadingMark(paragraph)],
+        })),
+      });
+    } else out.push(...run);
+    run = [];
+    mark = null;
+  };
+
+  for (const block of blocks) {
+    const paragraph = block.type === "paragraph" ? block : null;
+    const opener = paragraph ? bulletOpening(paragraph) : null;
+    if (opener === null || paragraph === null) {
+      flush();
+      out.push(block);
+      continue;
+    }
+    if (opener !== mark) flush();
+    mark = opener;
+    run.push(paragraph);
+  }
+  flush();
+  return out;
+}
+
+/** The list mark a paragraph opens with, or null. */
+function bulletOpening(paragraph: Paragraph): string | null {
+  const text = blockTextOf(paragraph).trimStart();
+  const first = [...text][0];
+  if (first === undefined || !LIST_BULLETS.has(first)) return null;
+  // A line that is *nothing but* marks is a divider, not an item.
+  return text.slice(first.length).trim() === "" ? null : first;
+}
+
+/** The same paragraph with its opening mark and the space after it removed. */
+function stripLeadingMark(paragraph: Paragraph): Paragraph {
+  const strip = (nodes: readonly PhrasingContent[]): { done: boolean; nodes: PhrasingContent[] } => {
+    const out = [...nodes];
+    for (const [i, node] of out.entries()) {
+      if (node.type === "text") {
+        const trimmed = node.value.trimStart();
+        if (trimmed === "") continue;
+        const first = [...trimmed][0] as string;
+        if (!LIST_BULLETS.has(first)) return { done: true, nodes: out };
+        out[i] = { ...node, value: trimmed.slice(first.length).replace(/^[\s ]+/u, "") };
+        return { done: true, nodes: out };
+      }
+      const children = (node as { children?: unknown }).children;
+      if (!Array.isArray(children)) return { done: true, nodes: out };
+      const inner = strip(children as PhrasingContent[]);
+      out[i] = { ...node, children: inner.nodes } as PhrasingContent;
+      return { done: true, nodes: out };
+    }
+    return { done: false, nodes: out };
+  };
+  return { ...paragraph, children: strip(paragraph.children).nodes };
 }
 
 /** The ordinal a line announces itself with — `09.` or `9)` — if it does. */

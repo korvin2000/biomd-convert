@@ -145,6 +145,30 @@ export const RULE_GLYPHS = new Set([
 ]);
 
 /**
+ * Marks this era used where it had no `<ul>`: the glyph that opens an item.
+ *
+ * Lexical data, not detector literals — a mark that is not listed simply leaves
+ * its line a paragraph, which is what happens today for every one of them. The
+ * *rule* is elsewhere and supplies the whole burden of proof: what makes these
+ * a list is that the same mark opens two or more adjacent blocks. One bulleted
+ * line is a label (`• Из письма А.Максимова`), and three of them alone on a
+ * line are a divider — {@link RULE_GLYPHS} owns that case and answers it by
+ * repetition within the line.
+ *
+ * A deliberate subset of `RULE_GLYPHS`: a dash or an em dash opens a line of
+ * dialogue far more often than an item in this corpus, and `*` opens emphasis.
+ */
+export const LIST_BULLETS = new Set([
+  "•", // • bullet
+  "·", // · middle dot
+  "●", // ● black circle
+  "▪", // ▪ black small square
+  "◦", // ◦ white bullet
+  "‣", // ‣ triangular bullet
+  "»", // » right guillemet, used as a marker in this corpus's era
+]);
+
+/**
  * How many ornaments make a rule.
  *
  * Two is an ellipsis mid-sentence or a pair of markers; three is the dinkus.

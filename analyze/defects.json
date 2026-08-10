@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-10T09:10:53.203Z",
+  "generated": "2026-08-10T09:15:27.812Z",
   "totals": {
-    "findings": 151,
-    "converterDefects": 77,
+    "findings": 153,
+    "converterDefects": 75,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 47,
-    "ambiguous": 27,
+    "referenceInconsistencies": 49,
+    "ambiguous": 29,
     "bySeverity": {
-      "critical": 4,
-      "major": 67,
-      "minor": 80
+      "critical": 6,
+      "major": 65,
+      "minor": 82
     }
   },
   "perDocument": [
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 14,
-      "converterDefects": 10,
-      "critical": 1,
-      "major": 9,
-      "minor": 4
+      "findings": 16,
+      "converterDefects": 8,
+      "critical": 3,
+      "major": 7,
+      "minor": 6
     },
     {
       "doc": "segovia1",
@@ -217,29 +217,6 @@
         "path": "/align[23]",
         "produced": "▶",
         "reference": "▶ — at /paragraph[24]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "jovicic",
-        "kiselev",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 36,
-      "example": {
-        "doc": "jovicic",
-        "path": "/columns[11]/column[0]/list[2]",
-        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
-        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
       }
     },
     {
@@ -493,6 +470,28 @@
         "path": "/align[2]/heading[0]",
         "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
         "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /align[2]/paragraph[1]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-list",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "jovicic",
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "jovicic",
+        "path": "/columns[11]/column[0]/list[2]",
+        "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
+        "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
       }
     },
     {
@@ -1175,6 +1174,29 @@
       }
     },
     {
+      "class": "link.label.content.empty",
+      "severity": "critical",
+      "instances": 4,
+      "documents": [
+        "barrios",
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 4,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "barrios",
+        "path": "/paragraph[9]/link[0]",
+        "produced": "▶",
+        "reference": "/#/barrios1"
+      }
+    },
+    {
       "class": "hardbreak.spurious",
       "severity": "minor",
       "instances": 2,
@@ -1219,28 +1241,6 @@
       }
     },
     {
-      "class": "link.label.content.empty",
-      "severity": "critical",
-      "instances": 2,
-      "documents": [
-        "barrios",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 2,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "barrios",
-        "path": "/paragraph[9]/link[0]",
-        "produced": "▶",
-        "reference": "/#/barrios1"
-      }
-    },
-    {
       "class": "link.label.hyphenation.joined",
       "severity": "minor",
       "instances": 2,
@@ -1260,6 +1260,27 @@
         "path": "/paragraph[7]/link[0]",
         "produced": "www.abcguitars.com",
         "reference": "www.abc-guitars.com"
+      }
+    },
+    {
+      "class": "list.item.content.edited",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 2
+      },
+      "rank": 0,
+      "example": {
+        "doc": "segovia",
+        "path": "/list[36]/item[0]",
+        "produced": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [▶](/#/bobri1)",
+        "reference": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [/#/bobri1](/#/bobr…"
       }
     },
     {
@@ -3141,32 +3162,60 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "b4aaeb25",
+      "id": "2ec199ac",
       "doc": "segovia",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "list.item.content.edited",
+      "severity": "minor",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/list[36]",
+      "path": "/list[36]/item[0]",
       "producedLine": 124,
       "referenceLine": 129,
-      "produced": "• Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) ▶",
-      "reference": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) /#/bobri1 — at /paragraph[38]",
-      "verdict": "converter-defect"
+      "produced": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [▶](/#/bobri1)",
+      "reference": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [/#/bobri1](/#/bobr…",
+      "verdict": "ambiguous"
     },
     {
-      "id": "27fd7233",
+      "id": "5b69e942",
       "doc": "segovia",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "link.label.content.empty",
+      "severity": "critical",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/list[37]",
+      "path": "/list[36]/item[0]/link[0]",
+      "producedLine": 124,
+      "referenceLine": 129,
+      "produced": "▶",
+      "reference": "/#/bobri1",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "3e1fe639",
+      "doc": "segovia",
+      "class": "list.item.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/list[37]/item[0]",
       "producedLine": 126,
       "referenceLine": 131,
-      "produced": "• Денис Кольвах \"Техника Сеговии\" ▶",
-      "reference": "Денис Кольвах \"Техника Сеговии\" /#/segovia1 — at /paragraph[38]",
-      "verdict": "converter-defect"
+      "produced": "Денис Кольвах \"Техника Сеговии\" [▶](/#/segovia1)",
+      "reference": "Денис Кольвах \"Техника Сеговии\" [/#/segovia1](/#/segovia1)",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "f46ef65f",
+      "doc": "segovia",
+      "class": "link.label.content.empty",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/list[37]/item[0]/link[0]",
+      "producedLine": 126,
+      "referenceLine": 131,
+      "produced": "▶",
+      "reference": "/#/segovia1",
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "4bd5ee4f",
