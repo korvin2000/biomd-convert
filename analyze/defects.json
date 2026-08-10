@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T07:37:39.491Z",
+  "generated": "2026-08-10T07:45:55.232Z",
   "totals": {
-    "findings": 164,
-    "converterDefects": 88,
+    "findings": 162,
+    "converterDefects": 86,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 46,
     "ambiguous": 30,
     "bySeverity": {
       "critical": 4,
-      "major": 77,
+      "major": 75,
       "minor": 83
     }
   },
@@ -167,10 +167,10 @@
     },
     {
       "doc": "segovia1",
-      "findings": 5,
-      "converterDefects": 4,
+      "findings": 3,
+      "converterDefects": 2,
       "critical": 1,
-      "major": 3,
+      "major": 1,
       "minor": 1
     },
     {
@@ -241,28 +241,6 @@
         "path": "/columns[11]/column[0]/list[2]",
         "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
         "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
-      }
-    },
-    {
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "instances": 5,
-      "documents": [
-        "goya2",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 30,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "Francis Goya Plays His Favourite Hits",
-        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
     {
@@ -539,6 +517,27 @@
         "path": "/paragraph[2]",
         "produced": "БОРИСЛОВА Надя \\[Надежда Борис-лавовна Борислова] (Nadia Borislova) – гитаристка и композитор. Родилась в 1969 году в Москве в семье пианистов. С 1992 года жив…",
         "reference": "БОРИСЛОВА Надя \\[Надежда Бориславовна Борислова] (Nadia Borislova) – гитаристка и композитор. Родилась в 1969 году в Москве в семье пианистов. С 1992 года живе…"
+      }
+    },
+    {
+      "class": "retyped.align-to-paragraph",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 9,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+        "produced": "Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
     {
@@ -3652,34 +3651,6 @@
       "produced": null,
       "reference": "frame: gold",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "f8c486dc",
-      "doc": "segovia1",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 246,
-      "referenceLine": 242,
-      "produced": "Андрес Сеговия",
-      "reference": "Андрес Сеговия — at /columns[59]/column[2]/align[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e1e37cb3",
-      "doc": "segovia1",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 257,
-      "referenceLine": 246,
-      "produced": "Владимир Бобри",
-      "reference": "Владимир Бобри — at /columns[59]/column[3]/align[1]",
-      "verdict": "converter-defect"
     },
     {
       "id": "40c2a16b",

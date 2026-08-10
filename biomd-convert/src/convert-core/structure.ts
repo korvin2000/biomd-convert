@@ -3329,7 +3329,8 @@ function layoutFrom(
   el: LadomNode,
   classification: Classification,
 ): BiomdContent[] {
-  const maxLanes = isBareLinkRow(grid) ? 4 : 3;
+  const pager = isBareLinkRow(grid);
+  const maxLanes = pager ? 4 : 3;
   if (ctx.options.layoutFidelity === "faithful" && grid.cols >= 2 && grid.cols <= maxLanes && grid.rows >= 1) {
     // Speculative, so it has to be undoable. A lane attempt that turns out not
     // to produce two usable columns still walked every cell, and its links,
@@ -3401,8 +3402,21 @@ function layoutFrom(
         // The cell is decided now, so the align-run pass may look at it (§13
         // permits `align` inside `column`). During lowering above it must not:
         // the region detector reads the produced shape back.
+        //
+        // **Except in a pager.** {@link isBareLinkRow} holds only when every
+        // occupied cell is exactly one link and nothing else, so each lane
+        // already holds one thing and the lane itself is what places it — an
+        // `align` inside can restate the lane and nothing more. This is §6's
+        // "do not use `align` to restate a bounded group", the same argument
+        // {@link alignedGroup} makes for a `frame`, applied to the one region
+        // shape whose lanes are single navigation labels rather than record
+        // cards. The distinction matters: `kiselev` and `new_blackmore` set a
+        // multi-block lane apart from its neighbour inside an ordinary layout
+        // region, and their references keep that `align`.
+        const bounded: BiomdContent[] = kept.filter(isBounded);
+        const grouped: BiomdContent[] = pager ? bounded : groupAlignedRunsCommitted(bounded, ctx, cell.node);
         row.push({
-          blocks: groupAlignedRunsCommitted(kept.filter(isBounded), ctx, cell.node).filter(isBounded),
+          blocks: grouped.filter(isBounded),
           folded: inner.filter((block) => block.type === "biomdNav"),
         });
       }

@@ -1156,6 +1156,74 @@ describe("a row of nothing but links is a pager, not an abandoned record", () =>
   });
 
   /**
+   * ## Rule contract — a pager's lane is what places its link
+   *
+   * **Invariant.** {@link isBareLinkRow} holds only when every occupied cell is
+   * exactly one link and nothing else, so each lane holds one thing and the
+   * lane is already the bounded group. `BioMD-Reference.md` §6 says not to use
+   * `align` to restate one — the same argument `alignedGroup` makes for a
+   * `frame`. Nothing about the document, the glyph, or the label's text.
+   *
+   * **Recurrence.** Inherited from `isBareLinkRow`, which is exempt for the
+   * stated reason: a page draws one previous/next strip.
+   *
+   * **False friend, tested for non-firing below:** an ordinary layout region
+   * whose lane is set apart from its neighbour. `kiselev` right-sets a contact
+   * block beside a left-set source list and `new_blackmore` centres an issue
+   * date beside its interview, and both references keep the `align` — those
+   * lanes hold blocks, not a single navigation label, and the alignment is the
+   * only thing saying the lane differs from the one next to it.
+   */
+  async function measuredWith(cls: Classification["class"], html: string): Promise<string> {
+    const doc = parseHtml(html);
+    const inner = [...walkElements(doc.root)].filter((e) => e.tag === "table");
+    const target = inner[inner.length - 1];
+    const classifications = new Map([
+      [target!.id, { class: cls, confidence: 0.4, tier: 4 as const, reason: "forced by test" }],
+    ]);
+    const result = await convert(Buffer.from(html, "utf8"), {
+      profile: SPEC,
+      layoutFidelity: "faithful",
+      classifications,
+      measurer: new InlineAlignMeasurer(),
+    });
+    return result.markdown;
+  }
+
+  it("leaves a pager's lanes bare, however the strip is centred", async () => {
+    // `segovia1`'s footer: `◀ | Андрес Сеговия | Владимир Бобри | ▶`, the two
+    // named cells centred. Its reference writes each lane's link bare.
+    const centred =
+      '<table width="60" border="0" cellspacing="0" cellpadding="0"><tr>' +
+      '<td width="11"><a href="segovia.htm"><img src="../main/back.gif" width="11" height="11"></a></td>' +
+      '<td><p style="text-align: center"><a href="segovia.htm">Андрес Сеговия</a></p></td>' +
+      '<td><p style="text-align: center"><a href="bobri.htm">Владимир Бобри</a></p></td>' +
+      '<td width="11"><a href="bobri.htm"><img src="../main/forward.gif" width="11" height="11"></a></td>' +
+      "</tr></table>";
+    const out = await measuredWith("DATA", page(PROSE + centred));
+    expect(out).toContain("::: columns");
+    expect(out).toContain("[Андрес Сеговия](/#/segovia)");
+    expect(out).not.toContain("::: align");
+  });
+
+  it("keeps the align on a lane that is set apart from its neighbour", async () => {
+    // The false friend, and the reason the guard reads the *region* rather than
+    // the cell: a two-lane region whose right lane is right-set against a
+    // left-set source list. Not a bare-link row — the left lane carries prose —
+    // so the pager guard never sees it and §13's `align` inside `column` stands.
+    const region =
+      '<table width="90%" border="0"><tr>' +
+      '<td width="50%"><p>Основные источники приведены ниже по тексту статьи.</p></td>' +
+      '<td width="50%"><p style="text-align: right">Информация о продуктах<br>' +
+      "VP Music Media<br>представлена на сайтах издательства</p></td>" +
+      "</tr></table>";
+    const out = await measuredWith("UNKNOWN", page(PROSE + region));
+    expect(out).toContain("::: columns");
+    expect(out).toContain("::: align");
+    expect(out).toContain("position: right");
+  });
+
+  /**
    * A single-row table holding one record is a table.
    *
    * `planDataTable`'s `minRows: 2` is a recurrence gate, and a one-record table

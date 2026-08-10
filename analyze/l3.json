@@ -27,13 +27,13 @@
     ]
   },
   "totals": {
-    "findings": 66,
-    "alignmentRows": 277
+    "findings": 62,
+    "alignmentRows": 275
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 25,
+      "instances": 23,
       "documents": 10
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 11,
+      "instances": 9,
       "documents": 6
     }
   ],
@@ -1037,52 +1037,6 @@
       }
     },
     {
-      "id": "2baace70",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 249,
-      "referenceLine": 242,
-      "produced": "Андрес Сеговия",
-      "reference": "Андрес Сеговия",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "27ee331f",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 260,
-      "referenceLine": 246,
-      "produced": "Владимир Бобри",
-      "reference": "Владимир Бобри",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "a540369c",
       "doc": "segovia1",
       "class": "layout.containment.mismatch",
@@ -1131,40 +1085,6 @@
       "geometry": {
         "producedContainer": "align",
         "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "64aad5bd",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[59]/column[2]/paragraph[0]",
-      "producedLine": 249,
-      "referenceLine": 242,
-      "produced": "Андрес Сеговия",
-      "reference": "Андрес Сеговия",
-      "geometry": {
-        "producedContainer": "columns>column>align",
-        "referenceContainer": "columns>column"
-      }
-    },
-    {
-      "id": "ae9982b2",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[59]/column[3]/paragraph[0]",
-      "producedLine": 260,
-      "referenceLine": 246,
-      "produced": "Владимир Бобри",
-      "reference": "Владимир Бобри",
-      "geometry": {
-        "producedContainer": "columns>column>align",
-        "referenceContainer": "columns>column"
       }
     },
     {
@@ -4661,32 +4581,6 @@
       "sourceProse": "left",
       "sourceDistinctive": false,
       "sourcePath": null
-    },
-    {
-      "doc": "segovia1",
-      "producedLine": 249,
-      "referenceLine": 242,
-      "text": "Андрес Сеговия",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[2]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/p[1]/a[1]/font[1]"
-    },
-    {
-      "doc": "segovia1",
-      "producedLine": 260,
-      "referenceLine": 246,
-      "text": "Владимир Бобри",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[2]/center[1]/table[1]/tbody[1]/tr[1]/td[3]/p[1]/a[1]/font[1]"
     },
     {
       "doc": "tarrega",
