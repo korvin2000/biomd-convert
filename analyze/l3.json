@@ -27,13 +27,13 @@
     ]
   },
   "totals": {
-    "findings": 53,
+    "findings": 47,
     "alignmentRows": 277
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 23,
+      "instances": 17,
       "documents": 10
     },
     {
@@ -623,7 +623,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[15]/paragraph[0]",
-      "producedLine": 53,
+      "producedLine": 55,
       "referenceLine": 57,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
@@ -646,7 +646,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[33]",
-      "producedLine": 114,
+      "producedLine": 116,
       "referenceLine": 119,
       "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
@@ -662,108 +662,6 @@
       }
     },
     {
-      "id": "80654395",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/paragraph[0]",
-      "producedLine": 44,
-      "referenceLine": 45,
-      "produced": "Формулируя цели своего творчества Сеговия писал: \"Я посвятил свою жизнь четырем главным задачам:",
-      "reference": "\"Я посвятил свою жизнь четырем главным задачам:",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "quote"
-      }
-    },
-    {
-      "id": "5d924897",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/list[1]/item[0]",
-      "producedLine": 46,
-      "referenceLine": 47,
-      "produced": "отделение гитары от бездумных увеселений фольк-лорного типа;",
-      "reference": "отделение гитары от бездумных увеселений фольк-лорного типа;",
-      "geometry": {
-        "producedContainer": "list",
-        "referenceContainer": "quote>list"
-      }
-    },
-    {
-      "id": "d35462a2",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/list[1]",
-      "producedLine": 46,
-      "referenceLine": 47,
-      "produced": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленног…",
-      "reference": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленног…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "quote"
-      }
-    },
-    {
-      "id": "08d50672",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/list[1]/item[1]",
-      "producedLine": 47,
-      "referenceLine": 48,
-      "produced": "обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение в музыке и вышедших …",
-      "reference": "обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение в музыке и вышедших …",
-      "geometry": {
-        "producedContainer": "list",
-        "referenceContainer": "quote>list"
-      }
-    },
-    {
-      "id": "143de95c",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/list[1]/item[2]",
-      "producedLine": 48,
-      "referenceLine": 49,
-      "produced": "донесению красоты звучания гитары до филармонической публики всего мира;",
-      "reference": "донесению красоты звучания гитары до филармонической публики всего мира;",
-      "geometry": {
-        "producedContainer": "list",
-        "referenceContainer": "quote>list"
-      }
-    },
-    {
-      "id": "71fecf77",
-      "doc": "segovia",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[13]/list[1]/item[3]",
-      "producedLine": 49,
-      "referenceLine": 50,
-      "produced": "влиянию и воздействию на авторитеты в консерваториях, академиях и университетах с целью включения обучения игре на гита…",
-      "reference": "влиянию и воздействию на авторитеты в консерваториях, академиях и университетах с целью включения обучения игре на гита…",
-      "geometry": {
-        "producedContainer": "list",
-        "referenceContainer": "quote>list"
-      }
-    },
-    {
       "id": "71b4ab28",
       "doc": "segovia",
       "class": "layout.containment.mismatch",
@@ -771,7 +669,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[15]/paragraph[0]",
-      "producedLine": 53,
+      "producedLine": 55,
       "referenceLine": 57,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
@@ -788,7 +686,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/image[33]",
-      "producedLine": 114,
+      "producedLine": 116,
       "referenceLine": 119,
       "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
@@ -805,13 +703,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/paragraph[34]",
-      "producedLine": 120,
+      "producedLine": 122,
       "referenceLine": 125,
       "produced": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
       "reference": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
       "geometry": {
-        "producedRank": 38,
-        "referenceRank": 37
+        "producedRank": 39,
+        "referenceRank": 38
       }
     },
     {
@@ -4067,7 +3965,7 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 53,
+      "producedLine": 55,
       "referenceLine": 57,
       "text": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, пот…",
       "producedAlignment": "left",
@@ -4080,7 +3978,7 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 60,
+      "producedLine": 62,
       "referenceLine": 65,
       "text": "Памятник А. Сеговии в г. Линаресе.",
       "producedAlignment": "center",
@@ -4093,7 +3991,7 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 90,
+      "producedLine": 92,
       "referenceLine": 95,
       "text": "Андрес Сеговия",
       "producedAlignment": "center",
@@ -4106,7 +4004,7 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 101,
+      "producedLine": 103,
       "referenceLine": 106,
       "text": "Андрес Сеговия",
       "producedAlignment": "center",
@@ -4119,7 +4017,7 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 114,
+      "producedLine": 116,
       "referenceLine": 119,
       "text": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "producedAlignment": "center",

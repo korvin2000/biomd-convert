@@ -12,7 +12,7 @@ REVIEW  new_lendle2.htm  recall=97.9%  errors=1  reviews=9  tables=0/0  llm=0/1
 REVIEW  new_rechin4.htm  recall=99.4%  errors=0  reviews=13  tables=0/0  llm=0/1
 REVIEW  news.htm  recall=96.4%  errors=1  reviews=12  tables=0/0  llm=0/1
 REVIEW  news_2007.htm  recall=100.0%  errors=1  reviews=6  tables=0/0  llm=0/3
-REVIEW  segovia.htm  recall=98.7%  errors=0  reviews=14  tables=2/2  llm=0/4
+REVIEW  segovia.htm  recall=97.8%  errors=0  reviews=14  tables=2/2  llm=0/4
 REVIEW  segovia1.htm  recall=100.0%  errors=0  reviews=4  tables=0/1  llm=0/1
 REVIEW  tarrega.htm  recall=95.0%  errors=0  reviews=16  tables=1/1  llm=0/2
 REVIEW  williams2.htm  recall=99.8%  errors=0  reviews=15  tables=1/1  llm=0/1

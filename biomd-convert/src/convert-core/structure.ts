@@ -424,13 +424,108 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   return bindCaptions(
     groupAlignedRuns(
       groupSubordinatedRuns(
-        groupBulletedItems(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx)),
+        groupSpannedQuotation(groupBulletedItems(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx))),
         ctx,
       ),
       ctx,
     ),
     ctx,
   );
+}
+
+/**
+ * A quotation that opens in one block and closes in the next is a block quote.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Arithmetic on the author's own quotation marks: a paragraph
+ * carrying an odd number of `"` — a quotation opened and not closed — whose
+ * **immediately following** block carries an odd number too, closing it. The
+ * text before the opener is the lead-in and stays outside; everything from the
+ * opener to the end of the next block is the quotation. `analyze.md` states the
+ * evidence outright for `segovia` — *"текст заключен в кавычки (&quot;) — это
+ * явно индикатор, что эта цитата"* — and §3.5 is what a quotation maps to.
+ * Nothing about the document, the words, the tags or the typography.
+ *
+ * **Recurrence.** Not applicable: a quotation spans a block boundary once, at
+ * that boundary. The two-sided test is what carries the proof instead — an
+ * unclosed quote alone proves nothing, and the corpus says so loudly.
+ *
+ * **False friends, measured rather than imagined.** Six blocks in the 22
+ * produced documents carry an odd number of `"` and only one is this shape:
+ *   - `kiselev` ×3 — `*1'52"*`, a **duration**. The mark is a seconds symbol,
+ *     the next block does not close anything, and all three survive in
+ *     `kiselev`'s own reference.
+ *   - `segovia` ×1 — `„Жизнь, отданная искусству".`, a typographic opener
+ *     paired with a straight closer, so the straight count is odd and the
+ *     quotation is complete.
+ *   - `segovia` ×1 — the block that *closes* this very quotation.
+ * The requirement that the next block close it excludes every one of them, and
+ * the opener test excludes the duration marks a second time: `1'52"` is
+ * preceded by a digit, and an opening quote never is.
+ */
+function groupSpannedQuotation(blocks: readonly BiomdContent[]): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  for (let i = 0; i < blocks.length; i += 1) {
+    const block = blocks[i] as BiomdContent;
+    const next = blocks[i + 1];
+    const split = block.type === "paragraph" && next !== undefined && closesQuotation(next) ? splitAtOpener(block) : null;
+    if (!split) {
+      out.push(block);
+      continue;
+    }
+    if (split.lead) out.push(split.lead);
+    out.push({ type: "blockquote", children: [split.quoted, next as BlockContent] as BlockContent[] });
+    i += 1;
+  }
+  return out;
+}
+
+const STRAIGHT_QUOTE = '"';
+
+/** How many straight quotes a block's visible text carries. */
+function quoteCount(text: string): number {
+  return [...text].filter((ch) => ch === STRAIGHT_QUOTE).length;
+}
+
+/** Whether this block ends a quotation someone else opened. */
+function closesQuotation(block: BiomdContent): boolean {
+  const text = blockTextOf(block);
+  if (quoteCount(text) % 2 === 0) return false;
+  // A closer follows the words it closes; an opener never does.
+  const at = text.lastIndexOf(STRAIGHT_QUOTE);
+  const before = text[at - 1];
+  return before !== undefined && !/[\s(\d]/u.test(before);
+}
+
+/**
+ * A paragraph cut at the quotation mark that opens inside it.
+ *
+ * Only a top-level text child is cut. A quote opening inside emphasis or inside
+ * a link is a different construct and the rule declines it rather than guessing
+ * — which is also what keeps this off `kiselev`'s `*1'52"*`.
+ */
+function splitAtOpener(paragraph: Paragraph): { lead: Paragraph | null; quoted: Paragraph } | null {
+  if (quoteCount(blockTextOf(paragraph)) % 2 === 0) return null;
+  for (let i = paragraph.children.length - 1; i >= 0; i -= 1) {
+    const child = paragraph.children[i] as PhrasingContent;
+    if (child.type !== "text") continue;
+    const at = child.value.lastIndexOf(STRAIGHT_QUOTE);
+    if (at < 0) continue;
+    // An opener is preceded by a space or a colon and followed by a word.
+    const before = child.value[at - 1];
+    const after = child.value[at + 1];
+    if (before !== undefined && !/[\s:—–-]/u.test(before)) return null;
+    if (after === undefined || /[\s)]/u.test(after)) return null;
+    const leadText = child.value.slice(0, at).replace(/\s+$/u, "");
+    const leadChildren = [...paragraph.children.slice(0, i), ...(leadText === "" ? [] : [{ type: "text" as const, value: leadText }])];
+    const quoted: Paragraph = {
+      ...paragraph,
+      children: [{ type: "text", value: child.value.slice(at) }, ...paragraph.children.slice(i + 1)] as PhrasingContent[],
+    };
+    return { lead: leadChildren.length > 0 ? { ...paragraph, children: leadChildren } : null, quoted };
+  }
+  return null;
 }
 
 /**

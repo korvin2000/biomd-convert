@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T09:15:27.812Z",
+  "generated": "2026-08-10T09:19:16.601Z",
   "totals": {
-    "findings": 153,
-    "converterDefects": 75,
+    "findings": 151,
+    "converterDefects": 73,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 49,
     "ambiguous": 29,
     "bySeverity": {
-      "critical": 6,
-      "major": 65,
+      "critical": 5,
+      "major": 64,
       "minor": 82
     }
   },
@@ -159,10 +159,10 @@
     },
     {
       "doc": "segovia",
-      "findings": 16,
-      "converterDefects": 8,
-      "critical": 3,
-      "major": 7,
+      "findings": 14,
+      "converterDefects": 6,
+      "critical": 2,
+      "major": 6,
       "minor": 6
     },
     {
@@ -560,27 +560,6 @@
       }
     },
     {
-      "class": "paragraph.content",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "segovia",
-        "path": "/paragraph[12]",
-        "produced": "Формулируя цели своего творчества Сеговия писал: \"Я посвятил свою жизнь четырем главным задачам:",
-        "reference": "Формулируя цели своего творчества Сеговия писал:"
-      }
-    },
-    {
       "class": "frame.position.spurious",
       "severity": "minor",
       "instances": 2,
@@ -831,27 +810,6 @@
         "path": "/align[6]/paragraph[0]",
         "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
         "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /heading[6]"
-      }
-    },
-    {
-      "class": "retyped.list-to-quote",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "segovia",
-        "path": "/quote[13]",
-        "produced": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение…",
-        "reference": "\"Я посвятил свою жизнь четырем главным задачам: отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, сост… — at /list[14]"
       }
     },
     {
@@ -3057,39 +3015,11 @@
       "evidence": "content",
       "op": "insert",
       "path": "/table[44]/row[0]",
-      "producedLine": 162,
+      "producedLine": 164,
       "referenceLine": null,
       "produced": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra | — | — | — | —",
       "reference": null,
       "verdict": "ambiguous"
-    },
-    {
-      "id": "537ba493",
-      "doc": "segovia",
-      "class": "paragraph.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[12]",
-      "producedLine": 44,
-      "referenceLine": 44,
-      "produced": "Формулируя цели своего творчества Сеговия писал: \"Я посвятил свою жизнь четырем главным задачам:",
-      "reference": "Формулируя цели своего творчества Сеговия писал:",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3c39b5f4",
-      "doc": "segovia",
-      "class": "retyped.list-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[13]",
-      "producedLine": 46,
-      "referenceLine": 45,
-      "produced": "отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, составленного из сочинений, имеющих большое значение…",
-      "reference": "\"Я посвятил свою жизнь четырем главным задачам: отделение гитары от бездумных увеселений фольк-лорного типа; обеспечение ее репертуаром высокого качества, сост… — at /list[14]",
-      "verdict": "converter-defect"
     },
     {
       "id": "511588e0",
@@ -3099,7 +3029,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[15]",
-      "producedLine": 53,
+      "producedLine": 55,
       "referenceLine": 54,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа…",
       "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа… — at /paragraph[16]",
@@ -3113,7 +3043,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[17]",
-      "producedLine": 57,
+      "producedLine": 59,
       "referenceLine": 62,
       "produced": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья пере-ехала в Хаэн. Замечательное искусство импровиза…",
       "reference": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья переехала в Хаэн. Замечательное искусство импровизац…",
@@ -3127,7 +3057,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[28]",
-      "producedLine": 98,
+      "producedLine": 100,
       "referenceLine": 103,
       "produced": "Основная проблема, которую стремится решить Сеговия - это создание оригинального профессионального репертуара. Он завязывал творческие контакты с другими музык…",
       "reference": "Основная проблема, которую стремится решить Сеговия - это создание оригинального профессионального репертуара. Он завязывал творческие контакты с другими музык…",
@@ -3141,7 +3071,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[28]",
-      "producedLine": 98,
+      "producedLine": 100,
       "referenceLine": 103,
       "produced": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:* · em:Альбениса \"Легенда\" · em:Мануэль де Фалья",
       "reference": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:\\ · em:Альбениса \"Легенда\" · em:Мануэль де Фалья · em:Федерико Морено Торроба",
@@ -3155,7 +3085,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[33]@position",
-      "producedLine": 114,
+      "producedLine": 116,
       "referenceLine": 119,
       "produced": "position: center",
       "reference": "position: left",
@@ -3169,7 +3099,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/list[36]/item[0]",
-      "producedLine": 124,
+      "producedLine": 126,
       "referenceLine": 129,
       "produced": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [▶](/#/bobri1)",
       "reference": "Владимир Бобри о некоторых технических приемах Андреса Сеговии (Краткое изложение по книге М. Вайсборда \"Андрес Сеговия\", М., Музыка, 1981) [/#/bobri1](/#/bobr…",
@@ -3183,7 +3113,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/list[36]/item[0]/link[0]",
-      "producedLine": 124,
+      "producedLine": 126,
       "referenceLine": 129,
       "produced": "▶",
       "reference": "/#/bobri1",
@@ -3197,7 +3127,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/list[37]/item[0]",
-      "producedLine": 126,
+      "producedLine": 128,
       "referenceLine": 131,
       "produced": "Денис Кольвах \"Техника Сеговии\" [▶](/#/segovia1)",
       "reference": "Денис Кольвах \"Техника Сеговии\" [/#/segovia1](/#/segovia1)",
@@ -3211,7 +3141,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/list[37]/item[0]/link[0]",
-      "producedLine": 126,
+      "producedLine": 128,
       "referenceLine": 131,
       "produced": "▶",
       "reference": "/#/segovia1",
@@ -3225,7 +3155,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/image[39]@caption",
-      "producedLine": 131,
+      "producedLine": 133,
       "referenceLine": 137,
       "produced": "caption: ДИСКОГРАФИЯ",
       "reference": null,
@@ -3267,7 +3197,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[44]/header[4]",
-      "producedLine": 162,
+      "producedLine": 164,
       "referenceLine": 171,
       "produced": "🔗",
       "reference": "MP3 — column 4",

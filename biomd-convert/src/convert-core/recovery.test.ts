@@ -1921,6 +1921,48 @@ describe("an announced run of equally indented lines is a list", () => {
   });
 
   /**
+   * ## Rule contract — a quotation that spans a block boundary is a block quote
+   *
+   * **Invariant.** Arithmetic on the author's own quotation marks: a paragraph
+   * with an odd number of `"` whose *immediately following* block also has an
+   * odd number, closing it. `analyze.md` states the evidence outright for
+   * `segovia` — the `&quot;` is "явно индикатор, что эта цитата".
+   *
+   * **False friends, measured.** Six blocks in the corpus carry an odd count
+   * and only one is this shape; the rest are `kiselev`'s `*1'52"*` durations
+   * (three, present in its own reference) and a typographic `„…"` pair.
+   */
+  it("quotes a quotation the source opened in one block and closed in the next", async () => {
+    // `segovia`: `Сеговия писал: "Я посвятил…` and the closing `"` at the end
+    // of the last `<li>` four items later. The lead-in stays outside.
+    const out = await md(
+      PROSE +
+        '<p class="t1">Формулируя цели Сеговия писал: &quot;Я посвятил свою жизнь задачам:</p>' +
+        "<ol><li>отделение гитары от увеселений;</li>" +
+        "<li>обеспечение репертуаром высокого качества;</li>" +
+        "<li>донесению красоты звучания до публики&quot;</li></ol>" +
+        PROSE,
+    );
+    expect(out).toMatch(/^Формулируя цели Сеговия писал:$/mu);
+    expect(out).toMatch(/^> "Я посвятил свою жизнь задачам:$/mu);
+    expect(out).toMatch(/^> 1\\?\. отделение/mu);
+    expect(out).toMatch(/донесению красоты звучания до публики"/u);
+  });
+
+  it("leaves a duration alone — the measured false friend", async () => {
+    // `kiselev` writes `*1'52"*`: the mark is a seconds symbol, the count is
+    // odd, and nothing closes it. Two guards catch it — the next block closes
+    // no quotation, and an opening quote is never preceded by a digit.
+    const out = await md(
+      PROSE +
+        '<p class="t1">- "Босса-нова" Лео Брауэру (1987) <i>1\'52"</i></p>' +
+        '<p class="t1">Английская сюита (1988-1992)</p>' +
+        PROSE,
+    );
+    expect(out).not.toContain("> ");
+  });
+
+  /**
    * ## Rule contract — a hand-drawn bullet is the list it was drawing
    *
    * **Invariant.** Two or more adjacent blocks opening with the *same* mark
