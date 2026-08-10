@@ -54,6 +54,7 @@ import {
   groupLines,
   isWrapBreak,
   lineText,
+  collapseSpace,
   phrasingText,
   splitLines,
 } from "./lines.js";
@@ -1426,6 +1427,13 @@ function blocksFromGroup(
     return out;
   }
 
+  // The same list, drawn with an indent instead of with ordinals.
+  const announced = listFromAnnouncedIndent(rest, ctx);
+  if (announced) {
+    out.push(...announced);
+    return out;
+  }
+
   // A rule the author drew with punctuation because the era gave them no `<hr>`
   // they liked. See `drawnRuleFrom`.
   const drawn = drawnRuleFrom(rest);
@@ -1606,6 +1614,69 @@ function isWhollyStrong(nodes: readonly PhrasingContent[]): boolean {
  * it. A bullet list keeps every character the author typed and adds only the
  * marker, which is the layout claim §16.3 permits.
  */
+/**
+ * A run of equally indented lines, announced by the line above it, is a list.
+ *
+ * `news` writes two competition results this way: one sentence ending in a
+ * colon, then each prize on its own `<br>` line pushed in by two `&ensp;`.
+ * `listFromEnumeratedLines` cannot take it — the last item is *"диплом за
+ * участие"*, which carries no ordinal, so the ascent test the ordinal rule
+ * rightly insists on can never hold across the whole run.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Three relations, no absolutes: the run's members share one
+ * indent (uniformity), the indent is non-zero against a line that has none
+ * (subordination), and that line *announces* the run by ending in a colon
+ * (introduction). Nothing here reads a class, an id, a tag, a length or a word
+ * — a colon before an enumeration is typographic convention, and the indent
+ * test rests on the HTML whitespace model (see `collapseSpace`).
+ *
+ * **Recurrence** is the run itself: two members minimum, so a single indented
+ * line under a colon stays a line.
+ *
+ * **False friends, all four measured over the 22 sources rather than argued.**
+ * The uniform-indent-under-a-lead-in shape alone fires **21** times and only 2
+ * of those want a list; adding the announcing colon takes it to exactly the 2:
+ *   - **`borislova`'s sixteen movement runs** — a work title, then its movements
+ *     uniformly indented. The reference keeps every one as hard-break lines and
+ *     even preserves the indent, and no title ends in a colon.
+ *   - **`goya2`'s wrapped track titles** — the *continuation* of a title is
+ *     indented under it, so there the indent means the opposite. Run length 1,
+ *     and the indent is deeper than its siblings rather than shared.
+ *   - **`pavlov_azancheev`'s letter** — every line indented alike, but with no
+ *     unindented line to be subordinate to.
+ *   - **`tarrega`'s two nine-line track runs** — uniform indent under a lead-in,
+ *     no colon; the reference wants a *table* there, not a list.
+ */
+function listFromAnnouncedIndent(lines: readonly RunLine[], ctx: Ctx): BiomdContent[] | null {
+  const start = lines.findIndex((line) => line.indent > 0);
+  if (start < 1) return null;
+  const lead = lines[start - 1] as RunLine;
+  if (lead.indent > 0 || !lineText(lead).endsWith(":")) return null;
+
+  const run = lines.slice(start);
+  const indent = (lines[start] as RunLine).indent;
+  if (run.length < 2 || run.some((line) => line.indent !== indent)) return null;
+
+  const intro = paragraphFromLines(lines.slice(0, start));
+  if (!intro) return null;
+  void ctx;
+  return [
+    intro,
+    {
+      type: "list",
+      ordered: false,
+      spread: false,
+      children: run.map((line) => ({
+        type: "listItem" as const,
+        spread: false,
+        children: [{ type: "paragraph" as const, children: line.content }],
+      })),
+    } as BiomdContent,
+  ];
+}
+
 function listFromEnumeratedLines(lines: readonly RunLine[], ctx: Ctx): List | null {
   const grouped = enumeratedItems(lines);
   if (grouped === null) return null;
@@ -1818,11 +1889,13 @@ function paragraphFromLines(lines: readonly RunLine[]): Paragraph | null {
 
   lines.forEach((line, index) => {
     if (index > 0) {
-      const left = lineText(lines[index - 1] as RunLine);
+      const previous = lines[index - 1] as RunLine;
+      const left = lineText(previous);
       const right = lineText(line);
+      const indent: [number, number] = [previous.indent, line.indent];
       // A hand-wrapped sentence means a space; a line the author drew means a
       // hard break.
-      if (!lineated && isWrapBreak(left, right)) children.push({ type: "text", value: " " });
+      if (!lineated && isWrapBreak(left, right, indent)) children.push({ type: "text", value: " " });
       else children.push({ type: "break" });
     }
     children.push(...line.content);
@@ -2200,7 +2273,17 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
   for (const node of nodes) {
     if (node.kind === "comment") continue;
     if (node.kind === "text") {
-      const value = (node.value ?? "").replace(/\s+/gu, " ");
+      // Whitespace collapses the way a renderer collapses it — with one
+      // exception, taken at the one place it can carry meaning. A run of
+      // *non-collapsing* spaces at the head of the text that opens a line is
+      // the author's indent: `&nbsp;`/`&ensp;`/`&emsp;` were the only way to
+      // draw one, so their presence there is deliberate. Collapsing them here
+      // destroyed the evidence before `splitLines` could read it, which is why
+      // `news` merged three prize lines into one. Preserved *only* directly
+      // after a `<br>`; `splitLines` measures it and strips it, so it never
+      // reaches the output and no other consumer sees a changed string.
+      const afterBreak = out[out.length - 1]?.type === "break";
+      const value = collapseSpace(node.value ?? "", afterBreak);
       if (value !== "") out.push({ type: "text", value });
       continue;
     }

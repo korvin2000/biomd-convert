@@ -27,6 +27,15 @@ export interface RunLine {
   content: PhrasingContent[];
   /** Consecutive `<br>` that followed this line. 0 at the end of the run. */
   gap: number;
+  /**
+   * How far the author pushed the line in, in non-collapsing space characters.
+   *
+   * 0 at the margin. Measured and then **removed** from `content` by
+   * {@link splitLines}, so the indent informs segmentation without any consumer
+   * of a line seeing a string it did not see before. See {@link collapseSpace}
+   * for why the characters survive that far in the first place.
+   */
+  indent: number;
 }
 
 /** A maximal sequence of lines with no blank line between them. */
@@ -90,7 +99,7 @@ export function splitLines(input: readonly PhrasingContent[]): RunLine[] {
       continue;
     }
     if (current.length > 0) {
-      lines.push({ content: current, gap: 1 });
+      lines.push(measured(current, 1));
       current = [];
       continue;
     }
@@ -99,9 +108,36 @@ export function splitLines(input: readonly PhrasingContent[]): RunLine[] {
     const last = lines[lines.length - 1];
     if (last) last.gap += 1;
   }
-  if (current.length > 0) lines.push({ content: current, gap: 0 });
+  if (current.length > 0) lines.push(measured(current, 0));
 
   return lines;
+}
+
+/**
+ * Read the line's indent, then take it out of the content.
+ *
+ * A line that is *nothing but* spacing has no indent to read — the whole line
+ * is spacing, and the `&nbsp;` a 1998 author put between two `<br>`s to draw a
+ * blank line is the line, not a margin in front of one. Stripping it there
+ * emptied the spacer and `new_dyens` lost two paragraph boundaries: three
+ * paragraphs became one with two hard breaks in it.
+ */
+function measured(content: PhrasingContent[], gap: number): RunLine {
+  const head = content[0];
+  if (head === undefined || head.type !== "text" || !NON_COLLAPSING_SPACE.test(head.value)) {
+    return { content, gap, indent: 0 };
+  }
+  const indent = LEADING_INDENT.exec(head.value)?.[1];
+  if (indent === undefined) return { content, gap, indent: 0 };
+  const stripped = head.value.replace(LEADING_INDENT, "");
+  if (phrasingText([{ ...head, value: stripped }, ...content.slice(1)]).trim() === "") {
+    return { content, gap, indent: 0 };
+  }
+  return {
+    content: [{ ...head, value: stripped }, ...content.slice(1)],
+    gap,
+    indent: indent.length,
+  };
 }
 
 /** Split lines into groups at every blank line the author drew. */
@@ -124,6 +160,40 @@ export function lineText(line: RunLine): string {
   return phrasingText(line.content).replace(/\s+/gu, " ").trim();
 }
 
+/**
+ * Space characters an HTML renderer does **not** collapse.
+ *
+ * This is the whole basis of the indent test in {@link isWrapBreak} and it is the HTML whitespace
+ * model rather than anything about this corpus: a run of ASCII spaces, tabs and
+ * newlines collapses to one space, so an author who wanted a *visible* indent
+ * had no choice but to type `&nbsp;`, `&ensp;` or `&emsp;`. Their presence at
+ * the head of a line is therefore always deliberate.
+ */
+const NON_COLLAPSING_SPACE = /[  -   　]/u;
+const LEADING_INDENT = /^[ \t\r\n]*([  -   　]+)/u;
+
+/**
+ * Collapse a text node's whitespace the way a renderer does.
+ *
+ * `keepIndent` is set only for the text that opens a line, where a run of
+ * non-collapsing spaces is the author's indent rather than layout whitespace.
+ * Everywhere else the two are indistinguishable to a reader and the ASCII form
+ * is what the rest of the pipeline expects. {@link splitLines} removes even the
+ * kept run once it has measured it, so no emitted string differs.
+ */
+export function collapseSpace(value: string, keepIndent: boolean): string {
+  const collapsed = value.replace(/\s+/gu, " ");
+  if (!keepIndent) return collapsed;
+  const indent = LEADING_INDENT.exec(value)?.[1];
+  if (indent === undefined) return collapsed;
+  const rest = collapsed.replace(/^\s+/u, "");
+  // Nothing follows: this text is not an indent, it is a spacer — the `&nbsp;`
+  // a 1998 author put between two `<br>`s to draw a blank line. Keeping its
+  // characters here changed the string every consumer sees and cost `new_dyens`
+  // two paragraph boundaries.
+  return rest === "" ? collapsed : indent + rest;
+}
+
 export function phrasingText(nodes: readonly PhrasingContent[]): string {
   let out = "";
   for (const node of nodes) {
@@ -143,9 +213,33 @@ export function phrasingText(nodes: readonly PhrasingContent[]): string {
  * continues — no terminal punctuation on the left, and a continuation word on
  * the right — and only in a group that reads as prose rather than as verse or
  * a list, which is decided for the group as a whole.
+ *
+ * ## Two lines pushed in by the same amount are two lines
+ *
+ * The punctuation tests alone read a trailing comma as proof of continuation,
+ * and that is wrong for the shape this corpus writes an enumeration in: each
+ * item on its own line, indented, ending in a comma. `news` lost three lines to
+ * it — the first, second and third prizes of a competition ran together into
+ * one, which is a `paragraph.content` **critical**, the only kind of finding
+ * that says content changed.
+ *
+ * **The evidence is relational, and it has to be**, because an indent alone
+ * means the opposite just as often. `goya2` indents the *continuation* of a
+ * wrapped track title under the title it belongs to, and `borislova` indents
+ * every second line of a poem. What separates those from an enumeration is
+ * that their indent is the exception against unindented siblings, while an
+ * enumeration indents every item alike. So the test is equality of indent
+ * across the break, never the presence of one.
+ *
+ * Swept over all 22 sources against the shipped classifier: of the 19 folded
+ * pairs whose right line is indented, the 4 with **equal** indent are exactly
+ * `news`'s two enumerations, and the 15 with unequal indent are exactly the
+ * continuations and verse lines that must stay folded. No overlap, so the
+ * boundary is the mechanism rather than a tuned threshold.
  */
-export function isWrapBreak(left: string, right: string): boolean {
+export function isWrapBreak(left: string, right: string, indent?: readonly [number, number]): boolean {
   if (left === "" || right === "") return false;
+  if (indent !== undefined && indent[0] > 0 && indent[0] === indent[1]) return false;
   // A sentence that ended did not wrap.
   if (/[.!?…:;»"”)]$/u.test(left)) return false;
   if (/[,—–-]$/u.test(left)) return true;
@@ -170,7 +264,8 @@ export function groupIsLineated(lines: readonly RunLine[]): boolean {
   if (avg < 60) return true;
   let wraps = 0;
   for (let i = 0; i + 1 < texts.length; i += 1) {
-    if (isWrapBreak(texts[i] as string, texts[i + 1] as string)) wraps += 1;
+    const pair: [number, number] = [(lines[i] as RunLine).indent, (lines[i + 1] as RunLine).indent];
+    if (isWrapBreak(texts[i] as string, texts[i + 1] as string, pair)) wraps += 1;
   }
   return wraps < (texts.length - 1) / 2;
 }

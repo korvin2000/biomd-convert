@@ -1625,3 +1625,87 @@ describe("a document the source set apart from the article", () => {
     expect(out).not.toContain("> ");
   });
 });
+
+/**
+ * A run of equally indented lines, announced by the line above it, is a list.
+ *
+ * `news` writes two competition results this way: a sentence ending in a colon,
+ * then each prize on its own `<br>` line pushed in by two `&ensp;`. The
+ * ordinal-ascent rule cannot take it — the last item is "диплом за участие",
+ * which carries no ordinal at all.
+ *
+ * **Invariant.** Three relations, no absolutes: uniformity (the run's members
+ * share one indent), subordination (that indent is non-zero against a line with
+ * none) and introduction (the line above ends in a colon). The indent test
+ * rests on the HTML whitespace model — ASCII space collapses, so a *visible*
+ * indent had to be `&nbsp;`/`&ensp;`/`&emsp;` and is therefore deliberate.
+ *
+ * **Recurrence** is the run: two members minimum.
+ *
+ * **False friends, measured rather than argued.** Uniform-indent-under-a-lead-in
+ * alone fires 21 times across the 22 sources and only 2 want a list; the colon
+ * takes it to exactly those 2. The three tested below stand for the other 19:
+ * `borislova`'s sixteen movement runs (a work title announces nothing and its
+ * reference keeps hard-break lines), `goya2`'s wrapped track title (where the
+ * indent marks a *continuation*, one line, deeper than its siblings), and
+ * `pavlov_azancheev`'s letter (uniformly indented with nothing to subordinate
+ * to).
+ */
+describe("an announced run of equally indented lines is a list", () => {
+  const enumeration =
+    '<p class="t2">Подведены итоги конкурса в Москве:<br>\n' +
+    "\t\t&#8194;&#8194;1-я премия – <b>Артём Дервоед</b> (Россия, Москва),<br>\n" +
+    "\t\t&#8194;&#8194;2-я премия – <b>Антон Баранов</b> (Россия, Санкт-Петербург),<br>\n" +
+    "\t\t&#8194;&#8194;диплом за участие – <b>Дмитрий Загуменников</b> (Австрия)</p>";
+
+  it("splits the announcement from the items instead of running them together", async () => {
+    const out = await md(enumeration);
+    expect(out).toContain("Подведены итоги конкурса в Москве:");
+    expect(out).toContain("- 1-я премия – **Артём Дервоед** (Россия, Москва),");
+    expect(out).toContain("- 2-я премия – **Антон Баранов** (Россия, Санкт-Петербург),");
+    // The unnumbered last line is an item too — the ordinal rule cannot see it.
+    expect(out).toContain("- диплом за участие – **Дмитрий Загуменников** (Австрия)");
+  });
+
+  it("does not join two items that both end in a comma", async () => {
+    // The punctuation heuristic reads a trailing comma as proof of continuation.
+    // Equal indent on both sides of the break outranks it, and this is the
+    // `paragraph.content` critical the rule was built for.
+    const out = await md(enumeration);
+    expect(out).not.toContain("(Россия, Москва), 2-я премия");
+  });
+
+  it("leaves a work title and its movements as lines — the false friend", async () => {
+    // `borislova`: uniform indent, subordinate to a title that announces nothing.
+    const movements =
+      '<p class="t1">Suite "La procesion de las cucarachas" / Сюита "Шествие тараканов" *<br>\n' +
+      "&nbsp;&nbsp;1. La procesion / Шествие,<br>\n" +
+      "&nbsp;&nbsp;2. Estancamiento / Застой,<br>\n" +
+      "&nbsp;&nbsp;3. Nostalgia / Ностальгия</p>";
+    const out = await md(movements);
+    expect(out).not.toContain("- 2. Estancamiento");
+  });
+
+  it("leaves an indented continuation joined to the line it continues", async () => {
+    // `goya2`: the indent marks a wrapped title, so it means the opposite. One
+    // line, and deeper than the siblings it sits among.
+    const tracks =
+      '<p class="t1">Треки:<br>\n' +
+      "01. Woman in love (B&amp;R Gibb)&nbsp;<br>\n" +
+      "02. I just called to say I love you&nbsp;<br>\n" +
+      "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (S Wonder)&nbsp;<br>\n" +
+      "03. Maggy M (F Weyner)&nbsp;</p>";
+    const out = await md(tracks);
+    expect(out).not.toContain("- (S Wonder)");
+  });
+
+  it("leaves a uniformly indented letter alone — nothing to be subordinate to", async () => {
+    // `pavlov_azancheev`: every line indented alike, no unindented lead-in.
+    const letter =
+      '<p class="t8">&nbsp;&nbsp;Уважаемый Александр Яковлевич!<br>\n' +
+      "&nbsp;&nbsp;Простите, что так поздно выбрался написать,<br>\n" +
+      "&nbsp;&nbsp;но обстоятельства сложились именно так.</p>";
+    const out = await md(letter);
+    expect(out).not.toMatch(/^- Простите/mu);
+  });
+});
