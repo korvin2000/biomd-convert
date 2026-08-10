@@ -20,6 +20,7 @@ import { foldTextAlign } from "../ladom/style.js";
 import { BLOCK_TAGS, type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { effectiveBold, type Prominence, prominenceOf, textFontPx } from "./prominence.js";
 
+
 export interface HeadingDecision {
   id: string;
   depth: 1 | 2 | 3;
@@ -190,6 +191,132 @@ export function recoverHeadings(root: LadomNode, options: HeadingOptions = {}): 
 
   decisions.push(...recoverCenteredSections(root, opts));
   decisions.push(...recoverBulletSections(root, opts));
+  decisions.push(...completeHeadingTemplates(root, opts));
+  return decisions;
+}
+
+/**
+ * The template key two blocks share when the author set them the same way.
+ *
+ * A class name *is* the template — the author used one for section labels and
+ * another for quoted documents — and where the page names none, the tag with
+ * its weight and rounded size is the same statement made from measurement. The
+ * key is opaque: nothing reads a value out of it, so no corpus string enters a
+ * detector.
+ */
+function templateSignature(el: LadomNode, prominence: Prominence, baseline: number): string {
+  return el.attrs["class"]
+    ? `${el.tag}.${el.attrs["class"]}`
+    : `${el.tag}|${prominence.bold ? "b" : ""}|${Math.round(prominence.fontPx ?? baseline)}`;
+}
+
+/** The heading depth already marked on this block, or undefined. */
+function markedDepthOf(el: LadomNode): number | undefined {
+  for (const node of [el, blockHost(el)]) {
+    const depth = Number.parseInt(node.attrs["data-biomd-heading"] ?? "", 10);
+    if (Number.isFinite(depth)) return depth;
+  }
+  return undefined;
+}
+
+interface TemplateMember {
+  node: LadomNode;
+  label: string;
+  depth: number | undefined;
+}
+
+/**
+ * Section labels the page template has already answered for.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Some of a page's section labels arrive at heading recovery
+ * with enough evidence and some do not — `new_geyzel04` sets four chapter
+ * titles in one template and the converter recovers two: the third is one
+ * character over the label cap, and the fourth stands under a photograph and
+ * reads as its caption. Neither exception is about typography, and no amount of
+ * threshold-turning reaches them without reaching false friends too. What
+ * settles them is that the author used **one template** for all four, and that
+ * the template is already a heading twice over. So a block whose template
+ * carries two or more recovered headings, in a family that is uniformly
+ * label-shaped, is a heading of the same kind.
+ *
+ * The evidence is entirely relational: the template signature is opaque, the
+ * threshold is a count of the page's own decisions, and the depth is the one
+ * the page's own members already carry.
+ *
+ * **Recurrence.** Two independently recovered members — one promotion cannot
+ * spread — plus at least one unrecovered member, so the family recurs three
+ * times by construction. And *every* member must be label-shaped: one long
+ * member disqualifies the template rather than being admitted by it, which is
+ * what keeps a body class that happens to hold a heading from promoting the
+ * article.
+ *
+ * **False friend.** A caption family. Captions share a class as readily as
+ * headings do, and `followsImage` deliberately keeps them out of heading
+ * recovery — so a caption template has *zero* recovered members and there is
+ * nothing here to complete. This pass only ever joins a majority the page
+ * already established; it never creates one. The same asymmetry excludes a
+ * record-label family inside a catalog, which `catalogLabels` refuses upstream.
+ */
+function completeHeadingTemplates(root: LadomNode, opts: Required<HeadingOptions>): HeadingDecision[] {
+  const decisions: HeadingDecision[] = [];
+  if (!opts.sections) return decisions;
+
+  const baseline = bodyBaseline(root);
+  const families = new Map<string, TemplateMember[]>();
+  const disqualified = new Set<string>();
+
+  for (const el of walkElements(root)) {
+    if (!CANDIDATE_TAGS.has(el.tag)) continue;
+    const raw = textOf(el);
+    if (raw.trim() === "") continue;
+    if (!isTightWrapper(el, raw)) continue;
+    const signature = templateSignature(el, prominenceOf(el), baseline);
+    if (disqualified.has(signature)) continue;
+
+    const label = stripLabelGlyphs(raw.replace(/\s+/gu, " ").trim());
+    const linkish = el.metrics.links > 0 && linkTextLength(el) >= raw.length * 0.6;
+    if (
+      label.length > 160 ||
+      label.split(/\s+/u).filter(Boolean).length > 22 ||
+      el.metrics.images > 0 ||
+      linkish ||
+      !/\p{L}/u.test(label)
+    ) {
+      disqualified.add(signature);
+      families.delete(signature);
+      continue;
+    }
+    const member: TemplateMember = { node: el, label, depth: markedDepthOf(el) };
+    const list = families.get(signature) ?? [];
+    list.push(member);
+    families.set(signature, list);
+  }
+
+  for (const members of families.values()) {
+    const marked = members.filter((m) => m.depth !== undefined);
+    const open = members.filter((m) => m.depth === undefined && !isInsideHeading(m.node) && !containsHeading(m.node));
+    if (marked.length < 2 || open.length === 0) continue;
+    // The page's own answer for this template, taken at its most prominent —
+    // a family the page heads at two levels is one section kind seen through
+    // two regions, and the shallower is the one it means.
+    const depth = Math.min(...marked.map((m) => m.depth as number));
+    if (depth < 1 || depth > 3) continue;
+    for (const member of open) {
+      const host = blockHost(member.node);
+      if (host.attrs["data-biomd-heading"] !== undefined) continue;
+      mark(host, depth as 1 | 2 | 3);
+      decisions.push({
+        id: host.id,
+        depth: depth as 1 | 2 | 3,
+        text: member.label,
+        score: 1,
+        reason: `page template already recovered as a heading ${marked.length}×`,
+      });
+    }
+  }
+
   return decisions;
 }
 
@@ -212,6 +339,7 @@ const BULLET_LABEL = /^\s*[•·▪◆♦●■]\s+\S/u;
 function recoverBulletSections(root: LadomNode, opts: Required<HeadingOptions>): HeadingDecision[] {
   const decisions: HeadingDecision[] = [];
   if (!opts.sections) return decisions;
+  const docTextLen = root.metrics.textLen;
 
   const textAt = new Map<string, number>();
   let seen = 0;
@@ -306,6 +434,7 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
   if (proseIsCentered(root)) return decisions;
 
   const baseline = bodyBaseline(root);
+  const docTextLen = root.metrics.textLen;
   const candidates: CenteredCandidate[] = [];
   /** Running count of visible characters, so "how much prose is between two
    * candidates?" is a subtraction rather than an accumulation that every
@@ -350,7 +479,8 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
     // Inside a nested region — a record card, an obituary notice, a catalog
     // cell — a short centred line is the record's *label*, and §6 maps that to
     // a bounded `align`, not to a section of the document. Promoting them made
-    // a discography of twenty albums into twenty `###`.
+    // a discography of twenty albums into twenty `###`. "Nested" is measured
+    // by occupancy, not by depth: see `regionDepthOf`.
     if (tableAncestors(el) > 1) continue;
 
     const host = blockHost(el);
@@ -365,9 +495,7 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
       // left out — one label in the family may be bold and the next not, and
       // splitting the family on that put every member below the recurrence
       // threshold.
-      signature: el.attrs["class"]
-        ? `${el.tag}.${el.attrs["class"]}`
-        : `${el.tag}|${prominence.bold ? "b" : ""}|${Math.round(prominence.fontPx ?? baseline)}`,
+      signature: templateSignature(el, prominence, baseline),
       bold: prominence.bold,
       ...(prominence.fontPx !== undefined ? { fontPx: prominence.fontPx } : { fontPx: undefined }),
       order,
@@ -735,7 +863,7 @@ function splitMasthead(node: LadomNode): LadomNode | null {
 export function stripLabelGlyphs(text: string): string {
   return text
     .replace(/^[\s•·▪◦*•▪● -]+/u, "")
-    .replace(/[\s ]+$/u, "")
+    .replace(/[\s\u00A0]+$/u, "")
     .trim();
 }
 

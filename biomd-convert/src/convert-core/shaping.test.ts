@@ -172,6 +172,39 @@ describe("heading recovery", () => {
     expect(result.changes).toHaveLength(1);
   });
 
+  it("lifts a whole orphaned level, not just its first member", () => {
+    // §18 rejects a jump from `#` to `###`, and the repair used to lift the one
+    // heading that jumped. That makes the rest of that level its *children*:
+    // `new_geyzel04` recovers four chapter titles set in one template, all at
+    // h3, and lifting one of them alone claimed a hierarchy the page does not
+    // have — the opposite of the consistency the template states. A jump
+    // orphans a level, so the correction belongs to the level.
+    const heading = (depth: number, text: string): BiomdContent =>
+      ({ type: "heading", depth, children: [{ type: "text", value: text }] }) as unknown as BiomdContent;
+    const title = heading(1, "Заголовок");
+    const chapters = [heading(3, "Глава 1"), heading(3, "Глава 2"), heading(3, "Глава 3")];
+    const root = { type: "root" as const, children: [title, ...chapters] as BiomdContent[] };
+    enforceSingleTitle(root as never);
+    for (const chapter of chapters) expect((chapter as unknown as { depth: number }).depth).toBe(2);
+  });
+
+  it("false friend: a level the document itself writes is not orphaned", () => {
+    // The other half. Once the page writes the intervening level, the deeper
+    // one has a parent and must keep its depth — otherwise every `###` under a
+    // real `##` would be flattened into it.
+    const heading = (depth: number, text: string): BiomdContent =>
+      ({ type: "heading", depth, children: [{ type: "text", value: text }] }) as unknown as BiomdContent;
+    const title = heading(1, "Заголовок");
+    const orphan = heading(3, "Оторванный");
+    const section = heading(2, "Раздел");
+    const child = heading(3, "Подраздел");
+    const root = { type: "root" as const, children: [title, orphan, section, child] as BiomdContent[] };
+    enforceSingleTitle(root as never);
+    expect((orphan as unknown as { depth: number }).depth).toBe(2);
+    expect((section as unknown as { depth: number }).depth).toBe(2);
+    expect((child as unknown as { depth: number }).depth).toBe(3);
+  });
+
   it("strips emphasis inside a heading", async () => {
     const result = await convert(Buffer.from(page("<b>Андрес</b> Сеговия", PROSE), "utf8"));
     expect(result.markdown).toMatch(/^# Андрес Сеговия$/mu);

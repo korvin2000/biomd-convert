@@ -4754,11 +4754,27 @@ export function enforceSingleTitle(root: BiomdRoot): { root: BiomdRoot; changes:
   // label is recovered inside a region whose introducing `##` the source never
   // wrote. Lifting the orphan to the next legal level keeps the outline
   // navigable and invents no text.
+  //
+  // **A jump orphans a level, not a heading.** `new_geyzel04` sets four chapter
+  // titles in one template and every one of them is recovered at h3; lifting
+  // only the first made the other three its *children*, which is a hierarchy
+  // the page does not have and the opposite of the consistency the template
+  // states. So the correction is recorded per written level and reapplied to
+  // that level's later members, until a heading the document writes shallower
+  // shows the level is no longer orphaned.
   let previous = 1;
+  const lifted = new Map<number, number>();
   for (const { node } of headings) {
-    if (node.depth > previous + 1) {
-      changes.push(`heading level jumped from h${previous} to h${node.depth}; lifted to h${previous + 1}`);
+    const written = node.depth;
+    const already = lifted.get(written);
+    if (already !== undefined) {
+      node.depth = already;
+    } else if (written > previous + 1) {
+      changes.push(`heading level jumped from h${previous} to h${written}; lifted to h${previous + 1}`);
+      lifted.set(written, previous + 1);
       node.depth = previous + 1;
+    } else {
+      for (const key of [...lifted.keys()]) if (key > written) lifted.delete(key);
     }
     previous = node.depth;
   }

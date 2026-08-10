@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-10T14:53:15.449Z",
+  "generated": "2026-08-10T15:38:43.595Z",
   "totals": {
-    "findings": 134,
+    "findings": 133,
     "converterDefects": 73,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 43,
-    "ambiguous": 18,
+    "ambiguous": 17,
     "bySeverity": {
       "critical": 4,
       "major": 60,
-      "minor": 70
+      "minor": 69
     }
   },
   "perDocument": [
@@ -87,11 +87,11 @@
     },
     {
       "doc": "new_geyzel04",
-      "findings": 4,
+      "findings": 3,
       "converterDefects": 3,
       "critical": 0,
       "major": 3,
-      "minor": 1
+      "minor": 0
     },
     {
       "doc": "new_karta",
@@ -384,28 +384,6 @@
       }
     },
     {
-      "class": "heading.missing.caption-echo",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_geyzel04",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/heading[46]",
-        "produced": null,
-        "reference": "ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\""
-      }
-    },
-    {
       "class": "image.moved",
       "severity": "major",
       "instances": 2,
@@ -469,28 +447,6 @@
         "path": "/nav[4]/list[0]/item[2]/link[0]",
         "produced": null,
         "reference": "[3]()"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_geyzel04",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/align[2]/heading[0]",
-        "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-        "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /align[2]/paragraph[1]"
       }
     },
     {
@@ -684,6 +640,27 @@
       }
     },
     {
+      "class": "heading.level",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_geyzel04"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/heading[37]",
+        "produced": "ВМЕСТО ЭПИЛОГА",
+        "reference": "ВМЕСТО ЭПИЛОГА — h2, reference h3"
+      }
+    },
+    {
       "class": "heading.missing.absorbed",
       "severity": "major",
       "instances": 1,
@@ -702,6 +679,27 @@
         "path": "/heading[1]",
         "produced": null,
         "reference": "Путь к циклу"
+      }
+    },
+    {
+      "class": "heading.missing.caption-echo",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "segovia",
+        "path": "/heading[40]",
+        "produced": null,
+        "reference": "ДИСКОГРАФИЯ"
       }
     },
     {
@@ -831,6 +829,27 @@
       }
     },
     {
+      "class": "retyped.heading2-to-align",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_geyzel04"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_geyzel04",
+        "path": "/align[2]",
+        "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+        "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /heading[3]"
+      }
+    },
+    {
       "class": "retyped.heading2-to-paragraph",
       "severity": "major",
       "instances": 1,
@@ -870,6 +889,27 @@
         "path": "/align[2]/frame[0]",
         "produced": "Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запозданием.",
         "reference": "frame: white Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запо… — at /align[2]/paragraph[1]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-heading2",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "tarrega",
+        "path": "/heading[13]",
+        "produced": "Сборник произведений Франсиско Тарреги",
+        "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
       }
     },
     {
@@ -1193,28 +1233,6 @@
       }
     },
     {
-      "class": "image.caption.spurious",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "new_geyzel04",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 2
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/image[45]@caption",
-        "produced": "caption: ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
-        "reference": null
-      }
-    },
-    {
       "class": "list.item.content.edited",
       "severity": "minor",
       "instances": 2,
@@ -1275,6 +1293,27 @@
         "path": "/frame[58]/align[2]/paragraph[2]",
         "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
         "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks"
+      }
+    },
+    {
+      "class": "image.caption.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "segovia",
+        "path": "/image[39]@caption",
+        "produced": "caption: ДИСКОГРАФИЯ",
+        "reference": null
       }
     },
     {
@@ -1987,45 +2026,31 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "6b2777b7",
+      "id": "ad76ba43",
       "doc": "new_geyzel04",
-      "class": "retyped.paragraph-to-heading2",
+      "class": "retyped.heading2-to-align",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[2]/heading[0]",
-      "producedLine": 15,
-      "referenceLine": 15,
+      "path": "/align[2]",
+      "producedLine": 11,
+      "referenceLine": 12,
       "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /align[2]/paragraph[1]",
+      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /heading[3]",
       "verdict": "converter-defect"
     },
     {
-      "id": "61fb28b4",
+      "id": "9e2f6e3d",
       "doc": "new_geyzel04",
-      "class": "image.caption.spurious",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/image[45]@caption",
-      "producedLine": 104,
-      "referenceLine": 104,
-      "produced": "caption: ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "d9a9633d",
-      "doc": "new_geyzel04",
-      "class": "heading.missing.caption-echo",
+      "class": "heading.level",
       "severity": "major",
       "evidence": "structure",
-      "op": "delete",
-      "path": "/heading[46]",
-      "producedLine": null,
-      "referenceLine": 109,
-      "produced": null,
-      "reference": "ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
+      "op": "substitute",
+      "path": "/heading[37]",
+      "producedLine": 81,
+      "referenceLine": 86,
+      "produced": "ВМЕСТО ЭПИЛОГА",
+      "reference": "ВМЕСТО ЭПИЛОГА — h2, reference h3",
       "verdict": "converter-defect"
     },
     {
@@ -2036,7 +2061,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[78]",
-      "producedLine": 172,
+      "producedLine": 168,
       "referenceLine": 173,
       "produced": "БЛАГОДАРНОСТИ:",
       "reference": "БЛАГОДАРНОСТИ: — at /paragraph[79]",

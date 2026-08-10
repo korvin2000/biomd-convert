@@ -653,6 +653,64 @@ describe("outline", () => {
     expect(out).toContain("title: ИЗБРАННАЯ ДИСКОГРАФИЯ");
     expect(out).not.toContain("## ИЗБРАННАЯ ДИСКОГРАФИЯ");
   });
+
+  // -- a page template already recovered as a heading (`completeHeadingTemplates`)
+
+  it("completes a heading template the page has already answered for twice", async () => {
+    // `new_geyzel04` sets four chapter titles in one template and typography
+    // reaches only two of them: the third is a character over the label cap and
+    // the fourth stands under a photograph, where the caption guard correctly
+    // refuses it. Neither exception is about typography, so nothing keyed on
+    // typography can reach them without reaching the false friends too. The
+    // template is the evidence, and the page has already used it as a heading.
+    const label = (t: string): string => `<p class="ttlb" align="center"><b>${t}</b></p>`;
+    const out = await md(
+      label("ГЛАВА ПЕРВАЯ") +
+        PROSE +
+        label("ГЛАВА ВТОРАЯ") +
+        PROSE +
+        // Over `maxSectionLength`, so prominence alone will not nominate it.
+        label("ГЛАВА ТРЕТЬЯ, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА") +
+        PROSE +
+        // Directly under a bare picture, so the caption guard refuses it.
+        '<p><img src="photo/g/img_07.jpg" width="340" height="255"></p>' +
+        label("ПРИЛОЖЕНИЕ") +
+        PROSE,
+    );
+    expect(out).toMatch(/^#{2,3} ГЛАВА ТРЕТЬЯ, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ/mu);
+    expect(out).toMatch(/^#{2,3} ПРИЛОЖЕНИЕ$/mu);
+    // The picture keeps the caption it does not have rather than borrowing one.
+    expect(out).not.toContain("caption: ПРИЛОЖЕНИЕ");
+  });
+
+  it("false friend: a caption template has nothing to complete", async () => {
+    // Captions share a class as readily as headings do. The asymmetry that
+    // makes this rule safe is that it only ever *joins* a majority the page
+    // established: a family every member of which sits under its own picture
+    // has no recovered member at all, so no count is reached and nothing moves.
+    const figure = (t: string): string =>
+      `<p><img src="photo/g/${t}.jpg" width="300" height="200"></p>` +
+      `<p class="cap" align="center"><b>Снимок ${t} года</b></p>`;
+    const out = await md(PROSE + figure("1936") + PROSE + figure("1947") + PROSE + figure("1952") + PROSE);
+    expect(out).not.toMatch(/^#{2,3} Снимок 1936 года$/mu);
+    expect(out).not.toMatch(/^#{2,3} Снимок 1952 года$/mu);
+  });
+
+  it("false friend: one long member disqualifies the template", async () => {
+    // The body class of a page whose first paragraph happens to be recovered as
+    // a heading must not promote the article. Homogeneity is the guard: every
+    // member has to be label-shaped, so one paragraph of prose in the family
+    // takes the whole family out of consideration.
+    const out = await md(
+      '<p class="t" align="center"><b>ПЕРВЫЙ РАЗДЕЛ</b></p>' +
+        '<p class="t" align="center"><b>ВТОРОЙ РАЗДЕЛ</b></p>' +
+        PROSE.replace("<p>", '<p class="t">') +
+        '<p class="t">Короткая строка</p>' +
+        PROSE,
+    );
+    expect(out).not.toContain("## Короткая строка");
+    expect(out).toContain("Короткая строка");
+  });
 });
 
 describe("frames", () => {
