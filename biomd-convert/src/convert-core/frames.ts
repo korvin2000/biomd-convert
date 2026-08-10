@@ -100,6 +100,13 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
     const tint = tintedPanelPalette(el);
     return tint ? applyFrameGuards(el, documentTextLength, tint, `${tint} panel spanning a grid row`) : null;
   };
+  // The sole-cell path is tried wherever the border path declines, for the same
+  // reason and in the same position as the tint path: the commonest way a
+  // hairline declines is by being a hairline, which is the whole shape here.
+  const boxed = (): FrameEvidence | null => {
+    const box = soleCellBox(el);
+    return box ? applyFrameGuards(el, documentTextLength, box.frame, box.reason) : tinted();
+  };
 
   let width = 0;
   let color: string | undefined;
@@ -109,12 +116,12 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
     color = style.borderColor;
   } else {
     const decl = BORDER_DECL.exec(inline);
-    if (!decl) return tinted();
+    if (!decl) return boxed();
     const parts = (decl[1] as string).trim().split(/\s+/u);
     width = Number.parseFloat(parts[0] ?? "0");
     color = parts.find((p) => p.startsWith("#") || p in NAMED);
   }
-  if (!Number.isFinite(width) || width < 2) return tinted();
+  if (!Number.isFinite(width) || width < 2) return boxed();
 
   // There used to be a test here rejecting a border whose computed colour
   // equalled the element's text colour, on the grounds that an *undeclared*
@@ -171,6 +178,115 @@ function applyFrameGuards(
   if (documentTextLength > 0 && text.length > documentTextLength * 0.6) return null;
   if (hasDescendantTable(el)) return null;
   return { frame: palette, reason };
+}
+
+/**
+ * `BioMD-Reference.md` §12: "`frame: gold|black|red|white`, **default `gold`**".
+ *
+ * Used where the author demonstrably drew a box but the colour says nothing —
+ * a browser-default `rgb(128,128,128)` is not a choice, and §12's own "choose
+ * nearest valid theme token" has no nearest for a neutral grey. Writing the
+ * spec's default is the one answer that invents nothing.
+ */
+const DEFAULT_FRAME_PALETTE: FramePalette = "gold";
+
+/**
+ * A hairline around a table that has only one cell.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A 1 px border is refused everywhere else because it is a
+ * table's *cell grid*, and that reasoning has a precondition nobody checked:
+ * there have to be cells for a grid to separate. A table with exactly one cell
+ * has no grid, so its hairline is the only thing it can be — a box the author
+ * drew round a notice. The evidence is cardinality, not width; no class, id,
+ * colour or word is read.
+ *
+ * **Recurrence.** Deliberately **not** required, and this is the second shape
+ * `CLAUDE.md` §5 has in mind: a notice occurs once per page by definition, and
+ * both instances in the corpus are singletons. Cardinality replaces it —
+ * "exactly one cell" is a stronger statement than "seen twice".
+ *
+ * **False friend, swept.** Rendered in Chromium at 1024 px, all 22 sources
+ * carry exactly **24** single-cell bordered tables. Twenty-two are one per
+ * document: the site's masthead banner, "Иллюстрированный биографический
+ * энциклопедический словарь", 57 characters, identical everywhere. The other
+ * two are precisely the notices `analyze-3.md` names — `segovia1`'s copyright
+ * box (366 characters) and `new_karta`'s update note (154). No third shape
+ * exists. The banner never reaches here: `removeBoilerplate` deletes it on all
+ * 22 before structure runs, which is measured — it appears in none of the
+ * produced documents. That is a **dependency, not a coincidence**: without a
+ * corpus profile the chrome is kept, and the CLI already warns that it will be.
+ *
+ * **Mutation robustness.** Cardinality survives renamed classes, permuted
+ * attributes and `<font>`↔CSS. It is sensitive to a dropped `</td>`, which
+ * merges cells — and merging can only *reduce* the count to one, so the guard
+ * fails toward drawing a box that the source's own recovery would also draw.
+ *
+ * **Source.** `analyze-3.md` states it twice with the HTML: on `segovia1`,
+ * *"заключен в рамку (находится внутри таблицы у которой явно указан
+ * border="1") и отцентрован … такой текст стоит заключить во frame"*; on
+ * `new_karta`, *"поэтому такой текст я тоже выделил и поместил в самую близкую
+ * по цвету рамку"*.
+ */
+function soleCellBox(el: LadomNode): FrameEvidence | null {
+  if (el.tag !== "td" && el.tag !== "th") return null;
+  const table = tableOf(el);
+  if (!table || cellCount(table) !== 1) return null;
+  const width = drawnBorderWidth(el, table);
+  if (width === null) return null;
+  return {
+    frame: DEFAULT_FRAME_PALETTE,
+    reason: `${width}px border around the only cell of its table`,
+  };
+}
+
+/** The `<table>` this cell belongs to, through an optional row section. */
+function tableOf(el: LadomNode): LadomNode | null {
+  const row = el.parent;
+  if (!row || row.kind !== "element" || row.tag !== "tr") return null;
+  const section = row.parent;
+  if (!section || section.kind !== "element") return null;
+  const table = section.tag === "table" ? section : section.parent;
+  if (!table || table.kind !== "element" || table.tag !== "table") return null;
+  return table;
+}
+
+/**
+ * The border width the author drew, from measurement or from the attribute.
+ *
+ * Measured style wins where there is any — `border="0"` computes
+ * `border-style: none`, and a layout table is not a notice however many cells
+ * it has. Where the page was not measured the HTML `border` attribute is read
+ * instead, which is what this era actually writes: `border="1"` is not inline
+ * CSS, so `BORDER_DECL` never sees it and the unmeasured path would otherwise
+ * be blind to the only form the corpus uses.
+ */
+function drawnBorderWidth(el: LadomNode, table: LadomNode): number | null {
+  const style = el.style;
+  if (style) {
+    if (style.borderStyle === "none" || style.borderStyle === "hidden") return null;
+    const width = Math.min(style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth);
+    return Number.isFinite(width) && width >= 1 ? width : null;
+  }
+  const attr = Number.parseInt(table.attrs["border"] ?? "", 10);
+  return Number.isFinite(attr) && attr >= 1 ? attr : null;
+}
+
+/** How many cells the table holds, counted through its row sections. */
+function cellCount(table: LadomNode): number {
+  let cells = 0;
+  const visit = (node: LadomNode): void => {
+    for (const child of node.children) {
+      if (child.kind !== "element") continue;
+      // A nested table's cells belong to it, not to this one.
+      if (child.tag === "table") continue;
+      if (child.tag === "td" || child.tag === "th") cells += 1;
+      else visit(child);
+    }
+  };
+  visit(table);
+  return cells;
 }
 
 /**

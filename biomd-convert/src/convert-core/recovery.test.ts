@@ -2192,3 +2192,61 @@ describe("a dot leader is the column it was drawing", () => {
     expect(out).not.toContain("| - |");
   });
 });
+
+/**
+ * ## Rule contract — a hairline round a lone cell is a box, not a grid
+ *
+ * The full contract lives above `soleCellBox` in `frames.ts`, including the
+ * 24-instance corpus sweep. These are its falsifiers.
+ *
+ * `analyze-3.md` states it twice with the HTML. On `segovia1`: *"текст …
+ * заключен в рамку (находится внутри таблицы у которой явно указан border="1")
+ * и отцентрован … такой текст стоит заключить во frame"*. On `new_karta`:
+ * *"такой текст я тоже выделил и поместил в самую близкую по цвету рамку"*.
+ */
+describe("a hairline round a lone cell is a box", () => {
+  const NOTICE =
+    "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи " +
+    "разрешается только с письменного согласия автора. Ссылка обязательна.";
+
+  it("frames a one-cell bordered table the way the author drew it", async () => {
+    const out = await md(
+      PROSE + `<table border="1" width="90%"><tr><td><p>${NOTICE}</p></td></tr></table>` + PROSE,
+    );
+    expect(out).toContain("::: frame");
+    // No colour evidence — a browser-default grey is not a choice — so the
+    // spec's own default is written rather than a guessed token.
+    expect(out).toContain("frame: gold");
+    expect(out).toContain("ВНИМАНИЕ!");
+  });
+
+  // False friend: a bordered table that has a grid. The hairline is then the
+  // cell rule it was always taken for, and framing every cell of a discography
+  // would put a box round each track in the corpus's worst documents.
+  it("leaves a bordered table that actually has cells", async () => {
+    const out = await md(
+      PROSE +
+        '<table border="1"><tr>' +
+        `<td><p>${NOTICE}</p></td><td><p>Второй столбец этой же строки таблицы</p></td>` +
+        "</tr></table>" +
+        PROSE,
+    );
+    expect(out).not.toContain("::: frame");
+  });
+
+  // False friend: a lone cell with no border at all. `border="0"` computes
+  // `border-style: none`, and a table used for layout is not a notice.
+  it("leaves a one-cell table the author drew no border on", async () => {
+    const out = await md(
+      PROSE + `<table border="0"><tr><td><p>${NOTICE}</p></td></tr></table>` + PROSE,
+    );
+    expect(out).not.toContain("::: frame");
+  });
+
+  // False friend: the page shell. Legacy pages wrap the whole article in one
+  // bordered cell, and §12 excludes exactly that.
+  it("leaves a lone bordered cell that holds the whole article", async () => {
+    const out = await md(`<table border="1"><tr><td>${PROSE}</td></tr></table>`);
+    expect(out).not.toContain("::: frame");
+  });
+});
