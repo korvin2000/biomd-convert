@@ -83,3 +83,24 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 - **Instrument at runtime; never reason from the stylesheet.** Three separate defects this campaign
   were invisible in the source and obvious in one `DBG_X=1` run: a detector never called, a guard
   rejecting a declared value, and a pre-filter skipping the node. (`learned-patterns.md`)
+
+- **A word-less block may open an alignment run because it carries a target -- killed twice, on two
+  different falsifiers.** §30.1 killed it: `segovia1`'s four footer lane cells became alignable and
+  `groupAlignedRuns` swept them into one `::: align`. It named its own reopening condition -- *only
+  once the `columns` region is recovered first* -- §33 met it, and the rule was rebuilt and
+  re-measured, which is the correct process. It then failed for a **new** reason: the recovered lanes
+  want no `::: align` inside them at all, so `segovia1` went 2 -> 4 `retyped.align-to-paragraph`,
+  L3 rose 68 -> 70, and L2 was net zero. Reverted whole. Do not rebuild it; the residue is a
+  narrower, separate candidate -- `align` inside `column`, where the references want 26 and the
+  produced side has 32. (§35.10)
+- **A uniformly indented run subordinate to a lead-in is a list.** Fires **21** times across the 22
+  sources and only 2 want a list: `borislova`'s sixteen movement runs keep hard-break lines in their
+  own reference, `pavlov_azancheev`'s letter has no unindented lead-in, `tarrega`'s two nine-line
+  runs want a table. Only the *colon-announced* form was built, and it fires on exactly the right 2.
+  The lesson generalises: an indent alone means "continuation" as often as "item" -- `goya2` indents
+  the continuation of a wrapped track title *under* it. Equality and announcement are the evidence,
+  presence is not. (§35.7)
+- **Carry a container's right alignment into GFM column alignment.** Would close `new_kolpakov`'s
+  three `table.align` findings and recover `williams2`'s right-hug after §35.6 -- but exactly **1 of
+  the corpus's 21 reference tables** uses column alignment. Not a rule, a single reference choice.
+  Reopens only if a second and third instance appear. (§35.6)

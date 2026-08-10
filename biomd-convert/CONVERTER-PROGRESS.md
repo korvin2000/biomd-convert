@@ -4366,3 +4366,208 @@ paid every time.
 the "Том I…" volume-list instance) are the nearest remaining work. The parked discography-row
 question (§34.1) stays parked — small reach, no invariant, real distinction — until either a fifth
 instance breaks the 2-2 split or the author is asked directly.
+
+## 35. The normalized references: six mechanisms, and a validator that disagrees with its author (2026-08-10)
+
+`c92c009` normalized 11 references and added `analyze/analyze-2.md`, an in-depth complaint record for
+`news`, `goya2`, `new_karta` and `kiselev` with new house rules stated as prose. `a634d32` amended it.
+Every number in §21-§34 predates the normalization.
+
+### 35.1 Re-baseline before attribution
+
+The reference edit alone, no code change:
+
+| rung | after §34 | re-measured 2026-08-10 |
+|---|---|---|
+| L0 | 444 tests, 0 FAILED, clean 13.6 % | **444**, 0 FAILED, clean 13.6 % |
+| L1 | 94.5 | **94.6** |
+| L2 | 263 · 135 defect · 64 amb · 64 ref-inc · 8 crit | **257 · 112 · 59 · 86 · 6** |
+| L3 | 68 | **68** |
+
+### 35.2 End state, after this iteration
+
+| rung | value |
+|---|---|
+| L0 | **463 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 %, `read()` warnings 0 |
+| L1 | **96.4 %** |
+| L2 | **167 findings -- 91 converter-defect** · 31 ambiguous · 45 reference-inconsistency · **4 critical** |
+| L3 | **68**, identity 0, deterministic |
+| validator | **27** errors -- see §35.9; this rose, and the cause is an author ruling |
+
+Net over the iteration: L1 94.6 -> 96.4, L2 257 -> 167 findings, converter-defect 112 -> 91,
+critical 6 -> 4, L3 flat. **Of the 21-defect fall, 14 were the instrument becoming truthful (§35.4)
+and 7 the conversion improving.** Quote the split.
+
+### 35.3 A column of links is headed with the link symbol (`a4a39a1`)
+
+`analyze-2.md` states it twice with its reason -- *"любой столбец где есть какие-то ссылки … просто
+именовать так: `&#128279;`"*, *"что бы не включать эвристику и не определять"*. **This reverses
+§30.2**, which had itself reversed the contract before it; `data-table.test.ts` now records all
+three rulings in one table so no session re-derives them. Two mechanisms: the glyph is checked
+*before* `dominantLabel` (transcription is the guessing the author objects to -- a column of mixed
+`WMA` and `MIDI` got named after whichever dominated), and `isLinkColumn`'s recurrence gate drops
+2 -> 1 because homogeneity there is already exhaustive. Swept: 6 headers agree at 2, **9 at 1**, and
+nothing moves the wrong way -- flat, so the constant was a limit on the wrong axis.
+`table.header.cell` 40 -> 7; the residuals are `tarrega` x4, `kiselev` x2, `segovia` x1, all in files
+`c92c009` did not touch. L2 257 -> 224, **all 33 of the fall reference-inconsistency**.
+
+### 35.4 A property the profile forbids is not the converter's to emit (`4f20232`, instrument)
+
+`BioMD-Reference.md` §2 gives `image` two profiles and §3 says it in words -- *"child `position/size`
+omitted/ignored"*. `compareDirective` compares property maps generically, so every child `position:`
+the reference carried became a `structure`-evidence finding, which `triage`'s first short-circuit
+calls a converter defect unconditionally. That was **12 of goya2's 19 converter-defects**: the
+instrument asking the converter to violate the spec, and ranking the document first in the corpus
+for obeying it. The corpus agrees with the spec -- of the four references using `::: images`, only
+`goya2` writes the properties, on all six of its children; `borislova`, `jovicic` and `new_kolpakov`
+omit them on all seven of theirs. converter-defect 112 -> 98, total unchanged.
+
+### 35.5 An asset outside the content roots is one level up (`779ebd7`)
+
+`analyze-2.md`, "Обработка ссылок". **Segment containment, not a prefix test**: the three site-root
+documents spell the same files `pages/music/…` that their siblings spell `music/…`, so `startsWith`
+would have climbed 84 working paths. Measured over all 22 references: 458 relative targets, exactly
+the 21 under `main/` carry `/../`, no counterexample either way. Two domain limits, both properties
+rather than exceptions: a value with no directory component is in the page's own directory, and a
+value carrying markup is not a path (`new_kolpakov`'s `href="<B>http://…</B>"`, left exactly as
+found). Image `src` did not go through `rewriteTarget` at all and now shares the one resolver.
+`image.src.value` 19 -> 0, `news` 36 -> 17, L1 94.7 -> 95.1. **All 565 relative targets in the corpus
+now agree on both sides**, 0 reference-only.
+
+This reverses the *verdict* of §31.1, not its mechanism: a `src` is still a target, but that class's
+verdict logic assumes source-literal targets where the house rule rewrites them.
+
+### 35.6 A table holding one record is still a table (`3bd4a12`)
+
+**The parked question of §34.1 was parked on an artefact.** All four instances classify DATA and die
+identically on `too-small: 1x2 is below the minimum` -- `minRows: 2` is a recurrence gate, and a
+one-record table has one row by definition. The failure is not a choice between representations: on
+`new_kolpakov` the title `Венгерка` was absorbed into the *preceding* paragraph's `::: align`,
+`[WMA]` became its own centred `::: align`, and `(1,7 Mb)` a third.
+
+The recorded 2-2 split never existed. `williams2` was counted as "wants `::: align`" -- but its
+reference writes the **shattered** form, two sibling `::: align` blocks plus a stray `**` from an
+unbalanced emphasis, while `analyze.md` item 9 asks for the text *and* the MP3 link inside **one**
+block. The reference transcribes the break rather than ruling on it.
+
+`isSingleRecordRow` is `isBareLinkRow` inverted -- the acceptance check OPEN.md predicted this
+mechanism would need, written before it was built. L1 95.1 -> 96.4 (`new_kolpakov` 68.0 -> 93.9,
+`new_karta` 89.5 -> 95.2, `new_dyens` -> 100.0). Closed the shadow classes that outranked their own
+cause: `retyped.paragraph-to-table` x2, `retyped.align-to-table`, `align.spurious` x3,
+`paragraph.spurious.in-table` x3.
+
+**Tradeoff, stated.** `williams2` L1 100.0 -> 73.9, +3 L2 findings. Measured in the browser against
+the source's own rendering: the source draws **one** line, 566->858 px, hugging the right edge of a
+449 px column, title then MP3. The old output kept the right-hug and lost the line; the new output
+keeps the line and the title-beside-its-link arrangement and loses the right-hug.
+`BioMD-Reference.md`'s precedence ladder puts hierarchy/grouping above layout, which is what decides
+it. No level 1-4 loss, and L3 flat.
+
+Not built: carrying a container's right alignment into GFM column alignment would close
+`new_kolpakov`'s three `table.align` findings and recover `williams2`'s right-hug -- but **1 of the
+corpus's 21 reference tables uses column alignment.** Too thin to build a rule on.
+
+### 35.7 Two lines pushed in by the same amount are two lines (`9aeedf1`)
+
+`news` merged three prize entries into one sentence -- a `paragraph.content` **critical**.
+`isWrapBreak` reads a trailing comma as proof of continuation, and an enumeration of this era is
+exactly that: each item on its own `<br>` line, indented, ending in a comma.
+
+**The evidence was being destroyed upstream.** `inlineFrom`'s `replace(/\s+/gu, " ")` folds `&ensp;`
+into an ASCII space. HTML collapses ASCII whitespace, so a *visible* indent had to be a
+non-collapsing character and is therefore always deliberate; it is now kept only directly after a
+`<br>`, measured onto `RunLine.indent` by `splitLines`, and stripped there -- no emitted string
+changes.
+
+**The test is equality of indent, never its presence**, because an indent means the opposite just as
+often: `goya2` indents the continuation of a wrapped track title *under* the title. Swept over 22
+sources against the shipped classifier: of the 19 folded pairs whose right line is indented, the
+**4** with equal indent are `news`'s two enumerations and the **15** with unequal indent are the
+continuations and verse that must stay folded. No overlap, so the boundary is the mechanism rather
+than a tuned threshold.
+
+`listFromAnnouncedIndent` makes the run a list, which the ordinal-ascent rule can never do here (the
+last item, *"диплом за участие"*, carries no ordinal). **The announcing colon is what makes the rule
+usable, not decoration**: uniform-indent-under-a-lead-in alone fires **21** times over the corpus and
+only 2 want a list -- `borislova`'s sixteen movement runs keep hard-break lines in their own
+reference, `pavlov_azancheev`'s letter has no lead-in, `tarrega`'s two runs want a table. Adding the
+colon takes 21 firings to exactly the right 2.
+
+One regression found and fixed inside the change: keeping the characters made a `&nbsp;`-only spacer
+line -- how the era drew a blank line between two `<br>`s -- carry content it never had, and
+`new_dyens` lost two paragraph boundaries. A leading run with nothing after it is a spacer, not an
+indent. 8 closed, 0 new; **critical 6 -> 4**.
+
+### 35.8 A column no row fills is spacing (`6b104d2`)
+
+`analyze-2.md` asks for this twice. It keys on emptiness **in the source**, never on the rendered
+cell, and that distinction is the rule rather than a detail: `plannedCellTo` prints an em dash for an
+empty value, so downstream a column of generated dashes and a column of authored dashes are the same
+string. `segovia` is exactly that false friend -- a literal `-` the author typed between a movement
+number and its title, and its reference keeps the column. A source header also keeps its column.
+**30 closed, 0 new** -- `kiselev` 27 (one column of a 26-record table), `new_karta` 3.
+
+It exposed an existing proxy rather than creating one. `new_karta`'s "Абреу" table is UNKNOWN
+(margin 0.10), so it must carry its own evidence for being a record matrix, and the substitute
+available was "three-plus inferred columns". Dropping two spacer columns took it from 4 to 2 and the
+region stopped qualifying though nothing about it had changed -- the count was measuring padding.
+`isSingleRecordRow` now stands beside the count there: it asks what the cells *are* rather than how
+many there were.
+
+### 35.9 The validator now disagrees with its author -- open, needs a ruling
+
+`corpus run` reports **27** validator errors, up from 13. **22 of the 27 are
+`table-header-empty: Column N has no header (§3.8)`, exactly one per empty header cell**, and the
+per-document distribution matches to the instance (`new_karta` 8, `segovia` 4, `kiselev` 2,
+`new_kolpakov` 2, and 1 each in `barrios`, `borislova`, `new_bach`, `new_dyens`, `tarrega`,
+`williams2`). They are the direct and unavoidable consequence of §35.3: the author's `| | 🔗 |`
+leaves the record's own title column empty, and `BioMD-Reference.md` §1 says every GFM column MUST
+have a header.
+
+The references would fail identically if they went through the conversion path -- `validate <file>`
+reports 0 because it resolves a laxer profile, the trap OPEN.md §1 already records. This is a
+conflict between the author's stated house convention and the format's own MUST, not a converter
+defect, and it cannot be closed by changing the converter without disobeying one of the two. Do not
+"fix" it by re-inventing a title label: that is what §30.2 did and what `c92c009` reverted.
+
+### 35.10 Killed again, on a different falsifier: the word-less alignment rule
+
+§30.1 killed *"a word-less block may open an alignment run because it carries a target"* and named
+its reopening condition: **"reopens only on the `columns` region being recovered first."** §33
+recovered it, so the rule was rebuilt and re-measured -- the correct process, on measurement rather
+than on argument.
+
+It failed for a **new** reason. L2 net zero (3 closed on `new_karta`, `new_lendle2`, `new_rechin4`;
+3 new), **L3 68 -> 70**, and `segovia1` went 2 -> 4 `retyped.align-to-paragraph`. The recovered
+footer in the reference puts **no** `::: align` inside its four `::: column` lanes -- each holds a
+bare link -- so admitting the glyph cells added two more wrappers the reference does not want, one of
+them `position: right` on a `▶`. Reverted whole; the floor was restored exactly.
+
+The new falsifier is sharper than the old one and names the next candidate: **a block inside a
+`::: column` may be positioned by its lane rather than by an `align` of its own.** Not a blanket
+rule -- measured, the references put `align` directly inside `column` **26** times across `goya2`,
+`kiselev` and `new_blackmore`, and the produced side has **32**, across those three plus `new_karta`
+and `segovia1`. The work is separating the 26 wanted from the 6 unwanted, and it needs its own
+survey.
+
+### 35.11 Closed by earlier work, verified rather than assumed
+
+Two `analyze-2.md` complaints were already fixed before it was written, and both were confirmed by
+measurement: the long drawn separator (`\-------------------------`) is emitted as `---` on every
+document (§25.2), and `new_karta`'s linked micro-image is emitted as `[▶](/#/karta2)` where the
+reference writes `[&#9654;](/#/karta2)` -- the same glyph, and L2 folds numeric character references
+(§29.3).
+
+### 35.12 Not reached this iteration, with what is known about each
+
+- **`goya2`'s "Moscow Nights" `rowspan` lane** (`image.containment`, 1 defect). The author supplies
+  the reading in `analyze-2.md` with a screenshot: a `rowspan="2"` text cell beside two images that
+  a browser stacks in the right half, which the reference writes as `::: columns` with both images in
+  one column. Understood, not built.
+- **`goya2`'s split link label and its orphaned `09.` track** -- both stated in `analyze-2.md`, both
+  small, both still open.
+- **`kiselev`'s "Том I/Том II…" volume list** -- the author names the signal (left indent plus a
+  smaller font). §35.7's indent machinery now makes the first half readable; the font half is not
+  built, and §15.2 already says this is a third mechanism distinct from the other two.
+- **`news`'s `frame`/`align` shape** -- the normalized reference restructures the obituary notices
+  and replaces `title: ПОЗДРАВЛЯЕМ` with a `##` heading inside the frame. 7 defects, unexamined.

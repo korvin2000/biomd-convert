@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-09T21:01:58.000Z",
+  "generated": "2026-08-10T02:40:04.374Z",
   "totals": {
-    "findings": 263,
-    "converterDefects": 135,
+    "findings": 167,
+    "converterDefects": 91,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 64,
-    "ambiguous": 64,
+    "referenceInconsistencies": 45,
+    "ambiguous": 31,
     "bySeverity": {
-      "critical": 8,
-      "major": 125,
-      "minor": 130
+      "critical": 4,
+      "major": 82,
+      "minor": 81
     }
   },
   "perDocument": [
@@ -31,19 +31,19 @@
     },
     {
       "doc": "borislova",
-      "findings": 9,
-      "converterDefects": 8,
+      "findings": 6,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 5,
+      "major": 2,
       "minor": 4
     },
     {
       "doc": "goya2",
-      "findings": 29,
-      "converterDefects": 20,
+      "findings": 23,
+      "converterDefects": 7,
       "critical": 0,
       "major": 14,
-      "minor": 15
+      "minor": 9
     },
     {
       "doc": "jovicic",
@@ -55,18 +55,18 @@
     },
     {
       "doc": "kiselev",
-      "findings": 37,
-      "converterDefects": 6,
+      "findings": 10,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 4,
-      "minor": 33
+      "major": 3,
+      "minor": 7
     },
     {
       "doc": "new_bach",
-      "findings": 1,
+      "findings": 0,
       "converterDefects": 0,
       "critical": 0,
-      "major": 1,
+      "major": 0,
       "minor": 0
     },
     {
@@ -95,19 +95,19 @@
     },
     {
       "doc": "new_karta",
-      "findings": 13,
-      "converterDefects": 8,
+      "findings": 3,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 11,
-      "minor": 2
+      "major": 3,
+      "minor": 0
     },
     {
       "doc": "new_kolpakov",
-      "findings": 9,
-      "converterDefects": 7,
-      "critical": 1,
-      "major": 7,
-      "minor": 1
+      "findings": 6,
+      "converterDefects": 5,
+      "critical": 0,
+      "major": 2,
+      "minor": 4
     },
     {
       "doc": "new_lagq2",
@@ -135,11 +135,11 @@
     },
     {
       "doc": "news",
-      "findings": 59,
-      "converterDefects": 26,
-      "critical": 3,
-      "major": 37,
-      "minor": 19
+      "findings": 9,
+      "converterDefects": 7,
+      "critical": 0,
+      "major": 8,
+      "minor": 1
     },
     {
       "doc": "news_2007",
@@ -159,10 +159,10 @@
     },
     {
       "doc": "segovia",
-      "findings": 16,
+      "findings": 14,
       "converterDefects": 10,
       "critical": 1,
-      "major": 11,
+      "major": 9,
       "minor": 4
     },
     {
@@ -175,18 +175,18 @@
     },
     {
       "doc": "tarrega",
-      "findings": 8,
+      "findings": 11,
       "converterDefects": 5,
       "critical": 1,
-      "major": 6,
+      "major": 9,
       "minor": 1
     },
     {
       "doc": "williams2",
-      "findings": 5,
-      "converterDefects": 1,
+      "findings": 8,
+      "converterDefects": 4,
       "critical": 0,
-      "major": 1,
+      "major": 4,
       "minor": 4
     }
   ],
@@ -194,7 +194,7 @@
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 8,
+      "instances": 9,
       "documents": [
         "new_karta",
         "new_lagq2",
@@ -206,41 +206,17 @@
         "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 9,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 192,
+      "rank": 216,
       "example": {
         "doc": "new_karta",
         "path": "/align[23]",
         "produced": "▶",
         "reference": "▶ — at /paragraph[24]"
-      }
-    },
-    {
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "instances": 8,
-      "documents": [
-        "goya2",
-        "kiselev",
-        "news",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 8,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 96,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "Francis Goya Plays His Favourite Hits",
-        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
     {
@@ -268,13 +244,12 @@
       }
     },
     {
-      "class": "paragraph.spurious.in-table",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "instances": 5,
       "documents": [
-        "borislova",
-        "new_karta",
-        "new_kolpakov"
+        "goya2",
+        "segovia1"
       ],
       "verdicts": {
         "converter-defect": 5,
@@ -282,48 +257,21 @@
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 45,
+      "rank": 30,
       "example": {
-        "doc": "borislova",
-        "path": "/align[45]/paragraph[0]",
-        "produced": "WMA",
-        "reference": null
+        "doc": "goya2",
+        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+        "produced": "Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 24,
-      "documents": [
-        "new_blackmore",
-        "new_lendle2",
-        "news",
-        "news_2007",
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 17,
-        "ambiguous": 0
-      },
-      "rank": 42,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/heading[70]/text",
-        "produced": "(none)",
-        "reference": "strong:О вкусах не спорят"
-      }
-    },
-    {
-      "class": "align.spurious",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "major",
       "instances": 4,
       "documents": [
-        "borislova",
-        "new_karta",
-        "new_kolpakov"
+        "new_lagq2",
+        "news"
       ],
       "verdicts": {
         "converter-defect": 4,
@@ -331,18 +279,18 @@
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 36,
+      "rank": 24,
       "example": {
-        "doc": "borislova",
-        "path": "/align[45]",
-        "produced": "WMA",
+        "doc": "new_lagq2",
+        "path": "/paragraph[16]",
+        "produced": "Music by:",
         "reference": null
       }
     },
     {
       "class": "paragraph.content.edited",
       "severity": "minor",
-      "instances": 15,
+      "instances": 11,
       "documents": [
         "barrios",
         "jovicic",
@@ -354,12 +302,12 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 11
+        "ambiguous": 9
       },
-      "rank": 32,
+      "rank": 16,
       "example": {
         "doc": "new_blackmore",
         "path": "/paragraph[5]",
@@ -368,135 +316,28 @@
       }
     },
     {
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_lendle2",
-        "news",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 27,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/paragraph[0]",
-        "produced": null,
-        "reference": "frame: white"
-      }
-    },
-    {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 4,
-      "documents": [
-        "new_lendle2",
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 24,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]/paragraph[0]",
-        "produced": "Heitor Villa-Lobos",
-        "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]"
-      }
-    },
-    {
-      "class": "paragraph.content",
-      "severity": "critical",
-      "instances": 4,
-      "documents": [
-        "news",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 1
-      },
-      "rank": 20,
-      "example": {
-        "doc": "news",
-        "path": "/paragraph[92]",
-        "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
-        "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:"
-      }
-    },
-    {
-      "class": "image.position.missing",
-      "severity": "major",
-      "instances": 6,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 6,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "goya2",
-        "path": "/images[72]/image[0]@position",
-        "produced": null,
-        "reference": "position: center"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_lagq2",
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/paragraph[16]",
-        "produced": "Music by:",
-        "reference": null
-      }
-    },
-    {
-      "class": "image.size.missing",
+      "class": "emphasis.span",
       "severity": "minor",
-      "instances": 8,
+      "instances": 18,
       "documents": [
-        "borislova",
-        "goya2"
+        "new_blackmore",
+        "new_lendle2",
+        "news_2007",
+        "segovia",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 3,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
+        "reference-inconsistency": 15,
         "ambiguous": 0
       },
-      "rank": 16,
+      "rank": 15,
       "example": {
-        "doc": "borislova",
-        "path": "/images[6]/image[0]@size",
-        "produced": null,
-        "reference": "size: medium"
+        "doc": "new_blackmore",
+        "path": "/heading[70]/text",
+        "produced": "(none)",
+        "reference": "strong:О вкусах не спорят"
       }
     },
     {
@@ -523,24 +364,25 @@
       }
     },
     {
-      "class": "paragraph.spurious.absorbed",
+      "class": "align.missing",
       "severity": "major",
-      "instances": 4,
+      "instances": 2,
       "documents": [
-        "news"
+        "new_lendle2",
+        "williams2"
       ],
       "verdicts": {
-        "converter-defect": 4,
+        "converter-defect": 2,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 12,
       "example": {
-        "doc": "news",
-        "path": "/frame[47]/align[1]/paragraph[1]",
-        "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
-        "reference": null
+        "doc": "new_lendle2",
+        "path": "/frame[10]/align[1]",
+        "produced": null,
+        "reference": "Heitor Villa-Lobos"
       }
     },
     {
@@ -632,6 +474,50 @@
       }
     },
     {
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_lendle2",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]/paragraph[0]",
+        "produced": null,
+        "reference": "frame: white"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-table",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "segovia",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "segovia",
+        "path": "/paragraph[43]",
+        "produced": null,
+        "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra"
+      }
+    },
+    {
       "class": "retyped.list-to-paragraph",
       "severity": "major",
       "instances": 2,
@@ -673,28 +559,6 @@
         "path": "/align[2]/heading[0]",
         "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
         "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА — at /align[2]/paragraph[1]"
-      }
-    },
-    {
-      "class": "break.missing",
-      "severity": "minor",
-      "instances": 5,
-      "documents": [
-        "news",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 10,
-      "example": {
-        "doc": "news",
-        "path": "/break[40]",
-        "produced": null,
-        "reference": "---"
       }
     },
     {
@@ -742,6 +606,27 @@
       }
     },
     {
+      "class": "paragraph.content",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 5,
+      "example": {
+        "doc": "segovia",
+        "path": "/paragraph[12]",
+        "produced": "Формулируя цели своего творчества Сеговия писал: \"Я посвятил свою жизнь четырем главным задачам:",
+        "reference": "Формулируя цели своего творчества Сеговия писал:"
+      }
+    },
+    {
       "class": "frame.position.spurious",
       "severity": "minor",
       "instances": 2,
@@ -764,24 +649,24 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 1,
+      "class": "table.align",
+      "severity": "minor",
+      "instances": 3,
       "documents": [
-        "new_lendle2"
+        "new_kolpakov"
       ],
       "verdicts": {
-        "converter-defect": 1,
+        "converter-defect": 3,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 3,
       "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]",
-        "produced": null,
-        "reference": "Heitor Villa-Lobos"
+        "doc": "new_kolpakov",
+        "path": "/table[13]/col[0]",
+        "produced": "column 0: none",
+        "reference": "column 0: right"
       }
     },
     {
@@ -827,11 +712,11 @@
       }
     },
     {
-      "class": "column.spurious",
+      "class": "break.containment",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "new_karta"
+        "news"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -841,31 +726,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "new_karta",
-        "path": "/columns[20]/column[1]",
-        "produced": "align center WMA",
-        "reference": null
-      }
-    },
-    {
-      "class": "columns.spurious",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_karta",
-        "path": "/columns[20]",
-        "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
-        "reference": null
+        "doc": "news",
+        "path": "/frame[58]/break[3]",
+        "produced": "---",
+        "reference": "--- — produced at /frame[58]/align[4]/break[0]"
       }
     },
     {
@@ -953,48 +817,6 @@
       }
     },
     {
-      "class": "list.missing.absorbed",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news",
-        "path": "/list[93]",
-        "produced": null,
-        "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…"
-      }
-    },
-    {
-      "class": "list.missing.in-break-run",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news",
-        "path": "/list[96]",
-        "produced": null,
-        "reference": "1 место – Ровшан Мамедкулиев (Россия), 2 место – Артём Дервоед (Россия), 3 место – Константин Окуджава (Россия) и Марк Топчий (Украина)"
-      }
-    },
-    {
       "class": "nav.moved",
       "severity": "major",
       "instances": 1,
@@ -1013,6 +835,27 @@
         "path": "/nav[4]",
         "produced": "[1 ] [ 2 ] [ 3 ]",
         "reference": "1 2 3 — produced at /align[5]"
+      }
+    },
+    {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]/align[1]/paragraph[0]",
+        "produced": "Heitor Villa-Lobos",
+        "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]"
       }
     },
     {
@@ -1037,11 +880,11 @@
       }
     },
     {
-      "class": "paragraph.missing.in-table",
+      "class": "paragraph.spurious.absorbed",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "segovia"
+        "news"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1051,10 +894,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "segovia",
-        "path": "/paragraph[43]",
-        "produced": null,
-        "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra"
+        "doc": "news",
+        "path": "/frame[58]/align[4]/paragraph[0]",
+        "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
+        "reference": null
       }
     },
     {
@@ -1079,48 +922,6 @@
       }
     },
     {
-      "class": "retyped.align-to-table",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_karta",
-        "path": "/table[7]",
-        "produced": "El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA",
-        "reference": "Название Аудиоформат El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA — at /align[8]"
-      }
-    },
-    {
-      "class": "retyped.column-to-table",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_karta",
-        "path": "/table[19]",
-        "produced": "Heitor Villa-Lobos - Prelude No 3 in A Minor",
-        "reference": "Название Аудиоформат Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]/column[0]"
-      }
-    },
-    {
       "class": "retyped.columns-to-paragraph",
       "severity": "major",
       "instances": 1,
@@ -1139,6 +940,27 @@
         "path": "/columns[9]/column[1]/paragraph[0]",
         "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смер…",
         "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]"
+      }
+    },
+    {
+      "class": "retyped.columns-to-table",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_karta",
+        "path": "/table[19]",
+        "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
+        "reference": "🔗 Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]"
       }
     },
     {
@@ -1268,11 +1090,11 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-table",
+      "class": "retyped.table-to-align",
       "severity": "major",
       "instances": 1,
       "documents": [
-        "borislova"
+        "williams2"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1282,10 +1104,10 @@
       },
       "rank": 3,
       "example": {
-        "doc": "borislova",
-        "path": "/table[44]",
-        "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-        "reference": "Название Аудиоформат \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[1]"
+        "doc": "williams2",
+        "path": "/align[26]",
+        "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
+        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** — at /table[28]"
       }
     },
     {
@@ -1307,27 +1129,6 @@
         "path": "/signature[15]",
         "produced": "Основные источник: russianguitar.net\\ talismanmusic.org\\ masstusovka.com\\ barynya.com\\",
         "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — produced at /nav[16]"
-      }
-    },
-    {
-      "class": "table.geometry.cols",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "kiselev"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "kiselev",
-        "path": "/table[14]",
-        "produced": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу рабо…",
-        "reference": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP3… — 3 columns, reference has 2"
       }
     },
     {
@@ -1353,27 +1154,6 @@
       }
     },
     {
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 2,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[8]/column[1]/image[0]@caption",
-        "produced": null,
-        "reference": "caption: Francis Goya Plays His Favourite Hits vol. 1"
-      }
-    },
-    {
       "class": "table.cell.hyphenation.mixed",
       "severity": "minor",
       "instances": 2,
@@ -1395,11 +1175,11 @@
       }
     },
     {
-      "class": "image.link.spurious",
+      "class": "break.missing",
       "severity": "minor",
       "instances": 1,
       "documents": [
-        "news"
+        "pavlov_azancheev"
       ],
       "verdicts": {
         "converter-defect": 1,
@@ -1409,10 +1189,31 @@
       },
       "rank": 1,
       "example": {
-        "doc": "news",
-        "path": "/image[32]@link",
-        "produced": "link: http://www.guitar-times.ru/pages/magazine/mag20.htm",
-        "reference": null
+        "doc": "pavlov_azancheev",
+        "path": "/break[7]",
+        "produced": null,
+        "reference": "---"
+      }
+    },
+    {
+      "class": "image.caption.missing",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[12]/column[1]/image[0]@caption",
+        "produced": null,
+        "reference": "caption: Francis Goya Plays His Favourite Hits vol. 2"
       }
     },
     {
@@ -1458,70 +1259,69 @@
       }
     },
     {
-      "class": "table.cell.content.edited",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
-      "instances": 33,
+      "instances": 8,
       "documents": [
-        "kiselev",
-        "new_karta"
+        "borislova",
+        "goya2"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 33
-      },
-      "rank": 0,
-      "example": {
-        "doc": "kiselev",
-        "path": "/table[14]/cell[0][1]",
-        "produced": "—",
-        "reference": ""
-      }
-    },
-    {
-      "class": "image.src.value",
-      "severity": "major",
-      "instances": 19,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 19,
+        "reference-inconsistency": 8,
         "ambiguous": 0
       },
       "rank": 0,
       "example": {
-        "doc": "news",
-        "path": "/image[7]@src",
-        "produced": "src: main/magazines/IGvL_2020_2021.jpg",
-        "reference": "src: /../main/magazines/IGvL_2020_2021.jpg"
+        "doc": "borislova",
+        "path": "/images[6]/image[0]@size",
+        "produced": null,
+        "reference": "size: medium"
       }
     },
     {
       "class": "table.header.cell",
       "severity": "major",
-      "instances": 8,
+      "instances": 7,
       "documents": [
-        "new_bach",
-        "new_karta",
+        "kiselev",
         "segovia",
         "tarrega"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 7,
+        "reference-inconsistency": 6,
         "ambiguous": 1
       },
       "rank": 0,
       "example": {
-        "doc": "new_bach",
-        "path": "/table[26]/header[0]",
-        "produced": "Название",
-        "reference": "Произведение — column 0"
+        "doc": "kiselev",
+        "path": "/table[16]/header[0]",
+        "produced": "",
+        "reference": "Название — column 0"
+      }
+    },
+    {
+      "class": "image.position.missing.off-profile",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 6,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "goya2",
+        "path": "/images[72]/image[0]@position",
+        "produced": null,
+        "reference": "position: center"
       }
     },
     {
@@ -1546,67 +1346,46 @@
       }
     },
     {
-      "class": "image.caption.missing.self-echo",
+      "class": "table.cell.content.edited",
       "severity": "minor",
       "instances": 5,
       "documents": [
-        "goya2"
+        "kiselev"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 5,
-        "ambiguous": 0
+        "reference-inconsistency": 0,
+        "ambiguous": 5
+      },
+      "rank": 0,
+      "example": {
+        "doc": "kiselev",
+        "path": "/table[16]/cell[0][1]",
+        "produced": "—",
+        "reference": ""
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "goya2",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 3
       },
       "rank": 0,
       "example": {
         "doc": "goya2",
-        "path": "/columns[4]/column[1]/image[0]@caption",
-        "produced": null,
-        "reference": "caption: 1.000.000 Platinum"
-      }
-    },
-    {
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "borislova",
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 3,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "borislova",
-        "path": "/paragraph[45]",
-        "produced": "* Запись предоставлена автором и размещается с ее согласия.",
-        "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
-      }
-    },
-    {
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 2,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "news",
-        "path": "/frame[47]/align[1]/paragraph[0]",
-        "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
-        "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks"
+        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
+        "produced": "1988",
+        "reference": null
       }
     },
     {
@@ -1698,27 +1477,6 @@
       }
     },
     {
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 2
-      },
-      "rank": 0,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
-        "produced": "1988",
-        "reference": null
-      }
-    },
-    {
       "class": "align.active.spurious",
       "severity": "minor",
       "instances": 1,
@@ -1740,24 +1498,24 @@
       }
     },
     {
-      "class": "heading.spurious.unattested",
-      "severity": "major",
+      "class": "hardbreak.spurious",
+      "severity": "minor",
       "instances": 1,
       "documents": [
-        "news"
+        "borislova"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
+        "reference-inconsistency": 1,
+        "ambiguous": 0
       },
       "rank": 0,
       "example": {
-        "doc": "news",
-        "path": "/frame[61]/heading[1]",
-        "produced": "ПОЗДРАВЛЯЕМ",
-        "reference": null
+        "doc": "borislova",
+        "path": "/paragraph[45]",
+        "produced": "* Запись предоставлена автором и размещается с ее согласия.",
+        "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
       }
     },
     {
@@ -1842,27 +1600,6 @@
         "path": "/signature[15]@active",
         "produced": "active: Основные источник:",
         "reference": null
-      }
-    },
-    {
-      "class": "table.missing.unattested",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "new_kolpakov"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_kolpakov",
-        "path": "/table[13]",
-        "produced": null,
-        "reference": "Название Формат Размер Венгерка WMA (1,7 Mb)"
       }
     },
     {
@@ -1959,34 +1696,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "b5c7b817",
-      "doc": "borislova",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[45]",
-      "producedLine": 291,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e555dc3f",
-      "doc": "borislova",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[45]/paragraph[0]",
-      "producedLine": 294,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "94361f51",
       "doc": "borislova",
       "class": "paragraph.hyphenation.unjoined",
@@ -2029,9 +1738,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "6b95f0e6",
+      "id": "7175f531",
       "doc": "borislova",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
@@ -2040,12 +1749,12 @@
       "referenceLine": 21,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "28e53c23",
+      "id": "e5d9955c",
       "doc": "borislova",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
@@ -2054,21 +1763,7 @@
       "referenceLine": 27,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "5e27878a",
-      "doc": "borislova",
-      "class": "retyped.paragraph-to-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[44]",
-      "producedLine": 287,
-      "referenceLine": 290,
-      "produced": "\"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ]",
-      "reference": "Название Аудиоформат \"Estrelluvio\" (Dedicada a José Luis Vega) [ 4'46''; 1,65 Mb ] WMA — at /align[43]/paragraph[1]",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "ca928aef",
@@ -2078,7 +1773,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[45]",
-      "producedLine": 297,
+      "producedLine": 292,
       "referenceLine": 294,
       "produced": "* Запись предоставлена автором и размещается с ее согласия.",
       "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0",
@@ -2155,34 +1850,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "72f4e95f",
-      "doc": "goya2",
-      "class": "image.caption.missing.self-echo",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[4]/column[1]/image[0]@caption",
-      "producedLine": 64,
-      "referenceLine": 63,
-      "produced": null,
-      "reference": "caption: 1.000.000 Platinum",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b65a4200",
-      "doc": "goya2",
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[8]/column[1]/image[0]@caption",
-      "producedLine": 161,
-      "referenceLine": 161,
-      "produced": null,
-      "reference": "caption: Francis Goya Plays His Favourite Hits vol. 1",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "ef148075",
       "doc": "goya2",
       "class": "list.item.missing",
@@ -2191,7 +1858,7 @@
       "op": "delete",
       "path": "/columns[10]/column[0]/list[0]/item[8]",
       "producedLine": null,
-      "referenceLine": 185,
+      "referenceLine": 183,
       "produced": null,
       "reference": "09. Promise Me",
       "verdict": "converter-defect"
@@ -2205,7 +1872,7 @@
       "op": "substitute",
       "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
       "producedLine": 210,
-      "referenceLine": 213,
+      "referenceLine": 211,
       "produced": "Francis Goya Plays His Favourite Hits",
       "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]",
       "verdict": "converter-defect"
@@ -2219,24 +1886,10 @@
       "op": "delete",
       "path": "/columns[12]/column[1]/image[0]@caption",
       "producedLine": 228,
-      "referenceLine": 223,
+      "referenceLine": 221,
       "produced": null,
       "reference": "caption: Francis Goya Plays His Favourite Hits vol. 2",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "c8afb1ca",
-      "doc": "goya2",
-      "class": "image.caption.missing.self-echo",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[16]/column[1]/image[0]@caption",
-      "producedLine": 287,
-      "referenceLine": 283,
-      "produced": null,
-      "reference": "caption: Best of Francis Goya",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "1605ef60",
@@ -2247,24 +1900,10 @@
       "op": "substitute",
       "path": "/columns[20]/column[0]/align[0]/paragraph[0]",
       "producedLine": 339,
-      "referenceLine": 339,
+      "referenceLine": 336,
       "produced": "This Is Francis Goya",
       "reference": "This Is Francis Goya 1988 — at /columns[20]/column[0]/align[0]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "87690540",
-      "doc": "goya2",
-      "class": "image.caption.missing.self-echo",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[32]/column[1]/image[0]@caption",
-      "producedLine": 523,
-      "referenceLine": 516,
-      "produced": null,
-      "reference": "caption: Collection 2000 / Francis Goya",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "8f8dd370",
@@ -2275,24 +1914,10 @@
       "op": "substitute",
       "path": "/columns[40]/column[0]/align[0]/paragraph[0]",
       "producedLine": 652,
-      "referenceLine": 649,
+      "referenceLine": 645,
       "produced": "Historia de un Amor",
       "reference": "Historia de un Amor 1999 — at /columns[40]/column[0]/align[0]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "210f6bac",
-      "doc": "goya2",
-      "class": "image.caption.missing.self-echo",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[40]/column[1]/image[0]@caption",
-      "producedLine": 670,
-      "referenceLine": 658,
-      "produced": null,
-      "reference": "caption: Historia De Un Amor",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "e74ee424",
@@ -2303,192 +1928,178 @@
       "op": "move",
       "path": "/columns[50]/column[1]/image[1]",
       "producedLine": 820,
-      "referenceLine": 807,
+      "referenceLine": 802,
       "produced": "",
       "reference": "produced at /image[51]",
       "verdict": "converter-defect"
     },
     {
-      "id": "5f399bea",
+      "id": "5d59ba35",
       "doc": "goya2",
-      "class": "image.caption.missing.self-echo",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/columns[52]/column[1]/image[0]@caption",
-      "producedLine": 843,
-      "referenceLine": 832,
-      "produced": null,
-      "reference": "caption: Francis Goya in Moscow",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "85bd2924",
-      "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[0]@position",
       "producedLine": 1155,
-      "referenceLine": 1144,
+      "referenceLine": 1138,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "70479928",
+      "id": "bc1fd061",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[0]@size",
       "producedLine": 1155,
-      "referenceLine": 1144,
+      "referenceLine": 1138,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "18f32845",
+      "id": "993452d4",
       "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[1]@position",
       "producedLine": 1160,
-      "referenceLine": 1151,
+      "referenceLine": 1145,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "203f879d",
+      "id": "48d529cc",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[72]/image[1]@size",
       "producedLine": 1160,
-      "referenceLine": 1151,
+      "referenceLine": 1145,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "a79c8d1a",
+      "id": "02b782f7",
       "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[0]@position",
       "producedLine": 1172,
-      "referenceLine": 1165,
+      "referenceLine": 1159,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "bfbfdf06",
+      "id": "f53dc76b",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[0]@size",
       "producedLine": 1172,
-      "referenceLine": 1165,
+      "referenceLine": 1159,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "5be23d43",
+      "id": "436a3fbe",
       "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[1]@position",
       "producedLine": 1177,
-      "referenceLine": 1172,
+      "referenceLine": 1166,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "b72b8343",
+      "id": "d599636e",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[74]/image[1]@size",
       "producedLine": 1177,
-      "referenceLine": 1172,
+      "referenceLine": 1166,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "8ca0d238",
+      "id": "84406251",
       "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[0]@position",
       "producedLine": 1189,
-      "referenceLine": 1186,
+      "referenceLine": 1180,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "ffef4d54",
+      "id": "ca5f5625",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[0]@size",
       "producedLine": 1189,
-      "referenceLine": 1186,
+      "referenceLine": 1180,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "cd41de19",
+      "id": "b0413890",
       "doc": "goya2",
-      "class": "image.position.missing",
+      "class": "image.position.missing.off-profile",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[1]@position",
       "producedLine": 1194,
-      "referenceLine": 1193,
+      "referenceLine": 1187,
       "produced": null,
       "reference": "position: center",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "cc4a4de9",
+      "id": "a6c80030",
       "doc": "goya2",
-      "class": "image.size.missing",
+      "class": "image.size.missing.off-profile",
       "severity": "minor",
       "evidence": "structure",
       "op": "delete",
       "path": "/images[76]/image[1]@size",
       "producedLine": 1194,
-      "referenceLine": 1193,
+      "referenceLine": 1187,
       "produced": null,
       "reference": "size: medium",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "209e4c5f",
@@ -2589,494 +2200,102 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a220d04d",
+      "id": "4c397db7",
       "doc": "kiselev",
-      "class": "retyped.align-to-paragraph",
+      "class": "table.header.cell",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 163,
-      "referenceLine": 157,
-      "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci — at /align[13]",
-      "verdict": "converter-defect"
+      "path": "/table[16]/header[0]",
+      "producedLine": 180,
+      "referenceLine": 180,
+      "produced": "",
+      "reference": "Название — column 0",
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "2a22fd1f",
+      "id": "d37819c5",
       "doc": "kiselev",
-      "class": "retyped.align-to-paragraph",
+      "class": "table.header.cell",
       "severity": "major",
-      "evidence": "structure",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 171,
-      "referenceLine": 160,
-      "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it — at /align[13]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "db2451e1",
-      "doc": "kiselev",
-      "class": "table.geometry.cols",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[14]",
+      "path": "/table[16]/header[1]",
       "producedLine": 180,
-      "referenceLine": 169,
-      "produced": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов — — • Стакан сока со льдом в жаркий полдень MP3 — • Ищу рабо…",
-      "reference": "Название Аудиоформат ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов • Стакан сока со льдом в жаркий полдень MP3 • Ищу работу MP3… — 3 columns, reference has 2",
-      "verdict": "converter-defect"
+      "referenceLine": 180,
+      "produced": "🔗",
+      "reference": "Аудиоформат — column 1",
+      "verdict": "reference-inconsistency"
     },
     {
-      "id": "5b7ca08c",
+      "id": "6d0256da",
       "doc": "kiselev",
       "class": "table.cell.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[14]/cell[0][1]",
+      "path": "/table[16]/cell[0][1]",
       "producedLine": 180,
-      "referenceLine": 169,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "1967f01d",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[0][2]",
-      "producedLine": 180,
-      "referenceLine": 169,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "6d0471a4",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[1][2]",
-      "producedLine": 181,
-      "referenceLine": 170,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "69fdfcbb",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[2][2]",
-      "producedLine": 182,
-      "referenceLine": 171,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "230f84fa",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[3][2]",
-      "producedLine": 183,
-      "referenceLine": 172,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "5147bdc9",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[4][2]",
-      "producedLine": 184,
-      "referenceLine": 173,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "64112f80",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[5][2]",
-      "producedLine": 185,
-      "referenceLine": 174,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "04769bb2",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[6][1]",
-      "producedLine": 186,
-      "referenceLine": 175,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "6efed7d7",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[6][2]",
-      "producedLine": 186,
-      "referenceLine": 175,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "66acac66",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[7][2]",
-      "producedLine": 187,
-      "referenceLine": 176,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "7e56c155",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[8][2]",
-      "producedLine": 188,
-      "referenceLine": 177,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "bdbe4f3c",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[9][2]",
-      "producedLine": 189,
-      "referenceLine": 178,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "9f519b72",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[10][2]",
-      "producedLine": 190,
-      "referenceLine": 179,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "027f75ce",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[11][1]",
-      "producedLine": 191,
       "referenceLine": 180,
       "produced": "—",
       "reference": "",
       "verdict": "ambiguous"
     },
     {
-      "id": "6c69e133",
+      "id": "b05529f4",
       "doc": "kiselev",
       "class": "table.cell.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[14]/cell[11][2]",
-      "producedLine": 191,
-      "referenceLine": 180,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "d328929c",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[12][2]",
-      "producedLine": 192,
-      "referenceLine": 181,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "93bf71b5",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[13][2]",
-      "producedLine": 193,
-      "referenceLine": 182,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "56a2939e",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[14][2]",
-      "producedLine": 194,
-      "referenceLine": 183,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "fd098b2f",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[15][2]",
-      "producedLine": 195,
-      "referenceLine": 184,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "4ec95ee9",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[16][1]",
-      "producedLine": 196,
-      "referenceLine": 185,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "90de0f58",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[16][2]",
-      "producedLine": 196,
-      "referenceLine": 185,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "b4f175c1",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[17][2]",
-      "producedLine": 197,
+      "path": "/table[16]/cell[6][1]",
+      "producedLine": 186,
       "referenceLine": 186,
       "produced": "—",
       "reference": "",
       "verdict": "ambiguous"
     },
     {
-      "id": "4d5c1c5a",
+      "id": "d4b0d148",
       "doc": "kiselev",
       "class": "table.cell.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[14]/cell[18][2]",
-      "producedLine": 198,
-      "referenceLine": 187,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "bbaf649b",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[19][2]",
-      "producedLine": 199,
-      "referenceLine": 188,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "79932edb",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[20][2]",
-      "producedLine": 200,
-      "referenceLine": 189,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "f34b3dbf",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[21][1]",
-      "producedLine": 201,
-      "referenceLine": 190,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "88c3019a",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[21][2]",
-      "producedLine": 201,
-      "referenceLine": 190,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "f13970bd",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[22][2]",
-      "producedLine": 202,
+      "path": "/table[16]/cell[11][1]",
+      "producedLine": 191,
       "referenceLine": 191,
       "produced": "—",
       "reference": "",
       "verdict": "ambiguous"
     },
     {
-      "id": "afd4fdc4",
+      "id": "5e53b32f",
       "doc": "kiselev",
       "class": "table.cell.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[14]/cell[23][2]",
-      "producedLine": 203,
-      "referenceLine": 192,
+      "path": "/table[16]/cell[16][1]",
+      "producedLine": 196,
+      "referenceLine": 196,
       "produced": "—",
       "reference": "",
       "verdict": "ambiguous"
     },
     {
-      "id": "31ec7177",
+      "id": "f4b7ab3d",
       "doc": "kiselev",
       "class": "table.cell.content.edited",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[14]/cell[24][2]",
-      "producedLine": 204,
-      "referenceLine": 193,
+      "path": "/table[16]/cell[21][1]",
+      "producedLine": 201,
+      "referenceLine": 201,
       "produced": "—",
       "reference": "",
       "verdict": "ambiguous"
-    },
-    {
-      "id": "cc602906",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[14]/cell[25][2]",
-      "producedLine": 205,
-      "referenceLine": 194,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "20def884",
-      "doc": "new_bach",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[26]/header[0]",
-      "producedLine": 66,
-      "referenceLine": 66,
-      "produced": "Название",
-      "reference": "Произведение — column 0",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "8b16e066",
@@ -3373,62 +2592,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "0e736be5",
-      "doc": "new_karta",
-      "class": "columns.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[20]",
-      "producedLine": 122,
-      "referenceLine": null,
-      "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "55f5f72e",
-      "doc": "new_karta",
-      "class": "column.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[20]/column[1]",
-      "producedLine": 130,
-      "referenceLine": null,
-      "produced": "align center WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d70f99c3",
-      "doc": "new_karta",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[20]/column[1]/align[0]",
-      "producedLine": 132,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "048384a7",
-      "doc": "new_karta",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/columns[20]/column[1]/align[0]/paragraph[0]",
-      "producedLine": 135,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "4c21e9f3",
       "doc": "new_karta",
       "class": "retyped.paragraph-to-frame",
@@ -3443,102 +2606,18 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "7f110c6b",
+      "id": "74ecc356",
       "doc": "new_karta",
-      "class": "retyped.align-to-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[7]",
-      "producedLine": 38,
-      "referenceLine": 43,
-      "produced": "El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA",
-      "reference": "Название Аудиоформат El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA — at /align[8]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3692b9c3",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[11]/header[1]",
-      "producedLine": 57,
-      "referenceLine": 59,
-      "produced": "",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "23c9c244",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[11]/header[2]",
-      "producedLine": 57,
-      "referenceLine": 59,
-      "produced": "",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "6da7cb6c",
-      "doc": "new_karta",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[11]/cell[0][1]",
-      "producedLine": 57,
-      "referenceLine": 59,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "2e0d83fd",
-      "doc": "new_karta",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[11]/cell[0][2]",
-      "producedLine": 57,
-      "referenceLine": 59,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "90146f04",
-      "doc": "new_karta",
-      "class": "retyped.column-to-table",
+      "class": "retyped.columns-to-table",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[19]",
-      "producedLine": 124,
+      "producedLine": 117,
       "referenceLine": 124,
-      "produced": "Heitor Villa-Lobos - Prelude No 3 in A Minor",
-      "reference": "Название Аудиоформат Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]/column[0]",
+      "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
+      "reference": "🔗 Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "20f055ed",
-      "doc": "new_karta",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[21]/header[2]",
-      "producedLine": 144,
-      "referenceLine": 130,
-      "produced": "",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "4c7657a7",
@@ -3548,95 +2627,53 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[23]",
-      "producedLine": 160,
+      "producedLine": 155,
       "referenceLine": 147,
       "produced": "▶",
       "reference": "▶ — at /paragraph[24]",
       "verdict": "converter-defect"
     },
     {
-      "id": "8eb706b0",
+      "id": "5cfcb2b0",
       "doc": "new_kolpakov",
-      "class": "align.spurious",
-      "severity": "major",
+      "class": "table.align",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]",
-      "producedLine": 72,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "baed6145",
-      "doc": "new_kolpakov",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]",
-      "producedLine": 79,
-      "referenceLine": null,
-      "produced": "(1,7 Mb)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0f916446",
-      "doc": "new_kolpakov",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[12]/paragraph[1]",
-      "producedLine": 68,
-      "referenceLine": null,
-      "produced": "Венгерка",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8236e894",
-      "doc": "new_kolpakov",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]/paragraph[0]",
-      "producedLine": 75,
-      "referenceLine": null,
-      "produced": "WMA",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2e86f369",
-      "doc": "new_kolpakov",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]/paragraph[0]",
-      "producedLine": 82,
-      "referenceLine": null,
-      "produced": "(1,7 Mb)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a4209b0c",
-      "doc": "new_kolpakov",
-      "class": "table.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/table[13]",
-      "producedLine": null,
+      "op": "substitute",
+      "path": "/table[13]/col[0]",
+      "producedLine": 69,
       "referenceLine": 69,
-      "produced": null,
-      "reference": "Название Формат Размер Венгерка WMA (1,7 Mb)",
-      "verdict": "reference-inconsistency"
+      "produced": "column 0: none",
+      "reference": "column 0: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "423b1a70",
+      "doc": "new_kolpakov",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[1]",
+      "producedLine": 69,
+      "referenceLine": 69,
+      "produced": "column 1: none",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "c921eeac",
+      "doc": "new_kolpakov",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[2]",
+      "producedLine": 69,
+      "referenceLine": 69,
+      "produced": "column 2: none",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
     },
     {
       "id": "c8627658",
@@ -3646,7 +2683,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/signature[15]",
-      "producedLine": 88,
+      "producedLine": 76,
       "referenceLine": 76,
       "produced": "Основные источник: russianguitar.net\\ talismanmusic.org\\ masstusovka.com\\ barynya.com\\",
       "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — produced at /nav[16]",
@@ -3660,7 +2697,7 @@
       "evidence": "content",
       "op": "insert",
       "path": "/signature[15]@active",
-      "producedLine": 88,
+      "producedLine": 76,
       "referenceLine": 76,
       "produced": "active: Основные источник:",
       "reference": null,
@@ -3674,7 +2711,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/signature[15]/paragraph[0]",
-      "producedLine": 91,
+      "producedLine": 79,
       "referenceLine": 77,
       "produced": "Основные источник: russianguitar.net\\ talismanmusic.org\\ masstusovka.com\\ barynya.com\\",
       "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — at /signature[15]/list[1]",
@@ -3717,7 +2754,7 @@
       "op": "substitute",
       "path": "/align[15]",
       "producedLine": 217,
-      "referenceLine": 206,
+      "referenceLine": 213,
       "produced": "[Назад] [Фото]",
       "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[16]",
       "verdict": "converter-defect"
@@ -4059,72 +3096,44 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "78d307bc",
+      "id": "49a00212",
       "doc": "news",
-      "class": "paragraph.spurious.absorbed",
+      "class": "paragraph.spurious.in-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/frame[47]/align[1]/paragraph[1]",
-      "producedLine": 219,
+      "path": "/frame[58]/align[4]/paragraph[0]",
+      "producedLine": 305,
       "referenceLine": null,
-      "produced": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
+      "produced": "с успешной защитой диссертации на тему:",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "58cac983",
+      "id": "88a7cebf",
       "doc": "news",
-      "class": "heading.spurious.unattested",
+      "class": "paragraph.spurious.in-break-run",
       "severity": "major",
-      "evidence": "content",
+      "evidence": "structure",
       "op": "insert",
-      "path": "/frame[61]/heading[1]",
-      "producedLine": 297,
+      "path": "/frame[58]/align[4]/paragraph[0]",
+      "producedLine": 307,
       "referenceLine": null,
-      "produced": "ПОЗДРАВЛЯЕМ",
+      "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
       "reference": null,
       "verdict": "ambiguous"
     },
     {
-      "id": "0a256fbb",
+      "id": "84b66caf",
       "doc": "news",
       "class": "paragraph.spurious.absorbed",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/frame[61]/align[1]/paragraph[3]",
+      "path": "/frame[58]/align[4]/paragraph[0]",
       "producedLine": 309,
       "referenceLine": null,
       "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7e9ada79",
-      "doc": "news",
-      "class": "paragraph.spurious.absorbed",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[63]/align[1]/paragraph[1]",
-      "producedLine": 333,
-      "referenceLine": null,
-      "produced": "Владимир Ильич Богданович",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "862c94ec",
-      "doc": "news",
-      "class": "paragraph.spurious.absorbed",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[71]/align[1]/paragraph[1]",
-      "producedLine": 380,
-      "referenceLine": null,
-      "produced": "Александр Петрович Мартынов",
       "reference": null,
       "verdict": "converter-defect"
     },
@@ -4143,104 +3152,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "fda0a245",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[7]@src",
-      "producedLine": 22,
-      "referenceLine": 24,
-      "produced": "src: main/magazines/IGvL_2020_2021.jpg",
-      "reference": "src: /../main/magazines/IGvL_2020_2021.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "af4d7b84",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[8]@src",
-      "producedLine": 30,
-      "referenceLine": 32,
-      "produced": "src: main/magazines/IGvL_28_29_2022_ttl350.jpg",
-      "reference": "src: /../main/magazines/IGvL_28_29_2022_ttl350.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "e55c84b3",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[12]/image[2]@src",
-      "producedLine": 62,
-      "referenceLine": 59,
-      "produced": "src: main/smirnov_ua.jpg",
-      "reference": "src: /../main/smirnov_ua.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "014008c2",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[20]@src",
-      "producedLine": 97,
-      "referenceLine": 92,
-      "produced": "src: main/magazines/IGvL_23_2019_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_23_2019_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ea91be84",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[23]@src",
-      "producedLine": 107,
-      "referenceLine": 102,
-      "produced": "src: main/magazines/IGvL_24_2019_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_24_2019_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "0259611a",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[26]@src",
-      "producedLine": 117,
-      "referenceLine": 111,
-      "produced": "src: main/magazines/IGvL_22_2018_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_22_2018_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "f6cd916b",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[29]@src",
-      "producedLine": 128,
-      "referenceLine": 121,
-      "produced": "src: main/magazines/IGvL_21_2017_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_21_2017_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "5798a280",
       "doc": "news",
       "class": "paragraph.content.edited",
@@ -4255,619 +3166,45 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "a8e48d88",
-      "doc": "news",
-      "class": "image.link.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/image[32]@link",
-      "producedLine": 139,
-      "referenceLine": 131,
-      "produced": "link: http://www.guitar-times.ru/pages/magazine/mag20.htm",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1adce9e0",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[32]@src",
-      "producedLine": 139,
-      "referenceLine": 131,
-      "produced": "src: main/magazines/IGvL_20_2017_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_20_2017_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "176d5403",
-      "doc": "news",
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[34]/paragraph[1]",
-      "producedLine": 151,
-      "referenceLine": 143,
-      "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог Виктор Михайлович ЕФРЕМОВ",
-      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог — at /frame[34]/align[3]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "30a3d210",
-      "doc": "news",
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[34]/paragraph[2]",
-      "producedLine": null,
-      "referenceLine": 145,
-      "produced": null,
-      "reference": "Виктор Михайлович ЕФРЕМОВ",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "aba5f0c3",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[36]@src",
-      "producedLine": 171,
-      "referenceLine": 158,
-      "produced": "src: main/magazines/IGvL_18_19_2016_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_18_19_2016_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "1866be08",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[39]@src",
-      "producedLine": 182,
-      "referenceLine": 169,
-      "produced": "src: main/kniga_mg.jpg",
-      "reference": "src: /../main/kniga_mg.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "e75b7c8c",
-      "doc": "news",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[40]",
-      "producedLine": null,
-      "referenceLine": 175,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "19e46376",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[42]@src",
-      "producedLine": 191,
-      "referenceLine": 180,
-      "produced": "src: main/magazines/IGvL_17_2016_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_17_2016_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "d11e91a7",
-      "doc": "news",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[43]",
-      "producedLine": null,
-      "referenceLine": 187,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2d6da8be",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[45]@src",
-      "producedLine": 201,
-      "referenceLine": 192,
-      "produced": "src: main/magazines/IGvL_16_2016_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_16_2016_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "1693de49",
-      "doc": "news",
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 217,
-      "referenceLine": 206,
-      "produced": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
-      "reference": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Ядвига Ричардовна КОВАЛЕВСКАЯ — 0 of 1 hard breaks",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "9864651f",
-      "doc": "news",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 217,
-      "referenceLine": 206,
-      "produced": "**20 февраля 2016 года** ушла из жизни российская гитаристка и выдающийся гитарный педагог",
-      "reference": "**20 февраля 2016 года** ушла из жизни российская гитаристка и выдающийся гитарный педагог **Ядвига Ричардовна** **КОВАЛЕВСКАЯ**",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c618c5d9",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[47]/align[1]/paragraph[0]",
-      "producedLine": 217,
-      "referenceLine": 206,
-      "produced": "strong:20 февраля 2016 года",
-      "reference": "strong:20 февраля 2016 года · strong:КОВАЛЕВСКАЯ · strong:Ядвига Ричардовна",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "a5ec66a4",
-      "doc": "news",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[48]",
-      "producedLine": null,
-      "referenceLine": 219,
-      "produced": null,
-      "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e92488f6",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[50]@src",
-      "producedLine": 235,
-      "referenceLine": 224,
-      "produced": "src: main/magazines/IGvL_15_2015_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_15_2015_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "569bd8d0",
-      "doc": "news",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 248,
-      "referenceLine": 238,
-      "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист — produced at /frame[52]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f521fcc0",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[55]@src",
-      "producedLine": 271,
-      "referenceLine": 256,
-      "produced": "src: main/magazines/IGvL_14_2015_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_14_2015_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b67a6d03",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[58]@src",
-      "producedLine": 283,
-      "referenceLine": 267,
-      "produced": "src: main/elutin_konkurs.jpg",
-      "reference": "src: /../main/elutin_konkurs.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "cb234a04",
-      "doc": "news",
-      "class": "paragraph.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[61]/paragraph[0]",
-      "producedLine": 295,
-      "referenceLine": 278,
-      "produced": "frame: red",
-      "reference": "frame: red title: ПОЗДРАВЛЯЕМ",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "90903d08",
-      "doc": "news",
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 307,
-      "referenceLine": 289,
-      "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-      "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "4d9acce0",
-      "doc": "news",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 307,
-      "referenceLine": 289,
-      "produced": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»**",
-      "reference": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»** и присуждением ей ученой степени **канди…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b7dc7359",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[61]/align[1]/paragraph[2]",
-      "producedLine": 307,
-      "referenceLine": 289,
-      "produced": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-      "reference": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» · strong:кандидата искусствоведения",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8f768122",
-      "doc": "news",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары Владим… — produced at /frame[63]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8240ebc3",
-      "doc": "news",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "produced": "**3 августа 2014 года** в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары",
-      "reference": "**3 августа 2014 года** в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энтузиаст русской семиструнной гитары **…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "b215b577",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "produced": "strong:3 августа 2014 года",
-      "reference": "strong:3 августа 2014 года · strong:Владимир Ильич Богданович",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3fb8eff6",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[66]@src",
-      "producedLine": 350,
-      "referenceLine": 325,
-      "produced": "src: main/magazines/IGvL_13_2014_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_13_2014_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "00c10c01",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[69]@src",
-      "producedLine": 362,
-      "referenceLine": 336,
-      "produced": "src: main/magazines/IGvL_11_12_2014_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_11_12_2014_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "298d2ef0",
-      "doc": "news",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
-      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — produced at /frame[71]/paragraph[1]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "3dac2a6e",
-      "doc": "news",
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
-      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России Александр … — 0 of 1 hard breaks",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "42ad0c0c",
-      "doc": "news",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "**16 июня 2014 года** скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России",
-      "reference": "**16 июня 2014 года** скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармонии, Заслуженный артист России **Алек…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "5745795f",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "strong:16 июня 2014 года",
-      "reference": "strong:16 июня 2014 года · strong:Александр Петрович · strong:Мартынов",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9a459914",
+      "id": "d34b92fe",
       "doc": "news",
       "class": "retyped.paragraph-to-align",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[73]/align[1]",
+      "path": "/frame[58]/align[2]",
+      "producedLine": 302,
+      "referenceLine": 289,
+      "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
+      "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛ… — at /frame[58]/align[4]/paragraph[0]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "7c48e9d0",
+      "doc": "news",
+      "class": "break.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[58]/break[3]",
+      "producedLine": 312,
+      "referenceLine": 302,
+      "produced": "---",
+      "reference": "--- — produced at /frame[58]/align[4]/break[0]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e4b29f83",
+      "doc": "news",
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/frame[70]/align[1]",
       "producedLine": 392,
-      "referenceLine": 363,
+      "referenceLine": 383,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-      "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[73]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "333517d5",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/frame[73]/image[2]@src",
-      "producedLine": 394,
-      "referenceLine": 368,
-      "produced": "src: main/paco_de_lucia.jpg",
-      "reference": "src: /../main/paco_de_lucia.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "c382b4a4",
-      "doc": "news",
-      "class": "image.src.value",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/image[76]@src",
-      "producedLine": 406,
-      "referenceLine": 379,
-      "produced": "src: main/magazines/IGvL_10_2014_ttl225.jpg",
-      "reference": "src: /../main/magazines/IGvL_10_2014_ttl225.jpg",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "b3afc5f7",
-      "doc": "news",
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[90]",
-      "producedLine": 444,
-      "referenceLine": 409,
-      "produced": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб…",
-      "reference": "Информация о журнале перенесана в отдельный проект: \"История гитары в лицах\" (www.guitar-times.ru) – историко-биографический интернет-проект для гитаристов-люб… — 1 hard breaks, reference has 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "27b6638b",
-      "doc": "news",
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[92]",
-      "producedLine": 449,
-      "referenceLine": 413,
-      "produced": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фирмы…",
-      "reference": "Подведены итоги III Международного конкурса гитаристов имени Александра Фраучи (17–23 ноября 2013 г.) в Москве: — 2 hard breaks, reference has 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "118f0ef4",
-      "doc": "news",
-      "class": "paragraph.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[92]",
-      "producedLine": 449,
-      "referenceLine": 413,
-      "produced": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве: 1-я премия и приз зрительских симпатий от фир…",
-      "reference": "Подведены итоги *III Международного конкурса гитаристов имени Александра Фраучи* (17–23 ноября 2013 г.) в Москве:",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7663c267",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[92]",
-      "producedLine": 449,
-      "referenceLine": 413,
-      "produced": "em:III Международного конкурса гитаристов имени Александра Фраучи · strong:Антон Баранов · strong:Артём Дервоед · strong:Дмитрий Загуменников · strong:Марк Топ…",
-      "reference": "em:III Международного конкурса гитаристов имени Александра Фраучи",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "54b45207",
-      "doc": "news",
-      "class": "list.missing.absorbed",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/list[93]",
-      "producedLine": null,
-      "referenceLine": 415,
-      "produced": null,
-      "reference": "1-я премия и приз зрительских симпатий от фирмы Savarez – Артём Дервоед (Россия, Москва), 2-я премия – Антон Баранов (Россия, Санкт-Петербург), 3-я премия – Юр…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "55a84855",
-      "doc": "news",
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[95]",
-      "producedLine": 455,
-      "referenceLine": 422,
-      "produced": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: 1 место – Ровшан Мамедкулиев (Россия), 2 место…",
-      "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: — 1 hard breaks, reference has 0",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "6a9d766e",
-      "doc": "news",
-      "class": "paragraph.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[95]",
-      "producedLine": 455,
-      "referenceLine": 422,
-      "produced": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве: 1 место – **Ровшан Мамедкулиев** (Россия), 2 м…",
-      "reference": "Подведены итоги II Международного конкурса исполнителей на классической гитаре имени Александра Фраучи в Москве:",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "284af456",
-      "doc": "news",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[95]",
-      "producedLine": 455,
-      "referenceLine": 422,
-      "produced": "strong:Артём Дервоед · strong:Константин Окуджава · strong:Марк Топчий · strong:Ровшан Мамедкулиев",
-      "reference": "(none)",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "5d5173ab",
-      "doc": "news",
-      "class": "list.missing.in-break-run",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/list[96]",
-      "producedLine": null,
-      "referenceLine": 424,
-      "produced": null,
-      "reference": "1 место – Ровшан Мамедкулиев (Россия), 2 место – Артём Дервоед (Россия), 3 место – Константин Окуджава (Россия) и Марк Топчий (Украина)",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "017bd66a",
-      "doc": "news",
-      "class": "break.missing",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/break[99]",
-      "producedLine": null,
-      "referenceLine": 432,
-      "produced": null,
-      "reference": "---",
+      "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[70]/paragraph[2]",
       "verdict": "converter-defect"
     },
     {
@@ -5263,20 +3600,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "661b8666",
-      "doc": "segovia",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[42]/header[2]",
-      "producedLine": 156,
-      "referenceLine": 163,
-      "produced": "",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "52db765e",
       "doc": "segovia",
       "class": "paragraph.missing.in-table",
@@ -5291,20 +3614,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4de241b9",
-      "doc": "segovia",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[44]/header[0]",
-      "producedLine": 162,
-      "referenceLine": 171,
-      "produced": "Название",
-      "reference": "column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
       "id": "e7579151",
       "doc": "segovia",
       "class": "table.header.cell",
@@ -5314,7 +3623,7 @@
       "path": "/table[44]/header[4]",
       "producedLine": 162,
       "referenceLine": 171,
-      "produced": "Аудиоформат",
+      "produced": "🔗",
       "reference": "MP3 — column 4",
       "verdict": "ambiguous"
     },
@@ -5445,6 +3754,48 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "b53f95e1",
+      "doc": "tarrega",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[22]/header[0]",
+      "producedLine": 79,
+      "referenceLine": 84,
+      "produced": "",
+      "reference": "Название — column 0",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "265c41b3",
+      "doc": "tarrega",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[22]/header[1]",
+      "producedLine": 79,
+      "referenceLine": 84,
+      "produced": "🔗",
+      "reference": "Аудиоформат — column 1",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "ad5c31f4",
+      "doc": "tarrega",
+      "class": "table.header.cell",
+      "severity": "major",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[22]/header[2]",
+      "producedLine": 79,
+      "referenceLine": 84,
+      "produced": "🔗",
+      "reference": "Аудиоформат — column 2",
+      "verdict": "reference-inconsistency"
+    },
+    {
       "id": "60ec36e5",
       "doc": "tarrega",
       "class": "table.header.cell",
@@ -5454,7 +3805,7 @@
       "path": "/table[22]/header[3]",
       "producedLine": 79,
       "referenceLine": 84,
-      "produced": "",
+      "produced": "🔗",
       "reference": "Аудиоформат — column 3",
       "verdict": "reference-inconsistency"
     },
@@ -5569,6 +3920,48 @@
       "produced": "◀ К началу биографии",
       "reference": "К началу биографии",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "9187bb71",
+      "doc": "williams2",
+      "class": "retyped.table-to-align",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[26]",
+      "producedLine": 83,
+      "referenceLine": 84,
+      "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** — at /table[28]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "bd2b8abd",
+      "doc": "williams2",
+      "class": "align.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/align[27]",
+      "producedLine": null,
+      "referenceLine": 91,
+      "produced": null,
+      "reference": "MP3",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "db12789b",
+      "doc": "williams2",
+      "class": "paragraph.missing.in-table",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/align[27]/paragraph[0]",
+      "producedLine": null,
+      "referenceLine": 94,
+      "produced": null,
+      "reference": "MP3",
+      "verdict": "converter-defect"
     }
   ]
 }

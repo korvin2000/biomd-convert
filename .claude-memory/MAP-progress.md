@@ -75,3 +75,24 @@ Superseded: §23's 406 / 92.7 / 453 · 271 / 110 was the same 22 documents befor
 Two references were corrected by their author in §23, so §22's 481 / 140 are not comparable, and
 §20.8's 388 / 90.3 / 745 / 287 predates those corrections.
 §19.1's 369 / 93.8 / 314 / 82 was the **13**-document corpus and is not comparable at all.
+
+| 35 Normalized refs | 4370-4573 | re-baseline `35.1:4376` · end state `35.2:4387` · **the 🔗 header reversal `35.3:4401`** · off-profile child image, instrument `35.4:4414` · the `/../` asset rule `35.5:4425` · **a one-record table is a table, un-parking §34.1 `35.6:4440`** · indent-aware lines + the announced list `35.7:4470` · the empty-column drop `35.8:4501` · **the validator/author conflict, open `35.9:4517`** · the word-less alignment rule killed a second time `35.10:4533` · already-closed complaints verified `35.11:4553` · not reached `35.12:4561` | HOT |
+
+## Checkpoint -- §35, measured 2026-08-10 over **22 documents**
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | 463 tests, typecheck clean, 0 FAILED, `read()` warnings 0 | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **96.4 %**, clean share 13.6 % | `sh bench/run.sh` |
+| L2 | 167 findings -- **91 converter-defect** · 31 ambiguous · 45 reference-inconsistency · 4 critical | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **68** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | **27** errors, 22 of them `table-header-empty` | `corpus run -c bench/biomd.config.json` |
+
+**The validator figure is the author's convention, not a regression.** §21.4 recorded 28 errors "all
+`table-header-empty`"; §30.2's `Название` label took it to 13 by filling the title column, and §35.3
+reversed that on the author's newer ruling, so it is back where it was. Read §35.9 before treating it
+as work.
+
+Superseded: §34's 444 / 94.5 / 263 · 135 / 68 and §28's 424 / 92.7 / 417 · 241 / 92 both predate
+`c92c009`'s normalized references. The reference edit alone, no code change, took L1 94.5 -> 94.6,
+L2 263 -> 257 findings / 135 -> 112 defect, L3 flat -- so §21-§34 figures are not comparable to these.

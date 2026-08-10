@@ -28,27 +28,27 @@
   },
   "totals": {
     "findings": 68,
-    "alignmentRows": 273
+    "alignmentRows": 278
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 31,
+      "instances": 26,
       "documents": 10
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 10,
+      "instances": 13,
       "documents": 2
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 11,
+      "instances": 17,
       "documents": 5
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 16,
+      "instances": 12,
       "documents": 6
     }
   ],
@@ -71,6 +71,23 @@
       }
     },
     {
+      "id": "e527c426",
+      "doc": "goya2",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[52]/column[1]/image[0]",
+      "producedLine": 820,
+      "referenceLine": 827,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "columns>column"
+      }
+    },
+    {
       "id": "6724c674",
       "doc": "goya2",
       "class": "layout.lane.mismatch",
@@ -79,7 +96,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[0]",
       "producedLine": 191,
-      "referenceLine": 191,
+      "referenceLine": 189,
       "produced": "10. Hello Again",
       "reference": "10. Hello Again",
       "geometry": {
@@ -96,7 +113,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]",
       "producedLine": 191,
-      "referenceLine": 191,
+      "referenceLine": 189,
       "produced": "10. Hello Again 11. Secret Love 12. When You Tell Me That You Love Me 13. Winds Of Time 14. Bridge Over Troubled Water …",
       "reference": "10. Hello Again 11. Secret Love 12. When You Tell Me That You Love Me 13. Winds Of Time 14. Bridge Over Troubled Water …",
       "geometry": {
@@ -113,7 +130,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[1]",
       "producedLine": 192,
-      "referenceLine": 192,
+      "referenceLine": 190,
       "produced": "11. Secret Love",
       "reference": "11. Secret Love",
       "geometry": {
@@ -130,7 +147,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[2]",
       "producedLine": 193,
-      "referenceLine": 193,
+      "referenceLine": 191,
       "produced": "12. When You Tell Me That You Love Me",
       "reference": "12. When You Tell Me That You Love Me",
       "geometry": {
@@ -147,7 +164,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[3]",
       "producedLine": 194,
-      "referenceLine": 194,
+      "referenceLine": 192,
       "produced": "13. Winds Of Time",
       "reference": "13. Winds Of Time",
       "geometry": {
@@ -164,7 +181,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[4]",
       "producedLine": 195,
-      "referenceLine": 195,
+      "referenceLine": 193,
       "produced": "14. Bridge Over Troubled Water",
       "reference": "14. Bridge Over Troubled Water",
       "geometry": {
@@ -181,7 +198,7 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[5]",
       "producedLine": 196,
-      "referenceLine": 196,
+      "referenceLine": 194,
       "produced": "15. Sorry Seems To Be The Hardest",
       "reference": "15. Sorry Seems To Be The Hardest",
       "geometry": {
@@ -198,12 +215,29 @@
       "op": "move",
       "path": "/columns[10]/column[1]/list[0]/item[6]",
       "producedLine": 197,
-      "referenceLine": 197,
+      "referenceLine": 195,
       "produced": "16. Love On The Rock",
       "reference": "16. Love On The Rock",
       "geometry": {
         "producedLane": 16,
         "referenceLane": 17
+      }
+    },
+    {
+      "id": "818b7525",
+      "doc": "goya2",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[22]/column[1]/list[0]/item[8]",
+      "producedLine": 387,
+      "referenceLine": 377,
+      "produced": "18. Who pays the ferryman (I Marcopoulos)",
+      "reference": "18. Who pays the ferryman (I Marcopoulos)",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 19
       }
     },
     {
@@ -214,13 +248,81 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 161,
-      "referenceLine": 799,
+      "producedLine": 670,
+      "referenceLine": 794,
       "produced": "",
       "reference": "",
       "geometry": {
         "producedLane": 1,
         "referenceLane": 5
+      }
+    },
+    {
+      "id": "463cba03",
+      "doc": "goya2",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[50]/column[1]/image[1]",
+      "producedLine": 810,
+      "referenceLine": 802,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedLane": 5,
+        "referenceLane": 1
+      }
+    },
+    {
+      "id": "de396bc6",
+      "doc": "goya2",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[52]/column[1]/image[0]",
+      "producedLine": 820,
+      "referenceLine": 827,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 1
+      }
+    },
+    {
+      "id": "6733adb6",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[16]/column[1]/image[0]",
+      "producedLine": 228,
+      "referenceLine": 281,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 78,
+        "referenceRank": 99
+      }
+    },
+    {
+      "id": "2a52ccaf",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[17]",
+      "producedLine": 237,
+      "referenceLine": 290,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 80,
+        "referenceRank": 100
       }
     },
     {
@@ -231,13 +333,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[24]/column[1]/image[0]",
-      "producedLine": 64,
-      "referenceLine": 405,
+      "producedLine": 287,
+      "referenceLine": 402,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 3,
-        "referenceRank": 142
+        "producedRank": 101,
+        "referenceRank": 148
       }
     },
     {
@@ -248,13 +350,98 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[25]",
-      "producedLine": 73,
-      "referenceLine": 414,
+      "producedLine": 296,
+      "referenceLine": 411,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 4,
-        "referenceRank": 143
+        "producedRank": 102,
+        "referenceRank": 149
+      }
+    },
+    {
+      "id": "1b40c9d8",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[32]/column[1]/image[0]",
+      "producedLine": 412,
+      "referenceLine": 513,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 150,
+        "referenceRank": 191
+      }
+    },
+    {
+      "id": "f356f17d",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[33]",
+      "producedLine": 421,
+      "referenceLine": 522,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 151,
+        "referenceRank": 192
+      }
+    },
+    {
+      "id": "2be15183",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[40]/column[1]/image[0]",
+      "producedLine": 523,
+      "referenceLine": 654,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 193,
+        "referenceRank": 256
+      }
+    },
+    {
+      "id": "72b759c4",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/break[41]",
+      "producedLine": 532,
+      "referenceLine": 663,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 194,
+        "referenceRank": 257
+      }
+    },
+    {
+      "id": "193b990c",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[50]/column[0]/list[0]/item[4]",
+      "producedLine": 795,
+      "referenceLine": 779,
+      "produced": "05. Stenka Rasin",
+      "reference": "05. Stenka Rasin",
+      "geometry": {
+        "producedRank": 309,
+        "referenceRank": 308
       }
     },
     {
@@ -265,47 +452,30 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 161,
-      "referenceLine": 799,
+      "producedLine": 670,
+      "referenceLine": 794,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 56,
-        "referenceRank": 299
+        "producedRank": 258,
+        "referenceRank": 307
       }
     },
     {
-      "id": "fc2ecf0b",
+      "id": "4b0b3017",
       "doc": "goya2",
       "class": "layout.order.mismatch",
       "severity": "critical",
       "evidence": "structure",
       "op": "move",
-      "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 228,
-      "referenceLine": 807,
-      "produced": "",
-      "reference": "",
+      "path": "/columns[52]/column[0]/align[0]/paragraph[0]",
+      "producedLine": 835,
+      "referenceLine": 820,
+      "produced": "Francis Goya in Moscow",
+      "reference": "Francis Goya in Moscow",
       "geometry": {
-        "producedRank": 77,
-        "referenceRank": 301
-      }
-    },
-    {
-      "id": "1f5b3df1",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[51]",
-      "producedLine": 237,
-      "referenceLine": 815,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 79,
-        "referenceRank": 310
+        "producedRank": 320,
+        "referenceRank": 318
       }
     },
     {
@@ -316,13 +486,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": 287,
-      "referenceLine": 1088,
+      "producedLine": 843,
+      "referenceLine": 1082,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 100,
-        "referenceRank": 417
+        "producedRank": 321,
+        "referenceRank": 425
       }
     },
     {
@@ -333,47 +503,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/break[69]",
-      "producedLine": 296,
-      "referenceLine": 1097,
+      "producedLine": 852,
+      "referenceLine": 1091,
       "produced": "",
       "reference": "",
       "geometry": {
-        "producedRank": 101,
-        "referenceRank": 419
-      }
-    },
-    {
-      "id": "6cd69f60",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[1]",
-      "producedLine": 166,
-      "referenceLine": 157,
-      "produced": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "reference": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "columns>column>align"
-      }
-    },
-    {
-      "id": "0289f0d6",
-      "doc": "kiselev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[12]/column[1]/align[0]/paragraph[2]",
-      "producedLine": 174,
-      "referenceLine": 160,
-      "produced": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "reference": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "columns>column>align"
+        "producedRank": 322,
+        "referenceRank": 427
       }
     },
     {
@@ -402,7 +538,7 @@
       "op": "move",
       "path": "/align[15]/paragraph[0]",
       "producedLine": 213,
-      "referenceLine": 209,
+      "referenceLine": 216,
       "produced": "Music by:",
       "reference": "Music by:",
       "geometry": {
@@ -419,7 +555,7 @@
       "op": "move",
       "path": "/align[15]/paragraph[1]",
       "producedLine": 215,
-      "referenceLine": 211,
+      "referenceLine": 218,
       "produced": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - B…",
       "reference": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - B…",
       "geometry": {
@@ -436,7 +572,7 @@
       "op": "move",
       "path": "/align[15]/paragraph[2]",
       "producedLine": 217,
-      "referenceLine": 213,
+      "referenceLine": 220,
       "produced": "[Назад] [Фото]",
       "reference": "[Назад] [Фото]",
       "geometry": {
@@ -502,17 +638,17 @@
       }
     },
     {
-      "id": "58ff2cb7",
+      "id": "b2d076cb",
       "doc": "news",
       "class": "layout.align.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[34]/paragraph[1]",
-      "producedLine": 154,
-      "referenceLine": 143,
-      "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
-      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
+      "path": "/frame[58]/break[3]",
+      "producedLine": 312,
+      "referenceLine": 302,
+      "produced": "",
+      "reference": "",
       "geometry": {
         "producedAlign": "center",
         "referenceAlign": "left",
@@ -525,107 +661,15 @@
       }
     },
     {
-      "id": "b937f707",
+      "id": "7a26d59e",
       "doc": "news",
       "class": "layout.align.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/frame[34]/paragraph[2]",
-      "producedLine": 156,
-      "referenceLine": 145,
-      "produced": "Виктор Михайлович ЕФРЕМОВ",
-      "reference": "Виктор Михайлович ЕФРЕМОВ",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "99278cbb",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 248,
-      "referenceLine": 238,
-      "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "167c7fa5",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
-      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "f4affcac",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
-      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "cae9547b",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[73]/align[1]/paragraph[0]",
+      "path": "/frame[70]/align[1]/paragraph[0]",
       "producedLine": 392,
-      "referenceLine": 365,
+      "referenceLine": 385,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "geometry": {
@@ -674,100 +718,32 @@
       }
     },
     {
-      "id": "c9b64306",
+      "id": "08e1090a",
       "doc": "news",
       "class": "layout.containment.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
-      "path": "/frame[34]/paragraph[1]",
-      "producedLine": 154,
-      "referenceLine": 143,
-      "produced": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
-      "reference": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
+      "path": "/frame[58]/break[3]",
+      "producedLine": 312,
+      "referenceLine": 302,
+      "produced": "",
+      "reference": "",
       "geometry": {
         "producedContainer": "frame>align",
         "referenceContainer": "frame"
       }
     },
     {
-      "id": "7c890f34",
+      "id": "8cef4989",
       "doc": "news",
       "class": "layout.containment.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
-      "path": "/frame[34]/paragraph[2]",
-      "producedLine": 156,
-      "referenceLine": 145,
-      "produced": "Виктор Михайлович ЕФРЕМОВ",
-      "reference": "Виктор Михайлович ЕФРЕМОВ",
-      "geometry": {
-        "producedContainer": "frame>align",
-        "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "fc1bb50a",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[52]/align[1]/paragraph[0]",
-      "producedLine": 248,
-      "referenceLine": 238,
-      "produced": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "reference": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "geometry": {
-        "producedContainer": "frame",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "e430aede",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[63]/align[1]/paragraph[0]",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "produced": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
-      "reference": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, композитор и педагог, большой энту…",
-      "geometry": {
-        "producedContainer": "frame",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "ccccc69b",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[71]/align[1]/paragraph[0]",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "produced": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
-      "reference": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Московской государственной филармон…",
-      "geometry": {
-        "producedContainer": "frame",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
-      "id": "2a98f4c0",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[73]/align[1]/paragraph[0]",
+      "path": "/frame[70]/align[1]/paragraph[0]",
       "producedLine": 392,
-      "referenceLine": 365,
+      "referenceLine": 385,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "geometry": {
@@ -1504,8 +1480,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 64,
+      "referenceLine": 63,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 146,
-      "referenceLine": 146,
+      "referenceLine": 145,
       "text": "Francis Goya Plays His Favourite Hits",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1518,7 +1507,7 @@
     {
       "doc": "goya2",
       "producedLine": 153,
-      "referenceLine": 153,
+      "referenceLine": 152,
       "text": "Vol. 1",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1530,8 +1519,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 161,
+      "referenceLine": 160,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[3]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 213,
-      "referenceLine": 213,
+      "referenceLine": 211,
       "text": "Francis Goya Plays His Favourite Hits",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1544,7 +1546,7 @@
     {
       "doc": "goya2",
       "producedLine": 220,
-      "referenceLine": 215,
+      "referenceLine": 213,
       "text": "Vol. 2",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1557,7 +1559,7 @@
     {
       "doc": "goya2",
       "producedLine": 279,
-      "referenceLine": 275,
+      "referenceLine": 273,
       "text": "Best of Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1569,8 +1571,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 228,
+      "referenceLine": 281,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[7]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 342,
-      "referenceLine": 339,
+      "referenceLine": 336,
       "text": "This Is Francis Goya 1988",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1583,7 +1598,7 @@
     {
       "doc": "goya2",
       "producedLine": 403,
-      "referenceLine": 396,
+      "referenceLine": 393,
       "text": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1595,8 +1610,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 64,
-      "referenceLine": 405,
+      "producedLine": 287,
+      "referenceLine": 402,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1609,7 +1624,7 @@
     {
       "doc": "goya2",
       "producedLine": 463,
-      "referenceLine": 456,
+      "referenceLine": 453,
       "text": "The Very Best of Francis Goya (Diamond Star Collection)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1622,7 +1637,7 @@
     {
       "doc": "goya2",
       "producedLine": 515,
-      "referenceLine": 508,
+      "referenceLine": 505,
       "text": "Collection 2000 / Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1634,8 +1649,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 412,
+      "referenceLine": 513,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[15]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 579,
-      "referenceLine": 573,
+      "referenceLine": 569,
       "text": "Magic Moments",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1648,7 +1676,7 @@
     {
       "doc": "goya2",
       "producedLine": 590,
-      "referenceLine": 584,
+      "referenceLine": 580,
       "text": "Latin Romance",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1661,7 +1689,7 @@
     {
       "doc": "goya2",
       "producedLine": 655,
-      "referenceLine": 649,
+      "referenceLine": 645,
       "text": "Historia de un Amor 1999",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1673,8 +1701,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 523,
+      "referenceLine": 654,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[19]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 721,
-      "referenceLine": 710,
+      "referenceLine": 705,
       "text": "The Romantic Guitar of Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1687,7 +1728,7 @@
     {
       "doc": "goya2",
       "producedLine": 775,
-      "referenceLine": 764,
+      "referenceLine": 759,
       "text": "Moscow Nights",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1699,8 +1740,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 161,
-      "referenceLine": 799,
+      "producedLine": 670,
+      "referenceLine": 794,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1712,8 +1753,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 228,
-      "referenceLine": 807,
+      "producedLine": 810,
+      "referenceLine": 802,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1726,7 +1767,7 @@
     {
       "doc": "goya2",
       "producedLine": 835,
-      "referenceLine": 825,
+      "referenceLine": 820,
       "text": "Francis Goya in Moscow",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1738,8 +1779,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 820,
+      "referenceLine": 827,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[26]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 890,
-      "referenceLine": 880,
+      "referenceLine": 874,
       "text": "Francis Goya / Rendez-vous",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1752,7 +1806,7 @@
     {
       "doc": "goya2",
       "producedLine": 901,
-      "referenceLine": 891,
+      "referenceLine": 885,
       "text": "Golden Collection 8 Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1765,7 +1819,7 @@
     {
       "doc": "goya2",
       "producedLine": 965,
-      "referenceLine": 954,
+      "referenceLine": 948,
       "text": "Noche Latina / Francis Goya & Carmina 1993",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1778,7 +1832,7 @@
     {
       "doc": "goya2",
       "producedLine": 1018,
-      "referenceLine": 1006,
+      "referenceLine": 1000,
       "text": "Symphony of Love",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1791,7 +1845,7 @@
     {
       "doc": "goya2",
       "producedLine": 1029,
-      "referenceLine": 1017,
+      "referenceLine": 1011,
       "text": "Together / Peter Weekers & Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1804,7 +1858,7 @@
     {
       "doc": "goya2",
       "producedLine": 1089,
-      "referenceLine": 1077,
+      "referenceLine": 1071,
       "text": "Галерея инструментальной музыки. Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1817,7 +1871,7 @@
     {
       "doc": "goya2",
       "producedLine": 1092,
-      "referenceLine": 1080,
+      "referenceLine": 1074,
       "text": "Grand Records, 2001",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1829,8 +1883,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 287,
-      "referenceLine": 1088,
+      "producedLine": 843,
+      "referenceLine": 1082,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1843,7 +1897,7 @@
     {
       "doc": "goya2",
       "producedLine": 1160,
-      "referenceLine": 1151,
+      "referenceLine": 1145,
       "text": "Francis Goya",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1856,7 +1910,7 @@
     {
       "doc": "goya2",
       "producedLine": 1177,
-      "referenceLine": 1172,
+      "referenceLine": 1166,
       "text": "Francis Goya / Gondwana",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1869,7 +1923,7 @@
     {
       "doc": "goya2",
       "producedLine": 1194,
-      "referenceLine": 1193,
+      "referenceLine": 1187,
       "text": "Maria Padilha",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1973,7 +2027,7 @@
     {
       "doc": "kiselev",
       "producedLine": 166,
-      "referenceLine": 157,
+      "referenceLine": 166,
       "text": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1986,7 +2040,7 @@
     {
       "doc": "kiselev",
       "producedLine": 174,
-      "referenceLine": 160,
+      "referenceLine": 174,
       "text": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1999,7 +2053,7 @@
     {
       "doc": "kiselev",
       "producedLine": 215,
-      "referenceLine": 206,
+      "referenceLine": 217,
       "text": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2012,7 +2066,7 @@
     {
       "doc": "kiselev",
       "producedLine": 242,
-      "referenceLine": 233,
+      "referenceLine": 244,
       "text": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 I…",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -2025,7 +2079,7 @@
     {
       "doc": "kiselev",
       "producedLine": 248,
-      "referenceLine": 239,
+      "referenceLine": 250,
       "text": "E-mail: andy.waeyaert@advalvas.be",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -2038,7 +2092,7 @@
     {
       "doc": "kiselev",
       "producedLine": 259,
-      "referenceLine": 250,
+      "referenceLine": 261,
       "text": "",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -2051,7 +2105,7 @@
     {
       "doc": "kiselev",
       "producedLine": 261,
-      "referenceLine": 251,
+      "referenceLine": 262,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -2390,7 +2444,7 @@
       "doc": "new_karta",
       "producedLine": 29,
       "referenceLine": 34,
-      "text": "Название Аудиоформат Аудиоформат Аудиоформат Samba: Tico-Tico no Fuba MP3 MIDI(1) MIDI(2)…",
+      "text": "🔗 🔗 🔗 Samba: Tico-Tico no Fuba MP3 MIDI(1) MIDI(2) Табулатура (TablEdit) — TEF — Ноты …",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2414,7 +2468,20 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 46,
+      "producedLine": 37,
+      "referenceLine": 43,
+      "text": "🔗 El Puerto, da Suite Iberia (arr. Sergio Abreu, Duo) WMA",
+      "producedAlignment": "left",
+      "referenceAlignment": "left",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "new_karta",
+      "producedLine": 41,
       "referenceLine": 48,
       "text": "Агуадо Дионисио",
       "producedAlignment": "left",
@@ -2427,9 +2494,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 48,
+      "producedLine": 43,
       "referenceLine": 50,
-      "text": "Название Аудиоформат Аудиоформат Eight Lessons TAB — Etude in C TAB — Rondo — MIDI Etude …",
+      "text": "🔗 🔗 Eight Lessons TAB — Etude in C TAB — Rondo — MIDI Etude Nr.2 — MIDI",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2440,7 +2507,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 55,
+      "producedLine": 50,
       "referenceLine": 57,
       "text": "Алаис Хуан",
       "producedAlignment": "left",
@@ -2453,9 +2520,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 57,
+      "producedLine": 52,
       "referenceLine": 59,
-      "text": "Название Аудиоформат Аудиоформат La Regalona (Habanera) Ноты (.jpg ) [ 1 ] MIDI",
+      "text": "🔗 🔗 La Regalona (Habanera) — — Ноты (.jpg ) [ 1 ] MIDI",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2466,7 +2533,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 62,
+      "producedLine": 57,
       "referenceLine": 65,
       "text": "Альбенис Исаак",
       "producedAlignment": "left",
@@ -2479,9 +2546,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 64,
+      "producedLine": 59,
       "referenceLine": 67,
-      "text": "Название Аудиоформат Аудиоформат Celebre Serenata Espanola (Cadiz) - (arranged Miguel Llo…",
+      "text": "🔗 🔗 Celebre Serenata Espanola (Cadiz) - (arranged Miguel Llobet) TAB — Cordoba - from C…",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2492,7 +2559,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 79,
+      "producedLine": 74,
       "referenceLine": 82,
       "text": "Армик",
       "producedAlignment": "left",
@@ -2505,9 +2572,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 81,
+      "producedLine": 76,
       "referenceLine": 84,
-      "text": "Название Аудиоформат Isle of the Sun MP3 Romantic Souls MP3 Rosas del Amor MP3",
+      "text": "🔗 Isle of the Sun MP3 Romantic Souls MP3 Rosas del Amor MP3",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2518,7 +2585,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 87,
+      "producedLine": 82,
       "referenceLine": 90,
       "text": "Барриос Мангори Агустин",
       "producedAlignment": "left",
@@ -2531,9 +2598,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 89,
+      "producedLine": 84,
       "referenceLine": 92,
-      "text": "Название Аудиоформат Аудиоформат Choro Da Saudade - Nostalgic Choro TAB MIDI Contemplacio…",
+      "text": "🔗 🔗 Choro Da Saudade - Nostalgic Choro TAB MIDI Contemplacion (Vals et Tremelo) TAB — C…",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2544,7 +2611,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 119,
+      "producedLine": 114,
       "referenceLine": 122,
       "text": "Барруэко Мануэль",
       "producedAlignment": "left",
@@ -2557,7 +2624,7 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 142,
+      "producedLine": 137,
       "referenceLine": 128,
       "text": "Бартоли Рене",
       "producedAlignment": "left",
@@ -2570,9 +2637,9 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 144,
+      "producedLine": 139,
       "referenceLine": 130,
-      "text": "Название Аудиоформат Аудиоформат Aubade TAB — Romance TAB MIDI",
+      "text": "🔗 🔗 Aubade TAB — Romance TAB MIDI",
       "producedAlignment": "left",
       "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
@@ -2688,7 +2755,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 6,
-      "referenceLine": 5,
+      "referenceLine": 6,
       "text": "гитарный квартет",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2701,7 +2768,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 9,
-      "referenceLine": 8,
+      "referenceLine": 9,
       "text": "ДИСКОГРАФИЯ",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2714,7 +2781,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 11,
-      "referenceLine": 10,
+      "referenceLine": 11,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2727,7 +2794,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 18,
-      "referenceLine": 17,
+      "referenceLine": 18,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2740,7 +2807,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 27,
-      "referenceLine": 25,
+      "referenceLine": 27,
       "text": "Dances From Renaissance to Nutcracker",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2753,7 +2820,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 29,
-      "referenceLine": 27,
+      "referenceLine": 29,
       "text": "TCHAIKOVSKY- Nutcracker Suite op.71a;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2766,7 +2833,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 31,
-      "referenceLine": 29,
+      "referenceLine": 31,
       "text": "PRAETORIUS- Dance Suite;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2779,7 +2846,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 33,
-      "referenceLine": 31,
+      "referenceLine": 33,
       "text": "WARLOCK- Capriol Suite;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2792,7 +2859,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 35,
-      "referenceLine": 33,
+      "referenceLine": 35,
       "text": "MORLEY- 4 Dances;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2805,7 +2872,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 37,
-      "referenceLine": 35,
+      "referenceLine": 37,
       "text": "GABRIELI- 4 Instrumental Pieces",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2818,7 +2885,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 43,
-      "referenceLine": 41,
+      "referenceLine": 43,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2831,7 +2898,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 50,
-      "referenceLine": 48,
+      "referenceLine": 50,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2844,7 +2911,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 59,
-      "referenceLine": 56,
+      "referenceLine": 59,
       "text": "Evening in Grenada",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2857,7 +2924,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 61,
-      "referenceLine": 58,
+      "referenceLine": 61,
       "text": "BOCCHERINI- Introduction and Fandango;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2870,7 +2937,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 63,
-      "referenceLine": 60,
+      "referenceLine": 63,
       "text": "KROUSE- Folias;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2883,7 +2950,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 65,
-      "referenceLine": 62,
+      "referenceLine": 65,
       "text": "FALLA- El Amor Brujo;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2896,7 +2963,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 67,
-      "referenceLine": 64,
+      "referenceLine": 67,
       "text": "DEBUSSY- La Soiree dans Grenade;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2909,7 +2976,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 69,
-      "referenceLine": 66,
+      "referenceLine": 69,
       "text": "RIMSKY KORSAKOV - Capriccio Espagnol",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2922,7 +2989,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 75,
-      "referenceLine": 72,
+      "referenceLine": 75,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2935,7 +3002,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 82,
-      "referenceLine": 79,
+      "referenceLine": 82,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2948,7 +3015,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 91,
-      "referenceLine": 87,
+      "referenceLine": 91,
       "text": "Labyrinth",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2961,7 +3028,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 93,
-      "referenceLine": 89,
+      "referenceLine": 93,
       "text": "YORK- Quiccan, Pacific Coast Highway, Bantu;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2974,7 +3041,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 95,
-      "referenceLine": 91,
+      "referenceLine": 95,
       "text": "KROUSE- Labyrinth;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -2987,7 +3054,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 97,
-      "referenceLine": 93,
+      "referenceLine": 97,
       "text": "COPLAND - Simple Gifts, Corral Nocturne, Hoe-Down;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3000,7 +3067,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 99,
-      "referenceLine": 95,
+      "referenceLine": 99,
       "text": "BASIE - Jumpin’ at the Woodside;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3013,7 +3080,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 101,
-      "referenceLine": 97,
+      "referenceLine": 101,
       "text": "EAGAN-Red, White, Black ‘n’ Blue;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3026,7 +3093,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 103,
-      "referenceLine": 99,
+      "referenceLine": 103,
       "text": "SOUSA - Black Horse Troop;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3039,7 +3106,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 105,
-      "referenceLine": 101,
+      "referenceLine": 105,
       "text": "TRAD - Shenandoah",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3052,7 +3119,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 111,
-      "referenceLine": 107,
+      "referenceLine": 111,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3065,7 +3132,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 118,
-      "referenceLine": 114,
+      "referenceLine": 118,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3078,7 +3145,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 127,
-      "referenceLine": 122,
+      "referenceLine": 127,
       "text": "For Thy Pleasure",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3091,7 +3158,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 129,
-      "referenceLine": 124,
+      "referenceLine": 129,
       "text": "BACH- Brandenburg Concerto nr.6, Allegro from nr.3; Prelude & Fugue in C; Fugue nr.3;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3104,7 +3171,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 131,
-      "referenceLine": 126,
+      "referenceLine": 131,
       "text": "HANDEL- Arrival of the Queen of Sheba;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3117,7 +3184,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 133,
-      "referenceLine": 128,
+      "referenceLine": 133,
       "text": "FINK- Monteverdiana;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3130,7 +3197,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 135,
-      "referenceLine": 130,
+      "referenceLine": 135,
       "text": "PURCELL- Rondeau, Fantasia;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3143,7 +3210,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 137,
-      "referenceLine": 132,
+      "referenceLine": 137,
       "text": "TELEMANN- Concerto for 4 violins;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3156,7 +3223,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 139,
-      "referenceLine": 134,
+      "referenceLine": 139,
       "text": "PACHELBEL- Loose Canon",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3169,7 +3236,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 145,
-      "referenceLine": 140,
+      "referenceLine": 145,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3182,7 +3249,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 152,
-      "referenceLine": 147,
+      "referenceLine": 152,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3195,7 +3262,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 161,
-      "referenceLine": 155,
+      "referenceLine": 161,
       "text": "El Amor Brujo",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3208,7 +3275,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 163,
-      "referenceLine": 157,
+      "referenceLine": 163,
       "text": "FALLA- El Amor Brujo;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3221,7 +3288,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 165,
-      "referenceLine": 159,
+      "referenceLine": 165,
       "text": "SCIAMMARELLA- Interlude for Love;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3234,7 +3301,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 167,
-      "referenceLine": 161,
+      "referenceLine": 167,
       "text": "COPLAND- Corral Nocturne, Hoe-Down;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3247,7 +3314,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 169,
-      "referenceLine": 163,
+      "referenceLine": 169,
       "text": "BROUWER- Cuban Landscape with Rain;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3260,7 +3327,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 171,
-      "referenceLine": 165,
+      "referenceLine": 171,
       "text": "KROUSE- Antique Suite",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3273,7 +3340,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 177,
-      "referenceLine": 171,
+      "referenceLine": 177,
       "text": "",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3286,7 +3353,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 184,
-      "referenceLine": 178,
+      "referenceLine": 184,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3299,7 +3366,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 193,
-      "referenceLine": 186,
+      "referenceLine": 193,
       "text": "Recital",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3312,7 +3379,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 195,
-      "referenceLine": 188,
+      "referenceLine": 195,
       "text": "FAURE- Pavane;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3325,7 +3392,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 197,
-      "referenceLine": 190,
+      "referenceLine": 197,
       "text": "HOLST- St.Paul's Suite;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3338,7 +3405,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 199,
-      "referenceLine": 192,
+      "referenceLine": 199,
       "text": "KROUSE- Bulerias;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3351,7 +3418,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 201,
-      "referenceLine": 194,
+      "referenceLine": 201,
       "text": "ROSSINI- Barber of Seville;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3364,7 +3431,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 203,
-      "referenceLine": 196,
+      "referenceLine": 203,
       "text": "SIEGEL- East L.A.Phase;",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3377,7 +3444,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 205,
-      "referenceLine": 198,
+      "referenceLine": 205,
       "text": "STRAVINSKY- Tango, Pastorale, Circus Polka",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3390,7 +3457,7 @@
     {
       "doc": "new_lagq2",
       "producedLine": 211,
-      "referenceLine": 204,
+      "referenceLine": 211,
       "text": "The Best of the L.A.G.Q",
       "producedAlignment": "left",
       "referenceAlignment": "left",
@@ -3715,10 +3782,10 @@
     {
       "doc": "news",
       "producedLine": 154,
-      "referenceLine": 143,
+      "referenceLine": 146,
       "text": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
       "producedAlignment": "center",
-      "referenceAlignment": "left",
+      "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
       "sourceProse": "left",
@@ -3728,10 +3795,10 @@
     {
       "doc": "news",
       "producedLine": 156,
-      "referenceLine": 145,
+      "referenceLine": 148,
       "text": "Виктор Михайлович ЕФРЕМОВ",
       "producedAlignment": "center",
-      "referenceAlignment": "left",
+      "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
       "sourceProse": "left",
@@ -3741,7 +3808,7 @@
     {
       "doc": "news",
       "producedLine": 161,
-      "referenceLine": 148,
+      "referenceLine": 153,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3754,7 +3821,7 @@
     {
       "doc": "news",
       "producedLine": 171,
-      "referenceLine": 158,
+      "referenceLine": 163,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3767,7 +3834,7 @@
     {
       "doc": "news",
       "producedLine": 182,
-      "referenceLine": 169,
+      "referenceLine": 174,
       "text": "Зайцева Л., Тавровский В. Музей гитары на письменном столе. 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3780,7 +3847,7 @@
     {
       "doc": "news",
       "producedLine": 191,
-      "referenceLine": 180,
+      "referenceLine": 184,
       "text": "Журнал \"История гитары в лицах\", №2, 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3793,7 +3860,7 @@
     {
       "doc": "news",
       "producedLine": 201,
-      "referenceLine": 192,
+      "referenceLine": 195,
       "text": "Журнал \"История гитары в лицах\", №1, 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3806,20 +3873,33 @@
     {
       "doc": "news",
       "producedLine": 217,
-      "referenceLine": 206,
-      "text": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог Яд…",
+      "referenceLine": 211,
+      "text": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "producedAlignment": "center",
       "referenceAlignment": "center",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
       "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[26]/td[1]"
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[26]/td[1]/p[2]"
+    },
+    {
+      "doc": "news",
+      "producedLine": 219,
+      "referenceLine": 213,
+      "text": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[26]/td[1]/p[3]/b[1]"
     },
     {
       "doc": "news",
       "producedLine": 224,
-      "referenceLine": 211,
+      "referenceLine": 218,
       "text": "Я. Р. Ковалевская (1922-2016)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3832,7 +3912,7 @@
     {
       "doc": "news",
       "producedLine": 235,
-      "referenceLine": 224,
+      "referenceLine": 230,
       "text": "Журнал \"История гитары в лицах\", №2, 2015",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3844,21 +3924,8 @@
     },
     {
       "doc": "news",
-      "producedLine": 248,
-      "referenceLine": 238,
-      "text": "26 июля 2015 года после тяжелой болезни ушел из жизни российский гитарист",
-      "producedAlignment": "left",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[29]/td[1]/p[2]"
-    },
-    {
-      "doc": "news",
       "producedLine": 253,
-      "referenceLine": 240,
+      "referenceLine": 247,
       "text": "Михаил Владимирович КОРНИШИН",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3871,7 +3938,7 @@
     {
       "doc": "news",
       "producedLine": 258,
-      "referenceLine": 244,
+      "referenceLine": 252,
       "text": "М. В. Корнишин (1978-2015)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3884,7 +3951,7 @@
     {
       "doc": "news",
       "producedLine": 271,
-      "referenceLine": 256,
+      "referenceLine": 264,
       "text": "Журнал \"История гитары в лицах\", №1, 2015",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3897,7 +3964,7 @@
     {
       "doc": "news",
       "producedLine": 283,
-      "referenceLine": 267,
+      "referenceLine": 275,
       "text": "III Региональный конкурс гитаристов «Гранд соло» им. М. М. Елютина",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3910,7 +3977,7 @@
     {
       "doc": "news",
       "producedLine": 302,
-      "referenceLine": 284,
+      "referenceLine": 292,
       "text": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3923,7 +3990,7 @@
     {
       "doc": "news",
       "producedLine": 305,
-      "referenceLine": 287,
+      "referenceLine": 295,
       "text": "с успешной защитой диссертации на тему:",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3936,7 +4003,7 @@
     {
       "doc": "news",
       "producedLine": 307,
-      "referenceLine": 289,
+      "referenceLine": 297,
       "text": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И…",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3949,10 +4016,10 @@
     {
       "doc": "news",
       "producedLine": 312,
-      "referenceLine": 293,
+      "referenceLine": 302,
       "text": "",
       "producedAlignment": "center",
-      "referenceAlignment": "center",
+      "referenceAlignment": "left",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
       "sourceProse": "left",
@@ -3962,7 +4029,7 @@
     {
       "doc": "news",
       "producedLine": 314,
-      "referenceLine": 295,
+      "referenceLine": 307,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3974,21 +4041,21 @@
     },
     {
       "doc": "news",
-      "producedLine": 328,
-      "referenceLine": 310,
-      "text": "3 августа 2014 года в г. Кингисепп Ленинградской обл. скончался российский гитарист, комп…",
-      "producedAlignment": "left",
+      "producedLine": 333,
+      "referenceLine": 325,
+      "text": "Владимир Ильич Богданович",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
-      "sourceTextAlignRaw": "start",
-      "sourceAlignment": "left",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
       "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[37]/td[1]"
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[37]/td[1]/p[3]/b[1]"
     },
     {
       "doc": "news",
       "producedLine": 338,
-      "referenceLine": 313,
+      "referenceLine": 330,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4001,7 +4068,7 @@
     {
       "doc": "news",
       "producedLine": 350,
-      "referenceLine": 325,
+      "referenceLine": 342,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4014,7 +4081,7 @@
     {
       "doc": "news",
       "producedLine": 362,
-      "referenceLine": 336,
+      "referenceLine": 353,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4026,21 +4093,21 @@
     },
     {
       "doc": "news",
-      "producedLine": 375,
-      "referenceLine": 351,
-      "text": "16 июня 2014 года скоропостижно скончался замечательный российский гитарист, солист Моско…",
-      "producedAlignment": "left",
+      "producedLine": 380,
+      "referenceLine": 371,
+      "text": "Александр Петрович Мартынов",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
-      "sourceTextAlignRaw": null,
-      "sourceAlignment": "unknown",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
       "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": null
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/table[1]/tbody[1]/tr[44]/td[1]/p[3]/b[1]"
     },
     {
       "doc": "news",
       "producedLine": 392,
-      "referenceLine": 365,
+      "referenceLine": 385,
       "text": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легенда…",
       "producedAlignment": "left",
       "referenceAlignment": "center",
@@ -4053,7 +4120,7 @@
     {
       "doc": "news",
       "producedLine": 394,
-      "referenceLine": 368,
+      "referenceLine": 388,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4066,7 +4133,7 @@
     {
       "doc": "news",
       "producedLine": 406,
-      "referenceLine": 379,
+      "referenceLine": 399,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4079,7 +4146,7 @@
     {
       "doc": "news",
       "producedLine": 423,
-      "referenceLine": 394,
+      "referenceLine": 414,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -4819,33 +4886,7 @@
     },
     {
       "doc": "williams2",
-      "producedLine": 87,
-      "referenceLine": 87,
-      "text": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
-      "producedAlignment": "right",
-      "referenceAlignment": "right",
-      "sourceTextAlignRaw": null,
-      "sourceAlignment": "unknown",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": null
-    },
-    {
-      "doc": "williams2",
-      "producedLine": 94,
-      "referenceLine": 94,
-      "text": "MP3",
-      "producedAlignment": "right",
-      "referenceAlignment": "right",
-      "sourceTextAlignRaw": "-webkit-right",
-      "sourceAlignment": "right",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/p[1]/span[1]/a[1]/font[1]/u[1]"
-    },
-    {
-      "doc": "williams2",
-      "producedLine": 101,
+      "producedLine": 91,
       "referenceLine": 101,
       "text": "В статье использованы материалы сайта John Williams/The Guitarist – plum.cream.org)",
       "producedAlignment": "right",

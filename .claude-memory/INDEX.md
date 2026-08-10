@@ -36,24 +36,27 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: the author revised **21 of 22 references,
-`BioMD-Reference.md`, and added `/new_rules.md`** in `06eeafb`, so **every number in PROGRESS
-§21-§28 predates the current corpus** (PROGRESS §29.1). Seven mechanisms landed since -- a linked
-micro-image is now its glyph (§29.3), a synthesized column header gets the house name (§30.2), a
-flattened all-picture row is one `::: images` (§31.2), `src` is adjudicated as a target rather
-than as layout (§31.1), a figure label the owning side also states as a block is an echo
-(§32.1), a single-row table of nothing but links is a pager, not an abandoned record matrix
-(§33.2), and a native `<blockquote>` around one flat run of lines is a record list (§34.2).
-Current floor: L0 **444 tests / 13 validator errors**, L1 **94.5**, L2 **263 · 135 defect**,
-L3 **68**. One attempt was built and reverted on its measurement (§30.1) -- read it before touching
-`retyped.paragraph-to-align`, a *different* mechanism from `segovia1`'s that §33/§34 left untouched.
-The `borislova`/`new_kolpakov`/`new_karta` discography-row question is **parked with evidence**
-(§34.1, OPEN.md §1): real distinction (`analyze.md` backs both `borislova` and `williams2` directly),
-no deterministic invariant found, small reach -- do not re-probe from scratch, only reopen on new
-measurement. Next is `news` document-first, attested four times now and has paid every time.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: `c92c009` **normalized 11 references and
+added `analyze/analyze-2.md`**, an in-depth complaint record for `news`, `goya2`, `new_karta` and
+`kiselev` with new house rules stated as prose, so **every number in PROGRESS §21-§34 predates the
+current corpus** (PROGRESS §35.1). Six mechanisms landed since -- a link column is headed `🔗` again,
+reversing §30.2 (§35.3); a child `image`'s `position`/`size` is outside the profile so its absence is
+not a defect (§35.4, instrument); an asset outside the content roots climbs one level (§35.5); a
+one-record table is still a table, which un-parked §34.1 (§35.6); two lines pushed in by the same
+amount are two lines (§35.7); a column no row fills is spacing (§35.8).
+Current floor: L0 **463 tests / 27 validator errors**, L1 **96.4**, L2 **167 · 91 defect · 4 crit**,
+L3 **68**.
 
-> **Three of the last five mechanisms were instrument corrections, not converter fixes; two were not.**
-> Quote the defect count with that split or it reads as the conversion improving when it did not.
+**The validator rise is an author ruling, not a regression** -- 22 of the 27 are `table-header-empty`,
+one per empty header cell, because `| | 🔗 |` leaves the title column empty. It needs a decision, not
+a fix: OPEN.md §2.
+
+The word-less alignment rule has now been **killed twice**, on two different falsifiers (§30.1,
+§35.10) -- read both before touching `retyped.paragraph-to-align`, which is two mechanisms wearing
+one name.
+
+> **Fourteen of this iteration's 21-defect fall were the instrument becoming truthful, seven the
+> conversion improving.** Quote the defect count with that split or it reads as work that happened.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
