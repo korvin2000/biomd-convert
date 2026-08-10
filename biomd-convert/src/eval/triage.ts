@@ -156,6 +156,13 @@ export function triage(
   cls: string,
   evidence: "content" | "structure" = "content",
 ): Verdict {
+  // A property the normative profile does not define for this node is one the
+  // converter may not emit. Asking for it would be asking for a spec violation,
+  // so its absence is a statement about the reference — see `offProfileProp`.
+  // Tested before the structure short-circuit below, which would otherwise call
+  // every one of them a converter defect on the strength of the evidence kind.
+  if (cls.endsWith(".off-profile")) return "reference-inconsistency";
+
   // Layout is not content. §16.3 forbids inventing *text*; it says nothing
   // about wrapping text that is already there in a `::: columns`, splitting a
   // lane, drawing a `---`, or reading a size off the geometry. Running those

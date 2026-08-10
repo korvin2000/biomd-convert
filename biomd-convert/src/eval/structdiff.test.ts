@@ -122,6 +122,42 @@ describe("blind spots the scalar score folds away", () => {
   });
 
   /**
+   * A property the profile does not define for this node is the reference's.
+   *
+   * `BioMD-Reference.md` §2 gives `image` two profiles and §3 states the
+   * consequence outright — *"child `position/size` omitted/ignored"*. A
+   * converter that declines to emit one is obeying the spec, so the finding is
+   * a `reference-inconsistency` however structural the evidence looks. The
+   * generic property comparison had no way to know that and reported 12 of
+   * `goya2`'s 19 converter-defects for it.
+   *
+   * **False friend**, tested for non-firing: the same two properties on a
+   * *standalone* image, where the spec REQUIRES them and their absence is a
+   * real defect. The position in the tree is the whole discriminator.
+   */
+  it("does not blame the converter for a property the profile forbids it", () => {
+    const want =
+      "::: images\ncolumns: 2\n\n::: image\nsrc: a.jpg\nposition: center\nsize: medium\n:::\n\n" +
+      "::: image\nsrc: b.jpg\n:::\n\n:::\n";
+    const got = "::: images\ncolumns: 2\n\n::: image\nsrc: a.jpg\n:::\n\n::: image\nsrc: b.jpg\n:::\n\n:::\n";
+    const found = classes(got, want);
+    expect(found).toContain("image.position.missing.off-profile");
+    expect(found).toContain("image.size.missing.off-profile");
+    expect(triage(null, "position: center", null, "image.position.missing.off-profile", "structure")).toBe(
+      "reference-inconsistency",
+    );
+  });
+
+  it("still blames the converter on a standalone image — non-firing", () => {
+    const want = "::: image\nsrc: a.jpg\nposition: center\nsize: medium\n:::\n";
+    const got = "::: image\nsrc: a.jpg\n:::\n";
+    const found = classes(got, want);
+    expect(found).toContain("image.position.missing");
+    expect(found).not.toContain("image.position.missing.off-profile");
+    expect(triage(null, "position: center", null, "image.position.missing", "structure")).toBe("converter-defect");
+  });
+
+  /**
    * A figure label the owning side also states as a block is an **echo**.
    *
    * `homeOf` asks where the *other* side put a block's text, and that question

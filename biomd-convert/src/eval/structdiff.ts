@@ -675,8 +675,11 @@ function compareDirective(ctx: Context, produced: DirectiveNode, reference: Dire
       continue;
     }
     if (got === undefined) {
-      const echo = selfEcho(ctx, "reference", key, want) ? ".self-echo" : "";
-      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.missing${echo}`, propSeverity(key), evidence, "delete", `${path}@${key}`, null, quoteProp(key, want), undefined, [produced.line, reference.line]));
+      // A property the profile does not define for this node is not something
+      // the converter may emit, so its absence cannot be a converter defect.
+      const off = offProfileProp(reference.name, parentDirectiveOf(path), key) ? ".off-profile" : "";
+      const echo = off === "" && selfEcho(ctx, "reference", key, want) ? ".self-echo" : "";
+      ctx.findings.push(finding(ctx.doc, `${reference.name}.${key}.missing${off}${echo}`, propSeverity(key), evidence, "delete", `${path}@${key}`, null, quoteProp(key, want), undefined, [produced.line, reference.line]));
       continue;
     }
     if (got === want) continue;
@@ -690,6 +693,48 @@ function compareDirective(ctx: Context, produced: DirectiveNode, reference: Dire
     }
   }
   compareSequence(ctx, produced.children, reference.children, path);
+}
+
+/**
+ * The directive that encloses the node at `path`.
+ *
+ * `compareSequence` builds every path as `…/<directive-name>[<index>]`, so the
+ * segment before the last one names the parent exactly. This is not pattern
+ * matching on a document — the names come from the same `describe()` that wrote
+ * the path.
+ */
+function parentDirectiveOf(path: string): string | null {
+  const segments = path.split("/").filter((s) => s !== "");
+  const parent = segments[segments.length - 2];
+  if (parent === undefined) return null;
+  const at = parent.indexOf("[");
+  return at === -1 ? parent : parent.slice(0, at);
+}
+
+/**
+ * Properties `BioMD-Reference.md` §2 does not define for a node in this position.
+ *
+ * The spec's directive table gives `image` two profiles: standalone, which
+ * REQUIRES `src`, `position` and `size`, and **child** — an `image` inside an
+ * `images` group — which takes `src` plus `alt|caption|link|frame` and nothing
+ * else. §3 says the same thing in words: *"child `position/size`
+ * omitted/ignored"*. A group lays its children out itself, so the properties
+ * have nothing to act on.
+ *
+ * `CLAUDE.md` §2.1 makes permissiveness normative: a reader must accept these
+ * and ignore them, and an emitter may narrow what it writes. So a reference
+ * that carries them is inside what the format tolerates and outside what it
+ * defines — which makes "the converter did not write one" a statement about the
+ * reference, not a defect. Without this the instrument reported 12 of `goya2`'s
+ * 19 converter-defects for declining to emit a property the spec forbids it.
+ *
+ * Scoped to the one asymmetry the spec states outright and the corpus
+ * exercises. The corpus agrees: of the four references that use `::: images`,
+ * `borislova`, `jovicic` and `new_kolpakov` omit these on all seven of their
+ * children and only `goya2` writes them.
+ */
+function offProfileProp(name: string, parent: string | null, key: string): boolean {
+  return name === "image" && parent === "images" && (key === "position" || key === "size");
 }
 
 /**
