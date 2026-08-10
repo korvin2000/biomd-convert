@@ -27,14 +27,14 @@
     ]
   },
   "totals": {
-    "findings": 52,
-    "alignmentRows": 275
+    "findings": 53,
+    "alignmentRows": 277
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 22,
-      "documents": 9
+      "instances": 23,
+      "documents": 10
     },
     {
       "class": "layout.lane.mismatch",
@@ -357,6 +357,23 @@
       "geometry": {
         "producedContainer": "align",
         "referenceContainer": "align>frame"
+      }
+    },
+    {
+      "id": "220645a2",
+      "doc": "new_kolpakov",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/signature[15]/paragraph[0]",
+      "producedLine": 79,
+      "referenceLine": 77,
+      "produced": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
+      "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "signature"
       }
     },
     {
@@ -1723,7 +1740,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 153,
+      "producedLine": 154,
       "referenceLine": 153,
       "text": "Информация о продуктах VP Music Media представлена на сайтах издательства в Интернете:",
       "producedAlignment": "right",
@@ -1736,7 +1753,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 166,
+      "producedLine": 167,
       "referenceLine": 166,
       "text": "www.vpmusicmedia.com http://users.iol.it/vincenzo.pocci",
       "producedAlignment": "right",
@@ -1749,7 +1766,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 174,
+      "producedLine": 175,
       "referenceLine": 174,
       "text": "E-mail: info@vpmusicmedia.com vincenzo.pocci@iol.it",
       "producedAlignment": "right",
@@ -1762,7 +1779,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 215,
+      "producedLine": 216,
       "referenceLine": 217,
       "text": "Музыкальные файлы размещены с согласия композитора и издательства IMPRIMUS (Бельгия)",
       "producedAlignment": "center",
@@ -1775,7 +1792,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 242,
+      "producedLine": 243,
       "referenceLine": 244,
       "text": "АДРЕС ИЗДАТЕЛЬСТВА: Andy Waeyaert WWproductions BVBA (IMPRIMUS) Stationsstraat 4 B-8900 I…",
       "producedAlignment": "right",
@@ -1788,7 +1805,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 248,
+      "producedLine": 249,
       "referenceLine": 250,
       "text": "E-mail: andy.waeyaert@advalvas.be",
       "producedAlignment": "right",
@@ -1801,7 +1818,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 259,
+      "producedLine": 260,
       "referenceLine": 261,
       "text": "",
       "producedAlignment": "right",
@@ -1814,7 +1831,7 @@
     },
     {
       "doc": "kiselev",
-      "producedLine": 261,
+      "producedLine": 262,
       "referenceLine": 262,
       "text": "Олег Киселев: Oleg.Kiselev@list.ru",
       "producedAlignment": "right",
@@ -1892,7 +1909,20 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 23,
+      "producedLine": 16,
+      "referenceLine": 16,
+      "text": "(Источники rock.ru; rol.ru; blackmore.jsa.ru)",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "new_blackmore",
+      "producedLine": 20,
       "referenceLine": 20,
       "text": "Ричи Блэкмор и Кэндис Найт (Blackmore's Night)",
       "producedAlignment": "center",
@@ -1905,7 +1935,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 33,
+      "producedLine": 30,
       "referenceLine": 30,
       "text": "Ниже на нашей странице собраны \"под одной крышей\" несколько интервью Ричи Блэкмора, опубл…",
       "producedAlignment": "right",
@@ -1918,7 +1948,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 44,
+      "producedLine": 41,
       "referenceLine": 41,
       "text": "27 марта 2002 г.",
       "producedAlignment": "center",
@@ -1931,7 +1961,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 52,
+      "producedLine": 49,
       "referenceLine": 49,
       "text": "",
       "producedAlignment": "center",
@@ -1944,7 +1974,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 123,
+      "producedLine": 120,
       "referenceLine": 119,
       "text": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
       "producedAlignment": "center",
@@ -1957,7 +1987,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 132,
+      "producedLine": 129,
       "referenceLine": 128,
       "text": "",
       "producedAlignment": "center",
@@ -1970,7 +2000,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 146,
+      "producedLine": 143,
       "referenceLine": 142,
       "text": "Елена СЕМЕНОВА",
       "producedAlignment": "right",
@@ -1983,7 +2013,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 223,
+      "producedLine": 220,
       "referenceLine": 218,
       "text": "No. 13 (303) 19 апреля 2002",
       "producedAlignment": "center",
@@ -1996,7 +2026,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 232,
+      "producedLine": 229,
       "referenceLine": 226,
       "text": "",
       "producedAlignment": "center",
@@ -2009,7 +2039,7 @@
     },
     {
       "doc": "new_blackmore",
-      "producedLine": 282,
+      "producedLine": 279,
       "referenceLine": 275,
       "text": "Александр НЕВЕРОВ",
       "producedAlignment": "right",
@@ -2448,6 +2478,19 @@
       "sourceProse": "left",
       "sourceDistinctive": true,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[12]"
+    },
+    {
+      "doc": "new_kolpakov",
+      "producedLine": 79,
+      "referenceLine": 77,
+      "text": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "right",
+      "sourceAlignment": "right",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[14]"
     },
     {
       "doc": "new_lagq2",

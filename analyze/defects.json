@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-10T08:55:58.904Z",
+  "generated": "2026-08-10T09:05:06.318Z",
   "totals": {
-    "findings": 156,
-    "converterDefects": 82,
+    "findings": 154,
+    "converterDefects": 80,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 46,
-    "ambiguous": 28,
+    "referenceInconsistencies": 47,
+    "ambiguous": 27,
     "bySeverity": {
       "critical": 4,
-      "major": 71,
-      "minor": 81
+      "major": 68,
+      "minor": 82
     }
   },
   "perDocument": [
@@ -55,11 +55,11 @@
     },
     {
       "doc": "kiselev",
-      "findings": 10,
+      "findings": 11,
       "converterDefects": 3,
       "critical": 0,
       "major": 3,
-      "minor": 7
+      "minor": 8
     },
     {
       "doc": "new_bach",
@@ -71,10 +71,10 @@
     },
     {
       "doc": "new_blackmore",
-      "findings": 11,
-      "converterDefects": 4,
+      "findings": 9,
+      "converterDefects": 2,
       "critical": 0,
-      "major": 2,
+      "major": 0,
       "minor": 9
     },
     {
@@ -103,10 +103,10 @@
     },
     {
       "doc": "new_kolpakov",
-      "findings": 5,
+      "findings": 4,
       "converterDefects": 4,
       "critical": 0,
-      "major": 1,
+      "major": 0,
       "minor": 4
     },
     {
@@ -272,7 +272,7 @@
     {
       "class": "paragraph.content.edited",
       "severity": "minor",
-      "instances": 12,
+      "instances": 13,
       "documents": [
         "barrios",
         "jovicic",
@@ -287,7 +287,7 @@
         "converter-defect": 3,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 9
+        "ambiguous": 10
       },
       "rank": 24,
       "example": {
@@ -450,28 +450,6 @@
         "path": "/frame[10]/paragraph[0]",
         "produced": null,
         "reference": "frame: white"
-      }
-    },
-    {
-      "class": "retyped.list-to-paragraph",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_blackmore",
-        "new_kolpakov"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[6]/paragraph[0]",
-        "produced": "Источники: rock.ru rol.ru blackmore.jsa.ru",
-        "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[6]/list[1]"
       }
     },
     {
@@ -644,27 +622,6 @@
         "path": "/frame[10]/align[1]",
         "produced": null,
         "reference": "Heitor Villa-Lobos"
-      }
-    },
-    {
-      "class": "align.position.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[6]@position",
-        "produced": null,
-        "reference": "position: right"
       }
     },
     {
@@ -1152,6 +1109,27 @@
       }
     },
     {
+      "class": "signature.position.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "new_kolpakov"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "new_kolpakov",
+        "path": "/signature[15]@position",
+        "produced": "position: right",
+        "reference": null
+      }
+    },
+    {
       "class": "image.size.missing.off-profile",
       "severity": "minor",
       "instances": 8,
@@ -1260,6 +1238,28 @@
       }
     },
     {
+      "class": "hardbreak.spurious",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "borislova",
+        "kiselev"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 2,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[45]",
+        "produced": "* Запись предоставлена автором и размещается с ее согласия.",
+        "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
+      }
+    },
+    {
       "class": "image.caption.spurious",
       "severity": "minor",
       "instances": 2,
@@ -1347,27 +1347,6 @@
       }
     },
     {
-      "class": "align.active.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_blackmore"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/align[6]@active",
-        "produced": "active: Источники:",
-        "reference": null
-      }
-    },
-    {
       "class": "hardbreak.missing",
       "severity": "major",
       "instances": 1,
@@ -1386,27 +1365,6 @@
         "path": "/frame[58]/align[2]/paragraph[2]",
         "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
         "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks"
-      }
-    },
-    {
-      "class": "hardbreak.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "borislova"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "borislova",
-        "path": "/paragraph[45]",
-        "produced": "* Запись предоставлена автором и размещается с ее согласия.",
-        "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
       }
     },
     {
@@ -1470,27 +1428,6 @@
         "path": "/frame[57]/paragraph[0]",
         "produced": null,
         "reference": "frame: gold"
-      }
-    },
-    {
-      "class": "signature.active.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_kolpakov"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_kolpakov",
-        "path": "/signature[15]@active",
-        "produced": "active: Основные источник:",
-        "reference": null
       }
     },
     {
@@ -2021,6 +1958,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "ef7b0d3a",
+      "doc": "kiselev",
+      "class": "hardbreak.spurious",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "insert",
+      "path": "/columns[12]/column[0]/paragraph[0]",
+      "producedLine": 142,
+      "referenceLine": 142,
+      "produced": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
+      "reference": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm — 2 hard breaks, reference has 1",
+      "verdict": "reference-inconsistency"
+    },
+    {
       "id": "4c397db7",
       "doc": "kiselev",
       "class": "table.header.cell",
@@ -2028,7 +1979,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/header[0]",
-      "producedLine": 180,
+      "producedLine": 181,
       "referenceLine": 180,
       "produced": "",
       "reference": "Название — column 0",
@@ -2042,7 +1993,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/header[1]",
-      "producedLine": 180,
+      "producedLine": 181,
       "referenceLine": 180,
       "produced": "🔗",
       "reference": "Аудиоформат — column 1",
@@ -2056,7 +2007,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/cell[0][1]",
-      "producedLine": 180,
+      "producedLine": 181,
       "referenceLine": 180,
       "produced": "—",
       "reference": "",
@@ -2070,7 +2021,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/cell[6][1]",
-      "producedLine": 186,
+      "producedLine": 187,
       "referenceLine": 186,
       "produced": "—",
       "reference": "",
@@ -2084,7 +2035,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/cell[11][1]",
-      "producedLine": 191,
+      "producedLine": 192,
       "referenceLine": 191,
       "produced": "—",
       "reference": "",
@@ -2098,7 +2049,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/cell[16][1]",
-      "producedLine": 196,
+      "producedLine": 197,
       "referenceLine": 196,
       "produced": "—",
       "reference": "",
@@ -2112,7 +2063,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/table[16]/cell[21][1]",
-      "producedLine": 201,
+      "producedLine": 202,
       "referenceLine": 201,
       "produced": "—",
       "reference": "",
@@ -2147,46 +2098,18 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "74803e18",
+      "id": "b95d0aee",
       "doc": "new_blackmore",
-      "class": "align.active.spurious",
+      "class": "paragraph.content.edited",
       "severity": "minor",
       "evidence": "content",
-      "op": "insert",
-      "path": "/align[6]@active",
-      "producedLine": 13,
-      "referenceLine": 13,
-      "produced": "active: Источники:",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "2760aa94",
-      "doc": "new_blackmore",
-      "class": "align.position.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[6]@position",
-      "producedLine": 13,
-      "referenceLine": 13,
-      "produced": null,
-      "reference": "position: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4248b292",
-      "doc": "new_blackmore",
-      "class": "retyped.list-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
       "op": "substitute",
       "path": "/align[6]/paragraph[0]",
       "producedLine": 16,
       "referenceLine": 16,
-      "produced": "Источники: rock.ru rol.ru blackmore.jsa.ru",
-      "reference": "(Источники rock.ru; rol.ru; blackmore.jsa.ru) — at /align[6]/list[1]",
-      "verdict": "converter-defect"
+      "produced": "(Источники: [rock.ru](http://www.rock.ru/); [rol.ru](http://www.rol.ru/); [blackmore.jsa.ru](http://www.blackmore.jsa.ru/))",
+      "reference": "(Источники [rock.ru](http://www.rock.ru/); [rol.ru](http://www.rol.ru/); [blackmore.jsa.ru](http://www.blackmore.jsa.ru/))",
+      "verdict": "ambiguous"
     },
     {
       "id": "212bdd93",
@@ -2196,7 +2119,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[8]/paragraph[0]",
-      "producedLine": 33,
+      "producedLine": 30,
       "referenceLine": 30,
       "produced": "(none)",
       "reference": "em:Ниже на нашей странице собраны \"под одной крышей\" несколько интервью Ричи Блэкмора, опубликованных в российской прессе в марте - апреле 2002 года.",
@@ -2210,7 +2133,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/heading[10]/text",
-      "producedLine": 62,
+      "producedLine": 59,
       "referenceLine": 59,
       "produced": "Ричи Блэкмор: «Вcтречайте, скоро буду!»",
       "reference": "Ричи Блэкмор: «Вcтречайте, скоро буду!»\\",
@@ -2224,7 +2147,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[11]",
-      "producedLine": 64,
+      "producedLine": 61,
       "referenceLine": 61,
       "produced": "(none)",
       "reference": "em:Накануне своего приезда в Москву один из главных гитаристов прошлого столетия рассказывает о накладных ногтях, злых менеджерах и добрых старых временах",
@@ -2238,7 +2161,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/heading[38]/text",
-      "producedLine": 149,
+      "producedLine": 146,
       "referenceLine": 145,
       "produced": "Гитарист \"тяжелого\" поведения",
       "reference": "Гитарист \"тяжелого\" поведения\\",
@@ -2252,7 +2175,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/heading[70]/text",
-      "producedLine": 242,
+      "producedLine": 239,
       "referenceLine": 235,
       "produced": "(none)",
       "reference": "strong:О вкусах не спорят",
@@ -2266,7 +2189,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[90]",
-      "producedLine": 287,
+      "producedLine": 284,
       "referenceLine": 280,
       "produced": "(none)",
       "reference": "em:На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
@@ -2497,31 +2420,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e5e30c14",
+      "id": "1a945c8d",
       "doc": "new_kolpakov",
-      "class": "signature.active.spurious",
+      "class": "signature.position.spurious",
       "severity": "minor",
-      "evidence": "content",
+      "evidence": "structure",
       "op": "insert",
-      "path": "/signature[15]@active",
+      "path": "/signature[15]@position",
       "producedLine": 76,
       "referenceLine": 76,
-      "produced": "active: Основные источник:",
+      "produced": "position: right",
       "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "36c8b220",
-      "doc": "new_kolpakov",
-      "class": "retyped.list-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/signature[15]/paragraph[0]",
-      "producedLine": 79,
-      "referenceLine": 77,
-      "produced": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
-      "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — at /signature[15]/list[1]",
       "verdict": "converter-defect"
     },
     {

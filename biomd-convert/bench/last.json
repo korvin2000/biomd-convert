@@ -1,5 +1,5 @@
 {
-  "overall": 0.9671873564222366,
+  "overall": 0.9674819350402479,
   "documents": [
     {
       "name": "authors",
@@ -1191,17 +1191,13 @@
     {
       "name": "new_blackmore",
       "text": {
-        "recall": 0.9989909182643795,
-        "precision": 0.9986550100874243,
-        "f1": 0.9988229359340844,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 2973,
-        "actual": 2974,
-        "matched": 2970,
-        "missing": [
-          "играешь на лютне источники rock",
-          "на лютне источники rock ru",
-          "лютне источники rock ru rol"
-        ]
+        "actual": 2973,
+        "matched": 2973,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -1231,15 +1227,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9523809523809523,
-        "precision": 0.9523809523809523,
-        "f1": 0.9523809523809523,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 21,
         "actual": 21,
-        "matched": 20,
-        "missing": [
-          "align"
-        ]
+        "matched": 21,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -1253,7 +1247,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9948849760183206
+      "overall": 1
     },
     {
       "name": "new_dyens",
@@ -1948,16 +1942,13 @@
     {
       "name": "new_kolpakov",
       "text": {
-        "recall": 0.9969604863221885,
-        "precision": 0.9939393939393939,
-        "f1": 0.9954476479514416,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 658,
-        "actual": 660,
-        "matched": 656,
-        "missing": [
-          "7 mb основные источник russianguitar",
-          "mb основные источник russianguitar net"
-        ]
+        "actual": 658,
+        "matched": 658,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -2039,7 +2030,7 @@
           ]
         }
       ],
-      "overall": 0.9886342943854325
+      "overall": 0.99
     },
     {
       "name": "new_lagq2",

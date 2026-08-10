@@ -2083,6 +2083,11 @@ function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
       if (NAV_SEPARATOR.test(value)) continue;
       const label = value.replace(NAV_SEPARATOR_CHARS, " ").replace(/\s+/gu, " ").trim();
       if (label === "" ) continue;
+      // §11's one plain item is "the page you are already on", and a page is
+      // never *announced*. A colon is the punctuation of announcement, so the
+      // text carrying one is a lead-in standing outside the run — which makes
+      // the run a credit line rather than a menu. See {@link ANNOUNCING_LABEL}.
+      if (ANNOUNCING_LABEL.test(label)) return null;
       if (label.length > 40 || plainItems.length > 0) return null;
       plainItems.push(label);
       order.push({ kind: "plain", text: label });
@@ -2154,6 +2159,36 @@ function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
     ...(active !== undefined ? { active } : {}),
   });
 }
+
+/**
+ * A label that announces what comes after it rather than naming itself.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Punctuation, not vocabulary: a trailing colon. `BioMD-Reference.md`
+ * §11 allows a `nav` exactly one plain item and says what it is — *the page you
+ * are already on* — and a page name is never announced. Text that announces the
+ * links after it stands **outside** the run, which makes the run a credit line
+ * or a citation rather than a menu, and `navFrom`'s own stated evidence is
+ * negative: what makes a stack of links a menu is that there is nothing else
+ * between them. A lead-in is something else.
+ *
+ * This is the same signal, read the same way, as the colon-announced list of
+ * `promoteLabelBeforeList`: the colon marks its line as a lead-in, not a member.
+ * Language-independent, and the full-width form is included because the corpus
+ * is not guaranteed to be Latin-punctuated.
+ *
+ * **Recurrence.** Not applicable: a run has at most one lead-in by definition.
+ *
+ * **False friend, tested for non-firing: the active page marker.** The corpus
+ * separates cleanly and in both directions — the three plain items the
+ * references *keep* are `Последние` (`news`) and `А Бартоли` twice
+ * (`new_karta`), none with a colon; the two the produced side invented are
+ * `Источники:` (`new_blackmore`) and `Основные источник:` (`new_kolpakov`),
+ * both with one, and both of them source-credit lines their references write
+ * as prose. Length, word count and position separate none of these.
+ */
+const ANNOUNCING_LABEL = /[:：]$/u;
 
 /** Punctuation legacy menus used to fence their items. */
 const NAV_SEPARATOR_CHARS = /[[\]()|·•—–\-/,;«»]/gu;
@@ -2394,12 +2429,76 @@ export function foldBreaks(nodes: readonly PhrasingContent[]): PhrasingContent[]
  * same `<a>` in `goya2` is followed by a second `<br>` outside it, and that one
  * is the entry boundary.
  *
- * An interior break becomes a space rather than nothing, so two words can never
- * fuse. Every instance this corpus has is at an edge, where the trim removes it
- * entirely.
+ * **An interior break becomes a space; an edge break is handed back to the
+ * caller.** These are different facts and the first version of this rule
+ * conflated them, which lost a line division: `new_kolpakov` writes each source
+ * credit as `<a …>talismanmusic.org<br></a>`, with the break *inside* the
+ * anchor and nothing after it, so dropping it ran four credits onto one line.
+ * The label is still one line — the break is simply not part of it, and it
+ * divides the link from whatever follows exactly as the author drew it.
+ * {@link labelWithEdgeBreaks} is the form that says so; `oneLineLabel` is the
+ * shorthand for callers whose own construct is already one line per item, where
+ * an edge break has nothing left to divide.
  */
 function oneLineLabel(nodes: readonly PhrasingContent[]): PhrasingContent[] {
-  return trimRunEdges(foldBreaks(nodes));
+  return labelWithEdgeBreaks(nodes).label;
+}
+
+/** A one-line label, plus how many breaks stood at each of its edges. */
+function labelWithEdgeBreaks(nodes: readonly PhrasingContent[]): {
+  leading: number;
+  label: PhrasingContent[];
+  trailing: number;
+} {
+  let work: PhrasingContent[] = [...nodes];
+  let leading = 0;
+  let trailing = 0;
+  for (;;) {
+    const stripped = stripEdgeBreak(work, "start");
+    if (!stripped.found) break;
+    work = stripped.nodes;
+    leading += 1;
+  }
+  for (;;) {
+    const stripped = stripEdgeBreak(work, "end");
+    if (!stripped.found) break;
+    work = stripped.nodes;
+    trailing += 1;
+  }
+  return { leading, label: trimRunEdges(foldBreaks(work)), trailing };
+}
+
+/**
+ * Remove one break from an edge of an inline run, at whatever depth it sits.
+ *
+ * Depth matters: the corpus writes `<a><font>label<br></font></a>` as often as
+ * `<a>label<br></a>`, and a top-level test sees the `<font>` and stops. Blank
+ * text is stepped over — `<br> ` before `</a>` is still an edge break.
+ */
+function stripEdgeBreak(
+  nodes: readonly PhrasingContent[],
+  edge: "start" | "end",
+): { found: boolean; nodes: PhrasingContent[] } {
+  const out = [...nodes];
+  const order = edge === "start" ? [...out.keys()] : [...out.keys()].reverse();
+  for (const i of order) {
+    const node = out[i] as PhrasingContent;
+    if (node.type === "break") {
+      out.splice(i, 1);
+      return { found: true, nodes: out };
+    }
+    if (node.type === "text") {
+      if (node.value.trim() === "") continue;
+      return { found: false, nodes: out };
+    }
+    const children = (node as { children?: unknown }).children;
+    if (!Array.isArray(children) || children.length === 0) return { found: false, nodes: out };
+    const inner = stripEdgeBreak(children as PhrasingContent[], edge);
+    if (!inner.found) return { found: false, nodes: out };
+    out[i] = { ...node, children: inner.nodes } as PhrasingContent;
+    return { found: true, nodes: out };
+  }
+  return { found: false, nodes: out };
 }
 
 /** Whitespace off the outer edges of an inline run, at whatever depth it sits. */
@@ -2473,8 +2572,17 @@ function listFrom(el: LadomNode, ctx: Ctx): List {
 /** Inline content, with `<br>` handled by the caller's block segmentation. */
 function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
   const out: PhrasingContent[] = [];
+  /**
+   * Whether the break just emitted came out of a link label rather than out of
+   * the run. Set by the `<a>` case, read by the `<br>` case, and cleared by
+   * anything else — blank text excepted, since `</a>\n<br>` is one gesture with
+   * a newline in the middle of it. See the `<br>` case for what it decides.
+   */
+  let hoistedBreak = false;
 
   for (const node of nodes) {
+    const carriedHoist = hoistedBreak;
+    if (!(node.kind === "text" && (node.value ?? "").trim() === "")) hoistedBreak = false;
     if (node.kind === "comment") continue;
     if (node.kind === "text") {
       // Whitespace collapses the way a renderer collapses it — with one
@@ -2495,6 +2603,16 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
 
     switch (node.tag) {
       case "br":
+        // A division drawn on both sides of the anchor boundary is one
+        // division. `borislova` writes `<a …>ДИСКОГРАФИЯ<br></a><br>`, where
+        // the break inside the label and the one after it are the same
+        // gesture — the editor put one where the cursor was and the author put
+        // the other where they meant it. Emitting both would claim a paragraph
+        // boundary and split a credit block in two, and §1's hierarchy puts
+        // structural correctness above reproducing a 14 px gap. The `<br>`
+        // *outside* is the authored one, so it is the hoisted break that gives
+        // way. See {@link labelWithEdgeBreaks}.
+        if (carriedHoist && out[out.length - 1]?.type === "break") break;
         out.push({ type: "break" });
         break;
       case "b":
@@ -2533,7 +2651,11 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         if (rewritten.warning) ctx.warnings.push(`${node.id}: ${rewritten.warning}`);
         ctx.targets.push(rewritten.href);
         ctx.ledger.push(emitted(node.id, nextId(ctx, "link")));
-        const label = oneLineLabel(inlineFrom(node.children, ctx));
+        const { leading, label, trailing } = labelWithEdgeBreaks(inlineFrom(node.children, ctx));
+        // A break the author drew at the edge of the label divides the link
+        // from its neighbour, not the label from itself, so it comes back out
+        // into the run at the position it was written.
+        for (let i = 0; i < leading; i += 1) out.push({ type: "break" });
         // `<a href=x><img src=forward.gif></a>` — the label was a glyph, and
         // the glyph is gone. An empty `[](x)` is not a link a reader can see
         // or a screen reader can announce; the destination is the only
@@ -2543,6 +2665,8 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
           url: rewritten.href,
           children: label.length > 0 ? label : [{ type: "text", value: rewritten.href }],
         });
+        for (let i = 0; i < trailing; i += 1) out.push({ type: "break" });
+        hoistedBreak = trailing > 0;
         break;
       }
       case "img": {

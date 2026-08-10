@@ -232,22 +232,60 @@ describe("break-run segmentation", () => {
     ]);
   });
 
-  it("folds a break out of a link label, and leaves the one after the link", async () => {
-    // `goya2` writes `<a href="#26">…Francis Goya&nbsp;<br></a><br>` — a break
-    // inside the label and a second one after it. `analyze-2.md` rules that a
-    // link label is one line; the break outside is the division between two
-    // contents entries and stays.
+  it("folds a break out of a link label, and keeps the division it drew", async () => {
+    // `goya2` writes `<a href="#26">…Francis Goya&nbsp;<br></a>` — the break is
+    // inside the label. `analyze-2.md` rules that a link label is one line, so
+    // it does not stay there; it is the division between two contents entries,
+    // so it does not vanish either.
     const out = await md(
       PROSE +
-        '<p><a href="a.htm">Галерея инструментальной музыки. Francis Goya&nbsp;<br></a><br>' +
+        '<p><a href="a.htm">Галерея инструментальной музыки. Francis Goya&nbsp;<br></a>' +
         '<a href="b.htm">Другие альбомы</a></p>' +
         PROSE,
     );
     expect(out).toContain("[Галерея инструментальной музыки. Francis Goya](/#/a)");
     // The label is one line — no hard break and no trailing space inside it.
-    expect(out).not.toMatch(/\[[^\]\n]*\\\n/u);
-    // False friend: the break between the two entries is meaning, and survives.
+    expect(out).not.toMatch(/\[[^\]\n]*\\\n[^\]]*\]\(/u);
+    // And the division survives, outside the label where the reader sees it.
     expect(out).toMatch(/\\\n\[Другие альбомы\]/u);
+  });
+
+  it("reads a break drawn on both sides of the anchor boundary as one division", async () => {
+    // `borislova` writes `<a …>ДИСКОГРАФИЯ<br></a><br>` and `goya2` the same
+    // shape. Measured in the browser, the source draws a **blank** line there:
+    // 14 px line height, a 28 px step from `ДИСКОГРАФИЯ` to `Основные
+    // источники:` where every other step in the block is 14. Emitting both
+    // breaks reproduces that gap and, in Markdown, also asserts a paragraph
+    // boundary — splitting one credit block into two, taking its opening link
+    // out of the block it belongs to.
+    //
+    // §1's hierarchy is lexicographic and structural correctness outranks
+    // rendering detail, so the hoisted break gives way to the authored one and
+    // the 14 px is knowingly not reproduced. The whole block stays one
+    // paragraph, which is also what the reference does.
+    const out = await md(
+      PROSE + '<p><a href="a.htm">Первая<br></a><br>Вторая строка<br>Третья</p>' + PROSE,
+    );
+    expect(out).toMatch(/\[Первая\]\(\/#\/a\)\\\nВторая строка\\\nТретья/u);
+    expect(out).not.toMatch(/\[Первая\]\(\/#\/a\)\n\s*\nВторая/u);
+  });
+
+  it("hands an edge break back to the run — it divides the link, not the label", async () => {
+    // `new_kolpakov` writes each source credit as `<a …>talismanmusic.org<br></a>`,
+    // the break inside the anchor with nothing after it. The label is still one
+    // line; the break is not part of it, and dropping it ran four credits
+    // together. Nested inside `<font>`, which is how the corpus writes it.
+    const credits = await md(
+      PROSE +
+        '<p>Основные источники: <a href="http://a.example/"><font>a.example<br></font></a>' +
+        '<a href="http://b.example/"><font>b.example<br></font></a>' +
+        '<a href="http://c.example/"><font>c.example</font></a></p>' +
+        PROSE,
+    );
+    expect(credits).toContain("[a.example](http://a.example/)\\\n");
+    expect(credits).toContain("[b.example](http://b.example/)\\\n");
+    // Still one line each — no break survives *inside* a label.
+    expect(credits).not.toMatch(/\[[^\]\n]*\\\n[^\]]*\]\(/u);
   });
 
   it("puts a space where an interior label break was, so two words cannot fuse", async () => {
