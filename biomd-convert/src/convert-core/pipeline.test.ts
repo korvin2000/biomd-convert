@@ -3,7 +3,7 @@ import iconv from "iconv-lite";
 import { convert } from "./pipeline.js";
 import { Lexicon } from "./lexicon.js";
 import { read, directiveNames } from "../biomd-ast/index.js";
-import { rewriteTarget, makeEntryLink, transliterateSlug, resolveResourcePath } from "./links.js";
+import { rewriteTarget, makeEntryLink, transliterateSlug, resolveResourcePath, siteRelativeAsset } from "./links.js";
 import { checkConservation } from "./conservation.js";
 import { runCorpusPass, fingerprint } from "./corpus.js";
 import { parseHtml } from "../ladom/parse.js";
@@ -193,6 +193,75 @@ describe("link policy", () => {
     expect(resolveResourcePath("/music/x.mp3")).toBe("/pages/music/x.mp3");
     expect(resolveResourcePath("/pages/music/x.mp3")).toBe("/pages/music/x.mp3");
     expect(resolveResourcePath("https://x.com/a.mp3")).toBe("https://x.com/a.mp3");
+  });
+});
+
+/**
+ * An asset outside the content roots is one directory above the page.
+ *
+ * **Invariant.** Segment containment against `LinkProfile.contentRoots`, which
+ * is site-layout data — no document name, no class, no filename, and an
+ * unlisted directory takes the other branch rather than failing. The rule is
+ * the author's, stated in `analyze/analyze-2.md` under "Обработка ссылок", and
+ * it is confirmed by every one of the 458 relative targets in the 22
+ * references: the 21 under `main/` climb and the other 437 do not.
+ *
+ * **Recurrence does not apply.** A target's correctness is a property of that
+ * one target — a page with a single asset reference is not thereby exempt from
+ * resolving it. What replaces recurrence here is exhaustiveness: the rule is
+ * checked against every target in the corpus, both sides, with no exception.
+ *
+ * **Prefix would be the wrong test**, and this is the case that shows it: the
+ * three documents served from the site root spell the very same files
+ * `pages/music/…` that their siblings spell `music/…`. Containment leaves both
+ * alone; `startsWith` would have climbed 84 working paths.
+ *
+ * **False friends**, all tested for non-firing: a path that already climbs, in
+ * either spelling the author names; an absolute URL, including one on an
+ * internal host, which resolved from the host root already; a bare filename,
+ * which is in the page's own directory and has no directory to reach; and an
+ * attribute carrying markup rather than a path.
+ */
+describe("an asset path that cannot reach a content root", () => {
+  it("climbs one level", () => {
+    expect(siteRelativeAsset("main/kniga_mg.jpg")).toBe("/../main/kniga_mg.jpg");
+    expect(siteRelativeAsset("magazine/mag20.gif")).toBe("/../magazine/mag20.gif");
+    expect(siteRelativeAsset("/fest/2014/afisha.jpg")).toBe("/../fest/2014/afisha.jpg");
+  });
+
+  it("leaves a path that reaches a content root at any depth", () => {
+    expect(siteRelativeAsset("music/tab/asvbret.txt")).toBe("music/tab/asvbret.txt");
+    expect(siteRelativeAsset("/music/tab/asvbret.txt")).toBe("/music/tab/asvbret.txt");
+    expect(siteRelativeAsset("articles/geyzel/img_07.jpg")).toBe("articles/geyzel/img_07.jpg");
+    expect(siteRelativeAsset("pages/music/wma/abreuduo.wma")).toBe("pages/music/wma/abreuduo.wma");
+    expect(siteRelativeAsset("pages/photo/e/efremov.jpg")).toBe("pages/photo/e/efremov.jpg");
+  });
+
+  it("leaves a path that already climbs, in both spellings — non-firing", () => {
+    expect(siteRelativeAsset("../main/previous.gif")).toBe("../main/previous.gif");
+    expect(siteRelativeAsset("/../main/previous.gif")).toBe("/../main/previous.gif");
+  });
+
+  it("leaves an absolute URL and a bare filename — non-firing", () => {
+    expect(siteRelativeAsset("http://abc-guitars.com/main/x.jpg")).toBe("http://abc-guitars.com/main/x.jpg");
+    expect(siteRelativeAsset("//cdn.example.com/main/x.jpg")).toBe("//cdn.example.com/main/x.jpg");
+    expect(siteRelativeAsset("icon.gif")).toBe("icon.gif");
+    expect(siteRelativeAsset("#top")).toBe("#top");
+  });
+
+  it("leaves an attribute that carries markup rather than a path — non-firing", () => {
+    // `new_kolpakov`: FrontPage let a tag into the attribute. Broken upstream,
+    // and not to be replaced with a differently-broken value here.
+    expect(siteRelativeAsset("<B>http://www.russianguitar.net/</B>")).toBe("<B>http://www.russianguitar.net/</B>");
+  });
+
+  it("reaches an anchor's resource target through rewriteTarget", () => {
+    expect(rewriteTarget("main/kniga_mg.jpg")).toMatchObject({
+      kind: "resource",
+      href: "/../main/kniga_mg.jpg",
+      rewritten: true,
+    });
+    expect(rewriteTarget("music/midi/a.mid")).toMatchObject({ kind: "resource", rewritten: false });
   });
 });
 

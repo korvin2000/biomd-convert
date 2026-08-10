@@ -45,7 +45,7 @@ import {
 } from "./data-table.js";
 import { LINK_GLYPH, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
 import { canonicalColumnLabel } from "./column-labels.js";
-import { type LinkProfile, rewriteTarget } from "./links.js";
+import { type LinkProfile, rewriteTarget, siteRelativeAsset } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
   type RunLine,
@@ -2295,7 +2295,13 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         }
         ctx.images.push(src);
         ctx.ledger.push(emitted(node.id, nextId(ctx, "img")));
-        const emittedImage = { type: "image" as const, url: src, alt: node.attrs["alt"] ?? "" };
+        // The ledger keeps the source spelling so conservation still matches on
+        // it; only the emitted target is resolved against the site layout.
+        const emittedImage = {
+          type: "image" as const,
+          url: siteRelativeAsset(src, ctx.options.links),
+          alt: node.attrs["alt"] ?? "",
+        };
         // Line segmentation may still promote this to `::: image`; it needs the
         // source node to answer position, size and caption.
         ctx.imageNodes.set(emittedImage, node);
@@ -2404,6 +2410,9 @@ function imageFrom(el: LadomNode, ctx: Ctx, standalone: boolean): BiomdContent |
   }
   ctx.images.push(src);
   ctx.ledger.push(emitted(el.id, nextId(ctx, "image")));
+  // The ledger keeps the source spelling so conservation still matches on it;
+  // only the emitted target is resolved against the site layout.
+  const href = siteRelativeAsset(src, ctx.options.links);
 
   // §7.1: this corpus's `alt` is the only source-backed comment there is, and
   // it is the visible label the author wrote under the picture. Copying it to
@@ -2413,11 +2422,11 @@ function imageFrom(el: LadomNode, ctx: Ctx, standalone: boolean): BiomdContent |
   const link = enclosingLink(el, ctx);
 
   if (!standalone) {
-    return makeGroupedImage({ src, ...(caption ? { caption } : {}), ...(link ? { link } : {}) });
+    return makeGroupedImage({ src: href, ...(caption ? { caption } : {}), ...(link ? { link } : {}) });
   }
 
   return makeImage({
-    src,
+    src: href,
     position: estimatePosition(el),
     size: sizeTokenFor(imageWidthOf(el), ctx.contentWidth),
     ...(caption ? { caption } : {}),
