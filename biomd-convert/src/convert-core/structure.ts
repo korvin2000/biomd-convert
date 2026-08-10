@@ -1920,6 +1920,21 @@ function listFromBlockquoteRun(inner: readonly BiomdContent[]): List | null {
  * this rule can fail in, so it is refused on three counts at once: length, word
  * count and terminal punctuation.
  *
+ * **Second false friend: a line that is itself a series.** `new_rechin4`'s
+ * strapline `Идея • Концепция • Музыкальное воплощение` passes every test above
+ * — 5 words, 37 characters, no terminal stop — and is not the name of anything.
+ * An ornament *between* phrases is structure: the line lists three things, and a
+ * title names one. Symmetric ornament is the opposite and is stripped first by
+ * {@link stripPairedOrnament}, which is why the test runs on the stripped text.
+ * Measured: the five titles the references carry — `ИЗБРАННАЯ ДИСКОГРАФИЯ`,
+ * `ДРУГИЕ АЛЬБОМЫ`, `Архив новостей` twice, `Дискография` — hold no interior
+ * ornament between them.
+ *
+ * **Why not source containment**, which looks like the obvious guard: `news`
+ * puts its label in a bordered tinted cell of its own, a *different* container
+ * from the bar it names, and wants the title anyway. Adjacency in the flow is
+ * the position §11 describes; the source's box structure is not.
+ *
  * The `::: align` a centred label arrives in is unwrapped rather than refused —
  * `nav` carries its own presentation, and a label that is centred *because* it
  * titles a centred bar says nothing further.
@@ -1937,6 +1952,9 @@ function navTitleFrom(node: BiomdContent): string | null {
   if (text.length < 4 || text.length > 60) return null;
   if (text.split(/\s+/u).filter(Boolean).length > 8) return null;
   if (/[.!?]/u.test(text)) return null;
+  // A line that separates its own phrases with an ornament is a series, and a
+  // title names one thing. Interior only — the ends were handled above.
+  if ([...text].slice(1, -1).some((ch) => RULE_GLYPHS.has(ch))) return null;
   return text;
 }
 
@@ -2074,23 +2092,28 @@ function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
   const plainItems: string[] = [];
   const order: Array<{ kind: "link"; node: LadomNode } | { kind: "plain"; text: string }> = [];
 
+  /** The one plain item §11 allows, wherever the source spelled it. */
+  const takePlain = (raw: string): boolean => {
+    if (NAV_SEPARATOR.test(raw)) return true;
+    const label = raw.replace(NAV_SEPARATOR_CHARS, " ").replace(/\s+/gu, " ").trim();
+    if (label === "") return true;
+    // §11's one plain item is "the page you are already on", and a page is
+    // never *announced*. A colon is the punctuation of announcement, so the
+    // text carrying one is a lead-in standing outside the run — which makes
+    // the run a credit line rather than a menu. See {@link ANNOUNCING_LABEL}.
+    if (ANNOUNCING_LABEL.test(label)) return false;
+    if (label.length > 40 || plainItems.length > 0) return false;
+    plainItems.push(label);
+    order.push({ kind: "plain", text: label });
+    return true;
+  };
+
   for (const node of nodes) {
     if (node.kind === "comment") continue;
     if (node.kind === "text") {
       // Separators, not words. Legacy menus bracket their items — `[ 2007 ]` —
       // and rejecting punctuation outright missed every one of them.
-      const value = node.value ?? "";
-      if (NAV_SEPARATOR.test(value)) continue;
-      const label = value.replace(NAV_SEPARATOR_CHARS, " ").replace(/\s+/gu, " ").trim();
-      if (label === "" ) continue;
-      // §11's one plain item is "the page you are already on", and a page is
-      // never *announced*. A colon is the punctuation of announcement, so the
-      // text carrying one is a lead-in standing outside the run — which makes
-      // the run a credit line rather than a menu. See {@link ANNOUNCING_LABEL}.
-      if (ANNOUNCING_LABEL.test(label)) return null;
-      if (label.length > 40 || plainItems.length > 0) return null;
-      plainItems.push(label);
-      order.push({ kind: "plain", text: label });
+      if (!takePlain(node.value ?? "")) return null;
       continue;
     }
     if (node.tag === "br") continue;
@@ -2101,10 +2124,24 @@ function navFrom(nodes: readonly LadomNode[], ctx: Ctx): BiomdContent | null {
     }
     // A wrapper around exactly one link is still a link.
     if (textOf(node) === "" && node.metrics.images === 0) continue;
+    // And a wrapper around the plain item is still the plain item. `new_rechin4`
+    // marks the page you are on by setting it in bold — `[ <b> 3</b> ]` beside
+    // `[<a>1</a>] [<a>2</a>]` — which is the commonest way this era says "you
+    // are here" and was rejecting the whole strip. Only a wrapper carrying no
+    // link and no picture of its own: anything else is content, and the
+    // negative evidence that makes a stack of links a menu still has to hold.
+    if (node.metrics.links === 0 && node.metrics.images === 0) {
+      if (!takePlain(textOf(node))) return null;
+      continue;
+    }
     return null;
   }
 
-  if (links.length < 3) return null;
+  // Three *items*, not three links: §11's plain item is an item, and a strip of
+  // `1 | 2 | 3` on page three has only two places left to go. Two links remain
+  // the floor for the run being navigation at all — one link and a word is a
+  // sentence.
+  if (links.length < 2 || order.length < 3) return null;
 
   // Decide before emitting: every check below is pure, so a run that turns out
   // not to be a menu leaves nothing behind in the conservation inventory.

@@ -469,7 +469,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[18]",
-      "producedLine": 45,
+      "producedLine": 47,
       "referenceLine": 48,
       "produced": "",
       "reference": "",
@@ -3365,7 +3365,7 @@
     },
     {
       "doc": "new_rechin4",
-      "producedLine": 45,
+      "producedLine": 47,
       "referenceLine": 48,
       "text": "",
       "producedAlignment": "center",

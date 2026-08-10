@@ -531,6 +531,47 @@ describe("outline", () => {
     expect(out).toContain(sentence);
   });
 
+  it("false friend: a strapline that is itself a series is not a title", async () => {
+    // `new_rechin4`'s `Идея • Концепция • Музыкальное воплощение` passes every
+    // other test — 5 words, 37 characters, no terminal stop — and names
+    // nothing. An ornament *between* phrases is structure: the line lists three
+    // things. Symmetric ornament is the opposite and is stripped, so the two
+    // cases are decided by where the glyph sits, not by which glyph it is.
+    const strapline = "Идея • Концепция • Музыкальное воплощение";
+    const out = await mdMeasured(
+      `${PROSE}<p style="text-align: center">${strapline}</p>` +
+        '<p style="text-align: center">[<a href="a.htm">1</a> ] ' +
+        '[<a href="b.htm">2</a> ] [ <b>3</b> ]</p>',
+    );
+    expect(out).toContain("::: nav");
+    expect(out).not.toContain("title:");
+    expect(out).toContain(strapline);
+  });
+
+  it("counts the page you are on as an item, however the source marked it", async () => {
+    // `new_rechin4`'s pager is `[1] [2] [ <b>3</b> ]` — two links left to go
+    // and the current page in bold. The old floor counted links, so a
+    // three-item strip on its last page was two links and fell through; and a
+    // wrapper carrying only text rejected the whole run rather than yielding
+    // the plain item inside it. §11's plain item is an item.
+    const out = await mdMeasured(
+      `${PROSE}<p style="text-align: center">[<a href="a.htm">1</a> ] ` +
+        '[<a href="b.htm">2</a> ] [ <b>3</b> ]</p>',
+    );
+    expect(out).toContain("::: nav");
+    expect(out).toContain("active: 3");
+    expect(out).toContain("[1](/#/a)");
+  });
+
+  it("false friend: one link and a word is a sentence, not a menu", async () => {
+    // Two links stay the floor for the run being navigation at all — counting
+    // items must not let a single link plus a stray word claim a menu.
+    const out = await mdMeasured(
+      `${PROSE}<p style="text-align: center">Смотри <a href="a.htm">здесь</a></p>`,
+    );
+    expect(out).not.toContain("::: nav");
+  });
+
   it("recovers a section label that follows a banner carrying its own words", async () => {
     // The caption guard asks whether a picture stands above the label, and it
     // has to mean a picture still looking for its words. `new_blackmore` sets

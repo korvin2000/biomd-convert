@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-10T09:05:06.318Z",
+  "generated": "2026-08-10T09:10:53.203Z",
   "totals": {
-    "findings": 154,
-    "converterDefects": 80,
+    "findings": 151,
+    "converterDefects": 77,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 47,
     "ambiguous": 27,
     "bySeverity": {
       "critical": 4,
-      "major": 68,
-      "minor": 82
+      "major": 67,
+      "minor": 80
     }
   },
   "perDocument": [
@@ -127,11 +127,11 @@
     },
     {
       "doc": "new_rechin4",
-      "findings": 12,
-      "converterDefects": 9,
+      "findings": 9,
+      "converterDefects": 6,
       "critical": 0,
-      "major": 5,
-      "minor": 7
+      "major": 4,
+      "minor": 5
     },
     {
       "doc": "news",
@@ -222,20 +222,19 @@
     {
       "class": "retyped.paragraph-to-list",
       "severity": "major",
-      "instances": 5,
+      "instances": 4,
       "documents": [
         "jovicic",
         "kiselev",
-        "new_rechin4",
         "segovia"
       ],
       "verdicts": {
-        "converter-defect": 5,
+        "converter-defect": 4,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 60,
+      "rank": 36,
       "example": {
         "doc": "jovicic",
         "path": "/columns[11]/column[0]/list[2]",
@@ -428,6 +427,28 @@
         "path": "/image[18]@position",
         "produced": "position: center",
         "reference": "position: right"
+      }
+    },
+    {
+      "class": "link.inline.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_rechin4",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/nav[4]/list[0]/item[2]/link[0]",
+        "produced": null,
+        "reference": "[3]()"
       }
     },
     {
@@ -664,48 +685,6 @@
         "path": "/heading[1]",
         "produced": null,
         "reference": "Путь к циклу"
-      }
-    },
-    {
-      "class": "link.inline.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news_2007",
-        "path": "/nav[14]/list[0]/item[2]/link[0]",
-        "produced": null,
-        "reference": "[2007]()"
-      }
-    },
-    {
-      "class": "nav.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/nav[4]",
-        "produced": "[1 ] [ 2 ] [ 3 ]",
-        "reference": "1 2 3 — produced at /align[5]"
       }
     },
     {
@@ -1064,48 +1043,6 @@
         "path": "/columns[12]/column[1]/image[0]@caption",
         "produced": null,
         "reference": "caption: Francis Goya Plays His Favourite Hits vol. 2"
-      }
-    },
-    {
-      "class": "nav.active.missing",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/nav[4]@active",
-        "produced": null,
-        "reference": "active: 3"
-      }
-    },
-    {
-      "class": "nav.position.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_rechin4"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/nav[4]@position",
-        "produced": "position: center",
-        "reference": null
       }
     },
     {
@@ -2658,59 +2595,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "5177919d",
+      "id": "b771d41c",
       "doc": "new_rechin4",
-      "class": "nav.moved",
+      "class": "link.inline.missing",
       "severity": "major",
       "evidence": "structure",
-      "op": "move",
-      "path": "/nav[4]",
-      "producedLine": 12,
-      "referenceLine": 12,
-      "produced": "[1 ] [ 2 ] [ 3 ]",
-      "reference": "1 2 3 — produced at /align[5]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "56b17255",
-      "doc": "new_rechin4",
-      "class": "nav.active.missing",
-      "severity": "minor",
-      "evidence": "content",
       "op": "delete",
-      "path": "/nav[4]@active",
-      "producedLine": 12,
-      "referenceLine": 12,
+      "path": "/nav[4]/list[0]/item[2]/link[0]",
+      "producedLine": 17,
+      "referenceLine": 17,
       "produced": null,
-      "reference": "active: 3",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "26cb7bb0",
-      "doc": "new_rechin4",
-      "class": "nav.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/nav[4]@position",
-      "producedLine": 12,
-      "referenceLine": 12,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "05b76806",
-      "doc": "new_rechin4",
-      "class": "retyped.paragraph-to-list",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/nav[4]/list[0]",
-      "producedLine": 15,
-      "referenceLine": 15,
-      "produced": "[1 ] [ 2 ] [ 3 ]",
-      "reference": "1 2 3 — at /nav[4]/paragraph[1]",
+      "reference": "[3]()",
       "verdict": "converter-defect"
     },
     {
@@ -2721,7 +2616,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[7]",
-      "producedLine": 22,
+      "producedLine": 24,
       "referenceLine": 24,
       "produced": "И ещё одна мечта, которая вдохновляла – Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их в…",
       "reference": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
@@ -2735,7 +2630,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[8]",
-      "producedLine": 24,
+      "producedLine": 26,
       "referenceLine": 26,
       "produced": "Но тогда в 1984 году я ещё не знал, сколько прелюдий и фуг мне удастся написать. Меня очень беспокоили тональности с большим количеством знаков (Des, b, As, as…",
       "reference": "Но тогда в 1984 году я ещё не знал, сколько прелюдий и фуг мне удастся написать. Меня очень беспокоили тональности с большим количеством знаков (Des, b, As, as…",
@@ -2749,7 +2644,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[10]",
-      "producedLine": 28,
+      "producedLine": 30,
       "referenceLine": 30,
       "produced": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
       "reference": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
@@ -2763,7 +2658,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[14]",
-      "producedLine": 36,
+      "producedLine": 38,
       "referenceLine": 38,
       "produced": "Полифоническая техника – это интеллектуальная игра композитора с исполнителем. Композитор предлагает – исполнитель реализует. Просмотрев сочинения для гитары в…",
       "reference": "Полифоническая техника – это интеллектуальная игра композитора с исполнителем. Композитор предлагает – исполнитель реализует. Просмотрев сочинения для гитары в…",
@@ -2777,7 +2672,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/image[18]@position",
-      "producedLine": 45,
+      "producedLine": 47,
       "referenceLine": 48,
       "produced": "position: center",
       "reference": "position: right",
@@ -2791,7 +2686,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[20]",
-      "producedLine": 52,
+      "producedLine": 54,
       "referenceLine": 56,
       "produced": "◀ ●",
       "reference": "◀ ● — at /paragraph[21]",
