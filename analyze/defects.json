@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T15:45:35.010Z",
+  "generated": "2026-08-10T15:56:12.649Z",
   "totals": {
-    "findings": 131,
-    "converterDefects": 71,
+    "findings": 129,
+    "converterDefects": 69,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 43,
     "ambiguous": 17,
     "bySeverity": {
       "critical": 4,
-      "major": 58,
+      "major": 56,
       "minor": 69
     }
   },
@@ -151,10 +151,10 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "findings": 5,
-      "converterDefects": 5,
+      "findings": 3,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 3,
+      "major": 1,
       "minor": 2
     },
     {
@@ -194,22 +194,21 @@
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 6,
+      "instances": 5,
       "documents": [
         "new_karta",
         "new_lendle2",
         "new_rechin4",
-        "pavlov_azancheev",
         "segovia",
         "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 6,
+        "converter-defect": 5,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 108,
+      "rank": 75,
       "example": {
         "doc": "new_karta",
         "path": "/align[23]",
@@ -450,6 +449,28 @@
       }
     },
     {
+      "class": "retyped.paragraph-to-quote",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "borislova",
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "borislova",
+        "path": "/quote[4]",
+        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
+        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
+      }
+    },
+    {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "instances": 1,
@@ -551,27 +572,6 @@
         "doc": "new_karta",
         "path": "/align[2]@position",
         "produced": null,
-        "reference": "position: center"
-      }
-    },
-    {
-      "class": "align.position.value",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "pavlov_azancheev",
-        "path": "/align[6]@position",
-        "produced": "position: right",
         "reference": "position: center"
       }
     },
@@ -828,27 +828,6 @@
       }
     },
     {
-      "class": "retyped.heading2-to-paragraph",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "pavlov_azancheev",
-        "path": "/align[6]/paragraph[0]",
-        "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-        "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /heading[6]"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
       "instances": 1,
@@ -930,27 +909,6 @@
         "path": "/lead[1]",
         "produced": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы…",
         "reference": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы… — at /paragraph[2]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "borislova"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "borislova",
-        "path": "/quote[4]",
-        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
-        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
       }
     },
     {
@@ -2732,34 +2690,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "0cd4ef1f",
-      "doc": "pavlov_azancheev",
-      "class": "align.position.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[6]@position",
-      "producedLine": 25,
-      "referenceLine": 23,
-      "produced": "position: right",
-      "reference": "position: center",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "de14db3b",
-      "doc": "pavlov_azancheev",
-      "class": "retyped.heading2-to-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 22,
-      "referenceLine": 26,
-      "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы). — at /heading[6]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "f86e0976",
       "doc": "pavlov_azancheev",
       "class": "break.missing",
@@ -2774,17 +2704,17 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "ca372914",
+      "id": "295953b8",
       "doc": "pavlov_azancheev",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.paragraph-to-quote",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[8]",
-      "producedLine": 28,
-      "referenceLine": 32,
+      "path": "/align[8]/quote[0]",
+      "producedLine": 34,
+      "referenceLine": 35,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
-      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[6]/paragraph[1]",
+      "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[8]/paragraph[1]",
       "verdict": "converter-defect"
     },
     {

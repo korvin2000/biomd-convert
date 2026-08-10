@@ -223,6 +223,7 @@ interface TemplateMember {
   node: LadomNode;
   label: string;
   depth: number | undefined;
+  splitHeadline: boolean;
 }
 
 /**
@@ -288,11 +289,17 @@ function completeHeadingTemplates(root: LadomNode, opts: Required<HeadingOptions
       families.delete(signature);
       continue;
     }
-    const member: TemplateMember = { node: el, label, depth: markedDepthOf(el) };
+    const member: TemplateMember = { node: el, label, depth: markedDepthOf(el), splitHeadline: isSplitHeadline(el) };
     const list = families.get(signature) ?? [];
     list.push(member);
     families.set(signature, list);
   }
+
+  // The page draws a headline over a lighter continuation once; a template
+  // draws it repeatedly (`isSplitHeadline`). A lone one is a masthead and must
+  // not be completed into a heading by the family it happens to share a class
+  // with — on `pavlov_azancheev` that family is the page's two real headings.
+  const splitHeadlines = [...families.values()].flat().filter((m) => m.splitHeadline).length;
 
   for (const members of families.values()) {
     const marked = members.filter((m) => m.depth !== undefined);
@@ -304,6 +311,7 @@ function completeHeadingTemplates(root: LadomNode, opts: Required<HeadingOptions
     const depth = Math.min(...marked.map((m) => m.depth as number));
     if (depth < 1 || depth > 3) continue;
     for (const member of open) {
+      if (member.splitHeadline && splitHeadlines === 1) continue;
       const host = blockHost(member.node);
       if (host.attrs["data-biomd-heading"] !== undefined) continue;
       mark(host, depth as 1 | 2 | 3);
@@ -426,6 +434,43 @@ interface CenteredCandidate {
   bold: boolean;
   fontPx: number | undefined;
   order: number;
+  /** A headline set over a lighter continuation — see {@link isSplitHeadline}. */
+  splitHeadline: boolean;
+}
+
+/**
+ * True when a block opens bold and continues lighter on its own line.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** `pavlov_azancheev` writes `<b>М.ПАВЛОВ-АЗАНЧЕЕВ
+ * (1888-1963).<br></b>(Краткая биография, …)` — one centred block, two
+ * `<br>`-runs, the first bold and the second not. As a section label the two
+ * runs join into a 122-character `##`, which `analyze-3.md` calls the page's
+ * first critical fault, and the styling the author drew is lost. The evidence
+ * is the **weight class alone**, per run: `I. Краткая биография.` over
+ * `Нотное наследие. Первые исполнители.` on the same page and in the same
+ * template is bold throughout, and stays a heading. An earlier attempt
+ * compared prominence — size before weight — and the two `<b>` runs of that
+ * heading do not report identical sizes, so it vetoed both real headings too
+ * (PROGRESS §39.6.3).
+ *
+ * Only bold-then-lighter is claimed. A block that opens lighter and ends bold
+ * is something else and deterministic evidence does not say what, so nothing
+ * is asserted about it — the same caution `markWrappedMasthead` takes.
+ *
+ * **Recurrence inverts here, and the caller applies it.** The false friend —
+ * `borislova`'s eleven `<b>1990-1993<br></b>` labels over their unbolded works
+ * — has exactly this shape and *is* a heading every time. What separates them
+ * is that the false friend is a page template and this is a masthead: a shape
+ * that occurs once is a headline, and a shape that recurs is an entry label.
+ */
+function isSplitHeadline(el: LadomNode): boolean {
+  const runs = breakRuns(el);
+  if (runs.length < 2) return false;
+  const first = runs[0] as LineTypography;
+  if (!first.bold) return false;
+  return runs.slice(1).every((r) => !r.bold);
 }
 
 function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>): HeadingDecision[] {
@@ -499,6 +544,7 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
       bold: prominence.bold,
       ...(prominence.fontPx !== undefined ? { fontPx: prominence.fontPx } : { fontPx: undefined }),
       order,
+      splitHeadline: isSplitHeadline(el),
     });
     const start = textAt.get(el.id) ?? 0;
     proseBefore.push(Math.max(0, start - previousEnd));
@@ -512,6 +558,26 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
     bySignature.set(c.signature, list);
   });
 
+  // A headline over a lighter continuation is a masthead when the page draws it
+  // once and an entry label when the page draws it repeatedly — see
+  // {@link isSplitHeadline}. The count is taken over the whole page, because
+  // the shape is what recurs, not the class the author happened to give it.
+  const split = candidates.filter((c) => c.splitHeadline);
+  const splitHeadlines = split.length;
+  // Claimed positively rather than merely vetoed: the block still has to be
+  // lowered as the two lines the author set, and the mark is what says so.
+  if (splitHeadlines === 1) {
+    const only = split[0] as CenteredCandidate;
+    only.host.attrs["data-biomd-headline"] = "1";
+    decisions.push({
+      id: only.host.id,
+      depth: 2,
+      text: only.label,
+      score: 1,
+      reason: "headline over a lighter continuation, drawn once on this page",
+    });
+  }
+
   for (const [, indices] of bySignature) {
     if (indices.length < 3) continue;
     // Three labels in a row with nothing between them is a stanza, an address
@@ -522,6 +588,7 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
     for (const index of indices) {
       const c = candidates[index] as CenteredCandidate;
       if (c.host.attrs["data-biomd-heading"] !== undefined) continue;
+      if (c.splitHeadline && splitHeadlines === 1) continue;
       const strong = c.bold || (c.fontPx ?? baseline) > baseline * 1.05;
       const depth: 2 | 3 = strong ? 2 : 3;
       mark(c.host, depth);

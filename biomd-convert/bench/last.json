@@ -1,5 +1,5 @@
 {
-  "overall": 0.9839563096212345,
+  "overall": 0.9846079876922673,
   "documents": [
     {
       "name": "authors",
@@ -2363,10 +2363,10 @@
       },
       "headings": {
         "recall": 1,
-        "precision": 0.9375,
-        "f1": 0.967741935483871,
+        "precision": 1,
+        "f1": 1,
         "expected": 15,
-        "actual": 16,
+        "actual": 15,
         "matched": 15,
         "missing": []
       },
@@ -2389,15 +2389,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.888888888888889,
+        "f1": 1,
         "expected": 5,
-        "actual": 4,
-        "matched": 4,
-        "missing": [
-          "align"
-        ]
+        "actual": 5,
+        "matched": 5,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2411,7 +2409,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.985663082437276
+      "overall": 1
     },
     {
       "name": "segovia",

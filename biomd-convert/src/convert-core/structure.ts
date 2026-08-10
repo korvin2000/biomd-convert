@@ -2701,6 +2701,22 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     }
   }
 
+  // A headline the author set over a lighter continuation — `headings.ts`'s
+  // `isSplitHeadline`. It is not an outline entry: as a heading its two runs
+  // joined into one 122-character `##`, which `analyze-3.md` calls
+  // `pavlov_azancheev`'s first critical fault, and the bold-over-plain styling
+  // the author drew was lost. It is not two blocks either — the continuation
+  // belongs to the line above it. One paragraph, broken where the source broke,
+  // carrying the weight the source set on each run, inside whatever alignment
+  // the block already has.
+  if (el.attrs["data-biomd-headline"] !== undefined) {
+    const phrasing = trimEdgeBreaks(liftBreaksOutOfEmphasis(inlineFrom(flattenBlocks(el.children), ctx)));
+    if (phrasing.length > 0) {
+      ctx.ledger.push(emitted(el.id, nextId(ctx, "headline")));
+      return [{ type: "paragraph", children: phrasing }];
+    }
+  }
+
   // §2.1: the second line of a masthead stays a secondary title line, set in
   // italics directly under the title — not a second `#`, and not prose.
   if (el.attrs["data-biomd-subtitle"] !== undefined) {
@@ -2903,6 +2919,55 @@ export function foldBreaks(nodes: readonly PhrasingContent[]): PhrasingContent[]
  */
 function oneLineLabel(nodes: readonly PhrasingContent[]): PhrasingContent[] {
   return labelWithEdgeBreaks(nodes).label;
+}
+
+/**
+ * A break at the edge of an emphasis span is not part of the emphasis.
+ *
+ * A page of this era writes `<b>М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963).<br></b>` and
+ * puts the line division inside the weight that applies to the line above it.
+ * Serialized as written, the break lands inside `**…**`, where it has to be
+ * escaped — so the line ends with a literal backslash and the bold closes a
+ * character past where the reader saw it end. Nothing can be *emphasized*
+ * about a line ending.
+ *
+ * Scoped to the split-headline branch, which is the only construct that lowers
+ * a `<br>` inside emphasis into a hard break today; every other caller either
+ * folds breaks away (a link label, a heading) or keeps the run as written.
+ */
+function liftBreaksOutOfEmphasis(nodes: readonly PhrasingContent[]): PhrasingContent[] {
+  const out: PhrasingContent[] = [];
+  for (const node of nodes) {
+    if (node.type !== "strong" && node.type !== "emphasis") {
+      out.push(node);
+      continue;
+    }
+    let children = node.children as PhrasingContent[];
+    let leading = 0;
+    let trailing = 0;
+    for (;;) {
+      const stripped = stripEdgeBreak(children, "start");
+      if (!stripped.found) break;
+      children = stripped.nodes;
+      leading += 1;
+    }
+    for (;;) {
+      const stripped = stripEdgeBreak(children, "end");
+      if (!stripped.found) break;
+      children = stripped.nodes;
+      trailing += 1;
+    }
+    for (let i = 0; i < leading; i += 1) out.push({ type: "break" });
+    if (children.length > 0) out.push({ ...node, children: liftBreaksOutOfEmphasis(children) } as PhrasingContent);
+    for (let i = 0; i < trailing; i += 1) out.push({ type: "break" });
+  }
+  // A line that begins where the source indented it begins with spaces the
+  // serializer would have to escape. The break is the indentation now.
+  return out.map((node, i) =>
+    node.type === "text" && out[i - 1]?.type === "break"
+      ? { ...node, value: node.value.replace(/^[\s ]+/u, "") }
+      : node,
+  );
 }
 
 /** A one-line label, plus how many breaks stood at each of its edges. */

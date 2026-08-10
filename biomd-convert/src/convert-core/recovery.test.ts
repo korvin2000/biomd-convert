@@ -689,6 +689,50 @@ describe("outline", () => {
     expect(out).not.toContain("## ИЗБРАННАЯ ДИСКОГРАФИЯ");
   });
 
+  // -- a headline set over a lighter continuation (`isSplitHeadline`)
+
+  /** Three `p.t3` blocks, exactly as `pavlov_azancheev` writes them. */
+  const PAVLOV_HEADLINE =
+    '<p class="t3" align="center"><br><b>М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963).<br></b>' +
+    "(Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).</p>";
+  const PAVLOV_SECTIONS =
+    '<p class="t3" align="center"><b>I. Краткая биография.</b><br><b>Нотное наследие.</b></p>' +
+    `${PROSE}${PROSE}` +
+    '<p class="t3" align="center"><br><b>II. Неизвестные письма и документы</b></p>';
+
+  it("keeps a headline over its lighter continuation as one aligned block", async () => {
+    // Joined into a section label the two runs make a 122-character `##`,
+    // which `analyze-3.md` calls this page's first critical fault, and the
+    // bold-over-plain styling the author drew is lost.
+    const out = await mdMeasured(`${PAVLOV_HEADLINE}${PROSE}${PAVLOV_SECTIONS}${PROSE}`);
+    expect(out).not.toMatch(/^#+ М\.ПАВЛОВ-АЗАНЧЕЕВ \(1888-1963\)\. \(Краткая/mu);
+    expect(out).toMatch(/^\*\*М\.ПАВЛОВ-АЗАНЧЕЕВ \(1888-1963\)\.\*\*\\$/mu);
+    expect(out).toMatch(/^\(Краткая биография/mu);
+    // The two real headings on the same page, in the same template, are bold
+    // throughout and stay headings — the veto keys on weight per run, and an
+    // earlier attempt that compared prominence vetoed these as well.
+    expect(out).toMatch(/^#{2,3} I\. Краткая биография\./mu);
+    expect(out).toMatch(/^#{2,3} II\. Неизвестные письма и документы$/mu);
+  });
+
+  it("false friend: the same shape drawn repeatedly is an entry label", async () => {
+    // `borislova` writes `<b>1990-1993<br></b>` over its unbolded works eleven
+    // times down the page and every one is a heading the reference keeps.
+    // Recurrence inverts here: once is a masthead, many times is a template.
+    const entry = (year: string, work: string): string =>
+      `<p class="t3" align="center"><b>${year}<br></b>${work}</p>${PROSE}`;
+    const out = await mdMeasured(
+      entry("1990-1993", "Ciclo de piezas La mariposa") +
+        entry("1993", "Sonata para guitarra") +
+        entry("1995", "Preludios y danzas"),
+    );
+    // The veto does not fire, so each label stays whatever heading recovery
+    // makes of it rather than becoming a hard-broken headline.
+    expect(out).not.toMatch(/^\*\*1990-1993\*\*\\$/mu);
+    expect(out).not.toMatch(/^\*\*1993\*\*\\$/mu);
+    expect(out).toMatch(/^#{2,3} 1990-1993/mu);
+  });
+
   // -- a page template already recovered as a heading (`completeHeadingTemplates`)
 
   it("completes a heading template the page has already answered for twice", async () => {
