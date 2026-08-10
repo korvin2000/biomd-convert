@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T15:56:12.649Z",
+  "generated": "2026-08-10T16:00:35.861Z",
   "totals": {
-    "findings": 129,
-    "converterDefects": 69,
+    "findings": 128,
+    "converterDefects": 67,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 43,
+    "referenceInconsistencies": 44,
     "ambiguous": 17,
     "bySeverity": {
       "critical": 4,
-      "major": 56,
+      "major": 55,
       "minor": 69
     }
   },
@@ -31,10 +31,10 @@
     },
     {
       "doc": "borislova",
-      "findings": 6,
-      "converterDefects": 3,
+      "findings": 5,
+      "converterDefects": 1,
       "critical": 0,
-      "major": 2,
+      "major": 1,
       "minor": 4
     },
     {
@@ -449,28 +449,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "borislova",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "borislova",
-        "path": "/quote[4]",
-        "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
-        "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]"
-      }
-    },
-    {
       "class": "paragraph.spurious.unattested",
       "severity": "critical",
       "instances": 1,
@@ -681,27 +659,6 @@
       }
     },
     {
-      "class": "paragraph.missing.in-break-run",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "borislova"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "borislova",
-        "path": "/paragraph[3]",
-        "produced": null,
-        "reference": "Надя Борислова:"
-      }
-    },
-    {
       "class": "paragraph.missing.in-table",
       "severity": "major",
       "instances": 1,
@@ -909,6 +866,27 @@
         "path": "/lead[1]",
         "produced": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы…",
         "reference": "Раздел новостей \"Энциклопедии\", вопреки моим первоначальным ожиданиям, быстро разрастается. Приятно, что мне не приходится наполнять его содержанием ради формы… — at /paragraph[2]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-quote",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "pavlov_azancheev"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "pavlov_azancheev",
+        "path": "/align[8]/quote[0]",
+        "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо…",
+        "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот, чем хуже, тем лучше!\" (1930 г., письмо… — at /align[8]/paragraph[1]"
       }
     },
     {
@@ -1147,6 +1125,28 @@
       }
     },
     {
+      "class": "hardbreak.missing",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "borislova",
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 2,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[3]",
+        "produced": "Надя Борислова:",
+        "reference": "Надя Борислова: — 0 of 1 hard breaks"
+      }
+    },
+    {
       "class": "hardbreak.spurious",
       "severity": "minor",
       "instances": 2,
@@ -1208,27 +1208,6 @@
         "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
         "produced": "1988",
         "reference": null
-      }
-    },
-    {
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "news",
-        "path": "/frame[58]/align[2]/paragraph[2]",
-        "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-        "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks"
       }
     },
     {
@@ -1318,32 +1297,18 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "1d2b8ed8",
+      "id": "ff53e261",
       "doc": "borislova",
-      "class": "paragraph.missing.in-break-run",
+      "class": "hardbreak.missing",
       "severity": "major",
       "evidence": "structure",
       "op": "delete",
       "path": "/paragraph[3]",
-      "producedLine": null,
-      "referenceLine": 11,
-      "produced": null,
-      "reference": "Надя Борислова:",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7baf033e",
-      "doc": "borislova",
-      "class": "retyped.paragraph-to-quote",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/quote[4]",
       "producedLine": 11,
-      "referenceLine": 12,
-      "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они д…",
-      "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево – всего по… — at /paragraph[5]",
-      "verdict": "converter-defect"
+      "referenceLine": 11,
+      "produced": "Надя Борислова:",
+      "reference": "Надя Борислова: — 0 of 1 hard breaks",
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "7175f531",
@@ -1353,7 +1318,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[6]/image[0]@size",
-      "producedLine": 21,
+      "producedLine": 22,
       "referenceLine": 21,
       "produced": null,
       "reference": "size: medium",
@@ -1367,7 +1332,7 @@
       "evidence": "structure",
       "op": "delete",
       "path": "/images[6]/image[1]@size",
-      "producedLine": 26,
+      "producedLine": 27,
       "referenceLine": 27,
       "produced": null,
       "reference": "size: medium",
@@ -1381,7 +1346,7 @@
       "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[45]",
-      "producedLine": 292,
+      "producedLine": 293,
       "referenceLine": 294,
       "produced": "* Запись предоставлена автором и размещается с ее согласия.",
       "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0",

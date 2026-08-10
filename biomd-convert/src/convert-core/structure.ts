@@ -1844,6 +1844,14 @@ function blocksFromGroup(
     return out;
   }
 
+  // A speaker named, a colon, and the words in quotation marks on the next
+  // line. See `quotationAfterLeadIn`.
+  const quoted = quotationAfterLeadIn(rest);
+  if (quoted) {
+    out.push(...quoted);
+    return out;
+  }
+
   // A rule the author drew with punctuation because the era gave them no `<hr>`
   // they liked. See `drawnRuleFrom`.
   const drawn = drawnRuleFrom(rest);
@@ -1870,6 +1878,59 @@ function blocksFromGroup(
     out.push(paragraph);
   }
   return out;
+}
+
+/**
+ * A speaker named, a colon, and the words in quotation marks that follow.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The same arithmetic on the author's own quotation marks that
+ * {@link groupSpannedQuotation} does, one level down. `borislova` writes
+ * `<p class="t1">Надя Борислова:<br>"Мне было 8 лет…"</p>` — one block, whose
+ * first line names who is speaking and ends in a colon, and whose remaining
+ * lines are one complete quotation running to the end of the block.
+ * `analyze-3.md` states the evidence and asks for the rule: *"сразу после знака
+ * двоеточия ':' идет текст заключанный в кавычки, что явно указывает, что это
+ * цитата"*. §3.5 is what a quotation maps to. Nothing about the document, the
+ * words, the tags or the typography is consulted.
+ *
+ * **Recurrence.** Not applicable, and for {@link groupSpannedQuotation}'s
+ * reason: an attribution happens once where it happens. What carries the proof
+ * instead is that the test is closed on both sides — the colon *ends* a line,
+ * the very next line *opens* the quotation, and the quotation *closes* at the
+ * end of the block, so the block is exactly a lead-in and a quotation and
+ * nothing is left over to be misread.
+ *
+ * **False friends.** A colon mid-sentence before a quoted title — excluded
+ * because the colon has to end a line the author drew. A list introduced by a
+ * colon — excluded because what follows has to open with a quotation mark and
+ * close at the block's end. A quotation *without* attribution — excluded
+ * because a lead-in is required, so ordinary quoted dialogue inside prose is
+ * untouched. Swept over the 22 produced documents, this shape occurs once and
+ * no near-miss occurs at all.
+ */
+function quotationAfterLeadIn(lines: readonly RunLine[]): BiomdContent[] | null {
+  if (lines.length < 2) return null;
+  const lead = lineText(lines[0] as RunLine).trim();
+  if (!lead.endsWith(":") || lead.length < 3 || lead.length > 120) return null;
+  // A colon that ends a line the author drew, not a wrap the browser made.
+  if ((lines[0] as RunLine).gap === 0) return null;
+
+  const rest = lines.slice(1);
+  const body = rest.map(lineText).join(" ").trim();
+  if (!body.startsWith(STRAIGHT_QUOTE)) return null;
+  if (quoteCount(body) % 2 !== 0) return null;
+  // The quotation is the whole of what follows: nothing but punctuation may
+  // survive the closing mark, or the block is prose that merely contains one.
+  const closed = body.lastIndexOf(STRAIGHT_QUOTE);
+  if (closed < 0 || body.slice(closed + 1).replace(/[\s.,;!?)–—-]+/gu, "") !== "") return null;
+  if (body.length < 60) return null;
+
+  const leadParagraph = paragraphFromLines([lines[0] as RunLine]);
+  const quotedParagraph = paragraphFromLines(rest);
+  if (!leadParagraph || !quotedParagraph) return null;
+  return [leadParagraph, { type: "blockquote", children: [quotedParagraph] as BlockContent[] }];
 }
 
 /** A line that shows exactly one picture and no words. */

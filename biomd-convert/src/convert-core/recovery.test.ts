@@ -866,6 +866,41 @@ describe("frames", () => {
  * subordinated regions: one would be a credit line, not a quoted archive.
  */
 describe("a blockquote is quoted matter only when the source set it apart", () => {
+  it("quotes the words a colon introduces on the next line", async () => {
+    // `borislova` writes `Надя Борислова:<br>"Мне было 8 лет…"` in one block.
+    // `analyze-3.md` states the evidence and asks for the rule: straight after
+    // a colon comes text in quotation marks, so it is a quotation.
+    const quote =
+      '"Мне было 8 лет, когда отец купил нам две маленькие гитары: ему пришлось отстоять за ними ' +
+      'длинную очередь, поскольку стоили они дешево."';
+    const out = await md(`${PROSE}<p>Надя Борислова:<br>${quote}</p>${PROSE}`);
+    expect(out).toMatch(/^Надя Борислова:$/mu);
+    expect(out).toMatch(/^> "Мне было 8 лет/mu);
+  });
+
+  it("false friend: a colon inside a sentence introduces nothing", async () => {
+    // The colon has to end a line the author drew. Inside running text it is
+    // punctuation, and the quotation that follows is part of the sentence.
+    const out = await md(
+      `${PROSE}<p>Он вспоминал об этом так: "Мне было 8 лет, когда отец купил нам две маленькие ` +
+        'гитары: ему пришлось отстоять за ними длинную очередь, поскольку стоили они дешево."</p>' +
+        PROSE,
+    );
+    expect(out).not.toContain("> \"Мне было 8 лет");
+  });
+
+  it("false friend: a colon introducing something that is not a quotation", async () => {
+    // What follows has to open with a quotation mark and close at the block's
+    // end, or an introduced list becomes a quotation.
+    const out = await md(
+      `${PROSE}<p>Основные источники:<br>Пресса, письма и воспоминания современников, а также ` +
+        "материалы личного архива семьи, переданные в музей в 1994 году.</p>" +
+        PROSE,
+    );
+    expect(out).not.toMatch(/^> /mu);
+    expect(out).toContain("Основные источники:");
+  });
+
   it("quotes a region the source wrote wholly in italic", async () => {
     // `segovia` writes exactly this — `<blockquote><i>…</i></blockquote>` —
     // and the reference quotes both of them.
