@@ -22,6 +22,73 @@ const FAKE_ORACLE: HyphenationOracle = {
   },
 };
 
+/**
+ * Rule contract — **a hyphen inside a machine identifier is never a wrap.**
+ *
+ * *Invariant.* The evidence is the shape of the unbroken token the hyphen sits
+ * in, not its spelling: an interior `.` between two alphanumerics, or a `/`,
+ * `@`, `:` or `%`. No scheme, no TLD, no host and no file extension is named,
+ * so a `.ru` domain, a `.jpg` file name and a bare path all qualify, and text
+ * the rule cannot see simply falls through to the rest of the cascade.
+ *
+ * *Recurrence.* Deliberately **not** required, and this is one of the shapes
+ * `CLAUDE.md` §5 has in mind when it says so: an identifier is decided by
+ * containment, and one link is one link. Requiring a second occurrence would
+ * mean the corpus had to spell a domain twice before its label could be
+ * trusted — which is exactly the accident that produced the defect.
+ *
+ * *False friend.* Prose punctuation that merely abuts the token. `в г. Штут-
+ * гарте` carries a full stop two characters away and must still join; the space
+ * ends the token, and a leading or trailing separator is trimmed before the
+ * test, so `rendez-vous:` is not read as a scheme.
+ *
+ * *Mutation robustness.* Nothing here reads the DOM, the class, the `href` or
+ * the surrounding element, so wrapper nesting, renamed classes, `<font>` versus
+ * CSS and Latin/Cyrillic labels cannot change the answer. The candidate is
+ * judged from the text node alone.
+ *
+ * *Source.* `analyze-3.md`, `authors.htm`: "и в названии ссылки убран дефис
+ * (критически): [www.abcguitars.com] (должно быть [www.abc-guitars.com])".
+ */
+describe("rule 0 — a hyphen inside an identifier is not prose", () => {
+  // The real defect, reduced. `authors.htm` links to `www.abc-guitars.com` and,
+  // one clause later, to the genuinely different `www.abcguitars.com`. The
+  // second is therefore attested, and rule 4 rewrote the label of the first
+  // into the name of the second — leaving a label that contradicts its own href.
+  const lex = lexiconOf("www.abcguitars.com abcguitars хостинг");
+
+  it("preserves a hyphen in a host name the corpus attests unhyphenated", () => {
+    const src = "хостинг на www.abc-guitars.com, а также на www.abcguitars.com.";
+    const result = dehyphenateText(src, "ir:1", { lexicon: lex });
+    expect(result.text).toContain("www.abc-guitars.com");
+    expect(result.operations[0]).toMatchObject({ kind: "preserve-break" });
+    expect(decideHyphen({ left: "abc", right: "guitars", hyphen: "-", inIdentifier: true }, { lexicon: lex }))
+      .toMatchObject({ verdict: "PRESERVE", rule: 0 });
+  });
+
+  it("preserves a hyphen in a path and in a file name", () => {
+    for (const src of ["music/wma/kol-pakov.wma", "см. photo/w/john-williams.jpg"]) {
+      expect(dehyphenateText(src, "ir:1", { lexicon: lexiconOf("kolpakov johnwilliams") }).text).toBe(src);
+    }
+  });
+
+  // False friend: an abbreviation's full stop is *outside* the token, and a
+  // wrapped word next to one must still join.
+  it("does not fire on prose whose neighbouring word ends in a full stop", () => {
+    const prose = lexiconOf("Штутгарте Штутгарте");
+    const result = dehyphenateText("живет в г. Штут-гарте, Германия.", "ir:1", { lexicon: prose });
+    expect(result.text).toBe("живет в г. Штутгарте, Германия.");
+  });
+
+  // False friend: a trailing colon is sentence punctuation, not a scheme.
+  it("does not read trailing sentence punctuation as an identifier", () => {
+    expect(decideHyphen({ left: "музы", right: "кант", hyphen: "-" }, { lexicon: lexiconOf("музыкант музыкант") }))
+      .toMatchObject({ verdict: "JOIN", rule: 4 });
+    const result = dehyphenateText("музы-кант:", "ir:1", { lexicon: lexiconOf("музыкант музыкант") });
+    expect(result.text).toBe("музыкант:");
+  });
+});
+
 describe("decideHyphen cascade", () => {
   it("rule 1: joins on a soft hyphen unconditionally", () => {
     const d = decideHyphen(

@@ -31,7 +31,7 @@ export type HyphenVerdict = "JOIN" | "PRESERVE" | "REVIEW";
 
 export interface HyphenDecision {
   verdict: HyphenVerdict;
-  /** Which cascade rule fired, 1-7. */
+  /** Which cascade rule fired: 0 for the not-prose gate, then 1-7. */
   rule: number;
   reason: string;
   confidence: number;
@@ -52,6 +52,12 @@ export interface HyphenCandidate {
    * Undefined when the page was not measured.
    */
   atLineEdge?: boolean;
+  /**
+   * Whether the hyphen sits inside a machine identifier rather than prose —
+   * a host name, a path, a file name, an address. Set by `dehyphenateText`,
+   * which is the only caller that can see the characters around the candidate.
+   */
+  inIdentifier?: boolean;
 }
 
 /** Answers "is this a legal hyphenation point of this word?" — nothing more. */
@@ -98,6 +104,28 @@ export function decideHyphen(candidate: HyphenCandidate, options: DehyphenateOpt
   const right = candidate.right;
   const joined = left + right;
   const hyphenatedForm = `${left}-${right}`;
+
+  // 0 — the candidate is not prose. A hyphen inside a host name, a path or a
+  // file name was never produced by wrapping, because the thing it sits in is a
+  // single unbreakable token that no line break ever ran through; and joining it
+  // does not merely misspell a word, it rewrites an identifier. `authors` shows
+  // both halves of why this must outrank everything below it: the page links to
+  // `www.abc-guitars.com` *and*, two clauses later, to the genuinely different
+  // `www.abcguitars.com`, so the corpus attests the joined form and rule 4 —
+  // "the corpus is its own best dictionary" — joins the label of the first into
+  // the name of the second. The label then contradicts its own `href`.
+  //
+  // This is the one place in the cascade where PRESERVE is not merely the safe
+  // default but a §16.3 requirement: a target and its visible label are content.
+  if (candidate.inIdentifier === true) {
+    return {
+      verdict: "PRESERVE",
+      rule: 0,
+      reason: "hyphen sits inside a machine identifier, which no line break ever wrapped",
+      confidence: 0.99,
+      joined,
+    };
+  }
 
   // 1 — a soft hyphen is a layout artifact by definition. There is no other
   // reason for the character to exist.
@@ -255,6 +283,7 @@ export function dehyphenateText(
     const end = start + whole.length;
 
     const candidate: HyphenCandidate = { left, right, hyphen };
+    if (insideIdentifier(text, start, end)) candidate.inIdentifier = true;
     const atEdge = options.lineEdges?.(start + left.length);
     if (atEdge !== undefined) candidate.atLineEdge = atEdge;
 
@@ -328,6 +357,40 @@ export function dehyphenateDocument(
 
   visit(root as never);
   return { operations, reviews };
+}
+
+/**
+ * Characters that may continue a machine identifier around the candidate.
+ *
+ * Whitespace and every sentence-level punctuation mark are absent on purpose:
+ * they are exactly what ends the token, and the token is what has to be judged.
+ */
+const IDENTIFIER_CHAR = /[\p{L}\p{N}._~/@+%&=?#:-]/u;
+
+/**
+ * Does the hyphen at `[start, end)` sit inside a machine identifier?
+ *
+ * The evidence is **structural, not lexical** — no scheme list, no TLD list, no
+ * host name appears here, so the rule holds for a `.ru` domain, a `.jpg` file
+ * and a path segment alike, and degrades to `false` on anything it cannot see.
+ * The token is grown outward from the candidate over identifier characters, and
+ * it counts as an identifier when it carries an interior `.` between two
+ * alphanumerics, or any `/`, `@`, `:` or `%`.
+ *
+ * Requiring the dot to be *interior* is what keeps prose out. A sentence ends in
+ * a full stop and an abbreviation carries one (`г. Штут-гарте`), but neither
+ * puts one *between* two alphanumeric characters of the same unbroken token, and
+ * `г.` is separated from the next word by the space that stops the growth.
+ */
+function insideIdentifier(text: string, start: number, end: number): boolean {
+  let from = start;
+  while (from > 0 && IDENTIFIER_CHAR.test(text[from - 1] as string)) from -= 1;
+  let to = end;
+  while (to < text.length && IDENTIFIER_CHAR.test(text[to] as string)) to += 1;
+  // Punctuation that merely abuts the token belongs to the sentence, not to it:
+  // a trailing colon after `rendez-vous:` is not a scheme separator.
+  const token = text.slice(from, to).replace(/^[._~/@+%&=?#:-]+/u, "").replace(/[._~/@+%&=?#:-]+$/u, "");
+  return /[\p{L}\p{N}]\.[\p{L}\p{N}]/u.test(token) || /[/@:%]/u.test(token);
 }
 
 /** Upper-case initial followed by at least one lower-case letter. */
