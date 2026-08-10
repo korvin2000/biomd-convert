@@ -8,6 +8,7 @@ Facts marked *measured* were taken then; facts marked *recorded* are quoted and 
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
+- [2b. Ruled -- one-record table vs. `::: align`](#2b-ruled----one-record-table-vs--align-the-table-stays)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
 - [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-over-22-documents)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
@@ -103,7 +104,7 @@ reported. `validate.ts`'s `table-header-empty` rule is removed. **Validator erro
 author -- 🔗 was meant throughout, ▶ remains the *icon* glyph. No code changed; §35.3 had already
 implemented 🔗 on the strength of the 16 normalized references.
 
-## 2b. Open, needs the author: one-record table vs. `::: align`
+## 2b. RULED -- one-record table vs. `::: align`: the table stays
 
 `williams2`'s reference was corrected (`2228baf`) to **one** `::: align position: right` holding the
 title and the MP3 link, exactly as `analyze.md` item 9 asks. That confirms §35.6's diagnosis -- the
@@ -123,10 +124,18 @@ Probable reason they diverge: the two human complaints are about **different def
 `analyze.md:590` on `borislova` reports the missing **table**; item 9 on `williams2` reports the
 missing **alignment**. Neither rules on the other's subject.
 
-Keeping the table everywhere costs 1 defect on 1 document; reverting to `align` everywhere costs 4 on
-3 and brings the record-shattering back. Current state is the better of the two. A rule satisfying
-both needs either a signal the author can name, or the `table.classify` hook with
-`isSingleRecordRow` as its deterministic acceptance check.
+**Ruled 2026-08-10: keep the table; do not re-open this.** The author confirmed the general
+principle -- *choose the rules that leave the rule system least contradictory, therefore most
+generalizable, and that cost the metrics least, in that order.* Keeping the table costs 1 defect on
+1 document; reverting to `align` costs 4 on 3 and brings the record-shattering back. `williams2`'s
+`retyped.table-to-align` is therefore a **known, named divergence**, not a target: it is the minority
+reading of a shape three other documents settle the other way, and no special case exists that only
+one document could ever justify.
+
+Reopens only if a second `::: align` instance appears, which would make the split 2-3 rather than
+1-3 and put a real distinction back on the table. Until then the honest alternative remains the
+`table.classify` hook with `isSingleRecordRow` as its deterministic acceptance check -- not worth 1
+finding.
 
 ## 3. Answered by the reference author -- do not re-investigate
 
@@ -144,6 +153,14 @@ both needs either a signal the author can name, or the `table.classify` hook wit
    2026-08-10.* Implemented; segment containment, not a prefix test. PROGRESS §35.5.
 6. **A column no row fills is dropped**, and **a one-row table is still a table.** *Ruled
    2026-08-10.* Both implemented. PROGRESS §35.6, §35.8.
+7. **The analysis documents outrank `BioMD-Reference.md`, which is amendable.** *Ruled 2026-08-10.*
+   A spec rule that contradicts them is corrected in the spec, never worked around in the converter.
+   `CLAUDE.md` authority ladder rewritten; §35.9 closed this way. PROGRESS §36.1, §36.2.
+8. **When evidence runs out, take the reading that leaves the rule system least contradictory** --
+   fewest inconsistencies, therefore most generalizable, and least metric damage, in that order.
+   *Ruled 2026-08-10.* Now the stated tie-break for verdict 4 in `CLAUDE.md`. A minority reference
+   reading is recorded as a named divergence, never patched into a one-document special case.
+   PROGRESS §36.5; the worked example is §2b above.
 
 ## 4. Open defect classes -- *measured* 2026-08-10 over 22 documents
 

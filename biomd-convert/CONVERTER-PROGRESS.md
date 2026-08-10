@@ -4656,7 +4656,45 @@ complaint rules on the other's subject.
 state is the better of the two, and a rule that satisfies both needs either a signal the author can
 name or the `table.classify` hook with `isSingleRecordRow` as its deterministic acceptance check.
 
-### 36.5 State after §36
+### 36.5 The tie-break when evidence runs out -- and §36.4 closed by it
+
+*Ruled 2026-08-10, and now the stated tie-break for triage verdict 4 in `CLAUDE.md`.*
+
+> Choose the rules that leave the **rule system** least contradictory -- fewest inconsistencies
+> across the corpus, therefore most generalizable to the other ~987 pages, and least negative impact
+> on the metrics, in that order.
+
+This is a rule about *rules*, not about a document, and it is what §36.4 was missing. Four sessions
+of probing established that no DOM or geometric signal separates `williams2` from `borislova`; the
+question was never "which reading is true" but "which reading, adopted as a rule, contradicts the
+corpus least". Stated that way it decides itself:
+
+| reading | references it satisfies | references it contradicts | defects | generalizes? |
+|---|---|---|---|---|
+| one-record row -> **table** | `borislova`, `new_kolpakov`, `new_karta` x2 | `williams2` | **1** | yes -- one shape, one answer |
+| one-record row -> `::: align` | `williams2` | `borislova`, `new_kolpakov`, `new_karta` x2 | 4, plus the record-shattering returns | no |
+| a discriminator | all 4 | none | 0 | **no rule exists** -- see §36.4 |
+
+**Two references disagreeing about one shape is a fact about the references, not a rule.** Obeying
+the majority and recording the minority as a named divergence beats a special case that only one
+document could ever justify -- such a case is by construction a fixture-specific patch, which
+invariant 5 forbids and which would fail on the first of the other ~987 pages that draws the shape.
+
+So `williams2`'s single `retyped.table-to-align` is **closed as a known divergence, not carried as a
+target.** It reopens only if a second `::: align` instance appears, which would make the split 2-3
+instead of 1-3 and put a real distinction back in play.
+
+The same tie-break retroactively confirms two decisions already taken on the same instinct, and both
+should stay closed: **column alignment** was declined at 1 of 21 reference tables (§35.6), and the
+**general indent-means-list rule** was declined at 21 firings for 2 wanted (§35.7). Neither was a
+metric judgement; both were this one.
+
+**Where it does *not* apply.** It is a tie-break for verdict 4 only -- reached after deterministic
+evidence has genuinely failed, and never as a reason to skip looking. It cannot override priorities
+1-4 of the skill's hierarchy: a reading that loses content, breaks meaning, breaks structure or makes
+a rendered layout worse is rejected however tidy it leaves the rule system.
+
+### 36.6 State after §36
 
 | rung | after §35 | now |
 |---|---|---|
