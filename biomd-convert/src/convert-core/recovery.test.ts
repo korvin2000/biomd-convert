@@ -862,6 +862,30 @@ describe("alignment inside a bounded container", () => {
     expect(out).not.toContain("\\-----");
   });
 
+  it("ends the aligned group at a rule the author drew between two lines", async () => {
+    // `news`'s red congratulation notice: four centred `<p>`, then `* * *`, then
+    // two more centred `<p>`. Its reference closes the `::: align`, puts the
+    // `---` in the frame, and opens a second one — an `align` spanning the
+    // divider would claim the two halves are one bounded group, which is what
+    // the divider denies. Position within the run is the whole evidence, so the
+    // false friend above (a rule that *opens* a run) still keeps its rule.
+    const out = await mdMeasured(
+      PROSE +
+        '<table border="0" width="85%"><tr><td width="94%" style="border: 2px solid #FF0000">' +
+        '<p style="text-align: center">Анну Валерьевну Тихонравову (г. Харьков)</p>' +
+        '<p style="text-align: center">с успешной защитой диссертации</p>' +
+        '<p style="text-align: center">* * *</p>' +
+        '<p style="text-align: center">Защита состоялась 17 сентября 2014 г.</p>' +
+        "</td></tr></table>" +
+        PROSE,
+    );
+    const rule = out.indexOf("\n---\n", out.indexOf("::: frame"));
+    expect(rule).toBeGreaterThan(-1);
+    // One group each side of the divider, and the divider outside both.
+    expect(out.slice(0, rule).lastIndexOf(":::")).toBeGreaterThan(out.slice(0, rule).indexOf("::: align"));
+    expect(out.indexOf("::: align", rule)).toBeGreaterThan(rule);
+  });
+
   it("does not make an aligned group out of a rule alone", async () => {
     // False friend: the same alignment on a block with nothing in it. `align`
     // positions content, and a run whose only member is a divider has none, so

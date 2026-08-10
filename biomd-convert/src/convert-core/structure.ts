@@ -724,12 +724,55 @@ function groupAlignedRuns(blocks: BiomdContent[], ctx: Ctx): BiomdContent[] {
       out.push(block);
       continue;
     }
+    // A rule the author drew *between* two aligned lines divides them, and a
+    // wrapper that spans it asserts the opposite — §13 calls `align` a bounded
+    // group, so one group either side of the divider is what the source says.
+    // See {@link dividesTheRun}.
+    if (dividesTheRun(block, run)) {
+      flush();
+      out.push(block);
+      continue;
+    }
     if (align !== runAlign) flush();
     runAlign = align;
     run.push(block);
   }
   flush();
   return out;
+}
+
+/**
+ * Whether a rule arriving now is dividing the run rather than opening it.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Position within the run, not the rule's own typography: a
+ * `thematicBreak` divides when the run already holds a text-carrying member, so
+ * the source drew content, then a divider, then more content. Nothing about the
+ * document, the glyph the divider was written with, or how long either side is.
+ *
+ * **Why it is not a recurrence rule.** A divider inside a bounded group occurs
+ * at most once per group by construction, so there is no second occurrence to
+ * require. The evidence is *containment* instead, which `CLAUDE.md` §5 names as
+ * the substitute where recurrence cannot apply: an `::: align` spanning a
+ * divider claims the two halves are one bounded group, which is precisely what
+ * the divider denies.
+ *
+ * **False friend, tested for non-firing: the rule that *opens* a run.**
+ * `kiselev` ends with `::: align position: right` whose first child is `---`,
+ * and its reference keeps it there. That rule separates the footer from the
+ * page above it; it divides nothing inside the group, and the run has no
+ * text-carrying member yet when it arrives. This is also why the exclusion is
+ * written against `run` rather than against the block list: hoisting *every*
+ * rule out would put `kiselev`'s divider in a different container from the
+ * signature line it introduces, which is the case {@link alignableRunMember}
+ * records for admitting rules to a run at all.
+ *
+ * A trailing rule is left alone for the same reason — with nothing after it
+ * inside the group it is not between anything.
+ */
+function dividesTheRun(block: BiomdContent, run: BiomdContent[]): boolean {
+  return block.type === "thematicBreak" && run.some((member) => blockTextOf(member) !== "");
 }
 
 /**

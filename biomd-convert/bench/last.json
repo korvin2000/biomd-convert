@@ -1,5 +1,5 @@
 {
-  "overall": 0.9645668566801242,
+  "overall": 0.964619064148062,
   "documents": [
     {
       "name": "authors",
@@ -2303,12 +2303,12 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9347826086956522,
+        "recall": 0.9565217391304348,
         "precision": 1,
-        "f1": 0.9662921348314606,
+        "f1": 0.9777777777777777,
         "expected": 46,
-        "actual": 43,
-        "matched": 43,
+        "actual": 44,
+        "matched": 44,
         "missing": [
           "lead",
           "align"
@@ -2326,7 +2326,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9956234225657428
+      "overall": 0.9967719868603745
     },
     {
       "name": "news_2007",

@@ -27,13 +27,13 @@
     ]
   },
   "totals": {
-    "findings": 68,
-    "alignmentRows": 278
+    "findings": 66,
+    "alignmentRows": 277
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 26,
+      "instances": 25,
       "documents": 10
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 12,
+      "instances": 11,
       "documents": 6
     }
   ],
@@ -638,29 +638,6 @@
       }
     },
     {
-      "id": "b2d076cb",
-      "doc": "news",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[58]/break[3]",
-      "producedLine": 312,
-      "referenceLine": 302,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "7a26d59e",
       "doc": "news",
       "class": "layout.align.mismatch",
@@ -668,7 +645,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[70]/align[1]/paragraph[0]",
-      "producedLine": 392,
+      "producedLine": 397,
       "referenceLine": 385,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -718,23 +695,6 @@
       }
     },
     {
-      "id": "08e1090a",
-      "doc": "news",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[58]/break[3]",
-      "producedLine": 312,
-      "referenceLine": 302,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "frame>align",
-        "referenceContainer": "frame"
-      }
-    },
-    {
       "id": "8cef4989",
       "doc": "news",
       "class": "layout.containment.mismatch",
@@ -742,7 +702,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/frame[70]/align[1]/paragraph[0]",
-      "producedLine": 392,
+      "producedLine": 397,
       "referenceLine": 385,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсис…",
@@ -4015,20 +3975,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 312,
-      "referenceLine": 302,
-      "text": "",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": null,
-      "sourceAlignment": "unknown",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": null
-    },
-    {
-      "doc": "news",
-      "producedLine": 314,
+      "producedLine": 319,
       "referenceLine": 307,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "center",
@@ -4041,7 +3988,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 333,
+      "producedLine": 338,
       "referenceLine": 325,
       "text": "Владимир Ильич Богданович",
       "producedAlignment": "center",
@@ -4054,7 +4001,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 338,
+      "producedLine": 343,
       "referenceLine": 330,
       "text": "",
       "producedAlignment": "center",
@@ -4067,7 +4014,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 350,
+      "producedLine": 355,
       "referenceLine": 342,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
@@ -4080,7 +4027,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 362,
+      "producedLine": 367,
       "referenceLine": 353,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
@@ -4093,7 +4040,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 380,
+      "producedLine": 385,
       "referenceLine": 371,
       "text": "Александр Петрович Мартынов",
       "producedAlignment": "center",
@@ -4106,7 +4053,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 392,
+      "producedLine": 397,
       "referenceLine": 385,
       "text": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легенда…",
       "producedAlignment": "left",
@@ -4119,7 +4066,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 394,
+      "producedLine": 399,
       "referenceLine": 388,
       "text": "",
       "producedAlignment": "center",
@@ -4132,7 +4079,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 406,
+      "producedLine": 411,
       "referenceLine": 399,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
@@ -4145,7 +4092,7 @@
     },
     {
       "doc": "news",
-      "producedLine": 423,
+      "producedLine": 428,
       "referenceLine": 414,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "center",

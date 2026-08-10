@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-10T03:15:29.357Z",
+  "generated": "2026-08-10T07:37:39.491Z",
   "totals": {
-    "findings": 165,
-    "converterDefects": 89,
+    "findings": 164,
+    "converterDefects": 88,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 45,
-    "ambiguous": 31,
+    "referenceInconsistencies": 46,
+    "ambiguous": 30,
     "bySeverity": {
       "critical": 4,
-      "major": 80,
-      "minor": 81
+      "major": 77,
+      "minor": 83
     }
   },
   "perDocument": [
@@ -135,11 +135,11 @@
     },
     {
       "doc": "news",
-      "findings": 9,
-      "converterDefects": 7,
+      "findings": 8,
+      "converterDefects": 6,
       "critical": 0,
-      "major": 8,
-      "minor": 1
+      "major": 5,
+      "minor": 3
     },
     {
       "doc": "news_2007",
@@ -194,7 +194,7 @@
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 9,
+      "instances": 8,
       "documents": [
         "new_karta",
         "new_lagq2",
@@ -206,12 +206,12 @@
         "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 9,
+        "converter-defect": 8,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 216,
+      "rank": 192,
       "example": {
         "doc": "new_karta",
         "path": "/align[23]",
@@ -266,31 +266,35 @@
       }
     },
     {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "major",
-      "instances": 4,
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 19,
       "documents": [
-        "new_lagq2",
-        "news"
+        "new_blackmore",
+        "new_lendle2",
+        "news",
+        "news_2007",
+        "segovia",
+        "williams2"
       ],
       "verdicts": {
         "converter-defect": 4,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
+        "reference-inconsistency": 15,
         "ambiguous": 0
       },
       "rank": 24,
       "example": {
-        "doc": "new_lagq2",
-        "path": "/paragraph[16]",
-        "produced": "Music by:",
-        "reference": null
+        "doc": "new_blackmore",
+        "path": "/heading[70]/text",
+        "produced": "(none)",
+        "reference": "strong:О вкусах не спорят"
       }
     },
     {
       "class": "paragraph.content.edited",
       "severity": "minor",
-      "instances": 11,
+      "instances": 12,
       "documents": [
         "barrios",
         "jovicic",
@@ -302,12 +306,12 @@
         "williams2"
       ],
       "verdicts": {
-        "converter-defect": 2,
+        "converter-defect": 3,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 9
       },
-      "rank": 16,
+      "rank": 24,
       "example": {
         "doc": "new_blackmore",
         "path": "/paragraph[5]",
@@ -316,28 +320,25 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 18,
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "major",
+      "instances": 3,
       "documents": [
-        "new_blackmore",
-        "new_lendle2",
-        "news_2007",
-        "segovia",
-        "williams2"
+        "new_lagq2",
+        "news"
       ],
       "verdicts": {
         "converter-defect": 3,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 15,
+        "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 15,
+      "rank": 18,
       "example": {
-        "doc": "new_blackmore",
-        "path": "/heading[70]/text",
-        "produced": "(none)",
-        "reference": "strong:О вкусах не спорят"
+        "doc": "new_lagq2",
+        "path": "/paragraph[16]",
+        "produced": "Music by:",
+        "reference": null
       }
     },
     {
@@ -689,27 +690,6 @@
       }
     },
     {
-      "class": "break.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "news",
-        "path": "/frame[58]/break[3]",
-        "produced": "---",
-        "reference": "--- — produced at /frame[58]/align[4]/break[0]"
-      }
-    },
-    {
       "class": "heading.missing.absorbed",
       "severity": "major",
       "instances": 1,
@@ -893,7 +873,7 @@
       "rank": 3,
       "example": {
         "doc": "news",
-        "path": "/frame[58]/align[4]/paragraph[0]",
+        "path": "/frame[58]/align[2]/paragraph[3]",
         "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
         "reference": null
       }
@@ -1365,28 +1345,6 @@
       }
     },
     {
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2",
-        "news"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 3
-      },
-      "rank": 0,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
-        "produced": "1988",
-        "reference": null
-      }
-    },
-    {
       "class": "image.caption.spurious",
       "severity": "minor",
       "instances": 2,
@@ -1475,6 +1433,27 @@
       }
     },
     {
+      "class": "paragraph.spurious.in-break-run",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "goya2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 2
+      },
+      "rank": 0,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[20]/column[0]/align[0]/paragraph[1]",
+        "produced": "1988",
+        "reference": null
+      }
+    },
+    {
       "class": "align.active.spurious",
       "severity": "minor",
       "instances": 1,
@@ -1493,6 +1472,27 @@
         "path": "/align[6]@active",
         "produced": "active: Источники:",
         "reference": null
+      }
+    },
+    {
+      "class": "hardbreak.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 1,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "news",
+        "path": "/frame[58]/align[2]/paragraph[2]",
+        "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
+        "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks"
       }
     },
     {
@@ -3094,41 +3094,13 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "49a00212",
-      "doc": "news",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[58]/align[4]/paragraph[0]",
-      "producedLine": 305,
-      "referenceLine": null,
-      "produced": "с успешной защитой диссертации на тему:",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "88a7cebf",
-      "doc": "news",
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[58]/align[4]/paragraph[0]",
-      "producedLine": 307,
-      "referenceLine": null,
-      "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "84b66caf",
+      "id": "89f4e454",
       "doc": "news",
       "class": "paragraph.spurious.absorbed",
       "severity": "major",
       "evidence": "structure",
       "op": "insert",
-      "path": "/frame[58]/align[4]/paragraph[0]",
+      "path": "/frame[58]/align[2]/paragraph[3]",
       "producedLine": 309,
       "referenceLine": null,
       "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
@@ -3164,31 +3136,45 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "d34b92fe",
+      "id": "e917d727",
       "doc": "news",
-      "class": "retyped.paragraph-to-align",
+      "class": "hardbreak.missing",
       "severity": "major",
       "evidence": "structure",
+      "op": "delete",
+      "path": "/frame[58]/align[2]/paragraph[2]",
+      "producedLine": 307,
+      "referenceLine": 297,
+      "produced": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
+      "reference": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» и присуждением ей ученой степени кандидата и… — 0 of 1 hard breaks",
+      "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "580b0803",
+      "doc": "news",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
       "op": "substitute",
-      "path": "/frame[58]/align[2]",
-      "producedLine": 302,
-      "referenceLine": 289,
-      "produced": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
-      "reference": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков) с успешной защитой диссертации на тему: «СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛ… — at /frame[58]/align[4]/paragraph[0]",
+      "path": "/frame[58]/align[2]/paragraph[2]",
+      "producedLine": 307,
+      "referenceLine": 297,
+      "produced": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»**",
+      "reference": "**«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»** и присуждением ей ученой степени **канди…",
       "verdict": "converter-defect"
     },
     {
-      "id": "7c48e9d0",
+      "id": "728652d0",
       "doc": "news",
-      "class": "break.containment",
-      "severity": "major",
+      "class": "emphasis.span",
+      "severity": "minor",
       "evidence": "structure",
-      "op": "move",
-      "path": "/frame[58]/break[3]",
-      "producedLine": 312,
-      "referenceLine": 302,
-      "produced": "---",
-      "reference": "--- — produced at /frame[58]/align[4]/break[0]",
+      "op": "substitute",
+      "path": "/frame[58]/align[2]/paragraph[2]",
+      "producedLine": 307,
+      "referenceLine": 297,
+      "produced": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ»",
+      "reference": "strong:«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И ИСПОЛНИТЕЛЬСКИЕ АСПЕКТЫ» · strong:кандидата искусствоведения",
       "verdict": "converter-defect"
     },
     {
@@ -3199,7 +3185,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[70]/align[1]",
-      "producedLine": 392,
+      "producedLine": 397,
       "referenceLine": 383,
       "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
       "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[70]/paragraph[2]",
