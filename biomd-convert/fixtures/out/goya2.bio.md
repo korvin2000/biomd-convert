@@ -64,7 +64,6 @@ position: center
 src: photo/g/goya/goya_1000000a.jpg
 position: center
 size: medium
-caption: 1.000.000 Platinum
 :::
 
 :::
@@ -162,7 +161,6 @@ position: center
 src: photo/g/goya/goya_hits1a.jpg
 position: center
 size: medium
-caption: Francis Goya Plays His Favourite Hits vol. 1
 :::
 
 :::
@@ -284,7 +282,6 @@ position: center
 src: photo/g/goya/goya_hits1b.jpg
 position: center
 size: medium
-caption: Best of Francis Goya
 :::
 
 :::
@@ -517,7 +514,6 @@ position: center
 src: photo/g/goya/goya_2000a.jpg
 position: center
 size: medium
-caption: Collection 2000 / Francis Goya
 :::
 
 :::
@@ -659,7 +655,6 @@ position: center
 src: photo/g/goya/goya_historia1.jpg
 position: center
 size: medium
-caption: Historia De Un Amor
 :::
 
 :::
@@ -833,7 +828,6 @@ position: center
 src: photo/g/goya/goya_inmoscow1.jpg
 position: center
 size: medium
-caption: Francis Goya in Moscow
 :::
 
 :::

@@ -64,7 +64,7 @@ caption: Иоганн Себастьян Бах
 Хаммершлаг Я. Если бы Бах вел дневник. Будапешт, 1965.\
 Морозов С. Бах. М., 1984. // Сер. Жизнь замечательных людей.
 
-| Произведение | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 |
 | - | - | - |
 | Air on the G String - (Air from BWV 1068 arr Wilhelmi) - 2 versions | [TAB](music/tab/jsbaoagz.txt) | — |
 | Anna Magdalena Anh 114 - Minuet in G | [TAB](music/tab/jsba114z.txt) | — |

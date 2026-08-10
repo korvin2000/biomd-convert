@@ -24,7 +24,7 @@ size: small
 
 Диенс являлся членом жюри большого числа международных конкурсов. В 1988 году он вошел в число 100 лучших из ныне живущих гитаристов всех стилей и направлений. В течение нескольких последующих лет портрет Диенса появился на обложках всех главных гитарных журналов мира: *Les Cahiers de la Guitare*(Франция), *Classical Guitar* (Великобритания), *Gitarre & Laute* (Германия), *Guit'art* (Италия) и *Gitary Swiat* (Польша). В июне 2000 г. стал профессором гитары Парижской национальной консерватории.
 
-| Название | Аудиоформат | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 | 🔗 |
 | - | - | - | - |
 | _Tango En Skaï_ | [TAB](music/tab/skai.txt) | [MIDI](music/midi/tango_dyens.mid) | [RAM](music/ram/skai.ram) |
 | Ноты (.gif 1-2 ) | [ZIP](music/scores/dyens.zip) | [GIF-1](music/scores/tango_dyens1a.gif) | [GIF-2](music/scores/tango_dyens1b.gif) |

@@ -2,6 +2,7 @@
 position: center
 
 # Лос-Анджелесский
+
 # гитарный квартет
 
 :::
@@ -21,6 +22,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **D**ances From Renaissance to Nutcracker
@@ -52,6 +54,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **E**vening in Grenada
@@ -83,6 +86,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **L**abyrinth
@@ -118,6 +122,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **F**or Thy Pleasure
@@ -151,6 +156,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **E**l Amor Brujo
@@ -182,6 +188,7 @@ size: small
 :::
 
 :::
+
 ::: column
 
 **R**ecital

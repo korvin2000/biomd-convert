@@ -78,7 +78,7 @@ caption: Barrios - CD (2)
 
 :::
 
-| Название | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 |
 | - | - | - |
 | Choro Da Saudade - Nostalgic Choro | [TAB](music/tab/abmsaudz.txt) | [MIDI](music/midi/abmsaud.mid) |
 | Contemplacion (Vals et Tremelo) | [TAB](music/tab/abmcontz.txt) | — |

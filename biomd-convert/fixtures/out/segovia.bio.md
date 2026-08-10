@@ -161,7 +161,7 @@ size: large
 - Serenata
 - Short Spanish Pieces
 
-| Название | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 |
 | - | - | - |
 | *Bretonia* | [TAB](music/tab/asvbret.txt) | — |
 | *Escosesa* | [TAB](music/tab/asvescos.txt) | — |

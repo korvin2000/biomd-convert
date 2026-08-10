@@ -109,7 +109,7 @@ caption: Альбом Олега Киселева
 
 :::
 
-| Название | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 |
 | - | - | - |
 | Десять музыкальных этюдов для гитары (исп. О. Киселев) | — | — |
 | • Baroque - этюд № 1 | [MP3](music/mp/kiselev/01Baro.mp3) | — |
@@ -154,14 +154,25 @@ position: right
 VP Music Media\
 представлена на сайтах издательства в Интернете:
 
+:::
+
+:::
+
+:::
+
+::: align
+position: right
+
 [www.vpmusicmedia.com](http://www.vpmusicmedia.com)\
 [http://users.iol.it/vincenzo.pocci](http://users.iol.it/vincenzo.pocci)
 
-E-mail: [info@vpmusicmedia.com](mailto:info@vpmusicmedia.com)\
-[vincenzo.pocci@iol.it](mailto:vincenzo.pocci@iol.it)
 :::
 
-:::
+::: align
+position: right
+
+E-mail: [info@vpmusicmedia.com](mailto:info@vpmusicmedia.com)\
+[vincenzo.pocci@iol.it](mailto:vincenzo.pocci@iol.it)
 
 :::
 

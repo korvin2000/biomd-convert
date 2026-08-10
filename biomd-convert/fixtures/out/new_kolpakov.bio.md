@@ -67,7 +67,7 @@ position: right
 
 :::
 
-| Название | Формат | Размер |
+| | 🔗| |
 | --: | ---: | ---: |
 | Венгерка | [WMA](music/wma/Kolpakov_Vengerka.wma) | (1,7 Mb) |
 
