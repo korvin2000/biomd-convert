@@ -318,18 +318,13 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     // and §7.2 places it immediately before the paragraph it accompanies. Left
     // in the run it degrades to a bare `![]()` glued to the first word, which is
     // both wrong and what every legacy biography page looks like.
-    let hoisted = 0;
-    for (const node of inlineRun) {
-      if (node.kind !== "element" || node.tag !== "img" || !isFloated(node)) continue;
-      const figure = imageFrom(node, ctx, true);
-      if (figure) {
-        out.push(figure);
-        hoisted += 1;
-      }
-    }
-    if (hoisted > 0) {
+    const floats = floatedFigures(inlineRun, ctx);
+    if (floats.length > 0) {
       inlineRun = inlineRun.filter((n) => !(n.kind === "element" && n.tag === "img" && isFloated(n)));
-      if (inlineRun.length === 0) return;
+      if (inlineRun.length === 0) {
+        for (const { figure } of floats) out.push(figure);
+        return;
+      }
     }
 
     // A stack of links separated by nothing but `<br>` is a menu — a side rail,
@@ -383,7 +378,7 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
 
     const phrasing = inlineFrom(inlineRun, ctx);
     inlineRun = [];
-    out.push(...blocksFromPhrasing(phrasing, ctx, out[out.length - 1]));
+    out.push(...blocksFromPhrasing(phrasing, ctx, out[out.length - 1], floats));
   };
 
   for (const child of node.children) {
@@ -1706,19 +1701,87 @@ function blocksFromPhrasing(
   phrasing: readonly PhrasingContent[],
   ctx: Ctx,
   precededBy?: BiomdContent,
+  floats: readonly FloatedFigure[] = [],
 ): BiomdContent[] {
   if (phrasing.length === 0) return [];
   const out: BiomdContent[] = [];
 
   const groups = groupLines(splitLines(phrasing));
   const groupText = groups.map((g) => g.lines.map(lineText).join(" ").trim());
-  let after = groupText.reduce((a, t) => a + t.length, 0);
+  const total = groupText.reduce((a, t) => a + t.length, 0);
+  let after = total;
+  let consumed = 0;
+  let pending = 0;
 
   groups.forEach((group, index) => {
-    after -= (groupText[index] as string).length;
+    const length = (groupText[index] as string).length;
+    after -= length;
+    // §7.2: the figure goes immediately before the paragraph it accompanies,
+    // and `floats` says which one — see `floatedFigures`. The last group takes
+    // whatever is left, so no figure can be dropped by rounding.
+    const end = total > 0 ? (consumed + length) / total : 1;
+    while (pending < floats.length && ((floats[pending] as FloatedFigure).at < end || index === groups.length - 1)) {
+      out.push((floats[pending] as FloatedFigure).figure);
+      pending += 1;
+    }
+    consumed += length;
     const previous = out[out.length - 1] ?? precededBy;
     out.push(...blocksFromGroup(group.lines, ctx, after, previous?.type === "biomdImage"));
   });
+  return out;
+}
+
+/** A floated image lifted out of an inline run, and where in that run it stood. */
+interface FloatedFigure {
+  figure: BiomdContent;
+  /** Share of the run's visible text that precedes it, 0..1. */
+  at: number;
+}
+
+/**
+ * Floated images lifted out of an inline run, each keeping its place in it.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** A 1998 page writes a whole section as one `<p>` whose
+ * paragraphs are `<br><br>`, and drops a floated portrait wherever the text it
+ * belongs beside begins. Lifting every such image to the head of the *run* put
+ * `tarrega`'s portrait two paragraphs above the sentence it illustrates and
+ * `williams2`'s two above the CBS award it shows — the same defect, the same
+ * distance, on two documents whose sources are otherwise unalike.
+ *
+ * The image's own position in the run is the evidence, and it survives the
+ * lowering boundary as a **proportion** of the run's visible text rather than
+ * as a character offset: the two sides count text differently — entities are
+ * decoded, wraps are joined, hard breaks are added — and a ratio is invariant
+ * under all of it while an offset is not. The figure then goes before the
+ * paragraph whose share of the run brackets it, which is where the reader saw
+ * it.
+ *
+ * **Recurrence** does not apply and is not claimed: a floated figure occurs
+ * once where it occurs. What replaces it is that the rule is *total* — every
+ * floated image is placed by the same measurement, including the common case
+ * of a run with one paragraph, where the bracket is the whole run and the
+ * result is the head of it, exactly as before.
+ *
+ * **False friend.** A run that is nothing but the image. It has no paragraph
+ * to sit before, so it is emitted directly and never reaches the bracketing.
+ */
+function floatedFigures(run: readonly LadomNode[], ctx: Ctx): FloatedFigure[] {
+  const visible = (node: LadomNode): number =>
+    (node.kind === "text" ? (node.value ?? "") : textOf(node)).replace(/\s+/gu, " ").trim().length;
+  const total = run.reduce((n, node) => n + visible(node), 0);
+
+  const out: FloatedFigure[] = [];
+  let seen = 0;
+  for (const node of run) {
+    if (node.kind === "element" && node.tag === "img" && isFloated(node)) {
+      const figure = imageFrom(node, ctx, true);
+      if (figure) out.push({ figure, at: total > 0 ? seen / total : 0 });
+      continue;
+    }
+    seen += visible(node);
+  }
   return out;
 }
 

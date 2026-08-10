@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T15:38:43.595Z",
+  "generated": "2026-08-10T15:45:35.010Z",
   "totals": {
-    "findings": 133,
-    "converterDefects": 73,
+    "findings": 131,
+    "converterDefects": 71,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 43,
     "ambiguous": 17,
     "bySeverity": {
       "critical": 4,
-      "major": 60,
+      "major": 58,
       "minor": 69
     }
   },
@@ -175,18 +175,18 @@
     },
     {
       "doc": "tarrega",
-      "findings": 7,
-      "converterDefects": 3,
+      "findings": 6,
+      "converterDefects": 2,
       "critical": 1,
-      "major": 5,
+      "major": 4,
       "minor": 1
     },
     {
       "doc": "williams2",
-      "findings": 3,
-      "converterDefects": 1,
+      "findings": 2,
+      "converterDefects": 0,
       "critical": 0,
-      "major": 1,
+      "major": 0,
       "minor": 2
     }
   ],
@@ -381,28 +381,6 @@
         "path": "/paragraph[5]",
         "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
         "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
-      }
-    },
-    {
-      "class": "image.moved",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "tarrega",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "tarrega",
-        "path": "/image[9]",
-        "produced": "Франсиско Таррега",
-        "reference": "Франсиско Таррега — produced at /image[7]"
       }
     },
     {
@@ -3062,20 +3040,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "40c2a16b",
-      "doc": "tarrega",
-      "class": "image.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[9]",
-      "producedLine": 24,
-      "referenceLine": 28,
-      "produced": "Франсиско Таррега",
-      "reference": "Франсиско Таррега — produced at /image[7]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "0cf42354",
       "doc": "tarrega",
       "class": "retyped.paragraph-to-heading2",
@@ -3172,20 +3136,6 @@
       "produced": "(none)",
       "reference": "em:Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую р…",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "528e5cbb",
-      "doc": "williams2",
-      "class": "image.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[6]",
-      "producedLine": 14,
-      "referenceLine": 18,
-      "produced": "",
-      "reference": "produced at /image[4]",
-      "verdict": "converter-defect"
     },
     {
       "id": "c28cdf81",

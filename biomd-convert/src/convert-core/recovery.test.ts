@@ -319,6 +319,41 @@ describe("break-run segmentation", () => {
 });
 
 describe("media", () => {
+  it("puts a floated figure before the paragraph it stands beside, not the block", async () => {
+    // `tarrega` and `williams2` both write a whole section as one `<p>` whose
+    // paragraphs are `<br><br>`, and drop the portrait where the text it
+    // illustrates begins. Lifting it to the head of the *run* moved it two
+    // paragraphs up on both.
+    const out = await md(
+      "<p>Первый абзац этой страницы, достаточно длинный чтобы его нельзя было принять за подпись.<br>" +
+        "<br>" +
+        "Второй абзац, тоже достаточно длинный чтобы считаться обычной прозой этой страницы.<br>" +
+        "<br>" +
+        '<img border="1" src="photo/t/tarrega1.jpg" align="right" width="150" height="201">Третий абзац, ' +
+        "рядом с которым художник и поставил этот портрет, и он тоже длинный.</p>",
+    );
+    const lines = out.split("\n");
+    const figure = lines.findIndex((l) => l.startsWith("::: image"));
+    const second = lines.findIndex((l) => l.startsWith("Второй абзац"));
+    const third = lines.findIndex((l) => l.startsWith("Третий абзац"));
+    expect(figure).toBeGreaterThan(second);
+    expect(figure).toBeLessThan(third);
+  });
+
+  it("false friend: a run that is nothing but the floated image stays where it is", async () => {
+    // No paragraph to stand beside, so it is emitted directly and never reaches
+    // the bracketing — the common single-paragraph case has to keep behaving
+    // exactly as it did.
+    const out = await md(
+      '<p><img border="1" src="photo/t/tarrega1.jpg" align="right" width="150" height="201"></p>' +
+        "<p>Абзац, который следует за отдельно стоящей картинкой и является обычной прозой страницы.</p>",
+    );
+    const lines = out.split("\n");
+    expect(lines.findIndex((l) => l.startsWith("::: image"))).toBeLessThan(
+      lines.findIndex((l) => l.startsWith("Абзац, который")),
+    );
+  });
+
   it("maps a portrait to a size token relative to the article, not to its parent", () => {
     // 152 px inside a 422 px content column is a small portrait. Measuring it
     // against the paragraph it stretched produced ratio ≈ 1 and `full`.
