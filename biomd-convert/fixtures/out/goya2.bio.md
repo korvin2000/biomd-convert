@@ -222,7 +222,6 @@ position: center
 src: photo/g/goya/goya_hits2a.jpg
 position: center
 size: medium
-caption: Francis Goya Plays His Favourite Hits vol. 2
 :::
 
 :::
