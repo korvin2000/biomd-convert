@@ -104,3 +104,18 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   three `table.align` findings and recover `williams2`'s right-hug after §35.6 -- but exactly **1 of
   the corpus's 21 reference tables** uses column alignment. Not a rule, a single reference choice.
   Reopens only if a second and third instance appear. (§35.6)
+- **Merge adjacent sibling `::: align` blocks that share a position.** The obvious reading of
+  `goya2`'s Vol. 2 cell, and it would close its three `retyped.align-to-paragraph`. The references
+  **keep** adjacent same-position `align` siblings in `goya2` (Vol. 1), `kiselev`, `new_geyzel04`,
+  `new_karta` and `williams2`, and merge in `goya2` (Vol. 2, 1988, 1999) alone -- four documents to
+  one, and the one contradicts itself: the `Vol. 1` and `Vol. 2` source cells are structurally
+  identical (`margin-top: 5` then `margin-top: 0`, both `align="center"`) twenty lines apart.
+  §36.5's tie-break decides it, and `analyze-2.md` then confirms outright that the author "сэкономил"
+  and that either spelling is allowed. Reopens on nothing short of a reference that merges where
+  another *cannot*. (§37.9)
+- **"Link-only cell" as the guard for `align` inside a pager lane -- killed in §33.4, and correctly.**
+  `kiselev`'s link-only contact block *is* wrapped by its reference, so no cell-level test can
+  separate them. It is recorded here so nobody rebuilds it: the working guard is the **region**
+  (`isBareLinkRow`), a signal §33.2 created in the same iteration that recorded the residue, and
+  §37.3 uses it. The lesson is the general one -- *when a cell-level test dies, ask whether the
+  container knows.* (§37.3)

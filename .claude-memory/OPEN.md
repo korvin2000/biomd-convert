@@ -3,78 +3,71 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-10**, after the author rulings of PROGRESS §36 (which follow §35).
+Last touched **2026-08-10**, after PROGRESS §37 (which follows §36).
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
 - [2b. Ruled -- one-record table vs. `::: align`](#2b-ruled----one-record-table-vs--align-the-table-stays)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
-- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-over-22-documents)
+- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-after-37)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. `c92c009` **normalized 11 references and added
-`analyze/analyze-2.md`** -- an in-depth complaint record for `news`, `goya2`, `new_karta` and
-`kiselev`, with new house rules stated as prose. Every figure quoted from PROGRESS §21-§34 predates
-it. Re-baselined before attribution: the reference edit alone took L1 94.5 -> 94.6, L2 263 -> 257
-findings / 135 -> 112 defect, L3 flat.
+Reference-guided refinement, 22 documents. §37 took the whole standing queue and closed **five**
+mechanisms; the authority order and the §36 rulings are unchanged.
 
-**The authority order changed in §36.1** -- `analyze/analyze.md` and `analyze/analyze-2.md` are now
-rung 1, the `fixtures/` pairs rung 2, and `BioMD-Reference.md` rung 3 and **amendable**.
-
-**Current state, *measured* 2026-08-10, after PROGRESS §36:**
+**Current state, *measured* 2026-08-10, after PROGRESS §37:**
 
 | rung | value |
 |---|---|
-| L0 | **463 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 %, `read()` warnings 0 |
-| L1 | **96.5 %** |
-| L2 | **165 findings -- 89 converter-defect** · 31 ambiguous · 45 reference-inconsistency · **4 critical** |
-| L3 | **68**, identity 0, deterministic |
-| validator | **5** errors -- was 27; §35.9 closed by amending the spec, see §2 |
+| L0 | **476 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | **96.6 %** |
+| L2 | **157 findings -- 83 converter-defect** · 28 ambiguous · 46 reference-inconsistency · **4 critical** |
+| L3 | **52**, identity 0, deterministic |
+| validator | **0 errors on every produced document**; 4 remain on the *references* (`fence-unbalanced`) |
 
 That is the floor. Nothing accepted from here may regress it.
 
-> **Of the iteration's 21-defect fall, 14 were the instrument becoming truthful and 7 the conversion
-> improving.** Never quote the drop without the split.
+**Landed in §37, one commit each.** A rule drawn between two aligned lines divides them (`730614a`,
+`news`) · a pager's lane is what places its link (`523dea8`, `segovia1`, and it closes §33.4's
+residue on the *region*-level signal §33.2 built) · a `rowspan` holds its rows in one region
+(`be5bdca`, `goya2`'s Moscow lane, now byte-identical to its reference) · a link label is one line
+(`96e5673`, `goya2` + `new_kolpakov`) · a numbered run the source split in two is one run
+(`9b88d67`, `goya2`, and it took L3 61 -> 52 on its own).
 
-**Landed this iteration (PROGRESS §35):** a link column is headed `🔗` again, reversing §30.2 on the
-author's newer ruling (§35.3) · a child `image`'s `position`/`size` is outside the profile, so its
-absence is not a defect -- 12 of goya2's 19 were phantom (§35.4) · an asset outside the content roots
-climbs one level, and all **565** relative targets now agree on both sides (§35.5) · a one-record
-table is a table (§35.6) · two lines pushed in by the same amount are two lines, closing both
-`paragraph.content` criticals (§35.7) · a column no row fills is spacing, 30 closed (§35.8).
+**Next, in order. Nothing here is a queue -- probe before committing (SKILL §6).**
+1. **`segovia` (10) and `new_rechin4` (9)** are the two largest per-document counts and **neither has
+   been probed this campaign**. Adjudicate two or three instances before surveying either.
+2. **`new_karta`'s one-record row** -- one `::: columns` where the reference writes the two-column
+   link table. §35.6 built exactly this mechanism; this instance escapes it. Also the cause of
+   `new_karta`'s one spurious `align` inside a `column`, which is a shadow, not an align defect.
+3. **`new_kolpakov`'s href carries markup** -- the source writes `<a href="<B>http://...</B>">` and
+   the produced target keeps the tags where the reference has the clean URL. Small, general,
+   4 instances on one document. Spotted while fixing §37.5, not built.
+4. **`analyze-2.md`'s "ДРУГИЕ АЛЬБОМЫ" request** -- `::: images` with `columns: 2` for `goya2`'s
+   two-up album plates. `::: images` is already emitted; the `columns:` property is not. **Check the
+   reference first** -- it may not carry it either.
 
-**Next, in order.**
-1. **`news`'s frame/align shape** -- 7 defects, the largest single unexamined cluster now, and the
-   normalized reference restructured exactly this: obituary notices re-split between the frame and an
-   inner `::: align`, and `title: ПОЗДРАВЛЯЕМ` replaced by a `##` heading inside the frame.
-2. **`align` inside `column`** -- named by §35.10's revert. The produced side has **32**, the
-   references **26**; the work is separating the 26 wanted (`goya2`, `kiselev`, `new_blackmore`) from
-   the 6 unwanted (`new_karta`, `segovia1`). Would close `segovia1`'s 2 `retyped.align-to-paragraph`.
-3. **`goya2`'s "Moscow Nights" `rowspan` lane** -- the author supplies the reading and a screenshot in
-   `analyze-2.md`: a `rowspan="2"` text cell beside two images the browser stacks into the right half,
-   written as `::: columns` with both images in one column. Understood, not built.
+**Do not re-take these; §37 settled them.**
+- `news`'s frame/align cluster is **done**: one mechanism (the divider) fixed, and 3 of the remaining
+  6 are ceilings -- 2 are the `::: lead` (§26.2, aesthetic in both directions) and 1 is the reference
+  centring the Paco de Lucía obituary's prose, which **computes `justify` in the browser** exactly
+  like the two obituaries the same reference leaves unwrapped.
+- `align` inside `column` is **done**: `segovia1`'s 2 fixed; `goya2`'s 3 are an author-declared
+  alternative (`analyze-2.md`, and the `Vol. 1`/`Vol. 2` sources are structurally identical while the
+  reference writes them differently); `new_karta`'s 1 is item 2 above wearing another name.
+- `goya2`'s Moscow `rowspan` lane is **done** and byte-identical.
 
-**Killed twice now: the word-less alignment rule.** §30.1 killed it and named its reopening condition
-("only on the `columns` region being recovered first"); §33 met it, the rule was rebuilt and
-re-measured, and it failed on a **different** falsifier -- `segovia1`'s recovered lanes want no
-`::: align` inside them at all, so it went 2 -> 4 `retyped.align-to-paragraph` and L3 rose 68 -> 70.
-Reverted whole. Do not rebuild it as a whole; the residue is candidate 2 above.
+**Killed this iteration: merging adjacent same-position `::: align` siblings.** Four references keep
+them (`goya2` Vol. 1, `kiselev`, `new_geyzel04`, `new_karta`, `williams2`), one merges (`goya2`
+Vol. 2/1988/1999) and contradicts itself on identical source. §36.5's tie-break. PROGRESS §37.9.
 
-**Downgraded on measurement this iteration.** *"A uniformly indented run subordinate to a lead-in is a
-list"* -- fires **21** times across the corpus and only 2 want a list; `borislova`'s sixteen movement
-runs keep hard-break lines in their own reference. Only the colon-announced form was built.
-*"Carry a container's right alignment into GFM column alignment"* -- would close `new_kolpakov`'s
-3 `table.align` and recover `williams2`'s right-hug, but **1 of 21** reference tables uses column
-alignment.
-
-**Off the queue entirely:** `retyped.paragraph-to-lead` (author ruling §26.2) · `image.size.value`
-(§25.4) · 7 of `break.missing`'s 10 (§25.3) · the long drawn separator and `new_karta`'s linked icon
-(both `analyze-2.md` complaints, both already closed by §25.2/§29.3 and verified, PROGRESS §35.11).
+**Still killed twice: the word-less alignment rule.** §30.1 and §35.10, two different falsifiers.
+Its residue was candidate `align`-inside-`column`, which §37.3 has now closed.
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
@@ -82,7 +75,6 @@ alignment.
 > **`corpus scan` is still required after a fresh clone.**
 
 ---
-
 ## 2. Closed -- the spec was amended, not the converter
 
 **The authority order was corrected (PROGRESS §36.1).** `analyze/analyze.md` + `analyze/analyze-2.md`
@@ -162,28 +154,27 @@ finding.
    reading is recorded as a named divergence, never patched into a one-document special case.
    PROGRESS §36.5; the worked example is §2b above.
 
-## 4. Open defect classes -- *measured* 2026-08-10 over 22 documents
+## 4. Open defect classes -- *measured* 2026-08-10 after §37
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
-| 216 | `retyped.paragraph-to-align` | 9 | 9 | 8 | **two mechanisms wearing one name.** 4 are a centred glyph pager (`new_karta`, `new_lendle2`, `new_rechin4`, `tarrega`) and are the rule killed twice, §35.10 -- do not rebuild it whole. The other 5 (`new_lagq2`, `news` x2, `pavlov_azancheev`, `segovia`) are a centred prose block and have never been probed |
+| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **two mechanisms wearing one name.** 4 are a centred glyph pager (`new_karta`, `new_lendle2`, `new_rechin4`, `tarrega`) and are the rule killed twice, §35.10 -- do not rebuild it whole. Of the other 4 (`new_lagq2`, `news`, `pavlov_azancheev`, `segovia`), **`news`'s is now adjudicated a ceiling** (§37.8, the browser says `justify`); the remaining 3 have never been probed |
 | 60 | `retyped.paragraph-to-list` | 5 | 5 | 4 | includes `kiselev`'s "Том I/Том II…" volume list, §15.2's named third mechanism. §35.7 built the indent machinery; the font-size half is not built |
-| 30 | `retyped.align-to-paragraph` | 5 | 5 | 2 | `segovia1`'s 2 are candidate 2 in §1 -- `align` inside `column` |
-| 24 | `paragraph.spurious.in-paragraph` | 4 | 4 | 2 | `news` x2, unexamined |
-| 16 | `paragraph.content.edited` | 11 | 2 | 8 | mostly reference-inconsistency |
-| 15 | `emphasis.span` | 18 | 3 | 5 | downgraded -- verdicts flip on identical evidence across documents. Probed for a URL-underscore artefact and cleared (2026-08-09) |
+| 24 | `emphasis.span` | 19 | 4 | 6 | downgraded -- verdicts flip on identical evidence across documents. Probed for a URL-underscore artefact and cleared (2026-08-09) |
+| 24 | `paragraph.content.edited` | 12 | 3 | 8 | mostly reference-inconsistency |
+| 18 | `paragraph.spurious.in-paragraph` | 3 | 3 | 2 | one of `news`'s two is the `::: lead` shadow (§26.2, off the queue) |
 | 15 | `paragraph.hyphenation.mixed` | 5 | 5 | 3 | |
-| -- | ~~`table.header.cell`~~ | 40 -> **7** | 0 | 3 | closed by §35.3; the 7 are `tarrega` x4, `kiselev` x2, `segovia` x1 -- three files `c92c009` did not normalize |
-| -- | ~~`image.src.value`~~ | 19 -> **0** | 0 | 0 | closed by §35.5 |
-| -- | ~~`image.position.missing` / `image.size.missing`~~ | 14 -> 0 defect | 0 | 2 | reclassified `.off-profile` by §35.4 -- the spec forbids these on a child image |
-| -- | ~~`table.geometry.cols`~~, ~~`table.cell.content.edited`~~ | 30 -> 0 | 0 | 0 | closed by §35.8 |
+| 12 | `frame.moved` · `heading.missing.caption-echo` · `image.moved` · `image.position.value` · `paragraph.missing.in-paragraph` · `retyped.list-to-paragraph` · `retyped.paragraph-to-heading2` | 2 each | 2 | 2 | the tail: seven classes at 2 instances on 2 documents each. None probed |
+| -- | ~~`retyped.align-to-paragraph`~~ | 5 -> **3** | 3 | 1 | `segovia1`'s 2 closed by §37.3; the 3 left are `goya2`'s author-declared alternative (§37.8) |
+| -- | ~~`break.containment`~~, ~~`image.containment`~~, ~~`list.item.missing`~~, ~~`paragraph.spurious.in-list`~~ | -> **0** | 0 | 0 | closed by §37.2, §37.4, §37.6 |
+| -- | ~~`link.label.content.edited`~~, ~~`list.item.content.edited`~~ | -> **0** | 0 | 0 | closed by §37.5 |
 
-Per document, defect count: `segovia` 10 · `new_rechin4` 9 · `goya2` 7 · `new_lendle2` 7 · `news` 7 ·
-`new_kolpakov` 5 · `pavlov_azancheev` 5 · `tarrega` 5 · `new_blackmore` 4 · `news_2007` 4 ·
-`segovia1` 4 · `williams2` 4 · rest ≤ 3. `new_bach` and `new_dyens` are at **0**.
+Per document, converter-defect: `segovia` 10 · `new_rechin4` 9 · `new_lendle2` 7 · `news` 6 ·
+`new_kolpakov` 5 · `pavlov_azancheev` 5 · `tarrega` 5 · `goya2` 4 · `new_blackmore` 4 · `news_2007` 4 ·
+rest ≤ 3. `new_bach` and `new_dyens` are at **0**.
 
 Also carried: `new_kolpakov`'s 3 `table.align` (column alignment, 1 of 21 references uses it) ·
-`williams2`'s 3 new findings are the stated §35.6 tradeoff, not a regression to fix ·
+`williams2`'s `retyped.table-to-align` is the §36.5 named divergence, not a target ·
 `frame`'s `title:` property is now *unused by the references too* -- `news` replaced its one use with
 a `##` heading inside the frame.
 
@@ -203,6 +194,10 @@ a `##` heading inside the frame.
 6. **L3 pairs by rendered text.** A block rewritten past 0.65 similarity is unpaired, and unpaired
    blocks yield no L3 finding. This bit in §35.6: L3 said nothing about `williams2`'s new table and
    the browser had to be measured directly.
+6b. **`layout.order.mismatch` can name a node whose own neighbourhood is exact.** Ranks are compared
+   across the two *whole* documents, so an unrelated divergence elsewhere shifts them. §37.4 closed
+   two majors at `goya2`'s second Moscow cover and opened one **critical** there -- on a region that
+   is now byte-identical on both sides. It is the largest L3 class at 18. Distrust before working.
 7. **One viewport (1024 px).** Nothing asserts a finding is stable across widths.
 8. **No mutation harness.** `CLAUDE.md` §5 asks for one; it has never been built.
 9. **L4 is not built.** Do not report an L4 number.

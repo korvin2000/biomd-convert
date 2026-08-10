@@ -96,3 +96,19 @@ as work.
 Superseded: §34's 444 / 94.5 / 263 · 135 / 68 and §28's 424 / 92.7 / 417 · 241 / 92 both predate
 `c92c009`'s normalized references. The reference edit alone, no code change, took L1 94.5 -> 94.6,
 L2 263 -> 257 findings / 135 -> 112 defect, L3 flat -- so §21-§34 figures are not comparable to these.
+
+| 36 Author rulings | 4575-4705 | the authority order corrected, analysis docs outrank the spec `36.1:4579` · empty header cell legalised, validator 27 -> 5 `36.2:4598` · `analyze-2.md` 373/375 corrected `36.3:4615` · `williams2`'s reference corrected `36.4:4623` · **the tie-break when evidence runs out `36.5:4659`** · state `36.6:4697` | HOT |
+| 37 Five mechanisms | 4707-4867 | end state `37.1:4714` · **a rule between two aligned lines divides them `37.2:4728`** · **a pager's lane places its own link, closing §33.4's residue `37.3:4743`** · **a `rowspan` holds its rows in one region `37.4:4760`** · a link label is one line `37.5:4777` · **a numbered run split in two is one run `37.6:4794`** · validator errors split by side `37.7:4812` · downgraded on evidence `37.8:4824` · killed: merging adjacent `align` `37.9:4844` · what is next `37.10:4853` | HOT |
+
+## Checkpoint -- §37, measured 2026-08-10 over **22 documents**
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **476** tests, typecheck clean, 0 FAILED, `read()` warnings 0 | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **96.6 %** | `sh bench/run.sh` |
+| L2 | **157** findings -- **83 converter-defect** · 28 ambiguous · 46 reference-inconsistency · 4 critical | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **52** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | **0** on every produced document; **4** on the *references*, all `fence-unbalanced` | `validate bench/out/<name>.bio.md` |
+
+**The validator figure is now split by side, and §36.2's "5" was not.** Do not read the 5 -> 0 as
+attributable work; §37.7 states what was measured and what was not.

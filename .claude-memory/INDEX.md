@@ -39,13 +39,13 @@ disagree, the repository file wins and this index gets fixed.
 **Next action** -- see [OPEN.md](OPEN.md) §1. In short: `c92c009` **normalized 11 references and
 added `analyze/analyze-2.md`**, an in-depth complaint record for `news`, `goya2`, `new_karta` and
 `kiselev` with new house rules stated as prose, so **every number in PROGRESS §21-§34 predates the
-current corpus** (PROGRESS §35.1). Six mechanisms landed since -- a link column is headed `🔗` again,
-reversing §30.2 (§35.3); a child `image`'s `position`/`size` is outside the profile so its absence is
-not a defect (§35.4, instrument); an asset outside the content roots climbs one level (§35.5); a
-one-record table is still a table, which un-parked §34.1 (§35.6); two lines pushed in by the same
-amount are two lines (§35.7); a column no row fills is spacing (§35.8).
-Current floor: L0 **463 tests / 5 validator errors**, L1 **96.5**, L2 **165 · 89 defect · 4 crit**,
-L3 **68**.
+current corpus** (PROGRESS §35.1). Six mechanisms landed in §35, and **§37 closed the whole standing
+queue with five more**: a rule drawn between two aligned lines divides them (§37.2) · a pager's lane
+is what places its link (§37.3, which closes §33.4's residue) · a `rowspan` holds its rows in one
+region (§37.4) · a link label is one line (§37.5) · a numbered run the source split in two is one
+run (§37.6). `analyze-2.md`'s `goya2` section supplied the last two and had not been mined.
+Current floor: L0 **476 tests**, **0 validator errors on every produced document** (4 remain on the
+*references*), L1 **96.6**, L2 **157 · 83 defect · 4 crit**, L3 **52**.
 
 **The authority order changed -- read this before citing a spec rule (PROGRESS §36.1).**
 `analyze/analyze.md` + `analyze/analyze-2.md` are now rung **1**, the `fixtures/` pairs rung 2, and
@@ -56,7 +56,12 @@ correction stated explicitly and by name.
 
 The word-less alignment rule has now been **killed twice**, on two different falsifiers (§30.1,
 §35.10) -- read both before touching `retyped.paragraph-to-align`, which is two mechanisms wearing
-one name.
+one name. Its residue, `align` inside `column`, is closed by §37.3.
+
+**Mine `analyze/analyze-2.md` before the ledger.** Two of §37's five mechanisms and three of its
+downgrades came straight out of its `goya2` section, which four sessions had not read to the end.
+It is rung 1, it names defects the instruments rank low or miss, and it states which differences the
+author considers non-defects.
 
 > **Fourteen of this iteration's 21-defect fall were the instrument becoming truthful, seven the
 > conversion improving.** Quote the defect count with that split or it reads as work that happened.

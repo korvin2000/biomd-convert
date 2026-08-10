@@ -4703,3 +4703,165 @@ a rendered layout worse is rejected however tidy it leaves the rule system.
 | L2 | 167 · 91 defect · 4 crit | **165 · 89 defect · 4 crit** |
 | L3 | 68 | **68**, identity 0 |
 | validator | 27 | **5** |
+
+## 37. Five mechanisms: the divider, the pager, the span, the label, the counter (2026-08-10)
+
+The queue OPEN.md §1 left -- `news`'s frame/align cluster, `align` inside `column`, `goya2`'s
+"Moscow Nights" `rowspan` lane -- taken in order. Two of the three held one actionable mechanism each
+and a residue that is not the converter's; the third was buildable as stated. Two further mechanisms
+came from `analyze-2.md`'s own `goya2` section, which had not been mined.
+
+### 37.1 End state, measured over 22 documents
+
+| rung | after §36 | now |
+|---|---|---|
+| L0 | 463 tests | **476**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | 96.5 | **96.6** |
+| L2 | 165 · 89 defect · 4 crit | **157 · 83 defect · 4 crit** · 28 ambiguous · 46 ref-inc |
+| L3 | 68 | **52**, identity 0, deterministic |
+| validator | 5 | **0 on every produced document** -- see §37.7 |
+
+Per document, converter-defect: `segovia` 10 · `new_rechin4` 9 · `new_lendle2` 7 · `news` 6 ·
+`new_kolpakov` 5 · `pavlov_azancheev` 5 · `tarrega` 5 · `goya2` 4 · `new_blackmore` 4 · `news_2007` 4 ·
+rest ≤ 3 · `new_bach` and `new_dyens` at 0.
+
+### 37.2 A rule drawn between two aligned lines divides them (`730614a`)
+
+`groupAlignedRuns` admitted a `thematicBreak` into an alignment run unconditionally, so `news`'s red
+congratulation notice was one `::: align` spanning the `* * *` its author drew across the middle.
+§13 calls `align` a bounded group; one that spans a divider asserts the two halves are one group,
+which is what the divider denies.
+
+The evidence is **position within the run**, not the rule's typography: a break divides when the run
+already holds a text-carrying member. The false friend keeps its existing contract -- `kiselev`'s
+footer *opens* its right-set group with a rule, which divides nothing inside the group and travels
+with the signature line it introduces. Corpus scan before building: exactly two rule-inside-`align`
+instances exist, `news`'s (interior, wanted out) and `kiselev`'s (leading, wanted in).
+
+L2 165 -> 164, defect 89 -> 88; L3 68 -> 66; `news` 9/7 -> 8/6.
+
+### 37.3 A pager's lane is what places its link (`523dea8`)
+
+`layoutFrom` ran the align-run pass over every lane it planned, including a bare-link pager, so
+`segovia1`'s footer strip wrapped each of its two named links in `::: align position: center`. Its
+reference writes them bare. `isBareLinkRow` holds only when every occupied cell is exactly one link
+and nothing else, so the lane already holds one thing and *is* the bounded group -- an `align` inside
+can restate the lane and nothing more (§6, the same argument `alignedGroup` makes for a `frame`).
+
+**§33.4's residue is closed, and on new evidence rather than argument.** That section recorded
+"link-only cannot be the guard" because `kiselev`'s link-only contact block *is* wrapped by its
+reference -- a correct killing of a *cell*-level test. The guard here reads the **region**, and
+`isBareLinkRow` did not exist as a signal when the residue was written: §33.2 built it in the same
+iteration and §33.4 explicitly left the per-cell lowering untouched.
+
+L2 164 -> 162, defect 88 -> 86; L3 66 -> 62; `segovia1` 5/4 -> 3/2, both `retyped.align-to-paragraph`
+closed; 21 documents byte-identical.
+
+### 37.4 A rowspan holds its rows in one region (`be5bdca`)
+
+`layoutFrom` emitted one region per grid row, so a row whose cells are continuations of a `rowspan`
+above had nothing to pair with: `goya2`'s second Moscow cover failed `columns.length >= 2` and left
+the region, landing *after* the `::: columns` it belongs inside. `rowBandsOf` groups rows into bands
+a span holds together, and each band's lane concatenates its cells top to bottom.
+
+Confirmed in the browser rather than argued, as `analyze-2.md` advises: the spanning track list
+renders 325 px tall at x=383, the two 162 px covers at x=634, y and y+162 -- one text lane beside one
+lane of stacked pictures. **The Moscow region is now byte-identical to its reference.**
+
+Reach: exactly **one** `rowspan` exists in the whole 22-document corpus, so where nothing spans every
+band is one row and the loop is unchanged. It is not a fixture-specific patch -- it reads a declared
+HTML fact and generalizes by construction to any of the other ~987 pages that spans a row.
+
+L2 162 -> 161, defect 86 -> 85; L3 62 -> 61; `goya2` 23/7 -> 22/6.
+
+### 37.5 A link label is one line (`96e5673`)
+
+`analyze-2.md` rules it outright -- *"ссылка ... всегда идет в 1 строку и имеет формат
+`[видимое-название](ссылка)`"* -- and `liftBreaks` has always applied it when a break reached it
+inside a link. Two of the three paths that build a link from an `<a>` never reach `liftBreaks`, so
+`goya2`'s contents entry and `new_kolpakov`'s four publisher links serialized with a hard break and
+two spaces inside the label. Asked at construction now, so the paths cannot disagree -- the fourth
+instance of the symmetry argument in this campaign, and `recovery.test.ts` was grepped first as
+`learned-patterns.md` demands.
+
+The corpus **states** the shape rather than repeating it: seven of the 22 sources write `<br>` inside
+an `<a>`, all at an edge of the label, and **no reference anywhere** contains a break inside a link
+label. An interior break becomes a space so two words can never fuse; the case does not occur here.
+
+L1 96.5 -> 96.6 (`new_kolpakov` 93.9 -> 97.0, link axis 66.7 -> 87.5); L2 161 -> 159, defect flat at
+85 -- both closed findings were `ambiguous`; L3 flat.
+
+### 37.6 A numbered run the source split in two is one run (`9b88d67`)
+
+`goya2` closes one `<p>` after `08. Sound Of Silence` and opens another for `09. Promise Me`;
+`analyze-2.md` names it as a human error in the source and asks the converter to repair it.
+`absorbContinuedItems` reads the author's own counter and nothing else: a block immediately after an
+enumerated list, announcing the **successor** of that list's last number with the same delimiter, is
+that list's next item. Recurrence is internal and required twice over -- the list must hold at least
+two items ascending by one -- so a single line beginning with a digit can never open a run.
+
+**Measured before building, over all 22 produced documents: exactly one paragraph follows an
+enumerated list beginning with any number at all, and it is the wanted one.** The corpus therefore
+offers no negative instance, which is why the three false friends are constructed and contract-tested
+rather than cited: the next album restarting at `01.`, a numbered aside that is not the successor,
+and a run repunctuated `04)`.
+
+L2 159 -> 157, defect 85 -> 83; **L3 61 -> 52** -- `layout.lane.mismatch` 12 -> 3, because the orphan
+paragraph had been displacing `goya2`'s whole lane geometry. `goya2` 20/6 -> 18/4.
+
+### 37.7 The validator count was never split by side, and the split matters
+
+Measured now, per document, with `biomd validate`:
+
+- **produced output: 0 errors on all 22 documents.**
+- **references: 4 errors**, all one class -- `fence-unbalanced`, a stray closing `:::` with no matching
+  directive, at `kiselev:264`, `new_lagq2:222`, `new_rechin4:61`, `segovia1:253`.
+
+§36.2's "5" was recorded without stating which side it counted, so the drop is not attributed here.
+The durable fact is the split: the converter emits no invalid document, and the four remaining errors
+are reference authoring slips that invariant 1 forbids editing.
+
+### 37.8 Downgraded on evidence, not worked
+
+- **`news`'s remaining 6 are not one cluster.** Two (`retyped.paragraph-to-lead`,
+  `paragraph.spurious.in-paragraph` at `/paragraph[2]`) are the same `::: lead`, which `analyze-2.md`
+  calls a human decision "для красоты" and §26.2 ruled aesthetic in **both** directions. One
+  (`retyped.paragraph-to-align` at `/frame[70]/align[1]`) is the reference centring the Paco de Lucía
+  obituary's prose: **measured in the browser, that `<p>` computes `justify`**, exactly like the
+  Богданович and Мартынов obituaries' opening prose, which the same reference leaves unwrapped. Three
+  identical shapes, one treated differently -- reference-inconsistency, and centring justified body
+  prose would be a priority-4 loss. Three of `news`'s six are therefore ceilings.
+- **`goya2`'s three `retyped.align-to-paragraph` are an author-declared alternative.**
+  `analyze-2.md`: *"не реальная проблема, а просто разные подходы ... я сэкономил и использовал 1
+  '::: align' вместо двух, это допускается"*. Independently proved before that passage was read: the
+  `Vol. 1` and `Vol. 2` cells are **identical in structure** in the source (`margin-top: 5` then
+  `margin-top: 0`, both `align="center"`) and the reference writes `Vol. 1` as two `::: align` and
+  `Vol. 2` as one -- opposite verdicts on identical evidence, twenty lines apart.
+- **`new_karta`'s one spurious `align` in a column is not an align defect.** It is the shadow of a
+  one-record row emitted as `::: columns` where the reference writes the two-column link table --
+  §35.6's mechanism not reaching this instance. Named for the next iteration.
+
+### 37.9 Killed on measurement
+
+- **Merge adjacent sibling `::: align` blocks that share a position.** It would close `goya2`'s three
+  and was the obvious reading of the Vol. 2 cell -- but the references **keep** adjacent
+  same-position `align` siblings in `goya2` (Vol. 1), `kiselev`, `new_geyzel04`, `new_karta` and
+  `williams2`, and merge in `goya2` (Vol. 2, 1988, 1999) alone. Four documents to one, and the one
+  contradicts itself on identical source. §36.5's tie-break decides it: do not merge. The author has
+  since confirmed in `analyze-2.md` that the divergence is allowed in both directions.
+
+### 37.10 What is next, with what is known about each
+
+- **`segovia` 10 and `new_rechin4` 9** are now the two largest per-document counts, and neither has
+  been probed this campaign.
+- **`new_karta`'s one-record row** -- §37.8; §35.6 built the mechanism, this instance escapes it.
+- **`new_kolpakov`'s href carries markup**: the source writes an `<a href="<B>http://...</B>">`, and
+  the produced target keeps the tags where the reference has the clean URL. A malformed-href repair,
+  small and general, spotted while fixing §37.5 and not built.
+- **`analyze-2.md`'s "ДРУГИЕ АЛЬБОМЫ" request** -- the author asks for `::: images` with `columns: 2`
+  for the two-up album plates at the tail of `goya2`. `::: images` is already emitted there; the
+  `columns:` property is not. Unverified whether the reference carries it.
+- **L3's `layout.order.mismatch` is the largest remaining class at 18** and is partly an artefact:
+  §37.4 closed two majors at a node and opened one critical there, on a region that is byte-identical
+  on both sides. L3 pairs across whole documents, so a rank finding can name a node whose own
+  neighbourhood is exact. Distrust it before working it.
