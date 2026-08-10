@@ -2841,12 +2841,21 @@ function dataRegionFrom(
   const supplied = ctx.options.tableHeaders?.get(el.id);
 
   // On the abstention path the region has to carry its own evidence for being a
-  // record matrix — a source header row, or three-plus inferred columns.
-  // Supplied labels deliberately do *not* count: a model will happily name the
-  // columns of a two-column news list, and accepting that would let the label
-  // hook quietly promote every ambiguous region into a table.
+  // record matrix — a source header row, three-plus inferred columns, or a row
+  // whose cells hold the roles a record holds. Supplied labels deliberately do
+  // *not* count: a model will happily name the columns of a two-column news
+  // list, and accepting that would let the label hook quietly promote every
+  // ambiguous region into a table.
+  //
+  // The column count is a proxy and `occupiedBands` exposed it as one: dropping
+  // `new_karta`'s two spacer columns took a 4-column table to 2 and the region
+  // stopped qualifying, though nothing about it had changed. `isSingleRecordRow`
+  // is the direct form of the same question — it tests what the cells *are*
+  // rather than how many of them there were — so it belongs here beside the
+  // count rather than downstream of it.
   const evidence =
-    planned.plan !== null && (!planned.plan.headerSynthesized || planned.plan.bands.length >= 3);
+    planned.plan !== null &&
+    (!planned.plan.headerSynthesized || planned.plan.bands.length >= 3 || isSingleRecordRow(grid));
 
   if (planned.plan && (!requireEvidence || evidence)) {
     const table = tableFromPlan(planned.plan, ctx, supplied);

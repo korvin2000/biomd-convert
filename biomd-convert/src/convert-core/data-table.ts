@@ -362,19 +362,70 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
   const body = hasRealHeader ? rows.slice(1) : rows;
   if (body.length === 0) return { plan: null, failure: "no-body", detail: "header row with no body" };
 
+  const kept = occupiedBands(bands, header, body, opts.minCols);
+  if (kept.length < bands.length) {
+    for (const row of rows) row.cells = kept.map((b) => row.cells[bands.indexOf(b)] as PlannedCell);
+  }
+
   return {
     plan: {
-      bands,
+      bands: kept,
       header,
       body,
       headerSynthesized: !hasRealHeader,
       reason:
-        `${bands.length} semantic column(s) folded from ${grid.cols} physical slots across ` +
-        `${rows.length} row(s)${hasRealHeader ? " with a source header" : " with no source header"}`,
+        `${kept.length} semantic column(s) folded from ${grid.cols} physical slots across ` +
+        `${rows.length} row(s)${hasRealHeader ? " with a source header" : " with no source header"}` +
+        `${kept.length < bands.length ? `, ${bands.length - kept.length} unoccupied column(s) dropped` : ""}`,
     },
     detail: "",
   };
 }
+
+/**
+ * Columns that hold something. A column no row ever fills is spacing.
+ *
+ * `analyze/analyze-2.md` asks for this twice: *"последние 2 пустые и поэтому их
+ * стоит отфильтровать"*, and *"проверять все row … если все пустые … то такой
+ * column можно удалить"*. This era padded a row out to a pixel width with
+ * `<td width="12%" align="center"></td>`, and carrying those through produces a
+ * header cell over nothing and a column of em dashes in every record.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Emptiness *in the source* — `PlannedCell.isEmpty`, which is
+ * `text === "" && images === 0 && links === 0`. Not the rendered cell, which is
+ * where this rule would go wrong: `plannedCellTo` prints an em dash for an empty
+ * value, so a column of dashes and a column the author filled with dashes look
+ * identical downstream. `segovia` is exactly that false friend — five columns
+ * where the second is a literal `-` the author typed between the movement number
+ * and its title (`<td class="jr"><p class="jr">-</td>`), and its reference keeps
+ * the column. Testing the source rather than the output separates them with no
+ * vocabulary of dash characters at all.
+ *
+ * **Recurrence** is inherent: every row must agree, so one populated cell
+ * anywhere in the column keeps it.
+ *
+ * **A source header keeps its column.** A named column that happens to be empty
+ * in this table is a fact the source states, and dropping it would delete the
+ * name — §16.3 in the other direction.
+ *
+ * **Never below `minCols`**, so a table cannot be emptied into a list.
+ */
+function occupiedBands(
+  bands: readonly Band[],
+  header: PlannedRow | null,
+  body: readonly PlannedRow[],
+  minCols: number,
+): Band[] {
+  const kept = bands.filter((_, band) => {
+    if (header && !(header.cells[band] as PlannedCell).isEmpty) return true;
+    return body.some((row) => !(row.cells[band] as PlannedCell).isEmpty);
+  });
+  return kept.length >= minCols && kept.length < bands.length ? kept : [...bands];
+}
+
+type Band = { start: number; end: number };
 
 function textLengthOf(cell: PlannedCell): number {
   return cell.sources.reduce((a, c) => a + c.text.length, 0);

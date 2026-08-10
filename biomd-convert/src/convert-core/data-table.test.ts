@@ -289,3 +289,79 @@ describe("a header for a column the source never labelled", () => {
     expect(result.markdown).not.toContain("Аудиоформат");
   });
 });
+
+/**
+ * A column no row ever fills is spacing, not a column.
+ *
+ * `analyze/analyze-2.md` asks for this twice — *"последние 2 пустые и поэтому
+ * их стоит отфильтровать"* and *"проверять все row … если все пустые … то
+ * такой column можно удалить"*. This era padded a row out to a pixel width
+ * with `<td width="12%" align="center"></td>`, and carrying those through
+ * produces a header cell over nothing and a column of em dashes in every
+ * record: 27 of `kiselev`'s findings and 3 of `new_karta`'s were this one
+ * column each.
+ *
+ * **Invariant.** Emptiness *in the source* — `text === "" && images === 0 &&
+ * links === 0` — never the rendered cell. That distinction is the whole rule:
+ * `plannedCellTo` prints an em dash for an empty value, so downstream a column
+ * of generated dashes and a column of authored dashes are identical strings.
+ *
+ * **Recurrence** is inherent: every row must agree, so one populated cell
+ * anywhere keeps the column.
+ *
+ * **False friend, tested for non-firing:** `segovia`'s five-column movement
+ * table, whose second column is a literal `-` the author typed between the
+ * movement number and its title. Its reference keeps the column, and testing
+ * the source rather than the output separates the two with no vocabulary of
+ * dash characters at all.
+ */
+describe("a column no row fills", () => {
+  it("drops the trailing spacer columns a fixed-width row was padded with", async () => {
+    const html =
+      "<html><body><table border=\"0\" width=\"85%\">" +
+      "<tr><td width=\"67%\">El Puerto, da Suite Iberia</td>" +
+      "<td width=\"8%\"><a href=\"music/wma/abreu.wma\">WMA</a></td>" +
+      "<td width=\"12%\" align=\"center\"></td>" +
+      "<td width=\"12%\" align=\"center\"></td></tr>" +
+      "<tr><td width=\"67%\">Tico-Tico no Fuba</td>" +
+      "<td width=\"8%\"><a href=\"music/wma/tico.wma\">WMA</a></td>" +
+      "<td width=\"12%\" align=\"center\"></td>" +
+      "<td width=\"12%\" align=\"center\"></td></tr>" +
+      "<tr><td width=\"67%\">Samba de Uma Nota</td>" +
+      "<td width=\"8%\"><a href=\"music/wma/samba.wma\">WMA</a></td>" +
+      "<td width=\"12%\" align=\"center\"></td>" +
+      "<td width=\"12%\" align=\"center\"></td></tr>" +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toContain("| | \u{1F517} |");
+    expect(result.markdown).toContain("| El Puerto, da Suite Iberia | [WMA](music/wma/abreu.wma) |");
+    expect(result.markdown).not.toContain("| — | — |");
+  });
+
+  it("keeps a column of dashes the author typed — non-firing", async () => {
+    // `segovia`: the `-` sits between the movement number and its title and is
+    // content. The rendered cell is indistinguishable from an empty one.
+    const row = (n: string, title: string, mins: string) =>
+      `<tr><td width="5%">${n}</td><td width="5%" align="center"><p>-</p></td>` +
+      `<td width="75%">${title}</td><td width="8%" align="right">${mins}</td></tr>`;
+    const html =
+      "<html><body><table border=\"0\">" +
+      row("I", "Villano y Recercarre", "4:49") +
+      row("II", "Espanoleta e Fanfare", "9:17") +
+      row("III", "Danza de Las Hachas", "2:13") +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toContain("| I | - | Villano y Recercarre | 4:49 |");
+  });
+
+  it("keeps an empty column the source header names — §16.3 in reverse", async () => {
+    const html =
+      "<html><body><table border=\"0\">" +
+      "<tr><th>Произведение</th><th>Ноты</th><th>Длительность</th></tr>" +
+      "<tr><td>Adelita</td><td><a href=\"a.txt\">TAB</a></td><td></td></tr>" +
+      "<tr><td>Capricho</td><td><a href=\"b.txt\">TAB</a></td><td></td></tr>" +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toContain("Длительность");
+  });
+});
