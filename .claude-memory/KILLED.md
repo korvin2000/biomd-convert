@@ -134,3 +134,37 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   from the bar it names, and wants the title anyway. Adjacency in the flow is the position §11
   describes; the source's box structure is not. The working guard is the label's own shape: an
   ornament *between* phrases means the line is a series, and a title names one thing. (§38.4)
+- **Right-aligned columns for a narrow table inside a right-aligned container.** `analyze-3.md`
+  states the reasoning for `new_kolpakov` — *"нет указаний на центрирование по правому краю, но
+  таблица узкая / маленькая, занимает 3-ть ширины и находится внутри `<div align="right">`"*, and
+  markdown cannot size a table so the workaround is to align its **content**. Swept in Chromium at
+  1024 px: **ten** multi-cell tables sit in a `right`- or `centre`-placed container across nine
+  documents — `new_bach` 0.90, `kiselev` 0.80 ×2, `tarrega` 0.75, `barrios` 0.70, `new_dyens` 0.68,
+  `borislova` 0.65, `williams2` 0.65, `segovia` 0.50, `new_kolpakov` **0.40** (share of the parent's
+  width). Exactly **one** reference uses `--:`. The only separator is width share, and 0.40 against a
+  next-nearest 0.50 is a cliff one document wide — §9 says a cliff means the number is standing in
+  for something else. Cost of leaving it: 3 minor findings on 1 document. (§39.6.1)
+- **Emphasis from a CSS class's `font-style: italic`.** `analyze-3.md` on `new_dyens` quotes the CSS:
+  `.l { … font-style: italic }`, and its reference italicizes all three `.l` cells. Swept in the
+  browser for computed-italic text carrying no `<i>`/`<em>`: **nine documents, several hundred
+  blocks** — `new_bach` 78, `kiselev` 34, `tarrega` 32, `barrios` 27, `pavlov_azancheev` 17,
+  `new_dyens` 3, `segovia` 2, `borislova` 1, `new_kolpakov` 1. One reference honours it; at least
+  five do not, and `new_kolpakov`'s `Венгерка` is `class="l"` in the source and upright in its
+  reference. Verdicts flip on identical evidence, which is the standing downgrade condition — and
+  this is the **cause** of `emphasis.span`'s 19 instances, which had been downgraded for the same
+  reason without knowing why. Implementing it italicizes hundreds of cells on six documents to close
+  three on one. (§39.6.2)
+- **Both attempted forms of `pavlov_azancheev`'s two-line-headline fix.** The defect is real and
+  `analyze-3.md` names it, but:
+  *(a)* vetoing the candidate in `headings.ts`'s centred-recurrence pass when a block's `<br>`-runs
+  are not of uniform weight **also killed the page's own two real headings** — `## I. Краткая
+  биография…` and `## II. Неизвестные письма…`, both of which the reference keeps — because
+  `morePromintentThan` compares dominant font size before weight and two `<b>` runs need not report
+  identical sizes. L1 98.4 → 98.3, `pavlov` heading axis 96.8 → **85.7**, L2 134 → 138.
+  *(b)* declining in `headingLineOf` on `followingText === 0` is **inert**: `blockFrom`'s
+  `data-biomd-heading` branch returns before any line splitting, so `headingLineOf` never sees a
+  block the typographic pass already marked. All four rungs byte-identical; reverted rather than
+  committed as dead code.
+  The next attempt must act where `data-biomd-heading` is *set*, and the discriminator is **page-level
+  recurrence of the shape**, not the shape: `borislova` writes `<b>1990-1993<br></b>` over unbolded
+  works **ten times**, structurally identical, and every one is a heading the reference keeps. (§39.6.3)

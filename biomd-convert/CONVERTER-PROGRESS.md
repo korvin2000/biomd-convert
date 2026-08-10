@@ -5019,3 +5019,310 @@ still open. Ranked by what it says, not by the ledger:
   markers, `image.position.value`, and the `◀ ●` glyph pager, which is the rule killed twice.
 - `retyped.paragraph-to-align` is once again the top class at 8 instances over 8 documents, and it is
   still two mechanisms wearing one name.
+
+## 39. `analyze-3.md`: four mechanisms, three killed hypotheses, and six author rulings (2026-08-10)
+
+`1214860` added `analyze/analyze-3.md` (337 lines, `snapshot_23`–`27`) **and normalized eleven
+references in the same commit**, so every number in §38 predates this state. The iteration
+re-baselined first, then worked the new complaint record.
+
+### 39.1 What the reference normalization alone did — no code changed
+
+| rung | after §38 | after `1214860` |
+|---|---|---|
+| L0 | 488 tests | 488 |
+| L1 | 96.8 | **98.0** |
+| L2 | 151 · 73 defect · 5 critical | **134 · 71 defect · 4 critical** |
+| L3 | 47 | **49** |
+
+The edits, and what each settled:
+
+- `barrios`, `new_bach`, `new_karta`, `new_lendle2`, `tarrega` — `[/#/x](/#/x)` and `&#9654;`/`&#9664;`
+  became `▶` and `◀`. This is OPEN.md §5.0's broken `link.label.content.empty` class **retiring by
+  itself**: it went 4 instances to 3, and none is a converter-defect any more.
+- `kiselev`, `tarrega` — invented `| Название | Аудиоформат |` headers became `| | 🔗 |`, and empty
+  body cells became `—`. §30.2's label invention is now reverted in the references too.
+- `news` — the `::: align position: center` inside the Paco de Lucía frame was **removed**, which is
+  the ceiling §37.8 ruled against us on browser evidence. It closed with no code change.
+- `williams2` — `[К началу биографии]` gained a `◀`, and the single-record `::: align` became the
+  two-column table. **That reverses the minority side of §36.5/OPEN §2b**: the split is now 0 `align`
+  to 4 table, and `retyped.table-to-align` is gone. The named divergence no longer exists.
+
+### 39.2 A hyphen inside an identifier is not a wrap (`68275ab`)
+
+`analyze-3.md` on `authors.htm`, and it is the only thing there it calls critical: *"и в названии
+ссылки убран дефис (критически): [www.abcguitars.com] (должно быть [www.abc-guitars.com])"*.
+
+The page links to `www.abc-guitars.com` and, one clause later, to the genuinely different
+`www.abcguitars.com`. The corpus therefore attests the joined form, and cascade rule 4 — *"the corpus
+is its own best dictionary"* — rewrote the label of the first into the name of the second. The link
+then carried a visible label contradicting its own `href`, on `authors` and `news_2007`.
+
+New **rule 0**, ahead of the whole cascade: a hyphen inside a machine identifier was never produced
+by wrapping, because the token it sits in is unbreakable, and joining it rewrites content rather than
+repairing a word. Evidence is structural — an interior `.` between two alphanumerics, or a `/`, `@`,
+`:`, `%` — so no scheme, TLD, host or extension is named and a path or file name qualifies on the
+same terms. Leading and trailing separators are trimmed first, so `в г. Штут-гарте` still joins and
+`rendez-vous:` is not read as a scheme.
+
+L2 134 → 131, ambiguous 21 → 18. `link.label.hyphenation.joined` 2/2 → 0. L1 does not move: `score.ts`
+does not compare link labels.
+
+### 39.3 A dot leader is the column it was drawing (`260698c`)
+
+`analyze-3.md` on `tarrega.htm`, with the wanted table written out row by row: *"получается ASCII
+подобная псевдо таблица, где отступ для второго столбца регулируется точками … Тут нужна умная
+функция, эвристика, что бы распознала такую структуру и правратила ее в более красивую и типичную
+для md таблицу"*.
+
+A run of `<br>` lines ruled into columns with dot leaders is now the two-column table it renders as.
+It is asked **before** `listFromEnumeratedLines`, and the order is the whole point: the rows are
+numbered as well as ruled, so the list rule fired first and folded the catalogue number into the
+title — and because `2-3.` is not an ordinal, it also attached that entire row to the one above it
+and lost the boundary. Both defects go away with the row structure.
+
+**The threshold is swept, not tuned.** Counting lines with an interior run of at least *k* dots and
+text on both sides, over all 22 sources:
+
+| k | documents |
+|---|---|
+| 2 | 8 (`borislova goya2 new_blackmore new_dyens new_geyzel04 pavlov_azancheev segovia tarrega`) |
+| 3 | 6 |
+| **4** | **2 — `tarrega` 17 lines, `segovia` 4** |
+| 5, 6, 8, 10 | the same 2 |
+
+Every ellipsis in the corpus (`Бразилию...`, `"...подделке под..."`, `произвело...`) disappears at
+exactly 4 and nothing else does. Flat curve, so it is a limit and not a number standing in for
+another mechanism. It cannot go higher either: `tarrega` pads *"9. Menuet de la Fantasie Op: 78 de
+Franz Schubert"* with exactly four.
+
+The measured false friend is `segovia`, which uses a leader as **padding inside a `<td>` that already
+has a column**. Two guards decline it: the leader is trailing, so it bounds nothing, and a one-line
+cell never reaches three rows. `segovia`'s output is byte-unchanged. That is the distinction the rule
+turns on — `segovia`'s leader decorates a column, `tarrega`'s **is** the column boundary.
+
+The unnamed second column is headed `-`, which `analyze-3.md` and `fixtures/out/tarrega.bio.md` write
+independently of each other, and which `segovia.htm` uses **in the source** as the whole content of a
+column it declines to name (`<p class="jr">-</td>`). It is `UNNAMED_COLUMN_MARK` in
+`column-labels.ts`, beside the rest of the label vocabulary, not a literal in a detector.
+
+L1 98.0 → 98.4; `tarrega` 87.4 → **96.7** (tables 82.3 → 100.0, links 33.3 → 100.0).
+L2 131 · 71 → 131 · **69**; `tarrega` 7/5 → 6/3. `retyped.list-to-table` 2/1 → 0.
+
+### 39.4 One block is not the mass of text around it (`ef125e6`)
+
+`analyze-3.md` on `new_lagq2.htm`: *"тут все верно, кроме того, что последний блок 3 текста должны
+быть выровнены посередине. по html это совршенно четко видно … (стоит `align="center"`)"*.
+
+No `::: align` was emitted, and the cause was **not** the alignment family refusing the block — it
+was the baseline the family judges against. Measured in Chromium at 1024 px, `new_lagq2` has 50 leaf
+blocks: 40 compute `justify`, 8 `-webkit-center`. But **exactly one** reaches `proseAlign`'s
+120-character prose length, and it is the centred composer list the caller was asking about. That
+single block declared the whole page centred, was then compared against itself, found no difference,
+and vetoed its own directive.
+
+Recurrence applies to the baseline as much as to any other rule here: **two qualifying blocks
+minimum, else `null`**. Not a new path — an unmeasured page already yields `null` and every caller
+already falls back to treating `center`/`right` as distinctive on their own. Counted in qualifying
+*blocks* rather than in winning weight, so two long blocks that disagree still have a real comparison
+to offer. A page that genuinely is centred keeps its baseline; that is the asserted false friend.
+
+The L3 comparator fixture was **corrected, not tuned**: its "page whose prose is itself centred" case
+supplied a single long block, which under the truer definition can no longer state that premise, so
+it now supplies two. Invariant 2 holds — the instrument became more truthful and both sides were
+re-baselined.
+
+L2 131 · 69 → 130 · **68**; `new_lagq2` 3/3 → 2/2. L3 **49 → 46**, `layout.containment.mismatch`
+18 → 15. L1 unchanged at 98.4 (`new_lagq2` align axis 98.0 → 98.1).
+
+Residue on `new_lagq2`, 2 findings: the produced side writes the nav row as its own `::: align` where
+the reference merges it with the block above. That is §37.9's killed hypothesis, and this is the
+document that merges — do not rebuild it.
+
+### 39.5 A hairline round a lone cell is a box, not a grid (`1deca7e`)
+
+`analyze-3.md` names the same defect twice, with the HTML both times. `segovia1`: *"текст … заключен
+в рамку (находится внутри таблицы у которой явно указан `border="1"`) и отцентрован … такой текст
+стоит заключить во frame"*. `new_karta`: *"такой текст я тоже выделил и поместил в самую близкую по
+цвету рамку"*.
+
+A 1 px border is refused everywhere else because it is a table's **cell grid**, and that reasoning
+had a precondition nobody had checked: there must be *cells* for a grid to separate. A table with
+exactly one cell has no grid, so its hairline is the only thing it can be. The evidence is
+cardinality, not width.
+
+**Swept in Chromium at 1024 px:** all 22 sources carry exactly **24** single-cell bordered tables.
+Twenty-two are one per document — the site masthead banner, *"Иллюстрированный биографический
+энциклопедический словарь"*, 57 characters, identical everywhere. The other two are precisely the
+notices above. There is no third shape. The banner never reaches the rule: `removeBoilerplate`
+deletes it on all 22 before structure runs, which is measured — it appears in none of the produced
+documents. **That is a stated dependency, not a coincidence**; without a corpus profile the chrome is
+kept, and the CLI already warns that it will be.
+
+No colour is invented. A browser-default `rgb(128,128,128)` is not a choice and §12's *"choose nearest
+valid theme token"* has no nearest for a neutral grey, so the spec's own documented default `gold` is
+written. `segovia1` wants exactly that.
+
+**This raises L2 while improving structure, and every added finding is about directive nesting, not
+about the region.** Stated in full because the count moved the wrong way:
+
+- `segovia1` **+4**. The produced frame holds an `::: align position: center` the reference omits.
+  Measured in the browser, all three `.r` paragraphs compute `text-align: center` against a `justify`
+  page, so it is source-attested; `BioMD-Reference.md` §2 says a converter **SHOULD** emit
+  `frame→align`; and **15 aligns sit inside frames across three references** — `news` 9,
+  `new_lendle2` 5, `news_2007` 1. §36.5's tie-break keeps the majority reading and records
+  `segovia1`'s omission as the minority. L3 agrees with the produced side: it renders the notice
+  centred like the source, the reference renders it left.
+- `new_karta` **+3**. The reference wraps its frame in an `::: align` the source attests
+  (`<div align="center"><center>`) but which §2 states *"accomplishes nothing"* — a frame is full
+  width. Not chased. One of the three is a critical, and it is the `blocks.ts` artefact that reads a
+  directive property line as a paragraph when the two sides nest differently: the *same* artefact
+  produced `segovia1`'s old critical, with the sides swapped.
+
+L0 502 tests, validator 0 errors on both. L1 98.4 → 98.4 (`segovia1` 99.4 → **99.7**).
+L2 130 · 68 → 134 · 73. L3 46 → 47.
+
+### 39.6 Three hypotheses killed, each on measurement
+
+**1. A narrow table inside a right-aligned container gets right-aligned columns.** `analyze-3.md`
+states the reasoning for `new_kolpakov` — *"нет указаний на центрирование по правому краю, но таблица
+узкая / маленькая, занимает 3-ть ширины и находится внутри `<div align="right">`"*. Swept in the
+browser: **ten** multi-cell tables sit in a `right`- or `centre`-placed container, across nine
+documents (`barrios` 0.70, `borislova` 0.65, `kiselev` 0.80 ×2, `new_bach` 0.90, `new_dyens` 0.68,
+`new_kolpakov` **0.40**, `segovia` 0.50, `tarrega` 0.75, `williams2` 0.65 — share of the parent
+width). Exactly one reference uses `--:`. The only separator is width share, and 0.40 against a
+next-nearest 0.50 is a **cliff one document wide**, which §9 says means the number is masking
+something. Cost of leaving it: 3 minor `table.align` findings on one document.
+
+**2. A CSS class's `font-style: italic` becomes `*emphasis*`.** `analyze-3.md` on `new_dyens`:
+*"Всего 1 проблема в таблице: `Tango En Skaï`, `Valse En Skaï`, `Libra Sonatine` все выделены `_`
+(italic) — в html за это отвечает `.l` class"*, and the CSS is quoted. Swept in the browser for
+computed-italic text carrying no `<i>`/`<em>`: **nine documents, several hundred blocks** —
+`new_bach` 78, `kiselev` 34, `tarrega` 32, `barrios` 27, `pavlov_azancheev` 17, `new_dyens` 3,
+`segovia` 2, `borislova` 1, `new_kolpakov` 1. **One reference italicizes them** (`new_dyens`); at
+least five do not, and `new_kolpakov`'s `Венгерка` is `class="l"` in the source and upright in its
+reference. Verdicts flip on identical evidence across documents, which is the standing downgrade
+condition — and this **explains `emphasis.span`'s 19 instances**, which OPEN §4 had downgraded for
+the same reason without knowing the cause. Implementing it would italicize hundreds of cells on six
+documents to close three on one.
+
+**3. `pavlov_azancheev`'s two-line headline. Two attempts, both reverted on measurement.**
+`analyze-3.md`: the converter makes *"М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, …)"* one
+122-character `##`; *"1-ое критическое замечание, заголовки не должны быть слишком длинными … 2-ое
+замечание теряется визуальное оформление, стиль"*. The wanted shape is one `::: align position:
+center` holding `**bold**\` and the subtitle.
+
+  - *Attempt A — veto the candidate in `headings.ts`'s centred-recurrence pass when the block's
+    `<br>`-runs are not of uniform weight.* It fired on `pavlov_azancheev`'s **own two real
+    headings** as well — `## I. Краткая биография. Нотное наследие. Первые исполнители.` and
+    `## II. Неизвестные письма и документы`, both of which the reference keeps — because
+    `morePromintentThan` compares dominant font size before weight and the two `<b>` runs do not
+    report identical sizes. L1 98.4 → 98.3, `pavlov` heading axis 96.8 → **85.7**, L2 134 → 138.
+  - *Attempt B — decline in `headingLineOf` when `followingText === 0`, the group's later lines are
+    set below the first, and the first is not a date label.* **Inert.** `blockFrom`'s
+    `data-biomd-heading` branch returns before any line splitting, so `headingLineOf` is never
+    reached for a block the typographic pass already marked. All four rungs were byte-identical with
+    and without it. Reverted rather than committed as dead code.
+
+  **What the next attempt needs**, recorded so it starts from the answer: the fix belongs where
+  `data-biomd-heading` is *set*, and the weight relation alone is not the discriminator. The false
+  friend is `borislova`, which writes `<b><font>1990-1993<br></font></b>` over unbolded works **ten
+  times down the page**, structurally identical to `pavlov`'s single block, and every one of them is
+  a heading the reference keeps (§2.2's repeated entry label). So the test is page-level
+  **recurrence** of the shape, not the shape itself — and it must not disturb the two uniform-weight
+  `p.t3` headings on `pavlov`'s own page.
+
+### 39.7 Six author rulings — do not re-investigate
+
+1. **`news.htm`: *"ошибок нет"*.** All of `news`'s remaining converter-defect findings are
+   non-defects. Its `retyped.paragraph-to-align` was already a ruled ceiling (§37.8) and the
+   normalization then removed the reference's align outright.
+2. **`new_karta`'s one-record `::: columns` is equally correct.** *"по-смыслу равнозначно, тоже
+   таблица, но без заголовка. Это равноценное решение, а не реальная проблема. Такие случаи нужно
+   игнорировать."* This **closes** OPEN §1's third standing candidate. `retyped.columns-to-table` on
+   `new_karta` is acceptable-alternative, not a target.
+3. **`williams2`'s two smaller-font indented blocks are italic by the author's own choice.**
+   *"такой возможности у markdown нет, поэтому я его просто выделяю курсивом."* Reference-inconsistency
+   by declaration, with `snapshot_25` and `snapshot_26` as the evidence.
+4. **`jovicic`'s trailing `-` list is a design decision.** *"в Оригинальном htm не выделяется — я
+   посчитал нужным выделить как список … Чисто человеческое дизайнерское решение."*
+5. **A right-aligned quoted passage may be `>` or `_`, and both are correct.** On
+   `pavlov_azancheev`: *"по-смыслу содержанию это небольшой блок текста заключенный в кавычки … тут
+   оба варианта одинаково верны и хороши — выбирай тот, который более гармонично вписывается в
+   текущие правила и не противоречит другим правилам."* Repeated for `borislova`. **This answers
+   §38's one open question**: `segovia`'s right-aligned quote after the `* * *` separator, where
+   `analyze.md` wants `>` and the normalized reference writes an italic paragraph, is the same shape,
+   and the author now rules both readings right. The rule to keep is whichever leaves the system least
+   contradictory (§36.5) — which is the reference's, since the converter emits italic there today.
+6. **The trailing `\` on each line is not settled by the author** — *"я их поставл на угад и не знаю
+   какой вариант верный"* — so a hard-break difference in that block is never evidence of a defect.
+
+### 39.8 The de-hyphenation root cause, measured
+
+`analyze-3.md` names wrap hyphens on five documents (`authors` ×7, `jovicic`, `borislova`, `segovia`,
+`news_2007`). Probing the cascade against the real corpus lexicon settles why **none** of them joins:
+
+```
+oracle available: false | lexicon: 9212 forms, 27508 tokens, 322 hyphenated
+мар-кетолог      REVIEW r7   joined=0 hyph=1     под-держанию   REVIEW r7  joined=0 hyph=1
+Борис-лавовна    REVIEW r7   joined=0 hyph=1     успе-хов       REVIEW r7  joined=0 hyph=1
+из-за            PRESERVE r5 joined=0 hyph=3     Борно-Сулиново PRESERVE r3
+```
+
+Three separate facts, all needed:
+
+1. **Hyphenopoly is not installed**, so `oracle.available` is `false` and cascade **rule 6 never
+   fires**. Every genuine wrap falls through to rule 7's conservative REVIEW → preserve. This is the
+   entire `paragraph.hyphenation.mixed` and `.unjoined` class.
+2. Even installed, **rule 6 cannot JOIN without `options.dictionary`**, and `pipeline.ts` never
+   supplies one — it passes `lexicon`, `oracle` and `lang` and nothing else.
+3. A **scan gap**: `dehyphenateText`'s pattern consumes the right-hand fragment, so a second hyphen
+   in the same word is never examined. `Информационно-аналити-ческого` is decided once, on
+   `Информационно`+`аналити`, and `-ческого` is never a candidate at all.
+
+A rule tested and rejected on the way: *"join when neither fragment is attested standalone"*. Of the
+308 pure-letter hyphenated forms in the lexicon, 144 have neither part attested — and that bucket
+holds `музыкально-педагогическом`, `киево-могилянская`, `южно-американскому`, `hi-fi` and
+`rendez-vous` alongside every genuine wrap. Rule 3 (title case) already catches the proper nouns; the
+lowercase compounds it does not.
+
+### 39.9 End state, *measured* 2026-08-10 after §39
+
+| rung | value |
+|---|---|
+| L0 | **502 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | **98.4 %** |
+| L2 | **134 findings — 73 converter-defect** · 18 ambiguous · 43 reference-inconsistency · 4 critical |
+| L3 | **47**, identity 0, deterministic |
+| validator | **0 errors on every produced document** |
+
+All four criticals remain reference-inconsistency. Three are `link.label.content.empty` on the two
+references the normalization did not reach (`segovia` ×2, `tarrega`); the fourth is the `blocks.ts`
+directive-property artefact on `new_karta` described in §39.5. **No converter-defect is critical.**
+
+Per document, converter-defect: `new_lendle2` 7 · `new_rechin4` 6 · `segovia` 6 · `new_karta` 6 ·
+`news` 5 · `pavlov_azancheev` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · `segovia1` 4 ·
+rest ≤ 3. `barrios`, `new_bach` and `new_dyens` are at 0 defect; `new_blackmore`, `new_bach`,
+`new_dyens` and `williams2` are at L1 100.0.
+
+### 39.10 What is next
+
+From `analyze-3.md`, unattempted and in the author's own order of emphasis:
+
+1. **`new_geyzel04`'s four headings.** Four large bold centred titles set in `class="ttlb"`; the
+   converter makes none of them a heading and binds one — *"ПРИЛОЖЕНИЕ: СЛОВАРЬ …"* — to the picture
+   above it as a caption (`snapshot_24`). The author asks for consistency across all four and notes
+   the caption misattribution needs *"реально более продвинутая эвристика"* keyed on the distance
+   from the image and the size of the type. 3 converter-defects.
+2. **The image bound one block too late**, on two documents. `williams2`:
+   `photo/w/john_williams/changes1.jpg` belongs beside *"В 1971 году компания CBS"* and sits beside
+   the next paragraph (`snapshot_27`). `tarrega`: `photo/t/tarrega1.jpg` belongs to *"Несмотря на
+   увлечение гитарой"* and is emitted before *"Он принадлежал к тем артистам"*. Same direction, same
+   distance — one block down — on two documents, which makes it a rule finding rather than two
+   instances.
+3. **De-hyphenation**, now that §39.8 has the root cause. The first move is a decision about the
+   oracle dependency, not more probing.
+4. **`new_karta`'s trailing `[▶](/#/karta2)` wants centring** (`align.missing`, 1 instance).
+5. **`new_kolpakov`'s `::: signature`.** The reference uses it for the source-credit block; the
+   converter writes `::: align position: right`. `signature` appears in 1 of 22 references and has
+   never been emitted.

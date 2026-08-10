@@ -36,26 +36,26 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: `c92c009` **normalized 11 references and
-added `analyze/analyze-2.md`**, an in-depth complaint record for `news`, `goya2`, `new_karta` and
-`kiselev` with new house rules stated as prose, so **every number in PROGRESS §21-§34 predates the
-current corpus** (PROGRESS §35.1). Six mechanisms landed in §35, and **§37 closed the whole standing
-queue with five more**: a rule drawn between two aligned lines divides them (§37.2) · a pager's lane
-is what places its link (§37.3, which closes §33.4's residue) · a `rowspan` holds its rows in one
-region (§37.4) · a link label is one line (§37.5) · a numbered run the source split in two is one
-run (§37.6). `analyze-2.md`'s `goya2` section supplied the last two and had not been mined.
-**§38 then took the three documents §37.10 named** -- `segovia`, `new_rechin4`, `new_kolpakov` --
-and closed six more: markup stripped from a target (§38.2) · a source credit is not a menu, plus the
-§37.5 edge-break correction it exposed (§38.3) · the page you are on is an item however the source
-marked it (§38.4) · a hand-drawn bullet is the list it was drawing (§38.5) · a quotation that spans
-a block boundary is a block quote (§38.6).
-Current floor: L0 **488 tests**, **0 validator errors on every produced document** (4 remain on the
-*references*), L1 **96.8**, L2 **151 · 73 defect**, L3 **47**.
-**No converter-defect remains at critical severity** -- all 5 criticals are reference-inconsistency,
-4 of them the broken `link.label.content.empty` class. Quote that split.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: `1214860` added **`analyze/analyze-3.md`**
+(337 lines, `snapshot_23`-`27`) **and normalized eleven references in the same commit**, so **every
+number in PROGRESS §21-§38 predates the current corpus** (PROGRESS §39.1). §37 closed the standing
+queue with five mechanisms, §38 took the three documents it named and closed six more, and **§39
+re-baselined and landed four**: a hyphen inside an identifier is not a wrap (§39.2, the only thing
+`analyze-3.md` calls critical) · a dot leader is the column it was drawing (§39.3, `tarrega` 87.4 ->
+96.7) · one block is not the mass of text around it (§39.4, the `proseAlign` baseline) · a hairline
+round a lone cell is a box, not a grid (§39.5, both notices `analyze-3.md` asks for).
+Current floor: L0 **502 tests**, **0 validator errors on every produced document**, L1 **98.4**,
+L2 **134 · 73 defect**, L3 **47**.
+**No converter-defect is critical** -- 3 of the 4 criticals are the broken `link.label.content.empty`
+class and the 4th is a `blocks.ts` artefact. Quote that split.
+
+**The reference normalization settled three standing items with no code change** (PROGRESS §39.1):
+`news`'s frame/align ceiling · `williams2`'s `retyped.table-to-align`, which **dissolves §36.5's
+named divergence** · most of `link.label.content.empty`. Re-measure before trusting any number
+written before it.
 
 **The authority order changed -- read this before citing a spec rule (PROGRESS §36.1).**
-`analyze/analyze.md` + `analyze/analyze-2.md` are now rung **1**, the `fixtures/` pairs rung 2, and
+`analyze/analyze.md` + `analyze-2.md` + `analyze-3.md` are now rung **1**, the `fixtures/` pairs rung 2, and
 `BioMD-Reference.md` rung 3 and **amendable**: a rule there that contradicts them is wrong and is
 corrected there, never worked around in the converter. That is how §35.9 closed -- an empty header
 **cell** is now legal, and validator errors fell 27 -> 5. Invariant 1 gains one exception: an author
@@ -65,16 +65,18 @@ The word-less alignment rule has now been **killed twice**, on two different fal
 §35.10) -- read both before touching `retyped.paragraph-to-align`, which is two mechanisms wearing
 one name. Its residue, `align` inside `column`, is closed by §37.3.
 
-**Mine `analyze/analyze.md` and `analyze-2.md` before the ledger.** Two of §37's five mechanisms and
-three of its downgrades came out of `analyze-2.md`'s `goya2` section; **five of §38's six** came out
-of `analyze.md`'s `segovia` section and `analyze-2.md`. Several sessions had not read either to the
-end. They are rung 1, they name defects the instruments rank low or cannot see, and they state which
-differences the author considers non-defects. `analyze.md`'s `segovia` section is still mostly open
-and is candidate 1 in [OPEN.md](OPEN.md) §1.
+**Mine `analyze/analyze.md`, `analyze-2.md` and `analyze-3.md` before the ledger.** Two of §37's five
+mechanisms came out of `analyze-2.md`'s `goya2` section, five of §38's six out of `analyze.md`'s
+`segovia` section, and **all four of §39's out of `analyze-3.md`** -- together with three killed
+hypotheses and **six author rulings** that close open questions for free (OPEN §3.9-§3.12), including
+the one conflict §38 had left for the author. They are rung 1, they name defects the instruments rank
+low or cannot see, and they state which differences the author considers non-defects.
 
-> **A defect count can fall because the instrument became truthful, because the conversion improved,
-> or because a difference became newly *visible*.** All three happened in §35-§38 — §38.5 raised
-> `segovia`'s total while halving its defects. Quote which, or the number reads as work that happened.
+> **A defect count can move because the instrument became truthful, because the conversion improved,
+> because a difference became newly *visible*, or because the references were edited.** All four have
+> happened — §38.5 raised `segovia`'s total while halving its defects; §39.1 moved every rung with no
+> code at all; §39.5 raised L2 by 7 while giving two documents the frames the author asked for. Quote
+> which, or the number reads as work that happened, or as damage that did not.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.
@@ -100,7 +102,7 @@ repo's midx is a version git 2.45 rejects).
 | the detail behind any PROGRESS claim | [MAP-progress.md](MAP-progress.md) → `Read` at the offset | **saves ~45k tokens** |
 | the iteration procedure | `.claude/skills/refine-biomd-converter/SKILL.md` | cheap |
 | harness lessons that cost hours (debug probes, `/dev/null` on Git Bash, NullMeasurer) | `.claude/skills/refine-biomd-converter/learned-patterns.md` | cheap |
-| the human quality record (Russian, per page) -- **rung 1, above the syntax reference** | `analyze/analyze.md` (614 ln) + `analyze/analyze-2.md` (386 ln, `news`/`goya2`/`new_karta`/`kiselev` + house rules) + `analyze/design.png` | grep by page name |
+| the human quality record (Russian, per page) -- **rung 1, above the syntax reference** | `analyze/analyze.md` (614 ln) + `analyze-2.md` (386 ln, `news`/`goya2`/`new_karta`/`kiselev` + house rules) + `analyze-3.md` (337 ln, 12 documents + 6 rulings, `snapshot_23`-`27`) + `analyze/design.png` | grep by page name |
 | mini-image / icon → glyph policy | `mini_images_to_md_guide.md` -- normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4. No reference conflicts remain | cheap |
 | the author's house conventions, newest ground truth | `/new_rules.md` (repo root) -- the column vocabulary is built (`column-labels.ts`); the rest is **not yet implemented**, inventory in PROGRESS §29.1 | cheap |
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` -- advisory, possibly stale | grep |

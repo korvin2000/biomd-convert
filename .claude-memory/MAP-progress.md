@@ -127,3 +127,23 @@ attributable work; §37.7 states what was measured and what was not.
 
 **Converter-defect criticals: 0.** All five criticals are reference-inconsistency and four are the
 `link.label.content.empty` class OPEN.md §5.0 records as broken. Never quote "5 critical" bare.
+
+| 39 analyze-3 | 5023-5328 | **normalization alone, no code** `39.1:5029` · a hyphen inside an identifier is not a wrap `39.2:5051` · **a dot leader is the column, with the 4-dot sweep** `39.3:5071` · one block is not the mass of text around it `39.4:5112` · **a hairline round a lone cell is a box, 24-instance sweep + the L2-rose-while-structure-improved accounting** `39.5:5142` · **three killed hypotheses** `39.6:5185` · **six author rulings** `39.7:5235` · **the de-hyphenation root cause, measured** `39.8:5260` · end state `39.9:5289` · what is next `39.10:5308` |
+
+## Checkpoint -- §39, measured 2026-08-10 over **22 documents**
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **502** tests, typecheck clean, 0 FAILED, `read()` warnings 0 | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **98.4 %** | `sh bench/run.sh` |
+| L2 | **134** findings -- **73 converter-defect** · 18 ambiguous · 43 reference-inconsistency · 4 critical | `diff -c bench/biomd.config.json` |
+| L3 | **47** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | **0** on every produced document | `validate bench/out/<name>.bio.md` |
+
+**Converter-defect criticals: 0.** Three of the four are the broken `link.label.content.empty` class
+(OPEN §5.0) and the fourth is the `blocks.ts` directive-property artefact (OPEN §5.0b). Never quote
+"4 critical" bare.
+
+**A large part of this checkpoint is not attributable work.** `1214860` normalized eleven references
+in the same commit that added `analyze-3.md`, moving L1 96.8 -> 98.0, L2 151 -> 134 and L3 47 -> 49
+with no code change at all. §39.1 separates the two.

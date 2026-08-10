@@ -3,82 +3,94 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-10**, after PROGRESS §38 (which follows §37).
+Last touched **2026-08-10**, after PROGRESS §39 (which follows §38).
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
-- [2b. Ruled -- one-record table vs. `::: align`](#2b-ruled----one-record-table-vs--align-the-table-stays)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
-- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-after-38)
+- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-after-39)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. §37 closed the standing queue with five mechanisms; §38
-took the three documents §37.10 named and closed six more.
+Reference-guided refinement, 22 documents. `1214860` added **`analyze/analyze-3.md`** (337 lines,
+`snapshot_23`-`27`) *and normalized eleven references in the same commit*, so **every number in
+PROGRESS §21-§38 predates the current corpus** (PROGRESS §39.1). §39 re-baselined first, then landed
+four mechanisms, killed three hypotheses on measurement, and recorded six author rulings.
 
-**Current state, *measured* 2026-08-10, after PROGRESS §38:**
+**Current state, *measured* 2026-08-10, after PROGRESS §39:**
 
 | rung | value |
 |---|---|
-| L0 | **488 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
-| L1 | **96.8 %** |
-| L2 | **151 findings -- 73 converter-defect** · 29 ambiguous · 49 reference-inconsistency · 5 critical |
+| L0 | **502 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | **98.4 %** |
+| L2 | **134 findings -- 73 converter-defect** · 18 ambiguous · 43 reference-inconsistency · 4 critical |
 | L3 | **47**, identity 0, deterministic |
-| validator | **0 errors on every produced document**; 4 on the *references* (`fence-unbalanced`) |
+| validator | **0 errors on every produced document** |
 
 That is the floor. Nothing accepted from here may regress it.
 
-> **No converter-defect remains at critical severity.** All five criticals are
-> reference-inconsistency, and four are the `link.label.content.empty` class §5.0 records as broken.
-> Quote that split, or the number reads as five open defects.
+> **No converter-defect is critical.** Three of the four criticals are `link.label.content.empty` on
+> the two references the normalization did not reach; the fourth is the `blocks.ts` artefact §5.0b
+> records. Quote that split, or the number reads as four open defects.
 
-**Landed in §38, one commit each.** Markup stripped from a target (`6198f04`) · a source credit is
-not a menu, plus the §37.5 edge-break correction it exposed (`1826288`) · the page you are on is an
-item however the source marked it, plus a second `navTitleFrom` false friend (`3239a7d`) · a
-hand-drawn bullet is the list it was drawing (`1ef7673`) · a quotation that spans a block boundary
-is a block quote (`fa1213d`, the last converter critical).
+**Landed in §39, one commit each.** A hyphen inside an identifier is not a wrap (`68275ab`, and the
+only thing `analyze-3.md` calls critical) · a dot leader is the column it was drawing (`260698c`,
+`tarrega` 87.4 -> 96.7) · one block is not the mass of text around it (`ef125e6`, the `proseAlign`
+baseline, L3 49 -> 46) · a hairline round a lone cell is a box, not a grid (`1deca7e`, both frames
+`analyze-3.md` asks for).
 
-**Five of the six came from reading `analyze/analyze.md` and `analyze-2.md` to the end.** Mine the
-analysis documents before the ledger: they are rung 1, they name defects the instruments rank low or
-cannot see, and they state which differences the author considers non-defects.
+**The normalization settled three standing items by itself, with no code change** (PROGRESS §39.1):
+`news`'s frame/align ceiling (the reference dropped the align) · `williams2`'s `retyped.table-to-align`
+(the reference became the table, so §36.5's named divergence **no longer exists**) · most of
+`link.label.content.empty` (`▶`/`◀` are now written in the references).
 
 **Next, in order. Probe before committing (SKILL §6).**
-1. **`analyze.md`'s `segovia` section** -- the densest complaint record in the project and mostly
-   still open. In its own order: de-hyphenation (eighteen words named), caption text cut in two on
-   two images, `segovia_gr.gif` wanting `position: left`/`size: medium`, `ДИСКОГРАФИЯ` as the heading
-   of what follows rather than the caption of the picture above, a `---` before "Сборник материалов",
-   and `</i><i> </i>` becoming `***`. PROGRESS §38.7 lists each with the author's words.
-2. **De-hyphenation as a class** -- `paragraph.hyphenation.mixed` 5 instances over 3 documents plus
-   `segovia`'s `unjoined`. The author lists the words; the mechanism is one rule, not six.
-3. **`new_karta`'s one-record row** -- one `::: columns` where the reference writes the two-column
-   link table. §35.6 built the mechanism; this instance escapes it.
-4. **`retyped.paragraph-to-align`, 8 instances over 8 documents** -- top of the ledger again, and
-   still two mechanisms wearing one name. Four are the glyph pager killed twice (§30.1, §35.10); of
-   the rest, `news`'s is a ruled ceiling (§37.8) and three have never been probed.
+1. **`new_geyzel04`'s four headings** -- four large bold centred titles; the converter makes none of
+   them a heading and binds one to the picture above it as a caption (`snapshot_24`). The author asks
+   for consistency across all four and says the caption misattribution needs a rule keyed on distance
+   from the image and type size. 3 converter-defects. PROGRESS §39.10.
+2. **The image bound one block too late**, `williams2` and `tarrega`. Same direction, same distance,
+   two documents -- a *rule* finding, not two instances. `snapshot_27` is the evidence.
+3. **De-hyphenation** -- the root cause is now measured (PROGRESS §39.8): hyphenopoly is **not
+   installed**, so cascade rule 6 never fires and every wrap falls to rule 7's PRESERVE; and even
+   installed it cannot JOIN without `options.dictionary`, which `pipeline.ts` never supplies. There
+   is also a scan gap -- the pattern consumes the right fragment, so `Информационно-аналити-ческого`
+   is only ever decided once. The first move is a decision about the oracle dependency, not more
+   probing.
+4. **`pavlov_azancheev`'s two-line headline** -- a real defect with a known shape and a known false
+   friend, but **two attempts were reverted on measurement** (PROGRESS §39.6). Read that before
+   trying again: the fix belongs where `data-biomd-heading` is *set*, the weight relation alone is
+   not the discriminator, and the test has to be page-level recurrence of the shape.
+5. **`new_karta`'s trailing `[▶]` wants centring** (`align.missing`, 1) and **`new_kolpakov`'s
+   `::: signature`** (1 of 22 references uses it; never emitted).
 
-**Open question for the author, one block.** `analyze.md` asks for `> "Все мое существо…"` inside
-`segovia`'s right-aligned block after the separator; the normalized reference (`c92c009`, later)
-writes it as an italic paragraph with no `>`. Rung 1 and rung 2 disagree on this one block. Not
-guessed at, and it is the only place they are known to conflict.
+**No open question for the author.** §38's one conflict -- `segovia`'s right-aligned quote, `>` in
+`analyze.md` and italic in the corrected reference -- is **answered** by `analyze-3.md`'s ruling 5 in
+§3 below: both readings are correct, so the reference's stands.
 
-**Do not re-take these; §37-§38 settled them.** `news`'s frame/align cluster · `align` inside
+**Do not re-take these; §37-§39 settled them.** `news`'s frame/align cluster · `align` inside
 `column` · `goya2`'s Moscow `rowspan` lane · `new_kolpakov`'s broken href and its footer ·
-`new_rechin4`'s pager · `segovia`'s bulleted "см. также" and its `<ol>` quotation.
+`new_rechin4`'s pager · `segovia`'s bulleted "см. также" and its `<ol>` quotation · `tarrega`'s
+dot-leader list · `new_lagq2`'s centred tail · `segovia1`'s and `new_karta`'s notices ·
+`new_karta`'s one-record `::: columns` (**ruled equally correct**, §3.9).
 
-**Killed in §37-§38:** merging adjacent same-position `::: align` siblings (four references keep
-them, one merges and contradicts itself on identical source -- §36.5's tie-break, PROGRESS §37.9) ·
-hoisting *every* edge break out of a link label without the doubled-break guard (`borislova` 3 -> 8
-defect, PROGRESS §38.3) · source containment as the guard for a nav title (`news` puts its label in a
-cell of its own and wants the title, PROGRESS §38.4).
+**Killed in §37-§39** -- reopen on new measurement only:
+merging adjacent same-position `::: align` siblings (§37.9; `new_lagq2` is the document that merges,
+and it is still the minority) · hoisting *every* edge break out of a link label without the
+doubled-break guard (§38.3) · source containment as the guard for a nav title (§38.4) ·
+**right-aligned columns for a narrow table in a right-aligned container** (§39.6.1) ·
+**emphasis from a CSS class's `font-style`** (§39.6.2) · **two forms of the `pavlov` heading fix**
+(§39.6.3).
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
 > carries a multi-pack-index git 2.45 cannot read; `git config core.multiPackIndex false` unblocks it.
-> **`corpus scan` is still required after a fresh clone.**
+> **`corpus scan` is still required after a fresh clone** -- and PROGRESS §39.5 now depends on it:
+> without the profile the masthead banner survives and every page gains a spurious frame.
 
 ---
 ## 2. Closed -- the spec was amended, not the converter
@@ -102,38 +114,17 @@ reported. `validate.ts`'s `table-header-empty` rule is removed. **Validator erro
 author -- 🔗 was meant throughout, ▶ remains the *icon* glyph. No code changed; §35.3 had already
 implemented 🔗 on the strength of the 16 normalized references.
 
-## 2b. RULED -- one-record table vs. `::: align`: the table stays
+## 2b. SUPERSEDED -- one-record table vs. `::: align`: the references now agree
 
-`williams2`'s reference was corrected (`2228baf`) to **one** `::: align position: right` holding the
-title and the MP3 link, exactly as `analyze.md` item 9 asks. That confirms §35.6's diagnosis -- the
-record must stay whole -- and rejects its *representation* for that one document. Cost: exactly
-**1** converter-defect, `retyped.table-to-align` at `williams2:/align[26]`.
+`1214860` rewrote `williams2`'s single-record `::: align position: right` as the two-column table,
+which was the **last** `::: align` reading of this shape. The split is now `williams2` /
+`borislova` / `new_kolpakov` / `new_karta` x2 -> **table, unanimously**, `retyped.table-to-align` is
+at 0, and §36.5's "known, named divergence" no longer has anything to name.
 
-The split is now `williams2` -> `::: align`, `borislova` / `new_kolpakov` / `new_karta` x2 -> table,
-and the author knows all four. **Four sessions have found no DOM or geometric signal.** Ruled out:
-title length · column count · width ratio · class names · blockquote depth · container alignment
-(`right` for `williams2`, `borislova` *and* `new_kolpakov`) · table width · bracketed size metadata ·
-whether the document holds other tables · rendered geometry (`williams2` 87 % / `borislova` 85 %
-title share, both a narrow shrink-to-fit line) · and, re-tested this session because a corrected
-reference is new measurement, *"the title recurs in the page's prose"* -- `new_kolpakov`'s occurs
-**once**, like `williams2`'s, and wants a table.
-
-Probable reason they diverge: the two human complaints are about **different defects on one shape**.
-`analyze.md:590` on `borislova` reports the missing **table**; item 9 on `williams2` reports the
-missing **alignment**. Neither rules on the other's subject.
-
-**Ruled 2026-08-10: keep the table; do not re-open this.** The author confirmed the general
-principle -- *choose the rules that leave the rule system least contradictory, therefore most
-generalizable, and that cost the metrics least, in that order.* Keeping the table costs 1 defect on
-1 document; reverting to `align` costs 4 on 3 and brings the record-shattering back. `williams2`'s
-`retyped.table-to-align` is therefore a **known, named divergence**, not a target: it is the minority
-reading of a shape three other documents settle the other way, and no special case exists that only
-one document could ever justify.
-
-Reopens only if a second `::: align` instance appears, which would make the split 2-3 rather than
-1-3 and put a real distinction back on the table. Until then the honest alternative remains the
-`table.classify` hook with `isSingleRecordRow` as its deterministic acceptance check -- not worth 1
-finding.
+Four sessions of ruled-out signals are kept in PROGRESS §35.6 and §36.5 in case a genuine `::: align`
+instance ever reappears. Until one does there is nothing here to decide. The general principle §36.5
+established -- *take the reading that leaves the rule system least contradictory* -- stands, and §3.8
+below is where it lives now.
 
 ## 3. Answered by the reference author -- do not re-investigate
 
@@ -158,43 +149,68 @@ finding.
    fewest inconsistencies, therefore most generalizable, and least metric damage, in that order.
    *Ruled 2026-08-10.* Now the stated tie-break for verdict 4 in `CLAUDE.md`. A minority reference
    reading is recorded as a named divergence, never patched into a one-document special case.
-   PROGRESS §36.5; the worked example is §2b above.
+   PROGRESS §36.5; §2b above records why its worked example has since dissolved.
+9. **`new_karta`'s one-record `::: columns` is equally correct.** *Ruled 2026-08-10*, `analyze-3.md`:
+   *"по-смыслу равнозначно, тоже таблица, но без заголовка. Это равноценное решение, а не реальная
+   проблема. Такие случаи нужно игнорировать."* Closes the third standing candidate of §38's queue.
+10. **`news.htm` has no errors at all** -- *"ошибок нет"*. Every remaining `news` converter-defect
+    finding is a non-defect.
+11. **A right-aligned quoted passage may be `>` or `_`, and both are correct.** *Ruled 2026-08-10*,
+    on `pavlov_azancheev` and repeated on `borislova`: *"тут оба варианта одинаково верны и хороши --
+    выбирай тот, который более гармонично вписывается в текущие правила"*. **This answers §38's one
+    open question** about `segovia`'s quote after the `* * *` separator: `analyze.md` wants `>`, the
+    corrected reference writes italic, and both are right -- so the reference's reading stands and
+    nothing changes. The trailing `\` in that block is explicitly *not* settled by the author
+    (*"я их поставл на угад"*), so a hard-break difference there is never evidence of a defect.
+12. **`williams2`'s two smaller-font indented blocks are italic by the author's own choice**
+    (`snapshot_25`, `snapshot_26`), and **`jovicic`'s trailing `-` list is a design decision** --
+    *"Чисто человеческое дизайнерское решение."* Both reference-inconsistency by declaration.
 
-## 4. Open defect classes -- *measured* 2026-08-10 after §38
+## 4. Open defect classes -- *measured* 2026-08-10 after §39
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
-| 192 | `retyped.paragraph-to-align` | 8 | 8 | 8 | **two mechanisms wearing one name.** 4 are a centred glyph pager (`new_karta`, `new_lendle2`, `new_rechin4`, `tarrega`) and are the rule killed twice, §35.10 -- do not rebuild it whole. Of the other 4 (`new_lagq2`, `news`, `pavlov_azancheev`, `segovia`), **`news`'s is a ruled ceiling** (§37.8, the browser says `justify`); the remaining 3 have never been probed |
-| 24 | `emphasis.span` | 19 | 4 | 6 | downgraded -- verdicts flip on identical evidence across documents. But `segovia`'s is named in `analyze.md`: `</i><i> </i>` became `***`, which is not valid Markdown |
-| 24 | `paragraph.content.edited` | 13 | 3 | 8 | mostly reference-inconsistency |
-| 18 | `paragraph.spurious.in-paragraph` | 3 | 3 | 2 | one of `news`'s two is the `::: lead` shadow (§26.2, off the queue) |
-| 15 | `paragraph.hyphenation.mixed` | 5 | 5 | 3 | **named by `analyze.md` with eighteen words listed.** Candidate 2 in §1; one rule, not six |
-| 12 | `frame.moved` · `heading.missing.caption-echo` · `image.moved` · `image.position.value` · `paragraph.missing.in-paragraph` · `retyped.list-to-paragraph` · `retyped.paragraph-to-heading2` | 2 each | 2 | 2 | the tail: seven classes at 2 instances on 2 documents each. `heading.missing.caption-echo` and `image.position.value` are both named in `analyze.md`'s `segovia` section |
-| -- | ~~`retyped.paragraph-to-list`~~ | 5 -> **3** | 3 | 3 | `segovia`'s 2 closed by §38.5. `kiselev`'s "Том I/Том II…" volume list remains -- §15.2's third mechanism, font-size half not built |
-| -- | ~~`retyped.align-to-paragraph`~~ | 5 -> **3** | 3 | 1 | `segovia1`'s 2 closed by §37.3; the 3 left are `goya2`'s author-declared alternative (§37.8) |
-| -- | ~~`paragraph.content`~~ (critical), ~~`retyped.list-to-quote`~~ | -> **0** | 0 | 0 | closed by §38.6 -- **the last converter-defect critical** |
-| -- | ~~`nav.moved`~~, ~~`nav.active.missing`~~, ~~`nav.position.spurious`~~ | -> **0** | 0 | 0 | closed by §38.4 |
-| -- | ~~`signature.moved`~~, ~~`link.target`~~ | -> **0** | 0 | 0 | closed by §38.2, §38.3 |
-| -- | ~~`break.containment`~~, ~~`image.containment`~~, ~~`list.item.missing`~~, ~~`paragraph.spurious.in-list`~~ | -> **0** | 0 | 0 | closed by §37.2, §37.4, §37.6 |
-| -- | ~~`link.label.content.edited`~~, ~~`list.item.content.edited`~~ | -> **0** | 0 | 0 | closed by §37.5 |
+| 147 | `retyped.paragraph-to-align` | 7 | 7 | 7 | **two mechanisms wearing one name.** 4 are the centred glyph pager (`new_karta`, `new_lendle2`, `new_rechin4`, `tarrega`) and are the rule killed twice, §30.1/§35.10 -- do not rebuild it whole. `news`'s went with the normalization. Of the rest, `new_lagq2`'s is now the §37.9 align-merge residue; `pavlov_azancheev`'s and `segovia`'s have never been probed |
+| 24 | `emphasis.span` | 19 | 4 | 6 | downgraded, and §39.6.2 now gives the **cause**: computed italic from a CSS class exists on 9 documents and hundreds of blocks, and exactly one reference honours it. Do not implement |
+| 18 | `paragraph.content.edited` | 11 | 3 | 6 | mostly reference-inconsistency |
+| 18 | `paragraph.spurious.in-paragraph` | 3 | 3 | 2 | one of `news`'s two is the `::: lead` shadow (§26.2, off the queue), and `news` is now ruled clean outright (§3.10) |
+| 15 | `paragraph.hyphenation.mixed` | 5 | 5 | 3 | root cause measured, PROGRESS §39.8. Not a detector problem: the oracle is absent, and rule 6 could not JOIN even if it were |
+| 12 | `frame.moved` · `heading.missing.caption-echo` · `image.moved` · `image.position.value` · `link.inline.missing` · `paragraph.missing.in-paragraph` · `retyped.paragraph-to-heading2` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail. **`image.moved` is candidate 2 in §1** -- `williams2` and `tarrega`, same direction, same distance |
+| 9 | `paragraph.hyphenation.unjoined` | 3 | 3 | 3 | same cause as `.mixed` |
+| 9 | `retyped.align-to-paragraph` | 3 | 3 | 1 | `goya2`'s author-declared alternative (§37.8) |
+| 4 | `frame.position.spurious` | 2 | 2 | 2 | new in §39.5 -- the frames now exist and the two sides nest them differently |
+| 3 | `table.align` | 3 | 3 | 1 | `new_kolpakov`. **Killed in §39.6.1** on a 10-table browser sweep; not a target |
+| -- | ~~`retyped.list-to-table`~~ | 2 -> **0** | 0 | 0 | closed by §39.3 |
+| -- | ~~`link.label.hyphenation.joined`~~ | 2 -> **0** | 0 | 0 | closed by §39.2 -- the one thing `analyze-3.md` calls critical |
+| -- | ~~`retyped.table-to-align`~~, ~~`table.header.cell` on `kiselev`/`tarrega`~~ | -> **0** | 0 | 0 | closed by the `1214860` reference normalization, no code change |
+| -- | ~~`retyped.columns-to-table`~~ on `new_karta` | -- | -- | -- | **ruled equally correct** by the author (§3.9); still counted by L2, never a target |
 
-Per document, converter-defect: `new_lendle2` 7 · `new_rechin4` 6 · `news` 6 · `segovia` 6 ·
-`pavlov_azancheev` 5 · `tarrega` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · rest ≤ 3.
-`new_bach` and `new_dyens` are at **0**; `new_blackmore` is at **L1 100.0**.
+Per document, converter-defect: `new_lendle2` 7 · `new_rechin4` 6 · `segovia` 6 · `new_karta` 6 ·
+`news` 5 · `pavlov_azancheev` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · `segovia1` 4 ·
+rest <= 3. `barrios`, `new_bach` and `new_dyens` are at **0**; `new_bach`, `new_blackmore`,
+`new_dyens` and `williams2` are at **L1 100.0**.
 
-Also carried: `new_kolpakov`'s 3 `table.align` (column alignment, 1 of 21 references uses it) and its
-`::: signature` wrapper (`signature` appears in **1** of 22 references and has never been emitted) ·
-`williams2`'s `retyped.table-to-align` is the §36.5 named divergence, not a target ·
-`frame`'s `title:` property is now *unused by the references too* -- `news` replaced its one use with
-a `##` heading inside the frame.
+> `new_karta` 3 -> 6 and `segovia1` 2 -> 4 are **not regressions**. §39.5 gave both documents the
+> frame `analyze-3.md` asks for, and every added finding is about how the two sides *nest* the
+> directive, not about the region. The full accounting is in PROGRESS §39.5 -- quote it or the
+> numbers read as damage.
+
+Also carried: `new_kolpakov`'s `::: signature` wrapper (`signature` appears in **1** of 22 references
+and has never been emitted) · `frame`'s `title:` property is unused by the references too.
 
 ## 5. Instrument debt -- what to distrust, in order
 
 0. **`link.label.content.empty` fires on labels that are not empty.** Reports `critical` when the
-   produced label is `▶` and the reference's is a raw route -- now **4** instances (`barrios`,
-   `tarrega`, `segovia` x2 since §38.5 made `segovia`'s pair pairable), and they are 4 of the corpus's
-   5 remaining criticals. `analyze.md` rules the `▶` form correct in as many words.
-   The class name states a condition the finding does not meet. Fix the class, not the converter.
+   produced label is `▶` and the reference's is a raw route. `1214860` normalized most of these away
+   -- **3** instances remain (`segovia` x2, `tarrega`) and they are 3 of the corpus's 4 criticals, all
+   reference-inconsistency. The class name still states a condition the finding does not meet, and the
+   remaining three are simply references the normalization did not reach. Fix the class, not the
+   converter.
+0b. **`blocks.ts` reads a directive property line as a paragraph.** When the two sides nest a
+   directive differently -- `::: align` wrapping a `::: frame` on one side only -- the `frame: gold`
+   property line pairs against prose and is reported as `paragraph.missing.unattested` or
+   `.spurious.unattested`, at **critical**. It produced `segovia1`'s old critical and now produces
+   `new_karta`'s, with the sides swapped (PROGRESS §39.5). A property is not a block.
 1. **`src/eval/blocks.ts` has no setext case and `src/eval/facts.ts` does.** The converter no longer
    emits one, but the blind spot would misread any that appeared.
 2. **The 0.5-0.95 `ambiguous` word-coverage corridor is set, not calibrated**, and so is the **0.65**
