@@ -1190,6 +1190,30 @@ describe("a row of nothing but links is a pager, not an abandoned record", () =>
     return result.markdown;
   }
 
+  it("stacks a span's covered row into the lane beside it, not after the region", async () => {
+    // `goya2`'s "Moscow Nights", end to end. The second cover has no cell of
+    // its own in the text lane, so its row used to fail `columns.length >= 2`
+    // and fall out of the region — the picture ended up *after* the `:::
+    // columns` it belongs inside. Measured in the browser: 325 px of track list
+    // at x=383, two 162 px covers at x=634, y and y+162.
+    const spanned =
+      '<table width="90%" border="0"><tr>' +
+      '<td width="50%" valign="middle" rowspan="2"><p>01. Song of the Dnepr<br>02. Cossack Patrol</p></td>' +
+      '<td width="50%" valign="top"><p align="center"><img src="photo/goya_moscow1.jpg" width="150" height="150"></p></td>' +
+      "</tr><tr>" +
+      '<td width="50%" valign="top"><p align="center"><img src="photo/goya_moscow3a.jpg" width="150" height="150"></p></td>' +
+      "</tr></table>";
+    const out = await measuredWith("UNKNOWN", page(PROSE + spanned));
+    const region = out.indexOf("::: columns");
+    expect(region).toBeGreaterThan(-1);
+    const first = out.indexOf("goya_moscow1.jpg");
+    const second = out.indexOf("goya_moscow3a.jpg");
+    expect(first).toBeGreaterThan(region);
+    expect(second).toBeGreaterThan(first);
+    // Both inside the same lane: no `::: column` opens between them.
+    expect(out.slice(first, second)).not.toContain("::: column");
+  });
+
   it("leaves a pager's lanes bare, however the strip is centred", async () => {
     // `segovia1`'s footer: `◀ | Андрес Сеговия | Владимир Бобри | ▶`, the two
     // named cells centred. Its reference writes each lane's link bare.

@@ -3314,6 +3314,49 @@ function isSingleRecordRow(grid: TableGrid): boolean {
 }
 
 /**
+ * The grid's rows grouped into bands a `rowspan` holds together.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** `rowspan` and nothing else. A cell declaring `rowspan="n"` at
+ * row `r` occupies rows `r … r+n-1`, so those rows cannot be laid out
+ * independently: the rows below have no cell of their own in that lane, and a
+ * browser stacks whatever they *do* carry underneath the content already in
+ * the neighbouring lane. Emitting them as separate regions asserts a division
+ * the source does not draw. No document, class, width or content is consulted.
+ *
+ * **Recurrence.** Not applicable and deliberately not required: a span is a
+ * declared fact about two specific rows, not a pattern to be corroborated.
+ * Where no cell spans, every band is one row and this is the identity function
+ * — which is the corpus-wide state of all 22 documents but `goya2`.
+ *
+ * **False friend, tested for non-firing:** two ordinary rows that merely *look*
+ * paired — a title row above a track row, `goya2`'s own commonest shape. Their
+ * cells each occupy one row, so nothing joins them and the two regions stay
+ * separate with the `---` the row boundary earns.
+ *
+ * The reading is `analyze-2.md`'s, on "Moscow Nights", and it was confirmed in
+ * the browser rather than argued: the `rowspan="2"` track list renders 325 px
+ * tall at x=383, and the two 162 px covers render at x=634, y and y+162 — one
+ * text lane beside one lane of stacked pictures.
+ */
+export function rowBandsOf(grid: TableGrid): Array<{ start: number; end: number }> {
+  const bands: Array<{ start: number; end: number }> = [];
+  for (let r = 0; r < grid.rows; r += 1) {
+    const open = bands[bands.length - 1];
+    const band = open && r <= open.end ? open : (bands.push({ start: r, end: r }), bands[bands.length - 1]!);
+    for (let c = 0; c < grid.cols; c += 1) {
+      const slot = grid.slots[r]?.[c];
+      if (!slot?.isOrigin) continue;
+      const cell = grid.cells.find((x) => x.id === slot.originId);
+      if (!cell) continue;
+      band.end = Math.min(grid.rows - 1, Math.max(band.end, r + cell.rowSpan - 1));
+    }
+  }
+  return bands;
+}
+
+/**
  * A layout or catalog region.
  *
  * Under `simplified` this flattens to linear reading order. `columns` is
@@ -3426,17 +3469,27 @@ function layoutFrom(
     const lanes = laneColumnsOf(grid, (r, c) => (loweredRows[r]?.[c]?.blocks.length ?? 0) > 0);
     const rails = pageRailColumns(grid);
     for (const c of rails) lanes.delete(c);
-    for (let r = 0; r < grid.rows; r += 1) {
+    for (const band of rowBandsOf(grid)) {
       const columns = [];
       const folded: BiomdContent[] = [];
       for (let c = 0; c < grid.cols; c += 1) {
-        const cellContent = loweredRows[r]?.[c];
-        if (!cellContent) continue;
-        folded.push(...cellContent.folded);
-        // A rail's content is not lost — it joins the flow after the region, the
-        // same way a folded menu does.
-        if (rails.has(c)) folded.push(...cellContent.blocks);
-        else if (cellContent.blocks.length > 0) columns.push(makeColumn(cellContent.blocks));
+        // Every cell this band puts in lane `c`, top to bottom — which is the
+        // order a browser stacks them in, and for a single-row band is the one
+        // cell the loop used to read directly.
+        const stacked: BoundedContent[] = [];
+        let occupied = false;
+        for (let r = band.start; r <= band.end; r += 1) {
+          const cellContent = loweredRows[r]?.[c];
+          if (!cellContent) continue;
+          occupied = true;
+          folded.push(...cellContent.folded);
+          // A rail's content is not lost — it joins the flow after the region,
+          // the same way a folded menu does.
+          if (rails.has(c)) folded.push(...cellContent.blocks);
+          else stacked.push(...cellContent.blocks);
+        }
+        if (!occupied || rails.has(c)) continue;
+        if (stacked.length > 0) columns.push(makeColumn(stacked));
         // An established lane keeps its place even in a row that has nothing to
         // put there. Five `goya2` albums have no cover art, and dropping the
         // empty lane dropped the whole row out of the two-lane region — so five

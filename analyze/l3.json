@@ -27,23 +27,23 @@
     ]
   },
   "totals": {
-    "findings": 62,
+    "findings": 61,
     "alignmentRows": 275
   },
   "classes": [
     {
       "class": "layout.containment.mismatch",
-      "instances": 23,
-      "documents": 10
+      "instances": 22,
+      "documents": 9
     },
     {
       "class": "layout.lane.mismatch",
-      "instances": 13,
+      "instances": 12,
       "documents": 2
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 17,
+      "instances": 18,
       "documents": 5
     },
     {
@@ -68,23 +68,6 @@
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "quote"
-      }
-    },
-    {
-      "id": "e527c426",
-      "doc": "goya2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[52]/column[1]/image[0]",
-      "producedLine": 820,
-      "referenceLine": 827,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "columns>column"
       }
     },
     {
@@ -275,23 +258,6 @@
       }
     },
     {
-      "id": "de396bc6",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[52]/column[1]/image[0]",
-      "producedLine": 820,
-      "referenceLine": 827,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
       "id": "6733adb6",
       "doc": "goya2",
       "class": "layout.order.mismatch",
@@ -476,6 +442,23 @@
       "geometry": {
         "producedRank": 320,
         "referenceRank": 318
+      }
+    },
+    {
+      "id": "7468a4ae",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[52]/column[1]/image[0]",
+      "producedLine": 816,
+      "referenceLine": 827,
+      "produced": "",
+      "reference": "",
+      "geometry": {
+        "producedRank": 310,
+        "referenceRank": 319
       }
     },
     {
@@ -1659,7 +1642,7 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 820,
+      "producedLine": 816,
       "referenceLine": 827,
       "text": "",
       "producedAlignment": "center",

@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T07:45:55.232Z",
+  "generated": "2026-08-10T07:50:46.910Z",
   "totals": {
-    "findings": 162,
-    "converterDefects": 86,
+    "findings": 161,
+    "converterDefects": 85,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 46,
     "ambiguous": 30,
     "bySeverity": {
       "critical": 4,
-      "major": 75,
+      "major": 74,
       "minor": 83
     }
   },
@@ -39,10 +39,10 @@
     },
     {
       "doc": "goya2",
-      "findings": 23,
-      "converterDefects": 7,
+      "findings": 22,
+      "converterDefects": 6,
       "critical": 0,
-      "major": 14,
+      "major": 13,
       "minor": 9
     },
     {
@@ -707,27 +707,6 @@
         "path": "/heading[1]",
         "produced": null,
         "reference": "Путь к циклу"
-      }
-    },
-    {
-      "class": "image.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[50]/column[1]/image[1]",
-        "produced": "",
-        "reference": "produced at /image[51]"
       }
     },
     {
@@ -1914,20 +1893,6 @@
       "referenceLine": 645,
       "produced": "Historia de un Amor",
       "reference": "Historia de un Amor 1999 — at /columns[40]/column[0]/align[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e74ee424",
-      "doc": "goya2",
-      "class": "image.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 820,
-      "referenceLine": 802,
-      "produced": "",
-      "reference": "produced at /image[51]",
       "verdict": "converter-defect"
     },
     {

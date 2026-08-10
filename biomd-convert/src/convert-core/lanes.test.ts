@@ -9,7 +9,7 @@
 import { describe, expect, it } from "vitest";
 import type { TableGrid } from "../ladom/grid.js";
 import { makeColumn } from "../biomd-ast/index.js";
-import { laneColumnsOf, pageRailColumns } from "./structure.js";
+import { laneColumnsOf, pageRailColumns, rowBandsOf } from "./structure.js";
 
 /**
  * A grid from an occupancy map: `"XX"` is a row with both cells populated,
@@ -102,6 +102,66 @@ describe("lane occupancy is measured on what the region is built from", () => {
     // The default has to stay the source grid: callers that have not lowered
     // anything yet are asking about the shape the author drew.
     expect([...laneColumnsOf(gridOf(["X.", "X.", "X."]))].sort()).toEqual([0]);
+  });
+});
+
+/**
+ * A grid whose cells may span rows: `"A"` spans two rows, `"X"` one, `"."` is
+ * a covered slot with no cell of its own.
+ */
+function spanGridOf(rows: readonly string[]): TableGrid {
+  const cols = rows[0]?.length ?? 0;
+  const cells: Array<{ id: string; isEmpty: boolean; rowSpan: number }> = [];
+  const slots = rows.map((row) => [...row].map(() => null as { isOrigin: boolean; originId: string } | null));
+  rows.forEach((row, r) =>
+    [...row].forEach((ch, c) => {
+      if (ch === ".") return;
+      const id = `${r}:${c}`;
+      const rowSpan = ch === "A" ? 2 : 1;
+      cells.push({ id, isEmpty: false, rowSpan });
+      for (let dr = 0; dr < rowSpan && r + dr < rows.length; dr += 1) {
+        slots[r + dr]![c] = { isOrigin: dr === 0, originId: id };
+      }
+    }),
+  );
+  return { rows: rows.length, cols, slots, cells } as unknown as TableGrid;
+}
+
+/**
+ * See `rowBandsOf`'s own contract for the invariant. These pin the two
+ * behaviours the region loop depends on: identity where nothing spans, and one
+ * band where something does.
+ */
+describe("a rowspan holds its rows together", () => {
+  it("leaves every row its own band when nothing spans — the false friend", () => {
+    // `goya2`'s commonest shape and 21 of the 22 documents: a title row above a
+    // track row *look* paired and are not, so each keeps the `---` its own row
+    // boundary earns.
+    expect(rowBandsOf(spanGridOf(["XX", "XX", "XX"]))).toEqual([
+      { start: 0, end: 0 },
+      { start: 1, end: 1 },
+      { start: 2, end: 2 },
+    ]);
+  });
+
+  it("joins the row a span reaches into", () => {
+    // "Moscow Nights": a `rowspan="2"` track list beside a cover, and a second
+    // row carrying only the second cover. One band, so both covers land in the
+    // same lane instead of the second falling out of the region entirely.
+    expect(rowBandsOf(spanGridOf(["XX", "AX", ".X", "XX"]))).toEqual([
+      { start: 0, end: 0 },
+      { start: 1, end: 2 },
+      { start: 3, end: 3 },
+    ]);
+  });
+
+  it("does not let a span run off the end of the grid", () => {
+    // A `rowspan` that overshoots the last row is ordinary in 1998 markup; the
+    // band still has to name a row that exists.
+    expect(rowBandsOf(spanGridOf(["XX", "AX"]))).toEqual([
+      { start: 0, end: 0 },
+      { start: 1, end: 1 },
+    ]);
   });
 });
 
