@@ -289,7 +289,7 @@ Publications VP MUSIC MEDIA: [www.seicorde.it/Pocci](http://www.seicorde.it/Pocc
 :::
 
 | | 🔗|
-| --- | ---| 
+| - | - |
 | "Estrelluvio" (Dedicada a José Luis Vega) \[ 4'46''; 1,65 Mb ] | [WMA](music/wma/borislova_estrelluvio.wma) |
 
 \* Запись предоставлена автором и размещается с ее согласия.

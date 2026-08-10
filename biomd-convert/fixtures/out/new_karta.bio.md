@@ -147,6 +147,6 @@ active: А Бартоли
 ::: align
 position: center
 
-[&#9654;](/#/karta2)
+[▶](/#/karta2)
 
 :::

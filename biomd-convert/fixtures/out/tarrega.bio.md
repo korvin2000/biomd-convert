@@ -82,7 +82,7 @@ Antich y Tena Editores, San Vicente, 99, Valencia\
 
 **МУЗЫКА, ТАБУЛАТУРЫ И НОТЫ ИЗ ДРУГИХ ИЗДАНИЙ**
 
-| Название | Аудиоформат | Аудиоформат | Аудиоформат |
+| | 🔗 | 🔗 | 🔗 |
 | - | - | - | - |
 | Adelita | [TAB](music/tab/ftadelit.txt) | [RAM](music/ram/adelita.ra) | — |
 | Adelita (в исп. Дэвида Рассела) | — | [MP3](music/mp/adelita_russel.mp3) | — |
@@ -129,6 +129,6 @@ Antich y Tena Editores, San Vicente, 99, Valencia\
 ::: align
 position: right
 
-**Список произведений для гитары соло [&#9654;](/#/tarrega1)**
+**Список произведений для гитары соло [▶](/#/tarrega1)**
 
 :::

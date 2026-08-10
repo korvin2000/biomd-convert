@@ -233,6 +233,6 @@ caption: W. Lendle CD's - Spanish Guitar Music
 ::: align
 position: center
 
-[&#9664;](/#/lendle)
+[◀](/#/lendle)
 
 :::

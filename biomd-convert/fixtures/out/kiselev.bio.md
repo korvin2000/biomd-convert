@@ -180,30 +180,30 @@ E-mail: [info@vpmusicmedia.com](mailto:info@vpmusicmedia.com)\
 
 ## ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА
 
-| Название | Аудиоформат |
+| | 🔗 |
 | - | - |
-| ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов |   |
+| ДЖАЗ-СЮИТА (2001), Александру Виницкому – одному из моих любимых композиторов | — |
 | • Стакан сока со льдом в жаркий полдень | [MP3](music/mp/kiselev/01_jazz_suite.mp3) |
 | • Ищу работу | [MP3](music/mp/kiselev/02_jazz_suite.mp3) |
 | • Прогулка вдоль витрин дорогих магазинов | [MP3](music/mp/kiselev/03_jazz_suite.mp3) |
 | • Прохладный кафе, мягкий свет, тихая музыка | [MP3](music/mp/kiselev/04_jazz_suite.mp3) |
 | • Не стреляйте в гитариста, он играет, как умеет | [MP3](music/mp/kiselev/05_jazz_suite.mp3) |
-| ОСЕННЯЯ СЮИТА (1986) |   |
+| ОСЕННЯЯ СЮИТА (1986) | — |
 | • Прелюдия | [MP3](music/mp/kiselev/01_autumn_suite.mp3) |
 | • Сентиментальная прогулка | [MP3](music/mp/kiselev/02_autumn_suite.mp3) |
 | • Дождь за окном | [MP3](music/mp/kiselev/03_autumn_suite.mp3) |
 | • Листопад | [MP3](music/mp/kiselev/04_autumn_suite.mp3) |
-| ЗИМНЯЯ СЮИТА (1996), Виктору Козлову |   |
+| ЗИМНЯЯ СЮИТА (1996), Виктору Козлову | — |
 | • Метель | [MP3](music/mp/kiselev/01_winter_suite.mp3) |
 | • Вальс снежинок | [MP3](music/mp/kiselev/02_winter_suite.mp3) |
 | • Одиночество вдвоем | [MP3](music/mp/kiselev/03_winter_suite.mp3) |
 | • На катке | [MP3](music/mp/kiselev/04_winter_suite.mp3) |
-| ВЕСЕННЯЯ СЮИТА (1996), моему другу Станиславу Савельеву |   |
+| ВЕСЕННЯЯ СЮИТА (1996), моему другу Станиславу Савельеву | — |
 | • Ожидание | [MP3](music/mp/kiselev/01_spring_suite.mp3) |
 | • Начало | [MP3](music/mp/kiselev/02_spring_suite.mp3) |
 | • Подснежники | [MP3](music/mp/kiselev/03_spring_suite.mp3) |
 | • Купание воробьев в апрельской луже | [MP3](music/mp/kiselev/04_spring_suite.mp3) |
-| ЛЕТНЯЯ СЮИТА (1997) |   |
+| ЛЕТНЯЯ СЮИТА (1997) | — |
 | • На пляже | [MP3](music/mp/kiselev/01_summer_suite.mp3) |
 | • Старый парк во время грозы | [MP3](music/mp/kiselev/02_summer_suite.mp3) |
 | • Последняя иллюзия | [MP3](music/mp/kiselev/03_summer_suite.mp3) |
