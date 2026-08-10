@@ -84,14 +84,7 @@ caption: Джон Вильямс на обложках гитарных журн
 ::: align
 position: right
 
-J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**
-
-:::
-
-::: align
-position: right
-
-[MP3](music/mp/jwlms_bach.mp3)
+J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** [MP3](music/mp/jwlms_bach.mp3)
 
 :::
 
