@@ -19,7 +19,7 @@ REVIEW  williams2.htm  recall=99.8%  errors=0  reviews=15  tables=1/1  llm=0/1
 ok      borislova.htm  recall=99.7%  errors=0  reviews=9  tables=1/1  llm=0/3
 ok      new_blackmore.htm  recall=99.9%  errors=0  reviews=28  tables=0/0  llm=0/1
 ok      new_dyens.htm  recall=100.0%  errors=0  reviews=4  tables=1/1  llm=0/2
-ok      new_geyzel04.htm  recall=99.6%  errors=0  reviews=33  tables=0/0  llm=0/1
+ok      new_geyzel04.htm  recall=99.6%  errors=0  reviews=29  tables=0/0  llm=0/1
 ok      pavlov_azancheev.htm  recall=99.9%  errors=0  reviews=9  tables=0/0  llm=0/1
 
 Converted:      5

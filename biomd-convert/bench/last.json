@@ -1,5 +1,5 @@
 {
-  "overall": 0.9676505824064082,
+  "overall": 0.9840339408333301,
   "documents": [
     {
       "name": "authors",
@@ -65,19 +65,13 @@
     {
       "name": "barrios",
       "text": {
-        "recall": 0.9926253687315634,
-        "precision": 0.9940915805022157,
-        "f1": 0.9933579335793358,
-        "expected": 678,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 677,
         "actual": 677,
-        "matched": 673,
-        "missing": [
-          "мангори жизнь и творчество barrios1",
-          "жизнь и творчество barrios1 complete",
-          "и творчество barrios1 complete historical",
-          "творчество barrios1 complete historical recordings",
-          "barrios1 complete historical recordings 1913"
-        ]
+        "matched": 677,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -277,7 +271,7 @@
           ]
         }
       ],
-      "overall": 0.9980073800738007
+      "overall": 1
     },
     {
       "name": "borislova",
@@ -500,20 +494,13 @@
     {
       "name": "kiselev",
       "text": {
-        "recall": 0.9934924078091106,
-        "precision": 0.9956521739130435,
-        "f1": 0.9945711183496201,
-        "expected": 922,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 920,
         "actual": 920,
-        "matched": 916,
-        "missing": [
-          "завтрак на траве mp3 название",
-          "на траве mp3 название аудиоформат",
-          "траве mp3 название аудиоформат музыкальные",
-          "mp3 название аудиоформат музыкальные файлы",
-          "название аудиоформат музыкальные файлы размещены",
-          "аудиоформат музыкальные файлы размещены с"
-        ]
+        "matched": 920,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -604,8 +591,8 @@
           "cols": 2,
           "rows": 26,
           "header": [
-            "название",
-            "аудиоформат"
+            "",
+            ""
           ],
           "cells": [
             "джазсюита 2001 александру виницкому одному из моих любимых композиторов",
@@ -755,24 +742,18 @@
           ]
         }
       ],
-      "overall": 0.998371335504886
+      "overall": 1
     },
     {
       "name": "new_bach",
       "text": {
-        "recall": 0.9971735443753533,
-        "precision": 0.997737556561086,
-        "f1": 0.9974554707379135,
-        "expected": 1769,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1768,
         "actual": 1768,
-        "matched": 1764,
-        "missing": [
-          "произведениях и с баха 9654",
-          "и с баха 9654 источник",
-          "с баха 9654 источник большая",
-          "баха 9654 источник большая энциклопедия",
-          "9654 источник большая энциклопедия кирилла"
-        ]
+        "matched": 1768,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -1186,7 +1167,7 @@
           ]
         }
       ],
-      "overall": 0.999236641221374
+      "overall": 1
     },
     {
       "name": "new_blackmore",
@@ -1432,20 +1413,18 @@
     {
       "name": "new_karta",
       "text": {
-        "recall": 0.9820051413881749,
-        "precision": 0.9896373056994818,
-        "f1": 0.9858064516129031,
-        "expected": 389,
-        "actual": 386,
-        "matched": 382,
+        "recall": 0.9871134020618557,
+        "precision": 0.9871134020618557,
+        "f1": 0.9871134020618557,
+        "expected": 388,
+        "actual": 388,
+        "matched": 383,
         "missing": [
-          "аудио нот и табулатур frame",
           "нот и табулатур frame white",
           "и табулатур frame white поскольку",
           "табулатур frame white поскольку биографические",
           "frame white поскольку биографические страницы",
-          "white поскольку биографические страницы сайта",
-          "м о п я 9654"
+          "white поскольку биографические страницы сайта"
         ]
       },
       "headings": {
@@ -1483,7 +1462,7 @@
         "actual": 8,
         "matched": 5,
         "missing": [
-          "frame"
+          "align"
         ]
       },
       "tableCells": {
@@ -1937,7 +1916,7 @@
           ]
         }
       ],
-      "overall": 0.9548593958013313
+      "overall": 0.955251480936017
     },
     {
       "name": "new_kolpakov",
@@ -2071,15 +2050,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9615384615384616,
-        "precision": 1,
-        "f1": 0.9803921568627451,
+        "recall": 1,
+        "precision": 0.9629629629629629,
+        "f1": 0.9811320754716981,
         "expected": 26,
-        "actual": 25,
-        "matched": 25,
-        "missing": [
-          "align"
-        ]
+        "actual": 27,
+        "matched": 26,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2093,15 +2070,15 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9980392156862745
+      "overall": 0.9981132075471698
     },
     {
       "name": "new_lendle2",
       "text": {
-        "recall": 0.9831730769230769,
+        "recall": 0.9855421686746988,
         "precision": 0.9903147699757869,
-        "f1": 0.9867310012062726,
-        "expected": 416,
+        "f1": 0.9879227053140097,
+        "expected": 415,
         "actual": 413,
         "matched": 409,
         "missing": [
@@ -2110,8 +2087,7 @@
           "mi menor frame white heitor",
           "menor frame white heitor villalobos",
           "frame white heitor villalobos w",
-          "white heitor villalobos w lendle",
-          "federico moreno torroba madronos 9664"
+          "white heitor villalobos w lendle"
         ]
       },
       "headings": {
@@ -2165,7 +2141,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9926859670285484
+      "overall": 0.9930434782608696
     },
     {
       "name": "new_rechin4",
@@ -2282,15 +2258,14 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9565217391304348,
+        "recall": 0.9777777777777777,
         "precision": 1,
-        "f1": 0.9777777777777777,
-        "expected": 46,
+        "f1": 0.9887640449438202,
+        "expected": 45,
         "actual": 44,
         "matched": 44,
         "missing": [
-          "lead",
-          "align"
+          "lead"
         ]
       },
       "tableCells": {
@@ -2305,7 +2280,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9967719868603745
+      "overall": 0.9978706135769788
     },
     {
       "name": "news_2007",
@@ -2611,21 +2586,19 @@
     {
       "name": "segovia1",
       "text": {
-        "recall": 0.9927228623408126,
-        "precision": 0.9951367781155015,
-        "f1": 0.9939283545840923,
+        "recall": 0.9963614311704063,
+        "precision": 0.9975713418336369,
+        "f1": 0.9969660194174758,
         "expected": 1649,
-        "actual": 1645,
-        "matched": 1637,
+        "actual": 1647,
+        "matched": 1643,
         "missing": [
-          "суть педагогических принципов сеговии frame",
-          "педагогических принципов сеговии frame gold",
-          "принципов сеговии frame gold внимание",
-          "сеговии frame gold внимание частичное",
-          "frame gold внимание частичное или",
-          "gold внимание частичное или полное",
           "андреса сеговии columns 4 9664",
-          "сеговии columns 4 9664 андрес"
+          "сеговии columns 4 9664 андрес",
+          "columns 4 9664 андрес сеговия",
+          "4 9664 андрес сеговия владимир",
+          "9664 андрес сеговия владимир бобри",
+          "андрес сеговия владимир бобри 9654"
         ]
       },
       "headings": {
@@ -2656,15 +2629,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.9615384615384616,
-        "precision": 0.9615384615384616,
-        "f1": 0.9615384615384616,
+        "recall": 1,
+        "precision": 0.9629629629629629,
+        "f1": 0.9811320754716981,
         "expected": 26,
-        "actual": 26,
-        "matched": 25,
-        "missing": [
-          "frame"
-        ]
+        "actual": 27,
+        "matched": 26,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2678,17 +2649,17 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9943323525290738
+      "overall": 0.9972030133724125
     },
     {
       "name": "tarrega",
       "text": {
-        "recall": 0.9623893805309734,
-        "precision": 0.9709821428571429,
-        "f1": 0.9666666666666667,
-        "expected": 904,
+        "recall": 0.9721913236929922,
+        "precision": 0.9754464285714286,
+        "f1": 0.973816155988858,
+        "expected": 899,
         "actual": 896,
-        "matched": 870,
+        "matched": 874,
         "missing": [
           "гитары недоступных другим инструментам он",
           "недоступных другим инструментам он принадлежал",
@@ -2741,24 +2712,15 @@
         ]
       },
       "tableCells": {
-        "recall": 0.6991150442477876,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.8229166666666666,
+        "f1": 1,
         "expected": 113,
-        "actual": 79,
-        "matched": 79,
-        "missing": [
-          "1 capricho arabe serenata para guitarra",
-          "a y t 357",
-          "2 3 preludios no 1 y 2",
-          "a y t 358",
-          "4 largo de la sonata de beethoven op 7",
-          "a y t 362",
-          "5 gran vals",
-          "a y t 360"
-        ]
+        "actual": 113,
+        "matched": 113,
+        "missing": []
       },
-      "tableShape": 0.3333333333333333,
+      "tableShape": 1,
       "expectedTables": [
         {
           "cols": 2,
@@ -2818,10 +2780,10 @@
           "cols": 4,
           "rows": 32,
           "header": [
-            "название",
-            "аудиоформат",
-            "аудиоформат",
-            "аудиоформат"
+            "",
+            "",
+            "",
+            ""
           ],
           "cells": [
             "adelita",
@@ -2907,6 +2869,60 @@
         }
       ],
       "actualTables": [
+        {
+          "cols": 2,
+          "rows": 6,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "1 capricho arabe serenata para guitarra",
+            "a y t 357",
+            "2 3 preludios no 1 y 2",
+            "a y t 358",
+            "4 largo de la sonata de beethoven op 7",
+            "a y t 362",
+            "5 gran vals",
+            "a y t 360",
+            "6 la mariposa estudio para guitarra",
+            "a y t 359",
+            "7 adelita mazurka para guitarra",
+            "a y t 364"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 11,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "1 preludio no 20 chopin",
+            "a y t 391",
+            "2 preludio no 3",
+            "a y t 392",
+            "3 preludio no 4",
+            "a y t 392",
+            "4 preludio no 5",
+            "a y t 392",
+            "5 preludio no 6 chopin op 28",
+            "a y t 391",
+            "6 preludio no 7 chopin",
+            "a y t 391",
+            "7 rosita polka",
+            "a y t 393",
+            "8 marieta mazurka para guitarra",
+            "a y t 393",
+            "9 menuet de la fantasie op 78 de franz schubert",
+            "a y t 394",
+            "10 menuet beethoven",
+            "a y t 395",
+            "11 menuet de haydn",
+            "a y t 396"
+          ]
+        },
         {
           "cols": 4,
           "rows": 32,
@@ -2999,7 +3015,7 @@
           ]
         }
       ],
-      "overall": 0.8713740079365079
+      "overall": 0.966748021399832
     },
     {
       "name": "williams2",
@@ -3040,27 +3056,38 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8888888888888888,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9411764705882353,
-        "expected": 9,
+        "f1": 1,
+        "expected": 8,
         "actual": 8,
         "matched": 8,
-        "missing": [
-          "align"
-        ]
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
-        "precision": 0,
-        "f1": 0,
-        "expected": 0,
+        "precision": 1,
+        "f1": 1,
+        "expected": 2,
         "actual": 2,
-        "matched": 0,
+        "matched": 2,
         "missing": []
       },
-      "tableShape": 0,
-      "expectedTables": [],
+      "tableShape": 1,
+      "expectedTables": [
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "j s bach bwv 996 prelude suite for lute no 1 in em",
+            "mp3"
+          ]
+        }
+      ],
       "actualTables": [
         {
           "cols": 2,
@@ -3075,7 +3102,7 @@
           ]
         }
       ],
-      "overall": 0.7441176470588236
+      "overall": 1
     }
   ]
 }

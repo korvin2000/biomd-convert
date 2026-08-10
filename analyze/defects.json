@@ -1,33 +1,33 @@
 {
-  "generated": "2026-08-10T09:19:16.601Z",
+  "generated": "2026-08-10T14:53:15.449Z",
   "totals": {
-    "findings": 151,
+    "findings": 134,
     "converterDefects": 73,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 49,
-    "ambiguous": 29,
+    "referenceInconsistencies": 43,
+    "ambiguous": 18,
     "bySeverity": {
-      "critical": 5,
-      "major": 64,
-      "minor": 82
+      "critical": 4,
+      "major": 60,
+      "minor": 70
     }
   },
   "perDocument": [
     {
       "doc": "authors",
-      "findings": 3,
+      "findings": 2,
       "converterDefects": 2,
       "critical": 0,
       "major": 0,
-      "minor": 3
+      "minor": 2
     },
     {
       "doc": "barrios",
-      "findings": 2,
+      "findings": 0,
       "converterDefects": 0,
-      "critical": 1,
+      "critical": 0,
       "major": 0,
-      "minor": 1
+      "minor": 0
     },
     {
       "doc": "borislova",
@@ -55,11 +55,11 @@
     },
     {
       "doc": "kiselev",
-      "findings": 11,
+      "findings": 4,
       "converterDefects": 3,
       "critical": 0,
-      "major": 3,
-      "minor": 8
+      "major": 1,
+      "minor": 3
     },
     {
       "doc": "new_bach",
@@ -95,10 +95,10 @@
     },
     {
       "doc": "new_karta",
-      "findings": 3,
-      "converterDefects": 3,
-      "critical": 0,
-      "major": 3,
+      "findings": 6,
+      "converterDefects": 6,
+      "critical": 1,
+      "major": 5,
       "minor": 0
     },
     {
@@ -111,10 +111,10 @@
     },
     {
       "doc": "new_lagq2",
-      "findings": 3,
-      "converterDefects": 3,
+      "findings": 2,
+      "converterDefects": 2,
       "critical": 0,
-      "major": 3,
+      "major": 2,
       "minor": 0
     },
     {
@@ -135,19 +135,19 @@
     },
     {
       "doc": "news",
-      "findings": 8,
-      "converterDefects": 6,
+      "findings": 7,
+      "converterDefects": 5,
       "critical": 0,
-      "major": 5,
+      "major": 4,
       "minor": 3
     },
     {
       "doc": "news_2007",
-      "findings": 11,
+      "findings": 9,
       "converterDefects": 4,
       "critical": 0,
       "major": 3,
-      "minor": 8
+      "minor": 6
     },
     {
       "doc": "pavlov_azancheev",
@@ -167,56 +167,77 @@
     },
     {
       "doc": "segovia1",
-      "findings": 3,
-      "converterDefects": 2,
-      "critical": 1,
-      "major": 1,
-      "minor": 1
+      "findings": 4,
+      "converterDefects": 4,
+      "critical": 0,
+      "major": 4,
+      "minor": 0
     },
     {
       "doc": "tarrega",
-      "findings": 11,
-      "converterDefects": 5,
+      "findings": 7,
+      "converterDefects": 3,
       "critical": 1,
-      "major": 9,
+      "major": 5,
       "minor": 1
     },
     {
       "doc": "williams2",
-      "findings": 6,
-      "converterDefects": 2,
+      "findings": 3,
+      "converterDefects": 1,
       "critical": 0,
-      "major": 2,
-      "minor": 4
+      "major": 1,
+      "minor": 2
     }
   ],
   "classes": [
     {
       "class": "retyped.paragraph-to-align",
       "severity": "major",
-      "instances": 8,
+      "instances": 6,
       "documents": [
         "new_karta",
-        "new_lagq2",
         "new_lendle2",
         "new_rechin4",
-        "news",
         "pavlov_azancheev",
         "segovia",
         "tarrega"
       ],
       "verdicts": {
-        "converter-defect": 8,
+        "converter-defect": 6,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 192,
+      "rank": 108,
       "example": {
         "doc": "new_karta",
         "path": "/align[23]",
         "produced": "▶",
         "reference": "▶ — at /paragraph[24]"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "new_lagq2",
+        "new_lendle2",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 27,
+      "example": {
+        "doc": "new_lagq2",
+        "path": "/align[15]/paragraph[0]",
+        "produced": null,
+        "reference": "Music by:"
       }
     },
     {
@@ -246,26 +267,68 @@
       }
     },
     {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "new_lendle2",
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]/align[1]/paragraph[0]",
+        "produced": "Heitor Villa-Lobos",
+        "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]"
+      }
+    },
+    {
+      "class": "retyped.align-to-paragraph",
+      "severity": "major",
+      "instances": 4,
+      "documents": [
+        "goya2",
+        "new_lagq2"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 24,
+      "example": {
+        "doc": "goya2",
+        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
+        "produced": "Francis Goya Plays His Favourite Hits",
+        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
+      }
+    },
+    {
       "class": "paragraph.content.edited",
       "severity": "minor",
-      "instances": 13,
+      "instances": 11,
       "documents": [
-        "barrios",
         "jovicic",
         "new_blackmore",
         "new_rechin4",
         "news",
         "segovia",
-        "tarrega",
-        "williams2"
+        "tarrega"
       ],
       "verdicts": {
         "converter-defect": 3,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
-        "ambiguous": 10
+        "ambiguous": 8
       },
-      "rank": 24,
+      "rank": 18,
       "example": {
         "doc": "new_blackmore",
         "path": "/paragraph[5]",
@@ -274,70 +337,50 @@
       }
     },
     {
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "major",
-      "instances": 3,
+      "class": "paragraph.hyphenation.unjoined",
+      "severity": "minor",
+      "instances": 4,
       "documents": [
-        "new_lagq2",
-        "news"
+        "authors",
+        "borislova",
+        "news_2007",
+        "segovia"
       ],
       "verdicts": {
-        "converter-defect": 3,
+        "converter-defect": 4,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 18,
+      "rank": 16,
       "example": {
-        "doc": "new_lagq2",
-        "path": "/paragraph[16]",
-        "produced": "Music by:",
-        "reference": null
+        "doc": "authors",
+        "path": "/paragraph[7]",
+        "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+        "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…"
       }
     },
     {
       "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
-      "instances": 5,
+      "instances": 4,
       "documents": [
         "authors",
         "jovicic",
         "pavlov_azancheev"
       ],
       "verdicts": {
-        "converter-defect": 5,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 15,
-      "example": {
-        "doc": "authors",
-        "path": "/paragraph[5]",
-        "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
-        "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
-      }
-    },
-    {
-      "class": "frame.moved",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_lendle2",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
+        "converter-defect": 4,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
       "rank": 12,
       "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]",
-        "produced": "Heitor Villa-Lobos",
-        "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]"
+        "doc": "authors",
+        "path": "/paragraph[5]",
+        "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
+        "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
       }
     },
     {
@@ -429,28 +472,6 @@
       }
     },
     {
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_lendle2",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/paragraph[0]",
-        "produced": null,
-        "reference": "frame: white"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-heading2",
       "severity": "major",
       "instances": 2,
@@ -495,89 +516,23 @@
       }
     },
     {
-      "class": "paragraph.hyphenation.unjoined",
-      "severity": "minor",
-      "instances": 3,
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "instances": 1,
       "documents": [
-        "borislova",
-        "news_2007",
-        "segovia"
+        "new_karta"
       ],
       "verdicts": {
-        "converter-defect": 3,
+        "converter-defect": 1,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 9,
+      "rank": 5,
       "example": {
-        "doc": "borislova",
-        "path": "/paragraph[2]",
-        "produced": "БОРИСЛОВА Надя \\[Надежда Борис-лавовна Борислова] (Nadia Borislova) – гитаристка и композитор. Родилась в 1969 году в Москве в семье пианистов. С 1992 года жив…",
-        "reference": "БОРИСЛОВА Надя \\[Надежда Бориславовна Борислова] (Nadia Borislova) – гитаристка и композитор. Родилась в 1969 году в Москве в семье пианистов. С 1992 года живе…"
-      }
-    },
-    {
-      "class": "retyped.align-to-paragraph",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "goya2"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 9,
-      "example": {
-        "doc": "goya2",
-        "path": "/columns[12]/column[0]/align[0]/paragraph[0]",
-        "produced": "Francis Goya Plays His Favourite Hits",
-        "reference": "Francis Goya Plays His Favourite Hits — at /columns[12]/column[0]/align[0]"
-      }
-    },
-    {
-      "class": "retyped.list-to-table",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "tarrega",
-        "path": "/table[20]",
-        "produced": "1. Preludio No 20 Chopin .................................................. A. y T. 391 2. Preludio No 3 ......................................................…",
-        "reference": "Название - 1. Preludio No 20 Chopin A. y T. 391 2. Preludio No 3 A. y T. 392 3. Preludio No 4 A. y T. 392 4. Preludio No 5 A. y T. 392 5. Preludio No 6 Chopin … — at /list[21]"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "new_lendle2",
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 4,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]@position",
-        "produced": "position: center",
+        "doc": "new_karta",
+        "path": "/align[2]/paragraph[1]",
+        "produced": "frame: gold",
         "reference": null
       }
     },
@@ -624,6 +579,48 @@
       }
     },
     {
+      "class": "align.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_karta",
+        "path": "/align[2]",
+        "produced": "frame: gold Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запоз…",
+        "reference": "frame frame: white Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторы… — produced at /frame[3]"
+      }
+    },
+    {
+      "class": "align.position.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_karta"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_karta",
+        "path": "/align[2]@position",
+        "produced": null,
+        "reference": "position: center"
+      }
+    },
+    {
       "class": "align.position.value",
       "severity": "major",
       "instances": 1,
@@ -645,6 +642,48 @@
       }
     },
     {
+      "class": "align.spurious",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "segovia1"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "segovia1",
+        "path": "/frame[57]/align[4]",
+        "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
+        "reference": null
+      }
+    },
+    {
+      "class": "frame.moved",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]",
+        "produced": "Heitor Villa-Lobos",
+        "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]"
+      }
+    },
+    {
       "class": "heading.missing.absorbed",
       "severity": "major",
       "instances": 1,
@@ -663,27 +702,6 @@
         "path": "/heading[1]",
         "produced": null,
         "reference": "Путь к циклу"
-      }
-    },
-    {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_lendle2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]/paragraph[0]",
-        "produced": "Heitor Villa-Lobos",
-        "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]"
       }
     },
     {
@@ -746,6 +764,27 @@
         "doc": "news",
         "path": "/frame[58]/align[2]/paragraph[3]",
         "produced": "и присуждением ей ученой степени кандидата искусствоведения.",
+        "reference": null
+      }
+    },
+    {
+      "class": "paragraph.spurious.in-paragraph",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "news"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "news",
+        "path": "/paragraph[2]",
+        "produced": "Такая новость может исходить и от вас, уважаемые гости, так что если у вас есть, чем поделиться с интернет-сообществом, направляйте мне свои сообщения и если о…",
         "reference": null
       }
     },
@@ -897,27 +936,6 @@
       }
     },
     {
-      "class": "retyped.table-to-align",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "williams2",
-        "path": "/align[26]",
-        "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
-        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /table[27]"
-      }
-    },
-    {
       "class": "heading.content.edited",
       "severity": "minor",
       "instances": 3,
@@ -979,6 +997,27 @@
         "path": "/break[7]",
         "produced": null,
         "reference": "---"
+      }
+    },
+    {
+      "class": "frame.position.spurious",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 1,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]@position",
+        "produced": "position: center",
+        "reference": null
       }
     },
     {
@@ -1046,29 +1085,6 @@
       }
     },
     {
-      "class": "table.header.cell",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "kiselev",
-        "segovia",
-        "tarrega"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 6,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "kiselev",
-        "path": "/table[16]/header[0]",
-        "produced": "",
-        "reference": "Название — column 0"
-      }
-    },
-    {
       "class": "image.position.missing.off-profile",
       "severity": "major",
       "instances": 6,
@@ -1111,47 +1127,47 @@
       }
     },
     {
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "instances": 5,
-      "documents": [
-        "kiselev"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 5
-      },
-      "rank": 0,
-      "example": {
-        "doc": "kiselev",
-        "path": "/table[16]/cell[0][1]",
-        "produced": "—",
-        "reference": ""
-      }
-    },
-    {
       "class": "link.label.content.empty",
       "severity": "critical",
-      "instances": 4,
+      "instances": 3,
       "documents": [
-        "barrios",
         "segovia",
         "tarrega"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 4,
+        "reference-inconsistency": 3,
         "ambiguous": 0
       },
       "rank": 0,
       "example": {
-        "doc": "barrios",
-        "path": "/paragraph[9]/link[0]",
+        "doc": "segovia",
+        "path": "/list[36]/item[0]/link[0]",
         "produced": "▶",
-        "reference": "/#/barrios1"
+        "reference": "/#/bobri1"
+      }
+    },
+    {
+      "class": "table.header.cell",
+      "severity": "major",
+      "instances": 3,
+      "documents": [
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 2,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "segovia",
+        "path": "/table[44]/header[4]",
+        "produced": "🔗",
+        "reference": "MP3 — column 4"
       }
     },
     {
@@ -1196,28 +1212,6 @@
         "path": "/image[45]@caption",
         "produced": "caption: ПРИЛОЖЕНИЕ: СЛОВАРЬ \"Кто есть Кто в истории Песни\"",
         "reference": null
-      }
-    },
-    {
-      "class": "link.label.hyphenation.joined",
-      "severity": "minor",
-      "instances": 2,
-      "documents": [
-        "authors",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 2
-      },
-      "rank": 0,
-      "example": {
-        "doc": "authors",
-        "path": "/paragraph[7]/link[0]",
-        "produced": "www.abcguitars.com",
-        "reference": "www.abc-guitars.com"
       }
     },
     {
@@ -1284,69 +1278,6 @@
       }
     },
     {
-      "class": "link.label.content.edited",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "williams2",
-        "path": "/paragraph[25]/link[0]",
-        "produced": "◀ К началу биографии",
-        "reference": "К началу биографии"
-      }
-    },
-    {
-      "class": "paragraph.hyphenation.joined",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "news_2007",
-        "path": "/columns[11]/column[1]/paragraph[0]",
-        "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abcguitars.com](…",
-        "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…"
-      }
-    },
-    {
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "segovia1"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "segovia1",
-        "path": "/frame[57]/paragraph[0]",
-        "produced": null,
-        "reference": "frame: gold"
-      }
-    },
-    {
       "class": "table.row.spurious",
       "severity": "major",
       "instances": 1,
@@ -1384,9 +1315,9 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "dcae797e",
+      "id": "08e6948d",
       "doc": "authors",
-      "class": "paragraph.hyphenation.mixed",
+      "class": "paragraph.hyphenation.unjoined",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
@@ -1396,48 +1327,6 @@
       "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "8d8a02b2",
-      "doc": "authors",
-      "class": "link.label.hyphenation.joined",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[7]/link[0]",
-      "producedLine": 35,
-      "referenceLine": 35,
-      "produced": "www.abcguitars.com",
-      "reference": "www.abc-guitars.com",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "7fcddc8c",
-      "doc": "barrios",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[9]",
-      "producedLine": 28,
-      "referenceLine": 28,
-      "produced": "*Подробнее см.:* \"Барриос Мангори - жизнь и творчество\" [▶](/#/barrios1)",
-      "reference": "*Подробнее см.:* \"Барриос Мангори - жизнь и творчество\" [/#/barrios1](/#/barrios1)",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "aec3d670",
-      "doc": "barrios",
-      "class": "link.label.content.empty",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[9]/link[0]",
-      "producedLine": 28,
-      "referenceLine": 28,
-      "produced": "▶",
-      "reference": "/#/barrios1",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "94361f51",
@@ -1888,104 +1777,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "4c397db7",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/header[0]",
-      "producedLine": 181,
-      "referenceLine": 180,
-      "produced": "",
-      "reference": "Название — column 0",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "d37819c5",
-      "doc": "kiselev",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/header[1]",
-      "producedLine": 181,
-      "referenceLine": 180,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "6d0256da",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/cell[0][1]",
-      "producedLine": 181,
-      "referenceLine": 180,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "b05529f4",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/cell[6][1]",
-      "producedLine": 187,
-      "referenceLine": 186,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "d4b0d148",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/cell[11][1]",
-      "producedLine": 192,
-      "referenceLine": 191,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "5e53b32f",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/cell[16][1]",
-      "producedLine": 197,
-      "referenceLine": 196,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "f4b7ab3d",
-      "doc": "kiselev",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[16]/cell[21][1]",
-      "producedLine": 202,
-      "referenceLine": 201,
-      "produced": "—",
-      "reference": "",
-      "verdict": "ambiguous"
-    },
-    {
       "id": "8b16e066",
       "doc": "new_blackmore",
       "class": "paragraph.content.edited",
@@ -2252,6 +2043,48 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "4b7b6d09",
+      "doc": "new_karta",
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "insert",
+      "path": "/align[2]/paragraph[1]",
+      "producedLine": 11,
+      "referenceLine": null,
+      "produced": "frame: gold",
+      "reference": null,
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "59c80665",
+      "doc": "new_karta",
+      "class": "align.moved",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[2]",
+      "producedLine": 10,
+      "referenceLine": 10,
+      "produced": "frame: gold Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запоз…",
+      "reference": "frame frame: white Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторы… — produced at /frame[3]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0caa5786",
+      "doc": "new_karta",
+      "class": "align.position.missing",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "delete",
+      "path": "/align[2]@position",
+      "producedLine": 10,
+      "referenceLine": 10,
+      "produced": null,
+      "reference": "position: center",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "4c21e9f3",
       "doc": "new_karta",
       "class": "retyped.paragraph-to-frame",
@@ -2350,45 +2183,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "a8d068d3",
+      "id": "28e388c6",
       "doc": "new_lagq2",
-      "class": "paragraph.spurious.in-paragraph",
+      "class": "paragraph.missing.in-paragraph",
       "severity": "major",
       "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[16]",
-      "producedLine": 213,
-      "referenceLine": null,
-      "produced": "Music by:",
-      "reference": null,
+      "op": "delete",
+      "path": "/align[15]/paragraph[0]",
+      "producedLine": null,
+      "referenceLine": 216,
+      "produced": null,
+      "reference": "Music by:",
       "verdict": "converter-defect"
     },
     {
-      "id": "0ad7f3aa",
+      "id": "e9fe6717",
       "doc": "new_lagq2",
-      "class": "paragraph.spurious.in-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[16]",
-      "producedLine": 215,
-      "referenceLine": null,
-      "produced": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street Electrical P…",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "4fec310a",
-      "doc": "new_lagq2",
-      "class": "retyped.paragraph-to-align",
+      "class": "retyped.align-to-paragraph",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[15]",
-      "producedLine": 217,
-      "referenceLine": 213,
-      "produced": "[Назад] [Фото]",
-      "reference": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El… — at /paragraph[16]",
+      "path": "/align[15]/paragraph[1]",
+      "producedLine": 214,
+      "referenceLine": 218,
+      "produced": "Music by: Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street El…",
+      "reference": "Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street Electrical P… — at /align[15]",
       "verdict": "converter-defect"
     },
     {
@@ -2770,20 +2589,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "e4b29f83",
-      "doc": "news",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[70]/align[1]",
-      "producedLine": 397,
-      "referenceLine": 383,
-      "produced": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце…",
-      "reference": "Сегодня, 26 февраля 2014 года, на 67-м году жизни в результате инфаркта скончался легендарный гитарист фламенко Франсиско Санчес Гомес, более известный под сце… — at /frame[70]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "25232086",
       "doc": "news_2007",
       "class": "emphasis.span",
@@ -2880,34 +2685,6 @@
       "produced": "(none)",
       "reference": "em:* · strong:*10 апреля 2007 г.",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "5f991a89",
-      "doc": "news_2007",
-      "class": "paragraph.hyphenation.joined",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/columns[11]/column[1]/paragraph[0]",
-      "producedLine": 120,
-      "referenceLine": 100,
-      "produced": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abcguitars.com](…",
-      "reference": "Благодаря спонсорской поддержке Александра Тавровского наш проект приобрел собственное доменное имя и теперь его можно увидеть по адресу: [www.abc-guitars.com]…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "f45d41d6",
-      "doc": "news_2007",
-      "class": "link.label.hyphenation.joined",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/columns[11]/column[1]/paragraph[0]/link[0]",
-      "producedLine": 120,
-      "referenceLine": 100,
-      "produced": "www.abcguitars.com",
-      "reference": "www.abc-guitars.com",
-      "verdict": "ambiguous"
     },
     {
       "id": "6bf2b608",
@@ -3204,46 +2981,60 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "4f04ad7a",
+      "id": "b97cd8ac",
       "doc": "segovia1",
-      "class": "frame.moved",
+      "class": "align.spurious",
       "severity": "major",
       "evidence": "structure",
-      "op": "move",
-      "path": "/frame[57]",
-      "producedLine": 222,
-      "referenceLine": 222,
-      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
-      "reference": "frame: gold ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование … — produced at /align[58]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d91c3983",
-      "doc": "segovia1",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
       "op": "insert",
-      "path": "/frame[57]@position",
-      "producedLine": 222,
-      "referenceLine": 222,
-      "produced": "position: center",
+      "path": "/frame[57]/align[4]",
+      "producedLine": 225,
+      "referenceLine": null,
+      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
       "reference": null,
       "verdict": "converter-defect"
     },
     {
-      "id": "7eab22eb",
+      "id": "72b417c7",
       "doc": "segovia1",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/frame[57]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 223,
-      "produced": null,
-      "reference": "frame: gold",
-      "verdict": "reference-inconsistency"
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[57]/paragraph[1]",
+      "producedLine": 228,
+      "referenceLine": 225,
+      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре…",
+      "reference": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора. Коммерческое использование статьи запре… — produced at /frame[57]/align[4]/paragraph[0]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "05921700",
+      "doc": "segovia1",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[57]/paragraph[2]",
+      "producedLine": 230,
+      "referenceLine": 227,
+      "produced": "Copyright © Денис Кольвах. All rights reserved.",
+      "reference": "Copyright © Денис Кольвах. All rights reserved. — produced at /frame[57]/align[4]/paragraph[1]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e81c23eb",
+      "doc": "segovia1",
+      "class": "paragraph.containment",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/frame[57]/paragraph[3]",
+      "producedLine": 232,
+      "referenceLine": 229,
+      "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mailto:dendvk@hotbox.ru?Subject=Техника Анд…",
+      "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mailto:dendvk@hotbox.ru?Subject=Техника Анд… — produced at /frame[57]/align[4]/paragraph[2]",
+      "verdict": "converter-defect"
     },
     {
       "id": "40c2a16b",
@@ -3274,87 +3065,31 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "d0ae74b4",
-      "doc": "tarrega",
-      "class": "retyped.list-to-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[18]",
-      "producedLine": 57,
-      "referenceLine": 56,
-      "produced": "1. Capricho Arabe (Serenata para guitarra) ..................... A. y T. 357 2-3. Preludios No 1 y 2 ......................................................... …",
-      "reference": "Название - 1. Capricho Arabe (Serenata para guitarra) A. y T. 357 2-3. Preludios No 1 y 2 A. y T. 358 4. Largo de la Sonata de Beethoven (Op. 7) A. y T. 362 5.… — at /list[19]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "69264f30",
-      "doc": "tarrega",
-      "class": "retyped.list-to-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]",
-      "producedLine": 65,
-      "referenceLine": 67,
-      "produced": "1. Preludio No 20 Chopin .................................................. A. y T. 391 2. Preludio No 3 ......................................................…",
-      "reference": "Название - 1. Preludio No 20 Chopin A. y T. 391 2. Preludio No 3 A. y T. 392 3. Preludio No 4 A. y T. 392 4. Preludio No 5 A. y T. 392 5. Preludio No 6 Chopin … — at /list[21]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b53f95e1",
+      "id": "4f2ba348",
       "doc": "tarrega",
       "class": "table.header.cell",
       "severity": "major",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[22]/header[0]",
-      "producedLine": 79,
-      "referenceLine": 84,
+      "path": "/table[18]/header[0]",
+      "producedLine": 57,
+      "referenceLine": 56,
       "produced": "",
       "reference": "Название — column 0",
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "265c41b3",
+      "id": "9160facf",
       "doc": "tarrega",
       "class": "table.header.cell",
       "severity": "major",
       "evidence": "content",
       "op": "substitute",
-      "path": "/table[22]/header[1]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 1",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "ad5c31f4",
-      "doc": "tarrega",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[22]/header[2]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 2",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "60ec36e5",
-      "doc": "tarrega",
-      "class": "table.header.cell",
-      "severity": "major",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[22]/header[3]",
-      "producedLine": 79,
-      "referenceLine": 84,
-      "produced": "🔗",
-      "reference": "Аудиоформат — column 3",
+      "path": "/table[20]/header[0]",
+      "producedLine": 68,
+      "referenceLine": 67,
+      "produced": "",
+      "reference": "Название — column 0",
       "verdict": "reference-inconsistency"
     },
     {
@@ -3365,7 +3100,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[26]",
-      "producedLine": 121,
+      "producedLine": 126,
       "referenceLine": 126,
       "produced": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [▶](/#/tarrega2)",
       "reference": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [/#/tarrega2](/#/tarrega2)",
@@ -3379,7 +3114,7 @@
       "evidence": "content",
       "op": "substitute",
       "path": "/paragraph[26]/link[0]",
-      "producedLine": 121,
+      "producedLine": 126,
       "referenceLine": 126,
       "produced": "▶",
       "reference": "/#/tarrega2",
@@ -3393,7 +3128,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[27]",
-      "producedLine": 123,
+      "producedLine": 128,
       "referenceLine": 129,
       "produced": "Список произведений для гитары соло ▶",
       "reference": "Список произведений для гитары соло ▶ — at /paragraph[28]",
@@ -3440,48 +3175,6 @@
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "72ee3668",
-      "doc": "williams2",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[25]",
-      "producedLine": 81,
-      "referenceLine": 81,
-      "produced": "[◀ К началу биографии](/#/williams1)",
-      "reference": "[К началу биографии](/#/williams1)",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "01457bd8",
-      "doc": "williams2",
-      "class": "link.label.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[25]/link[0]",
-      "producedLine": 81,
-      "referenceLine": 81,
-      "produced": "◀ К началу биографии",
-      "reference": "К началу биографии",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "cf27d7e7",
-      "doc": "williams2",
-      "class": "retyped.table-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[26]",
-      "producedLine": 83,
-      "referenceLine": 84,
-      "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
-      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /table[27]",
-      "verdict": "converter-defect"
     }
   ]
 }
