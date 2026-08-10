@@ -44,7 +44,7 @@ import {
   planDataTable,
 } from "./data-table.js";
 import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
-import { canonicalColumnLabel } from "./column-labels.js";
+import { UNNAMED_COLUMN_MARK, canonicalColumnLabel } from "./column-labels.js";
 import { type LinkProfile, rewriteTarget, siteRelativeAsset } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
@@ -1755,6 +1755,16 @@ function blocksFromGroup(
     if (rest.length === 0) return out;
   }
 
+  // A run of lines whose columns the author aligned with dot leaders is a table
+  // that predates the ability to draw one. It has to be asked before the
+  // enumerated-list rule, because its rows are usually numbered too and a list
+  // would swallow the second column into the item text.
+  const leaders = tableFromLeaderLines(rest);
+  if (leaders) {
+    out.push(leaders);
+    return out;
+  }
+
   // An enumerated run is a list the author had no <ul> for. As a paragraph of
   // hard breaks it renders as one block and reads as one sentence; as a list
   // each track, movement or volume is an item, which is what it is.
@@ -2012,6 +2022,162 @@ function listFromAnnouncedIndent(lines: readonly RunLine[], ctx: Ctx): BiomdCont
       })),
     } as BiomdContent,
   ];
+}
+
+/**
+ * The shortest run of `.` that is a column rule rather than punctuation.
+ *
+ * **Swept, not tuned.** Over all 22 sources, counting lines that carry an
+ * interior run of at least *k* dots with text on both sides: k=2 finds 8
+ * documents, k=3 finds 6, and **k=4 finds exactly 2 — `tarrega` (17 lines) and
+ * `segovia` (4) — and so does k=5, 6, 8 and 10.** Every ellipsis in the corpus
+ * (`Бразилию...`, `"...подделке под..."`, `произвело...`) disappears at exactly
+ * 4 and nothing else does. A curve that goes flat and stays flat is a limit,
+ * which `CLAUDE.md` §5 says is the right shape for a threshold; a cliff would
+ * have meant the number was standing in for some other mechanism.
+ *
+ * The lower bound cannot be raised past 4 either: `tarrega`'s
+ * *"9. Menuet de la Fantasie Op: 78 de Franz Schubert .... A. y T. 394"* pads
+ * its longest title with exactly four.
+ */
+const LEADER_RUN = /\.{4,}/u;
+
+/** A line split at its dot leader, or null when it carries none. */
+interface LeaderRow {
+  left: PhrasingContent[];
+  right: PhrasingContent[];
+}
+
+/**
+ * A run of lines the author ruled into columns with dot leaders → a table.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The evidence is a *typographic device*: a run of at least four
+ * dots, interior to the line, with content on both sides of it, repeated down
+ * the run. That is the same family of evidence as `drawnRuleFrom` — punctuation
+ * standing in for a structure the era gave the author no element for. Nothing
+ * here reads a class, an id, a file name, a word or a language; a leader is a
+ * leader in any script.
+ *
+ * **Recurrence.** Three rows minimum, *and* every non-blank line in the group
+ * must carry a leader. The second half is the stronger requirement and it is
+ * what makes the shape a table rather than a paragraph containing one aligned
+ * line: a column that stops halfway down is not a column.
+ *
+ * **False friends**, each tested for non-firing:
+ *   - **an ellipsis.** `new_dyens` writes `Бразилию...` and `"...подделке
+ *     под..."`, `borislova` `произвело...`. Three dots, and the sweep above is
+ *     the whole argument for four.
+ *   - **a leader used as padding inside a cell that already has a column.**
+ *     `segovia`'s Rodrigo table writes `Villano y Recercarre.................`
+ *     inside a real `<td>`, and both sides keep it verbatim. Two independent
+ *     guards stop it: the leader is *trailing*, so there is no right-hand
+ *     content, and a one-line cell can never reach three rows. This is the
+ *     distinction the rule turns on — `segovia`'s leader decorates a column,
+ *     `tarrega`'s **is** the column boundary.
+ *   - **an enumerated list.** Asked before `listFromEnumeratedLines` on
+ *     purpose. `goya2`'s numbered track list has no leaders and is unaffected;
+ *     `tarrega`'s rows are numbered *and* ruled, and the list rule would have
+ *     folded the catalogue number into the title.
+ *
+ * **Mutation robustness.** The rule reads `RunLine` content only, so renamed
+ * classes, permuted attributes, wrapper nesting, `<font>` versus CSS and a
+ * changed viewport cannot reach it. Dropping a closing tag changes which lines
+ * are in the group, and the all-lines requirement then declines rather than
+ * emitting a partial table.
+ *
+ * **Source.** `analyze-3.md`, `tarrega.htm`: *"получается ASCII подобная псевдо
+ * таблица, где отступ для второго столбца регулируется точками … Тут нужна
+ * умная функция, эвристика, что бы распознала такую структуру и правратила ее
+ * в более красивую и типичную для md таблицу"*, with the wanted output written
+ * out row by row.
+ */
+function tableFromLeaderLines(lines: readonly RunLine[]): Table | null {
+  const rows: LeaderRow[] = [];
+  for (const line of lines) {
+    if (lineText(line) === "") continue;
+    const row = splitAtLeader(line);
+    if (row === null) return null;
+    rows.push(row);
+  }
+  if (rows.length < 3) return null;
+
+  const header: TableRow = {
+    type: "tableRow",
+    children: [
+      { type: "tableCell", children: [] },
+      { type: "tableCell", children: [{ type: "text", value: UNNAMED_COLUMN_MARK }] },
+    ],
+  };
+  return {
+    type: "table",
+    align: [null, null],
+    children: [
+      header,
+      ...rows.map(
+        (row): TableRow => ({
+          type: "tableRow",
+          children: [
+            { type: "tableCell", children: row.left },
+            { type: "tableCell", children: row.right },
+          ],
+        }),
+      ),
+    ],
+  };
+}
+
+/**
+ * Cut one line in two at its leader, keeping inline markup on both sides.
+ *
+ * The cut is made inside the phrasing rather than on the flattened string, so a
+ * linked or emphasised title on the left keeps its link and its emphasis. A
+ * leader that is not interior — nothing before it, or nothing after it — is not
+ * a column boundary and returns null.
+ */
+function splitAtLeader(line: RunLine): LeaderRow | null {
+  const left: PhrasingContent[] = [];
+  const right: PhrasingContent[] = [];
+  let cut = false;
+
+  for (const node of line.content) {
+    if (cut) {
+      right.push(node);
+      continue;
+    }
+    if (node.type !== "text") {
+      left.push(node);
+      continue;
+    }
+    const match = LEADER_RUN.exec(node.value);
+    if (match === null) {
+      left.push(node);
+      continue;
+    }
+    const before = node.value.slice(0, match.index);
+    const after = node.value.slice(match.index + match[0].length);
+    if (before.trim() !== "") left.push({ type: "text", value: before });
+    if (after.trim() !== "") right.push({ type: "text", value: after });
+    cut = true;
+  }
+  if (!cut) return null;
+
+  trimTextEdges(left);
+  trimTextEdges(right);
+  if (phrasingText(left).trim() === "" || phrasingText(right).trim() === "") return null;
+  // A second leader on the same line would mean a third column, which this rule
+  // does not claim to read. Declining keeps it from silently losing one.
+  if (right.some((node) => node.type === "text" && LEADER_RUN.test(node.value))) return null;
+  return { left, right };
+}
+
+/** Drop the leading and trailing whitespace a cut leaves on a text edge. */
+function trimTextEdges(nodes: PhrasingContent[]): void {
+  const first = nodes[0];
+  if (first?.type === "text") first.value = first.value.replace(/^\s+/u, "");
+  const last = nodes[nodes.length - 1];
+  if (last?.type === "text") last.value = last.value.replace(/\s+$/u, "");
 }
 
 function listFromEnumeratedLines(lines: readonly RunLine[], ctx: Ctx): List | null {

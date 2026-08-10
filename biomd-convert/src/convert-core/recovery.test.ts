@@ -2053,3 +2053,102 @@ describe("an announced run of equally indented lines is a list", () => {
     expect(out).not.toMatch(/^- Простите/mu);
   });
 });
+
+/**
+ * ## Rule contract — a dot leader is the column it was drawing
+ *
+ * The full contract lives above `tableFromLeaderLines` in `structure.ts`,
+ * including the threshold sweep. These are its four falsifiers.
+ *
+ * `analyze-3.md`, `tarrega.htm`: *"получается ASCII подобная псевдо таблица,
+ * где отступ для второго столбца регулируется точками … Тут нужна умная
+ * функция, эвристика, что бы распознала такую структуру и правратила ее в
+ * более красивую и типичную для md таблицу"*.
+ */
+describe("a dot leader is the column it was drawing", () => {
+  const LEADERS =
+    "<blockquote><p>" +
+    "1. Capricho Arabe (Serenata para guitarra) ..................... A. y T. 357<br>" +
+    "2-3. Preludios No 1 y 2 ......................................... A. y T. 358<br>" +
+    "4. Largo de la Sonata de Beethoven (Op. 7) .................... A. y T. 362<br>" +
+    "5. Gran Vals ............................................ A. y T. 360" +
+    "</p></blockquote>";
+
+  it("reads a ruled run as the two-column table it renders as", async () => {
+    const out = await md(PROSE + LEADERS + PROSE);
+    expect(out).toMatch(/^\| \| - \|$/mu);
+    expect(out).toMatch(/^\| 1\\?\. Capricho Arabe \(Serenata para guitarra\) \| A\. y T\. 357 \|$/mu);
+    // The row the enumerated-list rule used to swallow: `2-3.` is not an
+    // ordinal, so the list attached it to the item above and lost the boundary.
+    expect(out).toMatch(/^\| 2-3\. Preludios No 1 y 2 \| A\. y T\. 358 \|$/mu);
+    expect(out).not.toMatch(/^- 1\\?\. Capricho/mu);
+    // No leader survives into a cell: the dots were the boundary, not content.
+    expect(out).not.toMatch(/\|[^|\n]*\.{4,}/u);
+  });
+
+  // False friend 1 — an ellipsis. `new_dyens` and `borislova` write three dots
+  // as punctuation, and the sweep is what fixes the limit at four.
+  it("does not read an ellipsis as a column rule", async () => {
+    const out = await md(
+      PROSE +
+        "<blockquote><p>" +
+        "Он объездил Восток, Индонезию, Скандинавию, Бразилию... Он также выступал<br>" +
+        'Речь шла о "...заменителе", "подделке под..." и о многом другом<br>' +
+        "Это произвело... Для меня же это было настоящим чудом и радостью" +
+        "</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toContain("| - |");
+  });
+
+  // False friend 2 — the measured one. `segovia`'s Rodrigo table pads a title
+  // inside a real `<td>` that already has its own column, and both sides keep
+  // the dots verbatim. The leader is trailing, so it bounds nothing.
+  it("leaves a leader that pads a cell which already has a column", async () => {
+    const out = await md(
+      PROSE +
+        '<table border="0" width="80%">' +
+        '<tr><td class="jr">I</td><td class="jr">-</td>' +
+        '<td><p class="jr">Villano y Recercarre........................................</p></td>' +
+        '<td align="right"><p class="jr">4:49</p></td></tr>' +
+        '<tr><td class="jr">II</td><td class="jr">-</td>' +
+        '<td><p class="jr">Espanoleta e Fanfare de la Caballeria........................</p></td>' +
+        '<td align="right"><p class="jr">9:17</p></td></tr>' +
+        '<tr><td class="jr">III</td><td class="jr">-</td>' +
+        '<td><p class="jr">Danza de Las Hachas......................................</p></td>' +
+        '<td align="right"><p class="jr">2:13</p></td></tr>' +
+        "</table>" +
+        PROSE,
+    );
+    expect(out).toContain("Villano y Recercarre........................................");
+  });
+
+  // False friend 3 — a run where the rule stops halfway down. A column that
+  // does not reach every row is not a column, and half a table loses the rest.
+  it("declines when only some of the lines are ruled", async () => {
+    const out = await md(
+      PROSE +
+        "<blockquote><p>" +
+        "1. Capricho Arabe ..................... A. y T. 357<br>" +
+        "2. Preludios No 1 y 2 ................. A. y T. 358<br>" +
+        "3. Все остальные произведения этого сборника изданы отдельно" +
+        "</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).not.toContain("| - |");
+    expect(out).toContain("Все остальные произведения этого сборника изданы отдельно");
+  });
+
+  // False friend 4 — an enumerated list with no leaders keeps being a list.
+  it("leaves an unruled numbered run to the list rule", async () => {
+    const out = await md(
+      PROSE +
+        "<blockquote><p>" +
+        "01. Speak softly love<br>02. I just called to say I love you<br>03. Moscow nights" +
+        "</p></blockquote>" +
+        PROSE,
+    );
+    expect(out).toMatch(/^- 01\\?\. Speak softly love$/mu);
+    expect(out).not.toContain("| - |");
+  });
+});

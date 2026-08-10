@@ -39,6 +39,24 @@ export const MEDIA_COLUMN_LABEL = "Аудиоформат";
 export const TITLE_COLUMN_LABEL = "Название";
 
 /**
+ * The mark for a column that has no name and no glyph that fits it.
+ *
+ * `LINK_GLYPH` says "this column holds a link". A column of catalogue numbers,
+ * durations or plate marks says nothing of the kind, and inventing a word for
+ * it is the §16.3 editorialising `c92c009` reverted when it deleted the
+ * `Название` headers §30.2 had synthesized.
+ *
+ * A dash is not an invention here: it is **the corpus's own mark for the
+ * column it declines to name**. `segovia.htm` writes `<p class="jr">-</td>` as
+ * the whole content of its second column, in a five-column media table whose
+ * other columns carry a movement number, a title, a duration and a link — and
+ * both the reference and the converter carry that `-` through untouched.
+ * `analyze-3.md` and `fixtures/out/tarrega.bio.md` then write the same mark
+ * into a synthesized header, independently of each other.
+ */
+export const UNNAMED_COLUMN_MARK = "-";
+
+/**
  * Synonyms the author folds onto the two canonical labels.
  *
  * Matched case-insensitively on the trimmed surface form. These are the labels
