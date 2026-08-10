@@ -84,18 +84,37 @@ export function isCenteredAlign(value: string | undefined | null): boolean {
  * enough that `CLAUDE.md` §4 records it as a corpus fact. What does not lie is
  * the same block being aligned differently from the mass of text around it, and
  * "the mass of text around it" is precisely what this returns.
+ *
+ * ## A sample of one is not a mass, and must not become the baseline
+ *
+ * The recurrence requirement applies to the baseline itself. `new_lagq2` is a
+ * gallery page: measured in the browser, exactly **one** of its blocks reaches
+ * the prose length, and it is the very block the caller is asking about — the
+ * centred composer list under *The Best of the L.A.G.Q*. It therefore declared
+ * the page centred, compared itself against itself, found no difference, and no
+ * `::: align` was emitted for a region `analyze-3.md` says is *"совершенно
+ * четко видно"* in the HTML. A block cannot be its own control.
+ *
+ * Two blocks minimum, so `null` is returned instead — which is not a new path
+ * but the documented one: an unmeasured page already yields `null` and the
+ * callers already fall back to treating `center`/`right` as distinctive on
+ * their own. Note the guard counts *qualifying blocks*, not winning weight: a
+ * page whose only two long blocks disagree still has a baseline, because the
+ * comparison it offers is real.
  */
 export function proseAlign(
   blocks: ReadonlyArray<{ align: PhysicalAlign; textLength: number }>,
   minProseLength = 120,
 ): PhysicalAlign {
   const weight = new Map<PhysicalAlign, number>();
+  let samples = 0;
   for (const b of blocks) {
     if (b.textLength < minProseLength) continue;
     if (b.align === null) continue;
+    samples += 1;
     weight.set(b.align, (weight.get(b.align) ?? 0) + b.textLength);
   }
-  if (weight.size === 0) return null;
+  if (samples < 2) return null;
   // Ties resolve by the fixed order below rather than by insertion order, so the
   // result does not depend on document order. Determinism is a contract: this
   // value decides emitted directives and must be identical across runs.

@@ -415,6 +415,7 @@ describe("L3 comparator", () => {
     page([
       block({ path: "/paragraph[0]", line: 1, text: prose, textLength: prose.length, box: { x: 0, y: 0, w: 700, h: 200 } }),
       block({ path: "/paragraph[1]", line: 9, text: "- 2 -", textLength: 5, box: { x: 0, y: 300, w: 700, h: 20 } }),
+      block({ path: "/paragraph[2]", line: 13, text: prose, textLength: prose.length, box: { x: 0, y: 340, w: 700, h: 200 } }),
     ]);
 
   it("identity: the same page on both sides yields zero findings", () => {
@@ -434,6 +435,11 @@ describe("L3 comparator", () => {
 
   it("does not report an alignment difference on a page whose prose is itself centred", () => {
     // The corpus fact §5 turns on: a wholly centred page has no centred blocks.
+    //
+    // Two prose blocks, not one. `proseAlign` requires a second sample before it
+    // will call anything the baseline — one block comparing itself against
+    // itself is what let `new_lagq2` declare a justified gallery page centred —
+    // so a fixture with a single long block cannot state this premise at all.
     const centredPage = () => {
       const p = surface();
       p.blocks = p.blocks.map((b) => block({ ...b, textAlign: "center" }));

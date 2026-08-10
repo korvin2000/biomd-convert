@@ -1060,6 +1060,46 @@ describe("alignment", () => {
     expect(proseAlign([{ align: "center", textLength: 10 }])).toBeNull();
   });
 
+  /**
+   * Rule contract — **a sample of one is not a baseline.**
+   *
+   * *Invariant.* Recurrence applied to the baseline itself. The evidence for
+   * "this block is aligned unlike the text around it" is the text around it,
+   * and a page with a single block of prose has none: the block ends up
+   * compared against itself and is distinctive from nothing. Counted in
+   * *qualifying blocks*, not in winning weight, because two long blocks that
+   * disagree still offer a real comparison.
+   *
+   * *False friend.* A page whose long blocks genuinely agree. Two centred prose
+   * blocks are a centred page and must keep suppressing a third centred block —
+   * this is `CLAUDE.md`'s corpus fact that a wholly centred page has no
+   * distinctively centred region, and the guard must not weaken it.
+   *
+   * *Measured.* `new_lagq2`, in Chromium at 1024 px: 50 leaf blocks, of which
+   * 40 compute `justify` and 8 `-webkit-center`, and **exactly one** reaches
+   * 120 characters — the centred composer list the caller was asking about. It
+   * declared the page centred and vetoed its own `::: align`.
+   */
+  it("declines to call one block a baseline, and still trusts two that agree", () => {
+    const composerList = [{ align: "center" as const, textLength: 164 }];
+    expect(proseAlign(composerList)).toBeNull();
+    expect(isDistinctiveAlign("center", proseAlign(composerList))).toBe(true);
+
+    // False friend: a page that really is centred keeps its baseline.
+    const centredPage = [
+      { align: "center" as const, textLength: 300 },
+      { align: "center" as const, textLength: 250 },
+    ];
+    expect(proseAlign(centredPage)).toBe("center");
+    expect(isDistinctiveAlign("center", proseAlign(centredPage))).toBe(false);
+
+    // Two long blocks that disagree are still a comparison, so still a baseline.
+    expect(proseAlign([
+      { align: "justify" as const, textLength: 900 },
+      { align: "center" as const, textLength: 130 },
+    ])).toBe("justify");
+  });
+
   it("judges a block against that baseline, never against a keyword", () => {
     // The whole point of the invariant: on a centred page a centred block says
     // nothing. A rule stated as `=== "center"` wraps the entire document.
