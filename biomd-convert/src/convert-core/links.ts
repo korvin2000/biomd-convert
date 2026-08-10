@@ -71,6 +71,13 @@ export const ABC_LINK_PROFILE: LinkProfile = {
  * into the attribute. That is a real defect with its own cause upstream, and
  * this function's job is to leave it exactly as it found it rather than to
  * produce a differently-broken version of it.
+ *
+ * **The upstream cause is now fixed** — {@link rewriteTarget} strips an element
+ * tag from a target before anything else reads it, so nothing reaches here
+ * carrying one any more. The `[<>]` half of the guard is therefore no longer
+ * load-bearing on this corpus and is kept as a defence: this is a pure function
+ * with callers of its own, and a path that still contained markup would be no
+ * more of a path than it was before.
  */
 export function siteRelativeAsset(path: string, profile: LinkProfile = ABC_LINK_PROFILE): string {
   if (path === "" || /^(?:[a-z][a-z\d+.-]*:|\/\/|[?#])/iu.test(path)) return path;
@@ -109,6 +116,8 @@ export interface RewrittenTarget {
 export const SLUG_PATTERN = /^[\w.-]+$/;
 
 const UNSAFE_SCHEME = /^\s*(?:javascript|vbscript|data|file):/iu;
+/** An element tag written into an attribute value. See {@link rewriteTarget}. */
+const MARKUP_IN_TARGET = /<\/?[a-z][a-z\d]*(?:\s[^<>]*)?>/giu;
 const ABSOLUTE = /^(?:[a-z][a-z\d+.-]*:|\/\/)/iu;
 const HTML_EXT = /\.html?$/iu;
 
@@ -118,9 +127,34 @@ const RESOURCE_EXT =
 
 export function rewriteTarget(raw: string, profile: LinkProfile = ABC_LINK_PROFILE): RewrittenTarget {
   const original = raw;
-  const value = raw.trim();
+  const trimmed = raw.trim();
+  // Markup that leaked into the attribute is not part of the destination.
+  //
+  // ## Rule contract
+  //
+  // **Invariant.** RFC 3986 excludes `<` and `>` from a URI outright, so an
+  // element tag inside an attribute value is a WYSIWYG editor's slip and never
+  // a destination. `new_kolpakov` writes `href="<B>http://www.russianguitar.net/
+  // </B>"` — a bold run the author applied to the visible text that FrontPage
+  // also wrote into the target — and the link navigated nowhere. Nothing about
+  // the document, the tag name or the host is consulted; only the shape of a
+  // tag, and it is stripped before every other test so a wrapped
+  // `javascript:` is still caught by {@link UNSAFE_SCHEME}.
+  //
+  // **Recurrence.** Not applicable and not required: a broken destination is a
+  // priority-1 defect on its own instance, not a pattern to corroborate. One
+  // href in the 22 sources carries a tag; the slip is a property of the era's
+  // authoring tools, so it will recur across the other ~987 pages.
+  //
+  // **False friend, tested for non-firing:** a `<` that is *not* a tag — a
+  // query string such as `?a<b` or a percent-encoded `%3C`. The pattern
+  // requires a name directly after the angle bracket and a closing one, so
+  // neither matches and the value passes through whole.
+  const value = trimmed.replace(MARKUP_IN_TARGET, "").trim();
+  /** True when the line above actually removed something. */
+  const demarkup = value !== trimmed;
 
-  if (value === "") return { kind: "empty", href: value, original, rewritten: false };
+  if (value === "") return { kind: "empty", href: value, original, rewritten: demarkup };
   if (UNSAFE_SCHEME.test(value)) {
     return {
       kind: "unsafe",
@@ -130,8 +164,8 @@ export function rewriteTarget(raw: string, profile: LinkProfile = ABC_LINK_PROFI
       warning: "target uses a script or data scheme and carries no navigable destination",
     };
   }
-  if (value.startsWith("#")) return { kind: "anchor", href: value, original, rewritten: false };
-  if (/^mailto:/iu.test(value)) return { kind: "mailto", href: value, original, rewritten: false };
+  if (value.startsWith("#")) return { kind: "anchor", href: value, original, rewritten: demarkup };
+  if (/^mailto:/iu.test(value)) return { kind: "mailto", href: value, original, rewritten: demarkup };
 
   // An absolute URL is external unless it points at this site, in which case it
   // is treated exactly like the equivalent relative path.
@@ -142,10 +176,10 @@ export function rewriteTarget(raw: string, profile: LinkProfile = ABC_LINK_PROFI
     try {
       url = new URL(value.startsWith("//") ? `http:${value}` : value);
     } catch {
-      return { kind: "external", href: value, original, rewritten: false };
+      return { kind: "external", href: value, original, rewritten: demarkup };
     }
     if (!profile.internalHosts.includes(url.hostname.toLowerCase())) {
-      return { kind: "external", href: value, original, rewritten: false };
+      return { kind: "external", href: value, original, rewritten: demarkup };
     }
     isAbsolute = true;
     pathPart = url.pathname + url.search + url.hash;
@@ -164,7 +198,7 @@ export function rewriteTarget(raw: string, profile: LinkProfile = ABC_LINK_PROFI
 
   if (!HTML_EXT.test(path)) {
     // Not an HTML page and not a known resource: pass through rather than guess.
-    if (isAbsolute) return { kind: "external", href: value, original, rewritten: false };
+    if (isAbsolute) return { kind: "external", href: value, original, rewritten: demarkup };
     const href = siteRelativeAsset(value, profile);
     return { kind: "resource", href, original, rewritten: href !== original };
   }
@@ -175,7 +209,7 @@ export function rewriteTarget(raw: string, profile: LinkProfile = ABC_LINK_PROFI
   const route = keepExtension ? base : base.replace(HTML_EXT, "");
 
   if (route === "") {
-    return { kind: "external", href: value, original, rewritten: false };
+    return { kind: "external", href: value, original, rewritten: demarkup };
   }
 
   const href = `/#/${route}${query ? `?${query}` : ""}${hash ? `#${hash}` : ""}`;

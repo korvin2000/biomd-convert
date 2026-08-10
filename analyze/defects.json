@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T08:03:25.194Z",
+  "generated": "2026-08-10T08:55:58.904Z",
   "totals": {
-    "findings": 157,
-    "converterDefects": 83,
+    "findings": 156,
+    "converterDefects": 82,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 46,
     "ambiguous": 28,
     "bySeverity": {
       "critical": 4,
-      "major": 72,
+      "major": 71,
       "minor": 81
     }
   },
@@ -103,10 +103,10 @@
     },
     {
       "doc": "new_kolpakov",
-      "findings": 6,
-      "converterDefects": 5,
+      "findings": 5,
+      "converterDefects": 4,
       "critical": 0,
-      "major": 2,
+      "major": 1,
       "minor": 4
     },
     {
@@ -1022,27 +1022,6 @@
         "path": "/align[26]",
         "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
         "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /table[27]"
-      }
-    },
-    {
-      "class": "signature.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_kolpakov"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_kolpakov",
-        "path": "/signature[15]",
-        "produced": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
-        "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — produced at /nav[16]"
       }
     },
     {
@@ -2515,20 +2494,6 @@
       "referenceLine": 69,
       "produced": "column 2: none",
       "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c8627658",
-      "doc": "new_kolpakov",
-      "class": "signature.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/signature[15]",
-      "producedLine": 76,
-      "referenceLine": 76,
-      "produced": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com",
-      "reference": "Основные источник: russianguitar.net talismanmusic.org masstusovka.com barynya.com — produced at /nav[16]",
       "verdict": "converter-defect"
     },
     {

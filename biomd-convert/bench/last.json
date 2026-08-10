@@ -1,5 +1,5 @@
 {
-  "overall": 0.966335083694964,
+  "overall": 0.9671873564222366,
   "documents": [
     {
       "name": "authors",
@@ -1969,15 +1969,13 @@
         "missing": []
       },
       "links": {
-        "recall": 0.875,
-        "precision": 0.875,
-        "f1": 0.875,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 8,
         "actual": 8,
-        "matched": 7,
-        "missing": [
-          "http://www.russianguitar.net"
-        ]
+        "matched": 8,
+        "missing": []
       },
       "images": {
         "recall": 1,
@@ -2041,7 +2039,7 @@
           ]
         }
       ],
-      "overall": 0.9698842943854324
+      "overall": 0.9886342943854325
     },
     {
       "name": "new_lagq2",

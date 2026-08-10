@@ -166,6 +166,35 @@ describe("link policy", () => {
     expect(rewriteTarget("javascript:void(0)")).toMatchObject({ kind: "unsafe", href: "" });
   });
 
+  /**
+   * ## Rule contract — markup in a target is not part of the destination
+   *
+   * **Invariant.** RFC 3986 excludes `<` and `>` from a URI, so an element tag
+   * in an attribute value is an editor's slip. `new_kolpakov` writes
+   * `href="<B>http://www.russianguitar.net/</B>"` and the link navigated
+   * nowhere. Stripped before every other test, so a wrapped `javascript:` is
+   * still refused.
+   *
+   * **False friends,** both tested below: an angle bracket that is not a tag,
+   * and a percent-encoded one. Neither has a name directly after `<`.
+   */
+  it("strips an element tag a WYSIWYG editor wrote into the target", () => {
+    expect(rewriteTarget("<B>http://www.russianguitar.net/</B>")).toMatchObject({
+      kind: "external",
+      href: "http://www.russianguitar.net/",
+      rewritten: true,
+    });
+    // The strip runs first, so a wrapped unsafe scheme is still caught.
+    expect(rewriteTarget("<b>javascript:void(0)</b>")).toMatchObject({ kind: "unsafe", href: "" });
+    // And it reaches the page path, not only absolute URLs.
+    expect(rewriteTarget("<i>segovia.htm</i>").href).toBe("/#/segovia");
+  });
+
+  it("leaves an angle bracket that is not a tag alone — the false friend", () => {
+    expect(rewriteTarget("https://example.com/q?a<b").href).toBe("https://example.com/q?a<b");
+    expect(rewriteTarget("https://example.com/q?a%3Cb").href).toBe("https://example.com/q?a%3Cb");
+  });
+
   it("passes anchors and mailto through", () => {
     expect(rewriteTarget("#top").kind).toBe("anchor");
     expect(rewriteTarget("mailto:a@b.c").kind).toBe("mailto");
