@@ -129,6 +129,7 @@ attributable work; §37.7 states what was measured and what was not.
 `link.label.content.empty` class OPEN.md §5.0 records as broken. Never quote "5 critical" bare.
 
 | 39 analyze-3 | 5023-5328 | **normalization alone, no code** `39.1:5029` · a hyphen inside an identifier is not a wrap `39.2:5051` · **a dot leader is the column, with the 4-dot sweep** `39.3:5071` · one block is not the mass of text around it `39.4:5112` · **a hairline round a lone cell is a box, 24-instance sweep + the L2-rose-while-structure-improved accounting** `39.5:5142` · **three killed hypotheses** `39.6:5185` · **six author rulings** `39.7:5235` · **the de-hyphenation root cause, measured** `39.8:5260` · end state `39.9:5289` · what is next `39.10:5308` |
+| 40 four mechanisms | 5329-5511 | end state `40.1:5335` · **four titles in one template are four headings, and a jump orphans a level not a heading** `40.2:5354` · **a floated figure belongs beside its own paragraph** `40.3:5384` · **a headline over a lighter line is not a section label -- recurrence inverted** `40.4:5401` · **a colon then quotation marks is a quotation** `40.5:5426` · **the page shell is not one table deep: measured wrong on 8/22, three replacements reverted, NOT landed** `40.6:5444` · **killed on a sweep: `::: signature`** `40.7:5481` · not re-taken `40.8:5491` · what is next `40.9:5503` |
 
 ## Checkpoint -- §39, measured 2026-08-10 over **22 documents**
 

@@ -36,16 +36,17 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: `1214860` added **`analyze/analyze-3.md`**
-(337 lines, `snapshot_23`-`27`) **and normalized eleven references in the same commit**, so **every
-number in PROGRESS §21-§38 predates the current corpus** (PROGRESS §39.1). §37 closed the standing
-queue with five mechanisms, §38 took the three documents it named and closed six more, and **§39
-re-baselined and landed four**: a hyphen inside an identifier is not a wrap (§39.2, the only thing
-`analyze-3.md` calls critical) · a dot leader is the column it was drawing (§39.3, `tarrega` 87.4 ->
-96.7) · one block is not the mass of text around it (§39.4, the `proseAlign` baseline) · a hairline
-round a lone cell is a box, not a grid (§39.5, both notices `analyze-3.md` asks for).
-Current floor: L0 **502 tests**, **0 validator errors on every produced document**, L1 **98.4**,
-L2 **134 · 73 defect**, L3 **47**.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §40** landed four mechanisms,
+all four named by `analyze-3.md`: four titles in one template are four headings (`691f3e9`, and
+`enforceSingleTitle` now lifts a whole orphaned level rather than its first member) · a floated
+figure belongs beside its own paragraph (`0c73e4f`, `image.moved` 2 -> 0, L3 order 18 -> 16) · a
+headline over a lighter line is not a section label (`0e91c67`, `pavlov_azancheev` to L1 **100.0 on
+every axis**) · a colon and then quotation marks is a quotation (`1ff4a3c`).
+§40 also measured, and **did not land**, the root cause behind several of these: the "one table is
+the page shell" constant is wrong on **8 of 22** documents, and three relational replacements were
+each reverted on measurement (PROGRESS §40.6).
+Current floor: L0 **514 tests**, **0 validator errors on every produced document**, L1 **98.5**,
+L2 **128 · 67 defect**, L3 **44**.
 **No converter-defect is critical** -- 3 of the 4 criticals are the broken `link.label.content.empty`
 class and the 4th is a `blocks.ts` artefact. Quote that split.
 

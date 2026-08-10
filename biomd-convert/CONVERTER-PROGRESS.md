@@ -5326,3 +5326,186 @@ From `analyze-3.md`, unattempted and in the author's own order of emphasis:
 5. **`new_kolpakov`'s `::: signature`.** The reference uses it for the source-credit block; the
    converter writes `::: align position: right`. `signature` appears in 1 of 22 references and has
    never been emitted.
+
+## 40. `new_geyzel04`, the floated figure, the split headline, the lead-in quotation (2026-08-10)
+
+Four mechanisms, one commit each, all four named by `analyze-3.md`. Also one root-cause finding
+measured and **not** landed, and one candidate killed on a corpus sweep.
+
+### 40.1 End state, *measured* 2026-08-10 after §40
+
+| rung | before §40 | after §40 |
+|---|---|---|
+| L0 | 502 tests | **514 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | 98.4 % | **98.5 %** |
+| L2 | 134 findings — 73 converter-defect · 18 ambiguous · 43 ref-inconsistency · 4 critical | **128 — 67 converter-defect** · 17 ambiguous · 44 ref-inconsistency · 4 critical |
+| L3 | 47 | **44**, identity 0, deterministic |
+| validator | 0 errors | **0 errors on all 22 produced documents** |
+
+All four criticals remain reference-inconsistency or instrument artefacts, unchanged from §39:
+three `link.label.content.empty` (`segovia` ×2, `tarrega`) and one `blocks.ts` directive-property
+artefact on `new_karta`. **No converter-defect is critical.**
+
+Per document, converter-defect: `new_lendle2` 7 · `new_karta` 6 · `new_rechin4` 6 · `segovia` 6 ·
+`news` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · `segovia1` 4 · rest ≤ 3.
+`barrios`, `new_bach`, `new_dyens` and `williams2` are at **0**; `new_bach`, `new_blackmore`,
+`new_dyens`, `pavlov_azancheev` and `williams2` are at **L1 100.0**.
+
+### 40.2 Four titles in one template are four headings (`691f3e9`)
+
+`new_geyzel04` sets four chapter titles in `p.ttlb`; heading recovery reached two. `ГЛАВА 10,
+ЦЕЛИКОМ …` is **71** characters against a 70-character label cap, and `ПРИЛОЖЕНИЕ: СЛОВАРЬ …`
+stands directly under a photograph, where the caption guard correctly refuses it — after which
+image binding took it as that photograph's `caption:`. `analyze-3.md` asks for consistency across
+all four and for *"реально более продвинутая эвристика"* on the misattribution.
+
+Neither exception is about typography, so no threshold reaches them without reaching the false
+friends too. `completeHeadingTemplates` joins the majority the page established: a block whose
+`tag.class` signature already carries **≥ 2** recovered headings, in a family every member of which
+is label-shaped, is marked at the shallowest depth its own members carry. It only ever joins a
+majority and never creates one, so a caption family — zero recovered members — is untouched.
+
+**Also fixed, exposed rather than caused by it.** All four titles lower to h3 (`ctx.tableDepth >= 2`;
+this page's shell is two tables) and `enforceSingleTitle`'s jump repair lifted only the *first*,
+making the other three its children. A jump orphans a **level**, not a heading, so the correction is
+now recorded per written level and reapplied to that level's later members until the document itself
+writes something shallower.
+
+`new_geyzel04`: closed `heading.missing.caption-echo`, `image.caption.spurious`,
+`retyped.paragraph-to-heading2`; opened `heading.level` ×1 and `retyped.heading2-to-align` ×1, both
+reference-inconsistency (the reference wraps `## ГЛАВА 10` in `::: align` and heads `ВМЕСТО
+ЭПИЛОГА` at h3 while heading its three siblings at h2 — author ruling OPEN §3.1 drops the centring
+of a recovered section label, and the reference's own 3-to-1 majority agrees). Both L3 findings this
+change added are that same wrapper. L1 96.7 → 96.2, head 66.7 → 72.7.
+
+Still open on that page: `БЛАГОДАРНОСТИ:` is `p.t`, not the template — a different mechanism, and
+one the author did not raise.
+
+### 40.3 A floated figure belongs beside its own paragraph (`0c73e4f`)
+
+A 1998 page writes a whole section as one `<p>` whose paragraphs are `<br><br>`, and drops a floated
+portrait wherever the text it illustrates begins. `flushInline` lifted every floated image to the
+head of the **run**, so `tarrega`'s portrait stood two paragraphs above *"Несмотря на увлечение
+гитарой"* and `williams2`'s two above *"В 1971 году компания CBS"* — the same defect, the same
+distance, on two documents whose sources are otherwise unalike.
+
+The image's own place in the run is the evidence, and it now survives the LADOM → mdast boundary as
+a **proportion** of the run's visible text rather than a character offset: the two sides count text
+differently (entities decoded, wraps joined, hard breaks added) and a ratio is invariant under all of
+it. `blocksFromPhrasing` emits the figure before the paragraph whose share of the run brackets it. A
+run of one paragraph brackets at its head, so the common case is byte-identical.
+
+`image.moved` 2 → **0**. L3 `layout.order.mismatch` 18 → 16, over 5 → 3 documents. `tarrega` L1
+96.7 → 97.0 (text 97.4 → 98.5); `williams2` was already at 100.0 — **L1 is blind to block order**.
+
+### 40.4 A headline over a lighter line is not a section label (`0e91c67`)
+
+`pavlov_azancheev` writes `<b>М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963).<br></b>(Краткая биография, …)` — one
+centred `p.t3`, two `<br>`-runs, the first bold and the second not. As a section label the two runs
+joined into a **122-character** `##`, which `analyze-3.md` calls the page's first critical fault, and
+the bold-over-plain styling went with it.
+
+The evidence is the **weight class alone, per run**. The same page sets `<b>I. Краткая
+биография.</b><br><b>Нотное наследие…</b>` in the same template, bold throughout, and that is a
+heading the reference keeps. §39.6.3 recorded why the previous attempt failed — it compared
+prominence, which weighs size before weight, and the two `<b>` runs of that heading do not report
+identical sizes, so it vetoed both real headings.
+
+**Recurrence inverts here and the rule says so.** `borislova` writes the identical shape —
+`<b>1990-1993<br></b>` over unbolded works — **eleven** times down one page, and every one is a
+heading. A shape drawn once is a masthead; drawn repeatedly it is a page template. The veto is
+applied in both passes that could mark the block (`recoverCenteredSections` and
+`completeHeadingTemplates`) and is claimed positively: `data-biomd-headline` lowers the block as one
+paragraph, broken where the source broke, inside the alignment it already has. A `<br>` at the edge
+of an emphasis span is lifted out of it, scoped to this branch — serialized as written it escapes
+inside `**…**` and ends the line with a literal backslash.
+
+`pavlov_azancheev` **98.6 → 100.0 on every L1 axis**; 5 → 3 converter-defects (closed
+`align.position.value`, `retyped.heading2-to-paragraph`). L3 47 → 45.
+
+### 40.5 A colon and then quotation marks is a quotation (`1ff4a3c`)
+
+`borislova` writes `<p class="t1">Надя Борислова:<br>"Мне было 8 лет…"</p>`. `analyze-3.md` states
+the evidence and asks for the rule outright — *"сразу после знака двоеточия ':' идет текст
+заключанный в кавычки, что явно указывает, что это цитата"* — and leaves `>` or `_` to whichever
+fits the existing rules. `>` does: it is the same arithmetic on the author's own quotation marks that
+§38.6's `groupSpannedQuotation` already does, one level down.
+
+The test is closed on both sides, which is what stands in for recurrence: the colon must **end** a
+line the author drew, the very next line must **open** the quotation, and the quotation must
+**close** at the end of the block. Swept over the 22 produced documents the shape occurs **once** and
+no near-miss occurs at all; both false friends (a colon mid-sentence, a colon introducing a list) are
+tested for non-firing.
+
+`borislova` 3 → **1** converter-defect. L3 45 → 44. The reference's trailing `\` on the lead-in now
+reports as `hardbreak.missing` at reference-inconsistency — §39.7.6 has the author declining to
+settle trailing `\`.
+
+### 40.6 Measured and *not* landed: the page shell is not one table deep
+
+Five rules in `structure.ts` (`promoteSectionAfterRule`, `promoteLabelBeforeList`, `headingLineOf`
+×2, `blockFrom`'s depth demotion) and three in `headings.ts` answer *"is this inside a nested
+region?"* by counting `<table>` ancestors against a constant — one is the page shell, two or more is
+a record card. `promoteSectionAfterRule`'s own comment states the assumption: *"Two levels of
+`<table>` and not one, because the page frame itself is a table."*
+
+**Measured, the constant is wrong on eight of twenty-two documents.** Median `<table>` depth of the
+page's own long prose blocks: `barrios` 2 · `goya2` 2 · `new_geyzel04` 2 · `new_lagq2` 2 ·
+`new_lendle2` 2 · `news_2007` 2 · `williams2` 2 · `news` **3**; the other fourteen are 1. On those
+eight every block reads as nested, `recoverCenteredSections` sees **no candidates at all**, and every
+section label that survives is demoted a level. That is why `new_geyzel04`'s four titles all lower
+to h3 (§40.2).
+
+Three relational replacements were built and all **reverted on measurement**:
+
+  - *Median prose depth as the baseline.* L1 98.4 → **96.9**: `news` head 100 → **14.3** (eleven
+    obituary names promoted), `new_lendle2` 100 → 44.4, `new_lagq2` 100 → 75.0. The page's prose
+    **is** the record content on a dated-news page, so the baseline becomes the records and the
+    comparison inverts — `learned-patterns.md`'s "a dominant construct disqualifies itself".
+  - *Occupancy — a table holding essentially the whole page is its frame.* L1 98.4 → **97.8**. The
+    assumed bimodal split does not exist: measured shares are `news` 1.000/0.999/**0.927**,
+    `new_lendle2` 0.989, `new_lagq2` 0.976/0.958, `goya2` 0.997/0.892 — the shell tables and the
+    discography tables occupy the same band, so **no share separates them**.
+  - *Wrapper-vs-grid — a table whose content all sits in one cell is a wrapper.* Recovers `news`,
+    `new_lendle2` and `new_lagq2` to 100.0, but `new_bach` 100 → **36.4**: its content sits under a
+    shell whose cells are one filled cell, so line-heading recovery is no longer suppressed there.
+    `new_geyzel04` is not fixed either — its content table is a **page rail**, content plus a chapter
+    nav column, so two cells are filled.
+
+The finding is real and general; the constant is **load-bearing** in five rules that were calibrated
+against it, at least two of them accidentally (`news`, `new_bach`). Re-deriving each rule's actual
+guard is its own iteration, and §40.2's level-run repair removes the one symptom that mattered.
+Reopen with the wrapper-vs-grid reading plus a page-rail exemption, and re-derive `headingLineOf`'s
+guard first — it is the one `new_bach` depends on.
+
+### 40.7 Killed on measurement: `new_kolpakov`'s `::: signature`
+
+The reference wraps `new_kolpakov`'s closing source credit in `::: signature`; the converter writes
+`::: align position: right`. `BioMD-Reference.md` §`signature` does say *"source-credit groups"*.
+Swept over the trailing block of all 22 references: **five** documents end in a distinctively
+aligned block — `authors`, `kiselev`, `pavlov_azancheev`, `tarrega` all keep `::: align position:
+right`, and only `new_kolpakov` uses `signature`. Verdicts flip on identical evidence, which is the
+standing downgrade condition; §36.5's tie-break makes it 4 documents to 1. Recorded as a named
+divergence, not a target. `signature` remains a directive the converter never emits.
+
+### 40.8 Not re-taken, and why
+
+- **`new_karta`'s trailing `[▶](/#/karta2)` centring** is `retyped.paragraph-to-align`, the word-less
+  alignment rule killed twice (§30.1, §35.10). The residue worth a future look is narrower and
+  different in kind — *an image the icon policy replaced with a glyph should keep the `position:` the
+  image had* — but it is 1 instance in twice-killed territory and reopens on measurement only.
+- **De-hyphenation** is unchanged and blocked where §39.8 left it: hyphenopoly is not installed, so
+  cascade rule 6 never fires; even installed it cannot JOIN without `options.dictionary`, which
+  `pipeline.ts` never supplies. 8 findings over 5 documents (`paragraph.hyphenation.unjoined` 4,
+  `.mixed` 4). **The first move is a decision about the oracle dependency and it belongs to the
+  author, not to a rule.**
+
+### 40.9 What is next
+
+1. **De-hyphenation**, once the oracle question is answered. Largest remaining author-named class.
+2. **`new_geyzel04`'s `БЛАГОДАРНОСТИ:`** — a lone short all-caps `p.t` line ending in `:`, which the
+   reference heads `###`. Its false friend is on the same page: `Примечания:`, which the reference
+   leaves as prose. Not author-raised.
+3. **The shell-depth root cause** (§40.6), starting from `headingLineOf`.
+4. **`goya2` 18 findings / 11 major** is now the largest per-document total and has never been
+   probed as a whole.

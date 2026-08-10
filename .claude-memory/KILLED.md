@@ -165,6 +165,29 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   `data-biomd-heading` branch returns before any line splitting, so `headingLineOf` never sees a
   block the typographic pass already marked. All four rungs byte-identical; reverted rather than
   committed as dead code.
-  The next attempt must act where `data-biomd-heading` is *set*, and the discriminator is **page-level
+  **Superseded by §40.4, which landed the third form.** The next attempt must act where `data-biomd-heading` is *set*, and the discriminator is **page-level
   recurrence of the shape**, not the shape: `borislova` writes `<b>1990-1993<br></b>` over unbolded
   works **ten times**, structurally identical, and every one is a heading the reference keeps. (§39.6.3)
+
+- **A closing source credit is a `::: signature`.** `new_kolpakov`'s reference uses it and
+  `BioMD-Reference.md` §`signature` does say "source-credit groups". Swept over the trailing block of
+  all 22 references: **five** documents end in a distinctively aligned block, and `authors`,
+  `kiselev`, `pavlov_azancheev` and `tarrega` all keep `::: align position: right`. Verdicts flip on
+  identical evidence, and §36.5's tie-break makes it 4 to 1. `signature` remains a directive the
+  converter never emits. (§40.7)
+- **A relational replacement for the "one table is the page shell" constant -- three forms, all
+  reverted on measurement.** The constant *is* wrong: measured, 8 of 22 documents wrap their article
+  in two or three tables, which kills `recoverCenteredSections` outright on those pages and demotes
+  every section label they do recover. But it is load-bearing in five rules calibrated against it.
+  *Median prose depth* -> L1 98.4 -> **96.9** (`news` head 100 -> 14.3: on a dated-news page the
+  prose **is** the record content, so the baseline becomes the records). *Occupancy* -> 97.8; the
+  assumed bimodal split does not exist (shell tables and discography tables both occupy 0.89-1.00 of
+  the page). *Wrapper-vs-grid* -> `news`/`new_lendle2`/`new_lagq2` recovered but `new_bach` head
+  100 -> **36.4**, and `new_geyzel04` is still not fixed because its content table is a page rail.
+  Reopen with wrapper-vs-grid **plus a page-rail exemption**, re-deriving `headingLineOf`'s guard
+  first. (§40.6)
+- **`new_karta`'s trailing `[▶]` wants centring.** Not attempted: it is `retyped.paragraph-to-align`,
+  the word-less alignment rule already killed twice (§30.1, §35.10), at 1 instance. The narrower
+  residue worth a future look is *an image the icon policy replaced with a glyph keeps the
+  `position:` the image had* -- a different claim, and one that must exclude anything inside a
+  recovered lane, which is what killed the rule the second time. (§40.8)
