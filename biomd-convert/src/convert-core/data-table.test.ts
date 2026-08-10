@@ -179,44 +179,52 @@ describe("end to end", () => {
 });
 
 /**
- * A column the source never named gets the house name for what it holds.
+ * A column of links is headed with the link symbol; nothing else is named.
  *
  * **Invariant.** `BioMD-Reference.md` §1 (Tables): every GFM column MUST have a
- * header. A column whose every populated cell is a short anchor is a resource
- * column — cardinality, containment and homogeneity down the column, no href
- * pattern and no filename. The leading column is the one whose role is fixed by
- * *position*: whatever the rows are, the thing they are indexed by is in front.
- * Both names come from `column-labels.ts`, which is language-tagged data.
+ * header. A column whose every populated cell is a short anchor holds links —
+ * containment (the link *is* the cell, not a phrase inside it) and homogeneity
+ * down the column, with no href pattern and no filename anywhere in the test.
+ * `LINK_GLYPH` asserts only what the cells already assert by containing links.
+ * Every other unnamed column is left empty and raises the review item.
  *
- * **This supersedes the previous contract, on an author ruling.** Until
- * `06eeafb` this described emitting `LINK_GLYPH` for a resource column and
- * leaving the leading column *empty*, on the grounds that naming it would be
- * invention (§16.3) — and cited `analyze/analyze.md` asking for the symbol on
- * three pages and sixteen references writing it. The author then replaced every
- * one of those sixteen and stated the vocabulary directly in `/new_rules.md`
- * ("не пытаться угадывать … использовать обобщающее название"). §16.3 is not
- * engaged: the probe in PROGRESS §29.2 confirmed these tables have **no source
- * header at all** — the old references invented `Композиция` and `Ноты (TAB)`
- * exactly as the new ones name `Название` — so nothing attested is rewritten,
- * and a column name is not factual text about the subject.
+ * **This reverses PROGRESS §30.2, which had itself reversed the contract before
+ * it.** The sequence is worth keeping, because the file has now been rewritten
+ * in both directions and the next session will otherwise re-derive it:
+ *
+ * | ruling | resource column | leading column |
+ * |---|---|---|
+ * | pre-`06eeafb` references (16) + `analyze.md` ×3 | `🔗` | empty |
+ * | `06eeafb` references (16) + `/new_rules.md` | `Аудиоформат` | `Название` |
+ * | `c92c009` references (16) + `analyze-2.md` ×2 | `🔗` | empty |
+ *
+ * The current ruling states its own reason — *"что бы не включать эвристику и
+ * не определять"* — and names the failure that prompted it: the house
+ * vocabulary was reached through `dominantLabel`, which transcribes what a
+ * column repeats, so a column of mixed `WMA` and `MIDI` links got named after
+ * whichever format happened to dominate. The glyph is therefore checked
+ * **before** transcription, not after it. §16.3 is not engaged in either
+ * direction: PROGRESS §29.2 established that these tables have no source header
+ * at all, so no attested text is being rewritten.
  *
  * **Why the header matters more than the label.** It used to be all-or-nothing:
  * with no recurring label the whole table was abandoned, and a five-record score
  * matrix came out as twenty loose aligned paragraphs with three work titles read
  * as quotations.
  *
- * **Recurrence requirement.** Two linked cells in the column.
+ * **Recurrence does not apply** — see `isLinkColumn`. Homogeneity is exhaustive
+ * here, so a one-link column is a sparsely populated column, not a stray.
  *
  * **False friend**, tested for non-firing: a column of prose that contains a
  * link. A label is not a sentence, and the length limit is the separator — such
- * a column is named neither a resource column nor anything else.
+ * a column is named neither a link column nor anything else.
  */
 describe("a header for a column the source never labelled", () => {
   const linkRow = (work: string, a: string, b: string) =>
     `<tr><td>${work}</td><td><a href="${a}">${a.slice(-3).toUpperCase()}</a></td>` +
     `<td><a href="${b}">${b.slice(-3).toUpperCase()}</a></td></tr>`;
 
-  it("names the resource columns and the column that indexes them", async () => {
+  it("marks the link columns and leaves the column that indexes them empty", async () => {
     // Mixed format tokens down each column, so no column has a dominant label —
     // `new_dyens` in miniature, where the table used to vanish entirely.
     const html =
@@ -226,14 +234,16 @@ describe("a header for a column the source never labelled", () => {
       linkRow("Libra Sonatine", "zip/libra.zip", "gif/libra.gif") +
       "</table></body></html>";
     const result = await convert(Buffer.from(html, "utf8"));
-    expect(result.markdown).toContain("| Название | Аудиоформат | Аудиоформат |");
-    expect(result.markdown).not.toContain("\u{1F517}");
+    expect(result.markdown).toContain("| | \u{1F517} | \u{1F517} |");
+    expect(result.markdown).not.toContain("Аудиоформат");
+    expect(result.markdown).not.toContain("Название");
   });
 
-  it("folds a transcribed format token onto the house name", async () => {
-    // Here every cell in a column repeats `TAB`, so `dominantLabel` transcribes
+  it("prefers the glyph to a format token the column happens to repeat", async () => {
+    // Every cell in the column repeats `TAB`, so `dominantLabel` would transcribe
     // it — and the format is already visible in each cell, so heading the column
-    // with it names the column after one of its own values.
+    // with it names the column after one of its own values. This is the case the
+    // author's second sentence is about.
     const html =
       "<html><body><table border=\"0\">" +
       "<tr><td>Adelita</td><td><a href=\"a.txt\">TAB</a></td></tr>" +
@@ -241,7 +251,19 @@ describe("a header for a column the source never labelled", () => {
       "<tr><td>Recuerdos</td><td><a href=\"c.txt\">TAB</a></td></tr>" +
       "</table></body></html>";
     const result = await convert(Buffer.from(html, "utf8"));
-    expect(result.markdown).toContain("| Название | Аудиоформат |");
+    expect(result.markdown).toContain("| | \u{1F517} |");
+    expect(result.markdown).not.toContain("| TAB |\n");
+  });
+
+  it("names a column populated once — recurrence would un-name it", async () => {
+    // `new_karta`'s "Алаис" table: two records, one of which has no resources.
+    const html =
+      "<html><body><table border=\"0\">" +
+      "<tr><td>La Regalona (Habanera)</td><td></td><td></td></tr>" +
+      "<tr><td>Ноты</td><td><a href=\"a.jpg\">JPG</a></td><td><a href=\"b.mid\">MIDI</a></td></tr>" +
+      "</table></body></html>";
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.markdown).toContain("| | \u{1F517} | \u{1F517} |");
   });
 
   it("passes an unrecognised label through untouched — graceful degradation", () => {
@@ -252,7 +274,7 @@ describe("a header for a column the source never labelled", () => {
     expect(canonicalColumnLabel("")).toBeNull();
   });
 
-  it("does not call a prose column a resource column — non-firing", async () => {
+  it("does not call a prose column a link column — non-firing", async () => {
     const sentence = (name: string, href: string) =>
       `<tr><td>${name}</td><td>Подробнее об этой записи можно прочитать в <a href="${href}">обзоре</a>, ` +
       "опубликованном в журнале в том же году.</td></tr>";
