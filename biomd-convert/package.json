@@ -29,7 +29,9 @@
     "zod": "4.4.3"
   },
   "optionalDependencies": {
+    "dictionary-ru": "3.0.0",
     "hyphenopoly": "6.1.0",
+    "nspell": "2.1.5",
     "playwright": "1.62.1"
   },
   "devDependencies": {

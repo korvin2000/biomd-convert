@@ -1,8 +1,6 @@
 /**
- * Hyphenopoly ships no type declarations. Only the fraction of its surface this
- * project uses is declared here — `config()` in synchronous mode, returning
- * either a single hyphenate function or a map of them by language.
- *
+ * Hyphenopoly ships no type declarations. Only the Node `config()` surface
+ * used by the converter is declared here.
  * The library is used strictly as a *validity oracle* ("is this a legal break
  * point?"), never to hyphenate output, so nothing beyond this is needed.
  */
@@ -15,12 +13,27 @@ declare module "hyphenopoly" {
     exceptions?: Record<string, string>;
     leftmin?: number;
     rightmin?: number;
-    sync?: boolean;
+    loader: (file: string, patternDirectory: URL) => Promise<Uint8Array>;
     [key: string]: unknown;
   }
 
-  export function config(options: HyphenopolyConfig): Hyphenator | Record<string, Hyphenator>;
+  interface Hyphenopoly {
+    config(options: HyphenopolyConfig): Map<string, Promise<Hyphenator>>;
+  }
 
-  const _default: { config: typeof config };
-  export default _default;
+  const hyphenopoly: Hyphenopoly;
+  export default hyphenopoly;
+}
+
+declare module "nspell" {
+  interface Dictionary {
+    aff: Uint8Array;
+    dic: Uint8Array;
+  }
+
+  interface SpellChecker {
+    correct(word: string): boolean;
+  }
+
+  export default function nspell(dictionary: Dictionary): SpellChecker;
 }

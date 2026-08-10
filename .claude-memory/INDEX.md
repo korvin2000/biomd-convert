@@ -36,19 +36,18 @@ disagree, the repository file wins and this index gets fixed.
 > describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
 > Measuring it means copying it into `fixtures/html/` deliberately, at the end.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §40** landed four mechanisms,
-all four named by `analyze-3.md`: four titles in one template are four headings (`691f3e9`, and
-`enforceSingleTitle` now lifts a whole orphaned level rather than its first member) · a floated
-figure belongs beside its own paragraph (`0c73e4f`, `image.moved` 2 -> 0, L3 order 18 -> 16) · a
-headline over a lighter line is not a section label (`0e91c67`, `pavlov_azancheev` to L1 **100.0 on
-every axis**) · a colon and then quotation marks is a quotation (`1ff4a3c`).
-§40 also measured, and **did not land**, the root cause behind several of these: the "one table is
-the page shell" constant is wrong on **8 of 22** documents, and three relational replacements were
-each reverted on measurement (PROGRESS §40.6).
-Current floor: L0 **514 tests**, **0 validator errors on every produced document**, L1 **98.5**,
-L2 **128 · 67 defect**, L3 **44**.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §41** repaired the existing
+de-hyphenation path after the author approved an optional Hunspell dictionary. Hyphenopoly's v6 Node
+API is now wired correctly; cascade rule 6 joins only when Hyphenopoly validates the observed break
+and Hunspell validates the joined word. A lookahead scan now decides every break in multiply broken
+words, with a multi-part proper-name guard (`Кастельон-де-ла-Плане`).
+Current floor: L0 **516 tests**, **0 validator errors on every produced document**, L1 **98.5**,
+L2 **141 · 67 defect**, L3 **44**. The 13 added findings are newly visible minor/ambiguous
+`*.hyphenation.joined` differences; no priority 1-4 regression.
 **No converter-defect is critical** -- 3 of the 4 criticals are the broken `link.label.content.empty`
 class and the 4th is a `blocks.ts` artefact. Quote that split.
+Next candidates: the conservative de-hyphenation proper-name/spacing tail; the isolated
+`БЛАГОДАРНОСТИ:` reference choice; then `headingLineOf`'s real nested-region guard (§40.6).
 
 **The reference normalization settled three standing items with no code change** (PROGRESS §39.1):
 `news`'s frame/align ceiling · `williams2`'s `retyped.table-to-align`, which **dissolves §36.5's

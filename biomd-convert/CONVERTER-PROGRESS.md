@@ -5509,3 +5509,70 @@ divergence, not a target. `signature` remains a directive the converter never em
 3. **The shell-depth root cause** (§40.6), starting from `headingLineOf`.
 4. **`goya2` 18 findings / 11 major** is now the largest per-document total and has never been
    probed as a whole.
+
+## 41. The de-hyphenation oracle and repeated-break scan (2026-08-10)
+
+The author approved an optional Hunspell dictionary after the source-backed tradeoff was presented.
+This iteration also probed the other live frontier before committing: `БЛАГОДАРНОСТИ:` is one isolated
+reference choice; `goya2`'s 18 findings reduce to four converter-defects and mostly known L3 rank
+artefacts/author-ruled alternatives; the shell-depth mechanism remains real but high-risk after §40.6's
+three measured reversions. De-hyphenation was the highest-value solvable root mechanism.
+
+### 41.1 The dependency was present; its integration was broken
+
+`hyphenopoly@6.1.0` was already an optional dependency and installed, but `createHyphenopolyOracle`
+used a stale API shape: named `config` instead of the default export, no required Node loader, a
+synchronous object/function return instead of `Map<lang, Promise<hyphenator>>`, and an empty sentinel
+whose positions cannot be observed. Runtime therefore returned `available: false`.
+
+The oracle now follows the package's Node contract, reads WASM patterns through the supplied loader,
+uses a visible sentinel and awaits the configured language map. `dictionary-ru@3.0.0` plus
+`nspell@2.1.5` supplies the independent word-membership half of cascade rule 6. Both remain optional:
+package absence and non-Russian languages abstain; the conservative output path stays sane. A join
+requires **both** a legal Hyphenopoly break at the observed position and Hunspell membership. The test
+names the false friend: a hypothetical joined compound may have legal breaks but must not join when
+Hunspell rejects the joined spelling.
+
+### 41.2 Every break in a multiply broken word is now scanned
+
+The old global regex consumed the right fragment, so `Информационно-аналити-ческого` yielded only the
+first candidate. Candidate discovery now captures the right fragment in a lookahead and applies
+non-overlapping edits only to each hyphen/whitespace gap. A three-part proper-name guard keeps every
+break in names such as `Кастельон-де-ла-Плане`, including lower-case internal linkers; the first build
+without that guard joined `де-ла`, opened one `paragraph.hyphenation.mixed`, and was rejected before
+acceptance. The final contract proves a lexical first break plus genuine second wrap, and the proper-name
+false friend.
+
+### 41.3 Measured outcome and classification
+
+| rung | before §41 | after §41 |
+|---|---|---|
+| L0 | 514 tests | **516 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | 98.5 % | **98.5 %** |
+| L2 | 128 findings — 67 converter-defect · 17 ambiguous · 44 ref-inconsistency · 4 critical | **141 — 67 converter-defect** · 30 ambiguous · 44 ref-inconsistency · 4 critical |
+| L3 | 44 | **44**, identity 0, deterministic |
+| validator | 0 errors | **0 errors on all 22 produced documents** |
+
+No priority 1–4 regression. The source-backed common-word joins include `маркетолог`, `поддержанию`,
+`успехов`, `Мануэле`, `переехала`, and the second fragment in `Информационно-аналитического`.
+`segovia`'s `paragraph.hyphenation.unjoined` closes; `authors`' first paragraph becomes reference-exact.
+
+The 13 extra L2 findings are all newly visible, minor `paragraph.hyphenation.joined` (12) or
+`list.item.hyphenation.joined` (1), classified **ambiguous** by the instrument because the references
+preserve source wrap hyphens. Source + dictionary + legal-break evidence identifies common examples
+(`фольклорного`, `камерной`, `Барселонской`, `разочарование`) as **semantic corrections**, not
+regressions. L1 is flat because gains and reference-preserved wrap differences offset; L3 is correctly
+flat because spelling does not alter the measured layout structure.
+
+The residual classes are `paragraph.hyphenation.unjoined` **3** and `.mixed` **5**. They include proper
+names rejected by Hunspell (`Бориславовна`, `Феррере`), one residual multi-break word, and spacing edits
+such as `радио-и` -> `радио- и` that are not de-hyphenation. Weakening the two-signal gate would trade
+visible residue for silent content corruption, so the tail remains.
+
+### 41.4 What is next
+
+1. Probe `new_geyzel04`'s isolated `БЛАГОДАРНОСТИ:` only if a second source-backed instance appears.
+2. Re-derive `headingLineOf`'s actual nested-region guard before revisiting the shell-depth constant;
+   §40.6 records three replacements and their falsifiers.
+3. On `goya2`, ignore the author-ruled align alternatives and global-rank L3 artefacts; only the local
+   caption tail remains plausible.

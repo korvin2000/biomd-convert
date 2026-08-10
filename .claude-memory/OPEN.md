@@ -16,21 +16,21 @@ Facts marked *measured* were taken then; facts marked *recorded* are quoted and 
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, 22 documents. §40 landed **four** mechanisms, all four named by
-`analyze-3.md`, and closed every remaining page-level complaint that document raises except
-de-hyphenation.
+Reference-guided refinement, 22 documents. §41 repaired the de-hyphenation oracle and repeated-break
+scan after the author approved the optional Hunspell dependency.
 
-**Current state, *measured* 2026-08-10, after PROGRESS §40:**
+**Current state, *measured* 2026-08-10, after PROGRESS §41:**
 
 | rung | value |
 |---|---|
-| L0 | **514 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **516 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.5 %** |
-| L2 | **128 findings -- 67 converter-defect** · 17 ambiguous · 44 reference-inconsistency · 4 critical |
+| L2 | **141 findings -- 67 converter-defect** · 30 ambiguous · 44 reference-inconsistency · 4 critical |
 | L3 | **44**, identity 0, deterministic |
 | validator | **0 errors on every produced document** |
 
-That is the floor. Nothing accepted from here may regress it.
+That is the floor. Nothing accepted from here may regress it. The 13 added L2 findings are newly
+visible `*.hyphenation.joined` differences, all minor/ambiguous; L3 and the converter-defect total held.
 
 > **No converter-defect is critical.** Three of the four criticals are `link.label.content.empty`
 > (`segovia` x2, `tarrega`); the fourth is the `blocks.ts` artefact §5.0b records, on `new_karta`.
@@ -44,22 +44,21 @@ level rather than its first member) · a floated figure belongs beside its own p
 a quotation (`1ff4a3c`; `borislova` 3 -> 1 defect).
 
 **Next, in order. Probe before committing (SKILL §6).**
-1. **De-hyphenation** -- root cause measured in PROGRESS §39.8 and unchanged: hyphenopoly is **not
-   installed**, so cascade rule 6 never fires and every wrap falls to rule 7's PRESERVE; and even
-   installed it cannot JOIN without `options.dictionary`, which `pipeline.ts` never supplies. There
-   is also a scan gap -- the pattern consumes the right fragment, so `Информационно-аналити-ческого`
-   is only ever decided once. 8 findings over 5 documents. **The first move is a decision about the
-   oracle dependency and it belongs to the author.**
+1. **The remaining de-hyphenation tail** -- 3 `unjoined` + 5 `mixed`; Hunspell rejects proper names
+   (`Бориславовна`, `Феррере`) and does not decide spacing repairs (`радио-и` -> `радио- и`). The
+   source-backed common-word subset is closed; do not weaken the two-signal gate to chase the tail.
 2. **`new_geyzel04`'s `БЛАГОДАРНОСТИ:`** -- a lone short all-caps `p.t` line ending in `:`, headed
    `###` by the reference. Its false friend is on the same page: `Примечания:`, left as prose. Not
    author-raised. 1 finding.
 3. **The shell-depth root cause, PROGRESS §40.6** -- the "one table is the page shell" constant is
    wrong on **8 of 22** documents and load-bearing in five rules. Three replacements were built and
-   all three reverted on measurement; the numbers and the falsifiers are recorded there. Start from
+   all three reverted on measurement; the numbers and falsifiers are recorded there. Start from
    `headingLineOf`, the guard `new_bach` depends on.
-4. **`goya2` 18 findings / 11 major** -- now the largest per-document total, never probed as a whole.
+4. **`goya2` 18 findings / 4 converter-defects** -- §41's whole-page probe found the three
+   `align-to-paragraph` differences are author-ruled alternatives and most L3 order findings are the
+   known global-rank artefact; only its local caption tail remains plausible.
 
-**No open question for the author except the oracle dependency** (item 1).
+**No open author question.** The oracle dependency was approved in §41.
 
 **Do not re-take these; §37-§40 settled them.** `news`'s frame/align cluster · `align` inside
 `column` · `goya2`'s Moscow `rowspan` lane · `new_kolpakov`'s broken href and its footer ·
@@ -160,7 +159,7 @@ below is where it lives now.
     (`snapshot_25`, `snapshot_26`), and **`jovicic`'s trailing `-` list is a design decision** --
     *"Чисто человеческое дизайнерское решение."* Both reference-inconsistency by declaration.
 
-## 4. Open defect classes -- *measured* 2026-08-10 after §40
+## 4. Open defect classes -- *measured* 2026-08-10 after §41
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
@@ -169,9 +168,9 @@ below is where it lives now.
 | 24 | `emphasis.span` | 19 | 4 | 6 | downgraded; §39.6.2 has the cause -- computed italic from a CSS class exists on 9 documents and hundreds of blocks, and exactly one reference honours it. Do not implement |
 | 24 | `paragraph.containment` | 4 | 4 | 2 | |
 | 24 | `retyped.align-to-paragraph` | 4 | 4 | 2 | `goya2`'s author-declared alternative (§37.8) |
+| 20 | `paragraph.hyphenation.mixed` | 5 | 5 | 4 | common dictionary words joined; residue includes spacing edits and source/reference blocks with several changes |
 | 18 | `paragraph.content.edited` | 11 | 3 | 6 | mostly reference-inconsistency |
-| 16 | `paragraph.hyphenation.unjoined` | 4 | 4 | 4 | **candidate 1.** Root cause measured, PROGRESS §39.8. Not a detector problem: the oracle is absent, and rule 6 could not JOIN even if it were |
-| 12 | `paragraph.hyphenation.mixed` | 4 | 4 | 3 | same cause |
+| 9 | `paragraph.hyphenation.unjoined` | 3 | 3 | 3 | proper names and one residual multi-break word rejected by the external dictionary; preserve rather than invent |
 | 12 | `image.position.value` · `link.inline.missing` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail |
 | 5 | `paragraph.spurious.unattested` | 1 | 1 | 1 | **critical, and a `blocks.ts` artefact** -- a directive property line paired against prose on `new_karta` (§5.0b) |
 | 3 | `table.align` | 3 | 3 | 1 | `new_kolpakov`. **Killed in §39.6.1**; not a target |
@@ -182,8 +181,8 @@ below is where it lives now.
 | -- | ~~`paragraph.missing.in-break-run`~~, ~~`retyped.paragraph-to-quote`~~ on `borislova` | -> **0** | 0 | 0 | closed by §40.5 |
 | -- | ~~`retyped.columns-to-table`~~ on `new_karta` | -- | -- | -- | **ruled equally correct** by the author (§3.9); still counted by L2, never a target |
 
-Per document, converter-defect: `new_lendle2` 7 · `new_karta` 6 · `new_rechin4` 6 · `segovia` 6 ·
-`news` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · `segovia1` 4 · rest <= 3.
+Per document, converter-defect: `new_lendle2` 7 · `new_karta` 6 · `new_rechin4` 6 · `new_kolpakov` 5 ·
+`news` 5 · `segovia` 5 · `goya2` 4 · `news_2007` 4 · `segovia1` 4 · rest <= 3.
 `barrios`, `new_bach`, `new_dyens` and `williams2` are at **0**; `new_bach`, `new_blackmore`,
 `new_dyens`, `pavlov_azancheev` and `williams2` are at **L1 100.0**.
 

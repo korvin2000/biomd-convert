@@ -58,6 +58,8 @@ export interface HyphenCandidate {
    * which is the only caller that can see the characters around the candidate.
    */
   inIdentifier?: boolean;
+  /** Whether this break belongs to a multi-part proper-name compound. */
+  inProperCompound?: boolean;
 }
 
 /** Answers "is this a legal hyphenation point of this word?" — nothing more. */
@@ -148,20 +150,23 @@ export function decideHyphen(candidate: HyphenCandidate, options: DehyphenateOpt
   }
 
   // 3 — a compound proper noun. `Римский-` + `Корсаков` is never one word.
+  // A multi-part name may carry lower-case linkers between title-cased ends;
+  // each internal candidate still belongs to the same lexical compound.
   //
   // This deliberately outranks corpus frequency. Frequency evidence can be an
   // artifact — a page that wrote the name without its hyphen, an earlier bad
-  // join fed back into the lexicon — whereas two title-cased fragments joined
-  // into a single word is essentially never correct Russian orthography.
+  // join fed back into the lexicon, or an internal linker that is also a common
+  // standalone word — whereas joining any break inside a proper-name compound
+  // silently changes the name.
   //
   // The check requires *title* case specifically. An ALL-CAPS heading wraps
   // like any other text (`МУЗЫ-` + `КАНТ`), and treating that as a compound
   // would leave every wrapped heading broken.
-  if (isTitleCase(left) && isTitleCase(right)) {
+  if (candidate.inProperCompound === true || (isTitleCase(left) && isTitleCase(right))) {
     return {
       verdict: "PRESERVE",
       rule: 3,
-      reason: "both fragments are title-cased, indicating a compound proper noun",
+      reason: "break belongs to a compound proper noun",
       confidence: 0.92,
       joined,
     };
@@ -253,9 +258,8 @@ export function dehyphenateText(
   options: DehyphenateOptions & { lineEdges?: (offset: number) => boolean | undefined },
 ): DehyphenateResult {
   const operations: TextOperation[] = [];
+  const replacements: Array<{ start: number; end: number; value: string }> = [];
   let reviews = 0;
-  let out = "";
-  let cursor = 0;
   let opIndex = 0;
 
   // A break candidate is letters, a hyphen, then letters — with or without a
@@ -275,34 +279,33 @@ export function dehyphenateText(
   // the cascade's default is PRESERVE and its first questions are about
   // compounds: `Римский-Корсаков` and `Переяслав-Хмельницкий` are settled by
   // rule 3 before any frequency evidence is consulted.
-  const pattern = /(\p{L}+)([-‐‑­])[ \t]*\n?[ \t]*(\p{L}+)/gu;
+  //
+  // The right fragment is captured in a lookahead rather than consumed. That
+  // lets the same fragment become the left side of the next candidate in a
+  // multiply broken word. Replacements touch only the hyphen and whitespace,
+  // so adjacent decisions cannot overlap or duplicate the shared fragment.
+  const pattern = /(\p{L}+)([-‐‑­])[ \t]*\n?[ \t]*(?=(\p{L}+))/gu;
 
   for (const match of text.matchAll(pattern)) {
-    const [whole, left = "", hyphen = "-", right = ""] = match;
+    const [gapWithLeft, left = "", hyphen = "-", right = ""] = match;
     const start = match.index;
-    const end = start + whole.length;
+    const hyphenStart = start + left.length;
+    const rightStart = start + gapWithLeft.length;
+    const end = rightStart + right.length;
 
     const candidate: HyphenCandidate = { left, right, hyphen };
     if (insideIdentifier(text, start, end)) candidate.inIdentifier = true;
-    const atEdge = options.lineEdges?.(start + left.length);
+    if (insideProperCompound(text, start, end)) candidate.inProperCompound = true;
+    const atEdge = options.lineEdges?.(hyphenStart);
     if (atEdge !== undefined) candidate.atLineEdge = atEdge;
 
     const decision = decideHyphen(candidate, options);
-    out += text.slice(cursor, start);
+    const replacement = decision.verdict === "JOIN" || hyphen === SOFT_HYPHEN ? "" : hyphen;
+    replacements.push({ start: hyphenStart, end: rightStart, value: replacement });
+    if (decision.verdict === "REVIEW") reviews += 1;
 
-    const before = whole;
-    let after: string;
-    if (decision.verdict === "JOIN") {
-      after = decision.joined;
-    } else {
-      // Preserve the hyphen but still resolve the line break: the wrap itself is
-      // presentational even when the hyphen is not.
-      after = `${left}${hyphen === SOFT_HYPHEN ? "" : hyphen}${right}`;
-      if (decision.verdict === "REVIEW") reviews += 1;
-    }
-    out += after;
-    cursor = end;
-
+    const before = text.slice(start, end);
+    const after = decision.verdict === "JOIN" ? decision.joined : `${left}${replacement}${right}`;
     operations.push({
       id: `${irItemId}:hyphen:${opIndex++}`,
       kind: decision.verdict === "JOIN" ? "join-hyphenated-word" : "preserve-break",
@@ -316,6 +319,12 @@ export function dehyphenateText(
     });
   }
 
+  let out = "";
+  let cursor = 0;
+  for (const replacement of replacements) {
+    out += text.slice(cursor, replacement.start) + replacement.value;
+    cursor = replacement.end;
+  }
   out += text.slice(cursor);
   return { text: out, operations, reviews };
 }
@@ -393,6 +402,21 @@ function insideIdentifier(text: string, start: number, end: number): boolean {
   return /[\p{L}\p{N}]\.[\p{L}\p{N}]/u.test(token) || /[/@:%]/u.test(token);
 }
 
+/**
+ * Is this candidate part of a multi-hyphen token whose outer fragments are
+ * title-cased? Lower-case internal linkers remain part of the same proper name.
+ */
+function insideProperCompound(text: string, start: number, end: number): boolean {
+  let from = start;
+  while (from > 0 && /[\p{L}\-‐‑­]/u.test(text[from - 1] as string)) from -= 1;
+  let to = end;
+  while (to < text.length && /[\p{L}\-‐‑­]/u.test(text[to] as string)) to += 1;
+  const parts = text.slice(from, to).split(/[-‐‑­]/u);
+  const first = parts[0];
+  const last = parts.at(-1);
+  return parts.length >= 3 && first !== undefined && last !== undefined && isTitleCase(first) && isTitleCase(last);
+}
+
 /** Upper-case initial followed by at least one lower-case letter. */
 function isTitleCase(word: string): boolean {
   const first = word[0];
@@ -417,31 +441,25 @@ export function isHyphen(ch: string): boolean {
  */
 export async function createHyphenopolyOracle(langs: readonly string[] = ["ru", "en-us"]): Promise<HyphenationOracle> {
   try {
-    const mod = (await import("hyphenopoly")) as unknown as {
-      config: (options: Record<string, unknown>) => unknown;
-    };
-    const SENTINEL = "";
-    const hyphenators = new Map<string, (word: string) => string>();
-
-    const configured = mod.config({
-      require: [...langs],
+    const [{ default: hyphenopoly }, { readFile }] = await Promise.all([
+      import("hyphenopoly"),
+      import("node:fs/promises"),
+    ]);
+    const SENTINEL = "•";
+    const configured = hyphenopoly.config({
+      require: [...new Set(langs)],
       hyphen: SENTINEL,
       exceptions: {},
+      loader: async (file, patternDirectory) => readFile(new URL(file, patternDirectory)),
       // Minima must be pinned: changing them silently changes which joins are
       // legal, and therefore which words the corpus ends up with.
       leftmin: 2,
       rightmin: 2,
-      sync: true,
-    }) as Record<string, (word: string) => string> | ((word: string) => string);
-
-    if (typeof configured === "function") {
-      hyphenators.set(langs[0] ?? "ru", configured);
-    } else {
-      for (const lang of langs) {
-        const fn = (configured as Record<string, unknown>)[lang];
-        if (typeof fn === "function") hyphenators.set(lang, fn as (word: string) => string);
-      }
-    }
+    });
+    const entries = await Promise.all(
+      [...configured].map(async ([lang, promised]) => [lang, await promised] as const),
+    );
+    const hyphenators = new Map(entries);
     if (hyphenators.size === 0) return NULL_ORACLE;
 
     return {
@@ -451,14 +469,13 @@ export async function createHyphenopolyOracle(langs: readonly string[] = ["ru", 
         if (!hyphenate) return false;
         try {
           const marked = hyphenate(word.toLowerCase());
-          // Positions of the sentinel, converted back to indices in the original.
           let seen = 0;
-          for (let i = 0; i < marked.length; i += 1) {
-            if (marked[i] === SENTINEL) {
+          for (const ch of marked) {
+            if (ch === SENTINEL) {
               if (seen === index) return true;
-              continue;
+            } else {
+              seen += 1;
             }
-            seen += 1;
           }
           return false;
         } catch {
@@ -468,5 +485,23 @@ export async function createHyphenopolyOracle(langs: readonly string[] = ["ru", 
     };
   } catch {
     return NULL_ORACLE;
+  }
+}
+
+/**
+ * Optional Hunspell dictionary used only as the second half of rule 6.
+ * Absence or an unsupported language degrades to abstention, never guessing.
+ */
+export async function createWordDictionary(lang = "ru"): Promise<((word: string) => boolean) | undefined> {
+  if (!lang.toLowerCase().startsWith("ru")) return undefined;
+  try {
+    const [{ default: words }, { default: nspell }] = await Promise.all([
+      import("dictionary-ru"),
+      import("nspell"),
+    ]);
+    const spell = nspell(words);
+    return (word: string): boolean => spell.correct(word);
+  } catch {
+    return undefined;
   }
 }

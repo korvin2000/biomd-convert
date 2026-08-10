@@ -27,15 +27,10 @@
     ]
   },
   "totals": {
-    "findings": 47,
-    "alignmentRows": 217
+    "findings": 44,
+    "alignmentRows": 218
   },
   "classes": [
-    {
-      "class": "layout.containment.mismatch",
-      "instances": 15,
-      "documents": 9
-    },
     {
       "class": "layout.lane.mismatch",
       "instances": 3,
@@ -43,33 +38,21 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 18,
-      "documents": 5
+      "instances": 16,
+      "documents": 3
     },
     {
       "class": "layout.align.mismatch",
       "instances": 11,
       "documents": 7
+    },
+    {
+      "class": "layout.containment.mismatch",
+      "instances": 14,
+      "documents": 9
     }
   ],
   "findings": [
-    {
-      "id": "6c783d91",
-      "doc": "borislova",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/quote[4]/paragraph[0]",
-      "producedLine": 11,
-      "referenceLine": 12,
-      "produced": "Надя Борислова: \"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними…",
-      "reference": "\"Мне было 8 лет, когда отец купил нам (мне и брату) две маленькие гитары: ему пришлось отстоять за ними длинную очередь…",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "quote"
-      }
-    },
     {
       "id": "b0ba68cc",
       "doc": "goya2",
@@ -343,6 +326,46 @@
       }
     },
     {
+      "id": "a51362b8",
+      "doc": "new_geyzel04",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[2]/heading[0]",
+      "producedLine": 11,
+      "referenceLine": 15,
+      "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "7c1e4dcf",
+      "doc": "new_geyzel04",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[2]/heading[0]",
+      "producedLine": 11,
+      "referenceLine": 15,
+      "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
+      }
+    },
+    {
       "id": "128f754e",
       "doc": "new_karta",
       "class": "layout.align.mismatch",
@@ -571,46 +594,6 @@
       }
     },
     {
-      "id": "6441b75a",
-      "doc": "pavlov_azancheev",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 22,
-      "referenceLine": 26,
-      "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "0e469565",
-      "doc": "pavlov_azancheev",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[6]/paragraph[0]",
-      "producedLine": 22,
-      "referenceLine": 26,
-      "produced": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "reference": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, неизвестные письма и документы).",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
       "id": "3cba2ddc",
       "doc": "pavlov_azancheev",
       "class": "layout.containment.mismatch",
@@ -618,7 +601,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[8]/quote[0]/paragraph[0]",
-      "producedLine": 28,
+      "producedLine": 34,
       "referenceLine": 35,
       "produced": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот…",
       "reference": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойти с намеченного пути! Наоборот…",
@@ -883,40 +866,6 @@
         "producedContainer": "(root)",
         "referenceContainer": "align"
       }
-    },
-    {
-      "id": "c1c930dd",
-      "doc": "tarrega",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[9]",
-      "producedLine": 24,
-      "referenceLine": 28,
-      "produced": "Франсиско Таррега",
-      "reference": "Франсиско Таррега",
-      "geometry": {
-        "producedRank": 8,
-        "referenceRank": 10
-      }
-    },
-    {
-      "id": "91228e45",
-      "doc": "williams2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[6]",
-      "producedLine": 14,
-      "referenceLine": 18,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 5,
-        "referenceRank": 7
-      }
     }
   ],
   "alignment": [
@@ -1065,7 +1014,7 @@
     },
     {
       "doc": "borislova",
-      "producedLine": 26,
+      "producedLine": 27,
       "referenceLine": 27,
       "text": "Надя Борислова (Nadia Borislova)",
       "producedAlignment": "right",
@@ -1078,7 +1027,7 @@
     },
     {
       "doc": "borislova",
-      "producedLine": 281,
+      "producedLine": 282,
       "referenceLine": 284,
       "text": "ДИСКОГРАФИЯ Основные источники: Официальный сайт Нади Борисловой: www.buap.mx/cultura Pub…",
       "producedAlignment": "right",
@@ -2040,10 +1989,10 @@
     },
     {
       "doc": "new_geyzel04",
-      "producedLine": 15,
+      "producedLine": 11,
       "referenceLine": 15,
       "text": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "producedAlignment": "center",
+      "producedAlignment": "left",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
@@ -2053,7 +2002,20 @@
     },
     {
       "doc": "new_geyzel04",
-      "producedLine": 190,
+      "producedLine": 99,
+      "referenceLine": 104,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[11]/img[1]"
+    },
+    {
+      "doc": "new_geyzel04",
+      "producedLine": 186,
       "referenceLine": 191,
       "text": "Главы 8-9 Владимир Вавилов",
       "producedAlignment": "center",
@@ -3093,10 +3055,10 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 22,
+      "producedLine": 26,
       "referenceLine": 26,
       "text": "М.ПАВЛОВ-АЗАНЧЕЕВ (1888-1963). (Краткая биография, нотное наследие, первые исполнители, н…",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
@@ -3106,7 +3068,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 28,
+      "producedLine": 34,
       "referenceLine": 35,
       "text": "\"Я уважаемый Михаил Фёдорович, оптимист! Меня никакое горе не прошибёт и не заставит сойт…",
       "producedAlignment": "right",
@@ -3119,7 +3081,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 143,
+      "producedLine": 149,
       "referenceLine": 149,
       "text": "В.Маркушевич.",
       "producedAlignment": "right",
@@ -3132,7 +3094,7 @@
     },
     {
       "doc": "pavlov_azancheev",
-      "producedLine": 145,
+      "producedLine": 151,
       "referenceLine": 151,
       "text": "Статья предоставлена автором.",
       "producedAlignment": "right",
@@ -3613,7 +3575,7 @@
     },
     {
       "doc": "tarrega",
-      "producedLine": 24,
+      "producedLine": 28,
       "referenceLine": 28,
       "text": "Франсиско Таррега",
       "producedAlignment": "right",
@@ -3665,7 +3627,7 @@
     },
     {
       "doc": "williams2",
-      "producedLine": 14,
+      "producedLine": 18,
       "referenceLine": 18,
       "text": "",
       "producedAlignment": "right",

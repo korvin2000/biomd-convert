@@ -69,6 +69,8 @@ export interface ConvertOptions {
   /** Corpus lexicon; an empty one still works, just with weaker de-hyphenation. */
   lexicon?: Lexicon;
   oracle?: HyphenationOracle;
+  /** Optional external word dictionary; paired with the hyphenation oracle. */
+  dictionary?: (word: string) => boolean;
   lang?: string;
   /** Directory to resolve relative assets from during measurement. */
   assetRoot?: string;
@@ -218,6 +220,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     lexicon,
     oracle: options.oracle ?? NULL_ORACLE,
     lang: options.lang ?? "ru",
+    dictionary: options.dictionary,
   };
   const dehyphenation = dehyphenateDocument(doc.root as never, dehyphenateOptions);
   const textOperations: TextOperation[] = dehyphenation.operations;

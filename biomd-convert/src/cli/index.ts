@@ -18,7 +18,7 @@ import {
   runCorpusPass,
   type CorpusProfile,
 } from "../convert-core/index.js";
-import { createHyphenopolyOracle } from "../convert-core/dehyphenate.js";
+import { createHyphenopolyOracle, createWordDictionary } from "../convert-core/dehyphenate.js";
 import { createMeasurer, type VisualMode } from "../ladom/measure.js";
 import { parseHtml } from "../ladom/parse.js";
 import { quarantineServerMarkup } from "../ladom/quarantine.js";
@@ -202,6 +202,7 @@ program
 
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
+    const dictionary = await createWordDictionary(cfg.lang);
     const { resolver, budget, note } = makeResolver(cfg, options);
     if (!options.quiet) process.stderr.write(`${note}\n`);
 
@@ -214,6 +215,7 @@ program
         layoutFidelity: cfg.layoutFidelity,
         measurer,
         oracle,
+        dictionary,
         lang: cfg.lang,
         ...(resolver ? { resolver } : {}),
         ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
@@ -342,6 +344,7 @@ corpus
 
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
+    const dictionary = await createWordDictionary(cfg.lang);
     // Browser contexts are the scarce resource; conversions are cheap.
     const queue = new PQueue({ concurrency: measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs });
 
@@ -368,6 +371,7 @@ corpus
                 layoutFidelity: cfg.layoutFidelity,
                 measurer,
                 oracle,
+                dictionary,
                 lexicon,
                 lang: cfg.lang,
                 ...(resolver ? { resolver } : {}),

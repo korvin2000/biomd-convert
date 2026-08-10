@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { Lexicon } from "./lexicon.js";
-import { NULL_ORACLE, decideHyphen, dehyphenateText, type HyphenationOracle } from "./dehyphenate.js";
+import {
+  NULL_ORACLE,
+  createHyphenopolyOracle,
+  createWordDictionary,
+  decideHyphen,
+  dehyphenateText,
+  type HyphenationOracle,
+} from "./dehyphenate.js";
 
 function lexiconOf(...texts: string[]): Lexicon {
   const lex = new Lexicon();
@@ -21,6 +28,37 @@ const FAKE_ORACLE: HyphenationOracle = {
     return (points[word.toLowerCase()] ?? []).includes(index);
   },
 };
+
+/**
+ * Rule contract — **rule 6 needs two independent external signals.**
+ *
+ * *Invariant.* Hyphenopoly only proves that a word may break at the observed
+ * position; Hunspell independently proves that the joined form is a word.
+ * Neither signal alone may authorize a destructive join.
+ *
+ * *Recurrence.* Not applicable: dictionary membership and legal break position
+ * are independent external evidence. Requiring corpus recurrence would make
+ * rule 6 identical to rule 4 and remove its purpose.
+ *
+ * *False friend.* A common lexical compound has legal breaks in its hypothetical
+ * joined spelling but the dictionary rejects that spelling, so it is preserved.
+ *
+ * *Mutation robustness.* Package loading and word decisions depend on language
+ * data only, not DOM names, wrappers, attributes, or fixture identity.
+ */
+describe("production de-hyphenation oracles", () => {
+  it("loads Russian patterns and dictionary while preserving independent vetoes", async () => {
+    const [oracle, dictionary] = await Promise.all([
+      createHyphenopolyOracle(["ru"]),
+      createWordDictionary("ru"),
+    ]);
+    expect(oracle.available).toBe(true);
+    expect(dictionary).toBeTypeOf("function");
+    expect(oracle.isLegalBreak("маркетолог", 3, "ru")).toBe(true);
+    expect(dictionary?.("маркетолог")).toBe(true);
+    expect(dictionary?.("информационноаналитического")).toBe(false);
+  });
+});
 
 /**
  * Rule contract — **a hyphen inside a machine identifier is never a wrap.**
@@ -263,6 +301,38 @@ describe("dehyphenateText", () => {
     const result = dehyphenateText(src, "ir:1", { lexicon: lex });
     expect(result.text).toBe("музыкант и композитор вместе");
     expect(result.operations).toHaveLength(2);
+  });
+
+  /**
+   * Rule contract — **every break in one multiply hyphenated word is decided.**
+   *
+   * *Invariant.* A candidate shares its right letter-run with the next
+   * candidate; discovery must not consume that run. Decisions replace only
+   * the intervening hyphen and whitespace, so neighbouring candidates cannot
+   * overlap or duplicate text.
+   *
+   * *Recurrence.* Intrinsic: this rule exists only when the same word carries
+   * at least two candidates. A one-break word stays on the established path.
+   *
+   * *False friend.* A multi-part proper name may contain a lower-case linker.
+   * All its breaks are lexical and must survive even when one linker is a
+   * frequent standalone word.
+   *
+   * *Mutation robustness.* The contract is plain text: DOM wrappers, classes,
+   * attributes, encoding, and script do not participate in candidate overlap.
+   */
+  it("decides adjacent candidates without consuming their shared fragment", () => {
+    const result = dehyphenateText("информационно-аналити-ческого", "ir:1", {
+      lexicon: lexiconOf("аналитического аналитического"),
+    });
+    expect(result.text).toBe("информационно-аналитического");
+    expect(result.operations).toHaveLength(2);
+    expect(result.operations.map((op) => op.kind)).toEqual(["preserve-break", "join-hyphenated-word"]);
+
+    const properName = dehyphenateText("Кастельон-де-ла-Плане", "ir:2", { lexicon: lexiconOf("де де") });
+    expect(properName.text).toBe("Кастельон-де-ла-Плане");
+    expect(properName.operations).toHaveLength(3);
+    expect(properName.operations.every((op) => op.kind === "preserve-break")).toBe(true);
   });
 });
 

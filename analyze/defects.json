@@ -1,41 +1,41 @@
 {
-  "generated": "2026-08-10T16:00:35.861Z",
+  "generated": "2026-08-10T17:39:10.954Z",
   "totals": {
-    "findings": 128,
+    "findings": 141,
     "converterDefects": 67,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 44,
-    "ambiguous": 17,
+    "ambiguous": 30,
     "bySeverity": {
       "critical": 4,
       "major": 55,
-      "minor": 69
+      "minor": 82
     }
   },
   "perDocument": [
     {
       "doc": "authors",
-      "findings": 2,
-      "converterDefects": 2,
+      "findings": 1,
+      "converterDefects": 1,
       "critical": 0,
       "major": 0,
-      "minor": 2
+      "minor": 1
     },
     {
       "doc": "barrios",
-      "findings": 0,
+      "findings": 1,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 1
     },
     {
       "doc": "borislova",
-      "findings": 5,
+      "findings": 6,
       "converterDefects": 1,
       "critical": 0,
       "major": 1,
-      "minor": 4
+      "minor": 5
     },
     {
       "doc": "goya2",
@@ -47,11 +47,11 @@
     },
     {
       "doc": "jovicic",
-      "findings": 4,
+      "findings": 5,
       "converterDefects": 3,
       "critical": 0,
       "major": 1,
-      "minor": 3
+      "minor": 4
     },
     {
       "doc": "kiselev",
@@ -63,11 +63,11 @@
     },
     {
       "doc": "new_bach",
-      "findings": 0,
+      "findings": 2,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 2
     },
     {
       "doc": "new_blackmore",
@@ -87,11 +87,11 @@
     },
     {
       "doc": "new_geyzel04",
-      "findings": 3,
+      "findings": 4,
       "converterDefects": 3,
       "critical": 0,
       "major": 3,
-      "minor": 0
+      "minor": 1
     },
     {
       "doc": "new_karta",
@@ -103,11 +103,11 @@
     },
     {
       "doc": "new_kolpakov",
-      "findings": 4,
-      "converterDefects": 4,
+      "findings": 5,
+      "converterDefects": 5,
       "critical": 0,
       "major": 0,
-      "minor": 4
+      "minor": 5
     },
     {
       "doc": "new_lagq2",
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 14,
-      "converterDefects": 6,
+      "findings": 16,
+      "converterDefects": 5,
       "critical": 2,
       "major": 6,
-      "minor": 6
+      "minor": 8
     },
     {
       "doc": "segovia1",
@@ -175,19 +175,19 @@
     },
     {
       "doc": "tarrega",
-      "findings": 6,
-      "converterDefects": 2,
+      "findings": 9,
+      "converterDefects": 3,
       "critical": 1,
       "major": 4,
-      "minor": 1
+      "minor": 4
     },
     {
       "doc": "williams2",
-      "findings": 2,
+      "findings": 4,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 2
+      "minor": 4
     }
   ],
   "classes": [
@@ -310,6 +310,30 @@
       }
     },
     {
+      "class": "paragraph.hyphenation.mixed",
+      "severity": "minor",
+      "instances": 5,
+      "documents": [
+        "jovicic",
+        "new_kolpakov",
+        "pavlov_azancheev",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 5,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 20,
+      "example": {
+        "doc": "jovicic",
+        "path": "/paragraph[3]",
+        "produced": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…",
+        "reference": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…"
+      }
+    },
+    {
       "class": "paragraph.content.edited",
       "severity": "minor",
       "instances": 11,
@@ -333,53 +357,6 @@
         "path": "/paragraph[5]",
         "produced": "Как говорит сам Ричи Блэкмор, он \"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать на …",
         "reference": "*Как говорит сам Ричи Блэкмор, он ==\"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать …"
-      }
-    },
-    {
-      "class": "paragraph.hyphenation.unjoined",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "authors",
-        "borislova",
-        "news_2007",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 16,
-      "example": {
-        "doc": "authors",
-        "path": "/paragraph[7]",
-        "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
-        "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…"
-      }
-    },
-    {
-      "class": "paragraph.hyphenation.mixed",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "authors",
-        "jovicic",
-        "pavlov_azancheev"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "authors",
-        "path": "/paragraph[5]",
-        "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
-        "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …"
       }
     },
     {
@@ -446,6 +423,29 @@
         "path": "/columns[11]/column[0]/list[2]",
         "produced": "J. S. Bach - Allemande F. Sor - Estudio e-moll F. Sor - From the \"Magic flute\" J. Vinas - Fantasia I. Albeniz - Granada F. Tarrega - Recuerdos d'Alhambra M. To…",
         "reference": "J. S. Bach - Allemande\\ F. Sor - Estudio e-moll\\ F. Sor - From the \"Magic flute\"\\ J. Vinas - Fantasia\\ I. Albeniz - Granada\\ F. Tarrega - Recuerdos d'Alhambra\\… — at /columns[11]/column[0]/paragraph[3]"
+      }
+    },
+    {
+      "class": "paragraph.hyphenation.unjoined",
+      "severity": "minor",
+      "instances": 3,
+      "documents": [
+        "authors",
+        "borislova",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 3,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 9,
+      "example": {
+        "doc": "authors",
+        "path": "/paragraph[7]",
+        "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+        "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…"
       }
     },
     {
@@ -1017,6 +1017,34 @@
       }
     },
     {
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "instances": 12,
+      "documents": [
+        "barrios",
+        "borislova",
+        "jovicic",
+        "new_bach",
+        "new_geyzel04",
+        "segovia",
+        "tarrega",
+        "williams2"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 12
+      },
+      "rank": 0,
+      "example": {
+        "doc": "barrios",
+        "path": "/paragraph[3]",
+        "produced": "В 1910 г. Барриос, ставший к тому времени уже известен как виртуозный гитарист, покинул Парагвай и уехал в Аргентину. Все последующие 34 года он гастролировал …",
+        "reference": "В 1910 г. Барриос, ставший к тому времени уже известен как виртуозный гитарист, покинул Парагвай и уехал в Аргентину. Все последующие 34 года он гастролировал …"
+      }
+    },
+    {
       "class": "image.size.missing.off-profile",
       "severity": "minor",
       "instances": 8,
@@ -1232,6 +1260,27 @@
       }
     },
     {
+      "class": "list.item.hyphenation.joined",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "segovia",
+        "path": "/quote[13]/list[1]/item[0]",
+        "produced": "отделение гитары от бездумных увеселений фольклорного типа;",
+        "reference": "отделение гитары от бездумных увеселений фольк-лорного типа;"
+      }
+    },
+    {
       "class": "table.row.spurious",
       "severity": "major",
       "instances": 1,
@@ -1255,20 +1304,6 @@
   ],
   "findings": [
     {
-      "id": "9354259e",
-      "doc": "authors",
-      "class": "paragraph.hyphenation.mixed",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[5]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, мар-кетолог,…",
-      "reference": "ТАВРОВСКИЙ Виктор Владимирович (род. 8 июля 1959, г. Борно-Сулиново, Кошалинское воевод., Польша), – философ, преподаватель философских дисциплин, маркетолог, …",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "08e6948d",
       "doc": "authors",
       "class": "paragraph.hyphenation.unjoined",
@@ -1281,6 +1316,20 @@
       "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "19751c41",
+      "doc": "barrios",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[3]",
+      "producedLine": 11,
+      "referenceLine": 11,
+      "produced": "В 1910 г. Барриос, ставший к тому времени уже известен как виртуозный гитарист, покинул Парагвай и уехал в Аргентину. Все последующие 34 года он гастролировал …",
+      "reference": "В 1910 г. Барриос, ставший к тому времени уже известен как виртуозный гитарист, покинул Парагвай и уехал в Аргентину. Все последующие 34 года он гастролировал …",
+      "verdict": "ambiguous"
     },
     {
       "id": "94361f51",
@@ -1337,6 +1386,20 @@
       "produced": null,
       "reference": "size: medium",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "8aea534d",
+      "doc": "borislova",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[8]",
+      "producedLine": 35,
+      "referenceLine": 36,
+      "produced": "Записала 5 CD-альбомов, в том числе двойной с музыкой Мауро Джулиани (2001). Первый диск, в который вошли собственные сочинения Нади Борисловой, вышел в 1995 г…",
+      "reference": "Записала 5 CD-альбомов, в том числе двойной с музыкой Мауро Джулиани (2001). Первый диск, в который вошли собственные сочинения Нади Борисловой, вышел в 1995 г…",
+      "verdict": "ambiguous"
     },
     {
       "id": "ca928aef",
@@ -1647,6 +1710,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "3e7f0098",
+      "doc": "jovicic",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[8]",
+      "producedLine": 34,
+      "referenceLine": 34,
+      "produced": "За более чем 50 лет активной творческой деятельности Йован Йовович внес огромный вклад в популяризацию классической гитары как сольного инструмента в Югославии…",
+      "reference": "За более чем 50 лет активной творческой деятельности Йован Йовович внес огромный вклад в популяризацию классической гитары как сольного инструмента в Югославии…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "1bf7c9b6",
       "doc": "jovicic",
       "class": "retyped.paragraph-to-list",
@@ -1715,6 +1792,34 @@
       "produced": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
       "reference": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm — 2 hard breaks, reference has 1",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "ec6f5a5d",
+      "doc": "new_bach",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[17]",
+      "producedLine": 46,
+      "referenceLine": 46,
+      "produced": "Бах становится «музыкальным директором» всех церквей города, следя за личным составом музыкантов и певцов, наблюдая за их обучением, назначая необходимые к исп…",
+      "reference": "Бах становится «музыкальным директором» всех церквей города, следя за личным составом музыкантов и певцов, наблюдая за их обучением, назначая необходимые к исп…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "b1aca943",
+      "doc": "new_bach",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[21]",
+      "producedLine": 54,
+      "referenceLine": 54,
+      "produced": "Сложной оказалась и судьба его наследия. При жизни Бах пользовался известностью. Однако после смерти композитора имя и музыка его стали предаваться забвению. П…",
+      "reference": "Сложной оказалась и судьба его наследия. При жизни Бах пользовался известностью. Однако после смерти композитора имя и музыка его стали предаваться забвению. П…",
+      "verdict": "ambiguous"
     },
     {
       "id": "8b16e066",
@@ -1941,6 +2046,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "71942500",
+      "doc": "new_geyzel04",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[5]",
+      "producedLine": 17,
+      "referenceLine": 22,
+      "produced": "Но для завершения последнего необходимо было хоть что-то узнать о Владимире Вавилове. Для начала я обратился во всемогущий Интернет, но тут меня ждало крупное …",
+      "reference": "Но для завершения последнего необходимо было хоть что-то узнать о Владимире Вавилове. Для начала я обратился во всемогущий Интернет, но тут меня ждало крупное …",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "9e2f6e3d",
       "doc": "new_geyzel04",
       "class": "heading.level",
@@ -2050,6 +2169,20 @@
       "referenceLine": 147,
       "produced": "▶",
       "reference": "▶ — at /paragraph[24]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b76620d5",
+      "doc": "new_kolpakov",
+      "class": "paragraph.hyphenation.mixed",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 3,
+      "referenceLine": 3,
+      "produced": "КОЛПАКОВ Вадим Григорьевич (род. в 1981 году, Саратов, Россия), – продолжатель известной цыганской артистичес-кой династии, гитарист-семиструнник, вокалист, ак…",
+      "reference": "КОЛПАКОВ Вадим Григорьевич (род. в 1981 году, Саратов, Россия), – продолжатель известной цыганской артистичес-кой династии, гитарист-семиструнник, вокалист, ак…",
       "verdict": "converter-defect"
     },
     {
@@ -2552,7 +2685,7 @@
       "path": "/columns[5]/column[1]/paragraph[0]",
       "producedLine": 34,
       "referenceLine": 33,
-      "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэ-ле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге…",
+      "produced": "Размещены статьи о Висенте Эспинеле, Хосе Фер-рере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге …",
       "reference": "Размещены статьи о Висенте Эспинеле, Хосе Феррере, Хосе Виньясе, Казимеже Сосинском, Мануэле Лопесе Рамосе и Л.Т. Шумееве, а также статья о Франсиско Тарреге и…",
       "verdict": "converter-defect"
     },
@@ -2697,6 +2830,20 @@
       "verdict": "ambiguous"
     },
     {
+      "id": "03f22732",
+      "doc": "segovia",
+      "class": "list.item.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/quote[13]/list[1]/item[0]",
+      "producedLine": 48,
+      "referenceLine": 47,
+      "produced": "отделение гитары от бездумных увеселений фольклорного типа;",
+      "reference": "отделение гитары от бездумных увеселений фольк-лорного типа;",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "511588e0",
       "doc": "segovia",
       "class": "retyped.paragraph-to-align",
@@ -2711,18 +2858,32 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "180dd6c8",
+      "id": "b08a9ff2",
       "doc": "segovia",
-      "class": "paragraph.hyphenation.unjoined",
+      "class": "paragraph.hyphenation.joined",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/paragraph[17]",
-      "producedLine": 59,
-      "referenceLine": 62,
-      "produced": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья пере-ехала в Хаэн. Замечательное искусство импровиза…",
-      "reference": "Андрес Сеговия родился в Андалусии, в городе Линарес, 21 февраля 1893 года, а через несколько недель семья переехала в Хаэн. Замечательное искусство импровизац…",
-      "verdict": "converter-defect"
+      "path": "/paragraph[24]",
+      "producedLine": 87,
+      "referenceLine": 90,
+      "produced": "В 1915 году Сеговия познакомился с гитаристом *Мигелем Льобетом*, благодаря которому ему удалось дать концерт в Барселоне в январе 1916 года. Однако, гитару не…",
+      "reference": "В 1915 году Сеговия познакомился с гитаристом *Мигелем Льобетом*, благодаря которому ему удалось дать концерт в Барселоне в январе 1916 года. Однако, гитару не…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "4bfa17b5",
+      "doc": "segovia",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[25]",
+      "producedLine": 89,
+      "referenceLine": 92,
+      "produced": "Поворотом в судьбе гитары стал концерт во Дворце камерной музыки \"Палау\" в Барселоне, где Андрес Сеговия, наконец, получил разрешение выступить. Красота звучан…",
+      "reference": "Поворотом в судьбе гитары стал концерт во Дворце камер-ной музыки \"Палау\" в Барселоне, где Андрес Сеговия, наконец, получил разрешение выступить. Красота звуча…",
+      "verdict": "ambiguous"
     },
     {
       "id": "0dc61be5",
@@ -2935,6 +3096,48 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "e0cd1468",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.mixed",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 3,
+      "referenceLine": 3,
+      "produced": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "reference": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "777df99d",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[3]",
+      "producedLine": 10,
+      "referenceLine": 10,
+      "produced": "Собственных сочинений для гитары у Тарреги немного, всего 34. Однако по мастерству применения технических средств и звуковых возможностей гитары сочинения Тарр…",
+      "reference": "Собственных сочинений для гитары у Тарреги немного, всего 34. Однако по мастерству применения технических средств и звуковых возможностей гитары сочинения Тарр…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "33541b10",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[10]",
+      "producedLine": 34,
+      "referenceLine": 34,
+      "produced": "Несмотря на увлечение гитарой, Таррега окончил Мадридскую консерваторию по классам фортепиано и композиция. Это произошло лишь потому, что ни в Барселонской, н…",
+      "reference": "Несмотря на увлечение гитарой, Таррега окончил Мадридскую консерваторию по классам фортепиано и композиция. Это произошло лишь потому, что ни в Барселон-ской, …",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "0cf42354",
       "doc": "tarrega",
       "class": "retyped.paragraph-to-heading2",
@@ -2986,7 +3189,7 @@
       "path": "/paragraph[26]",
       "producedLine": 126,
       "referenceLine": 126,
-      "produced": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [▶](/#/tarrega2)",
+      "produced": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библиографический и историко-критический словарь гитаристов\"(1934). [▶](/#/tarrega2)",
       "reference": "\\[Статья о Франсиско Тарреге] Доминго ПРАТ \"Биографический, библио-графический и историко-критический словарь гитаристов\"(1934). [/#/tarrega2](/#/tarrega2)",
       "verdict": "ambiguous"
     },
@@ -3031,6 +3234,34 @@
       "produced": "(none)",
       "reference": "em:Фильм \"Охотник на оленей\" (режиссер Майкл Чимино), с Робертом де Ниро в главной роли, в 1979 году был отмечен пятью Оскарами: за лучший фильм года, лучшую р…",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "d454a9fe",
+      "doc": "williams2",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[7]",
+      "producedLine": 23,
+      "referenceLine": 23,
+      "produced": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен…",
+      "reference": "В 1971 году компания CBS Records отметила продажу миллионного диска Джона Вильямса – событие явно неординарное для музыканта классического направления – вручен…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "b8d10f70",
+      "doc": "williams2",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[16]",
+      "producedLine": 53,
+      "referenceLine": 53,
+      "produced": "Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и композит…",
+      "reference": "*Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компози…",
+      "verdict": "ambiguous"
     },
     {
       "id": "c28cdf81",
