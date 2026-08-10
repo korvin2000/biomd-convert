@@ -112,3 +112,18 @@ L2 263 -> 257 findings / 135 -> 112 defect, L3 flat -- so §21-§34 figures are 
 
 **The validator figure is now split by side, and §36.2's "5" was not.** Do not read the 5 -> 0 as
 attributable work; §37.7 states what was measured and what was not.
+
+| 38 segovia/rechin4/kolpakov | 4869-5021 | end state `38.1:4876` · markup stripped from a target `38.2:4895` · **a source credit is not a menu, and §37.5 corrected `38.3:4907`** · **the page you are on is an item, plus a second `navTitleFrom` false friend `38.4:4935`** · a hand-drawn bullet is a list `38.5:4955` · **a quotation spanning a block boundary is a block quote — the last converter critical `38.6:4973`** · what `analyze.md` still asks of `segovia` `38.7:4993` · still open elsewhere `38.8:5013` | HOT |
+
+## Checkpoint -- §38, measured 2026-08-10 over **22 documents**
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **488** tests, typecheck clean, 0 FAILED, `read()` warnings 0 | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **96.8 %** | `sh bench/run.sh` |
+| L2 | **151** findings -- **73 converter-defect** · 29 ambiguous · 49 reference-inconsistency · 5 critical | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **47** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | **0** on every produced document; **4** on the *references*, all `fence-unbalanced` | `validate bench/out/<name>.bio.md` |
+
+**Converter-defect criticals: 0.** All five criticals are reference-inconsistency and four are the
+`link.label.content.empty` class OPEN.md §5.0 records as broken. Never quote "5 critical" bare.

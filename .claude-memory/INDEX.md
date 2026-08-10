@@ -44,8 +44,15 @@ queue with five more**: a rule drawn between two aligned lines divides them (§3
 is what places its link (§37.3, which closes §33.4's residue) · a `rowspan` holds its rows in one
 region (§37.4) · a link label is one line (§37.5) · a numbered run the source split in two is one
 run (§37.6). `analyze-2.md`'s `goya2` section supplied the last two and had not been mined.
-Current floor: L0 **476 tests**, **0 validator errors on every produced document** (4 remain on the
-*references*), L1 **96.6**, L2 **157 · 83 defect · 4 crit**, L3 **52**.
+**§38 then took the three documents §37.10 named** -- `segovia`, `new_rechin4`, `new_kolpakov` --
+and closed six more: markup stripped from a target (§38.2) · a source credit is not a menu, plus the
+§37.5 edge-break correction it exposed (§38.3) · the page you are on is an item however the source
+marked it (§38.4) · a hand-drawn bullet is the list it was drawing (§38.5) · a quotation that spans
+a block boundary is a block quote (§38.6).
+Current floor: L0 **488 tests**, **0 validator errors on every produced document** (4 remain on the
+*references*), L1 **96.8**, L2 **151 · 73 defect**, L3 **47**.
+**No converter-defect remains at critical severity** -- all 5 criticals are reference-inconsistency,
+4 of them the broken `link.label.content.empty` class. Quote that split.
 
 **The authority order changed -- read this before citing a spec rule (PROGRESS §36.1).**
 `analyze/analyze.md` + `analyze/analyze-2.md` are now rung **1**, the `fixtures/` pairs rung 2, and
@@ -58,13 +65,16 @@ The word-less alignment rule has now been **killed twice**, on two different fal
 §35.10) -- read both before touching `retyped.paragraph-to-align`, which is two mechanisms wearing
 one name. Its residue, `align` inside `column`, is closed by §37.3.
 
-**Mine `analyze/analyze-2.md` before the ledger.** Two of §37's five mechanisms and three of its
-downgrades came straight out of its `goya2` section, which four sessions had not read to the end.
-It is rung 1, it names defects the instruments rank low or miss, and it states which differences the
-author considers non-defects.
+**Mine `analyze/analyze.md` and `analyze-2.md` before the ledger.** Two of §37's five mechanisms and
+three of its downgrades came out of `analyze-2.md`'s `goya2` section; **five of §38's six** came out
+of `analyze.md`'s `segovia` section and `analyze-2.md`. Several sessions had not read either to the
+end. They are rung 1, they name defects the instruments rank low or cannot see, and they state which
+differences the author considers non-defects. `analyze.md`'s `segovia` section is still mostly open
+and is candidate 1 in [OPEN.md](OPEN.md) §1.
 
-> **Fourteen of this iteration's 21-defect fall were the instrument becoming truthful, seven the
-> conversion improving.** Quote the defect count with that split or it reads as work that happened.
+> **A defect count can fall because the instrument became truthful, because the conversion improved,
+> or because a difference became newly *visible*.** All three happened in §35-§38 — §38.5 raised
+> `segovia`'s total while halving its defects. Quote which, or the number reads as work that happened.
 
 > **The ledger's rank measures what an instrument noticed, not what work is available.** Three of
 > the last four classes taken from the top were ceilings or several mechanisms sharing a name.

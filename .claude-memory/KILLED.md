@@ -119,3 +119,18 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   (`isBareLinkRow`), a signal §33.2 created in the same iteration that recorded the residue, and
   §37.3 uses it. The lesson is the general one -- *when a cell-level test dies, ask whether the
   container knows.* (§37.3)
+- **Hoist *every* edge break out of a link label.** The first form of §37.5's correction, and it is
+  right for `new_kolpakov` (`<a>x<br></a>` with nothing after it) and wrong where the division is
+  drawn on **both** sides of the anchor boundary. `borislova`'s `<a>ДИСКОГРАФИЯ<br></a><br>` then
+  emitted two breaks, which a browser really does draw as a blank line (measured: 14 px line height,
+  a 28 px step where every other step is 14) — but in Markdown a blank line is a paragraph boundary,
+  and it split one credit block in two, took its opening link out of the block, and cascaded through
+  L2's positional link alignment to **3 -> 8 defect with 2 criticals**. The guard is that the hoisted
+  break gives way to the authored one; §1's hierarchy is lexicographic and structure outranks a
+  14 px gap. (§38.3)
+- **Source containment as the guard for a nav title.** The obvious fix for `new_rechin4`'s strapline
+  being absorbed into `title:` — require the label and the menu to come from the same source
+  container. `news` puts its label in a bordered tinted cell of its **own**, a different container
+  from the bar it names, and wants the title anyway. Adjacency in the flow is the position §11
+  describes; the source's box structure is not. The working guard is the label's own shape: an
+  ornament *between* phrases means the line is a series, and a title names one thing. (§38.4)

@@ -4865,3 +4865,157 @@ are reference authoring slips that invariant 1 forbids editing.
   §37.4 closed two majors at a node and opened one critical there, on a region that is byte-identical
   on both sides. L3 pairs across whole documents, so a rank finding can name a node whose own
   neighbourhood is exact. Distrust it before working it.
+
+## 38. `segovia`, `new_rechin4`, `new_kolpakov`: six mechanisms, and the last converter critical (2026-08-10)
+
+The three documents §37.10 named as next, taken in order. Five of the six mechanisms came from
+reading `analyze/analyze.md`'s `segovia` section and `analyze-2.md` to the end -- both rung 1, both
+naming defects the ledger ranks low or cannot see. The sixth is a correction to §37.5, found because
+a *different* fix made the loss visible.
+
+### 38.1 End state, measured over 22 documents
+
+| rung | after §37 | now |
+|---|---|---|
+| L0 | 476 tests | **488**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | 96.6 | **96.8** |
+| L2 | 157 · 83 defect · 4 crit | **151 · 73 defect · 5 crit, of which converter-defect = 0** |
+| L3 | 52 | **47**, identity 0, deterministic |
+| validator | 0 produced / 4 reference | **0 produced / 4 reference** (unchanged, `fence-unbalanced`) |
+
+Per document, converter-defect: `new_lendle2` 7 · `new_rechin4` 6 · `news` 6 · `segovia` 6 ·
+`pavlov_azancheev` 5 · `tarrega` 5 · `goya2` 4 · `new_kolpakov` 4 · `news_2007` 4 · rest ≤ 3 ·
+`new_bach` and `new_dyens` at 0. `new_blackmore` reaches **L1 100.0**.
+
+**The corpus now carries no converter-defect at critical severity.** The five criticals that remain
+are all reference-inconsistency, and four of them are the `link.label.content.empty` class OPEN.md
+§5.0 records as broken -- it fires when the produced label is `▶` and the reference's is a raw route,
+which `analyze.md` rules the *produced* way round.
+
+### 38.2 Markup in a target is not part of the destination (`6198f04`)
+
+`new_kolpakov` writes `href="<B>http://www.russianguitar.net/</B>"` -- a bold run FrontPage wrote
+into the attribute as well as around the visible text -- and the link navigated nowhere. RFC 3986
+excludes `<` and `>` from a URI, so a tag in an attribute value is never a destination.
+`rewriteTarget` strips it before every other test, so a wrapped `javascript:` is still refused.
+
+**This is the upstream fix an existing guard was waiting for.** `siteRelativeAsset` already tested
+`/[<>]|:\/\//` and its comment named the cause and declined to "produce a differently-broken
+version". That comment now records that the cause is gone and that the guard is a defence rather
+than load-bearing. L1 `new_kolpakov` 97.0 -> 98.9, link axis 66.7 -> 100.0.
+
+### 38.3 A source credit is not a menu -- and §37.5 corrected (`1826288`)
+
+`navFrom` allows one plain item, which §11 defines as *the page you are already on*. It was also
+accepting an **announcing lead-in**, so `new_blackmore`'s `(Источники: rock.ru; rol.ru; …)` and
+`new_kolpakov`'s `Основные источник: …` became `::: nav` with the label as both an item and
+`active:`. Both references write them as prose.
+
+The evidence is punctuation, not vocabulary: a trailing colon. A page name is never *announced*, and
+text that announces the links after it stands outside the run -- which is `navFrom`'s own stated
+negative evidence. Same signal, same reading, as the colon-announced list of §35.7. The corpus
+separates cleanly in both directions: the three plain items the references keep (`Последние`,
+`А Бартоли` twice) carry no colon; the two the produced side invented both do.
+
+**It also exposed a loss in §37.5.** `new_kolpakov` writes each credit as
+`<a …>talismanmusic.org<br></a>` -- the break inside the anchor with nothing after it -- and folding
+it away ran four credits onto one line. An edge break is not part of the label but it is still a
+division, so it is hoisted back into the run; only an *interior* break becomes a space. §37.5's
+contract was written as though the two cases were one, and they are not.
+
+**Where the division is drawn on both sides of the anchor boundary, the hoisted one gives way.**
+`borislova` writes `<a …>ДИСКОГРАФИЯ<br></a><br>`. Measured in the browser, the source draws a
+**blank** line there: 14 px line height and a 28 px step where every other step in the block is 14.
+Emitting both breaks reproduces that gap and *also* asserts a paragraph boundary, splitting one
+credit block in two and taking its opening link out of the block it belongs to. §1's hierarchy is
+lexicographic and structural correctness outranks rendering detail, so the 14 px is knowingly not
+reproduced. Measured and rejected on the way: hoisting without that guard took `borislova` 3 -> 8
+defect with 2 criticals, from a single paragraph split cascading through positional link alignment.
+
+### 38.4 The page you are on is an item, however the source marked it (`3239a7d`)
+
+`new_rechin4`'s pager is `[1] [2] [ <b>3</b> ]` -- two links left to go and the current page in bold
+-- and `navFrom` refused it twice over. It counted **links** against a floor of three, so a
+three-item strip on its last page had only two; and a wrapper carrying text rejected the whole run,
+though the code already knew that "a wrapper around exactly one link is still a link". §11's plain
+item is an item, and bold is how this era says "you are here". Now three *items* with at least two
+links -- one link and a word is a sentence, contract-tested. Closed `nav.moved`,
+`nav.active.missing`, `nav.position.spurious` and `retyped.paragraph-to-list`: four findings, one
+cause.
+
+**A second false friend in `navTitleFrom`, fixed with it** because the pager is what made it
+reachable. `Идея • Концепция • Музыкальное воплощение` passes every existing test -- 5 words, 37
+characters, no terminal stop -- and names nothing. An ornament **between** phrases is structure: the
+line lists three things and a title names one. Symmetric ornament is the opposite and is stripped
+first, so the two cases are decided by *where* the glyph sits. None of the five titles the references
+carry holds an interior ornament. **Source containment was considered and rejected as the guard** --
+`news` puts its label in a bordered cell of its own, a different container from the bar, and wants
+the title anyway.
+
+### 38.5 A hand-drawn bullet is the list it was drawing (`1ef7673`)
+
+`segovia` writes its "см. также" entries as two `<p>` each opening `•`; `analyze.md` asks for the
+conversion by name. `groupBulletedItems` makes a list of two or more **adjacent** blocks opening with
+the **same** mark from a new documented `LIST_BULLETS` set in `glyphs.ts`. Recurrence is the rule
+rather than a gate on it: one bulleted line is a **label** -- the false friend `RULE_GLYPHS`' own note
+already named, `• Из письма А.Максимова` -- and a run of two is the smallest thing that can be a list.
+`LIST_BULLETS` is a deliberate subset of `RULE_GLYPHS`: a dash opens dialogue far more often than an
+item here, and `*` opens emphasis.
+
+Measured first: **no reference anywhere** leaves a bullet-opened line as a paragraph, and the produced
+side had exactly two, both on `segovia`, both wanted as items.
+
+Cost, stated: `segovia`'s total rose 14 -> 16 while its defects fell 10 -> 8, because two findings
+became *visible*. With the entries paired as list items L2 now reaches their links and reports
+`link.label.content.empty` twice -- produced `▶`, reference a raw route `[/#/bobri1](…)`. Both are
+reference-inconsistency and `analyze.md` rules the `▶` form correct.
+
+### 38.6 A quotation that spans a block boundary is a block quote (`fa1213d`)
+
+`segovia` opens a quotation mid-paragraph and closes it at the end of the fourth `<li>` of the `<ol>`
+below; `analyze.md` names the evidence outright -- the `&quot;` is *"явно индикатор, что эта цитата"*.
+The lead-in was running into the quotation, and that was the corpus's **only converter-defect
+critical**.
+
+Arithmetic on the author's own marks: a paragraph with an odd number of `"` whose *immediately
+following* block also has an odd number, closing it. Everything from the opener through the next
+block becomes a `>` quote; the lead-in stays outside.
+
+**The false friends were measured, not imagined.** Six blocks in the 22 produced documents carry an
+odd count and only one is this shape: three are `kiselev`'s `*1'52"*` durations, where the mark is a
+seconds symbol and which survive in `kiselev`'s own reference, and one is a `„…"` pair whose straight
+count is odd though the quotation is complete. Requiring the next block to close it excludes all of
+them; the opener test excludes the durations twice over, since an opening quote is never preceded by
+a digit. A quote opening inside emphasis or a link is declined rather than guessed at.
+
+L3 53 -> 47 on this change alone.
+
+### 38.7 Open on `segovia`, with the author's own words behind each
+
+`analyze.md`'s `segovia` section is the densest complaint record in the project and most of it is
+still open. Ranked by what it says, not by the ledger:
+
+- **De-hyphenation is incomplete** and the author lists eighteen words by name
+  (`самостоятель-но`, `мас-терством`, `выдаю-щимся`, …). One `paragraph.hyphenation.unjoined` here,
+  and the `paragraph.hyphenation.mixed` class is 5 instances over 3 documents.
+- **Caption text is cut in two** on `segovia_1936_1.jpg` and `segovia_1936_2.jpg` -- the author gives
+  the joined form and states that a newline or `\` inside a `caption:` is inadmissible.
+- **`photo/s/segovia_gr.gif` wants `position: left`, `size: medium`**; produced says `center`,
+  `small`. `image.position.value`, 2 instances over 2 documents.
+- **`ДИСКОГРАФИЯ` is the heading of what follows, not the caption of the picture above it.**
+  `promoteLabelBeforeList` exists and does not reach this instance; `bindCaptions` claims it first.
+- **A `---` before the "Сборник материалов" bold block**, which the author asks for by name.
+- **`</i><i> </i>` became `***`**, which is the `emphasis.span` finding on `/paragraph[28]`.
+- **Open question for the author.** `analyze.md` asks for `> "Все мое существо…"` inside the
+  right-aligned block after the separator; the normalized reference (`c92c009`, later) writes it as
+  an italic paragraph with no `>`. Rung 1 and rung 2 disagree on one block. Not guessed at.
+
+### 38.8 Still open elsewhere
+
+- `new_kolpakov`'s remaining 4 are the 3 `table.align` (column alignment, declined at 1 of 21
+  reference tables, §35.6/§36.5) and the `::: signature` wrapper -- `signature` appears in **1** of 22
+  references and the converter has never emitted it.
+- `new_rechin4`'s remaining 6: the masthead wants two `##` where one is produced, `==highlight==`
+  markers, `image.position.value`, and the `◀ ●` glyph pager, which is the rule killed twice.
+- `retyped.paragraph-to-align` is once again the top class at 8 instances over 8 documents, and it is
+  still two mechanisms wearing one name.
