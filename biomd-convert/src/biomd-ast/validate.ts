@@ -481,9 +481,15 @@ function checkTable(
   if (header) {
     header.children.forEach((cell, index) => {
       const label = plainText(cell).trim();
-      if (label === "") {
-        add("table-header-empty", "error", `Column ${index + 1} has no header (§3.8).`, path);
-      } else if (/^(?:Поле|Field|Column|Столбец)\s*\d+$/iu.test(label)) {
+      // An empty header **cell** is legal; the header **row** is what is
+      // required. `BioMD-Reference.md` §1 (Tables) says so outright, and the
+      // house convention depends on it: a column of links is headed
+      // `&#128279;` and every other unnamed column — including the leading one
+      // that carries each record's name — is left empty rather than given an
+      // invented noun. This rule used to report one error per such cell, 22 of
+      // them across ten documents, all for obeying the convention. PROGRESS
+      // §36; the amendment to §1 is what makes this correct rather than lax.
+      if (label !== "" && /^(?:Поле|Field|Column|Столбец)\s*\d+$/iu.test(label)) {
         add(
           "table-header-placeholder",
           "error",

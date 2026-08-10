@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-10T02:40:04.374Z",
+  "generated": "2026-08-10T03:15:29.357Z",
   "totals": {
-    "findings": 167,
-    "converterDefects": 91,
+    "findings": 165,
+    "converterDefects": 89,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 45,
     "ambiguous": 31,
     "bySeverity": {
       "critical": 4,
-      "major": 82,
+      "major": 80,
       "minor": 81
     }
   },
@@ -183,10 +183,10 @@
     },
     {
       "doc": "williams2",
-      "findings": 8,
-      "converterDefects": 4,
+      "findings": 6,
+      "converterDefects": 2,
       "critical": 0,
-      "major": 4,
+      "major": 2,
       "minor": 4
     }
   ],
@@ -364,28 +364,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_lendle2",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]",
-        "produced": null,
-        "reference": "Heitor Villa-Lobos"
-      }
-    },
-    {
       "class": "frame.moved",
       "severity": "major",
       "instances": 2,
@@ -493,28 +471,6 @@
         "path": "/frame[10]/paragraph[0]",
         "produced": null,
         "reference": "frame: white"
-      }
-    },
-    {
-      "class": "paragraph.missing.in-table",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "segovia",
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "segovia",
-        "path": "/paragraph[43]",
-        "produced": null,
-        "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra"
       }
     },
     {
@@ -667,6 +623,27 @@
         "path": "/table[13]/col[0]",
         "produced": "column 0: none",
         "reference": "column 0: right"
+      }
+    },
+    {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_lendle2"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[10]/align[1]",
+        "produced": null,
+        "reference": "Heitor Villa-Lobos"
       }
     },
     {
@@ -877,6 +854,27 @@
         "path": "/paragraph[3]",
         "produced": null,
         "reference": "Надя Борислова:"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-table",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "segovia",
+        "path": "/paragraph[43]",
+        "produced": null,
+        "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra"
       }
     },
     {
@@ -1107,7 +1105,7 @@
         "doc": "williams2",
         "path": "/align[26]",
         "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
-        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** — at /table[28]"
+        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /table[27]"
       }
     },
     {
@@ -3922,7 +3920,7 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "9187bb71",
+      "id": "cf27d7e7",
       "doc": "williams2",
       "class": "retyped.table-to-align",
       "severity": "major",
@@ -3932,35 +3930,7 @@
       "producedLine": 83,
       "referenceLine": 84,
       "produced": "🔗 J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3",
-      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** — at /table[28]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bd2b8abd",
-      "doc": "williams2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[27]",
-      "producedLine": null,
-      "referenceLine": 91,
-      "produced": null,
-      "reference": "MP3",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "db12789b",
-      "doc": "williams2",
-      "class": "paragraph.missing.in-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[27]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 94,
-      "produced": null,
-      "reference": "MP3",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em** MP3 — at /table[27]",
       "verdict": "converter-defect"
     }
   ]

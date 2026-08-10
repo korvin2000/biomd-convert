@@ -40,7 +40,9 @@ Raw HTML/CSS/JS/JSX/MDX **MUST NOT** be emitted by BioMD contract. Convert/adopt
 
 ### Tables
 
-Every GFM table column MUST have a header; no `rowspan`, `colspan`, widths, CSS, or spacer-cell positioning. Renderer handles overflow/responsiveness.
+Every GFM table MUST have a header **row**; no `rowspan`, `colspan`, widths, CSS, or spacer-cell positioning. Renderer handles overflow/responsiveness.
+
+A header **cell** MAY be empty, and MUST NOT be reported as an error. A column the source never named cannot be labelled without inventing one, and the house convention is to say only what is known: a column of links is headed `&#128279;`, and every other unnamed column — including the leading column that carries each record's name — is left empty. Do not synthesize a noun to fill the cell.
 
 PREFER tables when source rows/columns remain intelligible. Layout tables MAY become `columns`/`images`/`frame`/blocks; a simple visually tabular layout MAY remain a Markdown table if that best preserves it.
 

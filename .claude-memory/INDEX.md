@@ -44,12 +44,15 @@ reversing §30.2 (§35.3); a child `image`'s `position`/`size` is outside the pr
 not a defect (§35.4, instrument); an asset outside the content roots climbs one level (§35.5); a
 one-record table is still a table, which un-parked §34.1 (§35.6); two lines pushed in by the same
 amount are two lines (§35.7); a column no row fills is spacing (§35.8).
-Current floor: L0 **463 tests / 27 validator errors**, L1 **96.4**, L2 **167 · 91 defect · 4 crit**,
+Current floor: L0 **463 tests / 5 validator errors**, L1 **96.5**, L2 **165 · 89 defect · 4 crit**,
 L3 **68**.
 
-**The validator rise is an author ruling, not a regression** -- 22 of the 27 are `table-header-empty`,
-one per empty header cell, because `| | 🔗 |` leaves the title column empty. It needs a decision, not
-a fix: OPEN.md §2.
+**The authority order changed -- read this before citing a spec rule (PROGRESS §36.1).**
+`analyze/analyze.md` + `analyze/analyze-2.md` are now rung **1**, the `fixtures/` pairs rung 2, and
+`BioMD-Reference.md` rung 3 and **amendable**: a rule there that contradicts them is wrong and is
+corrected there, never worked around in the converter. That is how §35.9 closed -- an empty header
+**cell** is now legal, and validator errors fell 27 -> 5. Invariant 1 gains one exception: an author
+correction stated explicitly and by name.
 
 The word-less alignment rule has now been **killed twice**, on two different falsifiers (§30.1,
 §35.10) -- read both before touching `retyped.paragraph-to-align`, which is two mechanisms wearing
@@ -82,7 +85,7 @@ repo's midx is a version git 2.45 rejects).
 | the detail behind any PROGRESS claim | [MAP-progress.md](MAP-progress.md) → `Read` at the offset | **saves ~45k tokens** |
 | the iteration procedure | `.claude/skills/refine-biomd-converter/SKILL.md` | cheap |
 | harness lessons that cost hours (debug probes, `/dev/null` on Git Bash, NullMeasurer) | `.claude/skills/refine-biomd-converter/learned-patterns.md` | cheap |
-| the human quality record (Russian, per page) | `analyze/analyze.md` (614 ln) + `analyze/design.png` | grep by page name |
+| the human quality record (Russian, per page) -- **rung 1, above the syntax reference** | `analyze/analyze.md` (614 ln) + `analyze/analyze-2.md` (386 ln, `news`/`goya2`/`new_karta`/`kiselev` + house rules) + `analyze/design.png` | grep by page name |
 | mini-image / icon → glyph policy | `mini_images_to_md_guide.md` -- normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4. No reference conflicts remain | cheap |
 | the author's house conventions, newest ground truth | `/new_rules.md` (repo root) -- the column vocabulary is built (`column-labels.ts`); the rest is **not yet implemented**, inventory in PROGRESS §29.1 | cheap |
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` -- advisory, possibly stale | grep |

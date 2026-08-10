@@ -3,11 +3,11 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-10**, after the normalized references and `analyze-2.md` (PROGRESS §35).
+Last touched **2026-08-10**, after the author rulings of PROGRESS §36 (which follow §35).
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
-- [2. Open question for the author](#2-open-question-for-the-author----the-validator-disagrees-with-the-house-rule)
+- [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
 - [4. Open defect classes](#4-open-defect-classes----measured-2026-08-10-over-22-documents)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
@@ -22,15 +22,18 @@ Reference-guided refinement, 22 documents. `c92c009` **normalized 11 references 
 it. Re-baselined before attribution: the reference edit alone took L1 94.5 -> 94.6, L2 263 -> 257
 findings / 135 -> 112 defect, L3 flat.
 
-**Current state, *measured* 2026-08-10, after PROGRESS §35:**
+**The authority order changed in §36.1** -- `analyze/analyze.md` and `analyze/analyze-2.md` are now
+rung 1, the `fixtures/` pairs rung 2, and `BioMD-Reference.md` rung 3 and **amendable**.
+
+**Current state, *measured* 2026-08-10, after PROGRESS §36:**
 
 | rung | value |
 |---|---|
 | L0 | **463 tests**, typecheck clean, 0 FAILED, conservation ok, clean share 13.6 %, `read()` warnings 0 |
-| L1 | **96.4 %** |
-| L2 | **167 findings -- 91 converter-defect** · 31 ambiguous · 45 reference-inconsistency · **4 critical** |
+| L1 | **96.5 %** |
+| L2 | **165 findings -- 89 converter-defect** · 31 ambiguous · 45 reference-inconsistency · **4 critical** |
 | L3 | **68**, identity 0, deterministic |
-| validator | **27** errors, up from 13 -- **22 of them are one author ruling**, see §2 |
+| validator | **5** errors -- was 27; §35.9 closed by amending the spec, see §2 |
 
 That is the floor. Nothing accepted from here may regress it.
 
@@ -79,24 +82,51 @@ alignment.
 
 ---
 
-## 2. Open question for the author -- the validator disagrees with the house rule
+## 2. Closed -- the spec was amended, not the converter
 
-`analyze-2.md` asks for `| | 🔗 |`: a synthesized header names link columns `&#128279;` and leaves
-every other column, **including the record's own title column**, empty. That is now implemented and
-16 of the corpus's 21 synthesized headers agree with it.
+**The authority order was corrected (PROGRESS §36.1).** `analyze/analyze.md` + `analyze/analyze-2.md`
+are rung 1, the `fixtures/` pairs rung 2, `BioMD-Reference.md` rung 3 and **amendable**: where one of
+its rules contradicts them, the rule is wrong and is corrected *there*, never worked around in the
+converter. Invariant 1 gains one exception -- an author correction stated explicitly and by name --
+and `analyze-2.md` is now routed into L4 calibration, the L5 mapping and the stop condition.
 
-`BioMD-Reference.md` §1 says every GFM table column MUST have a header, and the converter's own §3.8
-check enforces it. So **22 of the 27 validator errors are now `table-header-empty`, one per empty
-header cell** -- the direct consequence of the ruling, not a converter defect. The references would
-fail identically if they went through the conversion path (`validate <file>` reports 0 only because
-it resolves a laxer profile).
+**§35.9 is closed that way.** §1 (Tables) demanded a header for every *column*, which `| | 🔗 |`
+cannot satisfy: the leading column carries each record's name and has no label the source ever gave
+it. It now requires a header **row**, and states that a header **cell** MAY be empty and MUST NOT be
+reported. `validate.ts`'s `table-header-empty` rule is removed. **Validator errors 27 -> 5.**
 
-This cannot be closed by changing the converter without disobeying one of the two. **Do not "fix" it
-by re-inventing a title label** -- that is exactly what §30.2 did and what `c92c009` reverted.
+> **Do not "fix" a header count by re-inventing a title label.** That is what §30.2 did and what
+> `c92c009` reverted, and the count has now moved for this reason three times with no conversion
+> change behind any of them (§21.4: 28 · §30.2: 13 · §35.3: 27 · §36.2: 5).
 
-One more inconsistency in the same document, decided for the references: `analyze-2.md` writes
-`&#128279;` (🔗) for a link column at line 261 and `&#9654;` (▶) at line 375 for `kiselev`'s. All 16
-normalized references use 🔗, so 🔗 was implemented; ▶ remains the *icon* glyph.
+`analyze-2.md`'s own `&#9654;`/`&#128279;` inconsistency at lines 373 and 375 was corrected by the
+author -- 🔗 was meant throughout, ▶ remains the *icon* glyph. No code changed; §35.3 had already
+implemented 🔗 on the strength of the 16 normalized references.
+
+## 2b. Open, needs the author: one-record table vs. `::: align`
+
+`williams2`'s reference was corrected (`2228baf`) to **one** `::: align position: right` holding the
+title and the MP3 link, exactly as `analyze.md` item 9 asks. That confirms §35.6's diagnosis -- the
+record must stay whole -- and rejects its *representation* for that one document. Cost: exactly
+**1** converter-defect, `retyped.table-to-align` at `williams2:/align[26]`.
+
+The split is now `williams2` -> `::: align`, `borislova` / `new_kolpakov` / `new_karta` x2 -> table,
+and the author knows all four. **Four sessions have found no DOM or geometric signal.** Ruled out:
+title length · column count · width ratio · class names · blockquote depth · container alignment
+(`right` for `williams2`, `borislova` *and* `new_kolpakov`) · table width · bracketed size metadata ·
+whether the document holds other tables · rendered geometry (`williams2` 87 % / `borislova` 85 %
+title share, both a narrow shrink-to-fit line) · and, re-tested this session because a corrected
+reference is new measurement, *"the title recurs in the page's prose"* -- `new_kolpakov`'s occurs
+**once**, like `williams2`'s, and wants a table.
+
+Probable reason they diverge: the two human complaints are about **different defects on one shape**.
+`analyze.md:590` on `borislova` reports the missing **table**; item 9 on `williams2` reports the
+missing **alignment**. Neither rules on the other's subject.
+
+Keeping the table everywhere costs 1 defect on 1 document; reverting to `align` everywhere costs 4 on
+3 and brings the record-shattering back. Current state is the better of the two. A rule satisfying
+both needs either a signal the author can name, or the `table.classify` hook with
+`isSingleRecordRow` as its deterministic acceptance check.
 
 ## 3. Answered by the reference author -- do not re-investigate
 

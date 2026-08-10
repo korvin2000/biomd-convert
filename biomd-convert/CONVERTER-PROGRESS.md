@@ -4571,3 +4571,97 @@ reference writes `[&#9654;](/#/karta2)` -- the same glyph, and L2 folds numeric 
   built, and §15.2 already says this is a third mechanism distinct from the other two.
 - **`news`'s `frame`/`align` shape** -- the normalized reference restructures the obituary notices
   and replaces `title: ПОЗДРАВЛЯЕМ` with a `##` heading inside the frame. 7 defects, unexamined.
+
+## 36. The authority order corrected, and §35.9 closed by amending the spec (2026-08-10)
+
+Author rulings, given directly in session, resolving the conflict §35.9 opened.
+
+### 36.1 The analysis documents outrank the syntax reference
+
+*Ruled 2026-08-10, stated twice.* `CLAUDE.md`'s authority ladder is reordered:
+
+| was | now |
+|---|---|
+| 1 `BioMD-Reference.md` | 1 `analyze/analyze.md` + `analyze/analyze-2.md` + `design.png` + snapshots |
+| 4 `fixtures/` pairs | 2 `fixtures/` pairs |
+| 5 `analyze/analyze.md` | 3 `BioMD-Reference.md` -- **amendable** |
+
+`BioMD-Reference.md` is now explicitly amendable: where one of its rules contradicts the analysis
+documents or the references, **the rule is wrong and is corrected there rather than worked around in
+the converter**. `analyze-2.md` is also routed into L4 calibration, the L5 mapping and the stop
+condition, all of which named only `analyze.md`.
+
+Invariant 1 gains its single exception: an author correction to `analyze/*.md` or `fixtures/**`,
+stated explicitly and by name, is allowed and must be recorded with what changed. Everything else
+about the invariant is unchanged -- never edit to close a finding, never to make a rule fit.
+
+### 36.2 §35.9 closed: an empty header cell is legal
+
+`BioMD-Reference.md` §1 (Tables) said *"Every GFM table column MUST have a header"*, which the
+author's `| | 🔗 |` convention cannot satisfy: the leading column carries each record's name and has
+no label the source ever gave it. Amended to require a header **row**, and to state that a header
+**cell** MAY be empty and MUST NOT be reported as an error, with the convention spelled out --
+`&#128279;` for a column of links, empty for every other unnamed column, and no invented noun.
+
+`validate.ts`'s `table-header-empty` rule is removed accordingly. **Validator errors 27 -> 5.** All
+22 that went were this one rule firing on documents that were obeying the convention;
+`table-header-placeholder` is unaffected and still rejects `Поле 1`.
+
+This is the second time the count moved for this reason and neither move was a conversion change:
+§21.4 recorded 28, all of this class; §30.2's `Название` label filled the column and took it to 13;
+§35.3 reversed that on the author's newer ruling and it returned to 27. It is now 5 because the rule
+that produced it no longer exists.
+
+### 36.3 `analyze-2.md` line 373/375 corrected
+
+The document wrote `&#128279;` (🔗) for a link column at line 261 and `&#9654;` (▶) at lines 373 and
+375 for `kiselev`'s. *Corrected by the author 2026-08-10:* 🔗 was meant throughout, and ▶ remains the
+*icon* glyph of `mini_images_to_md_guide.md`. Both occurrences in that passage were changed under
+invariant 1's stated exception. §35.3 had already implemented 🔗 on the strength of the 16 normalized
+references, so no code changed.
+
+### 36.4 `williams2`'s reference corrected -- and the one defect it leaves
+
+*Corrected by the author 2026-08-10* (`2228baf`), to exactly what `analyze.md` item 9 asks: **one**
+`::: align position: right` holding the title and the MP3 link on one line, replacing the two
+sibling `::: align` blocks §35.6 identified as a transcription of the converter's own break.
+
+That confirms §35.6's diagnosis -- the record must stay whole -- and rejects its **representation**
+for this document. Re-measured against the corrected reference, `williams2` carries exactly **one**
+converter-defect from it: `retyped.table-to-align` at `/align[26]`. Its other findings are
+reference-inconsistency or ambiguous.
+
+**The discriminator is still not in the DOM, and this is now a four-session result.** With the
+corrected reference the split is `williams2` -> `::: align`, `borislova` / `new_kolpakov` /
+`new_karta` x2 -> table, and the author knows all four and chose differently. Checked and ruled out,
+across §34.1 and this session: title length · 2- vs 3-column count · width ratio · `<td>`/`<p>` class
+names · blockquote nesting depth · container alignment (`right` for `williams2`, `borislova` **and**
+`new_kolpakov`) · table width · cell count · bracketed size/duration metadata in the title cell ·
+whether the document holds other tables · and **rendered geometry**, where `williams2` and
+`borislova` are near-identical (87 % / 85 % title share, both a narrow shrink-to-fit line).
+
+Re-tested this session because a corrected reference is new measurement: *"the title recurs in the
+page's own prose"* -- `borislova`'s "Estrelluvio" occurs 6 times, but `new_kolpakov`'s "Венгерка"
+occurs **once**, exactly like `williams2`'s "BWV 996", and wants a table. Killed again on the same
+falsifier.
+
+The two human complaints are about **different defects on one shape**, which is probably why they
+diverge: `analyze.md:590` on `borislova` says *"не распознана таблица … из 1 записи с 2 колонками"* --
+the missing **table**; `analyze.md` item 9 on `williams2` says the text and link *"в оригинале
+отцентрована по правому краю, в md по умолчанию, по левому"* -- the missing **alignment**. Neither
+complaint rules on the other's subject.
+
+**Open, needs the author.** Keeping the table everywhere costs 1 defect on 1 document; reverting to
+`align` everywhere costs 4 defects on 3 documents and brings the record-shattering back. The current
+state is the better of the two, and a rule that satisfies both needs either a signal the author can
+name or the `table.classify` hook with `isSingleRecordRow` as its deterministic acceptance check.
+
+### 36.5 State after §36
+
+| rung | after §35 | now |
+|---|---|---|
+| L0 | 463 tests, 0 FAILED | **463**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | 96.4 | **96.5** |
+| L2 | 167 · 91 defect · 4 crit | **165 · 89 defect · 4 crit** |
+| L3 | 68 | **68**, identity 0 |
+| validator | 27 | **5** |
