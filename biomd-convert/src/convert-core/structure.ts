@@ -2751,7 +2751,9 @@ function dataRegionFrom(
   requireEvidence: boolean,
 ): BiomdContent[] {
   const snapshot = begin(ctx);
-  const planned = planDataTable(grid);
+  // `minRows` is a recurrence gate, and recurrence cannot be asked of a table
+  // holding one record — see `isSingleRecordRow` for what stands in for it.
+  const planned = planDataTable(grid, isSingleRecordRow(grid) ? { minRows: 1 } : {});
 
   const supplied = ctx.options.tableHeaders?.get(el.id);
 
@@ -3114,6 +3116,66 @@ function isBareLinkRow(grid: TableGrid): boolean {
     const cellText = cell.text.replace(/\s+/gu, " ").trim();
     return linkText === cellText;
   });
+}
+
+/**
+ * A single-row table that holds one record: a title beside its resources.
+ *
+ * `planDataTable`'s `minRows: 2` is a recurrence gate — "a record matrix has at
+ * least two records" — and it is the one thing standing between these rows and
+ * a table. The classifier has already said DATA on its own evidence; the
+ * planner then refuses the grid as `too-small` and the row falls to
+ * `decomposeFrom`, where each cell becomes a separate block. That does not
+ * produce a different *representation* of the record, it destroys it: on
+ * `new_kolpakov` the title `Венгерка` is absorbed into the preceding
+ * paragraph's `::: align`, `[WMA]` becomes its own centred `::: align` and
+ * `(1,7 Mb)` a third. The title↔resource relation is gone, and the title is
+ * attached to a block it has nothing to do with.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Role by position, containment, and cardinality — no width, no
+ * class, no filename, no format vocabulary. The first occupied cell indexes the
+ * record, so it must be text carrying neither a link nor a picture; some later
+ * cell must be a resource control, meaning a link whose whole cell is short
+ * enough to be a label. This is exactly {@link isBareLinkRow} inverted, which
+ * is the acceptance check this mechanism was predicted to need.
+ *
+ * **Recurrence cannot apply**, and requiring it is what caused the defect: a
+ * one-record table has one row by definition, so a second-row requirement asks
+ * the construct not to exist. Same exemption `isBareLinkRow` takes, for the
+ * same reason (`CLAUDE.md` §5). The per-cell role test carries the proof.
+ *
+ * **False friends, tested for non-firing.** A pager row — every cell is a link,
+ * so the leading cell fails immediately, and `isBareLinkRow` claims it first
+ * anyway. A layout scaffold of a text lane beside its cover — the second cell
+ * holds a picture, not a label-length link, which is what keeps `borislova`'s
+ * and `jovicic`'s 1×2 text+cover regions on the `::: columns` path the
+ * references want. A prose row with a reference inside the sentence — the link
+ * is not the cell, and the cell is far longer than a label.
+ *
+ * **The evidence that this is one defect and not a choice between two
+ * representations.** All four instances classify DATA and fail identically
+ * (`too-small: 1×2 is below the minimum`), including `williams2`, which was
+ * previously read as the counterexample that made the question undecidable.
+ * Its reference writes the shattered form — two sibling `::: align` blocks and
+ * a stray `**` from an unbalanced emphasis — while `analyze/analyze.md` item 9
+ * asks for the text *and* the MP3 link inside **one** block. The reference
+ * transcribes the break rather than ruling on it, so there was never a 2-2
+ * split; every piece of human evidence in the corpus wants the record kept
+ * whole. `analyze/analyze-2.md` then states it outright for `new_karta`:
+ * *"почему-то конвертор ломается именно на таблицах состоящих из одной
+ * записи: one row"*.
+ */
+function isSingleRecordRow(grid: TableGrid): boolean {
+  if (grid.rows !== 1) return false;
+  const cells = rowCells(grid, 0).filter((cell) => !cell.isEmpty);
+  const index = cells[0];
+  if (cells.length < 2 || !index) return false;
+  if (index.links > 0 || index.images > 0 || index.text.trim() === "") return false;
+  return cells
+    .slice(1)
+    .some((cell) => cell.links >= 1 && cell.images === 0 && cell.text.trim().length < LINK_LABEL_MAX_CHARS);
 }
 
 /**

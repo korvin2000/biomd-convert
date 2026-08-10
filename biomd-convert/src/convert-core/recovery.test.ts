@@ -1126,9 +1126,50 @@ describe("a row of nothing but links is a pager, not an abandoned record", () =>
     expect(result.markdown).toContain("::: column");
   });
 
-  it("leaves a title-bearing record row on the flow path — the false friend", async () => {
+  it("does not read a title-bearing record row as a pager — the false friend", async () => {
     const result = await convertWith("DATA", page(PROSE + record));
     expect(result.markdown).not.toContain("::: columns");
+  });
+
+  /**
+   * A single-row table holding one record is a table.
+   *
+   * `planDataTable`'s `minRows: 2` is a recurrence gate, and a one-record table
+   * has one row by definition — so the gate asked the construct not to exist.
+   * The classifier had already said DATA; the planner then refused the grid as
+   * `too-small` and every cell became a separate block. That is not a different
+   * representation of the record, it is the loss of one: on `new_kolpakov` the
+   * title `Венгерка` was absorbed into the previous paragraph's `::: align`,
+   * `[WMA]` became its own centred `::: align`, `(1,7 Mb)` a third.
+   *
+   * **Invariant.** Role by position, containment, cardinality — the first
+   * occupied cell indexes the record and so carries neither link nor picture,
+   * and a later cell is a label-length whole-cell link. Exactly
+   * `isBareLinkRow` inverted, which is the acceptance check this mechanism was
+   * predicted to need before it was built.
+   *
+   * **Recurrence cannot apply**; the role test carries the proof instead.
+   *
+   * **False friends, tested for non-firing:** the pager above (its first cell
+   * is a link), and a text lane beside its cover (the second cell holds a
+   * picture, not a label), which must stay on the `::: columns` path.
+   */
+  it("plans a one-record row as a table instead of scattering its cells", async () => {
+    const result = await convertWith("DATA", page(PROSE + record));
+    expect(result.markdown).toContain("| | \u{1F517} |");
+    expect(result.markdown).toContain(
+      "| \"Estrelluvio\" (Dedicada a José Luis Vega) | [WMA](music/wma/estrelluvio.wma) |",
+    );
+  });
+
+  it("does not read a text lane beside its cover as a record — non-firing", async () => {
+    const laneAndCover =
+      '<table width="400" border="0"><tr>' +
+      "<td width=\"70%\">Надя Борислова родилась в Москве и с восьми лет занималась на гитаре.</td>" +
+      '<td width="30%"><a href="photo/big.jpg"><img src="photo/cover.jpg" width="150" height="150"></a></td>' +
+      "</tr></table>";
+    const result = await convertWith("DATA", page(PROSE + laneAndCover));
+    expect(result.markdown).not.toContain("\u{1F517}");
   });
 
   it("caps an ordinary layout region at three lanes — the count stays four only for a pager", async () => {
