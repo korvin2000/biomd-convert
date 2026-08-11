@@ -24,30 +24,34 @@ disagree, the repository file wins and this index gets fixed.
 | the deliverable | (1) a rule system that generalizes to the other ~987 pages; (2) an evaluation apparatus that localizes defects. Both. |
 | the objective | source fidelity > visual layout quality > generality. **Never** byte-agreement with the references. |
 
-**Corpus roles -- verified 2026-08-08.** Instruments must report **22** documents, not 23.
+**Corpus roles -- verified 2026-08-11.** Instruments must report **28** documents. The "22" every
+earlier note quotes is superseded: the author added six `xtra_*` pairs and promoted the holdout.
 
 | role | members | rule |
 |---|---|---|
 | regression corpus | the original **13** (`authors barrios borislova goya2 jovicic kiselev news news_2007 pavlov_azancheev segovia segovia1 tarrega williams2`) | the floor. Never regress it |
-| refinement set | **9** `new_*` pairs in `fixtures/html/` ↔ `fixtures/out/` | where the work happens |
-| holdout | **`new_karta5`** -- `fixtures/html2/new_karta5.htm` ↔ `fixtures/out2/new_karta5.bio.md` | never read, diff, score or tune against it |
+| refinement set | **9** `new_*` + **6** `xtra_*` pairs in `fixtures/html/` ↔ `fixtures/out/` | where the work happens |
+| holdout | **none** | the role is empty -- see below |
 
-> Holdout note: the source moved *out* of `fixtures/html/`, so unlike the arrangement PROGRESS §19.2
-> describes, `corpus run` no longer converts it and its blind conservation/validation signal is gone.
-> Measuring it means copying it into `fixtures/html/` deliberately, at the end.
+> **The holdout role is empty and cannot be refilled from the repository.** `xtra_karta5` *is* the
+> former holdout `new_karta5` -- byte-identical reference, CRLF-normalized source -- promoted by the
+> author into `fixtures/html/`+`out/`. The stale copies still sit in `fixtures/html2/`+`out2/`. All
+> 28 documents have now been diffed, so none can serve retroactively. **Name a holdout before
+> designing a rule on the new pairs.** PROGRESS §42.1.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §41** repaired the existing
-de-hyphenation path after the author approved an optional Hunspell dictionary. Hyphenopoly's v6 Node
-API is now wired correctly; cascade rule 6 joins only when Hyphenopoly validates the observed break
-and Hunspell validates the joined word. A lookahead scan now decides every break in multiply broken
-words, with a multi-part proper-name guard (`Кастельон-де-ла-Плане`).
-Current floor: L0 **516 tests**, **0 validator errors on every produced document**, L1 **98.5**,
-L2 **141 · 67 defect**, L3 **44**. The 13 added findings are newly visible minor/ambiguous
-`*.hyphenation.joined` differences; no priority 1-4 regression.
-**No converter-defect is critical** -- 3 of the 4 criticals are the broken `link.label.content.empty`
-class and the 4th is a `blocks.ts` artefact. Quote that split.
-Next candidates: the conservative de-hyphenation proper-name/spacing tail; the isolated
-`БЛАГОДАРНОСТИ:` reference choice; then `headingLineOf`'s real nested-region guard (§40.6).
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §42** recalculated everything for
+the 28-document corpus and landed two table mechanisms — a strip of numbered slots is one column, not
+eight (`8ad896c`), and a full-span leading row is the table's title, not a record (`d17286f`).
+Current floor: L0 **526 tests**, **0 validator errors on every produced document**, L1 **98.5**,
+L2 **329 · 212 defect · 14 critical**, L3 **67**.
+**65 % of those 212 are two recorded reference divergences, not work** — `xtra_shelechov`'s row-major
+grid (~96, 8 references to 1) and `xtra_karta5`'s table headings (42, author-ruled ignorable). The
+honest open count is **~74**. Quote the split.
+**`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
+`tsc` fails on the missing declarations.
+Next candidates: name a holdout (the role is empty); `retyped.paragraph-to-align` 5/5 docs;
+`image.position.value` and `paragraph.missing.in-paragraph`, 3 documents each; then §40.6's
+shell-depth root cause.
 
 **The reference normalization settled three standing items with no code change** (PROGRESS §39.1):
 `news`'s frame/align ceiling · `williams2`'s `retyped.table-to-align`, which **dissolves §36.5's

@@ -191,3 +191,15 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   residue worth a future look is *an image the icon policy replaced with a glyph keeps the
   `position:` the image had* -- a different claim, and one that must exclude anything inside a
   recovered lane, which is what killed the rule the second time. (§40.8)
+
+- **Cell content weight as the per-row / row-major-grid discriminator for `::: columns`.** The
+  obvious reading -- *rows of single short cells are one list, rows of blocks are separate records* --
+  is falsified by `news_2007`, whose dated news list is one multi-row 2-column table of short cells
+  (source lines 99-136) and whose reference emits **one region per row with a rule between them**.
+  `news_2007` and `xtra_shelechov` are the corpus's only two text-beside-text multi-row cases and
+  they disagree, so verdicts flip on identical evidence. The majority is 8 documents to 1 and
+  `xtra_shelechov`'s grid is recorded as a named divergence instead. (§42.4)
+- **Raising `planDataTable`'s `maxCols` to keep a wide table.** `xtra_karta5`'s Sor table is a
+  legitimate **six**-column record matrix its reference keeps whole, so the cap is not the mechanism;
+  the eleven-column score sheet is a strip the source subdivided, and folding the strip is the fix.
+  (§42.5)

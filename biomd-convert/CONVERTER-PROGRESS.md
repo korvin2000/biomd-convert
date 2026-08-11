@@ -5576,3 +5576,166 @@ visible residue for silent content corruption, so the tail remains.
    §40.6 records three replacements and their falsifiers.
 3. On `goya2`, ignore the author-ruled align alternatives and global-rank L3 artefacts; only the local
    caption tail remains plausible.
+
+## 42. Six `xtra_` pairs, the corpus at 28, and two table mechanisms (2026-08-11)
+
+The author added six hand-made pairs prefixed `xtra_` and asked for the metrics to be recalculated
+and tables prioritised. Two things moved the baseline before a line of code was written, and both
+have to be separated from this iteration's work or the numbers read as damage that did not happen.
+
+### 42.1 The corpus is 28 documents, and there is no holdout any more
+
+`fixtures/html/` and `fixtures/out/` now hold **28** pairs. `xtra_karta5` is byte-for-byte the former
+holdout `new_karta5` (source CRLF-normalized, reference identical), promoted by the author out of
+`fixtures/html2/`+`out2/` into the measured corpus. `MAP-corpus.md`'s and `INDEX.md`'s "instruments
+must report 22" is superseded. **The holdout role is currently empty** — every one of the 28 has now
+been diffed, so no document in the repository can serve as one retroactively. The next iteration needs
+a holdout named before any rule is designed on the new pairs.
+
+Roles now: regression corpus the original 13 · refinement set 9 `new_*` + 6 `xtra_*` · holdout none.
+
+### 42.2 `92b7e67` moved every rung with no code change
+
+The commit *"fixed reference files"* landed **after** §41's measurements and edits 16 references. On
+the original 22 documents alone it took L2 from **141 findings / 67 converter-defect** to
+**106 / 56** and L3 from **44** to **25**. Every number in `OPEN.md` written on 2026-08-10 is stale
+for that reason and not because anything regressed. It also re-introduced hyphenation breaks the
+de-hyphenation work had joined (`програм-мную` in `authors`), which is why the `*.hyphenation.*`
+classes did not fall as §41 predicted.
+
+`npm install` is now required on a fresh clone even to typecheck: §41 added `dictionary-ru` and
+`nspell` as optional dependencies and `tsc` fails on the missing declarations, which is a *build*
+failure, not a degradation. The runtime path degrades correctly; the compiler does not.
+
+### 42.3 Baseline, 28 documents, measured 2026-08-11
+
+| rung | at the start of §42 | after §42.5 and §42.6 |
+|---|---|---|
+| L0 | 516 tests, 0 FAILED | **526 tests**, 0 FAILED, typecheck clean |
+| L1 | 97.8 | **98.5** |
+| L2 | 405 findings · 251 defect · 52 critical | **329 · 212 · 14** |
+| L3 | 67 (28 docs) | **67**, identity 0 |
+| validator | 0 errors on every produced document | 0 errors on every produced document |
+
+The six new documents at the start: `xtra_shelechov` 102/101 · `xtra_karta5` 141/69/28crit ·
+`xtra_rodrigo` 45/20/16crit · `xtra_albeniz` 6/**0** · `xtra_oyanguren` 3/3 · `xtra_mikulka` 2/2.
+`xtra_albeniz` converted with **no converter-defect at all** on first contact — a 13x3 media table,
+`::: image` sizing and the `/../` asset climb all already right.
+
+### 42.4 Two reference divergences recorded, not worked
+
+**`xtra_karta5`'s table headings and column alignment.** The source structure is *identical* to
+`new_karta`'s — the composer name is a `<p class="t">` outside and above a headerless
+`<div align="center"><table>` — and the two references read it differently:
+
+| | `new_karta` (+ `xtra_albeniz`, `xtra_rodrigo`, `williams2`) | `xtra_karta5` |
+|---|---|---|
+| composer name | paragraph above the table | lifted into header cell 1 |
+| link column header | `&#128279;` | empty |
+| alignment row | `- ` in every column | `---` then `--:` |
+
+The author ruled this session: *"the table headings in `xtra_karta5.bio.md` may conflict with the
+rules for table headings in the other reference files, so for the time being, please ignore the table
+headings in `xtra_karta5.bio.md` and focus on the content of the tables themselves"*. That is also
+where the §3.8 tie-break lands independently — the `xtra_karta5` reading is 1 against 4, contradicts
+the 2026-08-10 ruling that a link column is headed with the link glyph, and contradicts the source's
+own placement of the name outside the table. **26 `table.align` + 16 `paragraph.spurious.in-table` on
+that document are a ceiling, not work** — 42 of its 50 remaining converter-defects.
+
+**`xtra_shelechov`'s row-major grid.** Its concert programme is one 27x2 table; the reference emits
+**one `::: columns` with `columns: 2` and one `::: column` per cell**, flowing row-major. Every other
+reference in the corpus emits **one `::: columns` per row** with a rule between them — `goya2` 34
+regions, `new_lagq2` 6, `news_2007` 6, `new_lendle2` 5, `kiselev` 3, `new_blackmore` 3, `barrios` 2,
+`borislova` 2, `xtra_mikulka` 2. Eight documents to one. §3.8 says record the minority as a named
+divergence rather than build a special case only one document can justify, and no author record
+mentions the page. **~96 of `xtra_shelechov`'s 101 converter-defects are this divergence**
+(`column.containment` 29, `retyped.column-to-paragraph` 22, `break.spurious` 20, `column.missing` 8,
+`paragraph.containment` 6, `columns.spurious` 5, `column.spurious` 3, `retyped.paragraph-to-column` 2,
+`column.moved` 1), plus L3's `layout.lane.mismatch` 36.
+
+**Killed: cell content weight as the discriminator.** The obvious rule — *rows of single short cells
+are a list, rows of blocks are records* — is falsified by `news_2007`, whose news list is one
+multi-row 2-column table of short cells (source lines 99-136) read **per-row with a rule between**
+by its reference. `news_2007` and `xtra_shelechov` are the corpus's only two text-beside-text
+multi-row cases and they disagree, so verdicts flip on identical evidence. Reopen on new measurement
+only.
+
+### 42.5 A strip of numbered slots is one column, not eight (`8ad896c`)
+
+The era drew a multi-page scan as one `<td>` per page: label, roman numeral, eight bracketed page
+links and an archive link is **eleven** physical columns. `planDataTable`'s `maxCols: 8` rejected it,
+`dataRegionFrom` decomposed the region to linear flow, and **three rows ceased to exist while
+thirty-three cells became loose `::: align position: center` paragraphs**. `biomd inspect` named it
+exactly: `DATA -> flow(too-many-columns: 11 semantic columns is wider than a reader can use)`.
+
+Raising the cap is the wrong fix and the corpus says so: `xtra_karta5`'s Sor table is a legitimate
+**six**-column matrix its reference keeps whole. `coalesceOrdinalStrips` instead folds the strip the
+source subdivided — a run of >=3 adjacent single-slot bands whose every occupied cell is a lone link
+labelled with a bare number, ascending strictly across the run. Eleven bands become four, which is
+what `xtra_rodrigo`'s reference writes cell for cell.
+
+It runs **only on the too-many-columns failure path**, so a table that already plans is never
+reshaped — `xtra_albeniz`'s identical strip is folded by the ordinary band vote, because its other
+rows fix a three-band model, and stayed untouched at 0 defects. Recurrence is stated *within the row*,
+not down the table: `xtra_karta5`'s bumblebee strip occupies one row, `xtra_rodrigo`'s three.
+False friends tested for non-firing: a pair of format links (run of two, named not numbered), roman
+movement numbers, and unlinked digits.
+
+Measured: L1 97.8 -> **98.4** (`xtra_rodrigo` 87.4 -> 98.8, `xtra_karta5` 85.3 -> 91.8, every other
+document byte-identical) · L2 405 -> **333**, 251 -> **215** defect, **52 -> 14 critical** ·
+`xtra_rodrigo` 45/20/16crit -> 15/3/0, `xtra_karta5` 141/69/28crit -> 99/50/6, all 26 others unchanged
+to the finding · L0 516 -> 522 tests.
+
+**L3 said nothing, before or after — 0 on both documents either way.** L3 pairs by rendered text and
+an unpaired block yields no finding (OPEN §5.6), so a table dissolved into per-cell paragraphs is
+invisible to it. Quote that: it is the second time this instrument has been blind to a whole-table
+loss (§35.6 was the first).
+
+### 42.6 A full-span leading row is the table's title, not a record (`d17286f`)
+
+`segovia` and `xtra_rodrigo` introduce a movement list with the work's title written as a
+`colspan`-full first row. Kept as a record it became a row of one value and four em dashes under a
+synthesized header. `leadingCaptionCell` lifts it: first row, one cell covering every column, carrying
+bold text where the body does not.
+
+The corpus scan found **eight** tables with a full-span leading row, and prominence separates them
+with nothing in between:
+
+| document | shape | prominent | reference |
+|---|---|---|---|
+| `segovia` | 5x5 | yes | lifted to a paragraph |
+| `xtra_rodrigo` | 4x5, 5x5 | yes | lifted to a paragraph |
+| `xtra_shelechov` | 27x2 | yes | lifted to a bare bold line |
+| `xtra_karta5` | 11x7 | **no** | **kept as a table row** |
+| `kiselev` | 26x3 | **no** | **kept as a table row** |
+| `new_lendle2` | 10x2 | banner cell | lifted; reaches `layoutFrom`, not this path |
+
+Recurrence does not apply and the contract says so — a table has one title by definition, so span and
+position carry the evidence instead. The false friend is the full-span *section label*, live twice.
+
+**`positionedByConstruct` was needed and is the reusable part.** `blocksFrom` stamps the container's
+computed alignment onto *every* block a table element produces, so the lifted caption alone gained an
+`::: align position: center` the table itself cannot have. Measured at **+6 L3** before the
+suppression was added; 67 -> 73 -> 67. A block a construct lowered out of itself is positioned by
+that construct.
+
+Measured: L1 98.4 -> **98.5** (`xtra_rodrigo` **100.0 on every axis**, `segovia` 95.2 -> 96.0) ·
+L2 333 -> **329**, 215 -> **212** defect · `xtra_rodrigo` 15/3 -> **12/1**, `segovia` 8/5 -> **7/4** ·
+L3 67 -> 67 · L0 522 -> **526** tests.
+
+### 42.7 What the six pairs taught, and what remains
+
+`xtra_rodrigo` is at **1** converter-defect and L1 100.0 on every axis; `xtra_albeniz` at **0**;
+`xtra_oyanguren` 3, `xtra_mikulka` 2. The `::: images columns: 2` pair-gallery, the two-lane works
+list and the row-major discography all converted correctly on first contact.
+
+Remaining reachable, ranked: the `retyped.paragraph-to-align` pager residue (5 instances, 5 documents,
+the twice-killed word-less alignment rule — do not rebuild whole) · `image.position.value` 3/3 docs ·
+`paragraph.missing.in-paragraph` 3/3 · `xtra_karta5`'s 3 `table.row.missing`, which is its score table
+appended to the preceding record table by the reference and kept separate by `xtra_rodrigo`'s — a
+third named divergence, minority 1 to 1, not worth a rule · the §40.6 shell-depth root cause, still
+real and still high-risk.
+
+Provably unreachable now: `xtra_shelechov`'s ~96 and `xtra_karta5`'s 42, both recorded above.
+Together they are **138 of the 212 remaining converter-defects, 65 %**. The corpus's honest open
+count is closer to **74**.

@@ -23,320 +23,71 @@
       "segovia",
       "segovia1",
       "tarrega",
-      "williams2"
+      "williams2",
+      "xtra_albeniz",
+      "xtra_karta5",
+      "xtra_mikulka",
+      "xtra_oyanguren",
+      "xtra_rodrigo",
+      "xtra_shelechov"
     ]
   },
   "totals": {
-    "findings": 44,
-    "alignmentRows": 218
+    "findings": 67,
+    "alignmentRows": 243
   },
   "classes": [
     {
       "class": "layout.lane.mismatch",
-      "instances": 3,
-      "documents": 2
-    },
-    {
-      "class": "layout.order.mismatch",
-      "instances": 16,
+      "instances": 38,
       "documents": 3
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 11,
+      "instances": 12,
       "documents": 7
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 14,
-      "documents": 9
+      "instances": 15,
+      "documents": 10
+    },
+    {
+      "class": "layout.order.mismatch",
+      "instances": 2,
+      "documents": 2
     }
   ],
   "findings": [
     {
-      "id": "b0ba68cc",
+      "id": "818b7525",
       "doc": "goya2",
       "class": "layout.lane.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
-      "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 668,
-      "referenceLine": 794,
-      "produced": "",
-      "reference": "",
+      "path": "/columns[22]/column[1]/list[0]/item[8]",
+      "producedLine": 385,
+      "referenceLine": 376,
+      "produced": "18. Who pays the ferryman (I Marcopoulos)",
+      "reference": "18. Who pays the ferryman (I Marcopoulos)",
       "geometry": {
-        "producedLane": 1,
-        "referenceLane": 5
+        "producedLane": 19,
+        "referenceLane": 0
       }
     },
     {
-      "id": "463cba03",
-      "doc": "goya2",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[50]/column[1]/image[1]",
-      "producedLine": 808,
-      "referenceLine": 802,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedLane": 5,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "6733adb6",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[16]/column[1]/image[0]",
-      "producedLine": 226,
-      "referenceLine": 281,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 79,
-        "referenceRank": 100
-      }
-    },
-    {
-      "id": "2a52ccaf",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[17]",
-      "producedLine": 235,
-      "referenceLine": 290,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 81,
-        "referenceRank": 101
-      }
-    },
-    {
-      "id": "ca8a0a2d",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[24]/column[1]/image[0]",
-      "producedLine": 285,
-      "referenceLine": 402,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 102,
-        "referenceRank": 149
-      }
-    },
-    {
-      "id": "60de1482",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[25]",
-      "producedLine": 294,
-      "referenceLine": 411,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 103,
-        "referenceRank": 150
-      }
-    },
-    {
-      "id": "1b40c9d8",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[32]/column[1]/image[0]",
-      "producedLine": 410,
-      "referenceLine": 513,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 151,
-        "referenceRank": 192
-      }
-    },
-    {
-      "id": "f356f17d",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[33]",
-      "producedLine": 419,
-      "referenceLine": 522,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 152,
-        "referenceRank": 193
-      }
-    },
-    {
-      "id": "2be15183",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[40]/column[1]/image[0]",
-      "producedLine": 521,
-      "referenceLine": 654,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 194,
-        "referenceRank": 257
-      }
-    },
-    {
-      "id": "72b759c4",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[41]",
-      "producedLine": 530,
-      "referenceLine": 663,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 195,
-        "referenceRank": 258
-      }
-    },
-    {
-      "id": "193b990c",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[50]/column[0]/list[0]/item[4]",
-      "producedLine": 793,
-      "referenceLine": 779,
-      "produced": "05. Stenka Rasin",
-      "reference": "05. Stenka Rasin",
-      "geometry": {
-        "producedRank": 310,
-        "referenceRank": 309
-      }
-    },
-    {
-      "id": "66ae10d4",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[50]/column[1]/image[0]",
-      "producedLine": 668,
-      "referenceLine": 794,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 259,
-        "referenceRank": 308
-      }
-    },
-    {
-      "id": "4b0b3017",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[52]/column[0]/align[0]/paragraph[0]",
-      "producedLine": 833,
-      "referenceLine": 820,
-      "produced": "Francis Goya in Moscow",
-      "reference": "Francis Goya in Moscow",
-      "geometry": {
-        "producedRank": 321,
-        "referenceRank": 319
-      }
-    },
-    {
-      "id": "7468a4ae",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[52]/column[1]/image[0]",
-      "producedLine": 814,
-      "referenceLine": 827,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 311,
-        "referenceRank": 320
-      }
-    },
-    {
-      "id": "a7329ddd",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[68]/column[1]/image[0]",
-      "producedLine": 841,
-      "referenceLine": 1082,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 322,
-        "referenceRank": 426
-      }
-    },
-    {
-      "id": "61b76a72",
-      "doc": "goya2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/break[69]",
-      "producedLine": 850,
-      "referenceLine": 1091,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedRank": 323,
-        "referenceRank": 428
-      }
-    },
-    {
-      "id": "a51362b8",
-      "doc": "new_geyzel04",
+      "id": "29132624",
+      "doc": "new_karta",
       "class": "layout.align.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[2]/heading[0]",
+      "path": "/align[2]/frame[0]/paragraph[0]",
       "producedLine": 11,
-      "referenceLine": 15,
-      "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
+      "referenceLine": 14,
+      "produced": "frame: gold",
+      "reference": "frame: gold",
       "geometry": {
         "producedAlign": "left",
         "referenceAlign": "center",
@@ -344,25 +95,8 @@
         "referenceRaw": "center",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "7c1e4dcf",
-      "doc": "new_geyzel04",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[2]/heading[0]",
-      "producedLine": 11,
-      "referenceLine": 15,
-      "produced": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "reference": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
+        "producedProse": "unknown",
+        "referenceProse": "unknown"
       }
     },
     {
@@ -409,6 +143,23 @@
         "referenceEvidence": "keyword",
         "producedProse": "unknown",
         "referenceProse": "unknown"
+      }
+    },
+    {
+      "id": "d5f4296b",
+      "doc": "new_karta",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[2]/frame[0]/paragraph[0]",
+      "producedLine": 11,
+      "referenceLine": 14,
+      "produced": "frame: gold",
+      "reference": "frame: gold",
+      "geometry": {
+        "producedContainer": "frame",
+        "referenceContainer": "align>frame"
       }
     },
     {
@@ -560,6 +311,46 @@
       }
     },
     {
+      "id": "a1243bbc",
+      "doc": "new_rechin4",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[20]/paragraph[0]",
+      "producedLine": 54,
+      "referenceLine": 59,
+      "produced": "◀ ●",
+      "reference": "◀ ●",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "d3af8163",
+      "doc": "new_rechin4",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[20]/paragraph[0]",
+      "producedLine": 54,
+      "referenceLine": 59,
+      "produced": "◀ ●",
+      "reference": "◀ ●",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
+      }
+    },
+    {
       "id": "77fd891c",
       "doc": "news",
       "class": "layout.containment.mismatch",
@@ -619,7 +410,7 @@
       "op": "substitute",
       "path": "/align[15]/paragraph[0]",
       "producedLine": 55,
-      "referenceLine": 57,
+      "referenceLine": 58,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "geometry": {
@@ -642,7 +433,7 @@
       "op": "substitute",
       "path": "/image[33]",
       "producedLine": 116,
-      "referenceLine": 119,
+      "referenceLine": 120,
       "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "geometry": {
@@ -665,7 +456,7 @@
       "op": "move",
       "path": "/align[15]/paragraph[0]",
       "producedLine": 55,
-      "referenceLine": 57,
+      "referenceLine": 58,
       "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубо…",
       "geometry": {
@@ -682,7 +473,7 @@
       "op": "move",
       "path": "/image[33]",
       "producedLine": 116,
-      "referenceLine": 119,
+      "referenceLine": 120,
       "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "geometry": {
@@ -699,132 +490,12 @@
       "op": "move",
       "path": "/paragraph[34]",
       "producedLine": 122,
-      "referenceLine": 125,
+      "referenceLine": 126,
       "produced": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
       "reference": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
       "geometry": {
         "producedRank": 39,
         "referenceRank": 38
-      }
-    },
-    {
-      "id": "d563c9af",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[57]/paragraph[1]",
-      "producedLine": 228,
-      "referenceLine": 225,
-      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора.…",
-      "reference": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора.…",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "40c45cf1",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[57]/paragraph[2]",
-      "producedLine": 230,
-      "referenceLine": 227,
-      "produced": "Copyright © Денис Кольвах. All rights reserved.",
-      "reference": "Copyright © Денис Кольвах. All rights reserved.",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "eddd8b36",
-      "doc": "segovia1",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/frame[57]/paragraph[3]",
-      "producedLine": 232,
-      "referenceLine": 229,
-      "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "a540369c",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[57]/paragraph[1]",
-      "producedLine": 228,
-      "referenceLine": 225,
-      "produced": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора.…",
-      "reference": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только с письменного согласия автора.…",
-      "geometry": {
-        "producedContainer": "frame>align",
-        "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "87febaae",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[57]/paragraph[2]",
-      "producedLine": 230,
-      "referenceLine": 227,
-      "produced": "Copyright © Денис Кольвах. All rights reserved.",
-      "reference": "Copyright © Денис Кольвах. All rights reserved.",
-      "geometry": {
-        "producedContainer": "frame>align",
-        "referenceContainer": "frame"
-      }
-    },
-    {
-      "id": "6cd5e4ff",
-      "doc": "segovia1",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[57]/paragraph[3]",
-      "producedLine": 232,
-      "referenceLine": 229,
-      "produced": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "reference": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=Техника Андреса Сеговии.](<mai…",
-      "geometry": {
-        "producedContainer": "frame>align",
-        "referenceContainer": "frame"
       }
     },
     {
@@ -836,7 +507,7 @@
       "op": "substitute",
       "path": "/align[27]/paragraph[0]",
       "producedLine": 128,
-      "referenceLine": 132,
+      "referenceLine": 131,
       "produced": "Список произведений для гитары соло ▶",
       "reference": "Список произведений для гитары соло ▶",
       "geometry": {
@@ -859,12 +530,744 @@
       "op": "move",
       "path": "/align[27]/paragraph[0]",
       "producedLine": 128,
-      "referenceLine": 132,
+      "referenceLine": 131,
       "produced": "Список произведений для гитары соло ▶",
       "reference": "Список произведений для гитары соло ▶",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
+      }
+    },
+    {
+      "id": "d04f10bd",
+      "doc": "xtra_mikulka",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/heading[5]",
+      "producedLine": 68,
+      "referenceLine": 64,
+      "produced": "ДИСКОГРАФИЯ",
+      "reference": "ДИСКОГРАФИЯ",
+      "geometry": {
+        "producedAlign": "center",
+        "referenceAlign": "left",
+        "producedRaw": "center",
+        "referenceRaw": "start",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "cf3c5b52",
+      "doc": "xtra_mikulka",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/heading[5]",
+      "producedLine": 68,
+      "referenceLine": 64,
+      "produced": "ДИСКОГРАФИЯ",
+      "reference": "ДИСКОГРАФИЯ",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "(root)"
+      }
+    },
+    {
+      "id": "64881278",
+      "doc": "xtra_shelechov",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/paragraph[13]",
+      "producedLine": 40,
+      "referenceLine": 37,
+      "produced": "I отделение",
+      "reference": "I отделение",
+      "geometry": {
+        "producedAlign": "right",
+        "referenceAlign": "left",
+        "producedRaw": "right",
+        "referenceRaw": "start",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "e989ebe2",
+      "doc": "xtra_shelechov",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/paragraph[16]",
+      "producedLine": 189,
+      "referenceLine": 142,
+      "produced": "II отделение",
+      "reference": "II отделение",
+      "geometry": {
+        "producedAlign": "right",
+        "referenceAlign": "left",
+        "producedRaw": "right",
+        "referenceRaw": "start",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "left",
+        "referenceProse": "left"
+      }
+    },
+    {
+      "id": "ffb14599",
+      "doc": "xtra_shelechov",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/paragraph[13]",
+      "producedLine": 40,
+      "referenceLine": 37,
+      "produced": "I отделение",
+      "reference": "I отделение",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "(root)"
+      }
+    },
+    {
+      "id": "27b1f255",
+      "doc": "xtra_shelechov",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/paragraph[16]",
+      "producedLine": 189,
+      "referenceLine": 142,
+      "produced": "II отделение",
+      "reference": "II отделение",
+      "geometry": {
+        "producedContainer": "align",
+        "referenceContainer": "(root)"
+      }
+    },
+    {
+      "id": "3e04918a",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[1]/paragraph[0]",
+      "producedLine": 47,
+      "referenceLine": 44,
+      "produced": "Ф. Таррега",
+      "reference": "Ф. Таррега",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 2
+      }
+    },
+    {
+      "id": "20d8adbd",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[2]/paragraph[0]",
+      "producedLine": 53,
+      "referenceLine": 50,
+      "produced": "Воспоминанье об Альгамбре",
+      "reference": "Воспоминанье об Альгамбре",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 3
+      }
+    },
+    {
+      "id": "62da569c",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[3]/paragraph[0]",
+      "producedLine": 65,
+      "referenceLine": 56,
+      "produced": "Л. Ален",
+      "reference": "Л. Ален",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 4
+      }
+    },
+    {
+      "id": "af22ebb7",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[4]/paragraph[0]",
+      "producedLine": 71,
+      "referenceLine": 62,
+      "produced": "Испанская фантазия \"Огонь сердца\"",
+      "reference": "Испанская фантазия \"Огонь сердца\"",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 5
+      }
+    },
+    {
+      "id": "a9c55fac",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[5]/paragraph[0]",
+      "producedLine": 83,
+      "referenceLine": 68,
+      "produced": "Х. Мостаццо",
+      "reference": "Х. Мостаццо",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 6
+      }
+    },
+    {
+      "id": "3be35c10",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[6]/paragraph[0]",
+      "producedLine": 89,
+      "referenceLine": 74,
+      "produced": "Сапатеадо",
+      "reference": "Сапатеадо",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 7
+      }
+    },
+    {
+      "id": "701c61b5",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[7]/paragraph[0]",
+      "producedLine": 101,
+      "referenceLine": 80,
+      "produced": "Э. Лекуона",
+      "reference": "Э. Лекуона",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 8
+      }
+    },
+    {
+      "id": "d7a39fed",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[8]/paragraph[0]",
+      "producedLine": 107,
+      "referenceLine": 86,
+      "produced": "Малагуэнья",
+      "reference": "Малагуэнья",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 9
+      }
+    },
+    {
+      "id": "1ca70b62",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[9]/paragraph[0]",
+      "producedLine": 119,
+      "referenceLine": 92,
+      "produced": "Ф. Таррега",
+      "reference": "Ф. Таррега",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 10
+      }
+    },
+    {
+      "id": "b5d906cf",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[10]/paragraph[0]",
+      "producedLine": 125,
+      "referenceLine": 98,
+      "produced": "Вариации на тему \"Арагонской хоты\"",
+      "reference": "Вариации на тему \"Арагонской хоты\"",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 11
+      }
+    },
+    {
+      "id": "61e6c9a4",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[11]/paragraph[0]",
+      "producedLine": 137,
+      "referenceLine": 104,
+      "produced": "Кватромано",
+      "reference": "Кватромано",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 12
+      }
+    },
+    {
+      "id": "d327a991",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[12]/paragraph[0]",
+      "producedLine": 143,
+      "referenceLine": 110,
+      "produced": "Венесуэльский вальс \"Отъезд\"",
+      "reference": "Венесуэльский вальс \"Отъезд\"",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 13
+      }
+    },
+    {
+      "id": "945dcfae",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[13]/paragraph[0]",
+      "producedLine": 155,
+      "referenceLine": 116,
+      "produced": "В. Монти",
+      "reference": "В. Монти",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 14
+      }
+    },
+    {
+      "id": "aa375e91",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[14]/paragraph[0]",
+      "producedLine": 161,
+      "referenceLine": 122,
+      "produced": "Чардаш",
+      "reference": "Чардаш",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 15
+      }
+    },
+    {
+      "id": "7abd4b03",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[15]/paragraph[0]",
+      "producedLine": 173,
+      "referenceLine": 128,
+      "produced": "А. Шелехов",
+      "reference": "А. Шелехов",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 16
+      }
+    },
+    {
+      "id": "63024c4b",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[14]/column[16]/paragraph[0]",
+      "producedLine": 179,
+      "referenceLine": 134,
+      "produced": "Попурри на темы старинных романсов",
+      "reference": "Попурри на темы старинных романсов",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 17
+      }
+    },
+    {
+      "id": "0f813723",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[1]/paragraph[0]",
+      "producedLine": 198,
+      "referenceLine": 149,
+      "produced": "А. Сихра",
+      "reference": "А. Сихра",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 2
+      }
+    },
+    {
+      "id": "f1b2c278",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[2]/paragraph[0]",
+      "producedLine": 204,
+      "referenceLine": 155,
+      "produced": "Ах, не лист осенний",
+      "reference": "Ах, не лист осенний",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 3
+      }
+    },
+    {
+      "id": "3e425780",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[4]/paragraph[0]",
+      "producedLine": 219,
+      "referenceLine": 164,
+      "produced": "Мазурка",
+      "reference": "Мазурка",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 4
+      }
+    },
+    {
+      "id": "bbd15b6d",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[5]/paragraph[0]",
+      "producedLine": 231,
+      "referenceLine": 170,
+      "produced": "М. Высотский",
+      "reference": "М. Высотский",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 5
+      }
+    },
+    {
+      "id": "e24c8c23",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[6]/paragraph[0]",
+      "producedLine": 237,
+      "referenceLine": 176,
+      "produced": "Ах ты, матушка, голова болит",
+      "reference": "Ах ты, матушка, голова болит",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 6
+      }
+    },
+    {
+      "id": "30f4ebff",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[8]/paragraph[0]",
+      "producedLine": 252,
+      "referenceLine": 185,
+      "produced": "Где же ты, милая, скрылася",
+      "reference": "Где же ты, милая, скрылася",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 7
+      }
+    },
+    {
+      "id": "b0d92bd6",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[9]/paragraph[0]",
+      "producedLine": 264,
+      "referenceLine": 191,
+      "produced": "В. Сазонов",
+      "reference": "В. Сазонов",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 8
+      }
+    },
+    {
+      "id": "574a16ee",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[10]/paragraph[0]",
+      "producedLine": 270,
+      "referenceLine": 197,
+      "produced": "Вариации на тему романса и песни",
+      "reference": "Вариации на тему романса и песни",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 9
+      }
+    },
+    {
+      "id": "a1393eb0",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[12]/paragraph[0]",
+      "producedLine": 285,
+      "referenceLine": 206,
+      "produced": "Ты не поверишь",
+      "reference": "Ты не поверишь",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 10
+      }
+    },
+    {
+      "id": "dc9c2132",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[14]/paragraph[0]",
+      "producedLine": 300,
+      "referenceLine": 215,
+      "produced": "Не брани меня, родная",
+      "reference": "Не брани меня, родная",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 11
+      }
+    },
+    {
+      "id": "2a49df16",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[15]/paragraph[0]",
+      "producedLine": 312,
+      "referenceLine": 221,
+      "produced": "А. Шелехов",
+      "reference": "А. Шелехов",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 12
+      }
+    },
+    {
+      "id": "ab520cab",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[16]/paragraph[0]",
+      "producedLine": 318,
+      "referenceLine": 227,
+      "produced": "Попурри на темы песен из кинофильмов",
+      "reference": "Попурри на темы песен из кинофильмов",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 13
+      }
+    },
+    {
+      "id": "1f75fbaa",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[18]/paragraph[0]",
+      "producedLine": 333,
+      "referenceLine": 236,
+      "produced": "Вариации на тему песни \"Ехал козак за Дунай\"",
+      "reference": "Вариации на тему песни \"Ехал козак за Дунай\"",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 14
+      }
+    },
+    {
+      "id": "d330c9c2",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[20]/paragraph[0]",
+      "producedLine": 348,
+      "referenceLine": 245,
+      "produced": "Фантазия на тему песни \"Жил-был у бабушки серенький козлик\"",
+      "reference": "Фантазия на тему песни \"Жил-был у бабушки серенький козлик\"",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 15
+      }
+    },
+    {
+      "id": "91cc62af",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[22]/paragraph[0]",
+      "producedLine": 363,
+      "referenceLine": 254,
+      "produced": "Цыганские напевы из музыки к спектаклям театра \"Ромэн\"",
+      "reference": "Цыганские напевы из музыки к спектаклям театра \"Ромэн\"",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 16
+      }
+    },
+    {
+      "id": "c1c172c3",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[24]/paragraph[0]",
+      "producedLine": 378,
+      "referenceLine": 263,
+      "produced": "Цыганская венгерка",
+      "reference": "Цыганская венгерка",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 17
+      }
+    },
+    {
+      "id": "44c02025",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[25]/paragraph[0]",
+      "producedLine": 390,
+      "referenceLine": 269,
+      "produced": "В.Сазонов, С.Орехов",
+      "reference": "В.Сазонов, С.Орехов",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 18
+      }
+    },
+    {
+      "id": "495fa04f",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[26]/paragraph[0]",
+      "producedLine": 397,
+      "referenceLine": 276,
+      "produced": "Обработки цыганских песен \"Сарэ патря\" и \"Мар дяндя\"",
+      "reference": "Обработки цыганских песен \"Сарэ патря\" и \"Мар дяндя\"",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 19
+      }
+    },
+    {
+      "id": "70e0109b",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[27]/paragraph[0]",
+      "producedLine": 409,
+      "referenceLine": 282,
+      "produced": "И. Соколов",
+      "reference": "И. Соколов",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 20
+      }
+    },
+    {
+      "id": "3e7c6998",
+      "doc": "xtra_shelechov",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[17]/column[28]/paragraph[0]",
+      "producedLine": 415,
+      "referenceLine": 288,
+      "produced": "Концертная полька",
+      "reference": "Концертная полька",
+      "geometry": {
+        "producedLane": 1,
+        "referenceLane": 21
       }
     }
   ],
@@ -1144,8 +1547,21 @@
     },
     {
       "doc": "goya2",
+      "producedLine": 226,
+      "referenceLine": 221,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "justify",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/center[1]/table[1]/tbody[1]/tr[5]/td[2]/p[1]/img[1]"
+    },
+    {
+      "doc": "goya2",
       "producedLine": 277,
-      "referenceLine": 273,
+      "referenceLine": 272,
       "text": "Best of Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1157,8 +1573,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 226,
-      "referenceLine": 281,
+      "producedLine": 285,
+      "referenceLine": 280,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1171,7 +1587,7 @@
     {
       "doc": "goya2",
       "producedLine": 340,
-      "referenceLine": 336,
+      "referenceLine": 335,
       "text": "This Is Francis Goya 1988",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1184,7 +1600,7 @@
     {
       "doc": "goya2",
       "producedLine": 401,
-      "referenceLine": 393,
+      "referenceLine": 392,
       "text": "The Hi-Fi sound of Latin Guitar II / Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1196,8 +1612,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 285,
-      "referenceLine": 402,
+      "producedLine": 410,
+      "referenceLine": 401,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1210,7 +1626,7 @@
     {
       "doc": "goya2",
       "producedLine": 461,
-      "referenceLine": 453,
+      "referenceLine": 452,
       "text": "The Very Best of Francis Goya (Diamond Star Collection)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1223,7 +1639,7 @@
     {
       "doc": "goya2",
       "producedLine": 513,
-      "referenceLine": 505,
+      "referenceLine": 504,
       "text": "Collection 2000 / Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1235,8 +1651,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 410,
-      "referenceLine": 513,
+      "producedLine": 521,
+      "referenceLine": 512,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1249,7 +1665,7 @@
     {
       "doc": "goya2",
       "producedLine": 577,
-      "referenceLine": 569,
+      "referenceLine": 568,
       "text": "Magic Moments",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1262,7 +1678,7 @@
     {
       "doc": "goya2",
       "producedLine": 588,
-      "referenceLine": 580,
+      "referenceLine": 579,
       "text": "Latin Romance",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1275,7 +1691,7 @@
     {
       "doc": "goya2",
       "producedLine": 653,
-      "referenceLine": 645,
+      "referenceLine": 644,
       "text": "Historia de un Amor 1999",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1287,8 +1703,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 521,
-      "referenceLine": 654,
+      "producedLine": 668,
+      "referenceLine": 653,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1301,7 +1717,7 @@
     {
       "doc": "goya2",
       "producedLine": 719,
-      "referenceLine": 705,
+      "referenceLine": 704,
       "text": "The Romantic Guitar of Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1314,7 +1730,7 @@
     {
       "doc": "goya2",
       "producedLine": 773,
-      "referenceLine": 759,
+      "referenceLine": 758,
       "text": "Moscow Nights",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1326,8 +1742,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 668,
-      "referenceLine": 794,
+      "producedLine": 808,
+      "referenceLine": 793,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1339,8 +1755,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 808,
-      "referenceLine": 802,
+      "producedLine": 814,
+      "referenceLine": 801,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1353,7 +1769,7 @@
     {
       "doc": "goya2",
       "producedLine": 833,
-      "referenceLine": 820,
+      "referenceLine": 819,
       "text": "Francis Goya in Moscow",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1365,8 +1781,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 814,
-      "referenceLine": 827,
+      "producedLine": 841,
+      "referenceLine": 826,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1379,7 +1795,7 @@
     {
       "doc": "goya2",
       "producedLine": 888,
-      "referenceLine": 874,
+      "referenceLine": 873,
       "text": "Francis Goya / Rendez-vous",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1392,7 +1808,7 @@
     {
       "doc": "goya2",
       "producedLine": 899,
-      "referenceLine": 885,
+      "referenceLine": 884,
       "text": "Golden Collection 8 Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1405,7 +1821,7 @@
     {
       "doc": "goya2",
       "producedLine": 963,
-      "referenceLine": 948,
+      "referenceLine": 947,
       "text": "Noche Latina / Francis Goya & Carmina 1993",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1418,7 +1834,7 @@
     {
       "doc": "goya2",
       "producedLine": 1016,
-      "referenceLine": 1000,
+      "referenceLine": 999,
       "text": "Symphony of Love",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1431,7 +1847,7 @@
     {
       "doc": "goya2",
       "producedLine": 1027,
-      "referenceLine": 1011,
+      "referenceLine": 1010,
       "text": "Together / Peter Weekers & Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1444,7 +1860,7 @@
     {
       "doc": "goya2",
       "producedLine": 1087,
-      "referenceLine": 1071,
+      "referenceLine": 1070,
       "text": "Галерея инструментальной музыки. Francis Goya",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1457,7 +1873,7 @@
     {
       "doc": "goya2",
       "producedLine": 1090,
-      "referenceLine": 1074,
+      "referenceLine": 1073,
       "text": "Grand Records, 2001",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1469,8 +1885,8 @@
     },
     {
       "doc": "goya2",
-      "producedLine": 841,
-      "referenceLine": 1082,
+      "producedLine": 1098,
+      "referenceLine": 1081,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1483,7 +1899,7 @@
     {
       "doc": "goya2",
       "producedLine": 1158,
-      "referenceLine": 1145,
+      "referenceLine": 1144,
       "text": "Francis Goya",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1496,7 +1912,7 @@
     {
       "doc": "goya2",
       "producedLine": 1175,
-      "referenceLine": 1166,
+      "referenceLine": 1165,
       "text": "Francis Goya / Gondwana",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1509,7 +1925,7 @@
     {
       "doc": "goya2",
       "producedLine": 1192,
-      "referenceLine": 1187,
+      "referenceLine": 1186,
       "text": "Maria Padilha",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1834,7 +2250,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 120,
-      "referenceLine": 119,
+      "referenceLine": 120,
       "text": "'Аргументы и факты' #14 (1119) 3 апреля 2002 г.",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1847,7 +2263,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 129,
-      "referenceLine": 128,
+      "referenceLine": 129,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1860,7 +2276,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 143,
-      "referenceLine": 142,
+      "referenceLine": 143,
       "text": "Елена СЕМЕНОВА",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1873,7 +2289,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 220,
-      "referenceLine": 218,
+      "referenceLine": 220,
       "text": "No. 13 (303) 19 апреля 2002",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1886,7 +2302,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 229,
-      "referenceLine": 226,
+      "referenceLine": 229,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -1899,7 +2315,7 @@
     {
       "doc": "new_blackmore",
       "producedLine": 279,
-      "referenceLine": 275,
+      "referenceLine": 279,
       "text": "Александр НЕВЕРОВ",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -1989,21 +2405,8 @@
     },
     {
       "doc": "new_geyzel04",
-      "producedLine": 11,
-      "referenceLine": 15,
-      "text": "ГЛАВА 10, ЦЕЛИКОМ ПОСВЯЩЕННАЯ ИСЧИСЛЕНИЮ БЕСКОНЕЧНО ИСЧЕЗАЮЩЕГО ВАВИЛОВА",
-      "producedAlignment": "left",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[1]"
-    },
-    {
-      "doc": "new_geyzel04",
       "producedLine": 99,
-      "referenceLine": 104,
+      "referenceLine": 99,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2016,7 +2419,7 @@
     {
       "doc": "new_geyzel04",
       "producedLine": 186,
-      "referenceLine": 191,
+      "referenceLine": 186,
       "text": "Главы 8-9 Владимир Вавилов",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2038,6 +2441,19 @@
       "sourceProse": "left",
       "sourceDistinctive": true,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/p[1]/span[1]/font[1]"
+    },
+    {
+      "doc": "new_karta",
+      "producedLine": 11,
+      "referenceLine": 14,
+      "text": "frame: gold",
+      "producedAlignment": "left",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
     },
     {
       "doc": "new_karta",
@@ -2482,6 +2898,19 @@
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[10]/img[1]"
     },
     {
+      "doc": "new_rechin4",
+      "producedLine": 54,
+      "referenceLine": 59,
+      "text": "◀ ●",
+      "producedAlignment": "left",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
       "doc": "news",
       "producedLine": 22,
       "referenceLine": 24,
@@ -2510,7 +2939,7 @@
     {
       "doc": "news",
       "producedLine": 43,
-      "referenceLine": 43,
+      "referenceLine": 45,
       "text": "С НОВЫМ 2022 ГОДОМ!",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2523,7 +2952,7 @@
     {
       "doc": "news",
       "producedLine": 55,
-      "referenceLine": 53,
+      "referenceLine": 57,
       "text": "21 марта 2021 года на 86-м году жизни в г. Санкт-Петербурге скончался старейший музыкант …",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2536,7 +2965,7 @@
     {
       "doc": "news",
       "producedLine": 58,
-      "referenceLine": 56,
+      "referenceLine": 60,
       "text": "Юрий Алексеевич СМИРНОВ",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2549,7 +2978,7 @@
     {
       "doc": "news",
       "producedLine": 62,
-      "referenceLine": 59,
+      "referenceLine": 64,
       "text": "Юрий Алексеевич Смирнов",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2562,7 +2991,7 @@
     {
       "doc": "news",
       "producedLine": 81,
-      "referenceLine": 77,
+      "referenceLine": 83,
       "text": "Джулиан БРИМ",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2575,7 +3004,7 @@
     {
       "doc": "news",
       "producedLine": 97,
-      "referenceLine": 92,
+      "referenceLine": 99,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2588,7 +3017,7 @@
     {
       "doc": "news",
       "producedLine": 107,
-      "referenceLine": 102,
+      "referenceLine": 109,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2601,7 +3030,7 @@
     {
       "doc": "news",
       "producedLine": 117,
-      "referenceLine": 111,
+      "referenceLine": 119,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2614,7 +3043,7 @@
     {
       "doc": "news",
       "producedLine": 128,
-      "referenceLine": 121,
+      "referenceLine": 130,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2627,7 +3056,7 @@
     {
       "doc": "news",
       "producedLine": 139,
-      "referenceLine": 131,
+      "referenceLine": 141,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2640,7 +3069,7 @@
     {
       "doc": "news",
       "producedLine": 154,
-      "referenceLine": 146,
+      "referenceLine": 156,
       "text": "10 декабря 2018 года ушел из жизни российский гитарист, композитор и педагог",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2653,7 +3082,7 @@
     {
       "doc": "news",
       "producedLine": 156,
-      "referenceLine": 148,
+      "referenceLine": 158,
       "text": "Виктор Михайлович ЕФРЕМОВ",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2666,7 +3095,7 @@
     {
       "doc": "news",
       "producedLine": 161,
-      "referenceLine": 153,
+      "referenceLine": 163,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2679,7 +3108,7 @@
     {
       "doc": "news",
       "producedLine": 171,
-      "referenceLine": 163,
+      "referenceLine": 173,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2692,7 +3121,7 @@
     {
       "doc": "news",
       "producedLine": 182,
-      "referenceLine": 174,
+      "referenceLine": 184,
       "text": "Зайцева Л., Тавровский В. Музей гитары на письменном столе. 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2705,7 +3134,7 @@
     {
       "doc": "news",
       "producedLine": 191,
-      "referenceLine": 184,
+      "referenceLine": 194,
       "text": "Журнал \"История гитары в лицах\", №2, 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2718,7 +3147,7 @@
     {
       "doc": "news",
       "producedLine": 201,
-      "referenceLine": 195,
+      "referenceLine": 205,
       "text": "Журнал \"История гитары в лицах\", №1, 2016",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2731,7 +3160,7 @@
     {
       "doc": "news",
       "producedLine": 217,
-      "referenceLine": 211,
+      "referenceLine": 221,
       "text": "20 февраля 2016 года ушла из жизни российская гитаристка и выдающийся гитарный педагог",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2744,7 +3173,7 @@
     {
       "doc": "news",
       "producedLine": 219,
-      "referenceLine": 213,
+      "referenceLine": 223,
       "text": "Ядвига Ричардовна КОВАЛЕВСКАЯ",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2757,7 +3186,7 @@
     {
       "doc": "news",
       "producedLine": 224,
-      "referenceLine": 218,
+      "referenceLine": 228,
       "text": "Я. Р. Ковалевская (1922-2016)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2770,7 +3199,7 @@
     {
       "doc": "news",
       "producedLine": 235,
-      "referenceLine": 230,
+      "referenceLine": 240,
       "text": "Журнал \"История гитары в лицах\", №2, 2015",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2783,7 +3212,7 @@
     {
       "doc": "news",
       "producedLine": 253,
-      "referenceLine": 247,
+      "referenceLine": 257,
       "text": "Михаил Владимирович КОРНИШИН",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2796,7 +3225,7 @@
     {
       "doc": "news",
       "producedLine": 258,
-      "referenceLine": 252,
+      "referenceLine": 262,
       "text": "М. В. Корнишин (1978-2015)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2809,7 +3238,7 @@
     {
       "doc": "news",
       "producedLine": 271,
-      "referenceLine": 264,
+      "referenceLine": 274,
       "text": "Журнал \"История гитары в лицах\", №1, 2015",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2822,7 +3251,7 @@
     {
       "doc": "news",
       "producedLine": 283,
-      "referenceLine": 275,
+      "referenceLine": 285,
       "text": "III Региональный конкурс гитаристов «Гранд соло» им. М. М. Елютина",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2835,7 +3264,7 @@
     {
       "doc": "news",
       "producedLine": 302,
-      "referenceLine": 292,
+      "referenceLine": 302,
       "text": "Анну Валерьевну ТИХОНРАВОВУ (г. Харьков)",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2848,7 +3277,7 @@
     {
       "doc": "news",
       "producedLine": 305,
-      "referenceLine": 295,
+      "referenceLine": 305,
       "text": "с успешной защитой диссертации на тему:",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2861,7 +3290,7 @@
     {
       "doc": "news",
       "producedLine": 307,
-      "referenceLine": 297,
+      "referenceLine": 307,
       "text": "«СЕМИСТРУННАЯ ГИТАРА ВО ВРЕМЕНИ И ПРОСТРАНСТВЕ МУЗЫКАЛЬНОГО ИСКУССТВА: ОРГАНОЛОГИЧЕСКИЕ И…",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2874,7 +3303,7 @@
     {
       "doc": "news",
       "producedLine": 319,
-      "referenceLine": 307,
+      "referenceLine": 317,
       "text": "Защита состоялась 17 сентября 2014 г. С авторефератом диссертации можно ознакомиться по с…",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2887,7 +3316,7 @@
     {
       "doc": "news",
       "producedLine": 338,
-      "referenceLine": 325,
+      "referenceLine": 335,
       "text": "Владимир Ильич Богданович",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2900,7 +3329,7 @@
     {
       "doc": "news",
       "producedLine": 343,
-      "referenceLine": 330,
+      "referenceLine": 340,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2913,7 +3342,7 @@
     {
       "doc": "news",
       "producedLine": 355,
-      "referenceLine": 342,
+      "referenceLine": 352,
       "text": "Журнал \"История гитары в лицах\", №4, 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2926,7 +3355,7 @@
     {
       "doc": "news",
       "producedLine": 367,
-      "referenceLine": 353,
+      "referenceLine": 363,
       "text": "Журнал \"История гитары в лицах\", №2-3, 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2939,7 +3368,7 @@
     {
       "doc": "news",
       "producedLine": 385,
-      "referenceLine": 371,
+      "referenceLine": 381,
       "text": "Александр Петрович Мартынов",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2952,7 +3381,7 @@
     {
       "doc": "news",
       "producedLine": 399,
-      "referenceLine": 385,
+      "referenceLine": 395,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2965,7 +3394,7 @@
     {
       "doc": "news",
       "producedLine": 411,
-      "referenceLine": 396,
+      "referenceLine": 407,
       "text": "Журнал \"История гитары в лицах\" – № 1 (10) / 2014",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -2978,7 +3407,7 @@
     {
       "doc": "news",
       "producedLine": 428,
-      "referenceLine": 411,
+      "referenceLine": 424,
       "text": "С НОВЫМ 2014 ГОДОМ!",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3160,7 +3589,7 @@
     {
       "doc": "segovia",
       "producedLine": 55,
-      "referenceLine": 57,
+      "referenceLine": 58,
       "text": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, пот…",
       "producedAlignment": "left",
       "referenceAlignment": "right",
@@ -3173,7 +3602,7 @@
     {
       "doc": "segovia",
       "producedLine": 62,
-      "referenceLine": 65,
+      "referenceLine": 66,
       "text": "Памятник А. Сеговии в г. Линаресе.",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3186,7 +3615,7 @@
     {
       "doc": "segovia",
       "producedLine": 92,
-      "referenceLine": 95,
+      "referenceLine": 96,
       "text": "Андрес Сеговия",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3199,7 +3628,7 @@
     {
       "doc": "segovia",
       "producedLine": 103,
-      "referenceLine": 106,
+      "referenceLine": 107,
       "text": "Андрес Сеговия",
       "producedAlignment": "center",
       "referenceAlignment": "center",
@@ -3212,7 +3641,7 @@
     {
       "doc": "segovia",
       "producedLine": 116,
-      "referenceLine": 119,
+      "referenceLine": 120,
       "text": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
       "producedAlignment": "center",
       "referenceAlignment": "left",
@@ -3511,10 +3940,10 @@
     {
       "doc": "segovia1",
       "producedLine": 228,
-      "referenceLine": 225,
+      "referenceLine": 228,
       "text": "ВНИМАНИЕ! Частичное или полное использование материалов данной статьи разрешается только …",
       "producedAlignment": "center",
-      "referenceAlignment": "left",
+      "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
       "sourceProse": "left",
@@ -3524,10 +3953,10 @@
     {
       "doc": "segovia1",
       "producedLine": 230,
-      "referenceLine": 227,
+      "referenceLine": 230,
       "text": "Copyright © Денис Кольвах. All rights reserved.",
       "producedAlignment": "center",
-      "referenceAlignment": "left",
+      "referenceAlignment": "center",
       "sourceTextAlignRaw": "center",
       "sourceAlignment": "center",
       "sourceProse": "left",
@@ -3537,10 +3966,10 @@
     {
       "doc": "segovia1",
       "producedLine": 232,
-      "referenceLine": 229,
+      "referenceLine": 232,
       "text": "Со всеми вопросами и предложениями обращаться к автору: [mailto:dendvk@hotbox.ru?Subject=…",
       "producedAlignment": "center",
-      "referenceAlignment": "left",
+      "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
       "sourceProse": "left",
@@ -3602,7 +4031,7 @@
     {
       "doc": "tarrega",
       "producedLine": 128,
-      "referenceLine": 132,
+      "referenceLine": 131,
       "text": "Список произведений для гитары соло ▶",
       "producedAlignment": "left",
       "referenceAlignment": "right",
@@ -3702,6 +4131,305 @@
       "sourceProse": "left",
       "sourceDistinctive": true,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[18]"
+    },
+    {
+      "doc": "xtra_albeniz",
+      "producedLine": 5,
+      "referenceLine": 5,
+      "text": "Исаак Альбенис",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]/b[1]/font[1]/span[1]"
+    },
+    {
+      "doc": "xtra_albeniz",
+      "producedLine": 16,
+      "referenceLine": 16,
+      "text": "Титульная страница первого издания \"Испанской сюиты\"",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[4]"
+    },
+    {
+      "doc": "xtra_albeniz",
+      "producedLine": 25,
+      "referenceLine": 25,
+      "text": "Исаак Альбенис за фортепьяно",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[6]/img[1]"
+    },
+    {
+      "doc": "xtra_karta5",
+      "producedLine": 6,
+      "referenceLine": 6,
+      "text": "(сводный каталог аудио, нот и табулатур)",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/p[1]/span[1]/font[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 4,
+      "referenceLine": 4,
+      "text": "Владимир",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]/b[1]/font[1]/span[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 6,
+      "referenceLine": 6,
+      "text": "Микулка",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[2]/font[1]/span[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 12,
+      "referenceLine": 12,
+      "text": "Владимир Микулка",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "start",
+      "sourceAlignment": "left",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 25,
+      "referenceLine": 25,
+      "text": "Владимир Микулка на обложке журнала \"Classical Guitar\", октябрь 1984 г.",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/img[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 36,
+      "referenceLine": 36,
+      "text": "Владимир Микулка на обложке журнала \"Classical Guitar\", июнь 1989 г.",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/img[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 47,
+      "referenceLine": 47,
+      "text": "CD-диск Вл. Микулки - 'Classics from Bohemia'",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[3]/img[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 54,
+      "referenceLine": 54,
+      "text": "CD-диск Вл. Микулки - 'Stepan Rak'",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[2]/td[1]/img[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 68,
+      "referenceLine": 64,
+      "text": "ДИСКОГРАФИЯ",
+      "producedAlignment": "center",
+      "referenceAlignment": "left",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[5]/font[1]"
+    },
+    {
+      "doc": "xtra_mikulka",
+      "producedLine": 86,
+      "referenceLine": 82,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-left",
+      "sourceAlignment": "left",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/img[1]"
+    },
+    {
+      "doc": "xtra_oyanguren",
+      "producedLine": 13,
+      "referenceLine": 13,
+      "text": "Хулио М. Оянгурен (Julio J. Martinez Oyanguren)",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[1]/img[2]"
+    },
+    {
+      "doc": "xtra_rodrigo",
+      "producedLine": 5,
+      "referenceLine": 5,
+      "text": "Хоакин Родриго (Joaquin Rodrigo)",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[2]/img[1]"
+    },
+    {
+      "doc": "xtra_rodrigo",
+      "producedLine": 16,
+      "referenceLine": 16,
+      "text": "Хоакин Родриго",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]/font[1]/span[1]"
+    },
+    {
+      "doc": "xtra_rodrigo",
+      "producedLine": 27,
+      "referenceLine": 27,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "-webkit-center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[7]/img[1]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 5,
+      "referenceLine": 5,
+      "text": "А.Н. Шелехов",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[2]/img[1]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 15,
+      "referenceLine": 15,
+      "text": "Фото с сайта markguitar.livejournal.com",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "right",
+      "sourceAlignment": "right",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[3]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 40,
+      "referenceLine": 37,
+      "text": "I отделение",
+      "producedAlignment": "right",
+      "referenceAlignment": "left",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/b[1]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 189,
+      "referenceLine": 142,
+      "text": "II отделение",
+      "producedAlignment": "right",
+      "referenceAlignment": "left",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/table[1]/tbody[1]/tr[12]/td[1]/b[1]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 443,
+      "referenceLine": 316,
+      "text": "По очерку Альберта Федоровича МОСКВИНА для готовящейся к изданию книги \"История развития …",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "right",
+      "sourceAlignment": "right",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[6]"
+    },
+    {
+      "doc": "xtra_shelechov",
+      "producedLine": 447,
+      "referenceLine": 320,
+      "text": "Впервые опубликовано на сайте журнала \"Гитаристъ\" 05.10.2007: www.guitarists.ru",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "right",
+      "sourceAlignment": "right",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[6]"
     }
   ],
   "notes": []
