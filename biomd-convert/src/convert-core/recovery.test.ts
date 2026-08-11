@@ -1109,6 +1109,35 @@ describe("alignment inside a bounded container", () => {
     expect(lanes).not.toContain("::: frame");
   });
 
+  it("frames recurrent short row labels and rejects a singleton menu label", async () => {
+    // Short record labels have no meaningful absolute length. Their role is
+    // stated by recurrence: each owns a full tinted row, and populated record
+    // content sits between them. Class names and attribute order are irrelevant.
+    const records = await mdMeasured(
+      PROSE +
+        '<div style="background-color: #F7E7AF"><table border="0" width="90%">' +
+        '<tr><td bgcolor="#FCF3D8" colspan="2" width="100%">Lute Album</td></tr>' +
+        '<tr><td width="45%">Cover image</td><td width="55%">First programme and recording notes</td></tr>' +
+        '<tr><td width="100%" colspan="2" bgcolor="#FCF3D8">Guitar Album</td></tr>' +
+        '<tr><td width="45%">Second cover</td><td width="55%">Second programme and recording notes</td></tr>' +
+        "</table></div>" +
+        PROSE,
+    );
+    expect(records.match(/::: frame/gu)).toHaveLength(2);
+
+    // Named false friend: a page draws one tinted menu title followed by its
+    // links. It spans a row and shares the palette, but has no peer role.
+    const menu = await mdMeasured(
+      PROSE +
+        '<div style="background-color: #F7E7AF"><table border="0" width="90%">' +
+        '<tr><td width="100%" colspan="2" bgcolor="#FCF3D8">Archive</td></tr>' +
+        '<tr><td colspan="2"><a href="older.htm">Older</a> <a href="newer.htm">Newer</a></td></tr>' +
+        "</table></div>" +
+        PROSE,
+    );
+    expect(menu).not.toContain("::: frame");
+  });
+
   it("still leaves a real caption to its figure", () => {
     // The veto that used to block the case above is a *position*, not a flag:
     // a caption stands under its picture. Both facts have to hold at once, so

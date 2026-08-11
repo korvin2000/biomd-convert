@@ -42,20 +42,22 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §43** landed two more table
-mechanisms — a numbered strip is one value, not several columns (`4f6e048`), and an empty row at the
-foot of a table is bottom margin (`0826f53`) — and closed the table frontier.
-Current floor: L0 **535 tests**, **0 validator errors on every produced document**, L1 **98.6**,
-L2 **317 · 206 defect · 8 critical**, L3 **65 over 26**.
-**141 of those 206 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §45** restored the fifth
+`new_lendle2` panel by letting a short full-row tinted label bypass the length floor only when the
+same palette/occupancy role recurs around populated records. The one-off archive/menu label and
+repeated half-row catalogue cells remain false friends.
+Current floor: L0 **540 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+L2 **310 · 199 defect · 8 critical**, L3 **59 over 26**.
+**141 of those 199 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
 (~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
-`new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~65**, and
-**none of the 8 criticals has a mechanism to build**. Quote the split.
+`new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~58**;
+the 8 criticals remain only in the two recorded-divergence documents. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates: name a holdout (§43.7 spent the last one); `retyped.paragraph-to-align` 5/5 docs;
-`image.position.value` and `paragraph.missing.in-paragraph`, 3 documents each; then §40.6's
-shell-depth root cause. **Nothing table-shaped is both open and general** (§43.9).
+Next candidates: name a new holdout if blind evidence is required; adjudicate `segovia`'s long
+italic/margin-shifted `retyped.paragraph-to-align` separately from the four killed glyph/footer
+instances; then §40.6's shell-depth root cause. The residual `paragraph.missing.in-paragraph` pair is
+evaluator debt, not missing data. **Nothing table-shaped is both open and general** (§43.9).
 
 > **Start a table iteration with the routing survey, not the ledger (§43.2).** One
 > `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)` — the only

@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-11T23:31:12.007Z",
+  "generated": "2026-08-11T23:44:34.599Z",
   "totals": {
-    "findings": 315,
-    "converterDefects": 204,
+    "findings": 310,
+    "converterDefects": 199,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
     "ambiguous": 18,
     "bySeverity": {
       "critical": 8,
-      "major": 186,
-      "minor": 121
+      "major": 182,
+      "minor": 120
     }
   },
   "perDocument": [
@@ -119,11 +119,11 @@
     },
     {
       "doc": "new_lendle2",
-      "findings": 11,
-      "converterDefects": 7,
+      "findings": 6,
+      "converterDefects": 2,
       "critical": 0,
-      "major": 5,
-      "minor": 6
+      "major": 1,
+      "minor": 5
     },
     {
       "doc": "new_rechin4",
@@ -334,51 +334,6 @@
       }
     },
     {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 7,
-      "documents": [
-        "new_lendle2",
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 7,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 42,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]/paragraph[0]",
-        "produced": "Heitor Villa-Lobos",
-        "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]"
-      }
-    },
-    {
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_lagq2",
-        "new_lendle2",
-        "news_2007"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 27,
-      "example": {
-        "doc": "new_lagq2",
-        "path": "/align[15]/paragraph[0]",
-        "produced": null,
-        "reference": "Music by:"
-      }
-    },
-    {
       "class": "column.missing",
       "severity": "major",
       "instances": 8,
@@ -492,6 +447,27 @@
       }
     },
     {
+      "class": "paragraph.containment",
+      "severity": "major",
+      "instances": 6,
+      "documents": [
+        "xtra_shelechov"
+      ],
+      "verdicts": {
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 18,
+      "example": {
+        "doc": "xtra_shelechov",
+        "path": "/paragraph[13]",
+        "produced": "I отделение",
+        "reference": "I отделение — produced at /align[14]/paragraph[0]"
+      }
+    },
+    {
       "class": "paragraph.content.edited",
       "severity": "minor",
       "instances": 9,
@@ -559,28 +535,6 @@
       }
     },
     {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_lendle2",
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]/align[1]",
-        "produced": null,
-        "reference": "Heitor Villa-Lobos"
-      }
-    },
-    {
       "class": "link.inline.missing",
       "severity": "major",
       "instances": 2,
@@ -600,6 +554,28 @@
         "path": "/nav[4]/list[0]/item[2]/link[0]",
         "produced": null,
         "reference": "[3]()"
+      }
+    },
+    {
+      "class": "paragraph.missing.in-paragraph",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_lagq2",
+        "news_2007"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_lagq2",
+        "path": "/align[15]/paragraph[0]",
+        "produced": null,
+        "reference": "Music by:"
       }
     },
     {
@@ -798,6 +774,27 @@
       }
     },
     {
+      "class": "align.missing",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "xtra_karta5"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "xtra_karta5",
+        "path": "/align[21]",
+        "produced": null,
+        "reference": "◀ 🞈"
+      }
+    },
+    {
       "class": "align.moved",
       "severity": "major",
       "instances": 1,
@@ -858,27 +855,6 @@
         "path": "/columns[17]/column[23]",
         "produced": "",
         "reference": "produced at /columns[17]/column[0]"
-      }
-    },
-    {
-      "class": "frame.moved",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_lendle2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]",
-        "produced": "Heitor Villa-Lobos",
-        "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]"
       }
     },
     {
@@ -1174,27 +1150,6 @@
         "path": "/table[8]/cell[2][0]",
         "produced": "• Prelude-этюд № 2",
         "reference": "• Prelude- этюд № 2"
-      }
-    },
-    {
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "new_lendle2"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[10]@position",
-        "produced": "position: center",
-        "reference": null
       }
     },
     {
@@ -2271,76 +2226,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "3b78b47e",
-      "doc": "new_lendle2",
-      "class": "frame.moved",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[10]",
-      "producedLine": 151,
-      "referenceLine": 151,
-      "produced": "Heitor Villa-Lobos",
-      "reference": "frame: white align center Heitor Villa-Lobos — produced at /align[11]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "035e564a",
-      "doc": "new_lendle2",
-      "class": "frame.position.spurious",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/frame[10]@position",
-      "producedLine": 151,
-      "referenceLine": 151,
-      "produced": "position: center",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "03e81e02",
-      "doc": "new_lendle2",
-      "class": "paragraph.missing.in-paragraph",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[10]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 152,
-      "produced": null,
-      "reference": "frame: white",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d5bbb904",
-      "doc": "new_lendle2",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/frame[10]/align[1]",
-      "producedLine": null,
-      "referenceLine": 154,
-      "produced": null,
-      "reference": "Heitor Villa-Lobos",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "15f72a1e",
-      "doc": "new_lendle2",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 154,
-      "referenceLine": 157,
-      "produced": "Heitor Villa-Lobos",
-      "reference": "Heitor Villa-Lobos — produced at /frame[10]/paragraph[2]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "3d45a677",
       "doc": "new_lendle2",
       "class": "emphasis.span",
@@ -2348,7 +2233,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 154,
+      "producedLine": 157,
       "referenceLine": 157,
       "produced": "(none)",
       "reference": "strong:Heitor Villa-Lobos",
@@ -2362,7 +2247,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/frame[13]/align[1]/paragraph[0]",
-      "producedLine": 190,
+      "producedLine": 195,
       "referenceLine": 195,
       "produced": "(none)",
       "reference": "strong:Spanish Guitar Music",
@@ -2376,7 +2261,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]",
-      "producedLine": 227,
+      "producedLine": 232,
       "referenceLine": 233,
       "produced": "◀",
       "reference": "◀ — at /paragraph[17]",

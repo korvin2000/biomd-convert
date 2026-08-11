@@ -98,7 +98,9 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
   // being wrong rather than never being called.
   const tinted = (): FrameEvidence | null => {
     const tint = tintedPanelPalette(el);
-    return tint ? applyFrameGuards(el, documentTextLength, tint, `${tint} panel spanning a grid row`) : null;
+    if (!tint) return null;
+    const minText = recurrentTintedPanel(el, tint) ? 1 : undefined;
+    return applyFrameGuards(el, documentTextLength, tint, `${tint} panel spanning a grid row`, minText);
   };
   // The sole-cell path is tried wherever the border path declines, for the same
   // reason and in the same position as the tint path: the commonest way a
@@ -151,19 +153,11 @@ export function frameEvidenceFor(el: LadomNode, documentTextLength: number): Fra
 /**
  * The guards every frame answers, whatever drew it.
  *
- * The 20-character floor separates a notice from a table's cell grid, and it
- * costs one real panel: `new_lendle2`'s `Heitor Villa-Lobos` is 18 characters,
- * so four of its five panels are framed and the fifth is not.
- *
- * **Dropping the floor for the tint path was measured and reverted.** The
- * argument was good — `spansItsRow` is a stronger occupancy statement than a
- * length — and it did close the fifth panel and the `layout.order.mismatch`
- * that the gap creates (L3 92 → 90, critical 11 → 10). But the same floor is
- * the only thing keeping the *menu label* cells out: `news` and `news_2007`
- * each set `• Архив новостей •` in a spanning tinted cell, and both gained a
- * spurious frame (9 → 10 and 1 → 2). A box the author did not draw, on two
- * regression-corpus documents, outranks two L3 findings on one. L1 93.2 → 93.1
- * and L2 413 · 238 → 418 · 241 agreed.
+ * The 20-character floor separates a notice from a table's cell grid. A short
+ * tinted panel may bypass it only when the same full-row role recurs in its
+ * table with populated content between occurrences. This is relational
+ * evidence: a repeated record label is a panel; a singleton menu label is not.
+ * Occupancy remains the first gate, so repeated tinted lane cells still fail.
  */
 function applyFrameGuards(
   el: LadomNode,
@@ -304,20 +298,24 @@ function cellCount(table: LadomNode): number {
  * differs from the nearest painted ancestor is the same construct as a border.
  *
  * **Invariant: the panel spans its whole row.** This is what makes it a panel
- * rather than a cell. It is not a refinement — it is the entire rule, because
- * the false friend is enormous.
+ * rather than a cell. It is the primary rule because the false friend is
+ * enormous.
+ *
+ * **Short labels require recurrence.** The ordinary 20-character content
+ * floor still rejects singleton labels. A shorter panel qualifies only when a
+ * second full-row panel of the same palette occurs in the same table with a
+ * populated row between them. Record labels recur around their records; a
+ * page's one archive/menu label does not. Recurrence is deliberately applied
+ * after occupancy: repeating lane cells never reach it.
  *
  * **False friend, measured.** `goya2` tints **fifteen** cells exactly this way
  * — `bgcolor="#F5E29E"` with dead unitless top/bottom borders — and its
  * reference frames **none** of them. They are `width="50%"` *lane* cells, two
  * to a catalogue row, and framing them would put a box round every album title
  * in the corpus's worst document. `new_lendle2`'s five are `colspan="2"
- * width="100%"` and occupy a row of their own. Recurrence cannot separate these
- * — `goya2` recurs fifteen times and `new_lendle2` five — so this rule
- * deliberately does **not** use it; occupancy is the evidence instead.
- *
- * A cell that is alone in its row spans it too, so both forms are accepted, and
- * a cell that shares its row with a sibling is refused however it is tinted.
+ * width="100%"` and occupy a row of their own. Occupancy separates the two
+ * shapes before recurrence is consulted.
+
  */
 function tintedPanelPalette(el: LadomNode): FramePalette | null {
   if (el.tag !== "td" && el.tag !== "th") return null;
@@ -338,6 +336,44 @@ function tintedPanelPalette(el: LadomNode): FramePalette | null {
   if (!ancestor) return null;
 
   return paletteFor(background);
+}
+
+/**
+ * Whether a short tinted panel repeats as a structural row label.
+ *
+ * Recurrence is deliberately subordinate to occupancy: every candidate must
+ * already span its row. Two candidates must also have a populated row between
+ * them, so adjacent decorative bands and one-off menu labels do not qualify.
+ */
+function recurrentTintedPanel(el: LadomNode, palette: FramePalette): boolean {
+  const table = tableOf(el);
+  const row = el.parent;
+  if (!table || !row || row.kind !== "element" || row.tag !== "tr") return false;
+
+  const rows: LadomNode[] = [];
+  const visit = (node: LadomNode): void => {
+    for (const child of node.children) {
+      if (child.kind !== "element") continue;
+      if (child.tag === "table" && child !== table) continue;
+      if (child.tag === "tr") rows.push(child);
+      visit(child);
+    }
+  };
+  visit(table);
+
+  const here = rows.indexOf(row);
+  if (here < 0) return false;
+  for (let i = 0; i < rows.length; i += 1) {
+    if (i === here || Math.abs(i - here) < 2) continue;
+    const cells = rows[i]!.children.filter(
+      (child) => child.kind === "element" && (child.tag === "td" || child.tag === "th"),
+    );
+    const peer = cells.find((cell) => spansItsRow(cell) && tintedPanelPalette(cell) === palette);
+    if (!peer) continue;
+    const [from, to] = i < here ? [i + 1, here] : [here + 1, i];
+    if (rows.slice(from, to).some((between) => textOf(between) !== "")) return true;
+  }
+  return false;
 }
 
 /** True when this cell covers every column of the row it sits in. */

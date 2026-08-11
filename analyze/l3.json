@@ -31,7 +31,7 @@
     ]
   },
   "totals": {
-    "findings": 61,
+    "findings": 59,
     "alignmentRows": 232
   },
   "classes": [
@@ -47,13 +47,8 @@
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 14,
+      "instances": 13,
       "documents": 9
-    },
-    {
-      "class": "layout.order.mismatch",
-      "instances": 1,
-      "documents": 1
     }
   ],
   "findings": [
@@ -219,7 +214,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 227,
+      "producedLine": 232,
       "referenceLine": 236,
       "produced": "◀",
       "reference": "◀",
@@ -235,23 +230,6 @@
       }
     },
     {
-      "id": "8da6cbf0",
-      "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[10]/align[1]/paragraph[0]",
-      "producedLine": 154,
-      "referenceLine": 157,
-      "produced": "Heitor Villa-Lobos",
-      "reference": "Heitor Villa-Lobos",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "frame>align"
-      }
-    },
-    {
       "id": "45b67e54",
       "doc": "new_lendle2",
       "class": "layout.containment.mismatch",
@@ -259,30 +237,13 @@
       "evidence": "structure",
       "op": "move",
       "path": "/align[16]/paragraph[0]",
-      "producedLine": 227,
+      "producedLine": 232,
       "referenceLine": 236,
       "produced": "◀",
       "reference": "◀",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "b65c043a",
-      "doc": "new_lendle2",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/frame[10]/paragraph[0]",
-      "producedLine": 185,
-      "referenceLine": 152,
-      "produced": "frame: white",
-      "reference": "frame: white",
-      "geometry": {
-        "producedRank": 20,
-        "referenceRank": 16
       }
     },
     {
@@ -2686,7 +2647,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 154,
+      "producedLine": 157,
       "referenceLine": 157,
       "text": "Heitor Villa-Lobos",
       "producedAlignment": "center",
@@ -2699,7 +2660,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 164,
+      "producedLine": 169,
       "referenceLine": 169,
       "text": "W. Lendle CD's - Heitor Villa-Lobos",
       "producedAlignment": "center",
@@ -2712,7 +2673,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 190,
+      "producedLine": 195,
       "referenceLine": 195,
       "text": "Spanish Guitar Music",
       "producedAlignment": "center",
@@ -2725,7 +2686,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 202,
+      "producedLine": 207,
       "referenceLine": 207,
       "text": "W. Lendle CD's - Spanish Guitar Music",
       "producedAlignment": "center",
@@ -2738,7 +2699,7 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 227,
+      "producedLine": 232,
       "referenceLine": 236,
       "text": "◀",
       "producedAlignment": "left",

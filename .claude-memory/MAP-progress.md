@@ -186,7 +186,7 @@ ignorable by the author). The honest open count is **~69**.
 build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.empty` class, 1 the
 `blocks.ts` directive-property artefact.
 
-| 44 figure placement | 5924-end | baseline reproduced · `retyped.paragraph-to-align` split on probe · **standalone image keeps computed placement or floated one-column figure containment** · floated multi-column false friend rejected · `image.position.value` 2 → 0 · L3 65 → 61 | HOT |
+| 44 figure placement | 5924-5979 | baseline reproduced · `retyped.paragraph-to-align` split on probe · **standalone image keeps computed placement or floated one-column figure containment** · floated multi-column false friend rejected · `image.position.value` 2 → 0 · L3 65 → 61 | HOT |
 
 ## Checkpoint -- §44, measured 2026-08-12 over **26 compared documents** (28 converted)
 
@@ -200,3 +200,18 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 
 **Never quote the 204 bare.** 141 are recorded divergences and quirks, so the honest open count is
 ~63. None of the 8 criticals has a mechanism to build; the split remains §43.8's.
+
+| 45 recurrent short panels | 5981-end | `paragraph.missing.in-paragraph` downgraded as placement/evaluator artefacts · short full-row tinted labels bypass the length floor only by same-role recurrence around populated rows · archive/menu and half-row false friends rejected · L2 315/204 → 310/199 · L3 61 → 59 | HOT |
+
+## Checkpoint -- §45, measured 2026-08-12 over **26 compared documents** (28 converted)
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **540** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
+| L2 | **310** findings -- **199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **59** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json --json ../analyze/l3.json` |
+| validator | **0** on every produced document | `bench/run.sh` corpus summary |
+
+**Never quote the 199 bare.** 141 are recorded divergences and quirks, so the honest open count is
+~58. The 8 criticals remain only in `xtra_karta5` and `xtra_shelechov`, the recorded-divergence pair.

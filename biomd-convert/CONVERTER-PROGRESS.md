@@ -5977,3 +5977,57 @@ Next: probe the three `paragraph.missing.in-paragraph` instances as relationship
 text — all three values are visibly present in produced output — then return to the split
 `retyped.paragraph-to-align` mechanisms. The shell-depth root cause remains last because §40.6 already
 reverted three broad replacements.
+
+## 45. Short tinted record labels are frames by recurrence (2026-08-12)
+
+### 45.1 Probe and candidate choice
+
+The §44 floor reproduced exactly before code: L0 539 tests / 0 FAILED · L1 **98.6** · L2
+**315 findings / 204 converter-defect / 8 critical** · L3 **61 over 26** · validator 0 on all 28
+produced documents. As in §44, the holdout was already spent, so this iteration had none.
+
+The planned `paragraph.missing.in-paragraph` class was probed at all three instances and downgraded.
+All three values are present on both sides: `new_lagq2` puts `Music by:` inside one centred paragraph,
+`news_2007` keeps `22 апреля 2007 г.` in its date column, and `new_lendle2`'s `frame: white` is a
+directive property that `blocks.ts` misreads as Markdown when the fifth frame is absent. The first two
+documents have **L3 0**, so the class establishes neither data loss nor a shared converter mechanism.
+
+`new_lendle2` did expose the coherent upstream mechanism already measured in §27.3: four of five
+full-row tinted album labels became frames, while the 18-character `Heitor Villa-Lobos` label hit the
+shared 20-character floor. Its missing frame cast five L2 shadows and two L3 structural findings.
+
+### 45.2 The rule
+
+Tinted-panel occupancy remains the first gate: a candidate must own its whole row, so `goya2`'s
+repeated half-row catalogue cells still cannot become frames. The 20-character floor remains for a
+singleton. A short full-row tinted label may bypass it only when another full-row panel of the same
+palette occurs in the same table with populated content between them. That recurrence states the
+record-label role without any corpus literal, class, id, title or absolute text threshold.
+
+The named false friend is the one-off tinted archive/menu label on `news` and `news_2007`: it spans a
+row but has no peer role, so it remains a `nav` title and gains no frame. A contract also keeps the
+repeated half-row catalogue-cell false friend non-firing. Recurrence is subordinate to occupancy;
+that ordering is what avoids reopening §27.2's rejected recurrence-only rule.
+
+### 45.3 Acceptance and movement classification
+
+| rung | §44 floor | after §45 |
+|---|---:|---:|
+| L0 | 539 tests, 0 FAILED | **540 tests**, 0 FAILED, typecheck clean |
+| L1 | 98.6 | **98.6**; `new_lendle2` 99.3 → **99.8** |
+| L2 | 315 findings · 204 defect · 8 critical | **310 · 199 · 8** |
+| L3 | 61 | **59** over 26 documents |
+| validator | 0 on 28 produced | **0** on 28 produced |
+
+Only `new_lendle2` moved. Its fifth `frame: white` now encloses `Heitor Villa-Lobos`, closing
+`frame.moved`, `frame.position.spurious`, `align.missing`, `paragraph.containment`, and the
+directive-property artefact reported as `paragraph.missing.in-paragraph`: five `structural-error`
+closures from one root mechanism. L3 closes the matching `layout.containment.mismatch` and the
+downstream `layout.order.mismatch` (**4 → 2**), both `visual-improvement`. `news` and `news_2007`
+retain their previous frame counts, every other document is byte-stable at the measured rungs, and
+there is no loss or neutral tradeoff.
+
+Next: treat the two residual `paragraph.missing.in-paragraph` findings as evaluator debt, not converter
+work. For conversion, adjudicate `segovia`'s long italic/margin-shifted `retyped.paragraph-to-align`
+instance separately from the four twice-killed glyph/footer instances. The shell-depth root cause
+remains last; §40.6 already reverted three broad replacements.

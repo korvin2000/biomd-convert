@@ -3,13 +3,13 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-12**, after PROGRESS §44.
+Last touched **2026-08-12**, after PROGRESS §45.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
-- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-11-after-42)
+- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-12-after-45)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
 
 ---
@@ -32,24 +32,24 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-12, after PROGRESS §44:**
+**Current state, *measured* 2026-08-12, after PROGRESS §45:**
 
 | rung | value |
 |---|---|
-| L0 | **539 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **540 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
-| L2 | **315 findings -- 204 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
-| L3 | **61** over 26 documents, identity 0, deterministic |
+| L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
+| L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 
 That is the floor. Nothing accepted from here may regress it.
 
-> **141 of the 204 are recorded divergences and quirks, not work.** `xtra_shelechov` ~96,
-> `xtra_karta5` 42, `new_kolpakov` 3 (§43.5). The honest open count is **~63**. Quote the split or the
+> **141 of the 199 are recorded divergences and quirks, not work.** `xtra_shelechov` ~96,
+> `xtra_karta5` 42, `new_kolpakov` 3 (§43.5). The honest open count is **~58**. Quote the split or the
 > ledger reads as a collapse in quality that did not happen.
 >
-> **Of the 8 criticals, none has a mechanism to build**: 4 are `xtra_karta5`'s merged score table
-> (§43.6), 3 the broken `link.label.content.empty` class (§5.0), 1 the `blocks.ts` artefact (§5.0b).
+> **The 8 criticals remain only in the two recorded-divergence documents** (`xtra_karta5` 6,
+> `xtra_shelechov` 2); none gained a converter mechanism in §45.
 
 **`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
 clone and `tsc` fails on the missing declarations. That is a build failure, not a degradation.
@@ -63,6 +63,12 @@ table is bottom margin (`0826f53`; `new_karta` L1 95.9 → 98.0, 6 → 5 defects
 floated one-column figure ancestor; floated multi-column grids and the left prose baseline are false
 friends. `image.position.value` **2 → 0**, L2 317/206 → **315/204**, L3 65 → **61**, L1 flat 98.6.
 
+**Landed in §45.** A short full-row tinted record label may bypass the 20-character frame floor only
+when the same palette/occupancy role recurs in the same table with populated content between labels.
+The one-off archive/menu label and repeated half-row catalogue cells remain false friends.
+`new_lendle2` gains its fifth frame: L1 99.3 → 99.8, L2 11/7 → 6/2, L3 4 → 2;
+corpus L2 315/204 → **310/199**, L3 61 → **59**, overall L1 flat 98.6.
+
 > **Start a table iteration with the routing survey, not the ledger (§43.2).** One
 > `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)`, which is
 > the only view showing a table's *outcome* beside its *class*. Both §43 mechanisms came out of it and
@@ -71,11 +77,13 @@ friends. `image.position.value` **2 → 0**, L2 317/206 → **315/204**, L3 65 �
 **Next, in order. Probe before committing (SKILL §6).**
 0. **Nothing table-shaped is both open and general.** Every remaining `table.*`/`column.*` instance is
    one of the four recorded divergences or a single-document quirk. §43.9.
-1. **`paragraph.missing.in-paragraph` 3/3 documents** — all three values are visibly present, so probe
-   their three relationships and the evaluator before treating the label as data loss.
-2. **`retyped.paragraph-to-align`** — 5/5 documents but split mechanisms. Four are the twice-killed
-   glyph/footer family; `segovia` is a long italic quotation shifted by `margin-left: 140`, not the
-   same signal. §44.1.
+1. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
+   directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
+   `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or
+   shared converter mechanism remains. Fix the evaluator only in an isolated truthfulness step.
+2. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
+   glyph/footer family. `segovia` is a long italic quotation shifted by `margin-left: 140`, not the
+   same signal; decide whether the current `align` is a visual regression before touching code. §44.1.
 3. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
    wrong on 8 of 22 and load-bearing in five rules. Three replacements built, all three reverted on
    measurement. Start from `headingLineOf`.
@@ -83,8 +91,8 @@ friends. `image.position.value` **2 → 0**, L2 317/206 → **315/204**, L3 65 �
 **No open author question.**
 
 **The holdout has been measured once and is now spent (§43.7).** `xtra_oyanguren` 3/3 and
-`xtra_mikulka` 2/2/2 L3, byte-identical to §42.8 — both §43 rules are neutral there. §44 needs a new
-holdout named before any rule is designed, or must accept that it has none.
+`xtra_mikulka` 2/2/2 L3, byte-identical to §42.8 — both §43 rules are neutral there. §44 and §45 had
+no holdout; name a new one before the next rule if blind evidence is required.
 
 **Do not re-take these; §37-§43 settled them.** Everything §41's list named, plus:
 `xtra_rodrigo`'s score table and its two work titles · `segovia`'s work title · `xtra_karta5`'s
@@ -185,9 +193,9 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-12 after §44
+## 4. Open defect classes -- *measured* 2026-08-12 after §45
 
-**Read the ceiling column first.** Recorded divergences and quirks account for 141 of the 204
+**Read the ceiling column first.** Recorded divergences and quirks account for 141 of the 199
 converter-defects; see PROGRESS §42.4, §43.5 and §43.6 before treating any large class here as
 available work.
 
@@ -198,29 +206,29 @@ available work.
 | 66 | `retyped.column-to-paragraph` | 22 | 22 | 1 | **ceiling** — same divergence |
 | 58 | `table.align` | 29 | 29 | 2 | **ceiling, both documents** — `xtra_karta5`'s 26 author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
 | 48 | `paragraph.spurious.in-table` | 16 | 16 | 1 | **ceiling** — `xtra_karta5`'s name-in-header-cell |
-| 42 | `paragraph.containment` | 7 | 7 | 2 | mostly the `xtra_shelechov` divergence |
-| 27 | `paragraph.missing.in-paragraph` | 3 | 3 | 3 | **open, 3 documents** |
 | 24 | `column.missing` · `columns.spurious` · `column.spurious` | 8 · 5 · 3 | | 1 | **ceiling** — same divergence |
 | 24 | `retyped.align-to-paragraph` | 4 | 4 | 2 | `goya2`'s author-declared alternative (§37.8) |
 | 21 | `emphasis.span` | 23 | 3 | 7 | downgraded; §39.6.2 has the cause. Do not implement |
 | 20 | `break.spurious` | 20 | 20 | 1 | **ceiling** — the rules between `xtra_shelechov`'s programme rows |
+| 18 | `paragraph.containment` | 6 | 6 | 1 | `xtra_shelechov` divergence; `new_lendle2` shadow closed in §45 |
 | 15 | `table.row.missing` | 3 | 3 | 1 | **ceiling, checked in §43.6** — the source holds two `<table>`s, `xtra_karta5`'s reference merges them, `xtra_rodrigo`'s does not. 1 to 1 |
-| 12 | `link.inline.missing` · `retyped.paragraph-to-list` · `retyped.paragraph-to-heading2` · `align.missing` | 2 each | 2 | 2 | the tail |
+| 12 | `paragraph.missing.in-paragraph` | 2 | 2 | 2 | **evaluator/placement artefacts; downgraded §45.1** |
+| 12 | `link.inline.missing` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail; `align.missing` is now 1 |
 | -- | ~~`table.cell.content`~~ | 6 -> **0** | 0 | 0 | closed by §43.3 — was 6 of the corpus's 14 criticals |
 | -- | ~~`retyped.columns-to-table`~~ | 1 -> **0** | 0 | 0 | closed by §43.4 |
-| -- | ~~`align.spurious`~~ | 26 -> **3** | 3 | 2 | closed by §42.5 |
+| -- | ~~`align.spurious`~~ | 26 -> **2** | 2 | 1 | closed by §42.5; one more shadow dissolved in §45 |
 | -- | ~~`paragraph.missing.in-table`~~ | 3 -> **0** | 0 | 0 | closed by §42.6 |
 | -- | ~~`image.position.value`~~ | 2 -> **0** | 0 | 0 | closed by §44 — computed placement + floated one-column figure containment |
 
 Per document, converter-defect: `xtra_shelechov` 101 (**~96 ceiling**) · `xtra_karta5` 50
-(**42 ceiling**) · `new_lendle2` 7 · `new_rechin4` 5 · `new_karta` 5 · `news` 5 · `new_kolpakov` 4
-(**all 4 ceiling**) · `news_2007` 4 · `segovia` 3 · `goya2` 3 · rest <= 3.
+(**42 ceiling**) · `new_rechin4` 5 · `new_karta` 5 · `news` 5 · `new_kolpakov` 4
+(**all 4 ceiling**) · `news_2007` 4 · `segovia` 3 · `goya2` 3 · `new_lendle2` 2 · rest <= 3.
 `authors`, `barrios`, `new_bach`, `new_dyens`, `segovia1`, `williams2` and **`xtra_albeniz`** are at
 **0**. `xtra_rodrigo` is at **1** and at **L1 100.0 on every axis**.
 
 **The holdout is spent.** Measured once at the end of §43, exactly as §42.8 intended:
 `xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 / 2 L3 — unchanged, both §43 rules
-neutral there. §44 must name a new holdout before designing a rule, or record that it has none.
+neutral there. §44 and §45 had no holdout.
 
 ## 5. Instrument debt -- what to distrust, in order
 
