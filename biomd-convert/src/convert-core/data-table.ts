@@ -322,6 +322,34 @@ export function coalesceOrdinalStrips(grid: TableGrid, bands: readonly Band[]): 
   return out;
 }
 
+/**
+ * The index ranges, within one row's partition, that a numbered strip occupies.
+ *
+ * Same primitive as {@link coalesceOrdinalStrips}, asked of a single row instead
+ * of down the whole table: a maximal run of adjacent cells each stating nothing
+ * but its own position, the positions ascending strictly, at least three long.
+ */
+function ordinalRunsIn(partition: ReadonlyArray<{ cell: GridCell }>): Array<{ from: number; to: number }> {
+  const positions = partition.map((p) => positionOf(p.cell));
+  const runs: Array<{ from: number; to: number }> = [];
+  for (let i = 0; i < positions.length; ) {
+    if (positions[i] === null) {
+      i += 1;
+      continue;
+    }
+    let j = i;
+    while (j + 1 < positions.length && positions[j + 1] !== null && (positions[j + 1] as number) > (positions[j] as number)) {
+      j += 1;
+    }
+    if (j - i + 1 >= MIN_ORDINAL_RUN) runs.push({ from: i, to: j });
+    i = j + 1;
+  }
+  return runs;
+}
+
+/** Three slots is the shortest run that can show a sequence rather than a coincidence. */
+const MIN_ORDINAL_RUN = 3;
+
 /** Whether any text inside this cell is set bold. */
 function carriesBoldText(node: LadomNode): boolean {
   for (const child of node.children) {
@@ -439,8 +467,21 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
 
     const cells: PlannedCell[] = bands.map(() => ({ sources: [], isHeader: true, isEmpty: true }));
 
-    for (const part of partition) {
-      const bandIndex = bands.findIndex((b) => part.start >= b.start && part.start < b.end);
+    // A numbered strip is one value however many slots the source drew it in, so
+    // it is placed whole into the band it opens in and the boundaries the other
+    // rows voted for do not divide it. See {@link ordinalRunsIn}.
+    const anchors = partition.map((p) => p.start);
+    const inRun = partition.map(() => false);
+    for (const run of ordinalRunsIn(partition)) {
+      for (let k = run.from; k <= run.to; k += 1) {
+        anchors[k] = anchors[run.from] as number;
+        inRun[k] = k > run.from;
+      }
+    }
+
+    for (const [index, part] of partition.entries()) {
+      const anchor = anchors[index] as number;
+      const bandIndex = bands.findIndex((b) => anchor >= b.start && anchor < b.end);
       if (bandIndex < 0) {
         return {
           plan: null,
@@ -452,7 +493,7 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
       // A cell may end past its band only when it ends at the table edge — a
       // trailing colspan filler. Anything else genuinely straddles two columns
       // and cannot be represented without inventing a merge.
-      if (part.end > band.end && part.end !== grid.cols) {
+      if (!inRun[index] && part.end > band.end && part.end !== grid.cols) {
         return {
           plan: null,
           failure: "cell-crosses-band",

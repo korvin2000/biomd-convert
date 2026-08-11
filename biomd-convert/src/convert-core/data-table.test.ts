@@ -465,6 +465,113 @@ describe("a strip of numbered slots", () => {
 });
 
 /**
+ * A numbered strip is one value, whichever bands the other rows voted for.
+ *
+ * ## What it is for
+ *
+ * The strip and the table's column model can disagree. `xtra_albeniz` draws its
+ * media rows as three `colspan="2"` cells over six physical slots, so the band
+ * vote fixes `{0-2, 2-4, 4-6}`; its two score rows draw six single slots — a
+ * label and five page scans. Placed by physical position the scans are shredded
+ * across the band boundaries, and `[ 2 ] [ 3 ]` lands under the column that
+ * means *TAB* while `[ 4 ] [ 5 ]` lands under *MIDI*. That is not a layout
+ * quibble: the table then asserts that page 4 is a MIDI file. The reference puts
+ * all five in the record's first cell and leaves the other two empty.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Ordinality and adjacency inside one row, no vocabulary, no
+ * width, no class: a run of adjacent cells each stating nothing but its own
+ * position, ascending strictly, at least three long, is placed whole into the
+ * band it opens in. Digits are language-neutral and the same {@link positionOf}
+ * primitive §42.5 established reads them.
+ *
+ * **Recurrence is within the row**, as it is for {@link coalesceOrdinalStrips}
+ * and for the same reason: the strip may occupy one row (`xtra_karta5`) or three
+ * (`xtra_rodrigo`), so down-the-table recurrence would invert the answer. The
+ * shape repeating three times side by side, with the sequence advancing between
+ * occurrences, is the evidence.
+ *
+ * **False friends, all live in the corpus and all tested for non-firing.** A run
+ * of two (`barrios`, `new_karta` — `[ 1 ] [ 2 ]` beside an archive link) is a
+ * coincidence, not a sequence. Numbers that do not ascend are three columns that
+ * happen to hold numbers. Roman movement numbers and unlinked digits fail
+ * {@link positionOf} outright. And the case that must stay byte-identical: a
+ * strip already inside one band, which is what `barrios`, `new_bach`, `tarrega`,
+ * `new_karta` and `xtra_karta5` all draw — the rule is a no-op there by
+ * construction, because the band it opens in is the band it already occupies.
+ *
+ * **Degradation.** No qualifying run leaves every cell placed exactly where its
+ * physical slot puts it, which is the behaviour that shipped before.
+ */
+describe("a numbered strip against the table's column model", () => {
+  /** `xtra_albeniz`: three `colspan="2"` media columns over six physical slots. */
+  const mediaRow = (title: string, tab: string, midi: string) =>
+    `<tr><td width="72%" colspan="2">${title}</td>` +
+    `<td width="14%" colspan="2">${tab ? `<a href="${tab}">TAB</a>` : ""}</td>` +
+    `<td width="14%" colspan="2">${midi ? `<a href="${midi}">MIDI</a>` : ""}</td></tr>`;
+  const scoreRow = (label: string, dir: string, slots: readonly string[]) =>
+    `<tr><td width="65%">${label}</td>` +
+    slots.map((s) => `<td width="7%"><p><a href="s/${dir}/${s}.jpg">[ ${s} ]</a></p></td>`).join("") +
+    `</tr>`;
+  const sheet = (...rows: string[]) => `<table border="0">${rows.join("")}</table>`;
+  const ALBENIZ_SHAPED = sheet(
+    mediaRow("Cordoba", "tab/cord.txt", ""),
+    mediaRow("Sevilla", "tab/sev.txt", "midi/sev.mid"),
+    mediaRow("Asturias", "tab/ast.txt", "midi/ast.mid"),
+    scoreRow("Ноты – транскрипция А. Сеговии", "seg", ["1", "2", "3", "4", "5"]),
+  );
+
+  it("places all five scans in the cell the strip opens in", async () => {
+    const result = await convert(Buffer.from(`<html><body>${ALBENIZ_SHAPED}</body></html>`, "utf8"));
+    const row = result.markdown.split("\n").find((l) => l.includes("Сеговии")) ?? "";
+    expect(row.match(/s\/seg\/\d\.jpg/gu) ?? []).toHaveLength(5);
+    // One record cell, then the two resource columns this row does not fill.
+    expect(row.split("|").filter((c) => c.trim() !== "")).toHaveLength(3);
+    expect(row.trimEnd().endsWith("| — | — |")).toBe(true);
+  });
+
+  it("does not disturb the rows that voted for the column model", async () => {
+    const result = await convert(Buffer.from(`<html><body>${ALBENIZ_SHAPED}</body></html>`, "utf8"));
+    expect(result.markdown).toContain("| Sevilla | [TAB](/../tab/sev.txt) | [MIDI](/../midi/sev.mid) |");
+    expect(result.markdown).toContain("| Cordoba | [TAB](/../tab/cord.txt) | — |");
+  });
+
+  it("does not fire on a run of two — non-firing", async () => {
+    const html = sheet(
+      mediaRow("Cordoba", "tab/cord.txt", "midi/cord.mid"),
+      mediaRow("Sevilla", "tab/sev.txt", "midi/sev.mid"),
+      scoreRow("Ноты", "seg", ["1", "2"]),
+    );
+    const result = await convert(Buffer.from(`<html><body>${html}</body></html>`, "utf8"));
+    const row = result.markdown.split("\n").find((l) => l.includes("Ноты")) ?? "";
+    expect(row).toContain("s/seg/2.jpg");
+    // The second scan stays where its slot puts it: the middle column.
+    expect(row.split("|")[2]).toContain("s/seg/2.jpg");
+  });
+
+  it("does not fire on three numbers that do not ascend — non-firing", async () => {
+    const html = sheet(
+      mediaRow("Cordoba", "tab/cord.txt", "midi/cord.mid"),
+      mediaRow("Sevilla", "tab/sev.txt", "midi/sev.mid"),
+      scoreRow("Ноты", "seg", ["3", "1", "2", "9", "4"]),
+    );
+    const result = await convert(Buffer.from(`<html><body>${html}</body></html>`, "utf8"));
+    const row = result.markdown.split("\n").find((l) => l.includes("Ноты")) ?? "";
+    expect(row.split("|")[1]).toContain("s/seg/3.jpg");
+    expect(row.split("|")[2]).toContain("s/seg/2.jpg");
+  });
+
+  it("is a no-op on a strip that already sits inside one band — non-firing", async () => {
+    // `barrios`, `new_bach`, `tarrega`, `new_karta`, `xtra_karta5`: the leading
+    // band is wide enough to hold the whole strip, so nothing moves.
+    const result = await convert(Buffer.from(`<html><body>${BARRIOS_SHAPED}</body></html>`, "utf8"));
+    expect(result.markdown).toMatch(/\|\s*Ноты\s*\[\\\[ 1 \\\]\]\(\S*s\/1\.jpg\) \[\\\[ 2 \\\]\]\(\S*s\/2\.jpg\)\s*\|/u);
+    expect(result.markdown).toContain("| Choro Da Saudade |");
+  });
+});
+
+/**
  * A title the source drew inside the table is not a record in it.
  *
  * The contract is on {@link leadingCaptionCell}; these are its firing and

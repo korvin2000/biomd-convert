@@ -1,13 +1,13 @@
 {
-  "generated": "2026-08-11T21:37:59.865Z",
+  "generated": "2026-08-11T22:07:49.222Z",
   "totals": {
-    "findings": 324,
+    "findings": 318,
     "converterDefects": 207,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
-    "ambiguous": 24,
+    "ambiguous": 18,
     "bySeverity": {
-      "critical": 14,
+      "critical": 8,
       "major": 189,
       "minor": 121
     }
@@ -191,9 +191,9 @@
     },
     {
       "doc": "xtra_albeniz",
-      "findings": 6,
+      "findings": 0,
       "converterDefects": 0,
-      "critical": 6,
+      "critical": 0,
       "major": 0,
       "minor": 0
     },
@@ -1346,27 +1346,6 @@
         "path": "/images[72]/image[0]@position",
         "produced": null,
         "reference": "position: center"
-      }
-    },
-    {
-      "class": "table.cell.content",
-      "severity": "critical",
-      "instances": 6,
-      "documents": [
-        "xtra_albeniz"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 6
-      },
-      "rank": 0,
-      "example": {
-        "doc": "xtra_albeniz",
-        "path": "/table[8]/cell[7][0]",
-        "produced": "Ноты – транскрипция А. Сеговии [\\[ 1 \\]](music/scores/albeniz/leyenda_segovia/leyenda_01seg.jpg)",
-        "reference": "Ноты – транскрипция А. Сеговии [\\[ 1 \\]](music/scores/albeniz/leyenda_segovia/leyenda_01seg.jpg) [\\[ 2 \\]](music/scores/albeniz/leyenda_segovia/leyenda_02seg.j…"
       }
     },
     {
@@ -2991,90 +2970,6 @@
       "produced": "(none)",
       "reference": "em:Помимо Джона Вильямса в группу Sky также вошли: бас-гитарист Херби Флауэрз, клавишник и композитор Фрэнсис Монкмен (позднее его заменил аранжировщик и компо…",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "85fcb154",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[7][0]",
-      "producedLine": 38,
-      "referenceLine": 38,
-      "produced": "Ноты – транскрипция А. Сеговии [\\[ 1 \\]](music/scores/albeniz/leyenda_segovia/leyenda_01seg.jpg)",
-      "reference": "Ноты – транскрипция А. Сеговии [\\[ 1 \\]](music/scores/albeniz/leyenda_segovia/leyenda_01seg.jpg) [\\[ 2 \\]](music/scores/albeniz/leyenda_segovia/leyenda_02seg.j…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "0205bb3d",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[7][1]",
-      "producedLine": 38,
-      "referenceLine": 38,
-      "produced": "[\\[ 2 \\]](music/scores/albeniz/leyenda_segovia/leyenda_02seg.jpg) [\\[ 3 \\]](music/scores/albeniz/leyenda_segovia/leyenda_03seg.jpg)",
-      "reference": "—",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "1e149766",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[7][2]",
-      "producedLine": 38,
-      "referenceLine": 38,
-      "produced": "[\\[ 4 \\]](music/scores/albeniz/leyenda_segovia/leyenda_04seg.jpg) [\\[ 5 \\]](music/scores/albeniz/leyenda_segovia/leyenda_05seg.jpg)",
-      "reference": "—",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "2ca488c5",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[8][0]",
-      "producedLine": 39,
-      "referenceLine": 39,
-      "produced": "Ноты – транскрипция Д. Прата [\\[ 1 \\]](music/scores/albeniz/leyenda_prat/leyenda_01prt.jpg)",
-      "reference": "Ноты – транскрипция Д. Прата [\\[ 1 \\]](music/scores/albeniz/leyenda_prat/leyenda_01prt.jpg) [\\[ 2 \\]](music/scores/albeniz/leyenda_prat/leyenda_02prt.jpg) [\\[ …",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "89d4b120",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[8][1]",
-      "producedLine": 39,
-      "referenceLine": 39,
-      "produced": "[\\[ 2 \\]](music/scores/albeniz/leyenda_prat/leyenda_02prt.jpg) [\\[ 3 \\]](music/scores/albeniz/leyenda_prat/leyenda_03prt.jpg)",
-      "reference": "—",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "ef2d2c03",
-      "doc": "xtra_albeniz",
-      "class": "table.cell.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[8][2]",
-      "producedLine": 39,
-      "referenceLine": 39,
-      "produced": "[\\[ 4 \\]](music/scores/albeniz/leyenda_prat/leyenda_04prt.jpg) [\\[ 5 \\]](music/scores/albeniz/leyenda_prat/leyenda_05prt.jpg)",
-      "reference": "—",
-      "verdict": "ambiguous"
     },
     {
       "id": "a5c92b57",
