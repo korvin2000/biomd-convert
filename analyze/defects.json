@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-11T21:21:21.717Z",
+  "generated": "2026-08-11T21:37:59.865Z",
   "totals": {
-    "findings": 329,
-    "converterDefects": 212,
+    "findings": 324,
+    "converterDefects": 207,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
     "ambiguous": 24,
     "bySeverity": {
       "critical": 14,
-      "major": 193,
-      "minor": 122
+      "major": 189,
+      "minor": 121
     }
   },
   "perDocument": [
@@ -206,22 +206,6 @@
       "minor": 30
     },
     {
-      "doc": "xtra_mikulka",
-      "findings": 2,
-      "converterDefects": 2,
-      "critical": 0,
-      "major": 2,
-      "minor": 0
-    },
-    {
-      "doc": "xtra_oyanguren",
-      "findings": 3,
-      "converterDefects": 3,
-      "critical": 0,
-      "major": 2,
-      "minor": 1
-    },
-    {
       "doc": "xtra_rodrigo",
       "findings": 12,
       "converterDefects": 1,
@@ -372,29 +356,6 @@
       }
     },
     {
-      "class": "image.position.value",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "new_rechin4",
-        "segovia",
-        "xtra_oyanguren"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 27,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/image[18]@position",
-        "produced": "position: center",
-        "reference": "position: right"
-      }
-    },
-    {
       "class": "paragraph.missing.in-paragraph",
       "severity": "major",
       "instances": 3,
@@ -531,28 +492,6 @@
       }
     },
     {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "xtra_mikulka",
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "xtra_mikulka",
-        "path": "/align[6]",
-        "produced": "ДИСКОГРАФИЯ",
-        "reference": null
-      }
-    },
-    {
       "class": "paragraph.content.edited",
       "severity": "minor",
       "instances": 9,
@@ -642,6 +581,28 @@
       }
     },
     {
+      "class": "image.position.value",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "new_rechin4",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/image[18]@position",
+        "produced": "position: center",
+        "reference": "position: right"
+      }
+    },
+    {
       "class": "link.inline.missing",
       "severity": "major",
       "instances": 2,
@@ -683,28 +644,6 @@
         "path": "/align[2]/paragraph[1]",
         "produced": "frame: gold",
         "reference": null
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "tarrega",
-        "xtra_mikulka"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "tarrega",
-        "path": "/heading[13]",
-        "produced": "Сборник произведений Франсиско Тарреги",
-        "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
       }
     },
     {
@@ -793,6 +732,27 @@
         "path": "/paragraph[3]",
         "produced": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…",
         "reference": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…"
+      }
+    },
+    {
+      "class": "align.spurious",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "xtra_shelechov"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 6,
+      "example": {
+        "doc": "xtra_shelechov",
+        "path": "/align[14]",
+        "produced": "I отделение",
+        "reference": null
       }
     },
     {
@@ -1007,27 +967,6 @@
       }
     },
     {
-      "class": "paragraph.spurious.caption-echo",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "xtra_oyanguren"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "xtra_oyanguren",
-        "path": "/paragraph[8]",
-        "produced": "Почтовая марка, в память Хулио Мартинеса ОЯНГУРЕНА, выпущенная в Уругвае в серии Artistas Uruguayos (1999)",
-        "reference": null
-      }
-    },
-    {
       "class": "retyped.align-to-table",
       "severity": "major",
       "instances": 1,
@@ -1130,6 +1069,27 @@
         "path": "/align[2]/frame[0]",
         "produced": "Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запозданием.",
         "reference": "frame: gold Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запоз… — at /align[2]/paragraph[1]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-heading2",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "tarrega",
+        "path": "/heading[13]",
+        "produced": "Сборник произведений Франсиско Тарреги",
+        "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
       }
     },
     {
@@ -1278,27 +1238,6 @@
         "path": "/frame[10]@position",
         "produced": "position: center",
         "reference": null
-      }
-    },
-    {
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "xtra_oyanguren"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 1,
-      "example": {
-        "doc": "xtra_oyanguren",
-        "path": "/image[7]@caption",
-        "produced": null,
-        "reference": "caption: Почтовая марка, в память Хулио Мартинеса ОЯНГУРЕНА, выпущенная в Уругвае в серии Artistas Uruguayos (1999)"
       }
     },
     {
@@ -4522,76 +4461,6 @@
       "produced": null,
       "reference": "◀ 🞈",
       "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "3c714dc9",
-      "doc": "xtra_mikulka",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[6]",
-      "producedLine": 65,
-      "referenceLine": null,
-      "produced": "ДИСКОГРАФИЯ",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "82b9b4ba",
-      "doc": "xtra_mikulka",
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/heading[5]",
-      "producedLine": 68,
-      "referenceLine": 64,
-      "produced": "ДИСКОГРАФИЯ",
-      "reference": "ДИСКОГРАФИЯ — at /align[6]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f7d73ba9",
-      "doc": "xtra_oyanguren",
-      "class": "paragraph.spurious.caption-echo",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[8]",
-      "producedLine": 89,
-      "referenceLine": null,
-      "produced": "Почтовая марка, в память Хулио Мартинеса ОЯНГУРЕНА, выпущенная в Уругвае в серии Artistas Uruguayos (1999)",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "77bb13f8",
-      "doc": "xtra_oyanguren",
-      "class": "image.caption.missing",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/image[7]@caption",
-      "producedLine": 84,
-      "referenceLine": 84,
-      "produced": null,
-      "reference": "caption: Почтовая марка, в память Хулио Мартинеса ОЯНГУРЕНА, выпущенная в Уругвае в серии Artistas Uruguayos (1999)",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7be8978b",
-      "doc": "xtra_oyanguren",
-      "class": "image.position.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/image[7]@position",
-      "producedLine": 84,
-      "referenceLine": 84,
-      "produced": "position: center",
-      "reference": "position: right",
-      "verdict": "converter-defect"
     },
     {
       "id": "df4820de",

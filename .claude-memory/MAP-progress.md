@@ -153,18 +153,18 @@ with no code change at all. §39.1 separates the two.
 | 39 analyze-3 | 5023-5328 | four mechanisms, three killed hypotheses, six author rulings | |
 | 40 geyzel/figure/headline | 5330-5511 | four titles are four headings · a floated figure beside its paragraph · a headline over a lighter line · a colon then quotation marks | |
 | 41 de-hyphenation oracle | 5513-5578 | the dependency was present, its integration was broken | |
-| 42 the six `xtra_` pairs | 5580-end | **corpus 22 -> 28, holdout promoted away `42.1`** · `92b7e67` moved every rung with no code `42.2` · baseline `42.3` · **two reference divergences recorded, not worked `42.4`** · the numbered-slot strip `42.5` · the full-span table title `42.6` · what remains `42.7` | HOT |
+| 42 the six `xtra_` pairs | 5580-end | **corpus 22 -> 28, holdout promoted away `42.1`, refilled `42.8`** · `92b7e67` moved every rung with no code `42.2` · baseline `42.3` · **two reference divergences recorded, not worked `42.4`** · the numbered-slot strip `42.5` · the full-span table title `42.6` · what remains `42.7` · **the holdout refilled, sources in / references out `42.8`** | HOT |
 
-## Checkpoint -- §42, measured 2026-08-11 over **28 documents**
+## Checkpoint -- §42, measured 2026-08-11 over **26 compared documents** (28 converted)
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | **526** tests, typecheck clean, 0 FAILED, `read()` warnings 0 | `npm install && npx tsc -p tsconfig.json --noEmit && npm test` |
-| L1 | **98.5 %** | `sh bench/run.sh` |
-| L2 | **329** findings -- **212 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 14 critical | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
-| L3 | **67** findings, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| L0 | **526** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npm install && npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **98.4 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
+| L2 | **324** findings -- **207 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 14 critical | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **65** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
 | validator | **0** on every produced document | `validate bench/out/<name>.bio.md` |
 
-**Never quote the 212 bare.** 138 of them (65 %) are the two reference divergences PROGRESS §42.4
+**Never quote the 207 bare.** 138 of them (67 %) are the two reference divergences PROGRESS §42.4
 records -- `xtra_shelechov`'s row-major grid (~96) and `xtra_karta5`'s table headings (42, ruled
-ignorable by the author). The honest open count is **~74**.
+ignorable by the author). The honest open count is **~69**.

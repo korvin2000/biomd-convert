@@ -24,20 +24,23 @@ disagree, the repository file wins and this index gets fixed.
 | the deliverable | (1) a rule system that generalizes to the other ~987 pages; (2) an evaluation apparatus that localizes defects. Both. |
 | the objective | source fidelity > visual layout quality > generality. **Never** byte-agreement with the references. |
 
-**Corpus roles -- verified 2026-08-11.** Instruments must report **28** documents. The "22" every
-earlier note quotes is superseded: the author added six `xtra_*` pairs and promoted the holdout.
+**Corpus roles -- verified 2026-08-11.** **28 sources convert; 26 are compared.** The "22" every
+earlier note quotes is superseded: the author added six `xtra_*` pairs and promoted the old holdout.
 
 | role | members | rule |
 |---|---|---|
 | regression corpus | the original **13** (`authors barrios borislova goya2 jovicic kiselev news news_2007 pavlov_azancheev segovia segovia1 tarrega williams2`) | the floor. Never regress it |
-| refinement set | **9** `new_*` + **6** `xtra_*` pairs in `fixtures/html/` ↔ `fixtures/out/` | where the work happens |
-| holdout | **none** | the role is empty -- see below |
+| refinement set | **9** `new_*` + **4** `xtra_*` (`albeniz karta5 rodrigo shelechov`) | where the work happens |
+| holdout | **`xtra_oyanguren`**, **`xtra_mikulka`** -- sources in `fixtures/html/`, references in `fixtures/out2/` | never read, diff, score or tune against them |
 
-> **The holdout role is empty and cannot be refilled from the repository.** `xtra_karta5` *is* the
-> former holdout `new_karta5` -- byte-identical reference, CRLF-normalized source -- promoted by the
-> author into `fixtures/html/`+`out/`. The stale copies still sit in `fixtures/html2/`+`out2/`. All
-> 28 documents have now been diffed, so none can serve retroactively. **Name a holdout before
-> designing a rule on the new pairs.** PROGRESS §42.1.
+> **Which count an instrument reports tells you whether the holdout leaked.** `eval`, `diff` and `l3`
+> all enumerate **`expectedDir`** (`fixtures/out/`), so they must say **26**; `corpus run` and
+> `bench/run.sh` follow `inputDir` and must still convert **28**. That arrangement is deliberate and
+> better than the old `new_karta5` one, which moved the *source* out and lost the blind
+> conservation/validation signal with it. If `l3` says 28, a reference has been put back.
+
+> `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
+> the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
 **Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §42** recalculated everything for
 the 28-document corpus and landed two table mechanisms — a strip of numbered slots is one column, not

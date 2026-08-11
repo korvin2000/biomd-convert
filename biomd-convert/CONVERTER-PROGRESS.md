@@ -5592,7 +5592,8 @@ must report 22" is superseded. **The holdout role is currently empty** — every
 been diffed, so no document in the repository can serve as one retroactively. The next iteration needs
 a holdout named before any rule is designed on the new pairs.
 
-Roles now: regression corpus the original 13 · refinement set 9 `new_*` + 6 `xtra_*` · holdout none.
+Roles now: regression corpus the original 13 · refinement set 9 `new_*` + 4 `xtra_*` · holdout
+`xtra_oyanguren` and `xtra_mikulka`, named by the author the same day — see §42.8.
 
 ### 42.2 `92b7e67` moved every rung with no code change
 
@@ -5739,3 +5740,41 @@ real and still high-risk.
 Provably unreachable now: `xtra_shelechov`'s ~96 and `xtra_karta5`'s 42, both recorded above.
 Together they are **138 of the 212 remaining converter-defects, 65 %**. The corpus's honest open
 count is closer to **74**.
+
+### 42.8 The holdout, refilled — sources in, references out (2026-08-11)
+
+The author chose `xtra_oyanguren` and `xtra_mikulka`. Only their **references** moved, to
+`fixtures/out2/`; both sources stay in `fixtures/html/`.
+
+That is deliberate and is the arrangement §19.2 wanted and the `new_karta5` era lost. `eval`, `diff`
+and `l3` all enumerate `expectedDir` and pair each *reference* with its produced output, so a document
+with no reference is invisible to L1, L2 and L3. `corpus run` and `bench/run.sh` follow `inputDir`, so
+both documents are still converted, still validated and still inside the conservation gate — the blind
+signal §19.2 asked for, which disappeared when `new_karta5`'s *source* was moved out instead.
+
+**The count is the leak detector.** `l3` prints its document count directly and must say **26**;
+`bench/run.sh` must still report **28** converted. If a comparison rung says 28, a reference has been
+put back.
+
+Re-baselined immediately after the move, 2026-08-11:
+
+| rung | 28 compared | **26 compared, 28 converted** |
+|---|---|---|
+| L0 | 526 tests, 0 FAILED | **526 tests**, 0 FAILED, typecheck clean |
+| L1 | 98.5 | **98.4** |
+| L2 | 329 findings · 212 defect · 14 critical | **324 · 207 · 14** |
+| L3 | 67 over 28 documents | **65 over 26 documents** |
+| validator | 0 errors on 28 produced | **0 errors on 28 produced** (holdout included) |
+
+Every delta is exactly the two documents leaving the comparison — `xtra_oyanguren` 3 findings/3
+defects and `xtra_mikulka` 2/2 give L2 −5/−5, and `xtra_mikulka`'s 2 L3 findings give L3 −2. L1 falls
+0.1 because two documents scoring 100.0 and 98.2 left a 28-document average. **No behaviour changed**;
+do not read the L1 drop as a regression.
+
+**Honest caveat for the next session: this holdout is clean from §43 onward, not for §42.** Both
+references were read in full during §42's reconnaissance, before the author named them, and
+`xtra_mikulka` appears in §42.4's corpus-wide `::: columns` survey as one of the eight per-row
+documents. No rule was designed or tuned against either — §42.5's and §42.6's positives and false
+friends are `xtra_rodrigo`, `xtra_karta5`, `segovia`, `xtra_albeniz` and `kiselev` — so the figures
+above stand as their measured-once values. Treat the *first* post-§42 measurement as the honest
+generalization reading.

@@ -26,15 +26,13 @@
       "williams2",
       "xtra_albeniz",
       "xtra_karta5",
-      "xtra_mikulka",
-      "xtra_oyanguren",
       "xtra_rodrigo",
       "xtra_shelechov"
     ]
   },
   "totals": {
-    "findings": 67,
-    "alignmentRows": 243
+    "findings": 65,
+    "alignmentRows": 233
   },
   "classes": [
     {
@@ -44,13 +42,13 @@
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 12,
-      "documents": 7
+      "instances": 11,
+      "documents": 6
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 15,
-      "documents": 10
+      "instances": 14,
+      "documents": 9
     },
     {
       "class": "layout.order.mismatch",
@@ -536,46 +534,6 @@
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "d04f10bd",
-      "doc": "xtra_mikulka",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/heading[5]",
-      "producedLine": 68,
-      "referenceLine": 64,
-      "produced": "ДИСКОГРАФИЯ",
-      "reference": "ДИСКОГРАФИЯ",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "cf3c5b52",
-      "doc": "xtra_mikulka",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/heading[5]",
-      "producedLine": 68,
-      "referenceLine": 64,
-      "produced": "ДИСКОГРАФИЯ",
-      "reference": "ДИСКОГРАФИЯ",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "(root)"
       }
     },
     {
@@ -4183,136 +4141,6 @@
       "sourceProse": "left",
       "sourceDistinctive": true,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/p[1]/span[1]/font[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 4,
-      "referenceLine": 4,
-      "text": "Владимир",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]/b[1]/font[1]/span[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 6,
-      "referenceLine": 6,
-      "text": "Микулка",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[2]/font[1]/span[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 12,
-      "referenceLine": 12,
-      "text": "Владимир Микулка",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "start",
-      "sourceAlignment": "left",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 25,
-      "referenceLine": 25,
-      "text": "Владимир Микулка на обложке журнала \"Classical Guitar\", октябрь 1984 г.",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/img[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 36,
-      "referenceLine": 36,
-      "text": "Владимир Микулка на обложке журнала \"Classical Guitar\", июнь 1989 г.",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/img[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 47,
-      "referenceLine": 47,
-      "text": "CD-диск Вл. Микулки - 'Classics from Bohemia'",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[3]/img[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 54,
-      "referenceLine": 54,
-      "text": "CD-диск Вл. Микулки - 'Stepan Rak'",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/center[1]/table[1]/tbody[1]/tr[2]/td[1]/img[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 68,
-      "referenceLine": 64,
-      "text": "ДИСКОГРАФИЯ",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "-webkit-center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[5]/font[1]"
-    },
-    {
-      "doc": "xtra_mikulka",
-      "producedLine": 86,
-      "referenceLine": 82,
-      "text": "",
-      "producedAlignment": "center",
-      "referenceAlignment": "center",
-      "sourceTextAlignRaw": "-webkit-left",
-      "sourceAlignment": "left",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[1]/div[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/img[1]"
-    },
-    {
-      "doc": "xtra_oyanguren",
-      "producedLine": 13,
-      "referenceLine": 13,
-      "text": "Хулио М. Оянгурен (Julio J. Martinez Oyanguren)",
-      "producedAlignment": "right",
-      "referenceAlignment": "right",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[1]/img[2]"
     },
     {
       "doc": "xtra_rodrigo",

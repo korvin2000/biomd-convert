@@ -1,4 +1,7 @@
-# MAP-corpus -- 22 documents + 1 holdout, and what each one proves
+# MAP-corpus -- 26 compared + 2 holdout (28 converted), and what each one proves
+
+**Updated 2026-08-11, PROGRESS §42.** Six `xtra_` pairs joined the corpus and the holdout
+changed hands. §1 and §2 below still describe the original 13 and 9; §2b and §3 are new.
 
 Pick a document by **what it can falsify**, not by how many findings it has. A class in one document
 is nearly always the wrong target however many instances it has (`CLAUDE.md` §5).
@@ -41,21 +44,39 @@ Reference shape, measured 2026-08-08 (`^::: <name>$` fence counts; `tbl` = pipe-
 | `new_geyzel04` | long-form prose, deep nesting | nav 1 · align 3 · image 1 | nesting depth 4 vs budget 3; 48 review escalations (volume, not kind) |
 | `new_rechin4` | long-form prose | **lead 9** · h2 4 · nav 1 | **§17.5 Q3** -- the reference segments heavily and uses `::: lead` repeatedly; the converter emitted 11 paragraphs and 2 `line-too-long` |
 
-## 3. Holdout -- `new_karta5`. Do not open.
+## 2b. Refinement set -- the 4 `xtra_*` pairs that stayed comparable
 
-`fixtures/html2/new_karta5.htm` ↔ `fixtures/out2/new_karta5.bio.md`. Chosen because it stresses the
-two open questions hardest (PROGRESS §17.1, §17.2). What is already recorded about it from the blind
-phase -- safe to use, it predates the reference:
+Added by the author 2026-08-11 and measured the same day. Reference shapes counted from
+`fixtures/out/*.bio.md`.
 
-- 21 multi-column tables at 1024 px, **12 of them single-row**; the table path emits 4 of 15.
-- 39 `::: align` directives, more than any of the 13, **21 with no distinctive source alignment**.
-- It is the only document in 23 with **zero** leaf blocks ≥120 chars, so `proseAlignOf` returns a
-  **null baseline** and `isDistinctiveAlign` falls back to "centre and right are distinctive on their
-  own". Any change to the alignment baseline must be measured knowing this.
+| document | archetype | what it proves / why you'd open it | defects after §42 |
+|---|---|---|---|
+| `xtra_albeniz` | media table + bound figures | **the clean one.** A 13x3 record matrix whose score rows subdivide the leading band, `::: image` sizing, and the `/../` asset climb -- all correct on first contact. Open it as the *positive control* for any table change | **0** |
+| `xtra_rodrigo` | wide score sheet + two-lane works list | the eleven-column strip (§42.5) and the full-span work title (§42.6) both live here, and both references are unambiguous. **L1 100.0 on every axis** | **1** |
+| `xtra_karta5` | catalog of ~20 record tables | the former holdout. Its table *headings* are the corpus outlier and are author-ruled ignorable (OPEN §3.13); its table *content* is the evidence. Holds the six-column Sor matrix that kills any "wide tables are wrong" rule, and the plain full-span section label that is §42.6's false friend | 50 (**42 ceiling**) |
+| `xtra_shelechov` | 27x2 concert programme | the row-major-grid divergence, 8 references to 1 (PROGRESS §42.4). Open it to understand the ceiling, not to work it | 101 (**~96 ceiling**) |
 
-Both its source and its reference now sit outside `fixtures/`'s scanned directories, so `corpus run`
-does not convert it. Measuring it at the end means copying the `.htm` into `fixtures/html/`
-deliberately.
+## 3. Holdout -- `xtra_oyanguren`, `xtra_mikulka`. Do not open.
+
+Named by the author 2026-08-11. Sources stay in `fixtures/html/`; **only the references moved**, to
+`fixtures/out2/`. `eval`, `diff` and `l3` enumerate `expectedDir`, so both are invisible to L1/L2/L3;
+`corpus run` follows `inputDir`, so both are still converted, validated and inside the conservation
+gate. That is the arrangement PROGRESS §19.2 wanted and the `new_karta5` era lost.
+
+**The leak detector is the pair of counts:** `l3` must print **26 documents**, `bench/run.sh` must
+still report **28** converted. If a comparison rung says 28, a reference has been put back.
+
+Chosen because they exercise the `columns`/`images` shapes rather than the tables §42 worked:
+`xtra_oyanguren` is a two-lane composer/works list plus an `::: images columns: 2` pair-gallery,
+`xtra_mikulka` a three-lane discography with a per-cell image stack.
+
+Measured once, 2026-08-11, before they were named: `xtra_oyanguren` 3 findings / 3 defects,
+`xtra_mikulka` 2 / 2 and 2 L3. **Clean from §43 onward, not for §42** -- both references were read
+during §42's reconnaissance and `xtra_mikulka` appears in §42.4's `::: columns` survey, though no
+rule was designed or tuned against either. PROGRESS §42.8.
+
+The previous holdout `new_karta5` is now `xtra_karta5` in the measured corpus; its stale copies still
+sit in `fixtures/html2/` + `fixtures/out2/` and pair with nothing.
 
 ## 4. Corpus facts a rule may assume (`CLAUDE.md` §5, geometry-confirmed)
 

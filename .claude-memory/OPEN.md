@@ -16,13 +16,16 @@ Facts marked *measured* were taken then; facts marked *recorded* are quoted and 
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, **28 documents**. The author added six `xtra_` pairs and promoted the
-old holdout into the corpus; §42 recalculated everything and landed two table mechanisms.
+Reference-guided refinement, **28 sources / 26 compared**. The author added six `xtra_` pairs and
+promoted the old holdout into the corpus; §42 recalculated everything, landed two table mechanisms
+and refilled the holdout.
 
-> **The corpus is 28, not 22, and `xtra_karta5` *is* the former holdout `new_karta5`** (byte-identical
-> reference, CRLF-normalized source). **The holdout role is empty.** All 28 have now been diffed, so
-> none can serve retroactively — the next iteration must name one before designing a rule.
-> PROGRESS §42.1.
+> **28 sources convert; 26 are compared.** `xtra_karta5` *is* the former holdout `new_karta5`
+> (byte-identical reference, CRLF-normalized source), promoted by the author into the corpus. The
+> holdout was refilled the same day with **`xtra_oyanguren`** and **`xtra_mikulka`**: only their
+> *references* moved, to `fixtures/out2/`, so both are still converted, validated and inside the
+> conservation gate while being invisible to L1/L2/L3. **`l3` must print 26 and `bench/run.sh` must
+> still convert 28** — that pair of counts is the leak detector. PROGRESS §42.1, §42.8.
 
 > **Two things moved the baseline with no code change**, and both must be quoted or the numbers read
 > wrong: commit `92b7e67` *"fixed reference files"* landed after §41 and edited 16 references (the
@@ -34,16 +37,19 @@ old holdout into the corpus; §42 recalculated everything and landed two table m
 | rung | value |
 |---|---|
 | L0 | **526 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
-| L1 | **98.5 %** |
-| L2 | **329 findings -- 212 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 14 critical |
-| L3 | **67** over 28 documents, identity 0, deterministic |
-| validator | **0 errors on every produced document** |
+| L1 | **98.4 %** over the 26 compared |
+| L2 | **324 findings -- 207 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 14 critical |
+| L3 | **65** over 26 documents, identity 0, deterministic |
+| validator | **0 errors on all 28 produced documents**, holdout included |
 
 That is the floor. Nothing accepted from here may regress it.
 
-> **65 % of the 212 are two recorded reference divergences, not work.** `xtra_shelechov` ~96 and
-> `xtra_karta5` 42. The honest open count is **~74**. Quote the split or the ledger reads as a
+> **67 % of the 207 are two recorded reference divergences, not work.** `xtra_shelechov` ~96 and
+> `xtra_karta5` 42. The honest open count is **~69**. Quote the split or the ledger reads as a
 > collapse in quality that did not happen.
+>
+> The 329 -> 324 and 67 -> 65 steps are the holdout leaving the comparison, and the 98.5 -> 98.4 is a
+> 26-document average replacing a 28-document one. **No behaviour changed.**
 
 **`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
 clone and `tsc` fails on the missing declarations. That is a build failure, not a degradation.
@@ -55,14 +61,12 @@ L2 criticals 52 → 14) · a full-span leading row is the table's title, not a r
 construct's lowered-out block out of the align-run pass).
 
 **Next, in order. Probe before committing (SKILL §6).**
-1. **Name a holdout.** The role is empty and nothing else in the queue is safe to design without one.
-   Ask the author, or hold the next pair they supply.
-2. **`retyped.paragraph-to-align`** — 5 instances, 5 documents, the largest genuinely general class
+1. **`retyped.paragraph-to-align`** — 5 instances, 5 documents, the largest genuinely general class
    left. 4 are the centred glyph pager and are the rule killed twice (§30.1/§35.10) — do not rebuild
    it whole. `segovia`'s has still never been probed.
-3. **`image.position.value` 3/3 docs** and **`paragraph.missing.in-paragraph` 3/3** — the only other
+2. **`image.position.value` 3/3 docs** and **`paragraph.missing.in-paragraph` 3/3** — the only other
    classes spanning three documents.
-4. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
+3. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
    wrong on 8 of 22 and load-bearing in five rules. Three replacements built, all three reverted on
    measurement. Start from `headingLineOf`.
 
@@ -194,6 +198,11 @@ Per document, converter-defect: `xtra_shelechov` 101 (**~96 ceiling**) · `xtra_
 `new_kolpakov` 4 · `news_2007` 4 · `goya2` 3 · rest <= 3.
 `authors`, `barrios`, `new_bach`, `new_dyens`, `segovia1`, `williams2` and **`xtra_albeniz`** are at
 **0**. `xtra_rodrigo` is at **1** and at **L1 100.0 on every axis**.
+
+The holdout's measured-once values, taken 2026-08-11 before it was named and **not to be re-measured
+until §43 has landed its work**: `xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 and
+2 L3. Both were read during §42's reconnaissance, so they are a clean holdout from §43 onward, not
+for §42 — PROGRESS §42.8 states exactly what touched them.
 
 ## 5. Instrument debt -- what to distrust, in order
 

@@ -1,5 +1,5 @@
 {
-  "overall": 0.9846079876922673,
+  "overall": 0.9842513704628845,
   "documents": [
     {
       "name": "authors",
@@ -363,22 +363,13 @@
     {
       "name": "goya2",
       "text": {
-        "recall": 0.9943701618578465,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9971771347918136,
-        "expected": 1421,
+        "f1": 1,
+        "expected": 1413,
         "actual": 1413,
         "matched": 1413,
-        "missing": [
-          "francis goya plays his favourite",
-          "goya plays his favourite hits",
-          "plays his favourite hits vol",
-          "his favourite hits vol 2",
-          "favourite hits vol 2 francis",
-          "hits vol 2 francis goya",
-          "vol 2 francis goya plays",
-          "2 francis goya plays his"
-        ]
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -428,7 +419,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9981361912850016
+      "overall": 0.9989830508474576
     },
     {
       "name": "jovicic",
@@ -1357,14 +1348,13 @@
         "missing": []
       },
       "headings": {
-        "recall": 0.6666666666666666,
-        "precision": 0.8,
-        "f1": 0.7272727272727272,
+        "recall": 0.8333333333333334,
+        "precision": 1,
+        "f1": 0.9090909090909091,
         "expected": 6,
         "actual": 5,
-        "matched": 4,
+        "matched": 5,
         "missing": [
-          "3\tвместо эпилога",
           "3\tблагодарности"
         ]
       },
@@ -1387,15 +1377,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.888888888888889,
-        "expected": 5,
+        "f1": 1,
+        "expected": 4,
         "actual": 4,
         "matched": 4,
-        "missing": [
-          "align"
-        ]
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -1409,24 +1397,18 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9616161616161616
+      "overall": 0.9909090909090909
     },
     {
       "name": "new_karta",
       "text": {
-        "recall": 0.9871134020618557,
-        "precision": 0.9871134020618557,
-        "f1": 0.9871134020618557,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
         "expected": 388,
         "actual": 388,
-        "matched": 383,
-        "missing": [
-          "нот и табулатур frame white",
-          "и табулатур frame white поскольку",
-          "табулатур frame white поскольку биографические",
-          "frame white поскольку биографические страницы",
-          "white поскольку биографические страницы сайта"
-        ]
+        "matched": 388,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -1917,7 +1899,7 @@
           ]
         }
       ],
-      "overall": 0.955251480936017
+      "overall": 0.9591174603174603
     },
     {
       "name": "new_kolpakov",
@@ -2147,16 +2129,13 @@
     {
       "name": "new_rechin4",
       "text": {
-        "recall": 0.9991087344028521,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9995541685242979,
-        "expected": 2244,
+        "f1": 1,
+        "expected": 2242,
         "actual": 2242,
         "matched": 2242,
-        "missing": [
-          "особенности стиля игоря рехина 9664",
-          "стиля игоря рехина 9664 9679"
-        ]
+        "missing": []
       },
       "headings": {
         "recall": 0.7142857142857143,
@@ -2211,25 +2190,18 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.962503613194652
+      "overall": 0.9626373626373627
     },
     {
       "name": "news",
       "text": {
-        "recall": 0.9963436928702011,
-        "precision": 0.9969512195121951,
-        "f1": 0.9966473636086559,
-        "expected": 1641,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1640,
         "actual": 1640,
-        "matched": 1635,
-        "missing": [
-          "формате pdf на страницах сайта",
-          "pdf на страницах сайта guitartimes",
-          "на страницах сайта guitartimes ru",
-          "страницах сайта guitartimes ru frame",
-          "сайта guitartimes ru frame black",
-          "guitartimes ru frame black 10"
-        ]
+        "matched": 1640,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -2281,7 +2253,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9978706135769788
+      "overall": 0.9988764044943821
     },
     {
       "name": "news_2007",
@@ -2414,21 +2386,19 @@
     {
       "name": "segovia",
       "text": {
-        "recall": 0.9902467010900746,
-        "precision": 0.99252443933295,
-        "f1": 0.9913842619184378,
-        "expected": 1743,
+        "recall": 0.996551724137931,
+        "precision": 0.9971247843588269,
+        "f1": 0.9968381718884738,
+        "expected": 1740,
         "actual": 1739,
-        "matched": 1726,
+        "matched": 1734,
         "missing": [
           "памяти дебюсси федерико морено торроба",
           "дебюсси федерико морено торроба танцы",
           "федерико морено торроба танцы ноктюрны",
           "морено торроба танцы ноктюрны пьесы",
           "торроба танцы ноктюрны пьесы прелюды",
-          "танцы ноктюрны пьесы прелюды кастильскую",
-          "сеговия м музыка 1981 bobri1",
-          "м музыка 1981 bobri1 денис"
+          "танцы ноктюрны пьесы прелюды кастильскую"
         ]
       },
       "headings": {
@@ -2473,14 +2443,14 @@
       },
       "tableCells": {
         "recall": 1,
-        "precision": 0.9583333333333334,
-        "f1": 0.9787234042553191,
+        "precision": 1,
+        "f1": 1,
         "expected": 23,
-        "actual": 24,
+        "actual": 23,
         "matched": 23,
         "missing": []
       },
-      "tableShape": 0.95,
+      "tableShape": 1,
       "expectedTables": [
         {
           "cols": 3,
@@ -2508,7 +2478,7 @@
             "",
             "",
             "",
-            "mp3"
+            ""
           ],
           "cells": [
             "i",
@@ -2551,7 +2521,7 @@
         },
         {
           "cols": 5,
-          "rows": 5,
+          "rows": 4,
           "header": [
             "",
             "",
@@ -2560,7 +2530,6 @@
             ""
           ],
           "cells": [
-            "joaquin rodrigo andres segovia fantasia para un gentilhombre for guitar orchestra",
             "i",
             "villano y recercarre",
             "4 49",
@@ -2580,25 +2549,18 @@
           ]
         }
       ],
-      "overall": 0.9506272979857591
+      "overall": 0.960454960338472
     },
     {
       "name": "segovia1",
       "text": {
-        "recall": 0.9963614311704063,
-        "precision": 0.9975713418336369,
-        "f1": 0.9969660194174758,
-        "expected": 1649,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1647,
         "actual": 1647,
-        "matched": 1643,
-        "missing": [
-          "андреса сеговии columns 4 9664",
-          "сеговии columns 4 9664 андрес",
-          "columns 4 9664 андрес сеговия",
-          "4 9664 андрес сеговия владимир",
-          "9664 андрес сеговия владимир бобри",
-          "андрес сеговия владимир бобри 9654"
-        ]
+        "matched": 1647,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -2629,11 +2591,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.9629629629629629,
-        "f1": 0.9811320754716981,
-        "expected": 26,
+        "precision": 1,
+        "f1": 1,
+        "expected": 27,
         "actual": 27,
-        "matched": 26,
+        "matched": 27,
         "missing": []
       },
       "tableCells": {
@@ -2648,27 +2610,18 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9972030133724125
+      "overall": 1
     },
     {
       "name": "tarrega",
       "text": {
-        "recall": 0.9833147942157954,
-        "precision": 0.9866071428571429,
-        "f1": 0.9849582172701951,
-        "expected": 899,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 896,
         "actual": 896,
-        "matched": 884,
-        "missing": [
-          "a y t 364 название",
-          "y t 364 название часть",
-          "t 364 название часть 2",
-          "364 название часть 2 pdf",
-          "название часть 2 pdf 1",
-          "a y t 396 название",
-          "y t 396 название музыка",
-          "t 396 название музыка табулатуры"
-        ]
+        "matched": 896,
+        "missing": []
       },
       "headings": {
         "recall": 0.75,
@@ -2725,7 +2678,7 @@
           "cols": 2,
           "rows": 6,
           "header": [
-            "название",
+            "",
             ""
           ],
           "cells": [
@@ -2747,7 +2700,7 @@
           "cols": 2,
           "rows": 11,
           "header": [
-            "название",
+            "",
             ""
           ],
           "cells": [
@@ -3014,7 +2967,7 @@
           ]
         }
       ],
-      "overall": 0.9700906397842332
+      "overall": 0.9746031746031746
     },
     {
       "name": "williams2",
@@ -3102,6 +3055,1250 @@
         }
       ],
       "overall": 1
+    },
+    {
+      "name": "xtra_albeniz",
+      "text": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 507,
+        "actual": 507,
+        "matched": 507,
+        "missing": []
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 24,
+        "actual": 24,
+        "matched": 24,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 0.9259259259259259,
+        "precision": 0.8064516129032258,
+        "f1": 0.8620689655172414,
+        "expected": 27,
+        "actual": 31,
+        "matched": 25,
+        "missing": [
+          "ноты транскрипция а сеговии 1 2 3 4 5",
+          "ноты транскрипция д прата 1 2 3 4 5"
+        ]
+      },
+      "tableShape": 1,
+      "expectedTables": [
+        {
+          "cols": 3,
+          "rows": 13,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "celebre serenata espanola cadiz arranged miguel llobet",
+            "tab",
+            "cordoba from chants d espagne",
+            "tab",
+            "mallorca barcarolla arranged in am",
+            "tab",
+            "plegaria andante",
+            "tab",
+            "suite espanola op 47 no 3 sevilla arranged tarrega miguel llobet",
+            "tab",
+            "midi",
+            "suite espanola op 47 no 5 asturias leyenda",
+            "tab",
+            "midi",
+            "asturias leyenda исп филомена моретти",
+            "wma",
+            "ноты транскрипция а сеговии 1 2 3 4 5",
+            "ноты транскрипция д прата 1 2 3 4 5",
+            "recuerdos de viaje op 71 no 6 rumores de la caleta malaguena",
+            "tab",
+            "suite espana op 165 no 2 tango in d",
+            "tab",
+            "midi",
+            "zambra granadina",
+            "tab",
+            "el puerto da suite iberia arr sergio abreu duo",
+            "wma"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 3,
+          "rows": 13,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "celebre serenata espanola cadiz arranged miguel llobet",
+            "tab",
+            "cordoba from chants d espagne",
+            "tab",
+            "mallorca barcarolla arranged in am",
+            "tab",
+            "plegaria andante",
+            "tab",
+            "suite espanola op 47 no 3 sevilla arranged tarrega miguel llobet",
+            "tab",
+            "midi",
+            "suite espanola op 47 no 5 asturias leyenda",
+            "tab",
+            "midi",
+            "asturias leyenda исп филомена моретти",
+            "wma",
+            "ноты транскрипция а сеговии 1",
+            "2 3",
+            "4 5",
+            "ноты транскрипция д прата 1",
+            "2 3",
+            "4 5",
+            "recuerdos de viaje op 71 no 6 rumores de la caleta malaguena",
+            "tab",
+            "suite espana op 165 no 2 tango in d",
+            "tab",
+            "midi",
+            "zambra granadina",
+            "tab",
+            "el puerto da suite iberia arr sergio abreu duo",
+            "wma"
+          ]
+        }
+      ],
+      "overall": 0.9793103448275862
+    },
+    {
+      "name": "xtra_karta5",
+      "text": {
+        "recall": 0.7636363636363637,
+        "precision": 0.7688787185354691,
+        "f1": 0.766248574686431,
+        "expected": 440,
+        "actual": 437,
+        "matched": 336,
+        "missing": [
+          "аудио нот и табулатур cancion",
+          "нот и табулатур cancion tef",
+          "и табулатур cancion tef пенья",
+          "табулатур cancion tef пенья пако",
+          "cancion tef пенья пако аргентинское",
+          "tef пенья пако аргентинское танго",
+          "пенья пако аргентинское танго mp3",
+          "пако аргентинское танго mp3 перес"
+        ]
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 153,
+        "actual": 153,
+        "matched": 153,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 0.9783783783783784,
+        "precision": 0.9627659574468085,
+        "f1": 0.9705093833780161,
+        "expected": 185,
+        "actual": 188,
+        "matched": 181,
+        "missing": [
+          "ноты gif i 1 2 3 4 5 6 7 8",
+          "ii 1 2 3 4 5 6 7 8",
+          "iii 1 2 3 4 5 6 7 8",
+          "см на странице биографии альбом а фраучи гитара мелодия 1982"
+        ]
+      },
+      "tableShape": 0.9249999999999999,
+      "expectedTables": [
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "пенья пако",
+            ""
+          ],
+          "cells": [
+            "cancion",
+            "tef"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "перес карлос",
+            ""
+          ],
+          "cells": [
+            "аргентинское танго",
+            "mp3"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 2,
+          "header": [
+            "пухоль эмилио",
+            ""
+          ],
+          "cells": [
+            "el abejorro",
+            "midi",
+            "atardecer",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "пьяццола астор",
+            ""
+          ],
+          "cells": [
+            "romantico исп горан иванович",
+            "wma"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 4,
+          "header": [
+            "римскийкорсаков николай андреевич",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "полет шмеля",
+            "tef",
+            "tab",
+            "фортепиано",
+            "mp3",
+            "8 струнная гитара александр виноград",
+            "mp3",
+            "ноты gif 1 2 3 4 5 6",
+            "zip"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 10,
+          "header": [
+            "родригохоакин",
+            ""
+          ],
+          "cells": [
+            "fantasia para un gentilhombre for guitar orchestra guitar andres segovia",
+            "i villano y recercarre",
+            "мр3",
+            "ii espanoleta e fanfare de la caballeria de napoles",
+            "мр3",
+            "iii danza de las hachas",
+            "мр3",
+            "iv canario",
+            "мр3",
+            "concierto de aranjuez for guitar orchestra guitar john zaradin",
+            "ii adagio fragment",
+            "мр3",
+            "ноты gif i 1 2 3 4 5 6 7 8",
+            "zip",
+            "ii 1 2 3 4 5 6 7 8",
+            "zip",
+            "iii 1 2 3 4 5 6 7 8",
+            "zip"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "руссель альбер",
+            ""
+          ],
+          "cells": [
+            "segovia opus 29",
+            "tab"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "санц гаспар",
+            ""
+          ],
+          "cells": [
+            "canarios",
+            "мidi"
+          ]
+        },
+        {
+          "cols": 6,
+          "rows": 11,
+          "header": [
+            "сор фернандо",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "двадцать этюдов",
+            "estudio nr 01",
+            "midi",
+            "mp3",
+            "estudio nr 11",
+            "midi",
+            "mp3",
+            "estudio nr 02",
+            "midi",
+            "mp3",
+            "estudio nr 12",
+            "midi",
+            "mp3",
+            "estudio nr 03",
+            "midi",
+            "mp3",
+            "estudio nr 13",
+            "midi",
+            "mp3",
+            "estudio nr 04",
+            "midi",
+            "mp3",
+            "estudio nr 14",
+            "midi",
+            "mp3",
+            "estudio nr 05",
+            "midi",
+            "mp3",
+            "estudio nr 15",
+            "midi",
+            "mp3",
+            "estudio nr 06",
+            "midi",
+            "mp3",
+            "estudio nr 16",
+            "midi",
+            "mp3",
+            "estudio nr 07",
+            "midi",
+            "mp3",
+            "estudio nr 17",
+            "midi",
+            "mp3",
+            "estudio nr 08",
+            "midi",
+            "mp3",
+            "estudio nr 18",
+            "midi",
+            "mp3",
+            "estudio nr 09",
+            "midi",
+            "mp3",
+            "estudio nr 19",
+            "midi",
+            "mp3",
+            "estudio nr 10",
+            "midi",
+            "mp3",
+            "estudio nr 20",
+            "midi",
+            "mp3"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 20,
+          "header": [
+            "таррега франсиско",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "adelita исп дэвид рассел",
+            "tab",
+            "mp3",
+            "capricho arabe",
+            "tab",
+            "mp3",
+            "ноты gif 1 2 3 4",
+            "zip",
+            "malagueña",
+            "midi",
+            "ноты gif 1 2",
+            "zip",
+            "endecha prelude",
+            "tab",
+            "midi",
+            "estudio in a",
+            "tab",
+            "midi",
+            "estudio en forma de minueto",
+            "tab",
+            "midi",
+            "etude in em",
+            "tab",
+            "fanfare",
+            "tab",
+            "midi",
+            "grand waltz",
+            "tab",
+            "midi",
+            "la alborada",
+            "tab",
+            "lagrima",
+            "tab",
+            "midi",
+            "oremus",
+            "tab",
+            "midi",
+            "marieta mazurka",
+            "tab",
+            "midi",
+            "preludio nr 9 in a",
+            "tab",
+            "recuerdos de la alhambra",
+            "tab",
+            "midi",
+            "rosita polka",
+            "tab",
+            "midi",
+            "tango",
+            "tab",
+            "midi",
+            "valse en re waltz in d",
+            "tab",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "томатито",
+            ""
+          ],
+          "cells": [
+            "callejon de las canteras",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 4,
+          "header": [
+            "фортеа даниэль",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "estudio poeticos serenata",
+            "ноты jpg",
+            "1",
+            "midi",
+            "estudio poeticos dialogando",
+            "ноты jpg",
+            "1",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "фраучи александр",
+            ""
+          ],
+          "cells": [
+            "см на странице биографии альбом а фраучи гитара мелодия 1982"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 2,
+          "header": [
+            "хилл вильчински гитарный дуэт",
+            ""
+          ],
+          "cells": [
+            "tico tico abreu",
+            "мр3",
+            "the girl from ipanema a c jobim v de moraes",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 3,
+          "header": [
+            "шопен фридерик",
+            "",
+            ""
+          ],
+          "cells": [
+            "valse in em op posth",
+            "tab",
+            "midi",
+            "nocturne in cm no 21",
+            "tab",
+            "midi",
+            "nocturne in fm op 55 no 1",
+            "tab"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 1,
+          "header": [
+            "шуберт франц",
+            "",
+            ""
+          ],
+          "cells": [
+            "ave maria",
+            "tab",
+            "midi"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 1,
+          "header": [
+            "эйторссон свейн",
+            "",
+            ""
+          ],
+          "cells": [
+            "the promise",
+            "midi",
+            "мр3"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "cancion",
+            "tef"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "аргентинское танго",
+            "mp3"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 2,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "el abejorro",
+            "midi",
+            "atardecer",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "romantico исп горан иванович",
+            "wma"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 4,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "полет шмеля",
+            "tef",
+            "tab",
+            "фортепиано",
+            "mp3",
+            "8 струнная гитара александр виноград",
+            "mp3",
+            "ноты gif 1 2 3 4 5 6",
+            "zip"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 7,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "fantasia para un gentilhombre for guitar orchestra guitar andres segovia",
+            "i villano y recercarre",
+            "мр3",
+            "ii espanoleta e fanfare de la caballeria de napoles",
+            "мр3",
+            "iii danza de las hachas",
+            "мр3",
+            "iv canario",
+            "мр3",
+            "concierto de aranjuez for guitar orchestra guitar john zaradin",
+            "ii adagio fragment",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "ноты gif",
+            "i",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "ii",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "iii",
+            "1 2 3 4 5 6 7 8",
+            "zip"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "segovia opus 29",
+            "tab"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "canarios",
+            "мidi"
+          ]
+        },
+        {
+          "cols": 6,
+          "rows": 11,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "двадцать этюдов",
+            "estudio nr 01",
+            "midi",
+            "mp3",
+            "estudio nr 11",
+            "midi",
+            "mp3",
+            "estudio nr 02",
+            "midi",
+            "mp3",
+            "estudio nr 12",
+            "midi",
+            "mp3",
+            "estudio nr 03",
+            "midi",
+            "mp3",
+            "estudio nr 13",
+            "midi",
+            "mp3",
+            "estudio nr 04",
+            "midi",
+            "mp3",
+            "estudio nr 14",
+            "midi",
+            "mp3",
+            "estudio nr 05",
+            "midi",
+            "mp3",
+            "estudio nr 15",
+            "midi",
+            "mp3",
+            "estudio nr 06",
+            "midi",
+            "mp3",
+            "estudio nr 16",
+            "midi",
+            "mp3",
+            "estudio nr 07",
+            "midi",
+            "mp3",
+            "estudio nr 17",
+            "midi",
+            "mp3",
+            "estudio nr 08",
+            "midi",
+            "mp3",
+            "estudio nr 18",
+            "midi",
+            "mp3",
+            "estudio nr 09",
+            "midi",
+            "mp3",
+            "estudio nr 19",
+            "midi",
+            "mp3",
+            "estudio nr 10",
+            "midi",
+            "mp3",
+            "estudio nr 20",
+            "midi",
+            "mp3"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 20,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "adelita исп дэвид рассел",
+            "tab",
+            "mp3",
+            "capricho arabe",
+            "tab",
+            "mp3",
+            "ноты gif 1 2 3 4",
+            "zip",
+            "malagueña",
+            "midi",
+            "ноты gif 1 2",
+            "zip",
+            "endecha prelude",
+            "tab",
+            "midi",
+            "estudio in a",
+            "tab",
+            "midi",
+            "estudio en forma de minueto",
+            "tab",
+            "midi",
+            "etude in em",
+            "tab",
+            "fanfare",
+            "tab",
+            "midi",
+            "grand waltz",
+            "tab",
+            "midi",
+            "la alborada",
+            "tab",
+            "lagrima",
+            "tab",
+            "midi",
+            "oremus",
+            "tab",
+            "midi",
+            "marieta mazurka",
+            "tab",
+            "midi",
+            "preludio nr 9 in a",
+            "tab",
+            "recuerdos de la alhambra",
+            "tab",
+            "midi",
+            "rosita polka",
+            "tab",
+            "midi",
+            "tango",
+            "tab",
+            "midi",
+            "valse en re waltz in d",
+            "tab",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "callejon de las canteras",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 4,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "estudio poeticos serenata",
+            "ноты jpg",
+            "1",
+            "midi",
+            "estudio poeticos dialogando",
+            "ноты jpg",
+            "1",
+            "midi"
+          ]
+        },
+        {
+          "cols": 2,
+          "rows": 2,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "tico tico abreu",
+            "мр3",
+            "the girl from ipanema a c jobim v de moraes",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "valse in em op posth",
+            "tab",
+            "midi",
+            "nocturne in cm no 21",
+            "tab",
+            "midi",
+            "nocturne in fm op 55 no 1",
+            "tab"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 1,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "ave maria",
+            "tab",
+            "midi"
+          ]
+        },
+        {
+          "cols": 3,
+          "rows": 1,
+          "header": [
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "the promise",
+            "midi",
+            "мр3"
+          ]
+        }
+      ],
+      "overall": 0.9179509799126317
+    },
+    {
+      "name": "xtra_rodrigo",
+      "text": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 726,
+        "actual": 726,
+        "matched": 726,
+        "missing": []
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 2,
+        "actual": 2,
+        "matched": 2,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 34,
+        "actual": 34,
+        "matched": 34,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 6,
+        "actual": 6,
+        "matched": 6,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 36,
+        "actual": 36,
+        "matched": 36,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [
+        {
+          "cols": 5,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "i",
+            "allegro con spirito",
+            "6 08",
+            "ii",
+            "adagio",
+            "11 02",
+            "mp3",
+            "iii",
+            "allegro gentile",
+            "5 24"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "ноты",
+            "i",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "ii",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "iii",
+            "1 2 3 4 5 6 7 8",
+            "zip"
+          ]
+        },
+        {
+          "cols": 5,
+          "rows": 4,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "i",
+            "villano y recercarre",
+            "4 49",
+            "mp3",
+            "ii",
+            "espanoleta e fanfare de la caballeria de napoles",
+            "9 17",
+            "mp3",
+            "iii",
+            "danza de las hachas",
+            "2 13",
+            "mp3",
+            "iv",
+            "canario",
+            "5 18",
+            "mp3"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 5,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "i",
+            "allegro con spirito",
+            "6 08",
+            "ii",
+            "adagio",
+            "11 02",
+            "mp3",
+            "iii",
+            "allegro gentile",
+            "5 24"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "ноты",
+            "i",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "ii",
+            "1 2 3 4 5 6 7 8",
+            "zip",
+            "iii",
+            "1 2 3 4 5 6 7 8",
+            "zip"
+          ]
+        },
+        {
+          "cols": 5,
+          "rows": 4,
+          "header": [
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "i",
+            "villano y recercarre",
+            "4 49",
+            "mp3",
+            "ii",
+            "espanoleta e fanfare de la caballeria de napoles",
+            "9 17",
+            "mp3",
+            "iii",
+            "danza de las hachas",
+            "2 13",
+            "mp3",
+            "iv",
+            "canario",
+            "5 18",
+            "mp3"
+          ]
+        }
+      ],
+      "overall": 1
+    },
+    {
+      "name": "xtra_shelechov",
+      "text": {
+        "recall": 0.9918088737201365,
+        "precision": 0.9945242984257358,
+        "f1": 0.9931647300068351,
+        "expected": 1465,
+        "actual": 1461,
+        "matched": 1453,
+        "missing": [
+          "2001 году i отделение columns",
+          "году i отделение columns 2",
+          "i отделение columns 2 ф",
+          "отделение columns 2 ф таррега",
+          "columns 2 ф таррега воспоминанье",
+          "2 ф таррега воспоминанье об",
+          "старинных романсов ii отделение columns",
+          "романсов ii отделение columns 2"
+        ]
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 2,
+        "actual": 2,
+        "matched": 2,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 0.6901408450704225,
+        "f1": 0.8166666666666667,
+        "expected": 49,
+        "actual": 71,
+        "matched": 49,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 0.9796160856687172
     }
   ]
 }
