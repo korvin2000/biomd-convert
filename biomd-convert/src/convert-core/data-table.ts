@@ -215,6 +215,113 @@ function toBands(boundaries: readonly number[], cols: number): Array<{ start: nu
   return bands;
 }
 
+/**
+ * The position a cell states about itself, or null when it states none.
+ *
+ * A *position cell* is one link and nothing else, whose whole visible text is a
+ * number wearing the era's bracket decoration. Both spellings the corpus uses
+ * reduce to the same reading: `[ <a>3</a> ]` puts the brackets outside the
+ * anchor and `<a>[ 3 ]</a>` puts them inside, and neither says anything except
+ * "this is item 3". The brackets are stripped as punctuation, and a cell with
+ * any other text left over is not a position cell at all.
+ */
+function positionOf(cell: GridCell): number | null {
+  if (cell.links !== 1 || cell.images > 0) return null;
+  const bare = cell.text.replace(/\s+/gu, " ").trim();
+  const digits = /^[\p{Ps}\p{Pi}|]*\s*(\d{1,3})\s*[\p{Pe}\p{Pf}|.]*$/u.exec(bare);
+  return digits ? Number(digits[1]) : null;
+}
+
+/**
+ * Fold a strip of numbered slots into the one column it is.
+ *
+ * ## What it is for
+ *
+ * The era drew a multi-page scan as one `<td>` per page — eight narrow cells
+ * reading `[ 1 ] [ 2 ] … [ 8 ]` beside a label and an archive link. That is
+ * eleven physical columns, so {@link planDataTable} declares the table wider
+ * than a reader can use and the caller decomposes it to linear flow: the rows
+ * cease to exist and every cell becomes a loose aligned paragraph. It is one
+ * column of *this row's scans*, not eight columns of anything, and all four
+ * references that meet the shape write it as one cell of consecutive links.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Ordinality and adjacency, with no vocabulary at all: a run of
+ * adjacent single-slot bands whose every occupied cell is a lone link labelled
+ * with a bare number, ascending strictly across the run. No class, width,
+ * filename or label is consulted, and the digits are language-neutral. A run
+ * that does not ascend is several columns that happen to hold numbers.
+ *
+ * **Recurrence** is *within the row*, not down the table: the same cell shape
+ * repeats at least three times side by side, with the sequence advancing
+ * between occurrences. Down-the-table recurrence would be the wrong test —
+ * `xtra_karta5`'s `Полет шмеля` strip occupies exactly one row of its table,
+ * and `xtra_rodrigo`'s occupies three.
+ *
+ * **False friends, all present in the corpus and all non-firing.** A pair of
+ * format links (`MIDI | MP3` in `xtra_karta5`'s six-column Sor and Tárrega
+ * tables) — a run of two, and the labels are names rather than numbers. A
+ * movement column (`I. | II. | III.`) — roman numerals are not digits. A
+ * duration or year column — no link. A column of literal dashes (`segovia`) —
+ * no digits. The narrow escape hatch matters more than the breadth: this runs
+ * **only** when the table is otherwise about to be abandoned, so a table that
+ * already plans is never reshaped by it.
+ *
+ * **Degradation.** No qualifying run leaves the bands untouched and the caller
+ * fails exactly as before.
+ */
+export function coalesceOrdinalStrips(grid: TableGrid, bands: readonly Band[]): Band[] {
+  /** Per band: every position it states, or null the moment it states a non-position. */
+  const positions = bands.map((band) => {
+    if (band.end - band.start !== 1) return null;
+    const seen: Array<number | null> = [];
+    for (let r = 0; r < grid.rows; r += 1) {
+      const slot = grid.slots[r]?.[band.start];
+      if (!slot || !slot.isOrigin) {
+        seen.push(null);
+        continue;
+      }
+      const cell = grid.cells.find((x) => x.id === slot.originId);
+      if (!cell || cell.isEmpty) {
+        seen.push(null);
+        continue;
+      }
+      const position = positionOf(cell);
+      if (position === null) return null;
+      seen.push(position);
+    }
+    return seen.some((p) => p !== null) ? seen : null;
+  });
+
+  const out: Band[] = [];
+  for (let i = 0; i < bands.length; ) {
+    let j = i;
+    while (j + 1 < bands.length && positions[j + 1]) j += 1;
+    // The run must ascend somewhere. A row that occupies fewer than three of
+    // its slots cannot show a sequence, so it neither proves nor disproves one.
+    const ascends =
+      positions[i] != null &&
+      j - i + 1 >= 3 &&
+      Array.from({ length: grid.rows }, (_, r) => r).some((r) => {
+        const line: number[] = [];
+        for (let c = i; c <= j; c += 1) {
+          const value = (positions[c] as Array<number | null>)[r];
+          if (value !== null && value !== undefined) line.push(value);
+        }
+        return line.length >= 3 && line.every((v, k) => k === 0 || v > (line[k - 1] as number));
+      });
+    if (ascends) {
+      out.push({ start: (bands[i] as Band).start, end: (bands[j] as Band).end });
+      i = j + 1;
+      continue;
+    }
+    out.push(bands[i] as Band);
+    i += 1;
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------------------
 // Planning
 // ---------------------------------------------------------------------------
@@ -243,13 +350,19 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
     return { plan: null, failure: "too-small", detail: `${grid.rows}×${grid.cols} is below the minimum` };
   }
 
-  const bands = inferColumnBands(grid);
+  let bands = inferColumnBands(grid);
   if (bands.length < opts.minCols) {
     return {
       plan: null,
       failure: bands.length === 0 ? "no-bands" : "too-small",
       detail: `inferred ${bands.length} semantic column(s) from ${grid.cols} physical slots`,
     };
+  }
+  let coalescedStrips = 0;
+  if (bands.length > opts.maxCols) {
+    const coalesced = coalesceOrdinalStrips(grid, bands);
+    coalescedStrips = bands.length - coalesced.length;
+    if (coalescedStrips > 0) bands = coalesced;
   }
   if (bands.length > opts.maxCols) {
     return {
@@ -376,7 +489,8 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
       reason:
         `${kept.length} semantic column(s) folded from ${grid.cols} physical slots across ` +
         `${rows.length} row(s)${hasRealHeader ? " with a source header" : " with no source header"}` +
-        `${kept.length < bands.length ? `, ${bands.length - kept.length} unoccupied column(s) dropped` : ""}`,
+        `${kept.length < bands.length ? `, ${bands.length - kept.length} unoccupied column(s) dropped` : ""}` +
+        `${coalescedStrips > 0 ? `, ${coalescedStrips} slot(s) folded into a numbered strip` : ""}`,
     },
     detail: "",
   };

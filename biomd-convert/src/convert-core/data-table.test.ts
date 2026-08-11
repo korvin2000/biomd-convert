@@ -10,7 +10,7 @@ import { materializeGrid } from "../ladom/grid.js";
 import { parseHtml } from "../ladom/parse.js";
 import { findFirst } from "../ladom/types.js";
 import { canonicalColumnLabel } from "./column-labels.js";
-import { inferColumnBands, isInlineable, planDataTable } from "./data-table.js";
+import { coalesceOrdinalStrips, inferColumnBands, isInlineable, planDataTable } from "./data-table.js";
 import { convert } from "./pipeline.js";
 
 function gridOf(html: string) {
@@ -363,5 +363,97 @@ describe("a column no row fills", () => {
       "</table></body></html>";
     const result = await convert(Buffer.from(html, "utf8"));
     expect(result.markdown).toContain("Длительность");
+  });
+});
+
+/**
+ * A strip of numbered slots is one column, not eight.
+ *
+ * The failure this closes: the era drew a multi-page scan as one `<td>` per
+ * page, so `Ноты | I. | [1] … [8] | zip` is eleven physical columns. That is
+ * wider than `maxCols`, so the table was abandoned and decomposed — three rows
+ * ceased to exist and thirty-three cells became loose aligned paragraphs
+ * (`xtra_rodrigo`, `xtra_karta5`). The contract for the rule is on
+ * {@link coalesceOrdinalStrips}; these are its firing and non-firing cases.
+ */
+describe("a strip of numbered slots", () => {
+  const scan = (dir: string, n: number) =>
+    `<td width="6%" align="center"><p>[ <a href="s/${dir}/${n}.gif"> ${n}</a> ]</p></td>`;
+  const scoreRow = (dir: string, roman: string, lead: string) =>
+    `<tr><td width="23%">${lead}</td><td width="23%">${roman}</td>` +
+    [1, 2, 3, 4, 5, 6, 7, 8].map((n) => scan(dir, n)).join("") +
+    `<td width="6%" align="center"><a href="s/${dir}.zip">zip</a></td></tr>`;
+  const SCORE_SHEET =
+    `<table border="0">` +
+    scoreRow("1", "I.", "<p><b>Ноты</b></p>") +
+    scoreRow("2", "II.", "") +
+    scoreRow("3", "III.", "") +
+    `</table>`;
+
+  it("folds eight numbered slots into the one column they are", () => {
+    const grid = gridOf(SCORE_SHEET);
+    expect(inferColumnBands(grid)).toHaveLength(11);
+    expect(coalesceOrdinalStrips(grid, inferColumnBands(grid))).toEqual([
+      { start: 0, end: 1 },
+      { start: 1, end: 2 },
+      { start: 2, end: 10 },
+      { start: 10, end: 11 },
+    ]);
+  });
+
+  it("keeps the table, its rows and every link", async () => {
+    const result = await convert(Buffer.from(`<html><body>${SCORE_SHEET}</body></html>`, "utf8"));
+    expect(result.tables.some((t) => t.emittedTable)).toBe(true);
+    expect(result.markdown).toMatch(/\|\s*\*\*Ноты\*\*\s*\|\s*I\.\s*\|/u);
+    // Eight scans per row, three rows, and each row's archive beside them.
+    expect(result.markdown.match(/s\/\d\/\d\.gif/gu) ?? []).toHaveLength(24);
+    expect(result.markdown.match(/s\/\d\.zip/gu) ?? []).toHaveLength(3);
+  });
+
+  it("does not fire on a pair of format links — non-firing", () => {
+    // `xtra_karta5`'s Sor and Tárrega tables: two resource columns side by side.
+    // A run of two, labelled by name rather than by position.
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>Estudio Nr. 01</td><td><a href="a.mid">MIDI</a></td><td><a href="a.mp3">MP3</a></td>` +
+        `<td>Estudio Nr. 11</td><td><a href="b.mid">MIDI</a></td><td><a href="b.mp3">MP3</a></td></tr>` +
+        `<tr><td>Estudio Nr. 02</td><td><a href="c.mid">MIDI</a></td><td><a href="c.mp3">MP3</a></td>` +
+        `<td>Estudio Nr. 12</td><td><a href="d.mid">MIDI</a></td><td><a href="d.mp3">MP3</a></td></tr>` +
+        `</table>`,
+    );
+    const bands = inferColumnBands(grid);
+    expect(coalesceOrdinalStrips(grid, bands)).toEqual(bands);
+  });
+
+  it("does not fire on roman movement numbers — non-firing", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>Ноты</td><td><a href="1.gif">I.</a></td><td><a href="2.gif">II.</a></td>` +
+        `<td><a href="3.gif">III.</a></td><td><a href="4.gif">IV.</a></td></tr>` +
+        `<tr><td>Ноты</td><td><a href="5.gif">I.</a></td><td><a href="6.gif">II.</a></td>` +
+        `<td><a href="7.gif">III.</a></td><td><a href="8.gif">IV.</a></td></tr>` +
+        `</table>`,
+    );
+    const bands = inferColumnBands(grid);
+    expect(coalesceOrdinalStrips(grid, bands)).toEqual(bands);
+  });
+
+  it("does not fire on numbers the source never linked — non-firing", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>Такты</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>` +
+        `<tr><td>Такты</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>` +
+        `</table>`,
+    );
+    const bands = inferColumnBands(grid);
+    expect(coalesceOrdinalStrips(grid, bands)).toEqual(bands);
+  });
+
+  it("leaves a table that already plans untouched — the escape hatch is narrow", async () => {
+    // The same strip inside a table whose other rows fix a three-band model:
+    // `xtra_albeniz`. The band vote already folds it, and nothing here runs.
+    const result = await convert(Buffer.from(`<html><body>${BARRIOS_SHAPED}</body></html>`, "utf8"));
+    expect(result.markdown).toContain("| Choro Da Saudade |");
+    expect(result.markdown).toMatch(/\|\s*Ноты\s*\[\\\[ 1 \\\]\]\(\S*s\/1\.jpg\) \[\\\[ 2 \\\]\]\(\S*s\/2\.jpg\)\s*\|/u);
   });
 });
