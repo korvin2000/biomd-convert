@@ -1963,7 +1963,7 @@ function figureOf(line: RunLine, ctx: Ctx): BiomdContent | null {
       images.length === 1
         ? makeImage({
             src: image.url,
-            position: estimatePosition(source),
+            position: estimatePosition(source, ctx.proseAlign, ctx.grids),
             size: sizeTokenFor(imageWidthOf(source), ctx.contentWidth),
             ...(caption ? { caption } : {}),
             ...(link ? { link } : {}),
@@ -3440,7 +3440,7 @@ function imageFrom(el: LadomNode, ctx: Ctx, standalone: boolean): BiomdContent |
 
   return makeImage({
     src: href,
-    position: estimatePosition(el),
+    position: estimatePosition(el, ctx.proseAlign, ctx.grids),
     size: sizeTokenFor(imageWidthOf(el), ctx.contentWidth),
     ...(caption ? { caption } : {}),
     ...(link ? { link } : {}),
@@ -3549,15 +3549,36 @@ function floatOf(el: LadomNode): "left" | "right" | null {
   return null;
 }
 
-function estimatePosition(el: LadomNode): "left" | "right" | "center" | "full" {
+function estimatePosition(
+  el: LadomNode,
+  proseAlign: PhysicalAlign,
+  grids: ReadonlyMap<string, TableGrid>,
+): "left" | "right" | "center" | "full" {
   const float = floatOf(el);
   if (float) return float;
-  // Centre is the fallback for a standalone figure with no float evidence, and
-  // it is the *only* outcome here: the `text-align` test that used to sit on
-  // this line compared with `=== "center"` and returned "center" either way, so
-  // it decided nothing while looking like a rule. Removed rather than repaired
-  // — reading alignment for an image position is a separate question from the
-  // `::: align` family, and folding one into the other would confound both.
+
+  // A standalone image occupies the horizontal position of the nearest
+  // ancestor that actually positions it. Computed `text-align` is inherited,
+  // so the image itself already carries a paragraph's explicit placement.
+  // A floated ancestor is different: the whole figure participates in prose
+  // flow, and its image must keep the ancestor's side rather than defaulting
+  // back to centre.
+  const aligned = foldTextAlign(el.style?.textAlign);
+  if ((aligned === "right" || aligned === "center") && aligned !== proseAlign) return aligned;
+  let ancestor = el.parent;
+  while (ancestor) {
+    const ancestorFloat = floatOf(ancestor);
+    if (ancestorFloat) {
+      // A source table can either float a figure beside prose or be a layout
+      // grid whose cells happen to sit on the left. Only the one-cell figure
+      // owns the image's position; carrying a multi-cell grid's float into its
+      // children collapses every lane image to the page edge.
+      if (ancestor.tag !== "table") return ancestorFloat;
+      const grid = grids.get(ancestor.id);
+      if (grid?.cols === 1 && grid.cells.some((cell) => cell.images > 0)) return ancestorFloat;
+    }
+    ancestor = ancestor.parent;
+  }
   return "center";
 }
 

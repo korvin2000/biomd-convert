@@ -31,18 +31,18 @@
     ]
   },
   "totals": {
-    "findings": 65,
-    "alignmentRows": 233
+    "findings": 61,
+    "alignmentRows": 232
   },
   "classes": [
     {
       "class": "layout.lane.mismatch",
-      "instances": 38,
-      "documents": 3
+      "instances": 37,
+      "documents": 2
     },
     {
       "class": "layout.align.mismatch",
-      "instances": 11,
+      "instances": 9,
       "documents": 6
     },
     {
@@ -52,8 +52,8 @@
     },
     {
       "class": "layout.order.mismatch",
-      "instances": 2,
-      "documents": 2
+      "instances": 1,
+      "documents": 1
     }
   ],
   "findings": [
@@ -286,29 +286,6 @@
       }
     },
     {
-      "id": "311b1b7b",
-      "doc": "new_rechin4",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/image[18]",
-      "producedLine": 47,
-      "referenceLine": 48,
-      "produced": "",
-      "reference": "",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "right",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "box",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "a1243bbc",
       "doc": "new_rechin4",
       "class": "layout.align.mismatch",
@@ -423,29 +400,6 @@
       }
     },
     {
-      "id": "df1566a1",
-      "doc": "segovia",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/image[33]",
-      "producedLine": 116,
-      "referenceLine": 120,
-      "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
-      "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
-      "geometry": {
-        "producedAlign": "center",
-        "referenceAlign": "left",
-        "producedRaw": "center",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword+box",
-        "referenceEvidence": "keyword+box",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
       "id": "71b4ab28",
       "doc": "segovia",
       "class": "layout.containment.mismatch",
@@ -460,40 +414,6 @@
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "5311900e",
-      "doc": "segovia",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/image[33]",
-      "producedLine": 116,
-      "referenceLine": 120,
-      "produced": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
-      "reference": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
-      "geometry": {
-        "producedLane": 0,
-        "referenceLane": 1
-      }
-    },
-    {
-      "id": "d3fad8d3",
-      "doc": "segovia",
-      "class": "layout.order.mismatch",
-      "severity": "critical",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[34]",
-      "producedLine": 122,
-      "referenceLine": 126,
-      "produced": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
-      "reference": "В истории Испании не было артиста, который бы так активно пропагандировал испанскую музыку по всему миру. Как-то раз, о…",
-      "geometry": {
-        "producedRank": 39,
-        "referenceRank": 38
       }
     },
     {
@@ -2847,7 +2767,7 @@
       "producedLine": 47,
       "referenceLine": 48,
       "text": "",
-      "producedAlignment": "center",
+      "producedAlignment": "right",
       "referenceAlignment": "right",
       "sourceTextAlignRaw": "-webkit-right",
       "sourceAlignment": "right",
@@ -3595,19 +3515,6 @@
       "sourceProse": "left",
       "sourceDistinctive": true,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]"
-    },
-    {
-      "doc": "segovia",
-      "producedLine": 116,
-      "referenceLine": 120,
-      "text": "Cпециальный выпуск журнала \"Guitar Review\" # 52 1983 Special Segovia Issue",
-      "producedAlignment": "center",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "center",
-      "sourceAlignment": "center",
-      "sourceProse": "left",
-      "sourceDistinctive": true,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[2]/table[1]/tbody[1]/tr[2]/td[1]/p[1]"
     },
     {
       "doc": "segovia1",

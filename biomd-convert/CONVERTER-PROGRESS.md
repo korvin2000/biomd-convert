@@ -5920,3 +5920,60 @@ instance is one of the four recorded divergences or a single-document quirk. The
 what §42.7 left: `retyped.paragraph-to-align` 5/5 documents (the pager, killed twice — do not rebuild
 whole; `segovia`'s instance has still never been probed) · `image.position.value` and
 `paragraph.missing.in-paragraph`, 3 documents each · then §40.6's shell-depth root cause.
+
+
+## 44. Standalone figures keep source-stated placement (2026-08-12)
+
+### 44.1 Baseline and candidate choice
+
+The §43 floor reproduced exactly before code: L0 535 tests / 0 FAILED · L1 **98.6** · L2
+**317 findings / 206 converter-defect / 8 critical** · L3 **65 over 26** · validator 0 on all 28
+produced documents. The holdout was already spent in §43, so this iteration records that it had none.
+
+The top `retyped.paragraph-to-align` class was probed rather than taken whole. Four instances are the
+twice-killed footer/glyph family; `segovia` is a different mechanism — a long italic quotation shifted
+by `margin-left: 140`, which the reference approximates with right alignment. It supplies no common
+deterministic signal for the other four. `paragraph.missing.in-paragraph` likewise names three visibly
+present values in three different relationships. `image.position.value`, despite the stale `3/3`
+pointer in OPEN, re-measured as **2 instances in 2 documents** and both shared one direct source signal,
+so it was the smaller but coherent path.
+
+### 44.2 The rule
+
+`estimatePosition` used only an image's own float and otherwise returned `center`. It therefore lost
+two source-stated placements: `new_rechin4` puts its signature in a right-aligned paragraph, and
+`segovia` floats a one-column image-and-caption table left beside the following prose.
+
+A standalone image now keeps (1) its own computed `right` or distinctive `center` alignment, then
+(2) a floated one-column figure ancestor containing an image. The page's ordinary left baseline is
+not evidence, and a floated multi-column layout grid does not position each lane image at the page
+edge. Those are explicit false-friend contracts. Recurrence is inapplicable: one signature or one
+floated figure owns its placement by containment. Four contract tests cover both positives and both
+false friends.
+
+The first broader form inherited `left` from every floated table and was rejected immediately:
+`barrios` ×2, `kiselev` and `new_blackmore` ×3 changed centred lane images to left; L2 rose 317 → 321
+and L3 65 → 67. Restricting floated-table evidence to a one-column figure removes all six losses while
+retaining both positives. This is the rule's named boundary, not a fixture guard.
+
+### 44.3 Acceptance and movement classification
+
+| rung | §43 floor | after §44 |
+|---|---:|---:|
+| L0 | 535 tests, 0 FAILED | **539 tests**, 0 FAILED, typecheck clean |
+| L1 | 98.6 | **98.6** |
+| L2 | 317 findings · 206 defect · 8 critical | **315 · 204 · 8** |
+| L3 | 65 | **61** over 26 documents |
+| validator | 0 on 28 produced | **0** on 28 produced |
+
+Both L2 movements are `structural-error` closures: `image.position.value` is **2 → 0**.
+`new_rechin4`'s signature is right again; `segovia`'s magazine figure is left again. L3 closes their
+two `layout.align.mismatch` findings, plus the figure's `layout.lane.mismatch` and the downstream
+whole-document `layout.order.mismatch` it caused. These are `visual-improvement`; no output other than
+the two source-backed `position:` properties changed. L1 is flat because directive properties are
+outside that rung. No loss or neutral tradeoff remains.
+
+Next: probe the three `paragraph.missing.in-paragraph` instances as relationships, not as missing
+text — all three values are visibly present in produced output — then return to the split
+`retyped.paragraph-to-align` mechanisms. The shell-depth root cause remains last because §40.6 already
+reverted three broad replacements.

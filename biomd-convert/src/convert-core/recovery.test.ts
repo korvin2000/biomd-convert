@@ -1173,6 +1173,58 @@ describe("alignment inside a bounded container", () => {
   });
 });
 
+/**
+ * Standalone image position — rule contract (`CLAUDE.md` §5).
+ *
+ * **Invariant.** A figure keeps a source-stated horizontal position: first its
+ * own computed alignment, then a floated one-column figure ancestor that
+ * positions it. This is relational containment evidence, not a filename,
+ * class or size threshold.
+ *
+ * **Recurrence.** Not required: a page can contain one signature or floated
+ * figure. The containing block owns its placement by construction.
+ *
+ * **False friends.** A left-aligned page baseline is not a request for a left
+ * image; nor is a floated multi-column layout grid. With no distinctive image
+ * alignment or figure float, standalone figures retain the centred default.
+ */
+describe("standalone image position", () => {
+  it("keeps explicit placement inherited from the image's containing block", async () => {
+    const out = await mdMeasured(
+      PROSE +
+        '<p><img src="signature.gif" style="text-align: right" width="98" height="56"></p>' +
+        PROSE,
+    );
+    expect(out).toMatch(/::: image\nsrc: signature\.gif\nposition: right/u);
+  });
+
+  it("keeps a floated figure on its source side", async () => {
+    const out = await mdMeasured(
+      PROSE +
+        '<table align="left" style="float: left" width="218"><tr><td>' +
+        '<img src="cover.gif" width="209" height="281"></td></tr>' +
+        '<tr><td>Специальный выпуск журнала</td></tr></table>' +
+        PROSE,
+    );
+    expect(out).toMatch(/::: image\nsrc: cover\.gif\nposition: left/u);
+  });
+
+  it("false friend: a floated multi-column layout does not position its lane images", async () => {
+    const out = await mdMeasured(
+      '<table align="left" style="float: left"><tr>' +
+        '<td><img src="left.jpg" width="120" height="120"><p>Левая карточка</p></td>' +
+        '<td><img src="right.jpg" width="120" height="120"><p>Правая карточка</p></td>' +
+        "</tr></table>",
+    );
+    expect(out).not.toMatch(/src: (?:left|right)\.jpg\nposition: left/u);
+  });
+
+  it("false friend: ordinary page alignment keeps the centred default", async () => {
+    const out = await mdMeasured(PROSE + '<p><img src="portrait.jpg" width="180" height="240"></p>' + PROSE);
+    expect(out).toMatch(/::: image\nsrc: portrait\.jpg\nposition: center/u);
+  });
+});
+
 describe("alignment", () => {
   it("folds the vendor form a browser actually returns", () => {
     // Chromium computes `-webkit-center` for an element centred by an

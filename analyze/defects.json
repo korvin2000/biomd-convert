@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-11T22:21:10.615Z",
+  "generated": "2026-08-11T23:31:12.007Z",
   "totals": {
-    "findings": 317,
-    "converterDefects": 206,
+    "findings": 315,
+    "converterDefects": 204,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
     "ambiguous": 18,
     "bySeverity": {
       "critical": 8,
-      "major": 188,
+      "major": 186,
       "minor": 121
     }
   },
@@ -127,10 +127,10 @@
     },
     {
       "doc": "new_rechin4",
-      "findings": 9,
-      "converterDefects": 6,
+      "findings": 8,
+      "converterDefects": 5,
       "critical": 0,
-      "major": 4,
+      "major": 3,
       "minor": 5
     },
     {
@@ -159,10 +159,10 @@
     },
     {
       "doc": "segovia",
-      "findings": 7,
-      "converterDefects": 4,
+      "findings": 6,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 3,
+      "major": 2,
       "minor": 4
     },
     {
@@ -578,28 +578,6 @@
         "path": "/frame[10]/align[1]",
         "produced": null,
         "reference": "Heitor Villa-Lobos"
-      }
-    },
-    {
-      "class": "image.position.value",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "new_rechin4",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 12,
-      "example": {
-        "doc": "new_rechin4",
-        "path": "/image[18]@position",
-        "produced": "position: center",
-        "reference": "position: right"
       }
     },
     {
@@ -2503,20 +2481,6 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "cff4b9d3",
-      "doc": "new_rechin4",
-      "class": "image.position.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/image[18]@position",
-      "producedLine": 47,
-      "referenceLine": 48,
-      "produced": "position: center",
-      "reference": "position: right",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "2c52d3bd",
       "doc": "new_rechin4",
       "class": "retyped.paragraph-to-align",
@@ -2822,20 +2786,6 @@
       "referenceLine": 104,
       "produced": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:* · em:Альбениса \"Легенда\" · em:Мануэль де Фалья",
       "reference": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:\\ · em:Альбениса \"Легенда\" · em:Мануэль де Фалья · em:Федерико Морено Торроба",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6882ca7b",
-      "doc": "segovia",
-      "class": "image.position.value",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/image[33]@position",
-      "producedLine": 116,
-      "referenceLine": 120,
-      "produced": "position: center",
-      "reference": "position: left",
       "verdict": "converter-defect"
     },
     {
