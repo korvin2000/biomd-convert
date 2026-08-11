@@ -10,7 +10,13 @@ import { materializeGrid } from "../ladom/grid.js";
 import { parseHtml } from "../ladom/parse.js";
 import { findFirst } from "../ladom/types.js";
 import { canonicalColumnLabel } from "./column-labels.js";
-import { coalesceOrdinalStrips, inferColumnBands, isInlineable, planDataTable } from "./data-table.js";
+import {
+  coalesceOrdinalStrips,
+  inferColumnBands,
+  isInlineable,
+  leadingCaptionCell,
+  planDataTable,
+} from "./data-table.js";
 import { convert } from "./pipeline.js";
 
 function gridOf(html: string) {
@@ -455,5 +461,62 @@ describe("a strip of numbered slots", () => {
     const result = await convert(Buffer.from(`<html><body>${BARRIOS_SHAPED}</body></html>`, "utf8"));
     expect(result.markdown).toContain("| Choro Da Saudade |");
     expect(result.markdown).toMatch(/\|\s*Ноты\s*\[\\\[ 1 \\\]\]\(\S*s\/1\.jpg\) \[\\\[ 2 \\\]\]\(\S*s\/2\.jpg\)\s*\|/u);
+  });
+});
+
+/**
+ * A title the source drew inside the table is not a record in it.
+ *
+ * The contract is on {@link leadingCaptionCell}; these are its firing and
+ * non-firing cases. The two live false friends are `xtra_karta5`'s
+ * `Двадцать этюдов` and `kiselev`'s jazz-suite dedication — same position,
+ * same full span, set in the body's own face, and both references keep them.
+ */
+describe("a full-span leading row", () => {
+  const movements = (bold: string) =>
+    `<table border="0">` +
+    `<tr><td colspan="4" width="100%"><p>Joaquin Rodrigo:<br>${bold}</p></td></tr>` +
+    `<tr><td>I</td><td>-</td><td>Allegro con spirito</td><td>6:08</td></tr>` +
+    `<tr><td>II</td><td>-</td><td>Adagio</td><td>11:02</td></tr>` +
+    `<tr><td>III</td><td>-</td><td>Allegro gentile</td><td>5:24</td></tr>` +
+    `</table>`;
+
+  it("lifts a prominent title out as the caption it is", async () => {
+    const html = movements("<b>Concierto de Aranjuez</b>");
+    const result = await convert(Buffer.from(`<html><body>${html}</body></html>`, "utf8"));
+    expect(result.markdown).toContain("**Concierto de Aranjuez**");
+    // Above the table, not inside it, and not as a row of dashes.
+    expect(result.markdown).not.toMatch(/\|.*Concierto de Aranjuez.*\|/u);
+    expect(result.markdown).toContain("| I | - | Allegro con spirito | 6:08 |");
+  });
+
+  it("keeps a section label the body's own face — non-firing", async () => {
+    const html = movements("Двадцать этюдов");
+    const result = await convert(Buffer.from(`<html><body>${html}</body></html>`, "utf8"));
+    expect(result.markdown).toMatch(/\|.*Двадцать этюдов.*\|/u);
+  });
+
+  it("does not read the table's own typeface as prominence — non-firing", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td colspan="2" width="100%"><b>Заголовок</b></td></tr>` +
+        `<tr><td><b>Первый</b></td><td><b>1995</b></td></tr>` +
+        `<tr><td><b>Второй</b></td><td><b>1996</b></td></tr>` +
+        `</table>`,
+    );
+    expect(leadingCaptionCell(grid)).toBeNull();
+  });
+
+  it("declines a table whose source stated a header — non-firing", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><th>Произведение</th><th>Год</th></tr>` +
+        `<tr><td>Adelita</td><td>1995</td></tr>` +
+        `<tr><td>Capricho</td><td>1996</td></tr>` +
+        `</table>`,
+    );
+    // The first row is two cells, not one spanning cell: position alone is not
+    // the evidence, and a real header row can never be mistaken for a caption.
+    expect(leadingCaptionCell(grid)).toBeNull();
   });
 });

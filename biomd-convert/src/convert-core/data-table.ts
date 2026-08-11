@@ -32,7 +32,7 @@
  * a *reviewed* decomposition rather than to a fabricated table.
  */
 import { type GridCell, type TableGrid } from "../ladom/grid.js";
-import type { LadomNode } from "../ladom/types.js";
+import { type LadomNode, textOf } from "../ladom/types.js";
 
 /** One semantic cell: the origin cells that fall inside one band of one row. */
 export interface PlannedCell {
@@ -320,6 +320,65 @@ export function coalesceOrdinalStrips(grid: TableGrid, bands: readonly Band[]): 
     i += 1;
   }
   return out;
+}
+
+/** Whether any text inside this cell is set bold. */
+function carriesBoldText(node: LadomNode): boolean {
+  for (const child of node.children) {
+    if (child.kind !== "element") continue;
+    if (BOLD_TAGS.has(child.tag) && textOf(child).trim() !== "") return true;
+    if (carriesBoldText(child)) return true;
+  }
+  return false;
+}
+
+const BOLD_TAGS = new Set(["b", "strong"]);
+
+/**
+ * The row above the table that the source drew inside it.
+ *
+ * ## What it is for
+ *
+ * A work's movement list is introduced by its own title, and the era wrote that
+ * title as a `colspan`-full first row rather than as a paragraph above the
+ * table. Kept as a record it becomes a row of one value and four em dashes,
+ * under a header that has to pretend the title is a column value
+ * (`segovia`, `xtra_rodrigo` ×2). The references lift it out and set it as a
+ * paragraph immediately above the table, which is where it already reads.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Position, span and typographic prominence *relative to the
+ * table's own body* — no vocabulary, no length, no class. The row must be the
+ * table's first, must be a single cell covering every column, must carry bold
+ * text, and the body must not be mostly bold itself, or the "prominence" is
+ * just the table's typeface.
+ *
+ * **Recurrence does not apply, and saying so is the point.** A table has one
+ * title by definition; a recurrence requirement would make the rule unable to
+ * fire at all. Span and position carry the evidence instead.
+ *
+ * **False friend, present twice in the corpus and tested for non-firing:** the
+ * full-span *section label* — `xtra_karta5`'s `Двадцать этюдов` over twenty
+ * studies, `kiselev`'s jazz-suite dedication over its movements. Identical
+ * position and span, set in the body's own face, and both references keep them
+ * as table rows. Prominence is the whole discriminator, and it separates all
+ * five corpus instances with nothing in between: the titles carry bold text,
+ * the labels carry none.
+ *
+ * **Only where the source stated no header.** A table with a real header row
+ * has already said what its columns are, and its first body row is a record.
+ */
+export function leadingCaptionCell(grid: TableGrid): GridCell | null {
+  const first = grid.cells.filter((c) => c.row === 0);
+  if (first.length !== 1) return null;
+  const cell = first[0] as GridCell;
+  if (cell.colSpan !== grid.cols || cell.rowSpan !== 1 || cell.isEmpty) return null;
+  if (!carriesBoldText(cell.node)) return null;
+  const body = grid.cells.filter((c) => c.row > 0 && !c.isEmpty);
+  if (body.length < 2) return null;
+  const bold = body.filter((c) => carriesBoldText(c.node)).length;
+  return bold * 2 < body.length ? cell : null;
 }
 
 // ---------------------------------------------------------------------------

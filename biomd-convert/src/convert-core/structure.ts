@@ -41,6 +41,7 @@ import {
   type PlannedCell,
   type PlannedRow,
   cellText,
+  leadingCaptionCell,
   planDataTable,
 } from "./data-table.js";
 import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
@@ -164,6 +165,17 @@ interface Ctx {
    * is the only place both are available at once.
    */
   blockAlign: WeakMap<object, PhysicalAlign>;
+  /**
+   * Blocks a construct of their own already positions.
+   *
+   * A table's lifted caption is the case: it left the grid but it still belongs
+   * to the table, and the container that centres the table centres it too. The
+   * alignment the source states about it is therefore the table's, which §3.8
+   * says the table carries itself — so an `::: align` around the caption alone
+   * claims a group the author never drew, and puts the caption in a different
+   * bounded container from the thing it captions.
+   */
+  positionedByConstruct: WeakSet<object>;
   /** Visible characters in the whole document, so "is this block the article?" is answerable. */
   documentTextLength: number;
   /** Emitted mdast image → the source node it came from, for late re-lowering. */
@@ -264,6 +276,7 @@ export function recoverStructure(
     subordinationRecurs: false,
     proseAlign: proseAlignOf(root),
     blockAlign: new WeakMap(),
+    positionedByConstruct: new WeakSet(),
     documentTextLength: textOf(root).trim().length,
     imageNodes: new Map(),
     captionEligible: new WeakSet(),
@@ -1084,8 +1097,10 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   // A picture, a nested align and a frame each carry their own position (§6).
   if (block.type === "biomdImage" || block.type === "biomdImages") return null;
   if (block.type === "biomdAlign" || block.type === "biomdFrame") return null;
-  // §3.8 tables and §2 headings are positioned by their own construct.
+  // §3.8 tables and §2 headings are positioned by their own construct — and so
+  // is anything a construct kept hold of while lowering it out of itself.
   if (block.type === "table" || block.type === "heading") return null;
+  if (ctx.positionedByConstruct.has(block)) return null;
   // A rule carries no text, so it can never *nominate* an alignment. The source
   // block it came from can, and `blocksFrom` records that on every block the
   // element produced — a `<br>`-separated `<p>` that draws a rule above its
@@ -3773,6 +3788,25 @@ function dataRegionFrom(
     planned.plan !== null &&
     (!planned.plan.headerSynthesized || planned.plan.bands.length >= 3 || isSingleRecordRow(grid));
 
+  // A title the source drew as a `colspan`-full first row is a caption for the
+  // table, not a record in it. Lifted before the table is built, so the header
+  // is synthesized from the record columns rather than from the title's row.
+  // See {@link leadingCaptionCell} for the contract and its false friend.
+  let caption: BiomdContent[] = [];
+  if (planned.plan && planned.plan.header === null && planned.plan.body.length >= 3) {
+    const cell = leadingCaptionCell(grid);
+    const first = planned.plan.body[0];
+    if (cell && first && first.row === cell.row) {
+      const phrasing = plannedCellTo(first.cells[0] as PlannedCell, ctx);
+      if (phrasing) {
+        const paragraph: BiomdContent = { type: "paragraph", children: phrasing };
+        ctx.positionedByConstruct.add(paragraph);
+        caption = [paragraph];
+        planned.plan.body = planned.plan.body.slice(1);
+      }
+    }
+  }
+
   if (planned.plan && (!requireEvidence || evidence)) {
     const table = tableFromPlan(planned.plan, ctx, supplied);
     if (table) {
@@ -3795,7 +3829,7 @@ function dataRegionFrom(
         shape,
         ...(planned.plan.headerSynthesized && supplied === undefined ? { headerMissing: true } : {}),
       });
-      return [table];
+      return [...caption, table];
     }
   }
 
