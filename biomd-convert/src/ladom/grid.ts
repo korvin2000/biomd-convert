@@ -303,6 +303,28 @@ export function rowCells(grid: TableGrid, row: number): GridCell[] {
   return out;
 }
 
+/**
+ * The maximal run of wholly empty rows at the end of the grid.
+ *
+ * A geometric fact, not a rule: these rows hold nothing and have nothing after
+ * them, so whatever they are they are not records and not separators either.
+ * Rows covered by a `rowspan` are never in the run — {@link rowCells} reports
+ * the covering cell in every row it spans. The whole grid is never returned; a
+ * table of nothing but empty rows keeps them, so no caller is handed zero rows.
+ *
+ * The judgement built on it — *the era closed a table with a `&nbsp;` row to put
+ * space under it* — lives with its callers in `classify.ts` and `data-table.ts`.
+ */
+export function trailingEmptyRows(grid: TableGrid): Set<number> {
+  const rows = new Set<number>();
+  for (let r = grid.rows - 1; r > 0; r -= 1) {
+    const row = rowCells(grid, r);
+    if (row.length === 0 || !row.every((c) => c.isEmpty)) break;
+    rows.add(r);
+  }
+  return rows;
+}
+
 /** Origin cells of a visual column, top to bottom, each appearing once. */
 export function columnCells(grid: TableGrid, col: number): GridCell[] {
   const seen = new Set<string>();

@@ -1,5 +1,5 @@
 {
-  "overall": 0.9850471264310543,
+  "overall": 0.985850301034229,
   "documents": [
     {
       "name": "authors",
@@ -1438,29 +1438,26 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.8333333333333334,
-        "precision": 0.625,
-        "f1": 0.7142857142857143,
+        "recall": 0.6666666666666666,
+        "precision": 1,
+        "f1": 0.8,
         "expected": 6,
-        "actual": 8,
-        "matched": 5,
+        "actual": 4,
+        "matched": 4,
         "missing": [
           "align"
         ]
       },
       "tableCells": {
-        "recall": 0.9841269841269841,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9919999999999999,
+        "f1": 1,
         "expected": 126,
-        "actual": 124,
-        "matched": 124,
-        "missing": [
-          "wma",
-          "heitor villalobos prelude no 3 in a minor"
-        ]
+        "actual": 126,
+        "matched": 126,
+        "missing": []
       },
-      "tableShape": 0.8888888888888888,
+      "tableShape": 1,
       "expectedTables": [
         {
           "cols": 4,
@@ -1883,6 +1880,18 @@
           ]
         },
         {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "heitor villalobos prelude no 3 in a minor",
+            "wma"
+          ]
+        },
+        {
           "cols": 3,
           "rows": 2,
           "header": [
@@ -1899,7 +1908,7 @@
           ]
         }
       ],
-      "overall": 0.9591174603174603
+      "overall": 0.98
     },
     {
       "name": "new_kolpakov",

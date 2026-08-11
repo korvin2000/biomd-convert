@@ -31,7 +31,7 @@
  * Anything that fails those conditions returns null, and the caller falls back to
  * a *reviewed* decomposition rather than to a fabricated table.
  */
-import { type GridCell, type TableGrid } from "../ladom/grid.js";
+import { type GridCell, type TableGrid, trailingEmptyRows } from "../ladom/grid.js";
 import { type LadomNode, textOf } from "../ladom/types.js";
 
 /** One semantic cell: the origin cells that fall inside one band of one row. */
@@ -433,8 +433,9 @@ export interface PlanResult {
 export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanResult {
   const opts = { ...DEFAULTS, ...options };
 
-  if (grid.rows < opts.minRows || grid.cols < 1) {
-    return { plan: null, failure: "too-small", detail: `${grid.rows}×${grid.cols} is below the minimum` };
+  const contentRows = grid.rows - trailingEmptyRows(grid).size;
+  if (contentRows < opts.minRows || grid.cols < 1) {
+    return { plan: null, failure: "too-small", detail: `${contentRows}×${grid.cols} is below the minimum` };
   }
 
   let bands = inferColumnBands(grid);
@@ -460,8 +461,13 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
   }
 
   const rows: PlannedRow[] = [];
+  // Bottom margin the era drew as a `&nbsp;` row. `classify.ts` already declines
+  // to read it as evidence about the table; emitting it would put a row of em
+  // dashes under the last record.
+  const padding = trailingEmptyRows(grid);
 
   for (let r = 0; r < grid.rows; r += 1) {
+    if (padding.has(r)) continue;
     const partition = rowPartition(grid, r);
     if (partition.length === 0) continue;
 

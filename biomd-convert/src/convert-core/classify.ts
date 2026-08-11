@@ -10,7 +10,14 @@
  * a legitimate answer: a wrong confident classification is far more expensive
  * than an escalation.
  */
-import { type GridCell, type TableGrid, columnCells, gridRegularity, rowCells } from "../ladom/grid.js";
+import {
+  type GridCell,
+  type TableGrid,
+  columnCells,
+  gridRegularity,
+  rowCells,
+  trailingEmptyRows,
+} from "../ladom/grid.js";
 
 export type TableClass = "SHELL" | "LAYOUT" | "DATA" | "HYBRID" | "CATALOG" | "UNKNOWN";
 
@@ -96,8 +103,41 @@ export function picturePairedRows(grid: TableGrid): number {
   return content > 0 ? paired / content : 0;
 }
 
+/**
+ * The empty rows the era closed a table with, to put space under it.
+ *
+ * ## What it is for
+ *
+ * `new_karta` writes each composer's works as its own small table and ends each
+ * one with a `&nbsp;` row. On a two-row table that is `emptyRatio` 0.5, which
+ * collects LAYOUT's evidence *and* DATA's penalty at once — a 0.45 swing off
+ * bottom margin — and a one-record resource table came out as `::: columns`
+ * while its twelve siblings on the same page came out as tables.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Position, not emptiness: only the maximal run of empty rows at
+ * the *end* of the table. An empty row there can be padding and nothing else,
+ * because it has nothing after it to separate. No width, class or vocabulary.
+ *
+ * **Recurrence does not apply**, and the false friend is why. An empty row
+ * *between* records is a separator and genuine structural evidence — it is what
+ * `news_2007` and `xtra_shelechov` use to group their entries, and both
+ * references honour the grouping with `::: columns` per record. Treating those
+ * as padding is measured damage, not a hypothesis: L1 98.5 → 96.0, L2 318 → 342
+ * findings and 8 → 13 criticals. So interior and leading empty rows stay.
+ *
+ * **Degradation.** A table with no trailing empty row is read exactly as before;
+ * a table that is nothing *but* empty rows keeps them, so the feature vector is
+ * never asked about a table of zero rows.
+ *
+ * `planDataTable` reads the same run the same way — a row that is not evidence
+ * about records is not a record either, and it must not be emitted as one.
+ */
 export function extractFeatures(grid: TableGrid, corpusFrequency?: number): TableFeatures {
-  const cells = grid.cells;
+  const spacerRows = trailingEmptyRows(grid);
+  const cells = spacerRows.size === 0 ? grid.cells : grid.cells.filter((c) => !spacerRows.has(c.row));
+  const contentRows = grid.rows - spacerRows.size;
   const cellCount = cells.length;
   const empty = cells.filter((c) => c.isEmpty).length;
   const textLens = cells.map((c) => c.text.length);
@@ -115,6 +155,7 @@ export function extractFeatures(grid: TableGrid, corpusFrequency?: number): Tabl
   let pairs = 0;
   let similar = 0;
   for (let r = 0; r < grid.rows; r += 1) {
+    if (spacerRows.has(r)) continue;
     const row = rowCells(grid, r);
     for (let i = 0; i + 1 < row.length; i += 1) {
       const a = row[i];
@@ -131,7 +172,7 @@ export function extractFeatures(grid: TableGrid, corpusFrequency?: number): Tabl
   let countedColumns = 0;
   const columnWidths: number[] = [];
   for (let c = 0; c < grid.cols; c += 1) {
-    const col = columnCells(grid, c);
+    const col = columnCells(grid, c).filter((cell) => !spacerRows.has(cell.row));
     if (col.length === 0) continue;
     countedColumns += 1;
     const dist = new Map<ContentKind, number>();
@@ -164,7 +205,7 @@ export function extractFeatures(grid: TableGrid, corpusFrequency?: number): Tabl
     cells.some((c) => (c.node.style?.borderTopWidth ?? 0) > 0);
 
   const features: TableFeatures = {
-    rows: grid.rows,
+    rows: contentRows,
     cols: grid.cols,
     cellCount,
     nestedTables: grid.nestedTableIds.length,

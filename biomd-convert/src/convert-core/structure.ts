@@ -31,7 +31,7 @@ import {
   resolveColumnsCount,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
-import { type GridCell, type TableGrid, rowCells } from "../ladom/grid.js";
+import { type GridCell, type TableGrid, rowCells, trailingEmptyRows } from "../ladom/grid.js";
 import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
@@ -4210,7 +4210,9 @@ function isBareLinkRow(grid: TableGrid): boolean {
  * записи: one row"*.
  */
 function isSingleRecordRow(grid: TableGrid): boolean {
-  if (grid.rows !== 1) return false;
+  // Counted in content rows: `new_karta` closes each composer's table with a
+  // `&nbsp;` row, and a record followed by bottom margin is still one record.
+  if (grid.rows - trailingEmptyRows(grid).size !== 1) return false;
   const cells = rowCells(grid, 0).filter((cell) => !cell.isEmpty);
   const index = cells[0];
   if (cells.length < 2 || !index) return false;

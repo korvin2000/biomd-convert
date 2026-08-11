@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-11T22:07:49.222Z",
+  "generated": "2026-08-11T22:21:10.615Z",
   "totals": {
-    "findings": 318,
-    "converterDefects": 207,
+    "findings": 317,
+    "converterDefects": 206,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
     "ambiguous": 18,
     "bySeverity": {
       "critical": 8,
-      "major": 189,
+      "major": 188,
       "minor": 121
     }
   },
@@ -95,10 +95,10 @@
     },
     {
       "doc": "new_karta",
-      "findings": 6,
-      "converterDefects": 6,
+      "findings": 5,
+      "converterDefects": 5,
       "critical": 0,
-      "major": 6,
+      "major": 5,
       "minor": 0
     },
     {
@@ -1006,27 +1006,6 @@
         "path": "/columns[9]/column[1]/paragraph[0]",
         "produced": "column 22 апреля 2007 г. column Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смер…",
         "reference": "Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой информации, а это значит, что \"слухи о смерти проекта сильно преувеличены\".… — at /columns[9]"
-      }
-    },
-    {
-      "class": "retyped.columns-to-table",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_karta"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_karta",
-        "path": "/table[19]",
-        "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
-        "reference": "🔗 Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]"
       }
     },
     {
@@ -2174,20 +2153,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "74ecc356",
-      "doc": "new_karta",
-      "class": "retyped.columns-to-table",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[19]",
-      "producedLine": 117,
-      "referenceLine": 124,
-      "produced": "column Heitor Villa-Lobos - Prelude No 3 in A Minor column align center WMA",
-      "reference": "🔗 Heitor Villa-Lobos - Prelude No 3 in A Minor WMA — at /columns[20]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "4c7657a7",
       "doc": "new_karta",
       "class": "retyped.paragraph-to-align",
@@ -2195,7 +2160,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/align[23]",
-      "producedLine": 155,
+      "producedLine": 138,
       "referenceLine": 147,
       "produced": "▶",
       "reference": "▶ — at /paragraph[24]",

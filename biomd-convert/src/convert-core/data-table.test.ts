@@ -6,7 +6,7 @@
  * into twenty-seven paragraphs — at 100% text recall, so nothing reported it.
  */
 import { describe, expect, it } from "vitest";
-import { materializeGrid } from "../ladom/grid.js";
+import { materializeGrid, trailingEmptyRows } from "../ladom/grid.js";
 import { parseHtml } from "../ladom/parse.js";
 import { findFirst } from "../ladom/types.js";
 import { canonicalColumnLabel } from "./column-labels.js";
@@ -461,6 +461,94 @@ describe("a strip of numbered slots", () => {
     const result = await convert(Buffer.from(`<html><body>${BARRIOS_SHAPED}</body></html>`, "utf8"));
     expect(result.markdown).toContain("| Choro Da Saudade |");
     expect(result.markdown).toMatch(/\|\s*Ноты\s*\[\\\[ 1 \\\]\]\(\S*s\/1\.jpg\) \[\\\[ 2 \\\]\]\(\S*s\/2\.jpg\)\s*\|/u);
+  });
+});
+
+/**
+ * Bottom margin drawn as a row is not a record, and not evidence about records.
+ *
+ * ## What it is for
+ *
+ * `new_karta` writes each composer's works as its own small table and closes it
+ * with a `&nbsp;` row. On a one-record table that is `emptyRatio` 0.5, which
+ * collects LAYOUT's empty-table evidence *and* DATA's penalty for it at once —
+ * a 0.45 swing off bottom margin. One resource table came out as `::: columns`
+ * while its twelve siblings on the same page came out as tables, and the
+ * reference writes all thirteen the same way.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Position, not emptiness: only the maximal run of wholly empty
+ * rows at the *end* of the grid, read by `trailingEmptyRows` as a geometric
+ * fact. An empty row there can be padding and nothing else, because it has
+ * nothing after it to separate. No width, class, vocabulary or threshold. Rows
+ * a `rowspan` covers are never in the run.
+ *
+ * **Recurrence does not apply**, and the false friend is why. An empty row
+ * *between* records is a separator and genuine structural evidence: it is what
+ * `news_2007` and `xtra_shelechov` group their entries with, and both references
+ * honour that grouping with `::: columns` per record rather than a table. That
+ * is measured, not assumed — reading interior empty rows as padding too took
+ * L1 98.5 → 96.0, L2 318 → 342 findings and 8 → 13 criticals. Leading and
+ * interior empty rows therefore stay.
+ *
+ * **Degradation.** No trailing empty row, and every reading is exactly what it
+ * was. A table of nothing but empty rows keeps them, so no caller is ever handed
+ * a table of zero rows.
+ */
+describe("an empty row at the foot of a table", () => {
+  const record = `<tr><td width="90%" class="l">Heitor Villa-Lobos - Prelude No 3</td>` +
+    `<td width="10%" align="center"><a href="w/lobos.wma">WMA</a></td></tr>`;
+  const padding = `<tr><td width="90%" class="l">&nbsp;</td><td width="10%">&nbsp;</td></tr>`;
+
+  it("is bottom margin: the record is still a table", async () => {
+    const html = `<html><body><table border="0" width="85%">${record}${padding}</table></body></html>`;
+    const result = await convert(Buffer.from(html, "utf8"));
+    expect(result.tables.some((t) => t.emittedTable)).toBe(true);
+    expect(result.markdown).toContain("| Heitor Villa-Lobos - Prelude No 3 | [WMA](/../w/lobos.wma) |");
+    // Neither a lane pair nor a row of em dashes under the record.
+    expect(result.markdown).not.toContain("::: columns");
+    expect(result.markdown).not.toContain("| — | — |");
+  });
+
+  it("does not read an empty row between records as padding — non-firing", () => {
+    // `news_2007` and `xtra_shelechov` separate their entries this way, and both
+    // references keep the grouping. The run is anchored at the foot for exactly
+    // this reason.
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>22 апреля 2007 г.</td><td>Загружен пакет обновлений</td></tr>` +
+        `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>` +
+        `<tr><td>3 марта 2007 г.</td><td>Открыт новый раздел</td></tr>` +
+        `</table>`,
+    );
+    expect(planDataTable(grid).plan?.body).toHaveLength(3);
+  });
+
+  it("drops a run of them, not just the last — firing", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>Aubade</td><td><a href="a.txt">TAB</a></td></tr>` +
+        `<tr><td>Romance</td><td><a href="b.txt">TAB</a></td></tr>` +
+        `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>` +
+        `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>` +
+        `</table>`,
+    );
+    expect(planDataTable(grid).plan?.body).toHaveLength(2);
+  });
+
+  it("never consumes the whole table — degradation", () => {
+    const grid = gridOf(
+      `<table border="0">` +
+        `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>` +
+        `<tr><td>&nbsp;</td><td>&nbsp;</td></tr>` +
+        `</table>`,
+    );
+    // The run stops above row 0, so the caller is never handed a table of zero
+    // rows. What it is handed is one empty row, which is not a record matrix —
+    // and the ordinary minimum, not this rule, is what declines it.
+    expect(trailingEmptyRows(grid).has(0)).toBe(false);
+    expect(planDataTable(grid).failure).toBe("too-small");
   });
 });
 

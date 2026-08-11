@@ -5,7 +5,7 @@ REVIEW  goya2.htm  recall=98.8%  errors=1  reviews=2  tables=0/1  llm=0/1
 REVIEW  jovicic.htm  recall=99.0%  errors=0  reviews=6  tables=0/0  llm=0/2
 REVIEW  kiselev.htm  recall=99.3%  errors=0  reviews=15  tables=2/2  llm=0/5
 REVIEW  new_bach.htm  recall=97.5%  errors=0  reviews=8  tables=1/1  llm=0/2
-REVIEW  new_karta.htm  recall=99.0%  errors=0  reviews=10  tables=8/6  llm=0/10
+REVIEW  new_karta.htm  recall=99.0%  errors=0  reviews=11  tables=9/7  llm=0/10
 REVIEW  new_kolpakov.htm  recall=98.8%  errors=0  reviews=13  tables=1/1  llm=0/1
 REVIEW  new_lagq2.htm  recall=45.3%  errors=1  reviews=1  tables=0/0  llm=0/1
 REVIEW  new_lendle2.htm  recall=97.9%  errors=1  reviews=9  tables=0/0  llm=0/1
