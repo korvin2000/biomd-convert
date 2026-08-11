@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-11**, after PROGRESS §42.
+Last touched **2026-08-11**, after PROGRESS §43.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,35 +32,41 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-11, after PROGRESS §42:**
+**Current state, *measured* 2026-08-11, after PROGRESS §43:**
 
 | rung | value |
 |---|---|
-| L0 | **526 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
-| L1 | **98.4 %** over the 26 compared |
-| L2 | **324 findings -- 207 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 14 critical |
+| L0 | **535 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L1 | **98.6 %** over the 26 compared |
+| L2 | **317 findings -- 206 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **65** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 
 That is the floor. Nothing accepted from here may regress it.
 
-> **67 % of the 207 are two recorded reference divergences, not work.** `xtra_shelechov` ~96 and
-> `xtra_karta5` 42. The honest open count is **~69**. Quote the split or the ledger reads as a
-> collapse in quality that did not happen.
+> **141 of the 206 are recorded divergences and quirks, not work.** `xtra_shelechov` ~96,
+> `xtra_karta5` 42, `new_kolpakov` 3 (§43.5). The honest open count is **~65**. Quote the split or the
+> ledger reads as a collapse in quality that did not happen.
 >
-> The 329 -> 324 and 67 -> 65 steps are the holdout leaving the comparison, and the 98.5 -> 98.4 is a
-> 26-document average replacing a 28-document one. **No behaviour changed.**
+> **Of the 8 criticals, none has a mechanism to build**: 4 are `xtra_karta5`'s merged score table
+> (§43.6), 3 the broken `link.label.content.empty` class (§5.0), 1 the `blocks.ts` artefact (§5.0b).
 
 **`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
 clone and `tsc` fails on the missing declarations. That is a build failure, not a degradation.
 
-**Landed in §42, one commit each.** A strip of numbered slots is one column, not eight (`8ad896c`;
-`xtra_rodrigo` 45 findings/20 defect/16 critical → 15/3/0, `xtra_karta5` 141/69/28 → 99/50/6,
-L2 criticals 52 → 14) · a full-span leading row is the table's title, not a record (`d17286f`;
-`xtra_rodrigo` → **L1 100.0 on every axis**, `segovia` 8/5 → 7/4, and `positionedByConstruct` keeps a
-construct's lowered-out block out of the align-run pass).
+**Landed in §43, one commit each.** A numbered strip is one value, not several columns (`4f6e048`;
+`xtra_albeniz` → **L1 100.0 on every axis**, L2 criticals 14 → 8) · an empty row at the foot of a
+table is bottom margin (`0826f53`; `new_karta` L1 95.9 → 98.0, 6 → 5 defects,
+`retyped.columns-to-table` → 0).
+
+> **Start a table iteration with the routing survey, not the ledger (§43.2).** One
+> `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)`, which is
+> the only view showing a table's *outcome* beside its *class*. Both §43 mechanisms came out of it and
+> neither was near the top of the ledger; one was on a document the defect column called clean.
 
 **Next, in order. Probe before committing (SKILL §6).**
+0. **Nothing table-shaped is both open and general.** Every remaining `table.*`/`column.*` instance is
+   one of the four recorded divergences or a single-document quirk. §43.9.
 1. **`retyped.paragraph-to-align`** — 5 instances, 5 documents, the largest genuinely general class
    left. 4 are the centred glyph pager and are the rule killed twice (§30.1/§35.10) — do not rebuild
    it whole. `segovia`'s has still never been probed.
@@ -70,16 +76,23 @@ construct's lowered-out block out of the align-run pass).
    wrong on 8 of 22 and load-bearing in five rules. Three replacements built, all three reverted on
    measurement. Start from `headingLineOf`.
 
-**No open author question.** The one raised this session was answered in the same turn (§3.13).
+**No open author question.**
 
-**Do not re-take these; §37-§42 settled them.** Everything §41's list named, plus:
-`xtra_albeniz` (0 defects on first contact) · `xtra_rodrigo`'s score table and its two work titles ·
-`segovia`'s work title · `xtra_karta5`'s bumblebee strip.
+**The holdout has been measured once and is now spent (§43.7).** `xtra_oyanguren` 3/3 and
+`xtra_mikulka` 2/2/2 L3, byte-identical to §42.8 — both §43 rules are neutral there. §44 needs a new
+holdout named before any rule is designed, or must accept that it has none.
 
-**Killed in §37-§42** -- reopen on new measurement only: everything §41's list named, plus
-**cell content weight as the per-row/grid discriminator** (§42.4 — falsified by `news_2007`, whose
-short-celled multi-row news list is read per-row) and **raising `planDataTable`'s `maxCols`**
-(§42.5 — `xtra_karta5`'s Sor table is a legitimate six-column matrix).
+**Do not re-take these; §37-§43 settled them.** Everything §41's list named, plus:
+`xtra_rodrigo`'s score table and its two work titles · `segovia`'s work title · `xtra_karta5`'s
+bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convention (author-ruled) ·
+`xtra_shelechov`'s row-major grid (8-to-1, and its interior empty rows are the grouping evidence).
+
+**Killed in §37-§43** -- reopen on new measurement only: everything §41's list named, plus
+**cell content weight as the per-row/grid discriminator** (§42.4 — falsified by `news_2007`) ·
+**raising `planDataTable`'s `maxCols`** (§42.5 — `xtra_karta5`'s Sor table is a legitimate six-column
+matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
+general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
+table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
@@ -168,17 +181,18 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-11 after §42
+## 4. Open defect classes -- *measured* 2026-08-11 after §43
 
-**Read the ceiling column first.** Two recorded reference divergences account for 138 of the 212
-converter-defects; see PROGRESS §42.4 before treating any large class here as available work.
+**Read the ceiling column first.** Recorded divergences and quirks account for 141 of the 206
+converter-defects; see PROGRESS §42.4, §43.5 and §43.6 before treating any large class here as
+available work.
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
 | 87 | `column.containment` | 29 | 29 | 1 | **ceiling** — `xtra_shelechov`'s row-major grid, 8 references to 1 |
 | 75 | `retyped.paragraph-to-align` | 5 | 5 | 5 | **the largest genuinely general class left.** 4 are the centred glyph pager, the rule killed twice (§30.1/§35.10) — do not rebuild whole. `segovia`'s has never been probed |
 | 66 | `retyped.column-to-paragraph` | 22 | 22 | 1 | **ceiling** — same divergence |
-| 58 | `table.align` | 29 | 29 | 2 | **ceiling** — `xtra_karta5`'s `--:` columns, author-ruled ignorable this session |
+| 58 | `table.align` | 29 | 29 | 2 | **ceiling, both documents** — `xtra_karta5`'s 26 author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
 | 48 | `paragraph.spurious.in-table` | 16 | 16 | 1 | **ceiling** — `xtra_karta5`'s name-in-header-cell |
 | 42 | `paragraph.containment` | 7 | 7 | 2 | mostly the `xtra_shelechov` divergence |
 | 27 | `image.position.value` | 3 | 3 | 3 | **open, 3 documents** |
@@ -187,22 +201,22 @@ converter-defects; see PROGRESS §42.4 before treating any large class here as a
 | 24 | `retyped.align-to-paragraph` | 4 | 4 | 2 | `goya2`'s author-declared alternative (§37.8) |
 | 21 | `emphasis.span` | 23 | 3 | 7 | downgraded; §39.6.2 has the cause. Do not implement |
 | 20 | `break.spurious` | 20 | 20 | 1 | **ceiling** — the rules between `xtra_shelechov`'s programme rows |
-| 15 | `table.row.missing` | 3 | 3 | 1 | `xtra_karta5`'s score table, which its reference appends to the preceding record table and `xtra_rodrigo`'s keeps separate. A third named divergence, 1 to 1 |
+| 15 | `table.row.missing` | 3 | 3 | 1 | **ceiling, checked in §43.6** — the source holds two `<table>`s, `xtra_karta5`'s reference merges them, `xtra_rodrigo`'s does not. 1 to 1 |
 | 12 | `link.inline.missing` · `retyped.paragraph-to-list` · `retyped.paragraph-to-heading2` · `align.missing` | 2 each | 2 | 2 | the tail |
+| -- | ~~`table.cell.content`~~ | 6 -> **0** | 0 | 0 | closed by §43.3 — was 6 of the corpus's 14 criticals |
+| -- | ~~`retyped.columns-to-table`~~ | 1 -> **0** | 0 | 0 | closed by §43.4 |
 | -- | ~~`align.spurious`~~ | 26 -> **3** | 3 | 2 | closed by §42.5 |
 | -- | ~~`paragraph.missing.in-table`~~ | 3 -> **0** | 0 | 0 | closed by §42.6 |
-| -- | ~~`paragraph.spurious.unattested`~~ | 41 -> 1 | 1 | 1 | the `blocks.ts` artefact (§5.0b), mostly dissolved with §42.5 |
 
 Per document, converter-defect: `xtra_shelechov` 101 (**~96 ceiling**) · `xtra_karta5` 50
-(**42 ceiling**) · `new_lendle2` 7 · `new_karta` 6 · `new_rechin4` 6 · `news` 5 · `segovia` 4 ·
-`new_kolpakov` 4 · `news_2007` 4 · `goya2` 3 · rest <= 3.
+(**42 ceiling**) · `new_lendle2` 7 · `new_rechin4` 6 · `new_karta` 5 · `news` 5 · `new_kolpakov` 4
+(**all 4 ceiling**) · `news_2007` 4 · `segovia` 4 · `goya2` 3 · rest <= 3.
 `authors`, `barrios`, `new_bach`, `new_dyens`, `segovia1`, `williams2` and **`xtra_albeniz`** are at
 **0**. `xtra_rodrigo` is at **1** and at **L1 100.0 on every axis**.
 
-The holdout's measured-once values, taken 2026-08-11 before it was named and **not to be re-measured
-until §43 has landed its work**: `xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 and
-2 L3. Both were read during §42's reconnaissance, so they are a clean holdout from §43 onward, not
-for §42 — PROGRESS §42.8 states exactly what touched them.
+**The holdout is spent.** Measured once at the end of §43, exactly as §42.8 intended:
+`xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 / 2 L3 — unchanged, both §43 rules
+neutral there. §44 must name a new holdout before designing a rule, or record that it has none.
 
 ## 5. Instrument debt -- what to distrust, in order
 
@@ -235,3 +249,7 @@ for §42 — PROGRESS §42.8 states exactly what touched them.
 7. **One viewport (1024 px).** Nothing asserts a finding is stable across widths.
 8. **No mutation harness.** `CLAUDE.md` §5 asks for one; it has never been built.
 9. **L4 is not built.** Do not report an L4 number.
+10. **`diff` does not skip a document whose produced output is absent.** Pointed at `fixtures/out2` it
+    reported 25 findings and 19 criticals for `new_karta5`, whose source lives in `fixtures/html2` and
+    was never converted; it printed `note: no output produced` and counted it anyway. `l3` skips it
+    correctly. Check which documents produced output before reading any holdout comparison. §43.7.

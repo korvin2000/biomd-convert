@@ -168,3 +168,20 @@ with no code change at all. §39.1 separates the two.
 **Never quote the 207 bare.** 138 of them (67 %) are the two reference divergences PROGRESS §42.4
 records -- `xtra_shelechov`'s row-major grid (~96) and `xtra_karta5`'s table headings (42, ruled
 ignorable by the author). The honest open count is **~69**.
+
+| 43 the routing survey | 5781-end | **`describeTables` over the corpus is the table instrument the ledger is not `43.2`** · a numbered strip is one value, not several columns `43.3` · **an empty row at the foot of a table is bottom margin, and the general form is measured damage `43.4`** · killed: column alignment from a right-placed table, 12 refs to 1 `43.5` · **two ceilings checked against the source rather than quoted `43.6`** · **holdout measured once and spent `43.7`** · end state `43.8` · what is next `43.9` | HOT |
+
+## Checkpoint -- §43, measured 2026-08-11 over **26 compared documents** (28 converted)
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **535** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npm install && npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
+| L2 | **317** findings -- **206 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **65** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json` |
+| validator | **0** on every produced document | `validate bench/out/<name>.bio.md` |
+
+**Never quote the 206 bare.** 141 are recorded divergences and quirks (§42.4's two, plus §43.5's
+`new_kolpakov`); the honest open count is **~65**. And **none of the 8 criticals has a mechanism to
+build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.empty` class, 1 the
+`blocks.ts` directive-property artefact.

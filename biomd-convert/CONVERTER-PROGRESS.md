@@ -5778,3 +5778,145 @@ documents. No rule was designed or tuned against either — §42.5's and §42.6'
 friends are `xtra_rodrigo`, `xtra_karta5`, `segovia`, `xtra_albeniz` and `kiselev` — so the figures
 above stand as their measured-once values. Treat the *first* post-§42 measurement as the honest
 generalization reading.
+
+## 43. Two more table mechanisms, and three verdicts checked instead of quoted (2026-08-11)
+
+The author asked for tables again. The queue's largest numbers were all recorded ceilings, so this
+iteration went at the tables through the *routing* survey rather than through the ledger rank — one
+line per source table, class and outcome, over all 26 compared documents. That is what found both
+mechanisms, and neither was near the top of the ledger.
+
+### 43.1 Baseline, re-measured before anything
+
+Identical to §42.8's, so `1d2c9b3` is confirmed as recorded and nothing drifted:
+L0 526 tests / 0 FAILED · L1 **98.4** · L2 **324 · 207 defect · 14 critical** · L3 **65 over 26** ·
+validator 0 on all 28 produced. `bench/run.sh` converts 28, `l3` prints 26 — the leak detector holds.
+
+### 43.2 The routing survey is the instrument the ledger is not
+
+`describeTables` already prints `CLASS→table[r×c]` or `CLASS→flow(failure)` per source table; running
+it over the corpus gives the whole table-handling picture in one page, including the tables no rung
+raises. It found `xtra_albeniz` shredding a strip **while scoring 0 converter-defects**, and
+`new_karta` routing one of thirteen sibling tables differently from the other twelve. Neither is
+visible in a ranked class list. Repeat this survey first in any table iteration; it costs one loop
+over the corpus and it is the only view that shows a table *outcome* beside its *class*.
+
+### 43.3 A numbered strip is one value, not several columns (`4f6e048`)
+
+`xtra_albeniz` draws media rows as three `colspan="2"` cells over six physical slots, so the band vote
+fixes `{0-2, 2-4, 4-6}`; its two score rows draw six single slots — a label and five page scans.
+Placed by physical position the scans were shredded across those boundaries: `[ 2 ] [ 3 ]` landed
+under the column that means *TAB* and `[ 4 ] [ 5 ]` under *MIDI*. The output asserted that page 4 is a
+MIDI file — priority 2, a semantic error, not a layout quibble.
+
+`planDataTable` now places a row's ordinal run whole into the band it opens in, using §42.5's own
+`positionOf` primitive asked of one row instead of down the table. The two rules are one principle at
+two stages: `coalesceOrdinalStrips` reshapes the column model when the table would otherwise be
+abandoned; this places a row into the model that already exists.
+
+Corpus survey — **14 ordinal-strip rows in 8 tables across 7 documents**:
+
+| where | rows | band relation | effect |
+|---|---|---|---|
+| `barrios`, `new_bach`, `tarrega`, `new_karta`, `xtra_karta5` | 8 | inside one band | no-op by construction |
+| `xtra_rodrigo` ×3, `xtra_karta5` ×3 | 6 | crossed, folded upstream by §42.5 | no-op |
+| `xtra_albeniz` ×2 | 2 | crossed | the fix |
+
+Three references collapse the strip (`xtra_albeniz`, `xtra_rodrigo`, `xtra_karta5`); none splits it.
+
+Measured: L1 98.4 → **98.5** (`xtra_albeniz` 97.9 → **100.0 on every axis**, every other document
+byte-identical) · L2 324 → **318**, **critical 14 → 8**, ambiguous 24 → 18 · L3 65 → 65 · L0 526 →
+531 tests.
+
+**The converter-defect column did not move, and that is the point.** All six findings were triaged
+`ambiguous`: a strip split across semantic columns loses no text, so only the criticals and the cell
+coordinates ever showed it. §42.3's "`xtra_albeniz` converted with no converter-defect at all" was
+true of the column and false of the document.
+
+### 43.4 An empty row at the foot of a table is bottom margin (`0826f53`)
+
+`new_karta` closes each composer's table with a `&nbsp;` row. On a one-record table that is
+`emptyRatio` 0.5, which collects LAYOUT's empty-table evidence **and** DATA's penalty for it at once —
+a 0.45 swing off bottom margin — so one resource table came out as `::: columns` while its twelve
+siblings on the same page came out as tables. `classifyTier2` scored it LAYOUT 0.50 against the
+siblings' DATA 0.65.
+
+`trailingEmptyRows` states the geometric fact in `ladom/grid.ts`; `classify.ts` declines to read the
+run as evidence, `planDataTable` declines to emit it as a record, and `isSingleRecordRow` counts in
+content rows so a record followed by margin is still one record.
+
+**Killed in the same measurement: every wholly empty row is padding.** The general form flips three
+documents' routing — `news_2007`'s two news lists and `xtra_shelechov`'s programme become tables — and
+costs L1 98.5 → **96.0**, L2 318 → **342** findings, 207 → 232 defect, 8 → **13** criticals. An empty
+row *between* records is a separator and real structural evidence; both references honour it with
+`::: columns` per record. Anchored at the foot the rule flips exactly one table in the corpus, because
+a row with nothing after it cannot be separating anything. Position is the mechanism; emptiness is not.
+
+Measured: L1 98.5 → **98.6** (`new_karta` 95.9 → **98.0**, every other document byte-identical) ·
+L2 318 → **317**, 207 → **206** defect · `new_karta` 6 → 5 defects, `retyped.columns-to-table` → 0 ·
+L3 65 → 65 · L0 531 → **535** tests.
+
+### 43.5 Killed on a corpus sweep: column alignment from a right-placed table
+
+`new_kolpakov`'s reference writes `| --: | --: | --: |`, and its source is a `40%`-wide table inside
+`<div align="right">` — so "a table the source places right carries that placement into its column
+alignment" looked source-attested and general. It is not. **Thirteen documents wrap a table in
+`<div align="right">`** (`barrios`, `borislova`, `kiselev` ×2, `new_bach`, `new_blackmore`,
+`new_dyens`, `new_kolpakov`, `segovia`, `tarrega`, `williams2`, `xtra_albeniz`, `xtra_shelechov`) and
+**twelve of their references write `| - |`**. Only two references in the whole corpus use a non-default
+alignment row at all: `new_kolpakov` and `xtra_karta5`, and the author already ruled the second
+ignorable. 12 to 1 under the §36.5 tie-break. `table.align` is a reference quirk on both documents;
+`new_kolpakov`'s 3 instances are mis-triaged as converter-defect and are not work.
+
+### 43.6 Two recorded ceilings checked against the source rather than quoted
+
+**`xtra_karta5`'s score table (4 criticals) stands as recorded.** Its `table.row.missing` ×3 and
+`table.spurious.unattested` are one thing seen twice: the source holds the record table and the score
+strip as **two separate `<table>` elements**, its reference merges them, and `xtra_rodrigo`'s — same
+shape, same era — keeps them separate. Merging two adjacent source tables is a larger and riskier rule
+than keeping them apart and only one reference asks for it. Still 1 to 1; still not work.
+
+**`xtra_shelechov`'s row-major grid (~96) stands as recorded**, and its interior empty rows are now
+understood: rows 1, 10 and 12 are wholly empty and group the programme, which is why §43.4's general
+variant damaged it. That grouping is evidence *for* the per-row reading the other eight references
+use, not against it.
+
+### 43.7 Holdout, measured once
+
+`xtra_oyanguren` **3 findings / 3 defects** and `xtra_mikulka` **2 / 2 / 2 L3** — byte-identical to
+§42.8's measured-once values. Both rules are neutral there: neither document carries a band-crossing
+ordinal strip or a trailing spacer row that changes a verdict. No damage, no gain; the shapes are
+absent rather than mishandled. This was the honest post-§42 generalization reading §42.8 asked for.
+
+> **Instrument note.** `diff` does not skip a document whose produced output is absent: pointed at
+> `fixtures/out2` it reported 25 findings and 19 criticals for `new_karta5`, whose source lives in
+> `fixtures/html2` and was never converted. `l3` skips it correctly and says so. Never read a
+> holdout comparison without checking which documents actually produced output.
+
+### 43.8 End state, measured 2026-08-11 over 26 compared / 28 converted
+
+| rung | value |
+|---|---|
+| L0 | **535 tests**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | **98.6 %** |
+| L2 | **317 findings — 206 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** |
+| L3 | **65** over 26 documents, identity 0, deterministic |
+| validator | **0 errors** on every produced document, holdout included |
+
+**Never quote the 206 bare.** 138 are §42.4's two reference divergences and 3 more are §43.5's
+`new_kolpakov` quirk; the honest open count is **~65**. Per document: `xtra_shelechov` 101 (~96
+ceiling) · `xtra_karta5` 50 (42 ceiling) · `new_lendle2` 7 · `new_rechin4` 6 · `new_karta` 5 ·
+`news` 5 · rest ≤ 4. **`xtra_albeniz`, `authors`, `barrios`, `new_bach`, `new_dyens`, `segovia1`,
+`williams2` at 0**; `xtra_rodrigo` at 1.
+
+**Of the 8 criticals, 0 are converter-defects with a mechanism to build**: 4 are `xtra_karta5`'s
+merged score table (§43.6), 3 are the broken `link.label.content.empty` class (OPEN §5.0) and 1 is the
+`blocks.ts` directive-property artefact (OPEN §5.0b).
+
+### 43.9 What is next
+
+Nothing table-shaped is left that is both open and general — every remaining `table.*` and `column.*`
+instance is one of the four recorded divergences or a single-document quirk. The queue reverts to
+what §42.7 left: `retyped.paragraph-to-align` 5/5 documents (the pager, killed twice — do not rebuild
+whole; `segovia`'s instance has still never been probed) · `image.position.value` and
+`paragraph.missing.in-paragraph`, 3 documents each · then §40.6's shell-depth root cause.

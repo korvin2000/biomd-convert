@@ -203,3 +203,18 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   legitimate **six**-column record matrix its reference keeps whole, so the cap is not the mechanism;
   the eleven-column score sheet is a strip the source subdivided, and folding the strip is the fix.
   (§42.5)
+
+- **Every wholly empty row in a table is padding.** Only the run at the *foot* is. An empty row
+  *between* records is a separator and real structural evidence: `news_2007` groups its two news lists
+  that way and `xtra_shelechov` its programme (rows 1, 10, 12), and both references honour the
+  grouping with `::: columns` per record. The general form flipped all three documents to tables and
+  cost L1 98.5 -> **96.0**, L2 318 -> **342** findings, 207 -> 232 defect, 8 -> **13** criticals.
+  Anchored at the foot -- where a row has nothing after it to separate -- it flips exactly one table
+  in the corpus and is landed as `0826f53`. Position is the mechanism; emptiness is not. (§43.4)
+- **Column alignment inherited from a right-placed table.** `new_kolpakov`'s reference writes
+  `| --: | --: | --: |` over a `40%` table inside `<div align="right">`, which looks source-attested
+  and general. **Thirteen documents wrap a table in `<div align="right">` and twelve of their
+  references write `| - |`.** Only two references in the corpus use a non-default alignment row at
+  all, and the author already ruled the other (`xtra_karta5`) ignorable. 12 to 1; `table.align` is a
+  reference quirk on both documents and its 3 `new_kolpakov` instances are mis-triaged as
+  converter-defect. (§43.5)

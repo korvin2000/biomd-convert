@@ -42,19 +42,25 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §42** recalculated everything for
-the 28-document corpus and landed two table mechanisms — a strip of numbered slots is one column, not
-eight (`8ad896c`), and a full-span leading row is the table's title, not a record (`d17286f`).
-Current floor: L0 **526 tests**, **0 validator errors on every produced document**, L1 **98.5**,
-L2 **329 · 212 defect · 14 critical**, L3 **67**.
-**65 % of those 212 are two recorded reference divergences, not work** — `xtra_shelechov`'s row-major
-grid (~96, 8 references to 1) and `xtra_karta5`'s table headings (42, author-ruled ignorable). The
-honest open count is **~74**. Quote the split.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §43** landed two more table
+mechanisms — a numbered strip is one value, not several columns (`4f6e048`), and an empty row at the
+foot of a table is bottom margin (`0826f53`) — and closed the table frontier.
+Current floor: L0 **535 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+L2 **317 · 206 defect · 8 critical**, L3 **65 over 26**.
+**141 of those 206 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
+(~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
+`new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~65**, and
+**none of the 8 criticals has a mechanism to build**. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates: name a holdout (the role is empty); `retyped.paragraph-to-align` 5/5 docs;
+Next candidates: name a holdout (§43.7 spent the last one); `retyped.paragraph-to-align` 5/5 docs;
 `image.position.value` and `paragraph.missing.in-paragraph`, 3 documents each; then §40.6's
-shell-depth root cause.
+shell-depth root cause. **Nothing table-shaped is both open and general** (§43.9).
+
+> **Start a table iteration with the routing survey, not the ledger (§43.2).** One
+> `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)` — the only
+> view that shows a table's *outcome* beside its *class*. Both §43 mechanisms came out of it; neither
+> was near the top of the ledger, and one was on a document the defect column called clean.
 
 **The reference normalization settled three standing items with no code change** (PROGRESS §39.1):
 `news`'s frame/align ceiling · `williams2`'s `retyped.table-to-align`, which **dissolves §36.5's
