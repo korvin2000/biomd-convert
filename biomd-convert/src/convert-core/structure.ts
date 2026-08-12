@@ -361,11 +361,12 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     // is the `<a>`, so the figure degraded to `[![](thumb)](big)` — inline
     // Markdown that carries no position, size, caption or frame.
     const images = runImages(inlineRun);
-    const otherContent = inlineRun.some(
-      (n) =>
-        (n.kind === "text" && (n.value ?? "").trim() !== "") ||
-        (n.kind === "element" && n.tag !== "img" && n.tag !== "br" && textOf(n) !== ""),
-    );
+    const otherContent =
+      inlineRun.some(
+        (n) =>
+          (n.kind === "text" && (n.value ?? "").trim() !== "") ||
+          (n.kind === "element" && n.tag !== "img" && n.tag !== "br" && textOf(n) !== ""),
+      ) || hasOrphanTarget(inlineRun, images, ctx);
     if (images.length === 1 && !otherContent) {
       const only = images[0];
       if (only) {
@@ -3478,6 +3479,49 @@ function runImages(nodes: readonly LadomNode[]): LadomNode[] {
     }
   }
   return out;
+}
+
+/**
+ * Does the run hold a navigable target the figure would not carry?
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** `otherContent` asks whether anything in the run has *text*, and
+ * a link whose entire label is a control glyph has none: to `textOf`,
+ * `<a href=x><img src=back.gif></a>` is empty. So a run that renders as
+ * *arrow · marker · arrow* looks like a run holding one lone picture, the figure
+ * branch claims it, and both destinations are deleted with the two `<a>`
+ * elements — at 100 % text recall, because no text was involved. A target is
+ * content: `BioMD-Reference.md`'s precedence reads *content > targets > reading
+ * order*, above layout, and §16.3 is not engaged either way. So a target must be
+ * counted like content. Nothing here consults a document, a class or an asset
+ * name; it asks the run what would be lost.
+ *
+ * **False friend: the linked thumbnail.** `<a href=big><img src=thumb></a>` is
+ * the most common standalone figure in this corpus, and its `<a>` is exactly
+ * what `::: image`'s `link:` property is for. That target is not orphaned — the
+ * `<a>` contains the image the figure will use — so the branch still fires and
+ * `imageFrom` still reads the link off it. Only an `<a>` holding *none* of the
+ * chosen images counts, which is why the test is containment and not "is there
+ * an `<a>` in the run".
+ *
+ * **Recurrence does not apply**, and saying so is part of the contract: a lost
+ * destination is a defect at the first occurrence. Cardinality is the evidence
+ * here — one unaccounted-for target is enough.
+ */
+function hasOrphanTarget(nodes: readonly LadomNode[], kept: readonly LadomNode[], ctx: Ctx): boolean {
+  if (nodes.length === 0) return false;
+  const chosen = new Set(kept);
+  const holdsChosen = (n: LadomNode): boolean =>
+    chosen.has(n) || n.children.some((c) => holdsChosen(c));
+  const scan = (n: LadomNode): boolean => {
+    if (n.kind !== "element") return false;
+    if (n.tag === "a" && rewriteTarget(n.attrs["href"] ?? "", ctx.options.links).href !== "" && !holdsChosen(n)) {
+      return true;
+    }
+    return n.children.some((c) => scan(c));
+  };
+  return nodes.some((n) => scan(n));
 }
 
 /** `::: images` for a run that is nothing but adjacent pictures (§8). */

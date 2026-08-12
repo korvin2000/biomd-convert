@@ -2503,3 +2503,69 @@ describe("a hairline round a lone cell is a box", () => {
     expect(out).not.toContain("::: frame");
   });
 });
+
+/**
+ * A run's links survive the figure branch.
+ *
+ * The contract lives above `hasOrphanTarget` in `structure.ts`. These are its
+ * falsifiers. The shape it protects is the footer pager every page of this
+ * corpus family draws — *back arrow · current-page marker · forward arrow* —
+ * where the marker is the one icon `isUiIcon` declines, because the page it
+ * would point at is the page you are on. With the marker counted as the run's
+ * only picture, the run looked like a lone figure and both arrows' destinations
+ * were deleted. Text recall stayed at 100 %: no text was ever involved.
+ *
+ * The shape does not occur in any of the 28 reference sources, which is why no
+ * reference could have caught it; it occurs on 12 of the 946 unlabelled pages,
+ * and the conservation gate reports 15 lost targets and 15 lost images there.
+ */
+describe("a figure never swallows a link", () => {
+  const PAGER =
+    '<p align="center">' +
+    '<a href="prev.htm"><img border="0" src="../main/previous.gif" width="16" height="16"></a>' +
+    '<img border="0" src="../main/h2.gif" width="16" height="16">' +
+    '<a href="next.htm"><img border="0" src="../main/next.gif" width="16" height="16"></a>' +
+    "</p>";
+
+  it("keeps both destinations of a pager whose middle marker is unlinked", async () => {
+    const out = await md(PROSE + PAGER);
+    expect(out).toContain("(/#/prev)");
+    expect(out).toContain("(/#/next)");
+  });
+
+  it("does not reduce that run to a standalone figure", async () => {
+    const out = await md(PROSE + PAGER);
+    expect(out).not.toContain("::: image\nsrc: ../main/h2.gif");
+  });
+
+  // False friend: the linked thumbnail, the corpus's commonest standalone
+  // figure. Its `<a>` is what `::: image`'s `link:` property is for, and the
+  // `<a>` contains the chosen image, so the target is not orphaned and the
+  // figure branch must still fire.
+  it("still makes a figure of a thumbnail that links to its own scan", async () => {
+    const out = await md(
+      PROSE + '<p align="center"><a href="photo/big.jpg"><img src="photo/thumb.jpg" width="120" height="90"></a></p>',
+    );
+    expect(out).toContain("::: image");
+    expect(out).toContain("src: photo/thumb.jpg");
+  });
+
+  // False friend: a lone unlinked picture. Nothing to orphan, so nothing changes.
+  it("still makes a figure of a lone unlinked picture", async () => {
+    const out = await md(PROSE + '<p align="center"><img src="photo/portrait.jpg" width="200" height="260"></p>');
+    expect(out).toContain("::: image");
+    expect(out).toContain("src: photo/portrait.jpg");
+  });
+
+  // A link whose destination does not survive rewriting is not a lost target,
+  // so it must not block the figure either.
+  it("still makes a figure when the only other link goes nowhere", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><a href="javascript:void(0)"><img src="../main/previous.gif" width="16" height="16"></a>' +
+        '<img src="photo/portrait.jpg" width="200" height="260"></p>',
+    );
+    expect(out).toContain("::: image");
+    expect(out).toContain("src: photo/portrait.jpg");
+  });
+});
