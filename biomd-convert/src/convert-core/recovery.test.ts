@@ -2569,3 +2569,79 @@ describe("a figure never swallows a link", () => {
     expect(out).toContain("src: photo/portrait.jpg");
   });
 });
+
+/**
+ * An unlinked known icon standing in a strip of linked ones.
+ *
+ * The contract lives above `inControlStrip` in `media.ts`. These are its
+ * falsifiers. `isUiIcon` wants an `<a href>` ancestor, which the current-page
+ * marker of a footer pager can never have — the page it would point at is the
+ * page you are on — so it shipped as `![](../main/h2.gif)`, a broken picture
+ * between two arrows that had become glyphs. `mini_images_to_md_guide.md` maps
+ * the asset to `●` with no linked requirement, and `new_rechin4.bio.md` writes
+ * exactly that glyph in exactly this pager position.
+ */
+describe("an unlinked icon in a strip of linked ones is a control too", () => {
+  it("draws the pager marker as its glyph", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center">' +
+        '<a href="prev.htm"><img src="../main/previous.gif" width="16" height="16"></a>\n' +
+        '<img src="../main/h2.gif" width="16" height="16">\n' +
+        '<a href="next.htm"><img src="../main/next.gif" width="16" height="16"></a>' +
+        "</p>",
+    );
+    expect(out).toContain("[◀](/#/prev) ● [▶](/#/next)");
+    expect(out).not.toContain("h2.gif");
+  });
+
+  // False friend: the score mark before a discography cell's links. Ten of the
+  // reference corpus's eleven unlinked known icons are these, and they keep
+  // their picture. A link column's labels are text, never a known icon, so no
+  // linked icon stands beside them.
+  it("leaves a score mark that stands before a cell's text links", async () => {
+    const out = await md(
+      PROSE +
+        '<table border="0" width="90%"><tr>' +
+        '<td><p>Этюд № 1 для гитары соло, сочинение первое</p></td>' +
+        '<td><p><img src="../main/score3.gif" width="16" height="16">' +
+        '<a href="score/etude1.pdf">PDF</a></p></td>' +
+        "</tr><tr>" +
+        '<td><p>Этюд № 2 для гитары соло, сочинение второе</p></td>' +
+        '<td><p><img src="../main/score3.gif" width="16" height="16">' +
+        '<a href="score/etude2.pdf">PDF</a></p></td>' +
+        "</tr></table>" +
+        PROSE,
+    );
+    expect(out).toContain("score3.gif");
+  });
+
+  // False friend: a lone unlinked known icon with nothing beside it. One icon
+  // is not a strip, so the `<a>` requirement still governs.
+  it("leaves a lone unlinked known icon alone", async () => {
+    const out = await md(PROSE + '<p align="center"><img src="../main/h2.gif" width="16" height="16"></p>' + PROSE);
+    expect(out).toContain("h2.gif");
+  });
+
+  // The block boundary is the strip: an arrow in a different paragraph is not
+  // company.
+  it("does not reach across a block for its company", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><img src="../main/h2.gif" width="16" height="16"></p>' +
+        '<p align="center"><a href="next.htm"><img src="../main/next.gif" width="16" height="16"></a></p>',
+    );
+    expect(out).toContain("h2.gif");
+  });
+
+  // A linked image that is *not* a known icon is not company either — otherwise
+  // any thumbnail beside a marker would promote it.
+  it("needs the company to be a known icon, not merely a link", async () => {
+    const out = await md(
+      PROSE +
+        '<p align="center"><img src="../main/h2.gif" width="16" height="16">' +
+        '<a href="photo/big.jpg"><img src="photo/thumb.jpg" width="24" height="24"></a></p>',
+    );
+    expect(out).toContain("h2.gif");
+  });
+});

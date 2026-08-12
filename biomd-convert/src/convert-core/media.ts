@@ -156,10 +156,11 @@ export function isDecorative(el: LadomNode): boolean {
  * site badge that carries a real caption and is *not* in the table, and it must
  * keep its `::: image`.
  *
- * The `<a>` requirement is deliberate and narrower than the guide. An *unlinked*
- * known icon — the score marks that stand in front of a table cell's links — is
- * a different sub-mechanism with a different risk: it lands inside table cells
- * and can move table planning. It is left to `isDecorative` for now.
+ * The `<a>` requirement is deliberate and narrower than the guide, and
+ * {@link inControlStrip} states the one exemption: an *unlinked* known icon is
+ * usually a score mark inside a table cell, where a glyph substitution would
+ * move table planning, so it stays a picture unless the company it keeps says
+ * otherwise.
  */
 export function isUiIcon(el: LadomNode): boolean {
   if (el.tag !== "img") return false;
@@ -173,8 +174,69 @@ export function isUiIcon(el: LadomNode): boolean {
   for (let cur = el.parent; cur; cur = cur.parent) {
     if (cur.tag === "a") return (cur.attrs["href"] ?? "") !== "";
   }
-  return false;
+  return inControlStrip(el);
 }
+
+/**
+ * Is this unlinked known icon standing in a strip of linked ones?
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The current-page marker of a footer pager is unlinked *by
+ * definition* — the page it would point at is the page you are on — so
+ * {@link isUiIcon}'s containment signal can never fire for it, and it shipped as
+ * `![](../main/h2.gif)`: a broken picture standing between two arrows that had
+ * become glyphs. What separates it from the score marks is not the asset and not
+ * its size, both of which it shares with them, but the company it keeps: a
+ * *linked* known icon in the same block. The relation is the evidence; neither
+ * icon alone decides, and no document, class or asset name is consulted. The
+ * block boundary is what stops the strip from reaching across the page.
+ *
+ * **Recurrence within the block is the evidence**, which is the form
+ * `CLAUDE.md` §5 asks for and the form {@link isUiIcon} cannot use: a control
+ * strip is by construction two or three controls side by side, and one icon
+ * alone is not a strip.
+ *
+ * **False friend: the score mark before a cell's links.** Ten of the 28
+ * reference sources' eleven unlinked known icons are `score3` marks inside
+ * discography cells, and they must keep their `::: image`. They have no linked
+ * known icon as a block sibling — a link column's labels are text — so this
+ * never fires on them. Across the 946 unlabelled pages the same holds: 66
+ * unlinked known icons (score marks, smiley marks, the bitmap letter marks of a
+ * catalogue index) have no linked icon beside them and 12 do, and those 12 are
+ * exactly the footer pagers.
+ */
+function inControlStrip(el: LadomNode): boolean {
+  let block = el.parent;
+  while (block && !BLOCK_CONTEXT.has(block.tag)) block = block.parent;
+  if (!block) return false;
+
+  const linkedSibling = (node: LadomNode, linked: boolean): boolean => {
+    if (node === el) return false;
+    const inside = linked || (node.tag === "a" && (node.attrs["href"] ?? "") !== "");
+    if (inside && node.tag === "img" && iconGlyphFor(node.attrs["src"] ?? "") !== null) return true;
+    return node.children.some((child) => linkedSibling(child, inside));
+  };
+  return block.children.some((child) => linkedSibling(child, false));
+}
+
+/**
+ * Where an inline run ends, for the purpose of "the same strip".
+ *
+ * Deliberately the block boundary rather than the whole document: two pagers on
+ * one page are two strips, and a marker in a table cell is not in a strip with
+ * an arrow three cells away.
+ */
+const BLOCK_CONTEXT: ReadonlySet<string> = new Set([
+  "p",
+  "td",
+  "th",
+  "div",
+  "center",
+  "li",
+  "blockquote",
+  "body",
+]);
 
 /**
  * How big a control is allowed to be.
