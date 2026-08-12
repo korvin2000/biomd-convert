@@ -31,7 +31,7 @@ import {
   resolveColumnsCount,
   resolveListMarkerPadding,
 } from "../biomd-ast/index.js";
-import { type GridCell, type TableGrid, rowCells, trailingEmptyRows } from "../ladom/grid.js";
+import { type GridCell, type TableGrid, columnCells, rowCells, trailingEmptyRows } from "../ladom/grid.js";
 import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { type Classification, classifyTable } from "./classify.js";
@@ -40,6 +40,7 @@ import {
   type LogicalTablePlan,
   type PlannedCell,
   type PlannedRow,
+  MEDIA_LANE_SHARE,
   cellText,
   leadingCaptionCell,
   planDataTable,
@@ -3985,6 +3986,36 @@ function dataRegionFrom(
     // first cell and falls through to the DATA-abandonment path unchanged.
     if (isBareLinkRow(grid)) return layoutFrom(grid, ctx, el, classification);
 
+    // A table abandoned *because one column is a media lane* has already been
+    // told what it is. `planDataTable` refuses it on the stated ground that the
+    // column is bare pictures — §16.1's "text beside a cover", a lane rather
+    // than a column of values — and a lane is precisely what `layoutFrom`
+    // builds. Flattening instead destroys the pairing that reason just named:
+    // on `assad_b` the album title, its year and its cover stop being one
+    // record and become a rule, a bold line, a `###` year and a loose figure.
+    // The refusal names the remedy; taking flow anyway contradicts it.
+    //
+    // **This is not the general reconsideration §18.3 killed** and
+    // `recovery.test.ts` refuses by name. That one fires on a record matrix
+    // that would have been a table with one more row, where lanes lose a real
+    // table; this one fires only where `planDataTable` has established that no
+    // table exists to lose. The contract's fixture cannot reach it: the
+    // media-lane test needs two populated cells in one column and the fixture
+    // is one row, so it is refused earlier as `no-body`.
+    //
+    // **Two false friends, both measured, both named by
+    // `pairsPictureWithMatter`.** A *gallery* has no worded lane to pair the
+    // covers with — `goya2`'s reference writes the one `::: images` row the
+    // flow path already builds, and lanes cost that document 20 findings. A
+    // *resource matrix* carrying marks is a record list whose pictures are
+    // ornament. Neither has the pairing this rule exists to keep.
+    if (failure === "media-lane" && pairsPictureWithMatter(grid)) {
+      ctx.ledger.push(
+        review(el.id, `classified DATA but one column is a media lane (${detail}); reconsidered as a layout region`),
+      );
+      return layoutFrom(grid, ctx, el, classification);
+    }
+
     // A DATA verdict that cannot be expressed as a table is a classification
     // finding, not a formatting detail: rows and columns are about to be lost.
     ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
@@ -4190,6 +4221,56 @@ function isLinkColumn(column: readonly PlannedCell[]): boolean {
 
 /** A link label is a label, not a sentence — `contentKind`'s limit, shared. */
 const LINK_LABEL_MAX_CHARS = 40;
+
+/**
+ * Whether a grid sets a lane of bare pictures *beside* a lane of matter.
+ *
+ * This is §16.1's "text beside a cover" asked of the grid, and it is the whole
+ * of the evidence: three kinds of column, told apart by what a cell holds and
+ * nothing else.
+ *
+ *   - a **picture lane** — the cell is a picture and carries no words, at the
+ *     same share `planDataTable` used to refuse the table, so the routing asks
+ *     that rule's own question rather than a similar-looking one;
+ *   - a **resource column** — every cell is one short link and nothing else,
+ *     which is exactly what the tier-1 DATA gate reads to type a resource
+ *     matrix (`MP3 | MIDI | TAB` beside a strip of 16 px marks is a record list
+ *     whose pictures are ornament);
+ *   - **matter** — anything else carrying words: a title, a year, a track list,
+ *     which is what makes the picture beside it a picture *of* something.
+ *
+ * Both halves are required, and requiring the second is what keeps a *gallery*
+ * out: a grid whose every column is bare covers has nothing to pair them with,
+ * and one flattened all-picture row is one `::: images` (§31.2), which the flow
+ * path already builds and which `goya2`'s reference writes.
+ *
+ * Relational and unitless throughout — cardinality of images and links per
+ * cell, and the label limit every other link rule here shares. No size, no
+ * filename, no class, no vocabulary.
+ *
+ * **Recurrence** is required of both lanes — two populated cells each — because
+ * one picture beside one line is a figure over its caption, which `media.ts`
+ * binds far better than any lane.
+ */
+function pairsPictureWithMatter(grid: TableGrid): boolean {
+  let pictureLane = false;
+  let matterLane = false;
+  for (let col = 0; col < grid.cols; col += 1) {
+    const cells = columnCells(grid, col).filter((cell) => !cell.isEmpty);
+    if (cells.length < 2) continue;
+    const bare = cells.filter((cell) => cell.images > 0 && cell.text.trim().length < 3).length;
+    if (bare / cells.length >= MEDIA_LANE_SHARE) {
+      pictureLane = true;
+      continue;
+    }
+    const labels = cells.filter(
+      (cell) => cell.links === 1 && cell.images === 0 && cell.text.trim().length <= LINK_LABEL_MAX_CHARS,
+    ).length;
+    if (labels === cells.length) continue;
+    if (cells.some((cell) => cell.images === 0 && cell.text.trim().length >= 3)) matterLane = true;
+  }
+  return pictureLane && matterLane;
+}
 
 /** The text that at least 60% of a column's non-empty cells repeat verbatim. */
 function dominantLabel(cells: readonly PlannedCell[]): string | null {

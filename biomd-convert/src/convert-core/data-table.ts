@@ -420,7 +420,10 @@ export type PlanFailure =
   | "cell-crosses-band"
   | "cell-needs-blocks"
   | "prose-matrix"
+  /** One column is pictures and the others are matter: a catalog *lane*. */
   | "media-lane"
+  /** Most of the grid is pictures: a gallery, with no lane to pair them with. */
+  | "media-catalog"
   | "no-body";
 
 export interface PlanResult {
@@ -551,7 +554,7 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
     const column = rows.map((r) => r.cells[band] as PlannedCell).filter((c) => !c.isEmpty);
     if (column.length < 2) continue;
     const pictures = column.filter((c) => isPictureCell(c)).length;
-    if (pictures / column.length >= 0.6) {
+    if (pictures / column.length >= MEDIA_LANE_SHARE) {
       return {
         plan: null,
         failure: "media-lane",
@@ -560,16 +563,18 @@ export function planDataTable(grid: TableGrid, options: PlanOptions = {}): PlanR
     }
   }
 
-  // The same judgement one level up: a grid where most cells carry a picture is
-  // a catalog of items — cover plus caption, repeated — not a matrix of values.
-  // Its two "columns" are two lanes of the same list, which is why the second
-  // lane's header can only ever repeat the first's.
+  // The same judgement one level up, and a *different* construct: a grid where
+  // most cells carry a picture is a gallery — covers, repeated — not a matrix
+  // of values and not a lane beside one either, because there is no worded lane
+  // left to pair the pictures with. `goya2`'s cover wall is 100 % pictures and
+  // its reference writes one `::: images` row, which is what the flow path
+  // builds; routing it to lanes instead cost that document 20 findings.
   const populated = rows.flatMap((r) => r.cells).filter((c) => !c.isEmpty);
   const withMedia = populated.filter((c) => c.sources.some((s) => s.images > 0)).length;
   if (populated.length >= 4 && withMedia / populated.length >= 0.5) {
     return {
       plan: null,
-      failure: "media-lane",
+      failure: "media-catalog",
       detail: `${Math.round((withMedia / populated.length) * 100)}% of cells carry an image: a media catalog, not a record matrix`,
     };
   }
@@ -652,6 +657,14 @@ function textLengthOf(cell: PlannedCell): number {
 }
 
 /** An image with no caption of its own — a cover, not a value. */
+/**
+ * The share of a column that must be bare pictures for it to be a media lane.
+ *
+ * Exported so the routing decision downstream asks the *same* question this
+ * refusal asked, rather than a similar-looking one with its own number.
+ */
+export const MEDIA_LANE_SHARE = 0.6;
+
 function isPictureCell(cell: PlannedCell): boolean {
   const images = cell.sources.reduce((a, c) => a + c.images, 0);
   return images > 0 && textLengthOf(cell) < 3;

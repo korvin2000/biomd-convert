@@ -2753,3 +2753,111 @@ describe("a menu item whose label the source split across two anchors", () => {
   });
 });
 
+/**
+ * A grid abandoned *because* one column is a media lane is that lane.
+ *
+ * **Invariant.** The refusal names the remedy. `planDataTable` declines a
+ * `media-lane` grid on the stated ground that one column is bare pictures —
+ * §16.1's "text beside a cover", a lane rather than a column of values — and a
+ * lane is what `layoutFrom` builds. Decomposing to flow instead destroys the
+ * pairing that reason just identified: on `assad_b` an album's title, its year
+ * and its cover stop being one record and become a rule, a bold line, a `###`
+ * year and a loose figure.
+ *
+ * **This is not the reconsideration §18.3 killed**, which a contract above
+ * refuses by name. That one fires where a record matrix would have been a real
+ * table with one more row, and lanes lose it; this one fires only where
+ * `planDataTable` has established there is no table to lose. The killed form's
+ * own fixture cannot reach here — the media-lane test needs two populated cells
+ * in one column, and that fixture has one row.
+ *
+ * **Two false friends, both tested for non-firing.** A *gallery* — most of the
+ * grid pictures, so `planDataTable` refuses it as `media-catalog` instead —
+ * has no worded lane to pair the covers with, and `goya2`'s reference writes
+ * the single `::: images` row the flow path already builds. Lanes cost that
+ * document 20 findings, which is how the two refusals came to be told apart by
+ * name rather than by degree. A *resource matrix* carrying marks —
+ * `MP3 | MIDI | TAB` down one column, a 16 px glyph down the other — is a
+ * record list whose pictures are ornament; `hasResourceColumn` reads the same
+ * evidence the tier-1 DATA gate used to type it, so the two rules cannot
+ * disagree about what the grid is.
+ */
+describe("a media catalog that cannot be a table", () => {
+  /** The lane path only exists under `faithful`, which is what the corpus runs. */
+  const laned = async (body: string): Promise<string> =>
+    (
+      await convert(Buffer.from(page(body), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+
+  const album = (title: string, year: string, cover: string) =>
+    `<tr><td width="33%" valign="top"><p><b>${title}</b></p><p>${year}</p></td>` +
+    `<td width="67%" align="center"><p><img src="${cover}" width="180" height="180"></p></td></tr>`;
+
+  const CATALOG =
+    '<table border="0" width="80%">' +
+    album("Solo", "1994", "photo/a/bassad_1.jpg") +
+    album("Rhythms", "1995", "photo/a/bassad_2.jpg") +
+    album("Echoes of Brazil", "1997", "photo/a/bassad_3.jpg") +
+    "</table>";
+
+  it("pairs each cover with its own matter instead of flattening the grid", async () => {
+    const out = await laned(PROSE + CATALOG + PROSE);
+    expect(out).toContain("::: columns");
+    expect(out).toContain("photo/a/bassad_1.jpg");
+    // The year was becoming a section heading once the record was taken apart.
+    expect(out).not.toContain("### 1994");
+  });
+
+  it("leaves a gallery of covers on the flow path, where it becomes one row — non-firing", async () => {
+    // Every cell a picture: there is no worded lane to pair them with, so the
+    // pairing lanes would preserve does not exist. `goya2` is this shape, and
+    // its reference writes one `::: images` row. The verdict is forced for the
+    // same reason the contract above forces one — a synthetic gallery does not
+    // score DATA on its own, and tuning it until it did would test the scorer.
+    const cover = (src: string) => `<td width="25%"><p><img src="${src}" width="120" height="120"></p></td>`;
+    const html = page(
+      PROSE +
+        '<table border="0" width="80%"><tr>' +
+        cover("c1.jpg") +
+        cover("c2.jpg") +
+        "</tr><tr>" +
+        cover("c3.jpg") +
+        cover("c4.jpg") +
+        "</tr></table>" +
+        PROSE,
+    );
+    const doc = parseHtml(html);
+    const tables = [...walkElements(doc.root)].filter((e) => e.tag === "table");
+    const target = tables[tables.length - 1] as { id: string };
+    const result = await convert(Buffer.from(html, "utf8"), {
+      profile: SPEC,
+      layoutFidelity: "faithful",
+      measurer: new InlineAlignMeasurer(),
+      classifications: new Map([
+        [target.id, { class: "DATA", confidence: 0.4, tier: 4, reason: "forced by test" } as Classification],
+      ]),
+    });
+    expect(result.markdown).not.toContain("::: columns");
+    expect(result.markdown).toContain("::: images");
+  });
+
+  it("leaves a resource matrix on the flow path however often its marks recur — non-firing", async () => {
+    const mark = (glyph: string, href: string, label: string) =>
+      `<tr><td><img src="${glyph}" width="16" height="16"></td><td><a href="${href}">${label}</a></td></tr>`;
+    const out = await laned(
+      PROSE +
+        '<table border="0" width="300">' +
+        mark("a.gif", "a.htm", "MP3") +
+        mark("b.gif", "b.htm", "MIDI") +
+        mark("c.gif", "c.htm", "TAB") +
+        mark("d.gif", "d.htm", "NOTES") +
+        "</table>" +
+        PROSE,
+    );
+    expect(out).not.toContain("::: columns");
+  });
+});
