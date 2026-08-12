@@ -4016,6 +4016,22 @@ function dataRegionFrom(
       return layoutFrom(grid, ctx, el, classification);
     }
 
+    if (failure === "too-small") {
+      // A one-row grid can be neither a record matrix nor a recurring lane,
+      // yet still state one exact relationship: a figure beside its visible
+      // caption. The declared `<tr>` supplies the grouping; a second occurrence
+      // cannot be required of a singular figure. Binding here is earlier and
+      // safer than `decomposeFrom`: once flattened, the duplicate visible line
+      // survives beside `alt` as an unrelated block.
+      const figure = sideCaptionFigureFrom(grid, ctx);
+      if (figure) {
+        ctx.ledger.push(
+          review(el.id, `classified DATA but the one-row grid is a figure beside its caption (${detail}); bound as one figure`),
+        );
+        ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure: "figure-caption" });
+        return [figure];
+      }
+    }
     // A DATA verdict that cannot be expressed as a table is a classification
     // finding, not a formatting detail: rows and columns are about to be lost.
     ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure });
@@ -4272,6 +4288,81 @@ function pairsPictureWithMatter(grid: TableGrid): boolean {
   return pictureLane && matterLane;
 }
 
+/**
+ * One standalone figure beside its visible caption in a single declared row.
+ *
+ * This is deliberately narrower than a generic DATA→layout fallback. One cell
+ * must lower to exactly one standalone image; exactly one other occupied cell
+ * must lower to short, link-free text that substantially repeats the image's
+ * source-backed label; nothing else may survive. A prose lane, a resource
+ * record and two caption-like labels each fail a different part of that test.
+ */
+function sideCaptionFigureFrom(grid: TableGrid, ctx: Ctx): BiomdContent | null {
+  if (grid.rows - trailingEmptyRows(grid).size !== 1) return null;
+  const cells = rowCells(grid, 0).filter((cell) => !cell.isEmpty);
+  if (cells.length !== 2) return null;
+
+  const snapshot = begin(ctx);
+  const lowered = cells.map((cell) => framedCell(cell.node, ctx));
+  const figureIndex = lowered.findIndex(
+    (blocks) => blocks.length === 1 && blocks[0]?.type === "biomdImage" && blocks[0].standalone,
+  );
+  if (figureIndex < 0) {
+    rollback(ctx, snapshot);
+    return null;
+  }
+
+  const captionIndex = figureIndex === 0 ? 1 : 0;
+  const figure = lowered[figureIndex]?.[0];
+  const captionBlocks = lowered[captionIndex] ?? [];
+  const caption = sideCaptionText(captionBlocks, cells[captionIndex], cells[figureIndex], ctx);
+  if (!figure || figure.type !== "biomdImage" || caption === "") {
+    rollback(ctx, snapshot);
+    return null;
+  }
+
+  const captionSource = cells[captionIndex];
+  if (captionSource) ctx.ledger.push(mergedInto(captionSource.id, nextId(ctx, "image-caption")));
+  return { ...figure, caption };
+}
+
+/** Caption text accepted by the side-by-side figure relation. */
+function sideCaptionText(
+  blocks: readonly BiomdContent[],
+  captionCell: GridCell | undefined,
+  imageCell: GridCell | undefined,
+  ctx: Ctx,
+): string {
+  if (!captionCell || !imageCell || captionCell.links > 0 || captionCell.images > 0 || blocks.length === 0) return "";
+  const text = blocks.map(blockTextOf).join(" ").replace(/\s+/gu, " ").trim();
+  if (text === "" || text.length > 300) return "";
+
+  const images = [...walkElements(imageCell.node)].filter((node) => node.tag === "img");
+  if (images.length !== 1) return "";
+  const sourceLabel = captionFor(images[0] as LadomNode);
+  if (!sourceLabel) return "";
+  // Captions may insert relation words and punctuation into the image's `alt`.
+  // Require substantial source-label coverage in order, not literal equality.
+  const sourceWords = normalizedRelationText(sourceLabel).split(" ").filter(Boolean);
+  const visibleWords = normalizedRelationText(text).split(" ").filter(Boolean);
+  const forward = orderedWordCoverage(sourceWords, visibleWords) / sourceWords.length;
+  const reverse = orderedWordCoverage(visibleWords, sourceWords) / visibleWords.length;
+  if (sourceWords.length < 2 || visibleWords.length < 2 || Math.max(forward, reverse) < 0.7) return "";
+
+  const candidates = blocks.every((block) => isCaptionCandidate(block, ctx));
+  const boundedText = blocks.every((block) => block.type === "paragraph" || block.type === "heading");
+  return candidates || boundedText ? text : "";
+}
+function normalizedRelationText(value: string): string {
+  return value.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
+function orderedWordCoverage(source: readonly string[], visible: readonly string[]): number {
+  let at = 0;
+  for (const word of visible) if (word === source[at]) at += 1;
+  return at;
+}
+
 /** The text that at least 60% of a column's non-empty cells repeat verbatim. */
 function dominantLabel(cells: readonly PlannedCell[]): string | null {
   const counts = new Map<string, number>();
@@ -4282,10 +4373,9 @@ function dominantLabel(cells: readonly PlannedCell[]): string | null {
     total += 1;
     counts.set(text, (counts.get(text) ?? 0) + 1);
   }
-  if (total < 3) return null;
-  const best = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
-  if (!best) return null;
-  return best[1] / total >= 0.6 ? best[0] : null;
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .find(([, count]) => total >= 3 && count / total >= 0.6)?.[0] ?? null;
 }
 
 /**

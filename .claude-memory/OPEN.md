@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-12**, after PROGRESS §47.
+Last touched **2026-08-12**, after PROGRESS §48.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,16 +32,20 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-12, after PROGRESS §47:**
+**Current state, *measured* 2026-08-12, after PROGRESS §48:**
 
 | rung | value |
 |---|---|
-| L0 | **700 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **707 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
 | L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 | **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
+
+**Next:** re-probe §46.9's remaining corpus-only mechanisms against the post-§48 scan. The broad
+reference frontier is unchanged; §48 closed one structural/data-quality loss invisible to all
+reference rungs.
 
 > **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
 > left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
@@ -308,6 +312,11 @@ Per document, converter-defect: `xtra_shelechov` 101 (**~96 ceiling**) · `xtra_
 **The holdout is spent.** Measured once at the end of §43, exactly as §42.8 intended:
 `xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 / 2 L3 — unchanged, both §43 rules
 neutral there. §44 and §45 had no holdout.
+
+**Closed in §48:** one-row DATA grid holding one standalone image beside text that substantially
+repeats its source-backed image label. The converter now binds the visible text as that figure's
+caption. Corpus reach: exactly `bogdanovic`; text recall 98.44% -> 100%, directives 4 -> 3, no
+target/image/validator loss. Seven contract tests cover positive, mutation and false-friend shapes.
 
 ## 5. Instrument debt -- what to distrust, in order
 

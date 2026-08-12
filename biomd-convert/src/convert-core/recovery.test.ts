@@ -2861,3 +2861,105 @@ describe("a media catalog that cannot be a table", () => {
     expect(out).not.toContain("::: columns");
   });
 });
+
+/**
+ * A one-row DATA grid that carries a figure beside its visible caption is a
+ * bounded layout region, not a record matrix and not linear flow.
+ *
+ * **Invariant.** One occupied cell lowers to one standalone image; another
+ * lowers only to short, link-free text that substantially repeats the image's
+ * source-backed label. The source's row states the side-by-side relationship.
+ * No filename, class, width ratio or detector vocabulary participates.
+ *
+ * **Recurrence cannot apply.** A figure has one caption by definition. The
+ * declared row, cardinality and caption role carry the proof instead.
+ *
+ * **False friends, tested for non-firing.** A text lane beside a cover carries
+ * article prose rather than a centred caption and must not be bound as one; a
+ * title beside a resource link is the one-record DATA shape
+ * and must remain a GFM table; two caption cells with no image do not identify
+ * either text block as a caption of the other.
+ */
+describe("a one-row figure-and-caption grid preserves the binding", () => {
+  async function converted(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  it("binds the visible side caption to the figure instead of repeating it", async () => {
+    const figure =
+      '<table border="0"><tr>' +
+      '<td><p style="text-align: center"><img src="portrait.jpg" alt="Душан Богданович" width="125" height="175"></p></td>' +
+      '<td><p style="text-align: center">Душан Богданович в журнале, сентябрь 1998 г.</p></td>' +
+      "</tr></table>";
+    const out = await converted(figure);
+    expect(out).toContain("caption: Душан Богданович в журнале, сентябрь 1998 г.");
+    expect(out.match(/Душан Богданович в журнале, сентябрь 1998 г\./gu)).toHaveLength(1);
+    expect(out).not.toContain("::: columns");
+  });
+
+  it("binds a shorter visible caption when it preserves the image label's identity", async () => {
+    const figure =
+      '<table border="0"><tr>' +
+      '<td><p><img src="portrait.jpg" alt="Душан Богданович, Classical Guitar" width="125"></p></td>' +
+      '<td>Душан Богданович в журнале Classical Guitar</td>' +
+      "</tr></table>";
+    const out = await converted(figure);
+    expect(out).toContain("caption: Душан Богданович в журнале Classical Guitar");
+  });
+
+  it("does not bind unrelated short side text to a figure — non-firing", async () => {
+    const unrelated =
+      '<table border="0"><tr>' +
+      '<td><p><img src="portrait.jpg" alt="Душан Богданович" width="125"></p></td>' +
+      '<td><p>Концерт состоялся в сентябре</p></td>' +
+      "</tr></table>";
+    const out = await converted(unrelated);
+    expect(out).not.toContain("caption: Концерт состоялся");
+  });
+
+  it("does not bind a one-word generic alt to repeated side text — non-firing", async () => {
+    const generic =
+      '<table border="0"><tr>' +
+      '<td><p><img src="portrait.jpg" alt="Фото" width="125"></p></td>' +
+      '<td><p>Фото с концерта в сентябре</p></td>' +
+      "</tr></table>";
+    const out = await converted(generic);
+    expect(out).not.toContain("caption: Фото с концерта");
+  });
+
+  it("does not bind a prose lane beside its cover as a caption — non-firing", async () => {
+    const lane =
+      '<table border="0"><tr>' +
+      '<td>Он был выдающимся гитаристом своего поколения и оставил обширное музыкальное наследие.</td>' +
+      '<td><p><img src="cover.jpg" alt="Обложка" width="150" height="150"></p></td>' +
+      "</tr></table>";
+    const out = await converted(lane);
+    expect(out).toContain("Он был выдающимся гитаристом");
+    expect(out).not.toContain("caption: Он был выдающимся");
+  });
+
+  it("leaves a one-record resource row as a table — non-firing", async () => {
+    const record =
+      '<table border="0"><tr><td>Estrelluvio</td>' +
+      '<td><a href="music/estrelluvio.wma">WMA</a></td></tr></table>';
+    const out = await converted(record);
+    expect(out).toContain("| Estrelluvio | [WMA](music/estrelluvio.wma) |");
+    expect(out).not.toContain("::: columns");
+  });
+
+  it("does not invent a binding between two caption-like text cells — non-firing", async () => {
+    const labels =
+      '<table border="0"><tr>' +
+      '<td><p style="text-align: center">Левая подпись</p></td>' +
+      '<td><p style="text-align: center">Правая подпись</p></td>' +
+      "</tr></table>";
+    const out = await converted(labels);
+    expect(out).not.toContain("caption:");
+  });
+});

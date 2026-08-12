@@ -6396,3 +6396,60 @@ and its reference writes `::: images`).
 
 **The holdout stayed spent.** All three mechanisms were found by the 946 unlabelled pages and none
 could have been found by a reference, so there was nothing a holdout could have withheld.
+
+## 48 -- one row, one figure, one visible caption (2026-08-12)
+
+### 48.1 Why this ranked above the reference ledger
+
+The reference baseline reproduced before attribution: L0 **700** tests, L1 **98.6**, L2 **310 / 199
+defect / 8 critical**, L3 **59 over 26**, validator 0 on all 28; `bench/run.sh` converted 28 and L3
+printed 26. The reference frontier stayed dominated by known mixed or instrument-debt classes.
+Instead, §47.4's residual corpus mechanism supplied a coherent structural defect: 25 unlabelled
+one-row DATA grids were refused as `too-small`, and one positive shape put a photograph beside its
+visible caption. The flat fallback preserved both strings but destroyed their relationship and
+printed the image `alt` plus the visible caption as separate descriptions.
+
+Two representative positives/controls settled the mechanism before the survey: `bogdanovic` has one
+standalone image and adjacent text that names the same person/publication; `assad` and `petrenco` are
+false friends whose side text labels a next-page link, not the image. The complete 946-page survey
+found exactly one positive. Recurrence cannot apply to a singular figure-caption relationship; the
+declared row, exact occupancy, one-image role and source-backed label relation carry the proof.
+
+### 48.2 The rule
+
+On the DATA `too-small` path only, a single populated row is speculatively lowered and accepted when:
+
+- exactly two populated cells survive;
+- one lowers to exactly one standalone image;
+- the other is short, link-free paragraph/heading content;
+- it substantially repeats the image's source-backed `alt`/caption words in order; and
+- neither cell carries another image or surviving block role.
+
+The visible side text becomes the `::: image` caption; the speculative ledger is rolled back on every
+non-match. The relation uses no filename, class, id, title, width ratio or corpus vocabulary. The rule
+contract has seven observable tests: longer and shorter captions, the real punctuation/relation-word
+mutation, and non-firing prose-lane, resource-record, unrelated-text, one-word generic-alt and
+no-image shapes.
+
+### 48.3 Measured outcome
+
+`bogdanovic` is the only corpus firing. Its visible structure improves from a standalone image plus a
+separate centred paragraph to one figure whose caption is the visible source caption. Text recall
+**98.44 % -> 100.00 %** because the emitted relationship no longer interrupts the source wording;
+directive count **4 -> 3**, density **30.30 -> 24.39 / 1000 words**. Targets and images remain
+conserved. This is a structural/data-quality gain, not a reference-fidelity change.
+
+| rung | before | after |
+|---|---|---|
+| L0 | 700 tests | **707**, typecheck clean, 0 FAILED |
+| L1 | 98.6 % over 26 | **98.6 %**, per-document table unchanged |
+| L2 | 310 / 199 defect / 8 critical | **310 / 199 / 8**, per-document unchanged |
+| L3 | 59 over 26 | **59**, identity 0, deterministic |
+| validator | 0 on all 28 | **0** |
+| 946 unlabelled | 0 FAILED, 0 lost targets, 0 lost images | **unchanged; 1 intended firing** |
+
+The reference corpus contains no firing, so all three reference rungs are honestly unchanged. The
+post-change full 946-page Chromium run has **0 FAILED**, **0 validator errors**, **0 lost targets** and
+**0 lost images**. No priority 1-4 regression was observed. The remaining §46.9 corpus candidates stay
+open; the next iteration should re-probe them against this post-§48 scan rather than return to ledger
+rank order.
