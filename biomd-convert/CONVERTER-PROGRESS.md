@@ -6229,3 +6229,170 @@ The unlabelled corpus reorders the queue. Ranked by what is now measured:
 **The holdout is still spent (§43.7), and this iteration needed none**: the 946 pages are blind by
 construction -- no reference exists for any of them, so nothing could be tuned to them. That is a
 better generalization signal than a two-document holdout and it should be used as one.
+
+## 47 -- three silent losses, and the refusal that named its own remedy
+
+Three mechanisms, one commit each, all three invisible to every reference. Two closed the last two
+conservation losses in the 946 unlabelled pages; the third closed the routing inconsistency the
+first one exposed. **Every conservation loss in the corpus is now closed.**
+
+### 47.1 Baseline reproduced before anything was attributed
+
+Measured against `fe61b41` before the first edit and identical to §46.8: L0 **690** tests, L1
+**98.6**, L2 **310 / 199 defect / 8 critical**, L3 **59 over 26**, `bench/run.sh` converts 28, `l3`
+prints 26 -- leak detector holds. The 946-page scan reproduces with a config that differs from
+`bench/biomd.config.json` only in `inputDir`/`assetRoot`/`outDir`/`workDir` and carries **no**
+`expectedDir`, so nothing can be scored against a reference that does not exist:
+
+```bash
+node dist/cli/index.js corpus run -c <gen.config.json>   # ~4 min, jobs 4, real Chromium
+```
+
+Its conservation numbers are not printed by that command; they are in each job's
+`08-validation/report.json` (`conservation.targets.missing`, `conservation.images.missing`).
+
+### 47.2 A list with no items is not a list (`e4513f9`)
+
+`listFrom` iterated a list element's children and `continue`d past everything that was not an
+`<li>`. That is silent deletion, and the era's authoring tool makes it fire: its indent button
+emits a bare `<ul>` with **no items at all** around ordinary blocks. On `assad_b.htm` an indent
+wrapper around the discography deleted **the whole table, its three album covers and 23 of 194 text
+shingles** -- no ledger entry, no diagnostic, and a text recall of 88 % that §46.6 had *just*
+established is not a loss signal. The conservation gate's image multiset was the only witness, and
+it reported three covers rather than a discography.
+
+Cardinality decides it: a list element with zero list-item children cannot be a list in a target
+whose lists are made of items, so it converts as the block wrapper it renders as -- the same path
+`<blockquote>` takes when it does not quote. Recurrence is deliberately **not** required; an indent
+wrapper is drawn once, where the author pressed the button, and asking for a second would ask the
+construct not to exist (§35.8's `minRows: 2` trap). Content a list holds *beside* its items is no
+longer dropped either: it joins the item it follows, which is where the browser draws it. That half
+has **zero** instances in 974 pages and is a guard against the silent path, not a rule fitted to a
+shape.
+
+| measurement | before | after |
+|---|---|---|
+| `assad_b.htm` images missing | 3 | **0** |
+| `assad_b.htm` text recall | 88.14 % | **97.94 %** |
+| lost images, 946 pages | 3 in 1 doc | **0** |
+| item-less lists in the corpus | 5 docs (`assad_b` `fisk` `guzman_rep` `machneva1` `petrenco2`) | -- |
+| item-less lists in the 28 references | **0** | -- |
+
+### 47.3 An anchor merged into a menu item is accounted for, not lost (`d442c63`)
+
+`navFromGrid` requires every anchor in a cell to carry the *same* destination and then writes one
+link -- `<a>1995</a><a>-2002</a>` becomes `[1995-2002](…)`, which is §11's rule and the right
+reading of a label FrontPage split in two. Its own comment names the case. Only the kept anchor
+reached the ledger, so the folded one read as a dropped destination against the gate's target
+**multiset**: `williams1.htm`, the last lost target in the 946, was never lost.
+
+The fix is the record, not the routing -- one `REMOVED` entry per folded anchor, on the audited path
+`collectAccountedRemovals` already reads. A merge that ever folded a *different* href would still
+fail the gate, because the rule refuses to fire on one.
+
+**Lost targets 1 -> 0, lost images 3 -> 0, 0 FAILED, 946 documents.** Nothing else in the corpus
+fails conservation on a target, an image or a word.
+
+### 47.4 A picture lane beside a lane of matter is a lane (`a251a96`)
+
+`planDataTable` refuses a grid whose column is bare pictures on the stated ground that it is §16.1's
+*"text beside a cover"* -- a lane, not a column of values. The routing then decomposed it to linear
+flow anyway, destroying the pairing that reason had just identified. Once §47.2 restored
+`assad_b`'s discography, that is what it got: the album title, its year and its cover stop being one
+record and become a rule, a bold line, a spurious `### 1997` and a loose figure. **The refusal named
+the remedy and the router contradicted it.**
+
+This is **not** the reconsideration §18.3 killed and `recovery.test.ts` refuses by name. That one
+fires where a record matrix would have been a real table with one more row, and lanes lose it; this
+one fires only where `planDataTable` has established there is no table to lose. The killed form's
+own fixture cannot reach it -- the media-lane test needs two populated cells in one column and that
+fixture has one row.
+
+**The first version was too wide and the regression corpus said so within one run.** It routed every
+`media-lane` refusal to lanes, and `goya2` went from 3 converter-defects to **23**: its cover wall is
+a *gallery*, its reference writes the one `::: images` row §31.2 already builds, and lanes produced
+six `image.src.missing` and three `images.columns.missing`. L1 did not move at all -- `goya2` stayed
+at 99.5 on both sides of that regression, which is the §46 lesson repeating: **L1 is blind to
+exactly this.**
+
+Two false friends, both found by measurement rather than argument, both named by
+`pairsPictureWithMatter` and tested for non-firing:
+
+| false friend | evidence | corpus instances |
+|---|---|---|
+| **gallery** -- every column bare covers, no worded lane to pair them with | no matter lane; also refused one level up as the new `media-catalog` | `goya2` (reference) · `cobo2` `kleynjans2` `moreno1` (946) |
+| **resource matrix** -- `MP3 / MIDI / TAB` beside 16 px marks, pictures as ornament | a column of single short links, the same test the tier-1 DATA gate used to type it | `baden_powell1-4` `luiz` (946, §46.6's cover galleries) |
+
+The share a column must be pictures is now exported from the refusal itself (`MEDIA_LANE_SHARE`), so
+the routing asks that rule's own question instead of a similar-looking one with its own number. The
+two refusals are told apart **by name** rather than by degree: `media-lane` (one column is pictures)
+and `media-catalog` (most of the grid is).
+
+**Reach is 1 document in 946, and that is the point.** The shape is reference-attested three times --
+`borislova`, `jovicic` and `new_lagq2` all pair a cover with matter and all get lanes -- but they
+arrive via `UNKNOWN` and `CATALOG`. `assad_b` arrives via `DATA` and got flat flow. This is §46.5's
+consistency argument, not an instance count: one shape, three classifications, two outcomes.
+
+### 47.5 What was measured, and what did not move
+
+| rung | before | after |
+|---|---|---|
+| L0 | 690 tests | **700**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | 98.6 % over 26 | **98.6 %**, per-document table byte-identical |
+| L2 | 310 / 199 defect / 8 critical | **310 / 199 / 8**, per-document identical |
+| L3 | 59 over 26 | **59**, identity 0, deterministic |
+| validator | 0 on all 28 produced | **0** |
+| 946 unlabelled | 0 FAILED, 1 lost target, 3 lost images | **0 FAILED, 0 lost targets, 0 lost images** |
+
+The reference rungs are byte-identical throughout, which is again the honest reading: none of the
+three shapes occurs in the 28 sources. §46's sentence still holds -- *a corpus that never exercises
+a shape can never score it* -- and this iteration is the second consecutive one whose whole value is
+invisible to L1, L2 and L3.
+
+One diagnostic moved and it is not a regression: `error:complexity-budget` went from **89 documents
+to 90**, and the new one is `assad_b`, whose density rose because it now emits the discography it
+was deleting. All 90 are that one code; BioMD validator errors remain **0**. §46.9's item 6 already
+records the budget as a threshold whose provenance is unchecked.
+
+### 47.6 Routing survey over the 946, after the change
+
+Every table's class beside its outcome, no reference involved (§43.2, §46.5):
+
+| outcome | n |
+|---|---:|
+| `LAYOUT` to flat flow | 2927 |
+| `UNKNOWN` to flat flow | 964 |
+| `DATA` to table | 146 |
+| `LAYOUT` to `::: columns` | 62 |
+| `UNKNOWN` to `::: columns` | 43 |
+| `DATA` to flow (`too-small`) | 34 |
+| `CATALOG` to `::: columns` | 33 |
+| `DATA` to flow (`media-lane`) | 5 |
+| `DATA` to flow (`media-catalog`) | 3 |
+| `DATA` to flow (`cell-crosses-band`) | 3 |
+| `DATA` to `::: columns` (this iteration) | 1 |
+
+The only class this iteration touched is `media-lane`: 8 on flow before, now **5 on flow, 1 to
+lanes, 3 renamed** to `media-catalog`. §46.5's totals are not directly comparable because §47.2
+changed which tables exist at all on five documents.
+
+### 47.7 What is next
+
+1. **`DATA` to flow with `too-small`, 34 instances** -- still the largest reachable routing class and
+   untouched. §46.9's probe stands: these are figure/caption strips, not the record row §35.8 ruled
+   on, so the fix is a layout fallback and **not** a widening of `isSingleRecordRow`.
+2. **`LAYOUT t2` splitting 17 flat against 5 `::: columns` (§46.5)** -- the same question from the
+   other side, and 2927 `LAYOUT` to flat flow says the population is large enough to matter.
+3. **The 1x2 picture-beside-caption binding (§46.7)** -- 8 documents, still blocked on the swept
+   threshold against `borislova`/`jovicic`.
+4. **`error:complexity-budget` on 90 documents** -- check the threshold's provenance before treating
+   it as work; it is diagnostic-only and one of the 90 is now correct behaviour.
+5. Then §45's queue: `retyped.paragraph-to-align` on `segovia` alone, and §40.6's shell-depth root
+   cause.
+
+**Killed in §47** -- reopen on new measurement only: **every `media-lane` refusal is a lane**
+(§47.4 -- `goya2` 3 to 23 converter-defects in one run; a gallery has no matter lane to pair with,
+and its reference writes `::: images`).
+
+**The holdout stayed spent.** All three mechanisms were found by the 946 unlabelled pages and none
+could have been found by a reference, so there was nothing a holdout could have withheld.

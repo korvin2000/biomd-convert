@@ -43,26 +43,33 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §46** turned the author's 946
-reference-less pages into the generalization instrument, and closed a **priority-1 data loss the 28
-references cannot see**: a footer pager whose middle marker is unlinked lost both arrows and both
-destinations at 100 % text recall (`558eafd`, `120e7b8`). It also built the mutation harness
-`CLAUDE.md` §5 has always asked for (`e0cdf3a`).
-Current floor: L0 **690 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §47** closed the **last two
+conservation losses in the 946** and the routing inconsistency the first one exposed -- an indent
+`<ul>` with no items was deleting a whole discography (`e4513f9`), the "last lost target" was a
+deliberate anchor merge the multiset gate mis-read (`d442c63`), and a picture lane beside a lane of
+matter now becomes a lane instead of flat flow (`a251a96`). §46 before it built the generalization
+instrument, closed the footer-pager loss (`558eafd`, `120e7b8`) and the mutation harness (`e0cdf3a`).
+Current floor: L0 **700 tests**, **0 validator errors on every produced document**, L1 **98.6**,
 L2 **310 · 199 defect · 8 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
-errors, 1 lost target, 3 lost images**.
+errors, 0 lost targets, 0 lost images**.
 **141 of those 199 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
 (~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
 `new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~58**;
 the 8 criticals remain only in the two recorded-divergence documents. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates, reordered by §46's measurements: the **1×2 picture-beside-caption binding** (8
-documents, blocked on one swept threshold — §46.7 names the reference-attested false friend); a
-**layout fallback for an unplannable DATA table** (28 instances, 27 documents — *not* a widening of
-`isSingleRecordRow`); then `segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root
-cause. **Nothing table-shaped is open and general among the 26** (§43.9) — but on the 946, `DATA`→flow
-is 39 instances on 35 documents (§46.5).
+Next candidates, reordered by §47.6's re-run survey: a **layout fallback for a `too-small` DATA
+table** (34 instances — *not* a widening of `isSingleRecordRow`); **`LAYOUT`→flat flow, 2927 against
+62 `::: columns`**, the same routing question from the other side; the **1×2 picture-beside-caption
+binding** (8 documents, blocked on one swept threshold — §46.7 names the reference-attested false
+friend); then `segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root cause.
+**Nothing table-shaped is open and general among the 26** (§43.9); every table candidate now lives
+on the 946.
+
+> **A conservation finding is a pointer, not the defect.** Both of §46.9's named losses were
+> mis-diagnosed by the finding that raised them: `williams1`'s "lost target" had lost nothing (the
+> gate counted a deliberate same-href anchor merge), and `assad_b`'s "3 lost images" were the
+> visible corner of an entire deleted discography. Convert the document and read the output.
 
 > **Start a table iteration with the routing survey, not the ledger (§43.2).** One
 > `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)` — the only

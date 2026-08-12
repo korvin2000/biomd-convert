@@ -204,6 +204,8 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 | 45 recurrent short panels | 5981-6042 | `paragraph.missing.in-paragraph` downgraded as placement/evaluator artefacts · short full-row tinted labels bypass the length floor only by same-role recurrence around populated rows · archive/menu and half-row false friends rejected · L2 315/204 → 310/199 · L3 61 → 59 | HOT |
 | **46 the unlabelled corpus** | 6043-end | **946 pages with no references become the generalization instrument `46.2`** · **a figure never swallows a link -- targets 17 → 1, images 19 → 3, 12 docs, shape absent from all 28 references `46.3`** · **an unlinked icon in a strip of linked ones is a control too `46.3`** · **the mutation harness §5 always asked for: renaming/attr-order/determinism 946/946 identical `46.4`** · **cross-document consistency: 3332 tables, 62 classifier views, 7 split `46.5`** · **killed: low recall means data loss · the chrome model caused the pager loss · `new_page`'s 0 % `46.6`** · **downgraded with falsifier: the adjacent caption echo, 8 docs, blocked on a swept threshold `46.7`** · end state `46.8` · what is next `46.9` | HOT |
 
+| **47 three silent losses** | 6233-end | **a list with no items is not a list -- an indent `<ul>` deleted a whole discography `47.2`** · **a merged nav anchor is accounted, not lost -- the corpus's last lost target was never lost `47.3`** · **a picture lane beside a lane of matter is a lane; the first version was too wide and `goya2` went 3 → 23 in one run `47.4`** · end state, reference rungs byte-identical `47.5` · **routing survey over the 946, after `47.6`** · what is next `47.7` | HOT |
+
 ## Checkpoint -- §45, measured 2026-08-12 over **26 compared documents** (28 converted)
 
 | rung | value | reproduce with |
@@ -219,5 +221,20 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 
 **And a fifth corpus role since §46:** `fixtures/gen_corpus/`, **946 sources with no references**, blind
 by construction. Its rung is conservation + validator + FAILED + routing consistency, never a similarity
-score. Floor: **0 FAILED, 0 validator errors, 1 lost target, 3 lost images**. Scan is ~2.5 min.
+score. Scan is ~2.5-4 min.
+
+## Checkpoint -- §47, measured 2026-08-12 over **26 compared documents** (28 converted)
+
+| rung | value | reproduce with |
+|---|---|---|
+| L0 | **700** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
+| L2 | **310** findings -- **199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L3 | **59** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json --json ../analyze/l3.json` |
+| **946 unlabelled** | **0 FAILED · 0 lost targets · 0 lost images · 0 validator errors** | `corpus run` with a no-`expectedDir` config; conservation is in each job's `08-validation/report.json` |
+
+**Every conservation loss in the corpus is now closed** (§47.2, §47.3). The reference rungs are
+byte-identical to §45/§46 because none of the three shapes occurs in the 28 sources -- the second
+consecutive iteration whose whole value is invisible to L1, L2 and L3. Never quote the 199 bare:
+141 are recorded divergences, so the honest open count is ~58.
 

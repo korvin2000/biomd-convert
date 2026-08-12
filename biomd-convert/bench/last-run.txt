@@ -15,7 +15,6 @@ REVIEW  news_2007.htm  recall=100.0%  errors=1  reviews=4  tables=0/0  llm=0/3
 REVIEW  segovia.htm  recall=97.8%  errors=0  reviews=7  tables=2/2  llm=0/4
 REVIEW  segovia1.htm  recall=100.0%  errors=0  reviews=4  tables=0/1  llm=0/1
 REVIEW  tarrega.htm  recall=95.0%  errors=0  reviews=8  tables=1/1  llm=0/2
-REVIEW  williams2.htm  recall=99.8%  errors=0  reviews=11  tables=1/1  llm=0/1
 REVIEW  xtra_albeniz.htm  recall=95.2%  errors=0  reviews=2  tables=1/1  llm=0/2
 REVIEW  xtra_karta5.htm  recall=92.3%  errors=0  reviews=18  tables=17/15  llm=0/12
 REVIEW  xtra_mikulka.htm  recall=82.4%  errors=1  reviews=3  tables=0/0  llm=0/2
@@ -27,9 +26,10 @@ ok      new_blackmore.htm  recall=99.9%  errors=0  reviews=33  tables=0/0  llm=0
 ok      new_dyens.htm  recall=100.0%  errors=0  reviews=4  tables=1/1  llm=0/2
 ok      new_geyzel04.htm  recall=99.6%  errors=0  reviews=29  tables=0/0  llm=0/1
 ok      pavlov_azancheev.htm  recall=99.9%  errors=0  reviews=9  tables=0/0  llm=0/1
+ok      williams2.htm  recall=99.8%  errors=0  reviews=11  tables=1/1  llm=0/1
 
-Converted:      5
-Needs review:   23
+Converted:      6
+Needs review:   22
 Failed:         0
-Clean share:    17.9%
+Clean share:    21.4%
 LLM:            off — 71 escalation point(s) left as review items

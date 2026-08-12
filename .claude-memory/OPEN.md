@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-12**, after PROGRESS §46.
+Last touched **2026-08-12**, after PROGRESS §47.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,16 +32,21 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-12, after PROGRESS §46:**
+**Current state, *measured* 2026-08-12, after PROGRESS §47:**
 
 | rung | value |
 |---|---|
-| L0 | **690 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **700 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
 | L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
-| **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **1**, lost images **3** |
+| **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
+
+> **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
+> left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
+> provenance is unchecked (§46.9 item 6), not a BioMD validator error. It rose 89 → 90 because
+> `assad_b` now emits the discography it was deleting.
 
 That is the floor. Nothing accepted from here may regress it.
 
@@ -99,10 +104,25 @@ The 26 are byte-identical — the shape occurs in none of the 28 reference sourc
 > view (class, tier, rounded score vector) and a view with more than one *outcome* is an inconsistency
 > by construction. 3332 tables, 62 views, **7 split, 32 minority decisions** — no reference needed.
 
+**Landed in §47, one commit each.** A list with no items is not a list (`e4513f9`): `listFrom`
+skipped every non-`li` child silently, so FrontPage's indent `<ul>` deleted `assad_b`'s whole
+discography — table, 3 covers, 23 of 194 shingles — at 88 % recall. · A merged nav anchor is
+accounted for, not lost (`d442c63`): `navFromGrid` folds two same-href anchors into one link by
+design, and the multiset gate read the folded one as dropped; `williams1`'s "lost target" was never
+lost. · A picture lane beside a lane of matter is a lane (`a251a96`): `planDataTable` refuses a
+`media-lane` grid *because* it is §16.1's text-beside-a-cover, then the router flattened it anyway.
+**946: lost targets 1 → 0, lost images 3 → 0. The 26 are byte-identical on all three rungs.**
+
+> **The first version of the media-lane rule was too wide and cost `goya2` 20 findings in one run**
+> (3 → 23 converter-defects) — a *gallery* has no worded lane to pair covers with and its reference
+> writes `::: images`. **L1 did not move at all**: `goya2` sat at 99.5 on both sides. The two
+> refusals are now told apart by name, `media-lane` vs `media-catalog`, not by degree.
+
 **Next, in order. Probe before committing (SKILL §6).**
 0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — but
-   §46.5 opens the routing question again on the 946, where `DATA`→flow is **39 instances on 35
-   documents** and 28 of them sit inside a split view. That is the reachable table work now.
+   the routing survey re-run in §47.6 keeps the question open on the 946: `DATA`→flow is **34
+   `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, and `LAYOUT`→flat
+   flow is **2927** against 62 `::: columns`. `too-small` is the largest reachable class.
 1. **The 1×2 picture-beside-caption binding — 8 documents, the highest reach left (§46.7).** The
    converter states a caption twice within 20 lines of its figure 9 times; the hand-made references do
    it **zero** times at that distance (`goya2`'s three are 100+ lines apart and §32.1 ruled them
@@ -121,10 +141,10 @@ The 26 are byte-identical — the shape occurs in none of the 28 reference sourc
    directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
    `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or
    shared converter mechanism remains. Fix the evaluator only in an isolated truthfulness step.
-4. **`williams1.htm`** — the 946's last lost target: two adjacent `<a>` to the same href in a table
-   cell. One document. · **`assad_b.htm`** — its last lost images: three covers inside DATA table
-   cells, which a GFM cell cannot hold. One document, but latent wherever a discography pairs a cover
-   with a title.
+4. ~~**`williams1.htm`** and **`assad_b.htm`**~~ — **both closed in §47**, and neither was the
+   diagnosis §46.9 wrote down: `williams1` had lost nothing (the gate was counting a deliberate
+   merge), and `assad_b`'s three covers were the visible corner of a whole deleted discography.
+   **Read a conservation finding as a pointer, never as the defect.**
 5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
    glyph/footer family. `segovia` is a long italic quotation shifted by `margin-left: 140`, not the
    same signal; decide whether the current `align` is a visual regression before touching code. §44.1.
@@ -149,6 +169,12 @@ bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convent
 matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
 general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
 table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
+
+**Killed in §47** — reopen on new measurement only:
+**every `media-lane` refusal is a lane** (§47.4 — `goya2` 3 → 23 converter-defects in one run. A
+gallery, where *every* column is bare covers, has no worded lane to pair them with, and its
+reference writes one `::: images` row. The narrow form that survived requires a picture lane **and**
+a matter lane, and excludes a resource matrix by the same test the tier-1 DATA gate uses).
 
 **Killed in §46** — reopen on new measurement only:
 **low text recall means data loss** (§46.6 — `baden_powell2` is a cover gallery with 193 characters of
