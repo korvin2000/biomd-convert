@@ -2714,3 +2714,42 @@ describe("a list element with no items", () => {
   });
 });
 
+/**
+ * An anchor folded into a menu item is accounted for, not lost.
+ *
+ * `navFromGrid` requires every anchor of a cell to carry the *same* destination
+ * and then writes one link — `<a>1995</a><a>-2002</a>` becomes
+ * `[1995-2002](…)`, which is §11's rule and the right reading of a label the
+ * era's authoring tool split in two. The conservation gate compares target
+ * *multisets*, so the second anchor read as a lost destination: `williams1` was
+ * the last lost target in the 946 unlabelled pages, and it was never lost.
+ *
+ * **Invariant.** The record is the merge itself — one ledger entry per anchor
+ * the rule folded away, keyed on nothing but identity with the anchor it kept.
+ * A destination still in the document is still reachable.
+ */
+describe("a menu item whose label the source split across two anchors", () => {
+  const menu =
+    '<table border="0" width="120"><tr><td>Дискография</td></tr>' +
+    '<tr><td><a href="cd1.htm">1995</a><a href="cd1.htm">-2002</a></td></tr>' +
+    '<tr><td><a href="cd2.htm">1989-1994</a></td></tr>' +
+    '<tr><td><a href="cd3.htm">1979-1988</a></td></tr></table>';
+
+  it("writes one link carrying the whole label", async () => {
+    const out = await md(PROSE + menu + PROSE);
+    expect(out).toContain("[1995-2002](/#/cd1)");
+  });
+
+  it("records the folded anchor so the destination is not reported as lost", async () => {
+    const result = await convert(Buffer.from(page(PROSE + menu + PROSE), "utf8"), { profile: SPEC });
+    expect(result.conservation.targets.missing).toEqual([]);
+    expect(
+      result.ledger.some(
+        (e) =>
+          e.terminal.kind === "REMOVED" &&
+          /merged into the item/u.test((e.terminal as { reason: string }).reason),
+      ),
+    ).toBe(true);
+  });
+});
+

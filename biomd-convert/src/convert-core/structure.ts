@@ -3862,6 +3862,15 @@ function navFromGrid(grid: TableGrid, ctx: Ctx, el: LadomNode): BiomdContent[] |
   for (let i = 0; i < linked.length; i += 1) {
     ctx.targets.push(targets[i] as string);
     ctx.ledger.push(emitted((linked[i] as LadomNode).id, nextId(ctx, "nav-item")));
+    // The anchors folded into that one item are accounted for, not dropped.
+    // They were required above to carry the identical destination, so the
+    // target stays reachable and the label is the one the author drew; without
+    // the record the conservation gate compares multisets and reports a target
+    // this rule deliberately merged as lost (`williams1`, the corpus's last).
+    for (const extra of [...walkElements(cellNodes[i] as LadomNode)].filter((node) => node.tag === "a")) {
+      if (extra.id === (linked[i] as LadomNode).id) continue;
+      ctx.ledger.push(removed(extra.id, "anchor merged into the item's one link — same destination"));
+    }
   }
   ctx.ledger.push(emitted(el.id, nextId(ctx, "nav"), { note: `menu table, ${linked.length} item(s)` }));
   ctx.tables.push({ tableId: el.id, classification: "SHELL", emittedTable: false });
