@@ -2839,8 +2839,19 @@ function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
     }
 
     case "ul":
-    case "ol":
+    case "ol": {
+      // A list with no items is not a list — see `listFrom`. FrontPage's
+      // "increase indent" button emits a bare `<ul>` around ordinary blocks,
+      // and the item loop below has nothing to iterate. Treated as the block
+      // wrapper it is, exactly like `<blockquote>`'s non-quoting path.
+      if (!el.children.some((child) => child.kind === "element" && child.tag === "li")) {
+        const inner = blocksFrom(el, ctx);
+        if (inner.length > 0) ctx.ledger.push(emitted(el.id, nextId(ctx, "block")));
+        else ctx.ledger.push(removed(el.id, "no content after conversion"));
+        return alignedGroup(el, inner, ctx);
+      }
       return [listFrom(el, ctx)];
+    }
 
     case "blockquote": {
       const quoted = quotesItsContent(el, ctx);
@@ -3144,13 +3155,58 @@ function isBlockContent(node: BiomdContent): node is BlockContent {
   return node.type !== "definition" && node.type !== "footnoteDefinition";
 }
 
+/**
+ * A list, and everything a list element holds that is not an item.
+ *
+ * The loop used to `continue` past every non-`li` child, which is silent
+ * deletion: a `<ul>` that FrontPage's indent button drew around `assad_b`'s
+ * discography deleted the table, its three covers and 23 of 194 text shingles,
+ * and only the corpus-wide conservation gate ever noticed. The empty-list half
+ * of that is decided by the caller (cardinality: a list with no items is a
+ * block wrapper); this is the interleaved half.
+ *
+ * **Invariant.** Containment and order only — content inside a list element
+ * that is not an item belongs to the item it follows, which is where the
+ * browser draws it: inside the list's indented flow, continuing the last item.
+ * Content before the first item prefixes that item for the same reason. No
+ * tag, class, length or text is consulted.
+ *
+ * **Recurrence does not apply** and is deliberately not required: an indent
+ * wrapper is drawn once, wherever the author pressed the button, so asking for
+ * a second one would ask the construct not to exist — the trap §35.8 recorded
+ * for `minRows: 2`.
+ *
+ * **False friend, and why it cannot fire:** the whitespace between two `<li>`
+ * elements is a non-item child on every well-formed list in the corpus. It
+ * converts to no block at all, so it contributes nothing and splits nothing —
+ * which is why the test is "did it produce content", never "is it a text node".
+ * Across the 946 unlabelled pages and the 28 references there are **five**
+ * item-less lists and **zero** interleaved ones, so this branch is a guard
+ * against silent loss rather than a rule fitted to a shape.
+ */
 function listFrom(el: LadomNode, ctx: Ctx): List {
   const ordered = el.tag === "ol";
   const items: ListItem[] = [];
+  /** Consecutive non-item children, converted as one run so inline text joins. */
+  let strays: LadomNode[] = [];
+  /** Their blocks, waiting for the item they belong to. */
+  let carried: BlockContent[] = [];
+  const takeStrays = (): void => {
+    if (strays.length === 0) return;
+    // The list element itself is the context — its caption and centring apply
+    // to content drawn inside it — so only the child list is narrowed.
+    carried.push(...blocksFrom({ ...el, children: strays }, ctx).filter(isBlockContent));
+    strays = [];
+  };
 
   for (const li of el.children) {
-    if (li.kind !== "element" || li.tag !== "li") continue;
-    const inner = blocksFrom(li, ctx).filter(isBlockContent);
+    if (li.kind !== "element" || li.tag !== "li") {
+      strays.push(li);
+      continue;
+    }
+    takeStrays();
+    const inner = [...carried, ...blocksFrom(li, ctx).filter(isBlockContent)];
+    carried = [];
     items.push({
       type: "listItem",
       spread: false,
@@ -3158,6 +3214,9 @@ function listFrom(el: LadomNode, ctx: Ctx): List {
     });
     ctx.ledger.push(emitted(li.id, nextId(ctx, "li")));
   }
+  takeStrays();
+  const last = items[items.length - 1];
+  if (carried.length > 0 && last) last.children = [...last.children, ...carried];
 
   ctx.ledger.push(emitted(el.id, nextId(ctx, "list")));
 

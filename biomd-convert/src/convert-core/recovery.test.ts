@@ -2645,3 +2645,72 @@ describe("an unlinked icon in a strip of linked ones is a control too", () => {
     expect(out).toContain("h2.gif");
   });
 });
+
+/**
+ * A list with no items is not a list.
+ *
+ * **Invariant.** Cardinality, and nothing else: a list element with zero
+ * list-item children cannot be a list in a target whose lists are made of
+ * items, so it is the block wrapper it renders as. The era's authoring tool
+ * emitted `<ul>` with no `<li>` for its indent button, and `listFrom` skipped
+ * every non-`li` child — silently, with no ledger entry and no diagnostic. On
+ * `assad_b` that deleted a whole discography: the table, its three album covers
+ * and 23 of 194 text shingles, behind a text recall of 88 % that PROGRESS §46.6
+ * had just established is not a loss signal.
+ *
+ * **Recurrence deliberately not required.** An indent wrapper is drawn once,
+ * where the author pressed the button; asking for a second occurrence would ask
+ * the construct not to exist — the trap §35.8 recorded for `minRows: 2`. There
+ * are five in the 946 unlabelled pages, on five separate documents, and none in
+ * the 28 references, which is why no reference could ever have caught it.
+ *
+ * **False friends, both tested for non-firing:** a real list, and a list whose
+ * single item is empty — `<ul><li></li></ul>` has a list item and stays a list,
+ * because the evidence is the item's presence and never its content.
+ */
+describe("a list element with no items", () => {
+  const INDENTED_TABLE =
+    '<ul><div><table border="0" width="80%">' +
+    '<tr><td width="33%"><p><b>Solo</b></p><p>1994</p></td>' +
+    '<td width="67%"><p>композиции Сержиу Ассада</p></td></tr>' +
+    "</table></div></ul>";
+
+  it("keeps the content the indent wrapper holds", async () => {
+    const out = await md(PROSE + INDENTED_TABLE + PROSE);
+    expect(out).toContain("Solo");
+    expect(out).toContain("1994");
+    expect(out).toContain("композиции Сержиу Ассада");
+  });
+
+  it("loses no image drawn inside one", async () => {
+    const out = await md(
+      PROSE + '<ul><p><img src="photo/a/bassad_1.jpg" width="180" height="180"></p></ul>' + PROSE,
+    );
+    expect(out).toContain("photo/a/bassad_1.jpg");
+  });
+
+  it("still writes a list when the items are there — non-firing", async () => {
+    const out = await md(PROSE + "<ul><li>Solo</li><li>Rhythms</li></ul>" + PROSE);
+    expect(out).toContain("- Solo");
+    expect(out).toContain("- Rhythms");
+  });
+
+  it("reads one item as a list and one bare block as an indent — the pair", async () => {
+    // The discriminator, stated as the minimal pair it is: identical content,
+    // and the only difference is whether the tool wrote a list item around it.
+    expect(await md(PROSE + "<ul><li><p>Solo</p></li></ul>" + PROSE)).toContain("- Solo");
+    const wrapped = await md(PROSE + "<ul><p>Solo</p></ul>" + PROSE);
+    expect(wrapped).toContain("Solo");
+    expect(wrapped).not.toContain("- Solo");
+  });
+
+  it("keeps content a list holds beside its items", async () => {
+    // Zero instances in 974 pages, so this is a guard against silent loss and
+    // not a rule fitted to a shape — but the loss it guards against is the one
+    // that cost a discography, so it is stated rather than assumed impossible.
+    const out = await md(PROSE + "<ul><li>Solo</li><p>Rhythms</p></ul>" + PROSE);
+    expect(out).toContain("Solo");
+    expect(out).toContain("Rhythms");
+  });
+});
+
