@@ -76,3 +76,5 @@ analyze/rendered/
 biomd-convert/bench/out/
 biomd-convert/bench/work/
 .claude/skills/compress-llm-documentation/scripts/__pycache__/
+biomd-convert/bench/gen-out/
+biomd-convert/fixtures/gen_corpus/
