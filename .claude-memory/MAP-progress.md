@@ -201,13 +201,14 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 **Never quote the 204 bare.** 141 are recorded divergences and quirks, so the honest open count is
 ~63. None of the 8 criticals has a mechanism to build; the split remains §43.8's.
 
-| 45 recurrent short panels | 5981-end | `paragraph.missing.in-paragraph` downgraded as placement/evaluator artefacts · short full-row tinted labels bypass the length floor only by same-role recurrence around populated rows · archive/menu and half-row false friends rejected · L2 315/204 → 310/199 · L3 61 → 59 | HOT |
+| 45 recurrent short panels | 5981-6042 | `paragraph.missing.in-paragraph` downgraded as placement/evaluator artefacts · short full-row tinted labels bypass the length floor only by same-role recurrence around populated rows · archive/menu and half-row false friends rejected · L2 315/204 → 310/199 · L3 61 → 59 | HOT |
+| **46 the unlabelled corpus** | 6043-end | **946 pages with no references become the generalization instrument `46.2`** · **a figure never swallows a link -- targets 17 → 1, images 19 → 3, 12 docs, shape absent from all 28 references `46.3`** · **an unlinked icon in a strip of linked ones is a control too `46.3`** · **the mutation harness §5 always asked for: renaming/attr-order/determinism 946/946 identical `46.4`** · **cross-document consistency: 3332 tables, 62 classifier views, 7 split `46.5`** · **killed: low recall means data loss · the chrome model caused the pager loss · `new_page`'s 0 % `46.6`** · **downgraded with falsifier: the adjacent caption echo, 8 docs, blocked on a swept threshold `46.7`** · end state `46.8` · what is next `46.9` | HOT |
 
 ## Checkpoint -- §45, measured 2026-08-12 over **26 compared documents** (28 converted)
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | **540** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L0 | **690** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
 | L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
 | L2 | **310** findings -- **199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
 | L3 | **59** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json --json ../analyze/l3.json` |
@@ -215,3 +216,8 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 
 **Never quote the 199 bare.** 141 are recorded divergences and quirks, so the honest open count is
 ~58. The 8 criticals remain only in `xtra_karta5` and `xtra_shelechov`, the recorded-divergence pair.
+
+**And a fifth corpus role since §46:** `fixtures/gen_corpus/`, **946 sources with no references**, blind
+by construction. Its rung is conservation + validator + FAILED + routing consistency, never a similarity
+score. Floor: **0 FAILED, 0 validator errors, 1 lost target, 3 lost images**. Scan is ~2.5 min.
+

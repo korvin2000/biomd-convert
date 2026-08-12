@@ -31,7 +31,8 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 |---|---|---|
 | regression corpus | the original **13** (`authors barrios borislova goya2 jovicic kiselev news news_2007 pavlov_azancheev segovia segovia1 tarrega williams2`) | the floor. Never regress it |
 | refinement set | **9** `new_*` + **4** `xtra_*` (`albeniz karta5 rodrigo shelechov`) | where the work happens |
-| holdout | **`xtra_oyanguren`**, **`xtra_mikulka`** -- sources in `fixtures/html/`, references in `fixtures/out2/` | never read, diff, score or tune against them |
+| holdout | **`xtra_oyanguren`**, **`xtra_mikulka`** -- sources in `fixtures/html/`, references in `fixtures/out2/` | never read, diff, score or tune against them. **Spent since §43.7** |
+| **generalization corpus** | **946** sources in `fixtures/gen_corpus/`, **no references at all** (the 15 pages the fixtures came from are held out in `fixtures/aaaaaaaaaaaaaaa/`) | **blind by construction** — nothing can be tuned to a page with no reference. Rung = conservation + validator + FAILED + routing consistency, **never** a similarity score. PROGRESS §46 |
 
 > **Which count an instrument reports tells you whether the holdout leaked.** `eval`, `diff` and `l3`
 > all enumerate **`expectedDir`** (`fixtures/out/`), so they must say **26**; `corpus run` and
@@ -42,27 +43,46 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §45** restored the fifth
-`new_lendle2` panel by letting a short full-row tinted label bypass the length floor only when the
-same palette/occupancy role recurs around populated records. The one-off archive/menu label and
-repeated half-row catalogue cells remain false friends.
-Current floor: L0 **540 tests**, **0 validator errors on every produced document**, L1 **98.6**,
-L2 **310 · 199 defect · 8 critical**, L3 **59 over 26**.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §46** turned the author's 946
+reference-less pages into the generalization instrument, and closed a **priority-1 data loss the 28
+references cannot see**: a footer pager whose middle marker is unlinked lost both arrows and both
+destinations at 100 % text recall (`558eafd`, `120e7b8`). It also built the mutation harness
+`CLAUDE.md` §5 has always asked for (`e0cdf3a`).
+Current floor: L0 **690 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+L2 **310 · 199 defect · 8 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
+errors, 1 lost target, 3 lost images**.
 **141 of those 199 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
 (~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
 `new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~58**;
 the 8 criticals remain only in the two recorded-divergence documents. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates: name a new holdout if blind evidence is required; adjudicate `segovia`'s long
-italic/margin-shifted `retyped.paragraph-to-align` separately from the four killed glyph/footer
-instances; then §40.6's shell-depth root cause. The residual `paragraph.missing.in-paragraph` pair is
-evaluator debt, not missing data. **Nothing table-shaped is both open and general** (§43.9).
+Next candidates, reordered by §46's measurements: the **1×2 picture-beside-caption binding** (8
+documents, blocked on one swept threshold — §46.7 names the reference-attested false friend); a
+**layout fallback for an unplannable DATA table** (28 instances, 27 documents — *not* a widening of
+`isSingleRecordRow`); then `segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root
+cause. **Nothing table-shaped is open and general among the 26** (§43.9) — but on the 946, `DATA`→flow
+is 39 instances on 35 documents (§46.5).
 
 > **Start a table iteration with the routing survey, not the ledger (§43.2).** One
 > `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)` — the only
 > view that shows a table's *outcome* beside its *class*. Both §43 mechanisms came out of it; neither
 > was near the top of the ledger, and one was on a document the defect column called clean.
+> **§46.5 makes it a consistency instrument that needs no reference:** reduce every table to the
+> classifier's own view (class, tier, rounded score vector); a view with more than one *outcome* is an
+> inconsistency by construction. 3332 tables → 62 views → **7 split, 32 minority decisions**.
+
+> **Scan the 946 before reading the ledger (§46.2).** One pass, ~2.5 min, records per document: state,
+> recall, missing targets/images, diagnostics, REVIEW reasons, REMOVED reasons, every table's class and
+> outcome, and a fingerprint of the produced Markdown. Both §46 mechanisms came out of it and **neither
+> is visible to any reference** — the shape occurs in none of the 28 sources. Also note what it says
+> about the fixtures themselves: per document they carry **4–5× more table evidence** than the corpus
+> they stand for (`DATA`→table 46 % vs 10.5 %).
+
+> **Text recall is not a loss signal (§46.6, killed).** Its denominator includes the chrome the
+> converter is meant to remove, so a text-poor page scores terribly while losing nothing:
+> `baden_powell2` is 40 % with 193 characters of visible text and everything conserved, and
+> `new_lagq2` is **45 %** inside the reference set at L1 99.8. Check the page's text budget first.
 
 **The reference normalization settled three standing items with no code change** (PROGRESS §39.1):
 `news`'s frame/align ceiling · `williams2`'s `retyped.table-to-align`, which **dissolves §36.5's

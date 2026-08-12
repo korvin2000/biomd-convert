@@ -6031,3 +6031,201 @@ Next: treat the two residual `paragraph.missing.in-paragraph` findings as evalua
 work. For conversion, adjudicate `segovia`'s long italic/margin-shifted `retyped.paragraph-to-align`
 instance separately from the four twice-killed glyph/footer instances. The shell-depth root cause
 remains last; §40.6 already reverted three broad replacements.
+## 46. The unlabelled corpus: 946 pages as a generalization instrument (2026-08-12)
+
+The author supplied `biomd-convert/fixtures/gen_corpus/` -- **946 source pages with no references**,
+disjoint from the 28 (the 15 pages the `new_*`/`xtra_*` fixtures were drawn from sit in
+`fixtures/aaaaaaaaaaaaaaa/` and are excluded). The brief: treat it as an unlabelled generalization
+corpus, never as ground truth; cluster by mechanism rather than by file; find inconsistencies where
+equivalent source structures produce different Markdown; and never invent expected Markdown to match
+current output.
+
+### 46.1 Baseline, re-measured twice
+
+The session began against `79e3d7b`; the author pulled `953bde4` and `b8704e2` mid-iteration, so
+every rung was re-measured after the pull before anything was attributed. Post-pull floor, identical
+to §45's record: L0 **540** tests, L1 **98.6**, L2 **310 / 199 defect / 8 critical**, L3 **59 over
+26**, validator 0 on all 28. `bench/run.sh` converts 28, `l3` prints 26 -- leak detector holds.
+
+### 46.2 The scan is the instrument, not the ledger
+
+946 documents convert in ~2.5 minutes with Chromium at 4 jobs, so the whole corpus is affordable per
+iteration. One pass records per document: terminal state, encoding decision, text recall, missing
+targets/images, pipeline diagnostics, REVIEW escalations by pass and reason, REMOVED reasons, every
+source table's class and outcome, complexity, and a structural fingerprint of the produced Markdown.
+Rolling that up by *mechanism* is what located every finding below. **0 FAILED conversions and 0
+validator errors on 946 unseen pages** is the headline: the pipeline is robust on input it has never
+been shown.
+
+The comparison that matters is against the same scan over the 28 sources, because it shows what the
+references cannot teach. Per document, the reference set is far richer than the corpus it stands for:
+`DATA` to emitted table on **46 %** of references against **10.5 %** of the corpus, `::: columns`
+50 % against 11 %, `::: frame` 18 % against 4 %. Anything whose evidence is a table is
+over-represented in the fixtures by four to five times.
+
+### 46.3 Two mechanisms landed, both invisible to every reference
+
+**A figure never swallows a link (`558eafd`).** `otherContent` in `structure.ts` asked whether an
+inline run held any *text*, and a link whose whole label is a control glyph has none --
+`<a href=x><img src=back.gif></a>` is empty to `textOf`. So the footer pager this family draws on
+every page, *back arrow / current-page marker / forward arrow*, looked like a run holding one lone
+picture: the marker is the one icon `isUiIcon` declines, because the page it would point at is the
+page you are on. The figure branch claimed the run and **deleted both arrows with their
+destinations, at 100 % text recall**, because no text was ever involved. `hasOrphanTarget` counts a
+navigable target as content, which is what `BioMD-Reference.md`'s own precedence says (content >
+targets > reading order). It asks *containment*, not presence, so the `<a>` around a thumbnail --
+the corpus's commonest standalone figure, and what `::: image`'s `link:` is for -- still qualifies.
+
+**An unlinked icon in a strip of linked ones is a control too (`120e7b8`).** The marker then shipped
+as `![](../main/h2.gif)`: a broken picture between two glyphs, on a site where every asset 404s.
+What separates it from the score marks the `<a>` requirement protects is not the asset and not its
+size, both of which it shares, but the company it keeps -- a linked known icon in the same block.
+`inControlStrip` asks that relation; recurrence *within the block* is the evidence, which is the
+form `CLAUDE.md` §5 asks for and the one `isUiIcon` cannot use. `mini_images_to_md_guide.md` maps the
+asset to the filled circle with no linked requirement, and `new_rechin4.bio.md:59` writes that glyph
+in exactly this pager position.
+
+| measurement | before | after |
+|---|---|---|
+| lost link targets, 946 pages | 17 in 13 docs | **1 in 1** |
+| lost images, 946 pages | 19 in 13 docs | **3 in 1** |
+| documents whose output changed | -- | **12, and no others** |
+| L1 / L2 / L3 over the 26 | 98.6 / 310-199-8 / 59 | **byte-identical** |
+| L0 | 540 | **550** |
+
+**The shape occurs in none of the 28 reference sources.** The icon survey is the proof: 29 known-icon
+images across the references, 18 linked and 11 unlinked, and **zero** unlinked ones with a linked
+icon beside them. On the 946 there are 387, and exactly **12 -- all stem `h2` -- have that
+relation**; they are exactly the 12 documents the conservation gate named. The 65 remaining unlinked
+icons (score marks in discography cells, smiley marks, a catalogue's bitmap letter marks) never fire.
+The false friends were surveyed, not argued.
+
+### 46.4 The mutation harness `CLAUDE.md` §5 has always asked for (`e0cdf3a`)
+
+OPEN §5.8 carried "no mutation harness" as instrument debt from the day it was first asked for.
+`src/convert-core/metamorphic.test.ts` states it over whole documents instead of per rule, as
+**metamorphic** properties: none needs to know what the right Markdown is, each states a
+transformation of the *input* a reader would not notice and asserts the output does not notice it
+either. That is what makes them runnable on pages no reference exists for.
+
+| property | 28 references | 946 unlabelled, real Chromium |
+|---|---|---|
+| determinism -- same bytes twice | pass | **946/946 identical** |
+| every `class`/`id` value permuted, stylesheet selectors remapped with them | pass | **946/946 identical** |
+| every start tag's attributes reversed | pass | **946/946 identical** |
+| no target, image or word lost under renaming | pass | -- |
+| one more transparent `<div>` costs no content | pass | -- |
+
+**Invariant 5 now has a measurement behind it and not only a review convention.** The renaming sweep
+is the only thing that can check "no detector names a class or an id" rather than restate it, and it
+holds on ~1000 pages. The nesting property is asserted on *conservation* rather than byte equality on
+purpose: an extra block box is genuinely visible to geometry and several rules read geometry
+deliberately; what may never change is what survives. L0 550 to **690** tests, 22 s.
+
+### 46.5 Cross-document consistency: 7 split views out of 62
+
+Equivalent source structures producing different Markdown, asked without a reference. Every source
+table is reduced to the classifier's **own** view of it -- class, tier, rounded six-class score
+vector -- and a view producing more than one *outcome* is an inconsistency by construction. Node ids
+are stable only within one traversal, so features are never recomputed from a second parse; the join
+is inside a single result.
+
+**3332 tables, 62 distinct views, 7 that split, 32 minority decisions.** That is a good consistency
+picture, and it localizes the disagreements exactly:
+
+| view | n | majority | minority |
+|---|---:|---|---|
+| `DATA t2 [D0.7 L0.3]` | 77 | 68 to table | **9 to flow: too-small** |
+| `DATA t1` | 63 | 55 to table | 6 `media-lane`, 2 `cell-crosses-band` |
+| `LAYOUT t2 [L0.6 D0.4]` | 22 | 17 to flat flow | 5 to `::: columns` |
+| four smaller `DATA t2` views | 29 | 19 to table | 10 to flow |
+
+`DATA` to flow totals **39 instances on 35 documents**: 28 `too-small`, 8 `media-lane`, 3
+`cell-crosses-band`. 28 of the 39 sit inside a split view.
+
+### 46.6 Three candidates killed on cheap probes, before any survey
+
+**Low text recall is not data loss.** 34 documents score below 90 % and `baden_powell2/3/4` score
+40 %, which looked like the largest priority-1 signal in the scan. `baden_powell2` is an album-cover
+gallery with **193 characters of visible text**: the title, the `[ 1 ] [ 2 ] [ 3 ] [ 4 ]` pager, one
+section heading and twelve covers, all conserved. Recall's denominator includes the chrome the
+converter is *supposed* to remove, so on a text-poor page each removed banner word costs a large
+fraction. The reference set already said so and it was not noticed: `new_lagq2` sits at **45.25 %**
+recall with L1 99.8 and 2 defects. **Recall is not comparable across pages of different text
+volume** -- never read it as a loss signal without checking the page's text budget.
+
+**The corpus chrome model is not the cause of the pager loss.** The 946-page profile removes
+structures recurring at 99 %, 88 % and 77 % where the 28-page profile only sees 100 % and 91 %, so an
+over-aggressive chrome model was the obvious first hypothesis. Converting the same documents with
+`bench/corpus/corpus-profile.json` gives byte-identical loss. Killed for one command.
+
+**`new_page.htm` at 0.00 % recall is the author's blank template** -- *"Имя и фамилия"*, *"Текст
+биографии"* repeated -- and it converts correctly. An instrument artefact on a page with no content
+to lose.
+
+### 46.7 Downgraded with its falsifier named: the adjacent caption echo
+
+§32 built the L2 class for a caption a document states twice and measured that the corpus "contains
+no other caption either side states twice" -- true of the 28. On the 946 the converter states a
+caption twice within 20 lines of the figure **9 times across 8 documents** (`anido` x2,
+`bogdanovic`, `buek`, `domeniconi`, `galbraith`, `morkov`, `rom_lebedev`, `sor2`). The hand-made
+references contain **zero** adjacent echoes; `goya2`'s three are 100+ lines apart, an index list
+beside its cover captions, and §32.1 already ruled those both correct. Distance is the discriminator
+and the references supply it.
+
+Instrumented at the decision point rather than inferred: `bindCaptions` and `captionRunAt` are
+already correct, including looking through an `::: align` wrapper. What fails is
+`ctx.captionEligible`, because the picture sits **beside** the text in a 1x2 grid rather than under
+it, and `isCaptionContext` asks for a block *under* the picture.
+
+**Not shipped, and the reason is a reference-attested false friend.** `isSingleRecordRow`'s own
+contract keeps `borislova`'s and `jovicic`'s 1x2 text-lane-beside-cover regions on the `::: columns`
+path *because the references want them there*. Separating them from `bogdanovic`'s 64-character
+caption needs a text-length threshold, and a threshold ships only after a sweep
+(`learned-patterns.md`). `anido`'s two instances are a third shape again -- a 1x3 of caption, spacer,
+caption with no image in the grid at all. One label, three mechanisms: SKILL §6 says downgrade, so
+this is recorded with its falsifier instead of guessed at.
+
+### 46.8 End state, measured 2026-08-12
+
+| rung | value |
+|---|---|
+| L0 | **690 tests**, typecheck clean, 0 FAILED, `read()` warnings 0 |
+| L1 | **98.6 %** over the 26 compared |
+| L2 | **310 findings, 199 converter-defect**, 18 ambiguous, 93 reference-inconsistency, 8 critical |
+| L3 | **59** over 26 documents |
+| validator | **0 errors** on all 28 produced |
+| 946 unlabelled | **0 FAILED**, 0 validator errors, lost targets **1**, lost images **3** |
+
+The reference rungs are byte-identical to §45's floor throughout, which is the honest reading: this
+iteration bought nothing measurable on the 26 and closed a priority-1 data loss on 12 documents the
+26 cannot see. **A corpus that never exercises a shape can never score it.**
+
+### 46.9 What is next
+
+The unlabelled corpus reorders the queue. Ranked by what is now measured:
+
+1. **The 1x2 picture-beside-caption binding, §46.7** -- 8 documents, needs the length threshold swept
+   against `borislova`/`jovicic` before it can ship. Highest reach of anything left.
+2. **`DATA` to flow with `too-small`, 28 instances on 27 documents.** The author ruled *a one-row
+   table is still a table* (§35.8) and `isSingleRecordRow` implements only the narrow
+   index-plus-link-label shape. Probed: `anido`'s and `bogdanovic`'s are figure/caption layout strips,
+   not record rows, so the fix is a **layout fallback for an unplannable DATA table** rather than a
+   widening of `isSingleRecordRow` -- a DATA table that cannot be planned currently flattens to flat
+   flow and loses the pairing, where a LAYOUT table of the same shape reaches `::: columns`.
+3. **`LAYOUT t2` splitting 17 flat against 5 `::: columns`, §46.5** -- the same routing question from
+   the other side, and the two together are one mechanism seen twice.
+4. **`williams1.htm`**, the corpus's last lost target: two adjacent `<a>` to the same href inside a
+   table cell. One document.
+5. **`assad_b.htm`**, the corpus's last lost images: three album covers inside DATA table cells,
+   which a GFM cell cannot hold. One document, but the mechanism is latent everywhere a discography
+   pairs a cover with a title.
+6. **89 documents carry `error:complexity-budget`** -- 9.4 % of the corpus against 25 % of the
+   references, so it is not a generalization gap and the budget itself may be the wrong number.
+   Diagnostic-only; check the threshold's provenance before treating it as work.
+7. Then §45's queue: `retyped.paragraph-to-align` on `segovia` alone, and §40.6's shell-depth root
+   cause.
+
+**The holdout is still spent (§43.7), and this iteration needed none**: the 946 pages are blind by
+construction -- no reference exists for any of them, so nothing could be tuned to them. That is a
+better generalization signal than a two-document holdout and it should be used as one.

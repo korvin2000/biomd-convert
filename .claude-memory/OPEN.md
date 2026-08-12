@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-12**, after PROGRESS §45.
+Last touched **2026-08-12**, after PROGRESS §46.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,17 +32,29 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-12, after PROGRESS §45:**
+**Current state, *measured* 2026-08-12, after PROGRESS §46:**
 
 | rung | value |
 |---|---|
-| L0 | **540 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **690 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
 | L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
+| **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **1**, lost images **3** |
 
 That is the floor. Nothing accepted from here may regress it.
+
+> **There is a fifth corpus role now: `fixtures/gen_corpus/`, 946 sources with no references**
+> (PROGRESS §46). Disjoint from the 28 — the 15 pages the `new_*`/`xtra_*` fixtures came from sit in
+> `fixtures/aaaaaaaaaaaaaaa/`. It is **blind by construction**: nothing can be tuned to a page that
+> has no reference, so it is a better generalization signal than a two-document holdout. One scan is
+> ~2.5 min with Chromium at 4 jobs; run it every iteration. Its numbers are conservation, validator,
+> FAILED count, routing outcome and cross-document consistency — never a similarity score, because
+> there is nothing to be similar to.
+>
+> **Per document the reference set is 4–5× richer in table evidence than the corpus it stands for**
+> (`DATA`→table 46 % vs 10.5 %, `::: columns` 50 % vs 11 %, `frame` 18 % vs 4 %). Weight accordingly.
 
 > **141 of the 199 are recorded divergences and quirks, not work.** `xtra_shelechov` ~96,
 > `xtra_karta5` 42, `new_kolpakov` 3 (§43.5). The honest open count is **~58**. Quote the split or the
@@ -69,30 +81,62 @@ The one-off archive/menu label and repeated half-row catalogue cells remain fals
 `new_lendle2` gains its fifth frame: L1 99.3 → 99.8, L2 11/7 → 6/2, L3 4 → 2;
 corpus L2 315/204 → **310/199**, L3 61 → **59**, overall L1 flat 98.6.
 
+**Landed in §46, one commit each.** A figure never swallows a link (`558eafd`): `otherContent`
+measured text, and a link whose whole label is a control glyph has none, so every footer pager whose
+middle marker is unlinked lost **both arrows and both destinations at 100 % text recall**.
+`hasOrphanTarget` counts a target as content and asks containment, so the linked thumbnail still
+becomes a figure. · An unlinked icon in a strip of linked ones is a control too (`120e7b8`):
+`inControlStrip` promotes the pager's current-page marker, which can never have an `<a>` ancestor.
+· The mutation harness `CLAUDE.md` §5 has always asked for (`e0cdf3a`).
+**946 pages: lost targets 17 → 1, lost images 19 → 3, 12 documents changed and no others.
+The 26 are byte-identical — the shape occurs in none of the 28 reference sources.**
+
 > **Start a table iteration with the routing survey, not the ledger (§43.2).** One
 > `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)`, which is
 > the only view showing a table's *outcome* beside its *class*. Both §43 mechanisms came out of it and
 > neither was near the top of the ledger; one was on a document the defect column called clean.
+> **§46.5 generalizes it into a consistency instrument:** reduce every table to the classifier's own
+> view (class, tier, rounded score vector) and a view with more than one *outcome* is an inconsistency
+> by construction. 3332 tables, 62 views, **7 split, 32 minority decisions** — no reference needed.
 
 **Next, in order. Probe before committing (SKILL §6).**
-0. **Nothing table-shaped is both open and general.** Every remaining `table.*`/`column.*` instance is
-   one of the four recorded divergences or a single-document quirk. §43.9.
-1. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
+0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — but
+   §46.5 opens the routing question again on the 946, where `DATA`→flow is **39 instances on 35
+   documents** and 28 of them sit inside a split view. That is the reachable table work now.
+1. **The 1×2 picture-beside-caption binding — 8 documents, the highest reach left (§46.7).** The
+   converter states a caption twice within 20 lines of its figure 9 times; the hand-made references do
+   it **zero** times at that distance (`goya2`'s three are 100+ lines apart and §32.1 ruled them
+   correct). `bindCaptions`/`captionRunAt` are already right — `ctx.captionEligible` is not set,
+   because the picture sits *beside* the text in a 1×2 grid and `isCaptionContext` wants it *under*.
+   **Blocked on a swept threshold:** `isSingleRecordRow`'s contract keeps `borislova`'s and
+   `jovicic`'s 1×2 text-lane-beside-cover on the `::: columns` path because the references want it
+   there, and only text length separates them. `anido`'s two are a third shape (1×3 caption/spacer/
+   caption, no image in the grid). Sweep before building.
+2. **A layout fallback for an unplannable DATA table — 28 instances, 27 documents (§46.9).** Probed:
+   these are figure/caption strips, *not* the record row §35.8 ruled on, so do **not** widen
+   `isSingleRecordRow`. A DATA table that cannot be planned flattens to flat flow and loses the
+   pairing, where a LAYOUT table of the same shape reaches `::: columns`. `LAYOUT t2` splitting 17
+   flat against 5 `::: columns` is the same mechanism from the other side.
+3. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
    directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
    `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or
    shared converter mechanism remains. Fix the evaluator only in an isolated truthfulness step.
-2. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
+4. **`williams1.htm`** — the 946's last lost target: two adjacent `<a>` to the same href in a table
+   cell. One document. · **`assad_b.htm`** — its last lost images: three covers inside DATA table
+   cells, which a GFM cell cannot hold. One document, but latent wherever a discography pairs a cover
+   with a title.
+5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
    glyph/footer family. `segovia` is a long italic quotation shifted by `margin-left: 140`, not the
    same signal; decide whether the current `align` is a visual regression before touching code. §44.1.
-3. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
+6. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
    wrong on 8 of 22 and load-bearing in five rules. Three replacements built, all three reverted on
    measurement. Start from `headingLineOf`.
 
 **No open author question.**
 
-**The holdout has been measured once and is now spent (§43.7).** `xtra_oyanguren` 3/3 and
-`xtra_mikulka` 2/2/2 L3, byte-identical to §42.8 — both §43 rules are neutral there. §44 and §45 had
-no holdout; name a new one before the next rule if blind evidence is required.
+**The two-document holdout is still spent (§43.7), and §46 needed none.** The 946 unlabelled pages are
+blind by construction — no reference exists for any of them, so nothing can be tuned to them. Use the
+gen-corpus scan as the generalization signal instead of naming a new holdout; it is strictly stronger.
 
 **Do not re-take these; §37-§43 settled them.** Everything §41's list named, plus:
 `xtra_rodrigo`'s score table and its two work titles · `segovia`'s work title · `xtra_karta5`'s
@@ -105,6 +149,15 @@ bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convent
 matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
 general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
 table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
+
+**Killed in §46** — reopen on new measurement only:
+**low text recall means data loss** (§46.6 — `baden_powell2` is a cover gallery with 193 characters of
+visible text and loses nothing; recall's denominator includes the chrome the converter is meant to
+remove, so it is not comparable across pages of different text volume. `new_lagq2` sits at 45.25 % in
+the *reference* set with L1 99.8. Never read recall as loss without checking the page's text budget) ·
+**the 946-page chrome model caused the pager loss** (§46.6 — byte-identical with the 28-page profile;
+one command) · **`new_page.htm`'s 0.00 % recall is a defect** (§46.6 — it is the author's blank
+template and converts correctly).
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
@@ -259,7 +312,12 @@ neutral there. §44 and §45 had no holdout.
    two majors at `goya2`'s second Moscow cover and opened one **critical** there -- on a region that
    is now byte-identical on both sides. It is the largest L3 class at 18. Distrust before working.
 7. **One viewport (1024 px).** Nothing asserts a finding is stable across widths.
-8. **No mutation harness.** `CLAUDE.md` §5 asks for one; it has never been built.
+8. ~~**No mutation harness.**~~ **Built in §46.4** — `src/convert-core/metamorphic.test.ts`, 140
+   properties over the 28 sources, swept over the 946 unlabelled pages with real Chromium:
+   determinism, class/id renaming and attribute-order permutation each **946/946 byte-identical**.
+   Invariant 5 now has a measurement, not only a review convention. Still missing from §5's list:
+   `<font>`/`<b>` ↔ CSS equivalence, Latin↔Cyrillic label swaps, dropped closing tags, viewport
+   changes, encodings — add them to the same file as they earn a falsifier.
 9. **L4 is not built.** Do not report an L4 number.
 10. **`diff` does not skip a document whose produced output is absent.** Pointed at `fixtures/out2` it
     reported 25 findings and 19 criticals for `new_karta5`, whose source lives in `fixtures/html2` and

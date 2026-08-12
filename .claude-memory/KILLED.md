@@ -218,3 +218,17 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
   all, and the author already ruled the other (`xtra_karta5`) ignorable. 12 to 1; `table.align` is a
   reference quirk on both documents and its 3 `new_kolpakov` instances are mis-triaged as
   converter-defect. (§43.5)
+
+## §46 -- killed on the 946-page unlabelled corpus (2026-08-12)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **Low text recall means data loss.** 34 documents below 90 %, `baden_powell2/3/4` at 40 % -- the largest priority-1 signal in the scan | `baden_powell2` is an album-cover gallery with **193 characters of visible text**: title, `[ 1 ] [ 2 ] [ 3 ] [ 4 ]` pager, one heading and twelve covers, **all conserved**. Recall's denominator includes the chrome the converter is *meant* to remove, so on a text-poor page each removed banner word costs a large fraction. The reference set already said so: **`new_lagq2` sits at 45.25 % with L1 99.8 and 2 defects** | one `cat` of the produced file |
+| **The 946-page chrome model causes the pager loss.** That profile removes structures recurring at 99 %, 88 % and 77 % where the 28-page one sees only 100 % and 91 % | Converting the same documents with `bench/corpus/corpus-profile.json` gives **byte-identical** loss | one command |
+| **`new_page.htm`'s 0.00 % recall is a defect** | It is the author's blank template -- *"Имя и фамилия"*, *"Текст биографии"* repeated -- and it converts correctly | one `cat` |
+
+**Downgraded, not killed:** the **adjacent caption echo** (§46.7). The defect is real and measured --
+9 instances on 8 documents, against **zero** at that distance in the hand-made references -- but one
+label covers three shapes, and separating `bogdanovic`'s 64-character caption from `borislova`'s and
+`jovicic`'s reference-attested 1×2 text-lane-beside-cover needs a **swept** text-length threshold.
+Reopen with the sweep, not with an argument.

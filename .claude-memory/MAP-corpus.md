@@ -1,7 +1,27 @@
-# MAP-corpus -- 26 compared + 2 holdout (28 converted), and what each one proves
+# MAP-corpus -- 26 compared + 2 holdout (28 converted) + 946 unlabelled, and what each one proves
 
-**Updated 2026-08-11, PROGRESS §42.** Six `xtra_` pairs joined the corpus and the holdout
-changed hands. §1 and §2 below still describe the original 13 and 9; §2b and §3 are new.
+**Updated 2026-08-12, PROGRESS §46.** Six `xtra_` pairs joined the corpus and the holdout
+changed hands in §42; §46 added a fifth role. §1 and §2 below still describe the original 13 and 9;
+§2b and §3 are new.
+
+> **`fixtures/gen_corpus/` -- 946 sources, no references at all (PROGRESS §46).** The 15 pages the
+> `new_*`/`xtra_*` fixtures were drawn from are held out of it in `fixtures/aaaaaaaaaaaaaaa/`, so it is
+> disjoint from the 28. **Blind by construction**: nothing can be tuned to a page that has no
+> reference, which makes it a stronger generalization signal than the two-document holdout and the
+> reason §46 needed no holdout at all. Its rung is conservation, validator, FAILED count, routing
+> outcome and cross-document consistency -- **never** a similarity score, because there is nothing to
+> be similar to. Floor: 0 FAILED, 0 validator errors, 1 lost target, 3 lost images. One scan ~2.5 min.
+>
+> **Read it as a corrective on the tables below, too.** Per document the reference set carries four to
+> five times the table evidence of the corpus it stands for: `DATA`→emitted table on 46 % of references
+> against 10.5 % of the 946, `::: columns` 50 % against 11 %, `::: frame` 18 % against 4 %. The
+> archetypes below are real and they are also *not* a random sample.
+>
+> Shapes the 946 hold that no reference does: the **footer pager with an unlinked middle marker** (12
+> documents, §46.3 -- a priority-1 data loss no reference could have caught), the **adjacent caption
+> echo** (8 documents, §46.7), **`<map>`/`<area>` image-map navigation** (7), **`<dl>` definition
+> lists** (1, 56 tags), **`<pre>`** (1, 11 tags), real **`<h1>`-`<h6>`** headings (7), and **`<ol>`**
+> (7).
 
 Pick a document by **what it can falsify**, not by how many findings it has. A class in one document
 is nearly always the wrong target however many instances it has (`CLAUDE.md` §5).
