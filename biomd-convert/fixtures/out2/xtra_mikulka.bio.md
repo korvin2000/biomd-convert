@@ -81,7 +81,7 @@ caption: CD-диск Вл. Микулки - 'Stepan Rak'
 
 ::: image
 src: photo/m/mikulka_vhs.jpg
-position: center
+position: left
 size: small
 :::
 
@@ -99,4 +99,3 @@ size: small
 :::
 
 :::
-

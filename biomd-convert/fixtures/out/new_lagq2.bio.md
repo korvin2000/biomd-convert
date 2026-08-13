@@ -210,12 +210,18 @@ size: small
 :::
 
 ### The Best of the L.A.G.Q
+
 ::: align
 position: center
 
 *Music by:*
 
 Copland - Basie - Tchaikovsky - Falla - Sousa - Warlock - Traditional - Boccherini - Morley - Gabrieli - Praetorius - Bach - Debussy - Main Street Electrical Parade
+
+:::
+
+::: align
+position: center
 
 \[[Назад](/#/lagq)] \[[Фото](/#/lagq3)]
 

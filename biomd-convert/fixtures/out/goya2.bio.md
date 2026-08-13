@@ -52,6 +52,8 @@ title: ДРУГИЕ АЛЬБОМЫ
 ::: align
 position: center
 
+::anchor{#1}
+
 **1.000.000 Platinum**
 
 :::
@@ -142,6 +144,8 @@ size: medium
 ::: align
 position: center
 
+::anchor{#2}
+
 **Francis Goya Plays His Favourite Hits**
 
 :::
@@ -208,7 +212,14 @@ size: medium
 ::: align
 position: center
 
+::anchor{#3}
+
 **Francis Goya Plays His Favourite Hits**
+
+:::
+
+::: align
+position: center
 
 **Vol. 2**
 
@@ -268,6 +279,8 @@ size: medium
 
 ::: align
 position: center
+
+::anchor{#4}
 
 **Best of Francis Goya**
 
@@ -332,7 +345,15 @@ size: medium
 ::: align
 position: center
 
+::anchor{#5}
+
 **This Is Francis Goya**
+
+:::
+
+::: align
+position: center
+
 1988
 
 :::
@@ -388,6 +409,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#6}
 
 **The Hi-Fi sound of**\
 **Latin Guitar II / Francis Goya**
@@ -449,6 +472,8 @@ size: medium
 ::: align
 position: center
 
+::anchor{#7}
+
 **The Very Best of Francis Goya (Diamond Star Collection)**
 
 :::
@@ -500,6 +525,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#8}
 
 **Collection 2000 / Francis Goya**
 
@@ -565,6 +592,8 @@ size: medium
 ::: align
 position: center
 
+::anchor{#9}
+
 **Magic Moments**
 
 :::
@@ -575,6 +604,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#10}
 
 **Latin Romance**
 
@@ -641,7 +672,15 @@ position: center
 ::: align
 position: center
 
+::anchor{#11}
+
 **Historia de un Amor**
+
+:::
+
+::: align
+position: center
+
 1999
 
 :::
@@ -701,6 +740,8 @@ size: medium
 ::: align
 position: center
 
+::anchor{#12}
+
 **The Romantic Guitar of Francis Goya**
 
 :::
@@ -755,6 +796,8 @@ position: center
 ::: align
 position: center
 
+::anchor{#13}
+
 **Moscow Nights**
 
 :::
@@ -796,8 +839,6 @@ position: center
 size: medium
 :::
 
-
-
 ::: image
 src: photo/g/goya/goya_moscow3a.jpg
 position: center
@@ -805,6 +846,7 @@ size: medium
 :::
 
 :::
+
 :::
 
 ---
@@ -816,9 +858,12 @@ size: medium
 ::: align
 position: center
 
+::anchor{#14}
+
 **Francis Goya in Moscow**
 
 :::
+
 :::
 
 ::: column
@@ -870,6 +915,8 @@ size: medium
 ::: align
 position: center
 
+::anchor{#15}
+
 **Francis Goya / Rendez-vous**
 
 :::
@@ -880,6 +927,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#16}
 
 **Golden Collection 8**\
 **Francis Goya**
@@ -944,9 +993,13 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#17}
+
 **Noche Latina /**\
 **Francis Goya & Carmina**\
 1993
+
 :::
 
 :::
@@ -996,6 +1049,8 @@ position: center
 ::: align
 position: center
 
+::anchor{#18}
+
 **Symphony of Love**
 
 :::
@@ -1006,6 +1061,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#19}
 
 **Together / Peter Weekers & Francis Goya**
 
@@ -1066,6 +1123,8 @@ position: center
 
 ::: align
 position: center
+
+::anchor{#26}
 
 **Галерея инструментальной музыки.**\
 **Francis Goya**
@@ -1130,6 +1189,9 @@ size: medium
 
 ## ДРУГИЕ АЛЬБОМЫ
 
+::anchor{#20}
+
+::anchor{#21}
 
 ::: images
 columns: 2
@@ -1152,6 +1214,10 @@ caption: Francis Goya
 
 ---
 
+::anchor{#22}
+
+::anchor{#23}
+
 ::: images
 columns: 2
 
@@ -1172,6 +1238,10 @@ caption: Francis Goya / Gondwana
 :::
 
 ---
+
+::anchor{#24}
+
+::anchor{#25}
 
 ::: images
 columns: 2

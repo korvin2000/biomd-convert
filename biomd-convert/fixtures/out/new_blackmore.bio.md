@@ -13,7 +13,7 @@
 ::: align
 position: right
 
-(Источники [rock.ru](http://www.rock.ru/); [rol.ru](http://www.rol.ru/); [blackmore.jsa.ru](http://www.blackmore.jsa.ru/))
+(Источники: [rock.ru](http://www.rock.ru/); [rol.ru](http://www.rol.ru/); [blackmore.jsa.ru](http://www.blackmore.jsa.ru/))
 
 :::
 

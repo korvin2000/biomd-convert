@@ -176,8 +176,6 @@ E-mail: [info@vpmusicmedia.com](mailto:info@vpmusicmedia.com)\
 
 :::
 
-
-
 ## ПЯТЬ СЮИТ ОЛЕГА КИСЕЛЕВА
 
 | | 🔗 |
@@ -259,6 +257,7 @@ E-mail: [andy.waeyaert@advalvas.be](mailto:andy.waeyaert@advalvas.be)
 position: right
 
 ---
+
 Олег Киселев: [Oleg.Kiselev@list.ru](mailto:Oleg.Kiselev@list.ru)
 
 :::

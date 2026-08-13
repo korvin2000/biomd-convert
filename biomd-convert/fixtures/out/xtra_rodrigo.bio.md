@@ -101,7 +101,8 @@ Serenata Al Alba Del Día (1982)
 
 ---
 
-Joaquin Rodrigo: **Concierto de Aranjuez for Guitar & Orchestra**
+Joaquin Rodrigo:\
+**Concierto de Aranjuez for Guitar & Orchestra**
 
 | | | | | |
 | - | - | - | - | - |
@@ -109,11 +110,11 @@ Joaquin Rodrigo: **Concierto de Aranjuez for Guitar & Orchestra**
 | II | - | Adagio.......................................................... | 11:02 | [MP3](music/mp/concierto_de_aranjuez_IIa.mp3)\* |
 | III | - | Allegro gentile................................................ | 5:24 | ...... |
 
-| | | | | 
+| | | | 🔗 |
 | - | - | - | - |
 | **Ноты**\*\* | I. | \[ [1](music/scores/concierto_de_aranjuez/1/cda1_1.gif) ] \[ [2](music/scores/concierto_de_aranjuez/1/cda1_2.gif) ] \[ [3](music/scores/concierto_de_aranjuez/1/cda1_3.gif) ] \[ [4](music/scores/concierto_de_aranjuez/1/cda1_4.gif) ] \[ [5](music/scores/concierto_de_aranjuez/1/cda1_5.gif) ] \[ [6](music/scores/concierto_de_aranjuez/1/cda1_6.gif) ] \[ [7](music/scores/concierto_de_aranjuez/1/cda1_7.gif) ] \[ [8](music/scores/concierto_de_aranjuez/1/cda1_8.gif) ] | [zip](music/scores/concierto_de_aranjuez/concierto_de_aranjuez1.zip) |
-| - | II. | \[ [1](music/scores/concierto_de_aranjuez/2/cda2_1.gif) ] \[ [2](music/scores/concierto_de_aranjuez/2/cda2_2.gif) ] \[ [3](music/scores/concierto_de_aranjuez/2/cda2_3.gif) ] \[ [4](music/scores/concierto_de_aranjuez/2/cda2_4.gif) ] \[ [5](music/scores/concierto_de_aranjuez/2/cda2_5.gif) ] \[ [6](music/scores/concierto_de_aranjuez/2/cda2_6.gif) ] \[ [7](music/scores/concierto_de_aranjuez/2/cda2_7.gif) ] \[ [8](music/scores/concierto_de_aranjuez/2/cda2_8.gif) ] | [zip](music/scores/concierto_de_aranjuez/concierto_de_aranjuez2.zip) |
-| - | III. | \[ [1](music/scores/concierto_de_aranjuez/3/cda3_1.gif) ] \[ [2](music/scores/concierto_de_aranjuez/3/cda3_2.gif) ] \[ [3](music/scores/concierto_de_aranjuez/3/cda3_3.gif) ] \[ [4](music/scores/concierto_de_aranjuez/3/cda3_4.gif) ] \[ [5](music/scores/concierto_de_aranjuez/3/cda3_5.gif) ] \[ [6](music/scores/concierto_de_aranjuez/3/cda3_6.gif) ] \[ [7](music/scores/concierto_de_aranjuez/3/cda3_7.gif) ] \[ [8](music/scores/concierto_de_aranjuez/3/cda3_8.gif) ] | [zip](music/scores/concierto_de_aranjuez/concierto_de_aranjuez3.zip) |
+| — | II. | \[ [1](music/scores/concierto_de_aranjuez/2/cda2_1.gif) ] \[ [2](music/scores/concierto_de_aranjuez/2/cda2_2.gif) ] \[ [3](music/scores/concierto_de_aranjuez/2/cda2_3.gif) ] \[ [4](music/scores/concierto_de_aranjuez/2/cda2_4.gif) ] \[ [5](music/scores/concierto_de_aranjuez/2/cda2_5.gif) ] \[ [6](music/scores/concierto_de_aranjuez/2/cda2_6.gif) ] \[ [7](music/scores/concierto_de_aranjuez/2/cda2_7.gif) ] \[ [8](music/scores/concierto_de_aranjuez/2/cda2_8.gif) ] | [zip](music/scores/concierto_de_aranjuez/concierto_de_aranjuez2.zip) |
+| — | III. | \[ [1](music/scores/concierto_de_aranjuez/3/cda3_1.gif) ] \[ [2](music/scores/concierto_de_aranjuez/3/cda3_2.gif) ] \[ [3](music/scores/concierto_de_aranjuez/3/cda3_3.gif) ] \[ [4](music/scores/concierto_de_aranjuez/3/cda3_4.gif) ] \[ [5](music/scores/concierto_de_aranjuez/3/cda3_5.gif) ] \[ [6](music/scores/concierto_de_aranjuez/3/cda3_6.gif) ] \[ [7](music/scores/concierto_de_aranjuez/3/cda3_7.gif) ] \[ [8](music/scores/concierto_de_aranjuez/3/cda3_8.gif) ] | [zip](music/scores/concierto_de_aranjuez/concierto_de_aranjuez3.zip) |
 
 Joaquin Rodrigo / Andres Segovia:\
 **Fantasia Para Un Gentilhombre for guitar & orchestra**
@@ -132,4 +133,3 @@ Joaquin Rodrigo / Andres Segovia:\
 
 ([Classical Guitar Scores](http://web.dencity.com/guitar_scores/default.htm))
 
----
