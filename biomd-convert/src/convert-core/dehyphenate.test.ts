@@ -181,13 +181,95 @@ describe("decideHyphen cascade", () => {
     expect(d).toMatchObject({ verdict: "REVIEW", rule: 6 });
   });
 
-  it("rule 6: an illegal break point is not joined", () => {
-    // `музыкант` cannot break after `музык`, so this is not a wrap artifact.
+  it("rule 6: an illegal break point alone does not authorize a join", () => {
+    // `музыкант` cannot break after `музык`. With a dictionary that calls every
+    // string a word, both fragments are words too, so the fragment evidence
+    // rule 6b needs is absent and the illegal position is not overridden.
     const d = decideHyphen(
       { left: "музык", right: "ант", hyphen: "-", atLineEdge: true },
       { lexicon: lexiconOf(), oracle: FAKE_ORACLE, dictionary: () => true },
     );
     expect(d.verdict).not.toBe("JOIN");
+  });
+
+  /**
+   * Rule contract — **rule 6b: the break position is the typist's, the
+   * fragments are the language's.**
+   *
+   * *Invariant.* Evidence is two dictionary questions about the two fragments
+   * and their concatenation. No document, class, id, filename or title appears,
+   * and the dictionary is supplied per language by the caller.
+   *
+   * *Recurrence.* Not applicable, and stated rather than assumed: a wrapped word
+   * is one lexical event at one place on one page. Requiring it to recur would
+   * make the rule unable to fire on the shape it exists for.
+   *
+   * *False friend.* An abbreviation or compound whose halves are both words —
+   * `лит-ре`, where the joined spelling `литре` is a real but *different* word.
+   * Tested for non-firing. The larger family (`из-за`, `кто-то`, `во-первых`)
+   * is refused one step earlier, because no dictionary holds their joined forms.
+   *
+   * *Mutation robustness.* The decision reads two strings; DOM names, wrappers,
+   * attribute order and viewport cannot reach it. With no dictionary installed
+   * the rule cannot fire at all and the conservative path is unchanged.
+   */
+  it("rule 6b: joins an illegal break when the split leaves a fragment that is not a word", () => {
+    // `фестивалях` breaks as `фе-сти-ва-лях`, never after `фес` — yet that is
+    // where the page has it, and `фес` and `тивалях` are not words.
+    const russian = (w: string) => w === "фестивалях";
+    const d = decideHyphen(
+      { left: "фес", right: "тивалях", hyphen: "-", atLineEdge: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: russian },
+    );
+    expect(d).toMatchObject({ verdict: "JOIN", rule: 6, joined: "фестивалях" });
+  });
+
+  it("rule 6b: does not join when both fragments are words in their own right", () => {
+    // `лит-ре` abbreviates `литературе`; joining it silently produces `литре`,
+    // a real word with an unrelated meaning. Both halves are words, so the
+    // wrap evidence is absent and the conservative default holds.
+    const russian = (w: string) => ["литре", "лит", "ре"].includes(w);
+    const d = decideHyphen(
+      { left: "лит", right: "ре", hyphen: "-", atLineEdge: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: russian },
+    );
+    expect(d.verdict).not.toBe("JOIN");
+  });
+
+  it("rule 6b: a lexical compound the dictionary does not hold is never reached", () => {
+    // `вице-президент` is two words the language keeps apart; no dictionary
+    // holds `вицепрезидент`, so the first signal already refuses.
+    const russian = (w: string) => ["вице", "президент"].includes(w);
+    const d = decideHyphen(
+      { left: "вице", right: "президент", hyphen: "-", atLineEdge: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: russian },
+    );
+    expect(d.verdict).not.toBe("JOIN");
+  });
+
+  it("rule 6b: the earlier rules still outrank it", () => {
+    // A proper compound (rule 3) and an identifier (rule 0) must keep their
+    // hyphen even when the concatenation happens to be a dictionary word.
+    const yes = () => true;
+    const compound = decideHyphen(
+      { left: "Римский", right: "Корсаков", hyphen: "-", atLineEdge: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: yes },
+    );
+    expect(compound).toMatchObject({ verdict: "PRESERVE", rule: 3 });
+
+    const identifier = decideHyphen(
+      { left: "abc", right: "guitars", hyphen: "-", inIdentifier: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: yes },
+    );
+    expect(identifier).toMatchObject({ verdict: "PRESERVE", rule: 0 });
+  });
+
+  it("rule 6b: degrades to the old behaviour when no dictionary is installed", () => {
+    const d = decideHyphen(
+      { left: "фес", right: "тивалях", hyphen: "-", atLineEdge: true },
+      { lexicon: lexiconOf(), oracle: NULL_ORACLE },
+    );
+    expect(d).toMatchObject({ verdict: "REVIEW", rule: 7 });
   });
 
   it("rule 7: preserves and flags when nothing is decisive", () => {

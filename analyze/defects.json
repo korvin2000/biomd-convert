@@ -1,25 +1,25 @@
 {
-  "generated": "2026-08-13T00:51:02.057Z",
+  "generated": "2026-08-13T12:06:54.290Z",
   "totals": {
-    "findings": 310,
+    "findings": 316,
     "converterDefects": 199,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 93,
-    "ambiguous": 18,
+    "ambiguous": 24,
     "bySeverity": {
       "critical": 8,
       "major": 182,
-      "minor": 120
+      "minor": 126
     }
   },
   "perDocument": [
     {
       "doc": "authors",
-      "findings": 0,
+      "findings": 1,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 1
     },
     {
       "doc": "barrios",
@@ -63,11 +63,11 @@
     },
     {
       "doc": "new_bach",
-      "findings": 0,
+      "findings": 1,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 1
     },
     {
       "doc": "new_blackmore",
@@ -103,11 +103,11 @@
     },
     {
       "doc": "new_kolpakov",
-      "findings": 4,
+      "findings": 5,
       "converterDefects": 4,
       "critical": 0,
       "major": 0,
-      "minor": 4
+      "minor": 5
     },
     {
       "doc": "new_lagq2",
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 6,
+      "findings": 7,
       "converterDefects": 3,
       "critical": 0,
       "major": 2,
-      "minor": 4
+      "minor": 5
     },
     {
       "doc": "segovia1",
@@ -175,11 +175,11 @@
     },
     {
       "doc": "tarrega",
-      "findings": 2,
+      "findings": 3,
       "converterDefects": 2,
       "critical": 0,
       "major": 2,
-      "minor": 0
+      "minor": 1
     },
     {
       "doc": "williams2",
@@ -215,11 +215,11 @@
     },
     {
       "doc": "xtra_shelechov",
-      "findings": 102,
+      "findings": 103,
       "converterDefects": 101,
       "critical": 2,
       "major": 78,
-      "minor": 22
+      "minor": 23
     }
   ],
   "classes": [
@@ -1240,6 +1240,32 @@
       }
     },
     {
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "instances": 7,
+      "documents": [
+        "authors",
+        "new_bach",
+        "new_kolpakov",
+        "segovia",
+        "tarrega",
+        "xtra_shelechov"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 7
+      },
+      "rank": 0,
+      "example": {
+        "doc": "authors",
+        "path": "/paragraph[7]",
+        "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+        "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…"
+      }
+    },
+    {
       "class": "image.position.missing.off-profile",
       "severity": "major",
       "instances": 6,
@@ -1370,27 +1396,6 @@
       }
     },
     {
-      "class": "paragraph.hyphenation.joined",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "xtra_shelechov",
-        "path": "/paragraph[25]",
-        "produced": "Л.Т. Шумеев свое впечатление об этом концерте выразил следующими словами: \"А.Шелехов – это своеобразный, талантливый гитарист. Благодаря своим аранжировкам, те…",
-        "reference": "Л.Т. Шумеев свое впечатление об этом концерте выразил следующими словами: \"А.Шелехов – это своеобразный, талантливый гитарист. Благодаря своим аранжировкам, те…"
-      }
-    },
-    {
       "class": "table.spurious.unattested",
       "severity": "critical",
       "instances": 1,
@@ -1413,6 +1418,20 @@
     }
   ],
   "findings": [
+    {
+      "id": "b3385718",
+      "doc": "authors",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[7]",
+      "producedLine": 35,
+      "referenceLine": 35,
+      "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+      "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+      "verdict": "ambiguous"
+    },
     {
       "id": "94361f51",
       "doc": "borislova",
@@ -1834,6 +1853,20 @@
       "verdict": "reference-inconsistency"
     },
     {
+      "id": "671ad5ce",
+      "doc": "new_bach",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 9,
+      "referenceLine": 9,
+      "produced": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
+      "reference": "БАХ (Bach) Иоганн Себастьян (1685-1750), – немецкий композитор, органист, клавесинист. Философская глубина содержания и высокий этический смысл произведений Ба…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "8b16e066",
       "doc": "new_blackmore",
       "class": "paragraph.content.edited",
@@ -2098,6 +2131,20 @@
       "produced": "▶",
       "reference": "▶ — at /paragraph[24]",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "d496d02f",
+      "doc": "new_kolpakov",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 3,
+      "referenceLine": 3,
+      "produced": "КОЛПАКОВ Вадим Григорьевич (род. в 1981 году, Саратов, Россия), – продолжатель известной цыганской артистической династии, гитарист-семиструнник, вокалист, акт…",
+      "reference": "КОЛПАКОВ Вадим Григорьевич (род. в 1981 году, Саратов, Россия), – продолжатель известной цыганской артистичес-кой династии, гитарист-семиструнник, вокалист, ак…",
+      "verdict": "ambiguous"
     },
     {
       "id": "5cfcb2b0",
@@ -2674,6 +2721,20 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "d9056ca0",
+      "doc": "segovia",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[32]",
+      "producedLine": 113,
+      "referenceLine": 117,
+      "produced": "Если в 20-е годы имя великого гитариста связывали с рождением нового искусства, то в 30-е его можно было с полным основанием назвать создателем гитарного искус…",
+      "reference": "Если в 20-е годы имя великого гитариста связывали с рождением нового искусства, то в 30-е его можно было с полным основанием назвать создателем гитарного искус…",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "4bd5ee4f",
       "doc": "segovia",
       "class": "image.caption.spurious",
@@ -2714,6 +2775,20 @@
       "produced": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra",
       "reference": "Joaquin Rodrigo / Andres Segovia: Fantasia Para Un Gentilhombre for guitar & orchestra — 1 hard breaks, reference has 0",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "839e726a",
+      "doc": "tarrega",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[1]",
+      "producedLine": 3,
+      "referenceLine": 3,
+      "produced": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "reference": "ТАРРЕГА-ЭЙКСЕА Франсиско (Francisco Tárrega y Eixea), 21.XI.1852 – 05.XII.1909, – выдающийся испанский гитарист-виртуоз и композитор, основоположник испанской …",
+      "verdict": "ambiguous"
     },
     {
       "id": "0cf42354",
@@ -5738,6 +5813,20 @@
       "produced": "И. Соколов",
       "reference": "И. Соколов — at /columns[17]/column[25]/paragraph[1]",
       "verdict": "converter-defect"
+    },
+    {
+      "id": "5cc0713e",
+      "doc": "xtra_shelechov",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[23]",
+      "producedLine": 431,
+      "referenceLine": 304,
+      "produced": "29 октября 2006 года во Дворце культуры нефтяников состоялся юбилейный концерт, посвящённый 60-летию А.Н. Шелехова. Председатель правления Музыкального обществ…",
+      "reference": "29 октября 2006 года во Дворце культуры нефтяников состоялся юбилейный концерт, посвящённый 60-летию А.Н. Шелехова. Председатель правления Музыкального общест-…",
+      "verdict": "ambiguous"
     },
     {
       "id": "bd46e6c9",

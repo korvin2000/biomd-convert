@@ -206,17 +206,57 @@ export function decideHyphen(candidate: HyphenCandidate, options: DehyphenateOpt
 
   // 6 — the oracle, finally: is the observed break a legal hyphenation point of
   // the joined word, and is that word real?
-  if (oracle.available && oracle.isLegalBreak(joined, left.length, lang)) {
-    const inDictionary = options.dictionary?.(joined) ?? false;
-    if (inDictionary) {
+  const inDictionary = options.dictionary?.(joined) ?? false;
+  const legalBreak = oracle.available && oracle.isLegalBreak(joined, left.length, lang);
+
+  if (legalBreak && inDictionary) {
+    return {
+      verdict: "JOIN",
+      rule: 6,
+      reason: "observed break is a legal hyphenation point and the joined form is a dictionary word",
+      confidence: 0.88,
+      joined,
+    };
+  }
+
+  // 6b — the break *position* is the typesetter's choice, not the language's.
+  //
+  // Rule 6 asks the pattern engine where a word *may* break and refuses to join
+  // anywhere else. That is the right question for text a layout engine wrapped,
+  // and the wrong one for this corpus: these pages were typed from print by
+  // hand, and the hyphen is wherever the person doing the typing found it —
+  // `фес-тивалях`, `общест-ва`, `художест-венной`. Russian patterns forbid a
+  // break inside those clusters, so rule 6 vetoes the join and the broken word
+  // ships. Measured over the unlabelled corpus, 131 occurrences of 112 distinct
+  // forms sit in exactly that position, and not one of them is a compound.
+  //
+  // So the second signal moves off the break position and onto the fragments.
+  // A wrap cuts one word into two pieces that are not themselves words; a
+  // compound joins two things that are. That keeps rule 6 a two-signal gate —
+  // it replaces a signal measuring where a 1998 typist pressed the key with one
+  // measuring what the language actually contains — and it is why the join
+  // stays refused for `из-за`, `кто-то`, `во-первых` and `вице-президент`,
+  // whose joined spellings no dictionary holds, and for `лит-ре`, whose joined
+  // spelling `литре` is a different word and whose halves are both words.
+  //
+  // Recurrence cannot apply: a wrapped word is one lexical event at one place
+  // on one page. The evidence is lexical, and it is external to the corpus.
+  if (inDictionary) {
+    const isWord = options.dictionary ?? (() => false);
+    if (!(isWord(left) && isWord(right))) {
       return {
         verdict: "JOIN",
         rule: 6,
-        reason: "observed break is a legal hyphenation point and the joined form is a dictionary word",
-        confidence: 0.88,
+        reason:
+          "joined form is a dictionary word and the split leaves a fragment that is not, " +
+          "so the hyphen is a wrap the language does not license",
+        confidence: 0.82,
         joined,
       };
     }
+  }
+
+  if (legalBreak) {
     return {
       verdict: "REVIEW",
       rule: 6,
