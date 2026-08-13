@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-13T12:17:53.474Z",
+  "generated": "2026-08-13T13:08:23.639Z",
   "totals": {
-    "findings": 316,
-    "converterDefects": 199,
+    "findings": 320,
+    "converterDefects": 198,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 93,
-    "ambiguous": 24,
+    "referenceInconsistencies": 94,
+    "ambiguous": 28,
     "bySeverity": {
-      "critical": 8,
+      "critical": 9,
       "major": 182,
-      "minor": 126
+      "minor": 129
     }
   },
   "perDocument": [
@@ -23,9 +23,9 @@
     },
     {
       "doc": "barrios",
-      "findings": 0,
+      "findings": 1,
       "converterDefects": 0,
-      "critical": 0,
+      "critical": 1,
       "major": 0,
       "minor": 0
     },
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 7,
+      "findings": 9,
       "converterDefects": 3,
       "critical": 0,
       "major": 2,
-      "minor": 5
+      "minor": 7
     },
     {
       "doc": "segovia1",
@@ -183,11 +183,11 @@
     },
     {
       "doc": "williams2",
-      "findings": 2,
+      "findings": 3,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 2
+      "minor": 3
     },
     {
       "doc": "xtra_albeniz",
@@ -200,7 +200,7 @@
     {
       "doc": "xtra_karta5",
       "findings": 99,
-      "converterDefects": 50,
+      "converterDefects": 49,
       "critical": 6,
       "major": 63,
       "minor": 30
@@ -377,33 +377,6 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 23,
-      "documents": [
-        "new_blackmore",
-        "new_lendle2",
-        "news",
-        "news_2007",
-        "segovia",
-        "williams2",
-        "xtra_rodrigo"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 20,
-        "ambiguous": 0
-      },
-      "rank": 21,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[7]/align[1]/paragraph[0]",
-        "produced": "(none)",
-        "reference": "strong:Agustin Barrios Mangore"
-      }
-    },
-    {
       "class": "break.spurious",
       "severity": "minor",
       "instances": 20,
@@ -532,6 +505,33 @@
         "path": "/table[7]/row[7]",
         "produced": null,
         "reference": "Ноты (*.gif) I. [ 1 ] [ 2 ] [ 3 ] [ 4 ] [ 5 ] [ 6 ] [ 7 ] [ 8 ] | zip"
+      }
+    },
+    {
+      "class": "emphasis.span",
+      "severity": "minor",
+      "instances": 23,
+      "documents": [
+        "new_blackmore",
+        "new_lendle2",
+        "news",
+        "news_2007",
+        "segovia",
+        "williams2",
+        "xtra_rodrigo"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 21,
+        "ambiguous": 0
+      },
+      "rank": 14,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[7]/align[1]/paragraph[0]",
+        "produced": "(none)",
+        "reference": "strong:Agustin Barrios Mangore"
       }
     },
     {
@@ -728,27 +728,6 @@
         "path": "/columns[14]/column[7]",
         "produced": "Э. Лекуона",
         "reference": "Э. Лекуона — at /columns[14]/column[15]/paragraph[1]"
-      }
-    },
-    {
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 5,
-      "example": {
-        "doc": "xtra_karta5",
-        "path": "/paragraph[15]",
-        "produced": "Хилл/Вильчинскигитарный дуэт",
-        "reference": null
       }
     },
     {
@@ -1153,6 +1132,27 @@
       }
     },
     {
+      "class": "image.caption.content.edited",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 1,
+      "example": {
+        "doc": "segovia",
+        "path": "/image[6]@caption",
+        "produced": "caption: А. Сеговия с учениками В.И. Яшнева — В нижнем ряду второй справа Виль Белильников, слева в нижнем ряду Лилиана Седлецкая. г. Ленинград, гостиница \"Евр…",
+        "reference": "caption: А. Сеговия с учениками В.И.Яшнева — В нижнем ряду второй справа Виль Белильников, слева в нижнем ряду Лилиана Седлецкая. г. Ленинград, гостиница \"Евро…"
+      }
+    },
+    {
       "class": "signature.position.spurious",
       "severity": "minor",
       "instances": 1,
@@ -1287,6 +1287,28 @@
       }
     },
     {
+      "class": "table.cell.content.edited",
+      "severity": "minor",
+      "instances": 5,
+      "documents": [
+        "williams2",
+        "xtra_karta5"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 5
+      },
+      "rank": 0,
+      "example": {
+        "doc": "williams2",
+        "path": "/table[26]/cell[0][0]",
+        "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em",
+        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**"
+      }
+    },
+    {
       "class": "hardbreak.spurious",
       "severity": "minor",
       "instances": 4,
@@ -1308,27 +1330,6 @@
         "path": "/paragraph[45]",
         "produced": "* Запись предоставлена автором и размещается с ее согласия.",
         "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
-      }
-    },
-    {
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 4
-      },
-      "rank": 0,
-      "example": {
-        "doc": "xtra_karta5",
-        "path": "/table[13]/cell[0][3]",
-        "produced": "",
-        "reference": "—"
       }
     },
     {
@@ -1396,6 +1397,48 @@
       }
     },
     {
+      "class": "paragraph.content",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "barrios"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "barrios",
+        "path": "/paragraph[8]",
+        "produced": "[1](#2) Другая транскрипция – Баррьос.",
+        "reference": "[1](#2)Другая транскрипция – Баррьос."
+      }
+    },
+    {
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "xtra_karta5"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "xtra_karta5",
+        "path": "/paragraph[7]",
+        "produced": "Родриго Хоакин",
+        "reference": null
+      }
+    },
+    {
       "class": "table.spurious.unattested",
       "severity": "critical",
       "instances": 1,
@@ -1430,6 +1473,20 @@
       "referenceLine": 35,
       "produced": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
       "reference": "ТАВРОВСКИЙ Александр Викторович (род. 10 мая 1981, Переяслав-Хмельницкий, Киевская обл., Украина), – программист. В 2002 году окончил в г. Киеве Национальный у…",
+      "verdict": "ambiguous"
+    },
+    {
+      "id": "08535a60",
+      "doc": "barrios",
+      "class": "paragraph.content",
+      "severity": "critical",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[8]",
+      "producedLine": 26,
+      "referenceLine": 26,
+      "produced": "[1](#2) Другая транскрипция – Баррьос.",
+      "reference": "[1](#2)Другая транскрипция – Баррьос.",
       "verdict": "ambiguous"
     },
     {
@@ -2679,6 +2736,34 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "971e1bea",
+      "doc": "segovia",
+      "class": "image.caption.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/image[6]@caption",
+      "producedLine": 18,
+      "referenceLine": 18,
+      "produced": "caption: А. Сеговия с учениками В.И. Яшнева — В нижнем ряду второй справа Виль Белильников, слева в нижнем ряду Лилиана Седлецкая. г. Ленинград, гостиница \"Евр…",
+      "reference": "caption: А. Сеговия с учениками В.И.Яшнева — В нижнем ряду второй справа Виль Белильников, слева в нижнем ряду Лилиана Седлецкая. г. Ленинград, гостиница \"Евро…",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "14b7e0ee",
+      "doc": "segovia",
+      "class": "image.caption.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/image[7]@caption",
+      "producedLine": 25,
+      "referenceLine": 25,
+      "produced": "caption: А. Сеговия с В.И. Яшневым и его учениками — Справа от Сеговии - Виль Белильников, слева - Лилиана Седлецкая; за Сеговией стоит Василий Иванович Яшнев.…",
+      "reference": "caption: А. Сеговия с В.И.Яшневым и его учениками — Справа от Сеговии - Виль Белильников, слева - Лилиана Седлецкая; за Сеговией стоит Василий Иванович Яшнев. …",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "511588e0",
       "doc": "segovia",
       "class": "retyped.paragraph-to-align",
@@ -2716,9 +2801,9 @@
       "path": "/paragraph[28]",
       "producedLine": 100,
       "referenceLine": 104,
-      "produced": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:* · em:Альбениса \"Легенда\" · em:Мануэль де Фалья",
+      "produced": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:Альбениса \"Легенда\" · em:Мануэль де Фалья · em:Федерико Морено Торроба",
       "reference": "em:\"Кастильскую сюиту\", \"Кастильский концерт\" · em:\"Памяти Дебюсси\" · em:\\ · em:Альбениса \"Легенда\" · em:Мануэль де Фалья · em:Федерико Морено Торроба",
-      "verdict": "converter-defect"
+      "verdict": "reference-inconsistency"
     },
     {
       "id": "d9056ca0",
@@ -2847,6 +2932,20 @@
       "verdict": "reference-inconsistency"
     },
     {
+      "id": "d58fa914",
+      "doc": "williams2",
+      "class": "table.cell.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/table[26]/cell[0][0]",
+      "producedLine": 83,
+      "referenceLine": 83,
+      "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em",
+      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**",
+      "verdict": "ambiguous"
+    },
+    {
       "id": "a5c92b57",
       "doc": "xtra_karta5",
       "class": "paragraph.spurious.in-table",
@@ -2917,18 +3016,18 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "309f5f9a",
+      "id": "679a143d",
       "doc": "xtra_karta5",
-      "class": "paragraph.spurious.in-table",
-      "severity": "major",
-      "evidence": "structure",
+      "class": "paragraph.spurious.unattested",
+      "severity": "critical",
+      "evidence": "content",
       "op": "insert",
       "path": "/paragraph[7]",
       "producedLine": 43,
       "referenceLine": null,
-      "produced": "РодригоХоакин",
+      "produced": "Родриго Хоакин",
       "reference": null,
-      "verdict": "converter-defect"
+      "verdict": "ambiguous"
     },
     {
       "id": "821d4eb2",
@@ -3043,16 +3142,16 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "11946943",
+      "id": "b309b462",
       "doc": "xtra_karta5",
-      "class": "paragraph.spurious.unattested",
-      "severity": "critical",
-      "evidence": "content",
+      "class": "paragraph.spurious.in-table",
+      "severity": "major",
+      "evidence": "structure",
       "op": "insert",
       "path": "/paragraph[15]",
       "producedLine": 138,
       "referenceLine": null,
-      "produced": "Хилл/Вильчинскигитарный дуэт",
+      "produced": "Хилл/Вильчински гитарный дуэт",
       "reference": null,
       "verdict": "converter-defect"
     },

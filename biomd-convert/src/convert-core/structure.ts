@@ -3302,7 +3302,7 @@ function listFrom(el: LadomNode, ctx: Ctx): List {
 }
 
 /** Inline content, with `<br>` handled by the caller's block segmentation. */
-function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
+function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx, keepEdgeSpace = false): PhrasingContent[] {
   const out: PhrasingContent[] = [];
   /**
    * Whether the break just emitted came out of a link label rather than out of
@@ -3312,7 +3312,16 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
    */
   let hoistedBreak = false;
 
-  for (const node of nodes) {
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index] as LadomNode;
+    /** The first visible character after this node, for the mark cases. */
+    const nextChar = (): string => {
+      for (let i = index + 1; i < nodes.length; i += 1) {
+        const text = textOf(nodes[i] as LadomNode).replace(/^\s+/u, "");
+        if (text !== "") return text[0] as string;
+      }
+      return "";
+    };
     const carriedHoist = hoistedBreak;
     if (!(node.kind === "text" && (node.value ?? "").trim() === "")) hoistedBreak = false;
     if (node.kind === "comment") continue;
@@ -3349,23 +3358,38 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         break;
       case "b":
       case "strong": {
-        const children = inlineFrom(node.children, ctx);
+        const children = inlineFrom(node.children, ctx, /* keepEdgeSpace */ true);
         // `<b><b>x</b></b>` — legacy markup nests emphasis constantly, and the
         // serializer renders the redundant level as `****x****`, which is not
         // emphasis in Markdown at all.
-        out.push(unwrapRedundant(children, "strong") ?? { type: "strong", children });
+        pushMark(
+          out,
+          children,
+          (kids) => unwrapRedundant(kids, "strong") ?? { type: "strong", children: kids },
+          nextChar(),
+        );
         break;
       }
       case "i":
       case "em": {
-        const children = inlineFrom(node.children, ctx);
-        out.push(unwrapRedundant(children, "emphasis") ?? { type: "emphasis", children });
+        const children = inlineFrom(node.children, ctx, /* keepEdgeSpace */ true);
+        pushMark(
+          out,
+          children,
+          (kids) => unwrapRedundant(kids, "emphasis") ?? { type: "emphasis", children: kids },
+          nextChar(),
+        );
         break;
       }
       case "s":
       case "strike":
       case "del":
-        out.push({ type: "delete", children: inlineFrom(node.children, ctx) });
+        pushMark(
+          out,
+          inlineFrom(node.children, ctx, /* keepEdgeSpace */ true),
+          (kids) => ({ type: "delete", children: kids }),
+          nextChar(),
+        );
         break;
       case "code":
       case "tt":
@@ -3452,12 +3476,18 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx): PhrasingContent[] {
         break;
       }
       default:
-        out.push(...inlineFrom(node.children, ctx));
+        // A transparent wrapper — `<span>`, `<font>`, anything with no Markdown
+        // of its own. Its children are spliced straight into this run, and its
+        // edge whitespace is subject to the same word-boundary question a mark's
+        // is: `Ровшан </span>Шахбазович` fuses two words, while `В.И.</font>
+        // Яшнева` and a footnote marker are punctuation boundaries that stay
+        // tight. `pushMark` with an identity splice asks exactly that question.
+        pushMark(out, inlineFrom(node.children, ctx, /* keepEdgeSpace */ true), null, nextChar());
         break;
     }
   }
 
-  return collapseAdjacentText(out);
+  return collapseAdjacentText(out, keepEdgeSpace);
 }
 
 /** The inner node when a wrapper's only child already carries the same mark. */
@@ -3465,7 +3495,100 @@ function unwrapRedundant(children: PhrasingContent[], type: "strong" | "emphasis
   return children.length === 1 && children[0]?.type === type ? (children[0] as PhrasingContent) : null;
 }
 
-function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
+/**
+ * A word boundary that lives inside a mark belongs outside it.
+ *
+ * `<i>Доменикони </i>Карло` puts the word-separating space **inside** the
+ * italic. A browser renders `Доменикони Карло`; Markdown cannot, because `*x *`
+ * is not emphasis, so the serializer drops the space and the two words fuse into
+ * `*Доменикони*Карло`. That is a silent semantic corruption at full text recall:
+ * a reader sees one nonsense token where the source has two words, and no later
+ * gate can catch it, because nothing was removed — a space became no space.
+ *
+ * Hoisting is the lossless answer. The space moves out of the delimiters, the
+ * mark keeps exactly the words it marked, and the output is valid Markdown.
+ *
+ * **Only across a word boundary**, and the corpus decides that, not taste. Where
+ * the source spaces a mark boundary the references split cleanly on what stands
+ * on the other side: **letter to letter they keep the space, 3 to 1** — and the
+ * 1 is `xtra_karta5`, whose divergences are already recorded — while **against
+ * punctuation they drop it, 27 to 1**. That matches the precedence
+ * `BioMD-Reference.md` states: a space between two words is part of the content,
+ * a space before a dash or a bracket is exact style, which ranks last. So
+ * `TCHAIKOVSKY </i>- Nutcracker` stays tight and `Доменикони </i>Карло` does not.
+ *
+ * The mark is dropped entirely when it held nothing but whitespace — `<i> </i>`
+ * marks no word, and `**` around nothing is not emphasis either.
+ */
+function pushMark(
+  out: PhrasingContent[],
+  children: PhrasingContent[],
+  /** How to wrap the children, or `null` for a transparent wrapper that splices. */
+  make: ((kids: PhrasingContent[]) => PhrasingContent) | null,
+  nextChar: string,
+): void {
+  const lead = takeEdgeSpace(children, "start");
+  const trail = takeEdgeSpace(children, "end");
+  const inner = phrasingText(children);
+  const before = lastVisibleChar(out);
+
+  // The mark held nothing but whitespace. It marks no word — `**` around
+  // nothing is not emphasis, and `<em>Comments:</em><em> </em>clarinet` used to
+  // serialize as `*Comments:***clarinet`, opening a bold that never closes. But
+  // that whitespace is the element's entire content and a browser renders it,
+  // so unlike a space at the *edge* of a marked word it is not style and the
+  // word-boundary question does not arise. Keep it; `collapseAdjacentText`
+  // merges it away if a neighbour already supplies one.
+  if (children.length === 0) {
+    if (lead || trail) out.push({ type: "text", value: " " });
+    return;
+  }
+
+  if (lead && isWordEdge(inner[0]) && isWordEdge(before)) {
+    out.push({ type: "text", value: " " });
+  }
+  if (make) out.push(make(children));
+  else out.push(...children);
+  if (trail && isWordEdge(inner[inner.length - 1]) && isWordEdge(nextChar)) {
+    out.push({ type: "text", value: " " });
+  }
+}
+
+/** A letter or a digit — the two things a space can separate into two tokens. */
+function isWordEdge(ch: string | undefined): boolean {
+  return ch !== undefined && /[\p{L}\p{N}]/u.test(ch);
+}
+
+/** The last visible character emitted so far, for the leading-edge question. */
+function lastVisibleChar(out: readonly PhrasingContent[]): string {
+  for (let i = out.length - 1; i >= 0; i -= 1) {
+    const text = phrasingText([out[i] as PhrasingContent]).replace(/\s+$/u, "");
+    if (text !== "") return text[text.length - 1] as string;
+  }
+  return "";
+}
+
+/** Strip whitespace from one edge of a mark's children; true when there was any. */
+function takeEdgeSpace(children: PhrasingContent[], edge: "start" | "end"): boolean {
+  let found = false;
+  for (;;) {
+    const index = edge === "start" ? 0 : children.length - 1;
+    const node = children[index];
+    if (!node || node.type !== "text") return found;
+    const stripped =
+      edge === "start" ? node.value.replace(/^\s+/u, "") : node.value.replace(/\s+$/u, "");
+    if (stripped === node.value) return found;
+    found = true;
+    if (stripped === "") {
+      children.splice(index, 1);
+      continue;
+    }
+    node.value = stripped;
+    return true;
+  }
+}
+
+function collapseAdjacentText(nodes: PhrasingContent[], keepEdgeSpace = false): PhrasingContent[] {
   const merged: PhrasingContent[] = [];
   for (const node of nodes) {
     const last = merged[merged.length - 1];
@@ -3513,10 +3636,18 @@ function collapseAdjacentText(nodes: PhrasingContent[]): PhrasingContent[] {
   });
 
   // Trim the run's outer whitespace without touching interior spacing.
-  const first = cleaned[0];
-  if (first?.type === "text") first.value = first.value.replace(/^\s+/u, "");
-  const final = cleaned[cleaned.length - 1];
-  if (final?.type === "text") final.value = final.value.replace(/\s+$/u, "");
+  //
+  // **Not for a run that sits inside a mark.** At the outer edge of a paragraph
+  // or a cell this whitespace is layout and must go. One level down, inside
+  // `<i>Доменикони </i>Карло`, the identical character is the space between two
+  // words, and trimming it here is what fused them — `pushMark` never saw a
+  // space to hoist. The caller knows which of the two it is; this cannot.
+  if (!keepEdgeSpace) {
+    const first = cleaned[0];
+    if (first?.type === "text") first.value = first.value.replace(/^\s+/u, "");
+    const final = cleaned[cleaned.length - 1];
+    if (final?.type === "text") final.value = final.value.replace(/\s+$/u, "");
+  }
 
   return cleaned.filter((n) => n.type !== "text" || n.value !== "");
 }

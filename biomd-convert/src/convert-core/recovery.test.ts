@@ -3059,3 +3059,125 @@ describe("a one-row figure-and-caption grid preserves the binding", () => {
     expect(out).not.toContain("caption:");
   });
 });
+
+/**
+ * Rule contract — **a word boundary inside a mark belongs outside it.**
+ *
+ * *Invariant.* Evidence is the characters on the two sides of the boundary and
+ * nothing else: no document, class, id, filename, title or word list. It holds
+ * for any inline mark in any language, because what is being read is the HTML
+ * whitespace model, not the text.
+ *
+ * *Recurrence.* Not applicable, and stated rather than assumed: one `<i>x </i>y`
+ * is one word boundary at one place. Requiring it to recur would make the rule
+ * unable to fire on the shape it exists for. What recurs is the markup habit.
+ *
+ * *The word/punctuation cut is measured, not chosen.* Over the source pages of
+ * the reference corpus, where the source spaces a mark boundary the references
+ * keep the space **letter to letter, 3 to 1** — the 1 being `xtra_karta5`, whose
+ * divergences are recorded — and drop it **against punctuation, 27 to 1**.
+ *
+ * *False friends*, each tested for non-firing:
+ *   - punctuation on the other side (`<i>TCHAIKOVSKY </i>- Nutcracker`), which
+ *     is the 26-instance majority reading and `BioMD-Reference.md`'s lowest
+ *     precedence class, exact style;
+ *   - a source that already spaces the outside — no second space may appear;
+ *   - `<i> x</i>y` after a space, where the two spaces genuinely collapse in a
+ *     browser and the words really do run together;
+ *   - the outer edge of a paragraph or cell, where the same character is layout
+ *     and must still be trimmed.
+ *
+ * *Mutation robustness.* The wrapper's tag and attributes are not read beyond
+ * choosing the mark, so `<i>`/`<em>`/`<b>`/`<strong>`/`<s>` and any class or
+ * attribute order decide identically.
+ */
+describe("boundary whitespace inside an inline mark", () => {
+  it("hoists a trailing space out of the mark instead of dropping it", async () => {
+    const out = await md("<p>alpha <i>Доменикони </i>Карло beta</p>");
+    expect(out).toContain("alpha *Доменикони* Карло beta");
+  });
+
+  it("decides the same for every mark that carries delimiters", async () => {
+    expect(await md("<p>x <b>Fires </b>его y</p>")).toContain("x **Fires** его y");
+    expect(await md("<p>x <strong>Fires </strong>его y</p>")).toContain("x **Fires** его y");
+    expect(await md("<p>x <em>Fires </em>его y</p>")).toContain("x *Fires* его y");
+    expect(await md('<p>x <i class="q" lang="en-us">Fires </i>его y</p>')).toContain("x *Fires* его y");
+  });
+
+  it("hoists a leading space when nothing outside supplies one", async () => {
+    const out = await md("<p>слово<i> другое</i> конец</p>");
+    expect(out).toContain("слово *другое* конец");
+  });
+
+  it("leaves the boundary tight against punctuation — non-firing", async () => {
+    // The 26-instance majority reading. A space before a dash is exact style,
+    // the last thing in the reference's precedence order, and every reference
+    // but one writes it closed up.
+    const out = await md("<p><i>TCHAIKOVSKY </i>- Nutcracker Suite</p>");
+    expect(out).toContain("*TCHAIKOVSKY*- Nutcracker Suite");
+  });
+
+  it("hoists across a digit boundary, which is a token boundary too", async () => {
+    const out = await md("<p><i>Опус </i>1998 год</p>");
+    expect(out).toContain("*Опус* 1998 год");
+  });
+
+  it("adds no second space when the source already spaces the outside", async () => {
+    const out = await md("<p>x <i>Абреу </i> Зекинья y</p>");
+    expect(out).toContain("x *Абреу* Зекинья y");
+    expect(out).not.toContain("*Абреу*  Зекинья");
+  });
+
+  it("leaves words fused when the browser fuses them too — non-firing", async () => {
+    // `epsilon ` then `<i> Leading</i>` — the two spaces collapse into one, so a
+    // browser renders `epsilon Leadingword`. Inventing a space here would be
+    // inventing content.
+    const out = await md("<p>epsilon <i> Leading</i>word zeta</p>");
+    expect(out).toContain("epsilon *Leading*word zeta");
+  });
+
+  it("still trims the outer edge of the block itself — non-firing", async () => {
+    const out = await md("<p>  <i>Слово</i>  </p>");
+    expect(out).toContain("*Слово*");
+    expect(out.split("\n").some((line) => /^[ \t]+\*Слово|\*[ \t]+$/u.test(line))).toBe(false);
+  });
+
+  it("drops a mark that held nothing but whitespace", async () => {
+    const out = await md("<p>раз<i> </i>два</p>");
+    expect(out).toContain("раз два");
+    expect(out).not.toContain("**");
+  });
+});
+
+describe("boundary whitespace inside a transparent wrapper", () => {
+  it("keeps the space a span or font holds between two words", async () => {
+    expect(await md("<p><span>Ровшан </span>Шахбазович</p>")).toContain("Ровшан Шахбазович");
+    expect(await md('<p><font color="red">основателем </font>Нормальной</p>')).toContain("основателем Нормальной");
+  });
+
+  it("adds no second space when the source spaces both sides — non-firing", async () => {
+    const out = await md("<p>раз <span>два </span> три</p>");
+    expect(out).toContain("раз два три");
+    expect(out).not.toContain("два  три");
+  });
+
+  it("still trims the block's own outer edge — non-firing", async () => {
+    const out = await md("<p><span> Слово </span></p>");
+    expect(out.split("\n").some((line) => /^[ \t]+Слово|Слово[ \t]+$/u.test(line))).toBe(false);
+  });
+});
+
+describe("a mark that holds nothing but whitespace", () => {
+  it("keeps the space it renders and emits no delimiters", async () => {
+    // `<em>Comments:</em><em> </em>clarinet` used to serialize as
+    // `*Comments:***clarinet` — an unclosed bold and a lost space.
+    const out = await md("<p><em>Comments:</em><em> </em>clarinet, violin</p>");
+    expect(out).toContain("*Comments:* clarinet, violin");
+    expect(out).not.toContain("***");
+  });
+
+  it("keeps it against punctuation too, because it is content and not style", async () => {
+    const out = await md("<p>раз<i> </i>(два)</p>");
+    expect(out).toContain("раз (два)");
+  });
+});
