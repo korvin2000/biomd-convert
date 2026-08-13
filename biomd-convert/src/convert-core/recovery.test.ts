@@ -3280,3 +3280,69 @@ describe("a DATA grid too small to be a table is still asked whether it is a reg
     }
   });
 });
+
+/**
+ * A preformatted block is placed by the container the author put it in.
+ *
+ * **Invariant.** `alignedGroup` asks for weight because an unemphasised centred
+ * paragraph in a lane is a caption rather than a label. A `<pre>` holds verbatim
+ * text that can carry no emphasis at all, so it can never answer that question —
+ * and its own content can express no placement either. The container's computed
+ * alignment is the only statement available, and it is read as one. Geometry and
+ * node type only; no class, id, width or word.
+ *
+ * **Recurrence cannot apply** — a credit line under a poem occurs once.
+ *
+ * **False friends, tested for non-firing.** A code block the author did *not*
+ * set apart takes no wrapper, so a page that aligns nothing gains nothing. The
+ * length cap that separates a bounded group from an article still applies, so a
+ * whole right-set poem stays a block rather than becoming a label.
+ */
+describe("a code block keeps the placement its container declares", () => {
+  async function aligned(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  /**
+   * The corpus spells this `<div align="right">`; a browser computes
+   * `text-align: right` from it, which is what the rule reads and what the
+   * stand-in measurer above models. Both spellings sit on the element so the
+   * fixture stays the era's markup without exercising the degraded path.
+   */
+  const RIGHT_CREDIT = '<div align="right" style="text-align: right"><pre>(перевод М. Цветаевой)</pre></div>';
+
+  /** The Лорка shape: two lanes, the right one closing with a right-set credit. */
+  const lanes = (credit: string): string =>
+    '<table border="0" width="80%"><tr>' +
+    '<td width="48%" valign="top"><pre>Начинается плач гитары,\nРазбивается чаша утра.</pre></td>' +
+    '<td width="4%" valign="top">&nbsp;</td>' +
+    `<td width="48%" valign="top"><pre>Так плачет закат о расвете,\nтак плачет стрела без цели.</pre>${credit}</td>` +
+    "</tr></table>";
+
+  it("keeps the right placement of a credit the source set apart", async () => {
+    const out = await aligned(lanes(RIGHT_CREDIT));
+    expect(out).toContain("position: right");
+    expect(out).toContain("(перевод М. Цветаевой)");
+  });
+
+  it("wraps nothing when the source declares nothing — non-firing", async () => {
+    const out = await aligned(lanes("<pre>(перевод М. Цветаевой)</pre>"));
+    expect(out).toContain("(перевод М. Цветаевой)");
+    expect(out).not.toContain("position: right");
+  });
+
+  it("loses neither the credit nor the verse on either path", async () => {
+    for (const credit of [RIGHT_CREDIT, "<pre>(перевод М. Цветаевой)</pre>"]) {
+      const out = await aligned(lanes(credit));
+      expect(out).toContain("Разбивается чаша утра.");
+      expect(out).toContain("так плачет стрела без цели.");
+      expect(out).toContain("(перевод М. Цветаевой)");
+    }
+  });
+});

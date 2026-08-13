@@ -5539,9 +5539,20 @@ function alignedGroup(el: LadomNode, inner: BiomdContent[], ctx: Ctx): BiomdCont
   // A picture carries its own `position`; §6 says not to duplicate it.
   if (inner.every((n) => n.type === "biomdImage" || n.type === "biomdImages")) return inner;
   if (inner.some((n) => n.type === "heading")) return inner;
+  if (!isAlignableLabelText(text)) return inner;
   // The label of a record is set apart by weight as well as by position.
   // Unemphasised centred text in a lane is a caption, not a label.
-  if (!isAlignableLabelText(text) || !isWhollyStrongBlocks(inner)) return inner;
+  //
+  // **A preformatted block is exempt, because the question does not apply to
+  // it.** The weight test asks whether the author marked this *paragraph* as a
+  // label; a `<pre>` holds verbatim text that can carry no emphasis at all, so
+  // it can never answer yes, and the only thing that can place it is the
+  // container the author put it in. `xtra_garcia_lorca` wraps its translator
+  // credit in `<div align="right">` around a `<pre class="l">` — a declaration
+  // with no other expression available — and the reference writes the `::: align
+  // position: right` this refused. The length cap above still applies, so a
+  // whole right-set poem is a block, not a label.
+  if (!inner.every((n) => n.type === "code") && !isWhollyStrongBlocks(inner)) return inner;
 
   ctx.ledger.push(emitted(el.id, nextId(ctx, "align"), { note: `bounded ${position} group` }));
   return [makeAlign({ position, children: inner as BoundedContent[] })];
