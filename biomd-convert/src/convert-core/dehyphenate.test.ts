@@ -5,6 +5,7 @@ import {
   createHyphenopolyOracle,
   createWordDictionary,
   decideHyphen,
+  dehyphenateDocument,
   dehyphenateText,
   type HyphenationOracle,
 } from "./dehyphenate.js";
@@ -439,5 +440,89 @@ describe("Lexicon", () => {
     const restored = Lexicon.fromJSON(lex.toJSON());
     expect(restored.count("музыкант")).toBe(1);
     expect(restored.hyphenatedCount("из-за")).toBe(1);
+  });
+});
+
+/**
+ * Rule contract — **a wrap hyphen that markup put in a box of its own.**
+ *
+ * *Invariant.* Evidence is structural: an inline wrapper whose whole subtree is
+ * one hyphen, raw text siblings on both sides, letters touching both junctions.
+ * No class, id, filename, title or corpus word appears; `INLINE_WRAPPERS` is
+ * HTML vocabulary and an unknown tag simply yields no join.
+ *
+ * *Recurrence.* Not applicable, and stated: one wrapped word is one lexical
+ * event. The recurring thing here is the *markup habit*, not the word.
+ *
+ * *False friends.* Named and tested for non-firing: a dash separated by spaces;
+ * a hyphen alone inside a block element rather than an inline one; a hyphen
+ * whose neighbours are elements rather than raw text; and the verdict itself,
+ * which is the ordinary cascade — so an identifier and a proper compound keep
+ * their hyphen through this path exactly as they do through the other one.
+ *
+ * *Mutation robustness.* The wrapper's attributes are never read, so renaming a
+ * class or permuting attributes cannot change the decision; the same word split
+ * by `<span>`, `<font>` or `<b>` decides identically.
+ */
+describe("de-hyphenation across an inline wrapper", () => {
+  const text = (id: string, value: string) => ({ kind: "text", id, value, children: [] as unknown[] });
+  const el = (id: string, tag: string, ...children: unknown[]) => ({ kind: "element", id, tag, children });
+  const para = (...children: unknown[]) => ({ children: [el("ir:p", "p", ...children)] });
+
+  const russian = (w: string) => ["издавал", "фестивалях", "литре", "лит", "ре"].includes(w);
+  const opts = { lexicon: lexiconOf(), oracle: NULL_ORACLE, dictionary: russian };
+
+  it("joins a word the markup split into three nodes", () => {
+    const doc = para(text("ir:1", "он изда"), el("ir:2", "span", text("ir:3", "-")), text("ir:4", "вал сочинения"));
+    const result = dehyphenateDocument(doc as never, opts);
+    expect(result.operations.at(-1)).toMatchObject({ kind: "join-hyphenated-word", after: "издавал" });
+    const kids = doc.children[0]!.children as Array<{ children?: Array<{ value?: string }> }>;
+    expect(kids[1]!.children![0]!.value).toBe("");
+  });
+
+  it("decides identically whichever inline element holds the hyphen", () => {
+    for (const tag of ["span", "font", "b", "i"]) {
+      const doc = para(text("ir:1", "изда"), el("ir:2", tag, text("ir:3", "-")), text("ir:4", "вал"));
+      expect(dehyphenateDocument(doc as never, opts).operations.at(-1)).toMatchObject({ after: "издавал" });
+    }
+  });
+
+  it("does not join across a block element", () => {
+    const doc = para(text("ir:1", "изда"), el("ir:2", "p", text("ir:3", "-")), text("ir:4", "вал"));
+    expect(dehyphenateDocument(doc as never, opts).operations).toHaveLength(0);
+  });
+
+  it("does not join when whitespace touches either junction", () => {
+    for (const [l, r] of [["изда ", "вал"], ["изда", " вал"]]) {
+      const doc = para(text("ir:1", l!), el("ir:2", "span", text("ir:3", "-")), text("ir:4", r!));
+      expect(dehyphenateDocument(doc as never, opts).operations).toHaveLength(0);
+    }
+  });
+
+  it("does not join when the wrapper holds more than the hyphen", () => {
+    const doc = para(text("ir:1", "изда"), el("ir:2", "span", text("ir:3", "-в")), text("ir:4", "ал"));
+    expect(dehyphenateDocument(doc as never, opts).operations).toHaveLength(0);
+  });
+
+  it("keeps the cascade's guards on this path too", () => {
+    // An identifier: `abc-guitars.com` is a host name, not a wrapped word.
+    const host = para(text("ir:1", "www.abc"), el("ir:2", "span", text("ir:3", "-")), text("ir:4", "guitars.com"));
+    const d1 = dehyphenateDocument(host as never, { ...opts, dictionary: () => true });
+    expect(d1.operations.at(-1)).toMatchObject({ kind: "preserve-break" });
+
+    // A compound proper noun keeps its hyphen however it is marked up.
+    const name = para(text("ir:1", "Римский"), el("ir:2", "span", text("ir:3", "-")), text("ir:4", "Корсаков"));
+    const d2 = dehyphenateDocument(name as never, { ...opts, dictionary: () => true });
+    expect(d2.operations.at(-1)).toMatchObject({ kind: "preserve-break" });
+  });
+
+  it("leaves the hyphen in place when the language does not license the join", () => {
+    // `лит-ре` — both halves are words, so rule 6b refuses exactly as it does
+    // when no markup is involved.
+    const doc = para(text("ir:1", "в лит"), el("ir:2", "span", text("ir:3", "-")), text("ir:4", "ре сказано"));
+    const result = dehyphenateDocument(doc as never, opts);
+    expect(result.operations.at(-1)).toMatchObject({ kind: "preserve-break" });
+    const kids = doc.children[0]!.children as Array<{ children?: Array<{ value?: string }> }>;
+    expect(kids[1]!.children![0]!.value).toBe("-");
   });
 });

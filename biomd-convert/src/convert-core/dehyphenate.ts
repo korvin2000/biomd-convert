@@ -381,12 +381,104 @@ export function dehyphenateText(
 /** Cheap pre-filter: does this text hold a hyphen between two letters at all? */
 const HYPHEN_IN_WORD = /\p{L}[-‐‑­][ \t]*\n?[ \t]*\p{L}/u;
 
+/**
+ * Inline elements a wrap hyphen is found inside.
+ *
+ * HTML vocabulary, not corpus vocabulary: the list holds no class, id, file
+ * name or title, and a tag it does not know simply yields no join. It exists so
+ * that a hyphen alone inside `<p>` — a real dash between two blocks — can never
+ * be mistaken for a word split by markup.
+ */
+const INLINE_WRAPPERS = new Set([
+  "span", "font", "b", "strong", "i", "em", "u", "s", "strike", "small", "big",
+  "sub", "sup", "tt", "code", "abbr", "cite", "mark", "a",
+]);
+
+type TextishNode = { kind: string; id: string; tag?: string; value?: string; children: unknown[] };
+
+/** Concatenated text of a subtree — used only to recognize a lone hyphen. */
+function subtreeText(node: TextishNode): string {
+  if (node.kind === "text") return node.value ?? "";
+  let out = "";
+  for (const child of node.children) out += subtreeText(child as TextishNode);
+  return out;
+}
+
 export function dehyphenateDocument(
   root: { children: Array<{ kind: string; id: string; value?: string; children: unknown[] }> },
   options: DehyphenateOptions,
 ): { operations: TextOperation[]; reviews: number } {
   const operations: TextOperation[] = [];
   let reviews = 0;
+  let crossIndex = 0;
+
+  /**
+   * A wrap hyphen that markup put in a box of its own.
+   *
+   * `dehyphenateText` reads one text node, and this corpus routinely breaks the
+   * word across three: `изда<span lang="en-us">-</span>вал`. The spell-checker
+   * of the day tagged the hyphen it had just typed, and after that no single
+   * node holds a hyphen between two letters, so the pre-filter skips all of
+   * them and the word ships broken at 100 % text recall.
+   *
+   * The shape is recognized structurally and nothing else is admitted: an inline
+   * wrapper whose whole subtree is exactly one hyphen, a raw text sibling
+   * immediately before it ending in a letter, a raw text sibling immediately
+   * after it starting with a letter, and no whitespace at either junction. Two
+   * raw text siblings cannot be in different blocks, so the join can never span
+   * one. The verdict itself is the ordinary cascade — the same rules, with the
+   * same identifier and proper-compound guards, reading a synthesized view of
+   * the three nodes as the one word the source meant.
+   */
+  const joinAcrossWrapper = (parent: TextishNode): void => {
+    const kids = parent.children as TextishNode[];
+    for (let i = 1; i < kids.length - 1; i++) {
+      const wrapper = kids[i];
+      const before = kids[i - 1];
+      const after = kids[i + 1];
+      if (!wrapper || !before || !after) continue;
+      if (wrapper.kind !== "element" || !INLINE_WRAPPERS.has(wrapper.tag ?? "")) continue;
+      if (before.kind !== "text" || after.kind !== "text") continue;
+
+      const hyphen = subtreeText(wrapper);
+      if (hyphen.length !== 1 || !isHyphen(hyphen)) continue;
+
+      const leftValue = before.value ?? "";
+      const rightValue = after.value ?? "";
+      const left = /(\p{L}+)$/u.exec(leftValue)?.[1];
+      const right = /^(\p{L}+)/u.exec(rightValue)?.[1];
+      if (!left || !right) continue;
+
+      // The guards read characters around the candidate, so give them the word
+      // as it would have been written without the markup.
+      const context = leftValue + hyphen + rightValue;
+      const start = leftValue.length - left.length;
+      const end = leftValue.length + hyphen.length + right.length;
+      const candidate: HyphenCandidate = { left, right, hyphen };
+      if (insideIdentifier(context, start, end)) candidate.inIdentifier = true;
+      if (insideProperCompound(context, start, end)) candidate.inProperCompound = true;
+
+      const decision = decideHyphen(candidate, options);
+      if (decision.verdict === "REVIEW") reviews += 1;
+      if (decision.verdict === "JOIN") {
+        for (const child of wrapper.children) {
+          const text = child as TextishNode;
+          if (text.kind === "text") text.value = "";
+        }
+      }
+      operations.push({
+        id: `${wrapper.id}:hyphen-across:${crossIndex++}`,
+        kind: decision.verdict === "JOIN" ? "join-hyphenated-word" : "preserve-break",
+        sourceIds: [before.id, wrapper.id, after.id],
+        before: `${left}${hyphen}${right}`,
+        after: decision.verdict === "JOIN" ? decision.joined : `${left}${hyphen}${right}`,
+        evidenceIds: [`rule:${decision.rule}`, "split:inline-wrapper"],
+        confidence: decision.confidence,
+        status: decision.verdict === "REVIEW" ? "review" : "accepted",
+        note: decision.reason,
+      });
+    }
+  };
 
   const visit = (node: { kind: string; id: string; value?: string; children: unknown[] }): void => {
     // The cheap pre-filter has to admit the same shapes the cascade decides.
@@ -399,6 +491,7 @@ export function dehyphenateDocument(
       operations.push(...result.operations);
       reviews += result.reviews;
     }
+    if (node.kind === "element") joinAcrossWrapper(node as TextishNode);
     for (const child of node.children) {
       visit(child as { kind: string; id: string; value?: string; children: unknown[] });
     }
