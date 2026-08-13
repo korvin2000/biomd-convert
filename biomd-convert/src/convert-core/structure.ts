@@ -4232,6 +4232,29 @@ function tableRegionFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   }
 }
 
+/**
+ * Whether the grid draws a gutter between two populated lanes.
+ *
+ * The evidence a 1998 page leaves when it sets two regions side by side: a
+ * column that carries content in almost no row, sitting *between* two columns
+ * that do. `laneColumnsOf` already separates the two — a lane carries content
+ * in a substantial share of the content rows, a spacer in almost none — so this
+ * asks only about their arrangement, and reads no width, class, colour or
+ * entity. A record matrix never has one: its values are adjacent by
+ * construction.
+ */
+function hasGutteredLanes(grid: TableGrid): boolean {
+  const lanes = laneColumnsOf(grid);
+  if (lanes.size < 2) return false;
+  const columns = [...lanes].sort((a, b) => a - b);
+  const first = columns[0] as number;
+  const last = columns[columns.length - 1] as number;
+  for (let c = first + 1; c < last; c += 1) {
+    if (!lanes.has(c)) return true;
+  }
+  return false;
+}
+
 /** A menu label is a label, not a sentence — the same limit `navFrom` uses. */
 const NAV_TABLE_LABEL_MAX_CHARS = 100;
 
@@ -4524,6 +4547,41 @@ function dataRegionFrom(
         );
         ctx.tables.push({ tableId: el.id, classification: classification.class, emittedTable: false, failure: "figure-caption" });
         return [figure];
+      }
+
+      // **A gutter between two lanes is the author saying "side by side".**
+      //
+      // `planDataTable` refuses a one-row grid because a record matrix *is*
+      // recurrence and one row cannot recur. That is a verdict on the table
+      // reading and carries no information about lanes — but the general form
+      // of the remedy is the one §18.3 killed, and `recovery.test.ts` refuses
+      // it by name: a region the classifier really did type as records must
+      // not be promoted to columns, because losing a table to lanes is worse
+      // than losing a layout to flow.
+      //
+      // What separates the two is evidence the author left in the grid. A
+      // record matrix puts its values in **adjacent** columns; nobody draws a
+      // gutter between two columns of one record. A page that sets two regions
+      // beside each other draws exactly that — an empty column between them —
+      // and in this era it is the only way to draw it. So the reconsideration
+      // is asked only of a grid with two populated lanes and a column that is
+      // never populated *between* them.
+      //
+      // `xtra_garcia_lorca` proves both halves on one page. It sets three verse
+      // grids in the same `[47% | gutter | 47%]` shape; two make the classifier
+      // abstain and reach `layoutFrom` through the branch at the foot of this
+      // function, becoming the `::: columns` the reference writes. The third
+      // scores DATA outright, was refused `too-small`, and was flattened — two
+      // poems run together into one lane, which L3 reported as six
+      // `layout.overflow` findings. Same geometry, same page, opposite outcome.
+      // The named false friends all lack the gutter: `jovicic`'s label lane
+      // beside its cover, and §48's figure beside its caption, are adjacent
+      // pairs and stay exactly where they were.
+      if (hasGutteredLanes(grid)) {
+        ctx.ledger.push(
+          review(el.id, `classified DATA but too small to be a record matrix (${detail}); reconsidered as a layout region`),
+        );
+        return layoutFrom(grid, ctx, el, classification);
       }
     }
     // A DATA verdict that cannot be expressed as a table is a classification

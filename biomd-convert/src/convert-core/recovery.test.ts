@@ -3181,3 +3181,102 @@ describe("a mark that holds nothing but whitespace", () => {
     expect(out).toContain("раз (два)");
   });
 });
+
+/**
+ * "Too small to be a record matrix" is a verdict on the table, not on the region.
+ *
+ * **Invariant.** `planDataTable` refuses a one-row grid because a record matrix
+ * *is* recurrence and one row cannot recur. That is a statement about columns of
+ * values; it carries no information about whether the author drew lanes. The
+ * remedy is to ask the question that does — `layoutFrom`, which decides on
+ * occupancy and forces nothing: fewer than two columns, or only one populated
+ * lane, and it falls through to the same `decomposeFrom` this branch reached
+ * directly before. Nothing here reads a class, an id, a width, a filename or a
+ * word.
+ *
+ * **Recurrence cannot apply** — the rule fires only where recurrence has already
+ * been established absent. Cardinality and occupancy carry the proof instead.
+ *
+ * **Why it is a defect and not a preference.** `xtra_garcia_lorca` sets three
+ * verse grids in one `[47% | spacer | 47%]` shape on one page. Two make the
+ * classifier abstain, reach `layoutFrom` through the branch at the foot of
+ * `dataRegionFrom`, and become the `::: columns` the reference writes. The third
+ * scores DATA outright, is refused `too-small`, and was flattened — two poems
+ * running together into one lane, which L3 reported as six `layout.overflow`
+ * findings. Same geometry, same page, opposite outcome, decided by a score
+ * margin that says nothing about lanes.
+ *
+ * **False friends, tested for non-firing.** A one-column strip has no second
+ * lane and must stay flow. A one-row grid whose second cell is a spacer has no
+ * second *populated* lane and must stay flow. A figure beside its caption is
+ * claimed by the contract above, which runs first, and stays one figure.
+ */
+describe("a DATA grid too small to be a table is still asked whether it is a region", () => {
+  async function laned(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  /** The Лорка shape: two verse lanes with a spacer column between them. */
+  const VERSE_PAIR =
+    '<table border="0" width="74%"><tr>' +
+    '<td width="47%" valign="top"><pre>Когда умру,\nСхороните меня с гитарой\nВ речном песке.</pre></td>' +
+    '<td width="6%" valign="top">&nbsp;</td>' +
+    '<td width="47%" valign="top"><pre>Когда умру,\nСтану флюгером я на крыше,\nНа ветру.</pre></td>' +
+    "</tr></table>";
+
+  it("keeps the two lanes the author drew instead of running them together", async () => {
+    const out = await laned(VERSE_PAIR);
+    expect(out).toContain("::: columns");
+    expect(out).toContain("Схороните меня с гитарой");
+    expect(out).toContain("Стану флюгером я на крыше,");
+  });
+
+  it("records the reconsideration rather than swallowing it", async () => {
+    const result = await convert(Buffer.from(page(PROSE + VERSE_PAIR + PROSE), "utf8"), {
+      profile: SPEC,
+      layoutFidelity: "faithful",
+      measurer: new InlineAlignMeasurer(),
+    });
+    const noted = result.ledger.some(
+      (e) => e.terminal.kind === "REVIEW" && /too small to be a record matrix/u.test((e.terminal as { reason: string }).reason),
+    );
+    expect(noted).toBe(true);
+  });
+
+  it("leaves a one-column strip on the flow path — non-firing", async () => {
+    const out = await laned(
+      '<table border="0" width="300"><tr><td width="100%"><pre>Одна строка,\nвторая строка.</pre></td></tr></table>',
+    );
+    expect(out).not.toContain("::: columns");
+    expect(out).toContain("вторая строка.");
+  });
+
+  it("leaves a lane with a spacer beside it on the flow path — non-firing", async () => {
+    const out = await laned(
+      '<table border="0" width="300"><tr>' +
+        '<td width="94%"><pre>Одна строка,\nвторая строка.</pre></td>' +
+        '<td width="6%">&nbsp;</td>' +
+        "</tr></table>",
+    );
+    expect(out).not.toContain("::: columns");
+    expect(out).toContain("вторая строка.");
+  });
+
+  it("loses no word on any of those paths", async () => {
+    for (const body of [VERSE_PAIR, '<table border="0" width="300"><tr><td><pre>Одна\nдве</pre></td></tr></table>']) {
+      const result = await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      });
+      expect(result.conservation.targets.missing).toStrictEqual([]);
+      expect(result.conservation.images.missing).toStrictEqual([]);
+    }
+  });
+});
