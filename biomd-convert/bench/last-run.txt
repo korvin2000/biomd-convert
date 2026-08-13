@@ -16,9 +16,8 @@ REVIEW  segovia.htm  recall=98.1%  errors=0  reviews=6  tables=2/2  llm=0/4
 REVIEW  segovia1.htm  recall=100.0%  errors=0  reviews=4  tables=0/1  llm=0/1
 REVIEW  tarrega.htm  recall=95.0%  errors=0  reviews=7  tables=1/1  llm=0/2
 REVIEW  xtra_albeniz.htm  recall=95.2%  errors=0  reviews=2  tables=1/1  llm=0/2
+REVIEW  xtra_garcia_lorca.htm  recall=99.5%  errors=1  reviews=8  tables=1/2  llm=0/3
 REVIEW  xtra_karta5.htm  recall=94.4%  errors=0  reviews=18  tables=17/15  llm=0/12
-REVIEW  xtra_mikulka.htm  recall=82.4%  errors=1  reviews=3  tables=0/0  llm=0/2
-REVIEW  xtra_oyanguren.htm  recall=99.2%  errors=0  reviews=7  tables=0/0  llm=0/2
 REVIEW  xtra_rodrigo.htm  recall=99.2%  errors=0  reviews=6  tables=3/3  llm=0/4
 REVIEW  xtra_shelechov.htm  recall=99.7%  errors=1  reviews=14  tables=0/0  llm=0/2
 ok      borislova.htm  recall=99.7%  errors=0  reviews=8  tables=1/1  llm=0/3
@@ -29,7 +28,7 @@ ok      pavlov_azancheev.htm  recall=99.9%  errors=0  reviews=9  tables=0/0  llm
 ok      williams2.htm  recall=99.8%  errors=0  reviews=11  tables=1/1  llm=0/1
 
 Converted:      6
-Needs review:   22
+Needs review:   21
 Failed:         0
-Clean share:    21.4%
-LLM:            off — 71 escalation point(s) left as review items
+Clean share:    22.2%
+LLM:            off — 70 escalation point(s) left as review items

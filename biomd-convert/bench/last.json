@@ -1,5 +1,5 @@
 {
-  "overall": 0.9859775035337021,
+  "overall": 0.9887521211852777,
   "documents": [
     {
       "name": "authors",
@@ -110,9 +110,9 @@
         "recall": 1,
         "precision": 1,
         "f1": 1,
-        "expected": 10,
-        "actual": 10,
-        "matched": 10,
+        "expected": 12,
+        "actual": 12,
+        "matched": 12,
         "missing": []
       },
       "tableCells": {
@@ -406,11 +406,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.9798657718120806,
-        "f1": 0.9898305084745762,
-        "expected": 146,
-        "actual": 149,
-        "matched": 146,
+        "precision": 1,
+        "f1": 1,
+        "expected": 175,
+        "actual": 175,
+        "matched": 175,
         "missing": []
       },
       "tableCells": {
@@ -425,7 +425,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9989830508474576
+      "overall": 1
     },
     {
       "name": "jovicic",
@@ -1269,9 +1269,9 @@
         "recall": 1,
         "precision": 1,
         "f1": 1,
-        "expected": 4,
-        "actual": 4,
-        "matched": 4,
+        "expected": 6,
+        "actual": 6,
+        "matched": 6,
         "missing": []
       },
       "tableCells": {
@@ -2049,11 +2049,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.9629629629629629,
-        "f1": 0.9811320754716981,
-        "expected": 26,
+        "precision": 1,
+        "f1": 1,
+        "expected": 27,
         "actual": 27,
-        "matched": 26,
+        "matched": 27,
         "missing": []
       },
       "tableCells": {
@@ -2068,7 +2068,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9981132075471698
+      "overall": 1
     },
     {
       "name": "new_lendle2",
@@ -3196,23 +3196,104 @@
       "overall": 1
     },
     {
+      "name": "xtra_garcia_lorca",
+      "text": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 742,
+        "actual": 742,
+        "matched": 742,
+        "missing": []
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 0.5555555555555556,
+        "f1": 0.7142857142857143,
+        "expected": 5,
+        "actual": 9,
+        "matched": 5,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 15,
+        "actual": 15,
+        "matched": 15,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 2,
+        "actual": 2,
+        "matched": 2,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "federico garcia lorca el vito исп paco de lucia",
+            "mp3"
+          ]
+        }
+      ],
+      "actualTables": [
+        {
+          "cols": 2,
+          "rows": 1,
+          "header": [
+            "",
+            ""
+          ],
+          "cells": [
+            "federico garcia lorca el vito исп paco de lucia",
+            "mp3"
+          ]
+        }
+      ],
+      "overall": 0.9714285714285714
+    },
+    {
       "name": "xtra_karta5",
       "text": {
-        "recall": 0.7636363636363637,
-        "precision": 0.765375854214123,
-        "f1": 0.764505119453925,
-        "expected": 440,
+        "recall": 0.9954648526077098,
+        "precision": 1,
+        "f1": 0.9977272727272727,
+        "expected": 441,
         "actual": 439,
-        "matched": 336,
+        "matched": 439,
         "missing": [
-          "аудио нот и табулатур cancion",
-          "нот и табулатур cancion tef",
-          "и табулатур cancion tef пенья",
-          "табулатур cancion tef пенья пако",
-          "cancion tef пенья пако аргентинское",
-          "tef пенья пако аргентинское танго",
-          "пенья пако аргентинское танго mp3",
-          "пако аргентинское танго mp3 перес"
+          "м о п я 9664",
+          "о п я 9664 128904"
         ]
       },
       "headings": {
@@ -3243,35 +3324,32 @@
         "missing": []
       },
       "directives": {
+        "recall": 0.75,
+        "precision": 1,
+        "f1": 0.8571428571428571,
+        "expected": 4,
+        "actual": 3,
+        "matched": 3,
+        "missing": [
+          "align"
+        ]
+      },
+      "tableCells": {
         "recall": 1,
         "precision": 1,
         "f1": 1,
-        "expected": 3,
-        "actual": 3,
-        "matched": 3,
+        "expected": 188,
+        "actual": 188,
+        "matched": 188,
         "missing": []
       },
-      "tableCells": {
-        "recall": 0.9783783783783784,
-        "precision": 0.9627659574468085,
-        "f1": 0.9705093833780161,
-        "expected": 185,
-        "actual": 188,
-        "matched": 181,
-        "missing": [
-          "ноты gif i 1 2 3 4 5 6 7 8",
-          "ii 1 2 3 4 5 6 7 8",
-          "iii 1 2 3 4 5 6 7 8",
-          "см на странице биографии альбом а фраучи гитара мелодия 1982"
-        ]
-      },
-      "tableShape": 0.9249999999999999,
+      "tableShape": 1,
       "expectedTables": [
         {
           "cols": 2,
           "rows": 1,
           "header": [
-            "пенья пако",
+            "",
             ""
           ],
           "cells": [
@@ -3283,7 +3361,7 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "перес карлос",
+            "",
             ""
           ],
           "cells": [
@@ -3295,7 +3373,7 @@
           "cols": 2,
           "rows": 2,
           "header": [
-            "пухоль эмилио",
+            "",
             ""
           ],
           "cells": [
@@ -3309,7 +3387,7 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "пьяццола астор",
+            "",
             ""
           ],
           "cells": [
@@ -3321,7 +3399,7 @@
           "cols": 4,
           "rows": 4,
           "header": [
-            "римскийкорсаков николай андреевич",
+            "",
             "",
             "",
             ""
@@ -3340,9 +3418,9 @@
         },
         {
           "cols": 2,
-          "rows": 10,
+          "rows": 7,
           "header": [
-            "родригохоакин",
+            "",
             ""
           ],
           "cells": [
@@ -3357,12 +3435,28 @@
             "мр3",
             "concierto de aranjuez for guitar orchestra guitar john zaradin",
             "ii adagio fragment",
-            "мр3",
-            "ноты gif i 1 2 3 4 5 6 7 8",
+            "мр3"
+          ]
+        },
+        {
+          "cols": 4,
+          "rows": 3,
+          "header": [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "cells": [
+            "ноты gif",
+            "i",
+            "1 2 3 4 5 6 7 8",
             "zip",
-            "ii 1 2 3 4 5 6 7 8",
+            "ii",
+            "1 2 3 4 5 6 7 8",
             "zip",
-            "iii 1 2 3 4 5 6 7 8",
+            "iii",
+            "1 2 3 4 5 6 7 8",
             "zip"
           ]
         },
@@ -3370,7 +3464,7 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "руссель альбер",
+            "",
             ""
           ],
           "cells": [
@@ -3382,7 +3476,7 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "санц гаспар",
+            "",
             ""
           ],
           "cells": [
@@ -3394,7 +3488,7 @@
           "cols": 6,
           "rows": 11,
           "header": [
-            "сор фернандо",
+            "",
             "",
             "",
             "",
@@ -3469,7 +3563,7 @@
           "cols": 4,
           "rows": 20,
           "header": [
-            "таррега франсиско",
+            "",
             "",
             "",
             ""
@@ -3535,7 +3629,7 @@
           "cols": 2,
           "rows": 1,
           "header": [
-            "томатито",
+            "",
             ""
           ],
           "cells": [
@@ -3544,10 +3638,9 @@
           ]
         },
         {
-          "cols": 4,
+          "cols": 3,
           "rows": 4,
           "header": [
-            "фортеа даниэль",
             "",
             "",
             ""
@@ -3565,20 +3658,9 @@
         },
         {
           "cols": 2,
-          "rows": 1,
-          "header": [
-            "фраучи александр",
-            ""
-          ],
-          "cells": [
-            "см на странице биографии альбом а фраучи гитара мелодия 1982"
-          ]
-        },
-        {
-          "cols": 2,
           "rows": 2,
           "header": [
-            "хилл вильчински гитарный дуэт",
+            "",
             ""
           ],
           "cells": [
@@ -3592,7 +3674,7 @@
           "cols": 3,
           "rows": 3,
           "header": [
-            "шопен фридерик",
+            "",
             "",
             ""
           ],
@@ -3611,7 +3693,7 @@
           "cols": 3,
           "rows": 1,
           "header": [
-            "шуберт франц",
+            "",
             "",
             ""
           ],
@@ -3625,7 +3707,7 @@
           "cols": 3,
           "rows": 1,
           "header": [
-            "эйторссон свейн",
+            "",
             "",
             ""
           ],
@@ -4010,7 +4092,7 @@
           ]
         }
       ],
-      "overall": 0.9174279433428799
+      "overall": 0.9850324675324675
     },
     {
       "name": "xtra_rodrigo",
@@ -4226,22 +4308,13 @@
     {
       "name": "xtra_shelechov",
       "text": {
-        "recall": 0.9918088737201365,
-        "precision": 0.9945242984257358,
-        "f1": 0.9931647300068351,
-        "expected": 1465,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1461,
         "actual": 1461,
-        "matched": 1453,
-        "missing": [
-          "2001 году i отделение columns",
-          "году i отделение columns 2",
-          "i отделение columns 2 ф",
-          "отделение columns 2 ф таррега",
-          "columns 2 ф таррега воспоминанье",
-          "2 ф таррега воспоминанье об",
-          "старинных романсов ii отделение columns",
-          "романсов ii отделение columns 2"
-        ]
+        "matched": 1461,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -4272,11 +4345,11 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.6901408450704225,
-        "f1": 0.8166666666666667,
-        "expected": 49,
+        "precision": 0.971830985915493,
+        "f1": 0.9857142857142858,
+        "expected": 69,
         "actual": 71,
-        "matched": 49,
+        "matched": 69,
         "missing": []
       },
       "tableCells": {
@@ -4291,7 +4364,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9796160856687172
+      "overall": 0.9985714285714287
     }
   ]
 }
