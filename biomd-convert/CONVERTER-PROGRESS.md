@@ -6626,3 +6626,154 @@ misses. None of those three is closed by this work -- all are proper names Hunsp
 
 **The holdout stayed spent.** Both mechanisms were found by the 946 unlabelled pages; the shape of the
 second occurs in none of the 28 reference sources, so no holdout could have withheld it.
+
+## 51 -- a word boundary hidden inside inline markup (2026-08-13)
+
+The brief for this iteration was **major or critical only**. Two of the three probes below were
+aimed at exactly that and both ended in a ceiling; the mechanism that paid sat in none of the
+instrument rankings, because no instrument in the ladder measures a lost space.
+
+### 51.1 The eight criticals, checked against the source rather than quoted
+
+Baseline reproduced first: L0 **725** tests, L1 **98.6**, L2 **316 / 199 defect / 8 critical**,
+L3 **59 over 26**, validator 0 on all 28, and on the 946: 0 FAILED, 0 lost targets, 0 lost images,
+90 `complexity-budget`.
+
+`CLAUDE.md` forbids trusting a severity label, so all eight were opened:
+
+| criticals | verdict |
+|---|---|
+| `xtra_shelechov` × 2 -- reference `columns: 2` | **instrument**, OPEN §5.0b: `blocks.ts` reads a directive property line as a paragraph |
+| `xtra_karta5` `paragraph.missing.unattested` `◀ 🞈` | reference-inconsistency, already recorded |
+| `xtra_karta5` × 4 -- 3 `table.row.missing` + 1 `table.spurious.unattested` | **one mechanism, and a confirmed ceiling** -- see below |
+| `xtra_karta5` `paragraph.spurious.unattested` `Хилл/Вильчинскигитарный дуэт` | **a real defect, and the iteration** |
+
+The four table criticals are the same score-strip: the reference merges the composer's audio table
+and the score table into one 2-column table, the converter emits the score strip as its own 4-column
+table. §43.6 recorded this 1-to-1 against `xtra_rodrigo`, and **`xtra_rodrigo`'s reference was read
+directly this time rather than quoted**: it writes `| **Ноты**\*\* | I. | […] | [zip] |` -- the
+four-column form, byte-identical to what the converter produces. The converter's reading is
+reference-attested by the other document. Ceiling confirmed, not work.
+
+### 51.2 The routing consistency instrument, rebuilt and then explained away
+
+§46.5's cross-document view was rebuilt over 3492 tables (946 + 28) by joining `result.tables` to
+`result.classifications`: **48 classifier views, 11 split, 52 minority decisions.** The largest split
+was `LAYOUT t2 [DATA0.25,LAYOUT0.5,…]` -- **32 tables, 17 to flat flow and 15 to `::: columns`**, a
+near coin-flip on identical classifier evidence, and OPEN's standing item 2.
+
+Instrumented at the decision point rather than inferred. It is **not one shape decided two ways**:
+
+- on the flow side (`zanon`, `dylla`, `perroy`) the `LAYOUT t2` table is the **page shell** --
+  `w=[116,529,115]`, `pageRailColumns` finds rails `{0,2}`, one lane survives, flatten is correct;
+- on the columns side (`parkening`, `walker`, `rechin`) the page shell is `LAYOUT t1` and the `t2`
+  table is an inner content region with no rails -- `w=[229,130]`, `w=[202,4,217]` -- and `::: columns`
+  is correct.
+
+Both sides are right. The view is too coarse: it carries no geometry, so a page frame and a two-lane
+region inside one collapse into the same string. **A split view is evidence about the view as often
+as about the converter.** Recorded so the next session does not re-take it.
+
+### 51.3 The measurement no rung makes
+
+`Вильчинскигитарный` is two words. The source is `<i>Хилл/Вильчински </i>гитарный дуэт`: the
+word-separating space sits **inside** the italic. A browser renders it. Markdown cannot -- `*x *` is
+not emphasis -- so `mdast-util-to-markdown` drops the space and the words fuse.
+
+Nothing in the ladder sees this. Text recall is shingle-based and a fused pair keeps most of its
+shingles; the validator has no opinion; L3 measures geometry; L1's multiset F1 sees one token instead
+of two among thousands. It surfaced only because a *critical* pointed at the paragraph for an
+unrelated reason.
+
+Measured directly, reference-free, by asking of every `<mark>word&nbsp;</mark>word` shape in the
+source whether the produced Markdown still separates the two words:
+
+| corpus | boundary-space shapes | fused |
+|---|---:|---:|
+| hand-made references (26) | 4 | **2** (`xtra_karta5`) |
+| 946 unlabelled | 28 | **24 over 16 documents** |
+
+**26 of 32 instances of the shape failed.** `ДоменикониКарло`, `ЕпесНарсисо`, `Подробноститворческой`,
+`Миловановявляется`, `Firesего`.
+
+### 51.4 The rule, and the cut the corpus chose (`1e91d58`)
+
+The space is hoisted out of the delimiters. Three sites, one rule:
+
+- an **emphasis/strong/delete mark**, where the space sat at the marked word's edge;
+- a **transparent wrapper** (`<span>`, `<font>`), which splices its children into the run and so was
+  trimming flow whitespace one level down -- `Ровшан </span>Шахбазович`. The trim lives in
+  `collapseAdjacentText`, which `inlineFrom` calls at *every* nesting level; it is right at the outer
+  edge of a block and wrong one level in. `keepEdgeSpace` separates the two;
+- a **mark holding nothing but whitespace** -- the FrontPage editor's `<em> </em>` -- which used to
+  serialize as `*Comments:***clarinet`: an unclosed bold *and* a lost space.
+
+**Only across a word boundary, and the references decided that.** Where the source spaces a mark
+boundary they split cleanly on what stands on the other side:
+
+| other side | reference keeps the space | drops it |
+|---|---:|---:|
+| letter | **3** | 1 (`xtra_karta5`, already a recorded divergence) |
+| punctuation `-` | 1 | **26** (all `new_lagq2`) |
+| punctuation `(` | 0 | 1 (`news`, author-ruled "ошибок нет") |
+
+That is `BioMD-Reference.md`'s own precedence: a space between two words is **content**; a space
+before a dash is **exact style**, which ranks last. The whitespace-only mark is exempt -- there the
+space is the element's entire content, not style at an edge.
+
+**The wide form was built first and measured wrong**, which is why the cut is stated as measurement:
+hoisting at every boundary took `new_lagq2`'s text axis from **100.0 to 45.6** and L1 from 98.6 to
+**98.0**, because its 26 `<i>COMPOSER </i>- Work` rows each gained a space the reference does not
+have. Narrowing to the word boundary restored it to 99.8 and cost nothing measurable.
+
+### 51.5 Measured outcome
+
+| rung | before | after |
+|---|---|---|
+| L0 | 725 tests | **739**, typecheck clean, 0 FAILED |
+| L1 | 98.6 % over 26 | **98.6 %**, per-document table unchanged |
+| L2 | 316 / 199 defect / 8 critical | **320 / 198 defect / 9 critical**; ambiguous 24 → 28 |
+| L3 | 59 over 26 | **59**, identity 0, deterministic |
+| validator | 0 on all 28 | **0** |
+| 946 unlabelled | 0 FAILED, 0 lost targets/images, 90 `complexity-budget` | **unchanged** |
+| **word fusions, 946** | **24 over 16 docs** | **0** |
+| **word fusions, 28 produced** | **2** | **0** |
+| bare `***` runs, 946 | 74 over 8 docs | **70 over 6 docs** |
+
+**74 of the 946 changed; text recall rose on 49 and fell on none.** Routing outcomes, directive
+counts and conservation are identical everywhere.
+
+**Two tradeoffs, both priority-6, both stated.**
+
+1. `segovia` **+1 converter-defect**. Its two captions gain `В.И. Яшнева` where the reference writes
+   `В.И.Яшнева`. The source is `В.И.<span lang="en-us"> </span>Яшнева` and **the same page spells it
+   `В. И. Яшнева` in prose**, so the reference is normalising initials by hand. The instrument itself
+   cannot decide it: it calls one of the two identical captions `converter-defect` and the other
+   `ambiguous`. `xtra_karta5` moves -1 the other way, so the corpus total is 199 → 198.
+2. `barrios` **+1 critical**, triaged **ambiguous**, not a converter-defect. Its footnote becomes
+   `[1](#2) Другая` where the reference has no space. The source has one, and **the corpus's only
+   other footnote definition, in `new_dyens`, writes the space** -- 1 to 1, broken by the source. The
+   `critical` label is `paragraph.content`'s blanket severity for any paragraph mismatch, applied here
+   to a single space.
+
+### 51.6 What is next
+
+1. **`layout.containment.mismatch`, 13 instances over 9 documents** -- the broadest untouched L3 class
+   and the rung that answers priority 4. `new_karta` carries 3 of them plus 3 `layout.align.mismatch`
+   and is the largest non-ceiling L3 document.
+2. **The `paragraph.content` severity ladder.** `barrios` shows a one-space difference reported at
+   `critical`. Severity is not proportional to the size of the difference in this class. Fix the
+   instrument in an isolated truthfulness step, not the converter.
+3. **`xtra_shelechov`'s two criticals are OPEN §5.0b**, not defects: a directive property line read as
+   a paragraph. The same isolated step should take them.
+4. Then §45's queue: `retyped.paragraph-to-align` on `segovia` alone, and §40.6's shell-depth root
+   cause.
+
+**Killed in §51** -- reopen on new measurement only: **`LAYOUT t2`'s 17-against-15 routing split is a
+converter inconsistency** (§51.2 -- the flow side is the page shell with rails found, the columns side
+is an inner region with none; the classifier view carries no geometry and cannot tell them apart) ·
+**`xtra_karta5`'s four table criticals are work** (§51.1 -- `xtra_rodrigo`'s reference writes the
+four-column score strip the converter produces).
+
+**The holdout stayed spent.** `xtra_mikulka` appeared on one side of the routing split and was noted
+without being read; nothing was tuned to it.

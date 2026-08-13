@@ -43,34 +43,36 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §50** closed the **wrap hyphen**,
-twice. Rule 6 demanded a *legal* Hyphenopoly break before it would join, but these pages were typed
-from print by hand and the hyphen is where the typist put it, not where Russian allows one, so
-`общест-ва` and `фес-тивалях` shipped broken; rule 6b puts the second signal on the fragments instead
-(`c5f37bc`). And `изда<span lang="en-us">-</span>вал` splits one word across three IR nodes, so no
-node held a hyphen between two letters and the pre-filter skipped every one (`75b9b24`). **Surviving
-wrap hyphens: 167 over 108 of the 946 → 6 over 6; the 28 produced 7 → 0.** §48 and §49 before it bound
-one visible caption to each figure and each gallery image (`743e463`, `ca78c45`); §47 closed the last
-two conservation losses (`e4513f9`, `d442c63`, `a251a96`).
-Current floor: L0 **725 tests**, **0 validator errors on every produced document**, L1 **98.6**,
-L2 **316 · 199 defect · 8 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §51** closed a **word boundary
+hidden inside inline markup** (`1e91d58`). `<i>Доменикони </i>Карло` fused two words, because Markdown
+cannot write `*x *` and the serializer dropped the space rather than hoisting it — **silent semantic
+corruption that no rung in the ladder measures**: recall is shingle-based, the validator has no
+opinion, L3 measures geometry, and L1 sees one token instead of two among thousands. **Word fusions:
+24 over 16 of the 946 → 0; the 28 produced 2 → 0.** §50 before it closed the **wrap hyphen** twice
+(`c5f37bc`, `75b9b24`, 167 → 6); §48/§49 bound one visible caption to each figure and gallery image
+(`743e463`, `ca78c45`); §47 closed the last conservation losses (`e4513f9`, `d442c63`, `a251a96`).
+Current floor: L0 **739 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+L2 **320 · 198 defect · 9 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
 errors, 0 lost targets, 0 lost images**.
-**L2 rose 6 in §50 while converter-defect stayed at 199** — six `paragraph.hyphenation.joined`, all
-ambiguous, the priority-6 cost of a priority-5 gain. Quote the split.
+**L2's total rose 10 across §50 and §51 while converter-defect fell 199 → 198**, and the 9th critical
+is `barrios`'s one-space footnote, triaged *ambiguous*. Quote the split, and read §51.5 before
+treating any of it as damage.
 **141 of those 199 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
 (~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
 `new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~58**;
 the 8 criticals remain only in the two recorded-divergence documents. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates after §50: the **proper-name hyphenation tail** — `Бориславовна`, `Феррере`,
-`аккомпанементов` are still reference-attested `paragraph.hyphenation.unjoined` **defects** and need a
-stem-tolerant lexicon lookup, since Hunspell rejects them and the lexicon indexes exact forms; then
-`segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root cause. **`DATA`→flow
-`too-small` is downgraded — 27 instances in four unrelated shapes, probed five times (§50.1). Do not
-take it again.** `LAYOUT`→flat flow **2048** against 14 `::: columns` is the only live routing form.
-**Nothing table-shaped is open and general among the 26** (§43.9); every table candidate now lives
-on the 946.
+Next candidates after §51: **`layout.containment.mismatch`, 13 instances over 9 documents** — the
+broadest untouched L3 class and the rung that answers priority 4; then one **isolated
+instrument-truthfulness step** for `paragraph.content`'s blanket `critical` severity (OPEN §5.0aa) and
+the property-line-as-paragraph artefact (§5.0b), which together own 3 of the 9 criticals; then the
+**proper-name hyphenation tail** (needs a stem-tolerant lexicon lookup), `segovia`'s
+`retyped.paragraph-to-align`, and §40.6's shell-depth root cause.
+**Two routing candidates are closed, not open:** `DATA`→flow `too-small` is 27 instances in four
+unrelated shapes, probed five times (§50.1), and `LAYOUT t2`'s 17-against-15 split is a page shell on
+one side and an inner region on the other (§51.2). **Nothing table-shaped is open and general among
+the 26** (§43.9); every table candidate now lives on the 946.
 
 > **A conservation finding is a pointer, not the defect.** Both of §46.9's named losses were
 > mis-diagnosed by the finding that raised them: `williams1`'s "lost target" had lost nothing (the

@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-13**, after PROGRESS §50.
+Last touched **2026-08-13**, after PROGRESS §51.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,26 +32,32 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-13, after PROGRESS §50:**
+**Current state, *measured* 2026-08-13, after PROGRESS §51:**
 
 | rung | value |
 |---|---|
-| L0 | **725 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **739 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
-| L2 | **316 findings -- 199 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 8 critical |
+| L2 | **320 findings -- 198 converter-defect** · 28 ambiguous · 94 reference-inconsistency · 9 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 | **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
 | **wrap hyphens surviving** | **6 over 6** of the 946 (was 167/108); **0** of the 28 produced (was 7/7) |
+| **word fusions** | **0** on the 946 (was 24/16 docs) and **0** on the 28 produced (was 2) |
 
-> **L2 rose 6 with converter-defect flat at 199.** All six are `paragraph.hyphenation.joined`, triaged
-> **ambiguous**, on the six references that keep a wrap hyphen the dictionary rejects. §50.5 states the
-> tradeoff: a priority-6 reference-fidelity loss bought with a priority-5 general gain. Quote the
-> split or the number reads as damage that did not happen.
+> **L2's total has risen 10 across §50 and §51 while converter-defect fell 199 → 198.** The added
+> findings are `paragraph.hyphenation.joined` (6, §50) and the word-boundary spaces (§51) — all
+> triaged **ambiguous** or **reference-inconsistency**. Both sections state their tradeoff as a
+> priority-6 loss bought with a higher-priority gain. Quote the split or the number reads as damage
+> that did not happen.
+>
+> **The 9th critical is `barrios`, and it is `ambiguous`, not a defect** — a one-space footnote
+> difference reported at `critical` because that is `paragraph.content`'s blanket severity. Instrument
+> debt, listed in §5 below.
 
-**Next:** the proper-name hyphenation tail (§50.6) needs a stem-tolerant lexicon lookup — it is the
-only thing that closes the three remaining reference-attested `paragraph.hyphenation.unjoined`
-defects. The broad reference frontier and every routing question are unchanged.
+**Next:** **`layout.containment.mismatch`, 13 instances over 9 documents** — the broadest untouched L3
+class and the rung that answers priority 4. `new_karta` carries 3 of them plus 3
+`layout.align.mismatch`. Then the isolated instrument-truthfulness step (§51.6 items 2–3).
 
 > **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
 > left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
@@ -137,11 +143,26 @@ IR nodes, so no node holds a hyphen between two letters and the pre-filter skipp
 **946: surviving wrap hyphens 167 → 6; the 28 produced 7 → 0; 115 documents changed and every applied
 edit is a hyphen removal.**
 
+**Landed in §51, one commit (`1e91d58`).** A word boundary hidden inside inline markup survives.
+`<i>Доменикони </i>Карло` fused two words because Markdown cannot write `*x *`; the space is now
+hoisted out of the delimiters at three sites — a mark's edge, a transparent `<span>`/`<font>` wrapper
+one level down, and a mark holding nothing but whitespace (`<em> </em>`, which also emitted an
+unclosed `**`). **Only across a word boundary**, and the references chose that cut: letter-to-letter
+they keep the space 3 to 1, against punctuation they drop it 27 to 1.
+**946: word fusions 24 → 0, 74 documents changed, recall up on 49 and down on none.**
+
+> **The wide form was built first and measured wrong.** Hoisting at every boundary took `new_lagq2`
+> from L1 100.0 to **45.6** on its text axis and the corpus from 98.6 to 98.0 — its 26
+> `<i>COMPOSER </i>- Work` rows each gained a space the reference does not have. Narrowing to the word
+> boundary restored it. **Sweep the boundary condition, not just the threshold.**
+
 **Next, in order. Probe before committing (SKILL §6).**
 0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — and the
-   post-§50 routing survey leaves the corpus question exactly where §47.6 did: `DATA`→flow is **27
+   post-§51 routing survey leaves the corpus question exactly where §47.6 did: `DATA`→flow is **27
    `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, `LAYOUT`→flat flow
    **2048** against 14 `::: columns`, `UNKNOWN`→flat flow **974** against 56.
+   **§51.2 closed the `LAYOUT t2` 17-against-15 split**: it is a page shell on one side and an inner
+   region on the other, both correct, and the classifier view carries no geometry to tell them apart.
 1. **The proper-name hyphenation tail, §50.6 — the one open item with reference backing.**
    `Бориславовна` (`borislova`), `Феррере` (`news_2007`), `аккомпанементов` (`xtra_shelechov`) are
    still `paragraph.hyphenation.unjoined` **converter-defects**: the reference joined and we did not.
@@ -186,6 +207,16 @@ bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convent
 matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
 general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
 table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
+
+**Killed in §51** — reopen on new measurement only:
+**`LAYOUT t2`'s 17-against-15 routing split is a converter inconsistency** (§51.2 — instrumented at
+the decision point: the flow side is the page shell, `w=[116,529,115]` with `pageRailColumns` finding
+rails `{0,2}`; the columns side is an inner content region with no rails. Both correct. The classifier
+view carries no geometry, so a split view is evidence about the *view* as often as about the
+converter) ·
+**`xtra_karta5`'s four table criticals are available work** (§51.1 — `xtra_rodrigo`'s reference writes
+`| **Ноты**\*\* | I. | […] | [zip] |`, the four-column score strip the converter produces. §43.6's
+recorded ceiling holds, this time read rather than quoted).
 
 **Killed in §50** — reopen on new measurement only:
 **the adjacent title/caption echo is a defect** (§50.1 — 141 of the 174 produced echoes are the
@@ -343,6 +374,10 @@ target/image/validator loss. Seven contract tests cover positive, mutation and f
 
 ## 5. Instrument debt -- what to distrust, in order
 
+0aa. **`paragraph.content` reports `critical` regardless of how small the difference is.** `barrios`'s
+   single missing space after a footnote marker is the corpus's 9th critical (§51.5). Severity in this
+   class is not proportional to the size of the difference. Fix the class in an isolated truthfulness
+   step; §51.6 pairs it with §5.0b below, which owns `xtra_shelechov`'s two.
 0. **`link.label.content.empty` fires on labels that are not empty.** Reports `critical` when the
    produced label is `▶` and the reference's is a raw route. `1214860` normalized most of these away
    -- **3** instances remain (`segovia` x2, `tarrega`) and they are 3 of the corpus's 4 criticals, all

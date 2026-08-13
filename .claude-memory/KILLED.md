@@ -247,3 +247,16 @@ Reopen with the sweep, not with an argument.
 `Феррере`, `аккомпанементов` are reference-attested `paragraph.hyphenation.unjoined` **defects** --
 the reference joined and the converter did not -- and Hunspell rejects all three. Rule 4 cannot help
 because the lexicon indexes exact forms. A stem-tolerant lookup is the named next signal.
+
+## §51 -- killed by instrumenting the decision point, and by reading a reference instead of quoting it (2026-08-13)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **`LAYOUT t2` splitting 17 flat against 15 `::: columns` is a converter inconsistency.** The largest split in §46.5's reference-free consistency instrument -- 32 tables on identical classifier evidence, and OPEN's standing routing item | Both sides are right. Instrumented at the decision point: on the flow side (`zanon`, `dylla`, `perroy`) the table is the **page shell**, `w=[116,529,115]`, `pageRailColumns` finds rails `{0,2}`, one lane survives, flatten is correct. On the columns side (`parkening`, `walker`, `rechin`) the shell is `LAYOUT t1` and the `t2` table is an inner content region with no rails, `w=[229,130]`. **The classifier view carries no geometry, so a page frame and a two-lane region collapse into one string.** A split view is evidence about the view as often as about the converter | one `DBG_LANE` line, six documents |
+| **`xtra_karta5`'s four table criticals are available work.** Half the corpus's criticals, on the document whose *table content* the author explicitly asked for (OPEN §3.13) | `xtra_rodrigo`'s reference writes `\| **Ноты**\*\* \| I. \| […] \| [zip] \|` -- the **four-column** score strip the converter produces for `xtra_karta5`. The converter's reading is attested by the other reference; `xtra_karta5`'s 2-column merge is §43.6's recorded 1-to-1 minority | one `grep` of a reference |
+| **Hoisting mark-boundary whitespace is right at every boundary.** The obvious general form of the §51 rule | `new_lagq2` text axis **100.0 → 45.6**, corpus L1 98.6 → **98.0**: its 26 `<i>COMPOSER </i>- Work` rows each gained a space the reference does not have. The references cut it by what stands on the other side -- letter-to-letter keep 3 to 1, punctuation drop **27 to 1** -- which is `BioMD-Reference.md`'s own precedence, content above exact style | one bench run |
+
+**Not killed, and it is instrument debt, not a defect:** the 9th critical. `barrios`'s footnote gains
+the space its source draws, and `paragraph.content` reports any paragraph mismatch at `critical`
+however small. The corpus's only other footnote definition (`new_dyens`) writes the space, so the
+references are 1-to-1 and the source breaks the tie. Fix the severity ladder, not the converter.

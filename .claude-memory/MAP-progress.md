@@ -210,6 +210,8 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 | 49 gallery caption lanes | 6457-6491 | an `images` row followed by exactly-as-many ordered centred caption lanes · 0.7 bidirectional ordered-word coverage, reusing §48's relation predicate · `anido`/`buek`/`rom_lebedev` fire, `domeniconi`/`galbraith`/`morkov`/`sor2` are controls | |
 | **50 the wrap hyphen, twice** | 6493-end | **five candidates killed on cheap probes: `too-small` is four shapes, the title/caption echo is reference-attested, empty `align` was a probe bug, `\| \| 🔗 \|` headers are the ruling, `complexity-budget` is an uncalibrated default `50.1`** · **the measurement: 167 surviving wrap hyphens on 108 of the 946, 7 on the 28, invisible because the references keep them too `50.2`** · **rule 6b -- a break the language forbids is still a break; the second signal moves from break position to fragment wordhood `50.3`** · **a break markup put in a box of its own: `изда<span>-</span>вал` splits the word across three IR nodes `50.4`** · **167 → 6 and 7 → 0; L2 +6 all ambiguous, converter-defect flat at 199 `50.5`** · what is next `50.6` | **HOT** |
 
+| **51 a word boundary in markup** | 6493-end | **the 8 criticals opened rather than quoted: 2 instrument, 1 recorded, 4 a confirmed ceiling `xtra_rodrigo`'s reference attests, 1 the iteration `51.1`** · **the routing consistency instrument rebuilt, then explained away: `LAYOUT t2` 17-vs-15 is a page shell against an inner region `51.2`** · **the measurement no rung makes: 26 of 32 boundary-space shapes fused two words `51.3`** · **hoist the space at three sites, only across a word boundary — the references cut it 3-to-1 letter, 27-to-1 punctuation `51.4`** · **the wide form cost `new_lagq2` 100.0 → 45.6 before narrowing `51.4`** · outcome + two stated priority-6 tradeoffs `51.5` · what is next `51.6` | **HOT** |
+
 ## Checkpoint -- §45, measured 2026-08-12 over **26 compared documents** (28 converted)
 
 | rung | value | reproduce with |
@@ -231,11 +233,11 @@ score. Scan is ~2.5-4 min.
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | **725** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L0 | **739** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
 | L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
-| L2 | **316** findings -- **199 converter-defect** · 24 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L2 | **320** findings -- **198 converter-defect** · 28 ambiguous · 94 reference-inconsistency · **9 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
 | L3 | **59** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json --json ../analyze/l3.json` |
-| **946 unlabelled** | **0 FAILED · 0 lost targets · 0 lost images · 0 validator errors** · **6 surviving wrap hyphens on 6 docs** | `corpus run` with a no-`expectedDir` config; conservation is in each job's `08-validation/report.json` |
+| **946 unlabelled** | **0 FAILED · 0 lost targets · 0 lost images · 0 validator errors** · **6 surviving wrap hyphens on 6 docs · 0 word fusions** | `corpus run` with a no-`expectedDir` config; conservation is in each job's `08-validation/report.json` |
 
 **Every conservation loss in the corpus is now closed** (§47.2, §47.3). The reference rungs stayed
 byte-identical through §47, §48 and §49 because none of those shapes occurs in the 28 sources. §50 is
