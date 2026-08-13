@@ -3,251 +3,85 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-13**, after PROGRESS §51.
+Last touched **2026-08-14**, after PROGRESS §53.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
 - [3. Answered by the reference author -- do not re-investigate](#3-answered-by-the-reference-author----do-not-re-investigate)
-- [4. Open defect classes](#4-open-defect-classes----measured-2026-08-12-after-45)
+- [4. Open defect classes](#4-open-defect-classes)
 - [5. Instrument debt -- what to distrust, in order](#5-instrument-debt----what-to-distrust-in-order)
 
 ---
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, **28 sources / 26 compared**. The author added six `xtra_` pairs and
-promoted the old holdout into the corpus; §42 recalculated everything, landed two table mechanisms
-and refilled the holdout.
+Reference-guided refinement, **27 sources / 27 compared**. Every number written before 2026-08-14 is
+superseded: the author added `xtra_garcia_lorca`, edited eighteen references, parked the holdout
+**source and reference together** in `fixtures/html2/` + `out2/`, and **removed
+`fixtures/gen_corpus/`**. Do not reach for the 946 pages; they are gone and gitignored.
 
-> **28 sources convert; 26 are compared.** `xtra_karta5` *is* the former holdout `new_karta5`
-> (byte-identical reference, CRLF-normalized source), promoted by the author into the corpus. The
-> holdout was refilled the same day with **`xtra_oyanguren`** and **`xtra_mikulka`**: only their
-> *references* moved, to `fixtures/out2/`, so both are still converted, validated and inside the
-> conservation gate while being invisible to L1/L2/L3. **`l3` must print 26 and `bench/run.sh` must
-> still convert 28** — that pair of counts is the leak detector. PROGRESS §42.1, §42.8.
+> **The "28 convert / 26 compared" leak detector no longer applies.** Both counts are 27. The holdout
+> is fully outside the pipeline now -- outside the conservation and validator gate as well as outside
+> L1/L2/L3 -- so it costs nothing and proves nothing until it is measured deliberately.
 
-> **Two things moved the baseline with no code change**, and both must be quoted or the numbers read
-> wrong: commit `92b7e67` *"fixed reference files"* landed after §41 and edited 16 references (the
-> original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
-> arrival. PROGRESS §42.2.
-
-**Current state, *measured* 2026-08-13, after PROGRESS §51:**
+**Current state, *measured* 2026-08-14, after PROGRESS §53:**
 
 | rung | value |
 |---|---|
-| L0 | **739 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
-| L1 | **98.6 %** over the 26 compared |
-| L2 | **320 findings -- 198 converter-defect** · 28 ambiguous · 94 reference-inconsistency · 9 critical |
-| L3 | **59** over 26 documents, identity 0, deterministic |
-| validator | **0 errors on all 28 produced documents**, holdout included |
-| **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
-| **wrap hyphens surviving** | **6 over 6** of the 946 (was 167/108); **0** of the 28 produced (was 7/7) |
-| **word fusions** | **0** on the 946 (was 24/16 docs) and **0** on the 28 produced (was 2) |
+| L0 | **809 tests**, typecheck clean, 0 FAILED, conservation ok |
+| L1 | **98.9 %** over the 27 |
+| L2 | **203 findings -- 138 converter-defect** · 18 ambiguous · 47 reference-inconsistency · 2 critical |
+| L3 | **23** over 27 documents, **0 critical** |
+| removals, all 30 sources | **0 targets missing, 0 images missing**; no removal reason discards prose (§53.5) |
 
-> **L2's total has risen 10 across §50 and §51 while converter-defect fell 199 → 198.** The added
-> findings are `paragraph.hyphenation.joined` (6, §50) and the word-boundary spaces (§51) — all
-> triaged **ambiguous** or **reference-inconsistency**. Both sections state their tradeoff as a
-> priority-6 loss bought with a higher-priority gain. Quote the split or the number reads as damage
-> that did not happen.
->
-> **The 9th critical is `barrios`, and it is `ambiguous`, not a defect** — a one-space footnote
-> difference reported at `critical` because that is `paragraph.content`'s blanket severity. Instrument
-> debt, listed in §5 below.
+> **The author's baseline moved before any code did.** The reference edits alone took L2 from
+> 320/198/9 to **206/141/2** and L3 to 36. Quote that, or §53's three commits read as five times the
+> work they were.
 
-**Next:** **`layout.containment.mismatch`, 13 instances over 9 documents** — the broadest untouched L3
-class and the rung that answers priority 4. `new_karta` carries 3 of them plus 3
-`layout.align.mismatch`. Then the isolated instrument-truthfulness step (§51.6 items 2–3).
+**The report that the gen-corpus rules deleted content on `xtra_garcia_lorca` is disproved** (§53).
+A build at `b8704e2` -- before §46, before every gen-corpus rule -- converts that page
+**byte-identically to HEAD**. The real defect was `case "pre"` collapsing whitespace, present since
+the initial commit and never exercised because no earlier fixture had a `<pre>`.
 
-> **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
-> left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
-> provenance is unchecked (§46.9 item 6), not a BioMD validator error. It rose 89 → 90 because
-> `assad_b` now emits the discography it was deleting.
-
-That is the floor. Nothing accepted from here may regress it.
-
-> **There is a fifth corpus role now: `fixtures/gen_corpus/`, 946 sources with no references**
-> (PROGRESS §46). Disjoint from the 28 — the 15 pages the `new_*`/`xtra_*` fixtures came from sit in
-> `fixtures/aaaaaaaaaaaaaaa/`. It is **blind by construction**: nothing can be tuned to a page that
-> has no reference, so it is a better generalization signal than a two-document holdout. One scan is
-> ~2.5 min with Chromium at 4 jobs; run it every iteration. Its numbers are conservation, validator,
-> FAILED count, routing outcome and cross-document consistency — never a similarity score, because
-> there is nothing to be similar to.
->
-> **Per document the reference set is 4–5× richer in table evidence than the corpus it stands for**
-> (`DATA`→table 46 % vs 10.5 %, `::: columns` 50 % vs 11 %, `frame` 18 % vs 4 %). Weight accordingly.
-
-> **141 of the 199 are recorded divergences and quirks, not work.** `xtra_shelechov` ~96,
-> `xtra_karta5` 42, `new_kolpakov` 3 (§43.5). The honest open count is **~58**. Quote the split or the
-> ledger reads as a collapse in quality that did not happen.
->
-> **The 8 criticals remain only in the two recorded-divergence documents** (`xtra_karta5` 6,
-> `xtra_shelechov` 2); none gained a converter mechanism in §45.
-
-**`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
-clone and `tsc` fails on the missing declarations. That is a build failure, not a degradation.
-
-**Landed in §43, one commit each.** A numbered strip is one value, not several columns (`4f6e048`;
-`xtra_albeniz` → **L1 100.0 on every axis**, L2 criticals 14 → 8) · an empty row at the foot of a
-table is bottom margin (`0826f53`; `new_karta` L1 95.9 → 98.0, 6 → 5 defects,
-`retyped.columns-to-table` → 0).
-
-**Landed in §44.** Standalone images keep their own computed right/distinctive-centre placement or a
-floated one-column figure ancestor; floated multi-column grids and the left prose baseline are false
-friends. `image.position.value` **2 → 0**, L2 317/206 → **315/204**, L3 65 → **61**, L1 flat 98.6.
-
-**Landed in §45.** A short full-row tinted record label may bypass the 20-character frame floor only
-when the same palette/occupancy role recurs in the same table with populated content between labels.
-The one-off archive/menu label and repeated half-row catalogue cells remain false friends.
-`new_lendle2` gains its fifth frame: L1 99.3 → 99.8, L2 11/7 → 6/2, L3 4 → 2;
-corpus L2 315/204 → **310/199**, L3 61 → **59**, overall L1 flat 98.6.
-
-**Landed in §46, one commit each.** A figure never swallows a link (`558eafd`): `otherContent`
-measured text, and a link whose whole label is a control glyph has none, so every footer pager whose
-middle marker is unlinked lost **both arrows and both destinations at 100 % text recall**.
-`hasOrphanTarget` counts a target as content and asks containment, so the linked thumbnail still
-becomes a figure. · An unlinked icon in a strip of linked ones is a control too (`120e7b8`):
-`inControlStrip` promotes the pager's current-page marker, which can never have an `<a>` ancestor.
-· The mutation harness `CLAUDE.md` §5 has always asked for (`e0cdf3a`).
-**946 pages: lost targets 17 → 1, lost images 19 → 3, 12 documents changed and no others.
-The 26 are byte-identical — the shape occurs in none of the 28 reference sources.**
-
-> **Start a table iteration with the routing survey, not the ledger (§43.2).** One
-> `convert … | grep '^Tables:'` per source prints `CLASS→table[r×c]` / `CLASS→flow(failure)`, which is
-> the only view showing a table's *outcome* beside its *class*. Both §43 mechanisms came out of it and
-> neither was near the top of the ledger; one was on a document the defect column called clean.
-> **§46.5 generalizes it into a consistency instrument:** reduce every table to the classifier's own
-> view (class, tier, rounded score vector) and a view with more than one *outcome* is an inconsistency
-> by construction. 3332 tables, 62 views, **7 split, 32 minority decisions** — no reference needed.
-
-**Landed in §47, one commit each.** A list with no items is not a list (`e4513f9`): `listFrom`
-skipped every non-`li` child silently, so FrontPage's indent `<ul>` deleted `assad_b`'s whole
-discography — table, 3 covers, 23 of 194 shingles — at 88 % recall. · A merged nav anchor is
-accounted for, not lost (`d442c63`): `navFromGrid` folds two same-href anchors into one link by
-design, and the multiset gate read the folded one as dropped; `williams1`'s "lost target" was never
-lost. · A picture lane beside a lane of matter is a lane (`a251a96`): `planDataTable` refuses a
-`media-lane` grid *because* it is §16.1's text-beside-a-cover, then the router flattened it anyway.
-**946: lost targets 1 → 0, lost images 3 → 0. The 26 are byte-identical on all three rungs.**
-
-> **The first version of the media-lane rule was too wide and cost `goya2` 20 findings in one run**
-> (3 → 23 converter-defects) — a *gallery* has no worded lane to pair covers with and its reference
-> writes `::: images`. **L1 did not move at all**: `goya2` sat at 99.5 on both sides. The two
-> refusals are now told apart by name, `media-lane` vs `media-catalog`, not by degree.
-
-**Landed in §50, one commit each.** A break the language forbids is still a break (`c5f37bc`): rule 6
-required a legal Hyphenopoly break *and* dictionary membership, and the break position is the 1998
-typist's choice, not the language's — rule 6b puts the second signal on the fragments instead (a wrap
-cuts one word into pieces that are not words; a compound joins two things that are). · A break markup
-put in a box of its own (`75b9b24`): `изда<span lang="en-us">-</span>вал` splits the word across three
-IR nodes, so no node holds a hyphen between two letters and the pre-filter skipped every one.
-**946: surviving wrap hyphens 167 → 6; the 28 produced 7 → 0; 115 documents changed and every applied
-edit is a hyphen removal.**
-
-**Landed in §51, one commit (`1e91d58`).** A word boundary hidden inside inline markup survives.
-`<i>Доменикони </i>Карло` fused two words because Markdown cannot write `*x *`; the space is now
-hoisted out of the delimiters at three sites — a mark's edge, a transparent `<span>`/`<font>` wrapper
-one level down, and a mark holding nothing but whitespace (`<em> </em>`, which also emitted an
-unclosed `**`). **Only across a word boundary**, and the references chose that cut: letter-to-letter
-they keep the space 3 to 1, against punctuation they drop it 27 to 1.
-**946: word fusions 24 → 0, 74 documents changed, recall up on 49 and down on none.**
-
-> **The wide form was built first and measured wrong.** Hoisting at every boundary took `new_lagq2`
-> from L1 100.0 to **45.6** on its text axis and the corpus from 98.6 to 98.0 — its 26
-> `<i>COMPOSER </i>- Work` rows each gained a space the reference does not have. Narrowing to the word
-> boundary restored it. **Sweep the boundary condition, not just the threshold.**
+**Landed in §53, one commit each.**
+- A preformatted block's whitespace is its content (`9ab1f86`). L2 206 → 204, L3 36 → 30, L1 flat.
+- A gutter between two lanes is the author saying "side by side" (`43ec047`). L1 98.8 → 98.9,
+  L2 → 203/139, L3 30 → 25, L3's last critical closes.
+- A preformatted block is placed by its container (`3944fa2`). L2 defects → 138, L3 25 → 23.
 
 **Next, in order. Probe before committing (SKILL §6).**
-0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — and the
-   post-§51 routing survey leaves the corpus question exactly where §47.6 did: `DATA`→flow is **27
-   `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, `LAYOUT`→flat flow
-   **2048** against 14 `::: columns`, `UNKNOWN`→flat flow **974** against 56.
-   **§51.2 closed the `LAYOUT t2` 17-against-15 split**: it is a page shell on one side and an inner
-   region on the other, both correct, and the classifier view carries no geometry to tell them apart.
-1. **The proper-name hyphenation tail, §50.6 — the one open item with reference backing.**
-   `Бориславовна` (`borislova`), `Феррере` (`news_2007`), `аккомпанементов` (`xtra_shelechov`) are
-   still `paragraph.hyphenation.unjoined` **converter-defects**: the reference joined and we did not.
-   Hunspell rejects all three, and rule 4 cannot help because the lexicon indexes exact forms
-   (`lex(joined)=0`). A stem-tolerant lexicon lookup is the next signal; measure its false-friend rate
-   first. Corpus counterparts: `Чайковского` ×3, `Петропавловске`.
-2. ~~**A layout fallback for an unplannable DATA table.**~~ **Downgraded in §50.1 — stop returning to
-   it.** Probed four times now. `too-small` is 27 instances in four unrelated shapes: `1×3` 7, `1×2` 7,
-   `1×4` 3, `1×5` 1, and 9 that are a one-column table where flattening is correct. §48/§49 took the
-   coherent caption subsets. Do not widen `isSingleRecordRow` or use text length: both have recorded
-   counterexamples. `LAYOUT t2` splitting flat against `::: columns` remains the only live form of the
-   question.
-3. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
-   directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
-   `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or
-   shared converter mechanism remains. Fix the evaluator only in an isolated truthfulness step.
-4. ~~**`williams1.htm`** and **`assad_b.htm`**~~ — **both closed in §47**, and neither was the
-   diagnosis §46.9 wrote down: `williams1` had lost nothing (the gate was counting a deliberate
-   merge), and `assad_b`'s three covers were the visible corner of a whole deleted discography.
-   **Read a conservation finding as a pointer, never as the defect.**
+1. **`layout.containment.mismatch`, 13 over 9** -- the broadest untouched L3 class and the rung that
+   answers priority 4. Unchanged from §51.6, and now L3's largest by a wider margin.
+2. **One isolated instrument-truthfulness step**: `paragraph.content`'s blanket `critical` severity
+   (§5.0aa) and the property-line-as-paragraph artefact (§5.0b).
+3. **`structdiff`'s `code.text`** compares whitespace-collapsed values -- new debt from §53.2, listed
+   in §5 below.
+4. **The proper-name hyphenation tail, §50.6** -- `Бориславовна`, `Феррере`, `аккомпанементов`.
+   Needs a stem-tolerant lexicon lookup; measure its false-friend rate first.
 5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
-   glyph/footer family. `segovia` is a long italic quotation shifted by `margin-left: 140`, not the
-   same signal; decide whether the current `align` is a visual regression before touching code. §44.1.
-6. **The shell-depth root cause, PROGRESS §40.6** — the "one table is the page shell" constant is
-   wrong on 8 of 22 and load-bearing in five rules. Three replacements built, all three reverted on
-   measurement. Start from `headingLineOf`.
+   glyph/footer family. §44.1.
+6. **The shell-depth root cause, §40.6.** Three replacements built, all three reverted on measurement.
+
+**Killed in §53** -- reopen on new measurement only:
+**the gen-corpus rules (§46--§51) cost `xtra_garcia_lorca` content** (§53 -- byte-identical build
+comparison across the whole span, plus a removal-reason audit over all 30 sources in which no reason
+discards prose and no document loses a target or an image) ·
+**`retyped.heading2-to-paragraph` is workable** (§53.6 -- six blocks in one identical source template,
+four written `**bold**` and two `##` by the reference, nothing in the source separating them) ·
+**the unconditional `too-small` → `layoutFrom` reconsideration** (§53.3 -- it *is* §18.3's killed form
+and three existing contracts caught it in one run; the guttered-lane guard is the survivor).
 
 **No open author question.**
 
-**The two-document holdout is still spent (§43.7), and §46 needed none.** The 946 unlabelled pages are
-blind by construction — no reference exists for any of them, so nothing can be tuned to them. Use the
-gen-corpus scan as the generalization signal instead of naming a new holdout; it is strictly stronger.
-
-**Do not re-take these; §37-§43 settled them.** Everything §41's list named, plus:
-`xtra_rodrigo`'s score table and its two work titles · `segovia`'s work title · `xtra_karta5`'s
-bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convention (author-ruled) ·
-`xtra_shelechov`'s row-major grid (8-to-1, and its interior empty rows are the grouping evidence).
-
-**Killed in §37-§43** -- reopen on new measurement only: everything §41's list named, plus
-**cell content weight as the per-row/grid discriminator** (§42.4 — falsified by `news_2007`) ·
-**raising `planDataTable`'s `maxCols`** (§42.5 — `xtra_karta5`'s Sor table is a legitimate six-column
-matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
-general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
-table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
-
-**Killed in §51** — reopen on new measurement only:
-**`LAYOUT t2`'s 17-against-15 routing split is a converter inconsistency** (§51.2 — instrumented at
-the decision point: the flow side is the page shell, `w=[116,529,115]` with `pageRailColumns` finding
-rails `{0,2}`; the columns side is an inner content region with no rails. Both correct. The classifier
-view carries no geometry, so a split view is evidence about the *view* as often as about the
-converter) ·
-**`xtra_karta5`'s four table criticals are available work** (§51.1 — `xtra_rodrigo`'s reference writes
-`| **Ноты**\*\* | I. | […] | [zip] |`, the four-column score strip the converter produces. §43.6's
-recorded ceiling holds, this time read rather than quoted).
-
-**Killed in §50** — reopen on new measurement only:
-**the adjacent title/caption echo is a defect** (§50.1 — 141 of the 174 produced echoes are the
-portrait caption repeating the document title, and `fixtures/out/barrios.bio.md` writes exactly that
-shape; 6 mid-document echoes remain, in 6 different shapes on 6 documents) ·
-**`::: align` sometimes wraps nothing** (§50.1 — the probe was misreading a `Location: …` body line as
-a property line; `read()` over all 946 reports 0 empty directive nodes and 0 warnings) ·
-**§41.3's "weakening the two-signal gate trades residue for corruption"** (§50.3 — the gate was never
-weakened; one of its two signals measured the wrong thing. 131 simulated joins, not one a compound,
-and the one true false friend `лит-ре` is refused by the replacement signal).
-
-**Killed in §47** — reopen on new measurement only:
-**every `media-lane` refusal is a lane** (§47.4 — `goya2` 3 → 23 converter-defects in one run. A
-gallery, where *every* column is bare covers, has no worded lane to pair them with, and its
-reference writes one `::: images` row. The narrow form that survived requires a picture lane **and**
-a matter lane, and excludes a resource matrix by the same test the tier-1 DATA gate uses).
-
-**Killed in §46** — reopen on new measurement only:
-**low text recall means data loss** (§46.6 — `baden_powell2` is a cover gallery with 193 characters of
-visible text and loses nothing; recall's denominator includes the chrome the converter is meant to
-remove, so it is not comparable across pages of different text volume. `new_lagq2` sits at 45.25 % in
-the *reference* set with L1 99.8. Never read recall as loss without checking the page's text budget) ·
-**the 946-page chrome model caused the pager loss** (§46.6 — byte-identical with the 28-page profile;
-one command) · **`new_page.htm`'s 0.00 % recall is a defect** (§46.6 — it is the author's blank
-template and converts correctly).
+**`npm install` before anything** -- §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
+clone and `tsc` fails on the missing declarations.
 
 > **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
 > `npx playwright install chromium` or every document reports "no output produced". And this repo
 > carries a multi-pack-index git 2.45 cannot read; `git config core.multiPackIndex false` unblocks it.
-> **`corpus scan` is still required after a fresh clone** -- and PROGRESS §39.5 now depends on it:
-> without the profile the masthead banner survives and every page gains a spurious frame.
+> `corpus scan` is **not** needed: `bench/corpus/corpus-profile.json` is committed and built from 22
+> files. Without it the masthead banner survives and every page gains a spurious frame (§39.5).
 
 ---
 ## 2. Closed -- the spec was amended, not the converter
@@ -330,7 +164,7 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-12 after §45
+## 4. Open defect classes -- *measured* 2026-08-14 after §53
 
 **Read the ceiling column first.** Recorded divergences and quirks account for 141 of the 199
 converter-defects; see PROGRESS §42.4, §43.5 and §43.6 before treating any large class here as
@@ -374,6 +208,11 @@ target/image/validator loss. Seven contract tests cover positive, mutation and f
 
 ## 5. Instrument debt -- what to distrust, in order
 
+0aaa. **`structdiff`'s `code.text` compares whitespace-collapsed values.** It could not see
+   §53.2's defect -- six poems emitted as six single lines -- and it cannot see the fix either: the
+   class reported "ambiguous, sides equal" before and after. A fenced block's *line structure* is
+   currently unadjudicated by L2 in both directions. L3's `layout.overflow` was the only rung that
+   noticed, and it named the symptom. Fix the class in an isolated truthfulness step.
 0aa. **`paragraph.content` reports `critical` regardless of how small the difference is.** `barrios`'s
    single missing space after a footnote marker is the corpus's 9th critical (§51.5). Severity in this
    class is not proportional to the size of the difference. Fix the class in an isolated truthfulness

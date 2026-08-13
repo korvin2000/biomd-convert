@@ -6928,3 +6928,158 @@ stranded-marker ledger entries are what located it; it is now the sharpest lead 
 **The references will gain anchors.** When they do, nothing needs undoing: `reference-silent.ts`
 turns adjudication back on per document at the first marker a reference declares, and the L2 identity
 test already covers the anchored case on both sides.
+
+## 53 -- preformatted text, and a hypothesis the author's own falsifier killed (2026-08-14)
+
+The author added `xtra_garcia_lorca` (source + reference), edited eighteen more references, moved the
+two holdout sources into `fixtures/html2/` beside their `out2/` references, and removed
+`fixtures/gen_corpus/` from the working tree -- with the report that the generalization-corpus pass
+had "deleted a lot of important data/texts/content" on the new page.
+
+**The report is disproved, and the disproof was the cheapest measurement of the session.** Built at
+`b8704e2` -- the last commit before §46, therefore before every rule the gen-corpus passes produced --
+and converted `xtra_garcia_lorca.htm`: **byte-identical to HEAD, 9464 bytes on both sides.** None of
+§46--§52's rules touches this document at all. What the author saw was real and was worse than the
+report: **every poem on the page was one long line**, and that defect is as old as `case "pre"`
+(`git log -L` over those four lines returns one commit, `d78d62b`, the initial version). No fixture
+had `<pre>` in it before this one, so nothing had ever exercised it.
+
+### 53.1 Corpus roles, re-measured
+
+**27 sources convert; 27 are compared.** The pair of counts that used to be the leak detector no
+longer applies: the holdout is now *fully* parked, source and reference together, so it sits outside
+the conservation and validator gate as well as outside L1/L2/L3.
+
+| role | members |
+|---|---|
+| regression corpus | the original **13** |
+| refinement set | **9** `new_*` + **5** `xtra_*` (`albeniz garcia_lorca karta5 rodrigo shelechov`) |
+| holdout | `xtra_oyanguren`, `xtra_mikulka` -- `fixtures/html2/` + `fixtures/out2/`, plus `new_karta5` |
+| generalization corpus | **gone.** `fixtures/gen_corpus/` is removed and gitignored; do not reach for it |
+
+**Baseline after the author's reference edits, before any code changed** -- this is what every
+comparison below is against, and it moved with no work of mine in it: L1 **98.8**, L2 **206 findings
+/ 141 converter-defect / 2 critical**, L3 **36 over 27**, L0 **793 tests**, 0 FAILED.
+
+The 320/198/9 recorded in §51 is superseded. `bench/corpus/corpus-profile.json` is built from 22
+files and was never rebuilt from the 946 -- it is the same profile the gen-corpus passes ran against.
+
+### 53.2 A preformatted block's whitespace is its content (`9ab1f86`)
+
+`case "pre"` used the collapsing `textOf`. `BioMD-Reference.md`'s block table has always said
+"preserve real `<code>/<pre>` content"; the converter emitted the fence and threw the content away.
+
+**No rung of the ladder reported it, and that is the durable lesson.** Text recall 99.46 % (every word
+present), 0 validator errors, L1's seven multiset axes see the same tokens, `structdiff`'s `code.text`
+compares whitespace-collapsed values, and L3 pairs blocks by rendered text. The only instrument that
+did see it was L3's `layout.overflow` -- six findings, because a 450-character line does not fit the
+column it was set in -- and it named the symptom, not the cause.
+
+`preformatted.ts` reads the block's left edge as its smallest indent and keeps every source line. A
+line pushed in past that edge is a wrap: the remainder of a line too long for a fixed-width column,
+which is §50's 1998 line-fitting in another spelling. It is folded back by `isWrapBreak`, the
+predicate that already classifies a `<br>`, so a `<pre>` and a `<br>` run answer the same question the
+same way.
+
+**The indent must be the exception, and that is the whole defence.** Долматовский's romance runs 23
+lines at the left edge, most of them ending in a comma -- `isWrapBreak`'s strongest positive signal.
+Every one would have been folded on punctuation alone. A block with half or more of its lines indented
+is indentation-as-structure and is declined *entire*, so a listing can never be half-rewritten.
+
+    L0 801 tests (18 new) · L1 98.8 flat · L2 206 -> 204, defects 141 -> 140 · L3 36 -> 30
+
+L1 did not move by one tenth: a code block's line breaks are not tokens. Report this change by reading
+the output, never by quoting a rung.
+
+### 53.3 A gutter between two lanes is the author saying "side by side" (`43ec047`)
+
+`planDataTable` refuses a one-row grid as `too-small` because a record matrix *is* recurrence. The
+DATA branch read that as a verdict on the *region* and went to flat flow -- although two refusals
+beside it already ask `layoutFrom` instead (a pager row, a media lane). `too-small` was the last one
+that did not ask.
+
+`xtra_garcia_lorca` proves the inconsistency inside one page: **three verse grids, one
+`[47% | gutter | 47%]` shape.** Two make the classifier abstain, reach `layoutFrom` through the branch
+at the foot of `dataRegionFrom`, and become the `::: columns` the reference writes. The third scores
+DATA outright and was flattened -- two poems run together into one lane.
+
+**The unconditional form is the reconsideration §18.3 killed, and three existing contracts caught it
+in one run**: `jovicic`'s label lane beside its cover became columns, and §48's figure-beside-caption
+binding was bypassed. The narrowing is evidence rather than a threshold -- a record matrix puts its
+values in **adjacent** columns, and nobody draws a gutter between two columns of one record.
+`hasGutteredLanes` asks `laneColumnsOf` for a never-populated column *between* two populated ones.
+Both false friends are adjacent pairs and are untouched.
+
+**The narrowed rule is byte-identical on all 27 to the unconditional probe.** The guard costs nothing
+measured and removes the killed hypothesis entirely.
+
+    L0 806 tests (5 new) · L1 98.8 -> 98.9 · L2 204 -> 203, defects 140 -> 139, major 84 -> 81
+    L3 30 -> 25, and L3's one `layout.order.mismatch` critical closes
+
+### 53.4 A preformatted block is placed by its container (`3944fa2`)
+
+`alignedGroup` requires wholly-bold blocks, because an unemphasised centred paragraph in a lane is a
+caption rather than a label. A `<pre>` can never answer that question -- verbatim text carries no
+emphasis -- and nothing inside it can express placement either, so the container is the only statement
+available. The translator credit is `<div align="right">` around a `<pre class="l">`, and the
+reference writes the `::: align position: right` this refused. The length cap is untouched.
+
+    L0 809 tests (3 new) · L1 98.9 flat · L2 defects 139 -> 138, major 81 -> 80 · L3 25 -> 23
+
+### 53.5 The content-loss audit the author asked for
+
+Every `REMOVED` ledger reason over **all 30 sources** (27 + the 3 in `html2/`), real Chromium:
+
+| fires | docs | reason |
+|---:|---:|---|
+| 213 | 30 | empty block |
+| 212 | 30 | empty layout cell |
+| 121 | 30 | behaviour element `<script>` |
+| 60 | 30 | comment |
+| 41 | 30 | decorative image |
+| 30 | 30 | tracking pixel or counter |
+| 30 | 30 | document head, after fact harvesting |
+| 20 | 13 | UI icon replaced by its glyph |
+| 3 | 1 | anchor not emitted: identifier already declared |
+| 3 | 1 | target carries no navigable destination |
+| 1 | 1 | anchor merged into the item's one link -- same destination |
+| 1 | 1 | preformatted spacer with no content (§53.2, new) |
+| 1 | 1 | no content after conversion |
+
+**Nothing on that list discards prose, and `targets_missing = 0`, `images_missing = 0` on every one of
+the 30.** The §46--§51 rules the report suspected are on it as accounting entries or not at all: the
+icon-to-glyph rule *replaces*, the anchor-merge rule *accounts*, and two of §47's three rules exist to
+stop deletions (`assad_b`'s discography, the footer pagers).
+
+Every unmatched shingle inspected is a **seam** -- a five-word window straddling a block boundary the
+conversion legitimately introduced. `xtra_garcia_lorca`'s four are all the join between
+`…в своих стихах.` and the `ГИТАРА` fence, which the reference splits in the same place.
+
+### 53.6 Two ceilings on the new page, both reference-internal
+
+Recorded so that no later session investigates them:
+
+1. **`retyped.heading2-to-paragraph`, 3 instances.** The source sets six blocks in one identical
+   template -- `<p class="t2"><i><b>…</b></i></p>`, 11 pt, the body's own size. The reference writes
+   four of them `**bold**` and two of them `##`, with nothing in the source separating the groups. No
+   deterministic rule can satisfy both readings. Corpus-wide the heading family is 5 findings over 3
+   documents and splits both ways (`tarrega` and `new_geyzel04` are the converse). **Downgraded.**
+2. **`code.text` on the `ГИТАРА` block.** The reference merges a `<pre>` title into the poem's fence
+   in the right lane and keeps the identical `MEMENTO` pair separate in the left. 1 to 1 inside one
+   document. **Recorded as a ceiling.**
+
+Also reference-side and not work: the `Тише...` blank line the reference moves against the source,
+`злая пуля / оборвала.` joined with no indent evidence to read it from, and `Это  - радуга` where the
+source's double space survives.
+
+### 53.7 What is next
+
+1. **`layout.containment.mismatch`, 13 over 9** -- still the broadest untouched L3 class, and now
+   L3's largest by a wider margin (23 total, no criticals left).
+2. **`paragraph.content`'s blanket `critical` severity** and the property-line-as-paragraph artefact
+   (OPEN §5.0aa, §5.0b) -- one isolated instrument-truthfulness step, unchanged from §51.6.
+3. **`structdiff`'s `code.text` compares whitespace-collapsed values.** It could not see §53.2's
+   defect and cannot see its fix. New instrument debt, listed in OPEN §5.
+4. **The generality signal left with the gen corpus.** §46--§52 measured reach on 946 unlabelled
+   pages; there is now no blind set at all beyond a two-document holdout that has already been spent.
+   Say so when claiming that a rule generalizes.

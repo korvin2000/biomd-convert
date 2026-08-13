@@ -246,3 +246,18 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 `paragraph.hyphenation.joined`, all triaged ambiguous, the priority-6 cost of a priority-5 gain
 (§50.5). Never quote the 199 bare: 141 are recorded divergences, so the honest open count is ~58.
 
+## §53 -- preformatted text, and the report that prompted the iteration (2026-08-14)
+
+| where | line | what |
+|---|---|---|
+| `## 53` | 6932 | the byte-identical `b8704e2` build that disproved the gen-corpus content-loss report |
+| `### 53.1` | -- | corpus roles re-measured: **27 / 27**, holdout fully parked, `gen_corpus` deleted; the author's reference edits alone moved L2 320/198/9 → **206/141/2** with no code |
+| `### 53.2` | -- | `case "pre"` collapsed whitespace since `d78d62b`; **no rung saw it** -- recall 99.46 %, validator 0, L1 flat. `preformatted.ts` |
+| `### 53.3` | -- | `too-small` was the last DATA refusal that never asked `layoutFrom`; the unconditional form *is* §18.3's killed one and three contracts caught it. `hasGutteredLanes` |
+| `### 53.4` | -- | a `<pre>` cannot answer `alignedGroup`'s weight question, so its container places it |
+| `### 53.5` | -- | the removal-reason audit over **all 30 sources**: nothing on the list discards prose, 0 lost targets, 0 lost images |
+| `### 53.6` | -- | two reference-internal ceilings on the new page, both downgraded |
+| `### 53.7` | -- | the queue: `layout.containment.mismatch` 13/9, then the instrument-truthfulness step |
+
+**Read §53.1 before quoting any number written before 2026-08-14.**
+

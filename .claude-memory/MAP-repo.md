@@ -85,6 +85,7 @@ claude-project/
 | `media.ts` | what an `<img>` *means*, apart from where it sits | decorative filter (rendered geometry, never filename), size calibration against the article content box, caption binding, `::: images` grouping |
 | `frames.ts` | semantic frames + bounded alignment | `framedCell`, `alignedGroup`, `groupAlignedRuns`, `ALIGN_LABEL_MAX_CHARS = 400`, `alignableRunMember` (lists excluded) |
 | `lines.ts` | break-run segmentation -- the pass that made lines visible | WRAP vs LINEATION, `enumeratedItems` |
+| `preformatted.ts` | the one block whose whitespace is content (§53.2) | `preformattedLines`/`preformattedText`: left-edge dedent, blank-run collapse, and the indented-continuation fold that reuses `lines.ts`'s `isWrapBreak`. Contract in `preformatted.test.ts` |
 | `headings.ts` | heading recovery from typography | the four recurrence detectors (§4.3) |
 | `prominence.ts` | typographic prominence off whatever evidence exists | `bodyProminenceOf`, `contentIsSubordinated`, `subordinationRecursIn` |
 | `links.ts` | link and target policy -- pure, unit-tested against the guide's example table | adjacent-anchor merge, `resourceLink` |

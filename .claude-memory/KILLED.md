@@ -260,3 +260,17 @@ because the lexicon indexes exact forms. A stem-tolerant lookup is the named nex
 the space its source draws, and `paragraph.content` reports any paragraph mismatch at `critical`
 however small. The corpus's only other footnote definition (`new_dyens`) writes the space, so the
 references are 1-to-1 and the source breaks the tie. Fix the severity ladder, not the converter.
+
+## §53 -- killed by building an old commit, and by reading one reference against itself (2026-08-14)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **The generalization-corpus rules (§46--§51) deleted content from `xtra_garcia_lorca`.** The author's own report, and the reason this iteration was called | A build at `b8704e2` -- the last commit before §46, therefore before every one of those rules -- converts the page **byte-identically to HEAD**, 9464 bytes both sides. `git log -L` on `case "pre"` returns one commit, the initial version. Backed by a removal-reason audit over all 30 sources: **no reason discards prose, 0 lost targets, 0 lost images** | one `git worktree add` + one build (~4 min) |
+| **`retyped.heading2-to-paragraph` on `xtra_garcia_lorca` is available work.** 3 converter-defects, the document's largest remaining class | The source sets **six** blocks in one identical template, `<p class="t2"><i><b>…</b></i></p>` at the body's own 11 pt. The reference writes four of them `**bold**` and two of them `##`, with nothing in the source separating the groups. Corpus-wide the heading family is 5 findings over 3 documents and splits **both** ways | one `grep` of source and reference |
+| **Route every `too-small` DATA refusal to `layoutFrom`.** All four rungs improved and exactly one document changed | It *is* the reconsideration §18.3 killed. Three existing contracts failed in one run: `jovicic`'s label lane beside its cover became `::: columns`, and §48's figure-beside-caption binding was bypassed. The survivor requires a **gutter** -- a never-populated column between two populated ones -- which no record matrix has, and is byte-identical to the wide form on all 27 | one `npm test` |
+
+**The lesson §53.2 leaves:** a clean conservation report is not a clean conversion. Every word,
+target and image was present, recall 99.46 %, validator silent, L1 unmoved -- and six poems were
+flattened into single lines. Structure that no rung measures is where the next defect of this kind
+will be.
+
