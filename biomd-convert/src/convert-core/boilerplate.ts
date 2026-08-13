@@ -18,7 +18,7 @@
  */
 import { type LadomNode, textOf, walk, walkElements } from "../ladom/types.js";
 import type { CorpusProfile } from "./corpus.js";
-import { fingerprint } from "./corpus.js";
+import { MIN_PAGES_FOR_CHROME, fingerprint } from "./corpus.js";
 
 export interface BoilerplateRemoval {
   id: string;
@@ -62,6 +62,20 @@ export function removeBoilerplate(
   const removals: BoilerplateRemoval[] = [];
   const warnings: string[] = [];
   if (!profile) return { removals, warnings };
+
+  // A profile written before `MIN_PAGES_FOR_CHROME` existed can claim chrome a
+  // corpus of one could not possibly have observed — and one is on disk in every
+  // job directory that was scanned over a single page. Refuse it at use, so the
+  // fix does not depend on the operator knowing to re-scan.
+  if (profile.files < MIN_PAGES_FOR_CHROME && profile.stableChrome.length > 0) {
+    warnings.push(
+      `Corpus profile was built from ${profile.files} page(s) and claims ` +
+        `${profile.stableChrome.length} chrome structure(s); on a corpus that small every structure ` +
+        "on the page recurs on 100 % of it, so the claim carries no evidence. Chrome removal is " +
+        "skipped for this document — re-run `biomd corpus scan` over the whole site.",
+    );
+    return { removals, warnings };
+  }
 
   const chrome = new Set(profile.stableChrome);
   const documentText = visibleLength(root);

@@ -36,6 +36,16 @@ export interface CorpusPassOptions {
 }
 
 /**
+ * Pages a corpus must hold before "recurs across the site" is a measurement.
+ *
+ * Two, because recurrence is a relation between observations and one page is
+ * one observation. Deliberately not a tunable: below it the frequency is not
+ * uncertain, it is undefined. Read by `boilerplate.ts` as well, so a profile
+ * written by an older build is refused at use rather than trusted on its word.
+ */
+export const MIN_PAGES_FOR_CHROME = 2;
+
+/**
  * Structural fingerprint of a subtree.
  *
  * Tag path plus an attribute skeleton plus a coarse text signature. Page-
@@ -176,9 +186,30 @@ export function runCorpusPass(files: readonly CorpusFile[], options: CorpusPassO
   const total = files.length || 1;
   const fingerprintFrequency: Record<string, number> = {};
   const stableChrome: string[] = [];
+  // **Recurrence needs two observations to exist.** On a corpus of one every
+  // fingerprint the page carries appears on 100 % of pages, and holds exactly
+  // one text signature, so *both* tests below pass for every structure on the
+  // page — including the article. This is not a weak measurement to be
+  // thresholded, it is an undefined one: `pages.size / total` is 1/1 by
+  // construction and carries no information at all.
+  //
+  // Measured over the fixture sources, scanning the first N: the count is
+  // **22 and 43** for the two one-file scans and **10, 10, 10, 10, 9, 9, 9**
+  // from N = 2 upward, and the share of page text the removal pass then takes
+  // is **18.1 %** for the one-file profile against **1.1 %** for every other.
+  // A cliff at exactly one page, flat after it — the boundary is the mechanism
+  // rather than a tuned number.
+  if (total < MIN_PAGES_FOR_CHROME) {
+    warnings.push(
+      `Corpus of ${files.length} page(s): chrome cannot be identified, because "recurs on every ` +
+        `page" is true of everything a single page contains. No chrome recorded — scan at least ` +
+        `${MIN_PAGES_FOR_CHROME} pages of the same site, or convert without a profile.`,
+    );
+  }
   for (const [fp, pages] of fingerprintPages) {
     const frequency = pages.size / total;
     fingerprintFrequency[fp] = frequency;
+    if (total < MIN_PAGES_FOR_CHROME) continue;
     const texts = fingerprintTexts.get(fp);
     // Recurring structure *and* near-identical text is chrome. Recurring
     // structure with varying text is a template for content — a discography
@@ -199,9 +230,21 @@ export function runCorpusPass(files: readonly CorpusFile[], options: CorpusPassO
   };
 }
 
-/** Frequency lookup for a document's tables, keyed by node id. */
+/**
+ * Frequency lookup for a document's tables, keyed by node id.
+ *
+ * **Empty when the corpus was too small to observe recurrence.** This is the
+ * second consumer of the same evidence and the more destructive one:
+ * `classify.ts` returns `SHELL` at tier 1, confidence 0.95, for any table above
+ * `corpusFrequency` 0.7, and a `SHELL` table is deleted outright. On a corpus of
+ * one that is *every* table on the page. Returning no entry is the honest
+ * answer — the classifier already treats an absent frequency as "no evidence"
+ * and decides on the grid alone — and it keeps the two consumers of
+ * {@link MIN_PAGES_FOR_CHROME} from disagreeing about what the profile knows.
+ */
 export function frequencyForDocument(root: LadomNode, profile: CorpusProfile): Map<string, number> {
   const out = new Map<string, number>();
+  if (profile.files < MIN_PAGES_FOR_CHROME) return out;
   for (const el of walkElements(root)) {
     if (el.tag !== "table") continue;
     const fp = fingerprint(el);

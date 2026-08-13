@@ -308,6 +308,9 @@ corpus
         "",
       ].join("\n"),
     );
+    // A profile that could not measure recurrence says so here, where the
+    // operator is standing, rather than only inside the JSON it just wrote.
+    for (const warning of profile.warnings) process.stderr.write(`warning: ${warning}\n`);
   });
 
 corpus
@@ -1051,6 +1054,17 @@ function printResult(
     for (const r of reviews.slice(0, 10)) {
       lines.push(`  ${r.id}: ${r.terminal.kind === "REVIEW" ? r.terminal.reason : ""}`);
     }
+  }
+  // The pipeline's own warnings were being collected and never shown. Every one
+  // of them is something the operator can act on — a corpus profile too thin to
+  // identify chrome, a recurring structure kept because it carries the page's
+  // text, a page with no recoverable heading — and the boilerplate pass in
+  // particular can only be understood from them. Silence here is what let a
+  // profile scanned over one page delete a third of a document unremarked.
+  if (result.warnings.length > 0) {
+    lines.push("", `${result.warnings.length} warning(s):`);
+    for (const w of result.warnings.slice(0, 20)) lines.push(`  ${w}`);
+    if (result.warnings.length > 20) lines.push(`  … and ${result.warnings.length - 20} more`);
   }
   process.stdout.write(`${lines.join("\n")}\n`);
 }
