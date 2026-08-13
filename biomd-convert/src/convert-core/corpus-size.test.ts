@@ -23,6 +23,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { parseHtml } from "../ladom/parse.js";
+import { textOf } from "../ladom/types.js";
 import { resolveProfile } from "../biomd-ast/index.js";
 import { removeBoilerplate } from "./boilerplate.js";
 import { type CorpusProfile, frequencyForDocument, runCorpusPass } from "./corpus.js";
@@ -132,5 +133,41 @@ describe("end to end: the documented scan-then-run workflow keeps the document",
     });
     expect(result.markdown).toContain("Гарсиа Лорка не стал профессиональным музыкантом");
     expect(result.warnings.some((w) => /built from 1 page/u.test(w))).toBe(true);
+  });
+});
+
+/**
+ * Chrome removal is *measured*, whether or not it is bounded.
+ *
+ * **A cumulative bound was built and killed here.** The per-candidate
+ * `maxTextShare` guards were collectively unbounded, so the obvious next rule
+ * was to apply the same share to their sum. Its own false-friend test refused
+ * it: an ordinary short page whose banner, menu and footer are a third of its
+ * visible text trips any bound low enough to have caught the misfire that
+ * prompted it — which took 18.1 %, less than the false friend. The share of page
+ * text does not separate content from furniture, and the destructive half of
+ * that misfire was `classify.ts` returning `SHELL`, which this pass never saw.
+ *
+ * What survives is the measurement: the pass reports what it took, the CLI
+ * prints it on every conversion, and nothing detaches until the sum is known.
+ * Silence was the defect — a threshold that cannot tell the cases apart would
+ * only have moved it.
+ */
+describe("chrome removal reports what it took", () => {
+  it("reports the characters removed and the page they came from", () => {
+    const profile = runCorpusPass([file("a.htm", page(ARTICLE_A)), file("b.htm", page(ARTICLE_B))]);
+    const doc = parseHtml(page(ARTICLE_A));
+    const result = removeBoilerplate(doc.root, profile);
+    expect(result.removals.length).toBeGreaterThan(0);
+    expect(result.removedText).toBeGreaterThan(0);
+    expect(result.documentText).toBeGreaterThan(result.removedText);
+    expect(textOf(doc.root)).toContain("Гарсиа Лорка не стал");
+  });
+
+  it("reports zero, not a stale number, when it declines the profile", () => {
+    const doc = parseHtml(page(ARTICLE_A));
+    const result = removeBoilerplate(doc.root, runCorpusPass([file("a.htm", page(ARTICLE_A))]));
+    expect(result.removedText).toBe(0);
+    expect(result.removals).toEqual([]);
   });
 });

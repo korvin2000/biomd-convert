@@ -51,6 +51,10 @@ const CANDIDATE_TAGS = new Set(["table", "tr", "td", "div", "nav", "header", "fo
 export interface BoilerplateResult {
   removals: BoilerplateRemoval[];
   warnings: string[];
+  /** Visible characters the page had before this pass. */
+  documentText: number;
+  /** Visible characters this pass removed. `0` when it declined. */
+  removedText: number;
 }
 
 export function removeBoilerplate(
@@ -61,7 +65,8 @@ export function removeBoilerplate(
   const opts = { ...DEFAULTS, ...options };
   const removals: BoilerplateRemoval[] = [];
   const warnings: string[] = [];
-  if (!profile) return { removals, warnings };
+  const empty = { removals, warnings, documentText: 0, removedText: 0 };
+  if (!profile) return empty;
 
   // A profile written before `MIN_PAGES_FOR_CHROME` existed can claim chrome a
   // corpus of one could not possibly have observed — and one is on disk in every
@@ -74,23 +79,30 @@ export function removeBoilerplate(
         "on the page recurs on 100 % of it, so the claim carries no evidence. Chrome removal is " +
         "skipped for this document — re-run `biomd corpus scan` over the whole site.",
     );
-    return { removals, warnings };
+    return empty;
   }
 
   const chrome = new Set(profile.stableChrome);
   const documentText = visibleLength(root);
-  if (documentText === 0) return { removals, warnings };
+  if (documentText === 0) return empty;
 
   // Outermost first: removing the whole header table is better than removing its
   // six cells one at a time, and a descendant of something already gone is not a
   // separate decision.
   const candidates: LadomNode[] = [];
+  const byId = new Map<string, LadomNode>();
   for (const el of walkElements(root)) {
     if (!CANDIDATE_TAGS.has(el.tag)) continue;
     if (el.metrics.depth < 1) continue;
     candidates.push(el);
+    byId.set(el.id, el);
   }
 
+  // **Nothing detaches inside the loop.** The per-candidate guards below bound
+  // each removal and nothing bounded their sum, so a page could lose a third of
+  // its text to forty individually-innocent decisions. Collecting first makes
+  // the pass answerable as a whole, and declining is free: keeping chrome costs
+  // a little noise, deleting the article costs the document.
   const detached = new Set<LadomNode>();
   for (const el of candidates) {
     if (el.parent === null) continue;
@@ -122,11 +134,28 @@ export function removeBoilerplate(
       fingerprint: fp,
       frequency,
     });
-    detach(el);
     detached.add(el);
   }
 
-  return { removals, warnings };
+  // A removed structure's descendants are skipped above, so these do not overlap.
+  const removedText = removals.reduce((sum, r) => sum + r.text.replace(/\s+/gu, " ").trim().length, 0);
+
+  // **A cumulative cap on this share was built here and killed by its own false
+  // friend.** The obvious bound — chrome may not take more than the per-candidate
+  // `maxTextShare` in aggregate — declines a perfectly ordinary short page whose
+  // banner, menu and footer are a third of its visible text, while the misfire
+  // that prompted it took only 18.1 %. The share of page text does not separate
+  // the two, and the larger half of that misfire was never this pass at all: it
+  // was `classify.ts` returning `SHELL`. So the number is not the mechanism, and
+  // what is reported instead is the measurement, which the CLI prints on every
+  // run. Silence was the defect; a threshold that cannot tell content from
+  // furniture would only have moved it.
+  for (const el of removals) {
+    const node = byId.get(el.id);
+    if (node) detach(node);
+  }
+
+  return { removals, warnings, documentText, removedText };
 }
 
 function hasDetachedAncestor(node: LadomNode, detached: ReadonlySet<LadomNode>): boolean {

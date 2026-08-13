@@ -126,6 +126,13 @@ export interface ConvertResult {
   tables: TableOutcome[];
   /** What the escalation boundary did, so autonomy is measurable per file. */
   resolverStats: ResolverStats;
+  /**
+   * What chrome removal took, so the one pass the conservation gate cannot audit
+   * is still visible. The gate captures its inventory *after* this pass, which
+   * is why a misfiring profile once deleted a third of a document at a reported
+   * text recall of 100 %.
+   */
+  chrome: { documentText: number; removedText: number; structures: number };
   warnings: string[];
   /** Terminal state, per the plan's completion-state ladder. */
   state:
@@ -462,6 +469,11 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     classifications,
     tables: structure.tables,
     resolverStats: { ...resolver.stats(), ...escalations },
+    chrome: {
+      documentText: boilerplate.documentText,
+      removedText: boilerplate.removedText,
+      structures: boilerplate.removals.length,
+    },
     warnings,
     state,
     measured: measurement.measured,

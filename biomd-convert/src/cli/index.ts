@@ -1037,6 +1037,7 @@ function printResult(
     `Complexity:   ${result.complexity.directivesTotal} directives, depth ${result.complexity.maxNestingDepth}, ` +
       `${result.complexity.directiveDensity}/1000 words` +
       `${result.complexity.densityEnforced ? "" : " (density not enforced: document too short)"}`,
+    `Chrome:       ${describeChrome(result)}`,
     `Tables:       ${describeTables(result)}`,
     `Job:          ${jobRoot}`,
   ];
@@ -1067,6 +1068,14 @@ function printResult(
     if (result.warnings.length > 20) lines.push(`  … and ${result.warnings.length - 20} more`);
   }
   process.stdout.write(`${lines.join("\n")}\n`);
+}
+
+/** What boilerplate removal took — the pass the conservation gate cannot audit. */
+function describeChrome(result: { chrome: { documentText: number; removedText: number; structures: number } }): string {
+  const { documentText, removedText, structures } = result.chrome;
+  if (structures === 0) return "none removed";
+  const share = documentText > 0 ? (removedText / documentText) * 100 : 0;
+  return `${removedText} of ${documentText} visible chars (${share.toFixed(1)}%) in ${structures} structure(s)`;
 }
 
 registerConfigCommands(program);
