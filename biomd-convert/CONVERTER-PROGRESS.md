@@ -7083,3 +7083,106 @@ source's double space survives.
 4. **The generality signal left with the gen corpus.** §46--§52 measured reach on 946 unlabelled
    pages; there is now no blind set at all beyond a two-document holdout that has already been spent.
    Say so when claiming that a rule generalizes.
+
+## 54 -- a corpus of one, and the pass no rung could audit (2026-08-14)
+
+The author reported that the generated `xtra_garcia_lorca.bio.md` was **5931 bytes against a 9546-byte
+reference**, with the Долматовский romance gone entirely, and that `biomd corpus scan` → `biomd corpus
+run` had stopped preserving content. §53 had looked at `bench/out/` and reported the page clean. **Both
+observations were correct: they are different files, produced by different corpus profiles, and the
+profile is what decides how much of a page is deleted.**
+
+**§53's conclusion was right about the rules and wrong about the reach of its own audit.** The
+byte-identical `b8704e2` comparison still holds -- no rule from §46--§52 touches this page. What it
+missed is that the audit measured exactly one configuration, the 22-file bench profile, and reported it
+as though it covered the author's workflow. It did not.
+
+### 54.1 The mechanism
+
+`my-migration/html/` had been narrowed to a single file. `runCorpusPass` then computes
+`frequency = pages.size / total = 1/1` for every structure on that page, and each fingerprint holds
+exactly one text signature -- so **both halves of the chrome test pass for everything the page
+contains, including the article**. 43 of 45 fingerprints were recorded as `stableChrome`.
+
+Two consumers act on that, and the destructive one is not the obvious one:
+
+| consumer | what it does | cost on this page |
+|---|---|---|
+| `removeBoilerplate` | detaches the structure | **919 of 5064 visible chars, 18.1 %** |
+| `classify.ts` line 241 | `SHELL` at **tier 1, confidence 0.95** for `corpusFrequency > 0.7`; a `SHELL` table is deleted outright | **3 tables with their contents** -- the larger half |
+
+Swept over the fixture sources, scanning the first N:
+
+| N | 1 (`authors`) | 1 (`garcia_lorca`) | 2 | 3 | 4 | 5 | 8 | 13 | 22 |
+|---|---|---|---|---|---|---|---|---|---|
+| `stableChrome` | 22 | **43** | 10 | 10 | 10 | 10 | 9 | 9 | 9 |
+| text removed from `garcia_lorca` | -- | **18.1 %** | 1.1 % | 1.1 % | 1.1 % | 1.1 % | 1.1 % | 1.1 % | 1.1 % |
+
+**A cliff at exactly one page and a flat curve after it.** `MIN_PAGES_FOR_CHROME = 2` is therefore not
+a tunable: below it the frequency is not uncertain, it is *undefined*.
+
+### 54.2 Why nothing reported it
+
+The conversion printed `State: biomd-structurally-valid`, `Text recall: 100.00%`, `Targets: conserved`,
+`Images: conserved` while a third of the document was missing. Three reasons, all worth keeping:
+
+1. **The conservation gate captures its source inventory *after* `removeBoilerplate`** (`pipeline.ts`,
+   "so the conservation gate compares like with like"). The removed text never enters the denominator,
+   so recall is 100 % by construction however much the pass eats.
+2. **`SHELL` removal is a classifier verdict**, recorded as a legitimate `REMOVED` and equally invisible.
+3. **The CLI never printed `result.warnings`.** The boilerplate pass had emitted operator-facing
+   warnings since it was written -- including its own "kept as content" notes -- and not one of them
+   ever reached a terminal.
+
+§53.5's audit read the removal *reasons* and the recall, and both said the page was clean. **A removal
+reason is a claim, not a measurement.**
+
+### 54.3 What landed
+
+**`eba86c8` -- recurrence needs two observations to exist.** Enforced at the producer (`runCorpusPass`
+records no chrome and says why) and at *both* consumers (`removeBoilerplate` refuses a profile claiming
+what it cannot have seen; `frequencyForDocument` returns an empty map, which the classifier already
+treats as "decide on the grid alone"). Both, because a one-page profile is already on disk in every job
+directory scanned that way and the fix must not depend on the operator knowing to re-scan. The CLI now
+prints pipeline warnings and the scan prints the profile's.
+
+**`f9c4eed` -- chrome removal reports what it took.** The pass decides before it detaches and returns
+`documentText`/`removedText`; the CLI prints a `Chrome:` line beside the recall on every conversion.
+
+**A cumulative cap on that share was built and killed by its own false friend.** The per-candidate
+`maxTextShare` guards were collectively unbounded, so the obvious rule was to apply the same share to
+their sum. An ordinary short page whose banner, menu and footer are a third of its visible text trips
+any bound low enough to catch this misfire -- which took 18.1 %, **less than the false friend**. The
+share of page text does not separate content from furniture, and the destructive half of this defect
+was `SHELL`, which the pass never sees. The measurement survives; the threshold does not.
+
+### 54.4 Measured
+
+| | before | after |
+|---|---|---|
+| author's workflow, one-page `html/` | **5931 bytes**, romance absent | **9882 bytes**, romance present, scan warns |
+| documented workflow over a 27-page site | -- | **byte-identical to `bench/out/` on 26 of 27**; `xtra_shelechov` differs by 1 byte (27-page lexicon vs 22-page) |
+| L0 | 809 tests | **820 tests** (11 new), typecheck clean, 0 FAILED |
+| L1 / L2 / L3 | 98.9 · 203/138 · 23 | **unchanged** -- the bench profile has 22 files, so no guard can fire there |
+
+### 54.5 The standing lesson
+
+**A clean conservation report is not a clean conversion, and a removal reason is not evidence.** §53.2
+was the first form of this -- every word present, structure destroyed. §54 is the second and worse
+form: the gate is *structurally incapable* of auditing the pass most able to delete an article, and the
+audit that was supposed to catch it read the very claims the defect was making.
+
+**Measure one configuration and you have measured one configuration.** `bench/out/` is not the
+operator's output. When the report is about a produced file, find the file the operator is looking at.
+
+### 54.6 Still open here
+
+1. **The conservation gate still cannot audit boilerplate removal.** The `Chrome:` line makes it
+   *visible*; it does not make it *gated*. Capturing the inventory before the pass and discharging the
+   removals through `accounted` is the honest fix, and it is not a small one: `sourceText` is currently
+   taken after dehyphenation and normalization, both of which legitimately change text.
+2. **A `SHELL` verdict deletes a table with no share bound at all**, on `corpusFrequency` alone. On a
+   corpus large enough for the frequency to mean something this is right; nothing establishes that it
+   stays right when a site's article template genuinely recurs.
+3. **No test covered the CLI's report.** Two of the three reasons this was silent were presentation,
+   not conversion, and the suite has no eyes there.

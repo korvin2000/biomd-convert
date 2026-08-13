@@ -261,3 +261,14 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 
 **Read §53.1 before quoting any number written before 2026-08-14.**
 
+## §54 -- a corpus of one, and the pass no rung could audit (2026-08-14)
+
+| where | what |
+|---|---|
+| `### 54.1` | `frequency = 1/1` makes every structure on a single-page corpus chrome; **`SHELL` is the destructive consumer, not `removeBoilerplate`**; the N-sweep with its cliff at one page |
+| `### 54.2` | why nothing reported it: the gate captures its inventory *after* the pass, `SHELL` is a legitimate `REMOVED`, and the CLI never printed `result.warnings` |
+| `### 54.3` | `eba86c8` producer + both consumers; `f9c4eed` the `Chrome:` line; the cumulative cap killed by its own false friend |
+| `### 54.4` | 5931 → 9882 on the author's workflow; the 27 unchanged; scan→run over a 27-page site byte-identical to `bench/out/` |
+| `### 54.5` | **a clean conservation report is not a clean conversion, and a removal reason is not evidence** |
+| `### 54.6` | still open: the gate cannot audit chrome removal, `SHELL` has no share bound, no test covers the CLI report |
+

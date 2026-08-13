@@ -274,3 +274,15 @@ target and image was present, recall 99.46 %, validator silent, L1 unmoved -- an
 flattened into single lines. Structure that no rung measures is where the next defect of this kind
 will be.
 
+## §54 -- killed by its own false-friend test, in the run that introduced it (2026-08-14)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **A cumulative cap on chrome removal separates content from furniture.** The per-candidate `maxTextShare` guards are collectively unbounded -- 9 individually-innocent removals took 18.1 % of a page -- so applying the same share to their sum is the obvious next rule | Its own false-friend test refused it in the first run: an ordinary short page whose banner, menu and footer are **a third** of its visible text trips any bound low enough to catch the misfire, which took **18.1 %** — *less than the false friend*. And the destructive half of that misfire was `classify.ts` returning `SHELL`, which this pass never sees. **The share of page text is not the mechanism.** What survives is the measurement, printed on every conversion | one `npm test` |
+
+**And one correction to §53, not a kill.** §53's byte-identical `b8704e2` comparison stands: no
+§46--§52 rule touches `xtra_garcia_lorca`. But its content-loss audit measured **one configuration**
+(the 22-file bench profile) and was reported as covering the author's workflow, which runs through a
+job directory with its own profile. The profile is what decides how much of a page is deleted.
+**`bench/out/` is not the operator's output.**
+

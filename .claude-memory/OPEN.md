@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-14**, after PROGRESS §53.
+Last touched **2026-08-14**, after PROGRESS §54.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -39,7 +39,13 @@ superseded: the author added `xtra_garcia_lorca`, edited eighteen references, pa
 > 320/198/9 to **206/141/2** and L3 to 36. Quote that, or §53's three commits read as five times the
 > work they were.
 
-**The report that the gen-corpus rules deleted content on `xtra_garcia_lorca` is disproved** (§53).
+> **`bench/out/` is not the operator's output, and §53 forgot that.** The author converts through a
+> job directory (`my-migration/`) with its **own corpus profile**, and the profile decides how much of
+> a page is deleted. §53's audit measured one configuration and reported it as covering the workflow.
+> **When a report is about a produced file, find the file the operator is looking at** (§54).
+
+**The report that the gen-corpus *rules* deleted content on `xtra_garcia_lorca` is disproved** (§53) --
+but the report that *content was being deleted* was correct, and §54 found the cause.
 A build at `b8704e2` -- before §46, before every gen-corpus rule -- converts that page
 **byte-identically to HEAD**. The real defect was `case "pre"` collapsing whitespace, present since
 the initial commit and never exercised because no earlier fixture had a `<pre>`.
@@ -50,7 +56,20 @@ the initial commit and never exercised because no earlier fixture had a `<pre>`.
   L2 → 203/139, L3 30 → 25, L3's last critical closes.
 - A preformatted block is placed by its container (`3944fa2`). L2 defects → 138, L3 25 → 23.
 
+**Landed in §54, one commit each.** Recurrence needs two observations to exist (`eba86c8`): a corpus
+of one makes `frequency = 1/1` for every structure on the page, so 43 of 45 fingerprints became
+`stableChrome` and **`removeBoilerplate` took 18.1 % of the page while `classify.ts`'s `SHELL` deleted
+three whole tables** -- at a reported `Text recall: 100.00%`. Guarded at the producer and at both
+consumers, and the CLI now prints the pipeline's warnings, which it never had. · Chrome removal reports
+what it took (`f9c4eed`): a `Chrome:` line on every conversion. Author's workflow **5931 → 9882 bytes**;
+the 27 unchanged on every rung.
+
 **Next, in order. Probe before committing (SKILL §6).**
+0. **The conservation gate still cannot audit boilerplate removal** (§54.6). The `Chrome:` line makes
+   it visible, not gated; `sourceText` is captured after the pass, and moving it means moving it before
+   dehyphenation and normalization too. A `SHELL` verdict deletes a table on `corpusFrequency` alone,
+   with no share bound. **And no test covers the CLI's report** -- two of the three reasons §54 was
+   silent were presentation, not conversion.
 1. **`layout.containment.mismatch`, 13 over 9** -- the broadest untouched L3 class and the rung that
    answers priority 4. Unchanged from §51.6, and now L3's largest by a wider margin.
 2. **One isolated instrument-truthfulness step**: `paragraph.content`'s blanket `critical` severity
@@ -208,6 +227,11 @@ target/image/validator loss. Seven contract tests cover positive, mutation and f
 
 ## 5. Instrument debt -- what to distrust, in order
 
+0aaaa. **The conservation gate is structurally blind to chrome removal.** `sourceText` is captured
+   *after* `removeBoilerplate` detaches, so recall is 100 % by construction however much that pass
+   eats — 18.1 % of a page in §54, under `Text recall: 100.00%`, `Targets: conserved`,
+   `Images: conserved`. `SHELL` removal is equally invisible. **A removal reason is a claim, not a
+   measurement**, and §53.5's audit read the claims.
 0aaa. **`structdiff`'s `code.text` compares whitespace-collapsed values.** It could not see
    §53.2's defect -- six poems emitted as six single lines -- and it cannot see the fix either: the
    class reported "ambiguous, sides equal" before and after. A fenced block's *line structure* is
