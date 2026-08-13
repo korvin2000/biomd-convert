@@ -32,6 +32,7 @@ import {
   IMAGE_SIZES,
   IMAGES_COLUMNS,
   PICTURE_FRAMES,
+  isAnchorIdentifier,
   isBiomdDirective,
   type BiomdRoot,
 } from "./types.js";
@@ -139,14 +140,48 @@ export function validate(root: BiomdRoot, options: ValidateOptions = {}): Valida
   let words = 0;
   const footnoteDefs = new Set<string>();
   const footnoteRefs = new Map<string, string>();
+  /** Anchor identifier → path of its first definition. */
+  const anchorIds = new Map<string, string>();
+  /** Same-document `#x` targets → path of the first reference. */
+  const fragmentRefs = new Map<string, string>();
 
   walk(root as unknown as Nodes, "root", (node, path, ancestors) => {
     const directiveDepth = ancestors.filter((a) => isBiomdDirective(a as { type: string })).length;
 
     if (isBiomdDirective(node as { type: string })) {
-      directivesTotal += 1;
-      maxNestingDepth = Math.max(maxNestingDepth, directiveDepth + 1);
+      // An anchor is counted by neither budget, and the exclusion is a
+      // measurement decision rather than a favour to the converter. The
+      // complexity budget asks "does this output model layout rather than
+      // meaning" — a directive-per-word ratio is a good proxy for over-wrapping
+      // because every other directive draws something. An anchor draws nothing,
+      // nests nothing, and is emitted exactly once per source `<a name>`, so
+      // counting it would let a page with a long index of `#` links fail a
+      // budget it does not strain. `goya2` alone would contribute 26.
+      if (node.type !== "biomdAnchor") {
+        directivesTotal += 1;
+        maxNestingDepth = Math.max(maxNestingDepth, directiveDepth + 1);
+      }
       checkDirective(node, path, profile, ancestors, add);
+    }
+
+    if (node.type === "biomdAnchor") {
+      const first = anchorIds.get(node.identifier);
+      if (first === undefined) anchorIds.set(node.identifier, path);
+      else {
+        add(
+          "anchor-duplicate",
+          "error",
+          `Anchor #${node.identifier} is defined twice (first at ${first}). A fragment names one place; ` +
+            "the second definition is unreachable and which one a renderer picks is not specified.",
+          path,
+        );
+      }
+    }
+    if (node.type === "link" && node.url.startsWith("#") && node.url.length > 1) {
+      if (!fragmentRefs.has(node.url.slice(1))) fragmentRefs.set(node.url.slice(1), path);
+    }
+    if (node.type === "biomdImage" && node.link !== undefined && node.link.startsWith("#") && node.link.length > 1) {
+      if (!fragmentRefs.has(node.link.slice(1))) fragmentRefs.set(node.link.slice(1), path);
     }
 
     switch (node.type) {
@@ -254,6 +289,23 @@ export function validate(root: BiomdRoot, options: ValidateOptions = {}): Valida
         severity: "warning",
         message: `Footnote definition [^${identifier}] is never referenced.`,
         path: "root",
+      });
+    }
+  }
+
+  // A `#x` with no `::anchor{#x}` is a link that goes nowhere. A warning and
+  // not an error, deliberately: the reference tier was written before the
+  // construct existed, so every hand-made document in `fixtures/out/` carries
+  // these by design, and condemning them would make the validator useless on
+  // exactly the files it is calibrated against. It is still the sharpest
+  // available detector of an anchor the conversion dropped.
+  for (const [identifier, path] of fragmentRefs) {
+    if (!anchorIds.has(identifier)) {
+      diagnostics.push({
+        code: "anchor-target-missing",
+        severity: "warning",
+        message: `Link to #${identifier} has no ::anchor{#${identifier}} in this document; it navigates nowhere.`,
+        path,
       });
     }
   }
@@ -449,6 +501,23 @@ function checkDirective(
           "error",
           `Target ${JSON.stringify(profile.id)} does not implement \`::: signature\`; it renders as ` +
             "ordinary paragraphs.",
+          path,
+        );
+      }
+      break;
+    }
+    case "biomdAnchor": {
+      // An identifier that cannot survive the round trip is an error, not a
+      // warning: `::anchor{#a b}` re-reads as a different identifier or as
+      // prose, and either way the link that was supposed to reach it does not.
+      if (node.identifier.trim() === "") {
+        add("anchor-identifier-empty", "error", "`::anchor` carries no identifier and marks nothing.", path);
+      } else if (!isAnchorIdentifier(node.identifier)) {
+        add(
+          "anchor-identifier-invalid",
+          "error",
+          `Anchor identifier ${JSON.stringify(node.identifier)} contains a character the {#…} shorthand ` +
+            "cannot carry; the marker would not be read back as an anchor.",
           path,
         );
       }

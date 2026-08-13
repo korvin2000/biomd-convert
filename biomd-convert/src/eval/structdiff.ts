@@ -30,6 +30,7 @@ import {
   inlineOf,
   readBlocks,
 } from "./blocks.js";
+import { dropDirectives, silentIn } from "./reference-silent.js";
 
 export type Severity = "critical" | "major" | "minor";
 export type EditOp = "insert" | "delete" | "move" | "substitute";
@@ -92,8 +93,11 @@ interface Context {
 }
 
 export function diffDocuments(doc: string, producedSource: string, referenceSource: string): DiffResult {
-  const produced = readBlocks(producedSource).blocks;
   const reference = readBlocks(referenceSource).blocks;
+  // A reference that has never heard of a construct cannot adjudicate it. The
+  // exception is per document and per construct and reverses itself the moment
+  // the reference uses one; `reference-silent.ts` states the whole policy.
+  const produced = dropDirectives(readBlocks(producedSource).blocks, silentIn(reference));
   const ctx: Context = {
     doc,
     findings: [],

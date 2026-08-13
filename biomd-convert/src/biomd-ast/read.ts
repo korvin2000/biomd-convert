@@ -64,6 +64,17 @@ export interface BiomdSkeleton {
 const FENCE_OPEN = /^:::[ \t]*([A-Za-z][\w-]*)[ \t]*$/u;
 const FENCE_CLOSE = /^:::[ \t]*$/u;
 const PROP_LINE = /^([A-Za-z][\w-]*):[ \t]*(.*)$/u;
+/**
+ * A leaf directive: `::name{…}` on a line of its own, with no fence to close.
+ *
+ * Deliberately matched *before* `FENCE_OPEN` would ever see the line, and
+ * deliberately anchored to end-of-line: a `::anchor{#x}` with anything after it
+ * is not a leaf directive, it is prose that begins with two colons, and the
+ * serializer escapes exactly that case so the two can never be confused.
+ */
+const LEAF_DIRECTIVE = /^::([A-Za-z][\w-]*)\{([^}]*)\}[ \t]*$/u;
+/** The `#id` shorthand inside a leaf directive's attribute block. */
+const ID_SHORTHAND = /^#(\S+)$/u;
 
 /** Directives whose body is a list of child directives rather than Markdown. */
 const CONTAINER_ONLY = new Set(["columns", "images"]);
@@ -102,6 +113,9 @@ const KNOWN_DIRECTIVES = new Set([
   "signature",
 ]);
 
+/** Directives written in the one-line `::name{…}` form. Disjoint from the fenced set. */
+const KNOWN_LEAF_DIRECTIVES = new Set(["anchor"]);
+
 export function read(source: string): BiomdSkeleton {
   const lines = source.replace(/\r\n?/gu, "\n").split("\n");
   const warnings: ReadWarning[] = [];
@@ -139,6 +153,15 @@ function readNodes(
       return out;
     }
 
+    const leaf = LEAF_DIRECTIVE.exec(raw);
+    if (leaf) {
+      flush();
+      out.push(readLeafDirective(warnings, leaf[1] as string, leaf[2] as string, cursor.i + 1));
+      cursor.i += 1;
+      markdownStart = cursor.i + 1;
+      continue;
+    }
+
     const open = FENCE_OPEN.exec(raw);
     if (open) {
       flush();
@@ -166,6 +189,74 @@ function readNodes(
     });
   }
   return out;
+}
+
+/**
+ * A one-line `::name{…}` directive.
+ *
+ * The attribute block is reported through the same `props` map the fenced form
+ * uses, so every consumer downstream — the fact extractor, the block resolver,
+ * the L3 renderer — reads a leaf directive with the code it already has. The
+ * `#id` shorthand becomes `props.id`; a `key=value` pair becomes that pair.
+ * Anything else is kept verbatim under its own text so nothing is invented and
+ * nothing silently disappears.
+ */
+function readLeafDirective(
+  warnings: ReadWarning[],
+  name: string,
+  attributes: string,
+  line: number,
+): DirectiveBlock {
+  if (!KNOWN_LEAF_DIRECTIVES.has(name)) {
+    warnings.push({
+      code: "unknown-directive",
+      message: `Unknown leaf directive ${JSON.stringify(name)}; attributes preserved.`,
+      line,
+    });
+  }
+
+  const props: Record<string, string> = {};
+  const propOrder: string[] = [];
+  const set = (key: string, value: string) => {
+    if (key in props) {
+      warnings.push({
+        code: "malformed-property-line",
+        message: `Duplicate attribute ${JSON.stringify(key)}; last value wins.`,
+        line,
+      });
+    }
+    props[key] = value;
+    propOrder.push(key);
+  };
+
+  for (const token of attributes.trim().split(/[ \t]+/u)) {
+    if (token === "") continue;
+    const id = ID_SHORTHAND.exec(token);
+    if (id) {
+      set("id", id[1] as string);
+      continue;
+    }
+    const pair = /^([A-Za-z][\w-]*)=(.*)$/u.exec(token);
+    if (pair) {
+      set(pair[1] as string, (pair[2] as string).replace(/^"|"$/gu, ""));
+      continue;
+    }
+    warnings.push({
+      code: "malformed-property-line",
+      message: `Attribute ${JSON.stringify(token)} of ::${name} is neither #id nor key=value.`,
+      line,
+    });
+  }
+
+  if (name === "anchor" && props["id"] === undefined) {
+    warnings.push({
+      code: "malformed-property-line",
+      message: "::anchor carries no #identifier and marks no destination.",
+      line,
+    });
+  }
+
+  return { kind: "directive", name, props, propOrder, children: [], line, unclosed: false };
 }
 
 function readDirective(

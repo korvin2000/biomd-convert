@@ -213,6 +213,17 @@ describe("L3 renderer — spec rendering rules", () => {
     expect(html).toContain('href="#works"');
   });
 
+  it("renders `::anchor` as a destination with no geometry", () => {
+    const { html, warnings } = renderBiomd("[к альбому](#20)\n\n::anchor{#20}\n\nАльбом.\n");
+    expect(warnings).toEqual([]);
+    expect(html).toContain('<a class="anchor" id="20"');
+    // `display:none`, so an anchored produced document and an anchor-free
+    // reference cannot differ geometrically because of the marker.
+    expect(html).toContain(".anchor{display:none}");
+    // And the block it precedes is untouched.
+    expect(html).toContain("Альбом.");
+  });
+
   it("renders escapes as literal characters rather than as markup", () => {
     const { html } = renderBiomd("\\[Надежда] and 1\\. and \\*not em\\*\n");
     expect(html).toContain("[Надежда]");

@@ -282,6 +282,13 @@ function renderDirective(block: DirectiveNode, ctx: Ctx, path: string): string {
       return renderFrame(block, ctx, path);
     case "signature":
       return `<div class="signature"${attrs(block, path)}>\n${renderBlocks(block.children, ctx, path)}\n</div>`;
+    case "anchor":
+      // A destination, not a box. The stylesheet gives it `display:none` so that
+      // it contributes no geometry at all: an anchor that changed a single
+      // margin would make every L3 comparison between an anchored produced
+      // document and an anchor-free reference report a layout difference that
+      // the reader can never see.
+      return `<a class="anchor" id="${escapeAttr(block.props["id"] ?? "")}"${attrs(block, path)}></a>`;
     default:
       // §4 leaves unknown directives undefined; `read()` warns and keeps the
       // body. Rendering it as a plain region keeps the content visible and
@@ -710,6 +717,9 @@ figure.image.pos-full{width:100%!important;margin-left:0;margin-right:0}
 .signature>*:last-child{margin-bottom:0}
 
 .document{margin:1em 0;padding:.6em .8em;border:1px solid #c4c4c4;background:#fafafa;clear:both}
+
+/* A named destination. Zero geometry, so it can never move anything. */
+.anchor{display:none}
 .stray,.unknown-directive{outline:2px dashed #d33;outline-offset:2px}
 img.inline-image{max-width:100%;height:auto;vertical-align:middle}
 

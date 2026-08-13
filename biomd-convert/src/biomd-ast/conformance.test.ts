@@ -11,6 +11,7 @@ import { directiveNames, markdownRuns, read } from "./read.js";
 import { serialize } from "./serialize.js";
 import {
   makeAlign,
+  makeAnchor,
   makeColumn,
   makeColumns,
   makeFrame,
@@ -397,5 +398,90 @@ describe("reference permissions the implementation used to refuse", () => {
       expect(found).toHaveLength(1);
       expect(found[0]?.severity).toBe("warning");
     });
+  });
+});
+
+describe("::anchor — the leaf directive", () => {
+  it("serializes as one line with no fence", () => {
+    const out = serialize(doc(h1("T"), makeAnchor("12"), paragraph("текст")));
+    expect(out).toContain("\n::anchor{#12}\n");
+    // No closing fence was emitted for it, and the line is complete on its own.
+    expect(out.split("\n").filter((l) => l === ":::")).toHaveLength(0);
+  });
+
+  it("round-trips through read() with no warnings", () => {
+    const out = serialize(doc(makeAnchor("раздел"), paragraph("текст")));
+    const skeleton = read(out);
+    expect(skeleton.warnings).toEqual([]);
+    expect(directiveNames(skeleton.children)).toEqual(["anchor"]);
+    const block = skeleton.children[0];
+    expect(block?.kind).toBe("directive");
+    if (block?.kind === "directive") {
+      expect(block.props).toEqual({ id: "раздел" });
+      expect(block.children).toEqual([]);
+      expect(block.unclosed).toBe(false);
+    }
+    // The identifier is syntax, not prose: it must not reach the Markdown runs.
+    expect(markdownRuns(skeleton.children).join("\n")).not.toContain("раздел");
+  });
+
+  it("does not consume the block that follows it", () => {
+    const skeleton = read("::anchor{#a}\n\nОбычный абзац.\n\n::anchor{#b}\nСледующая строка.\n");
+    expect(directiveNames(skeleton.children)).toEqual(["anchor", "anchor"]);
+    expect(markdownRuns(skeleton.children)).toEqual(["Обычный абзац.", "Следующая строка."]);
+  });
+
+  it("a line that only looks like one stays prose", () => {
+    // Anchored to end of line on purpose: trailing text means the author wrote a
+    // sentence, not a marker, and the serializer escapes the leading colons so
+    // the two spellings can never be confused.
+    const skeleton = read("::anchor{#a} и ещё текст\n");
+    expect(directiveNames(skeleton.children)).toEqual([]);
+    expect(markdownRuns(skeleton.children)).toEqual(["::anchor{#a} и ещё текст"]);
+  });
+
+  it("warns rather than guessing when the shorthand is malformed", () => {
+    expect(read("::anchor{}\n").warnings.map((w) => w.code)).toEqual(["malformed-property-line"]);
+    expect(read("::signpost{#a}\n").warnings.map((w) => w.code)).toEqual(["unknown-directive"]);
+  });
+
+  it("escapes prose that begins with two colons", () => {
+    const out = serialize(doc(paragraph("::anchor{#not-a-marker} писал автор")));
+    expect(read(out).warnings).toEqual([]);
+    expect(directiveNames(read(out).children)).toEqual([]);
+  });
+
+  it("is valid, and a duplicate identifier is not", () => {
+    expect(validate(doc(h1("T"), makeAnchor("a"), makeAnchor("b"))).ok).toBe(true);
+    const twice = validate(doc(h1("T"), makeAnchor("a"), makeAnchor("a")));
+    expect(twice.ok).toBe(false);
+    expect(twice.diagnostics.map((d) => d.code)).toContain("anchor-duplicate");
+  });
+
+  it("refuses an identifier that could not be read back", () => {
+    expect(() => makeAnchor("two words")).toThrow(/shorthand cannot carry/u);
+    expect(() => makeAnchor("  ")).toThrow(/required/u);
+  });
+
+  it("reports a fragment link that reaches no anchor, as a warning", () => {
+    const link = {
+      type: "paragraph",
+      children: [{ type: "link", url: "#12", children: [{ type: "text", value: "к альбому" }] }],
+    } as const;
+    const missing = validate(doc(h1("T"), link as never));
+    expect(missing.diagnostics.filter((d) => d.code === "anchor-target-missing")).toHaveLength(1);
+    expect(missing.diagnostics.find((d) => d.code === "anchor-target-missing")?.severity).toBe("warning");
+    expect(missing.ok).toBe(true);
+
+    const resolved = validate(doc(h1("T"), makeAnchor("12"), link as never));
+    expect(resolved.diagnostics.filter((d) => d.code === "anchor-target-missing")).toEqual([]);
+  });
+
+  it("does not count against the complexity budget", () => {
+    // 40 markers is `goya2`'s shape and then some; none of them models layout.
+    const markers = Array.from({ length: 40 }, (_, i) => makeAnchor(`a${i}`));
+    const result = validate(doc(h1("T"), ...markers, paragraph("слово ".repeat(300))));
+    expect(result.complexity.directivesTotal).toBe(0);
+    expect(result.diagnostics.filter((d) => d.code === "complexity-budget")).toEqual([]);
   });
 });

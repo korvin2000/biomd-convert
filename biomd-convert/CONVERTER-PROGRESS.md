@@ -6777,3 +6777,155 @@ four-column score strip the converter produces).
 
 **The holdout stayed spent.** `xtra_mikulka` appeared on one side of the routing split and was noted
 without being read; nothing was tuned to it.
+
+## 52 -- a named destination the format could not write down (2026-08-13)
+
+The author extended the renderer with anchors and asked for the conversion rule. This is not a
+refinement of an existing mechanism: it is a construct the format did not have, so a target the
+source states plainly had no representation at all and was being dropped by every conversion so far.
+**30 fragment links in the 28 produced documents navigated nowhere; all 30 now resolve.**
+
+### 52.1 The gap, measured before it was closed
+
+`goya2`'s two `::: nav` bars are its whole table of contents -- 26 links to `#1`…`#26` -- and the
+reference writes them too. Neither side defined a single one of those 26 destinations, because
+`.bio.md` had no way to write one. `barrios` and `new_dyens` write the same shape smaller: a footnote
+marker that is a link *and* a target at once, `<a name="2" href="#1">`.
+
+| document | `#x` links | resolving before | resolving now |
+|---|---|---|---|
+| `goya2` | 26 | 0 | **26** |
+| `barrios` | 2 | 0 | **2** |
+| `new_dyens` | 2 | 0 | **2** |
+
+The reference tier is identical on the left column and identical on the middle one: **`fixtures/out/`
+carries the same 30 dangling links.** This is the first mechanism in the campaign whose ceiling is
+above the references rather than at them.
+
+### 52.2 The rule, and the three decisions inside it
+
+`src/convert-core/anchors.ts`. An `<a>` carrying `name` or `id` declares a destination; the
+identifier is copied verbatim. Contract in `anchors.test.ts`, 28 tests.
+
+**Recurrence does not apply and the contract says so.** The evidence is an attribute whose only
+purpose is to name a place -- the author stating it outright, not a shape inferred from typography.
+This is the exemption `rewriteTarget`'s markup guard and `isUiIcon` already state.
+
+**The identifier is refused rather than repaired.** A sanitized identifier stops matching the `#…`
+that was meant to reach it, and a marker pointing silently at nothing is worse than an absent one,
+which the validator still reports. Refusals are recorded in the ledger; the corpus produces three
+(§52.6).
+
+**False friends, each tested for non-firing.** `href="#x"` is a reference, not a declaration. An `id`
+on anything that is not an `<a>` is editor bookkeeping -- `xtra_shelechov.htm`'s `<table id="table1">`
+is the only one in the 28 and no link mentions it; 47 more sit in the 946. `<a name>` with no value.
+And the shape that is *both*, which produces a marker and a link rather than one of them.
+
+**Duplicates.** `goya2` declares 28 anchors for 26 destinations, repeating `4` and `6`. First
+declaration wins; the rest are recorded. A fragment names one place, and which of two definitions a
+renderer picks is unspecified.
+
+### 52.3 Placement: three positions, and two of them were wrong
+
+A marker is a block and its content frequently is not -- `barrios`'s sits inside a `<sup>`
+mid-sentence. It is claimed by the innermost region that lowers it and hoisted to just before that
+region's blocks. Deciding *when* to insert took three attempts, and the two failures are the finding:
+
+1. **Inserted where it was claimed.** `barrios` emitted **zero** markers. Structure recovery is
+   speculative -- a region is lowered, inspected, and sometimes thrown away -- and the rolled-back
+   attempt kept the claim, so the shape that actually shipped had nothing left to claim. The
+   `Snapshot` in `structure.ts` now carries the claim vector; `rollback` restores it.
+2. **Inserted at the end of each container.** L1's directive axis fell on `goya2` -- 146 expected
+   against 152 actual, `images` newly missing. Every pass in `blocksFrom` reads *adjacency*, and a
+   marker inserted at the level that claimed it is an ordinary sibling by the time the level above
+   looks. Six markers stood between six covers and the caption lines naming them: **three
+   `::: images` groups and six captions unbound.**
+3. **Inserted once, over the finished tree.** No pass can see one. L1 returned to the baseline value
+   *to the last digit*.
+
+That left a third failure mode with no bug attached: a pass may *replace* the marked block rather
+than wrap it -- a caption folded into an image's `caption:`, a paragraph promoted to a heading, six
+covers rebuilt into a `::: images`. Six of `goya2`'s 26 markers stranded that way. `rehomeAnchors`
+repairs it without naming any pass: every one of them replaces a contiguous run in place, so the
+replacement for a dead block is **the block after the last surviving block before it**. Finding that
+survivor names the replacement without knowing the transformation, and it lands the marker before its
+content rather than after -- a reader who arrives one block early scrolls down, one who arrives late
+has already passed it.
+
+### 52.4 The references are silent, so the instruments are too
+
+`fixtures/out/` was written before the construct existed. Compared naively, `goya2` reports 26
+invented directives and the converter looks worse at the moment it started preserving targets.
+
+`src/eval/reference-silent.ts` is the declared exception invariant 2 requires, and it is written to
+**retire itself**: the rule is per document and per construct -- *if this reference contains no
+anchor at all, ignore anchors on the produced side; if it contains even one, compare them normally.*
+Nothing has to be remembered or undone when the references gain anchors. Contract in
+`reference-silent.test.ts`: symmetric (never one side only), narrow (hides an absence, never a
+disagreement), self-retiring (a reference with one anchor adjudicates all of them).
+
+Three further folds, all of them the same kind of honesty rather than tolerance:
+
+- `plainTextOf` skips a leaf-directive line, so the conservation gate does not read `::anchor{#12}`
+  as prose the source never had.
+- The complexity budget does not count anchors. It asks "does this output model layout rather than
+  meaning"; an anchor draws nothing and is emitted exactly once per source declaration, so counting
+  `goya2`'s 26 would fail a budget the document does not strain.
+- L3 renders the marker with `display:none`, so an anchored produced document and an anchor-free
+  reference cannot differ geometrically because of it.
+
+### 52.5 Measured outcome
+
+| rung | before | after |
+|---|---|---|
+| L0 | 739 tests | **788**, typecheck clean, 0 FAILED over 28 |
+| L1 | 0.9859775035337021 | **0.9859775035337021** -- identical to the last digit |
+| L2 | 320 findings | **320**, zero anchor findings; the diff is `producedLine` shifts only |
+| L3 | 59 over 26 | **59 over 26** |
+| validator, 28 | errors column unchanged | **unchanged**; no anchor code fires |
+| produced `read()` warnings | 1 (`segovia1`, matched by its own reference) | **1**, unchanged |
+| **fragment links resolving** | **0 of 30** | **30 of 30** |
+| 946 unlabelled | 0 FAILED, 0 lost targets/images | **unchanged**; 57 errors, all `complexity-budget` |
+
+**One number moved and it is an instrument correction, not a regression.** `goya2`'s conservation
+recall reads 98.63 % where it read 98.79 %. An `<a name>` was being ledgered `REMOVED` -- "target
+carries no navigable destination" -- which was false twice over: the element is now emitted as a
+marker, and its text always carried on into the run. `collectAccountedRemovals` was therefore
+excusing **93 source shingles that were present in the output**, and with them 4 that were not. The
+denominator grew by 93, the missing set grew by 4, and both sets are the same pre-existing loss:
+`goya2`'s track lists, which its `tables=0/1` has recorded all along. Measured directly -- same
+input, only the ledger record reverted -- 98.795 % over 1660 shingles against 98.63 % over 1753.
+
+### 52.6 Generalization: 946 pages, and a defect the rule found on the way
+
+**26 documents, 95 markers, 0 FAILED, 0 lost targets, 0 lost images**, and no new validator error
+class. Three declarations refused, each recorded rather than repaired:
+
+| document | value | refusal |
+|---|---|---|
+| `duarte.htm` | `1` | declared twice |
+| `sarenko.htm` | `[1]`, `[2]` | square brackets cannot be written as a `{#…}` identifier |
+
+`sarenko` is the one open question for the author: the page links to both, so two working footnote
+jumps stay broken. Widening the identifier is a one-character change, but whether the renderer's
+shorthand parser accepts `#[1]` is not knowable from here, and a marker the parser rejects renders as
+visible text -- worse than an absent one. **Left refused, and asked rather than assumed.**
+
+**18 markers strand, all on `menu2.htm` and `menu3.htm`, and none of them is this rule's doing.**
+Proved directly: with the `name=` attribute made inert and every other byte unchanged, both documents
+produce **byte-identical output** -- 8081 characters, recall 0.8129 either way. The two alphabet
+index pages lose their letter headings to an unrelated routing defect, so the blocks the markers
+named do not exist to be marked. The sibling `menu.htm`, same markup shape, places all 11. The
+stranded-marker ledger entries are what located it; it is now the sharpest lead on those two pages.
+
+### 52.7 What is next
+
+1. **`menu2` / `menu3` text loss** -- recall 0.81 and 0.71 against `menu.htm`'s 0.95 on the same
+   markup shape. 18 stranded markers point at it and the letter headings are the visible symptom.
+2. **`sarenko`'s bracketed identifiers** -- one question for the author (§52.6), one character to fix.
+3. Then §51.6's queue, unchanged: `layout.containment.mismatch` at 13 over 9, the `paragraph.content`
+   severity ladder, and OPEN §5.0b.
+
+**The references will gain anchors.** When they do, nothing needs undoing: `reference-silent.ts`
+turns adjudication back on per document at the first marker a reference declares, and the L2 identity
+test already covers the anchored case on both sides.

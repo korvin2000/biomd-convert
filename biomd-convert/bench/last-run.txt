@@ -1,7 +1,7 @@
 llm off — fully deterministic
 REVIEW  authors.htm  recall=98.2%  errors=0  reviews=3  tables=0/0  llm=0/1
 REVIEW  barrios.htm  recall=96.4%  errors=0  reviews=4  tables=1/1  llm=0/2
-REVIEW  goya2.htm  recall=98.8%  errors=1  reviews=2  tables=0/1  llm=0/1
+REVIEW  goya2.htm  recall=98.6%  errors=1  reviews=2  tables=0/1  llm=0/1
 REVIEW  jovicic.htm  recall=99.0%  errors=0  reviews=6  tables=0/0  llm=0/2
 REVIEW  kiselev.htm  recall=99.3%  errors=0  reviews=15  tables=2/2  llm=0/5
 REVIEW  new_bach.htm  recall=97.5%  errors=0  reviews=7  tables=1/1  llm=0/2

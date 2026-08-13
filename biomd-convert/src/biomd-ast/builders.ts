@@ -15,6 +15,8 @@ import {
   ALIGN_POSITIONS,
   type AlignPosition,
   type BiomdAlign,
+  type BiomdAnchor,
+  isAnchorIdentifier,
   type BiomdColumn,
   type BiomdColumns,
   COLUMNS_COUNTS,
@@ -125,6 +127,36 @@ function rejectNested(directive: string, children: readonly BoundedContent[], fo
       );
     }
   }
+}
+
+// ---------------------------------------------------------------------------
+// anchor
+// ---------------------------------------------------------------------------
+
+/**
+ * `::anchor{#id}` — Reference §3.
+ *
+ * The identifier is refused rather than repaired. A converter reads it from an
+ * `<a name>`/`<a id>` attribute, and the thing that gives it any value at all
+ * is matching a `#…` link **character for character**; a sanitized identifier
+ * would silently stop matching, which is worse than no anchor, because a
+ * missing anchor is visible to the validator and a mismatched one is not. The
+ * caller decides what to do with a value this refuses — the conversion rule
+ * drops it and records why.
+ */
+export function makeAnchor(identifier: string): BiomdAnchor {
+  const value = typeof identifier === "string" ? identifier.trim() : "";
+  if (value === "") {
+    throw new BiomdBuildError("anchor", "identifier is required and must be non-empty");
+  }
+  if (!isAnchorIdentifier(value)) {
+    throw new BiomdBuildError(
+      "anchor",
+      `identifier ${JSON.stringify(value)} contains a character the {#…} shorthand cannot carry ` +
+        "(whitespace, or one of { } # . [ ] \" ')",
+    );
+  }
+  return { type: "biomdAnchor", identifier: value };
 }
 
 // ---------------------------------------------------------------------------

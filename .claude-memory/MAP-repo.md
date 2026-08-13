@@ -88,6 +88,7 @@ claude-project/
 | `headings.ts` | heading recovery from typography | the four recurrence detectors (§4.3) |
 | `prominence.ts` | typographic prominence off whatever evidence exists | `bodyProminenceOf`, `contentIsSubordinated`, `subordinationRecursIn` |
 | `links.ts` | link and target policy -- pure, unit-tested against the guide's example table | adjacent-anchor merge, `resourceLink` |
+| `anchors.ts` | named destinations: `<a name>` / `<a id>` → `::anchor{#id}` | harvest + claim registry; **claims are part of the speculative-emission `Snapshot`**; placement is global, after every grouping pass (§52.3) |
 | `dehyphenate.ts` | seven-rule cascade + lexicon + oracle; defaults to PRESERVE | **the pre-filter is part of the rule** (§13.2) |
 | `lexicon.ts` | corpus lexicon | a same-corpus lexicon cannot vouch for a single occurrence |
 | `text-ops.ts` | text operations | audited reversible edits |
@@ -115,7 +116,9 @@ claude-project/
 backpointers, hyphen-folding `similarityTokens`, `homeOf`/`homeKey` sub-classification) ·
 `eval/triage.ts` (three-way backing against the decoded `.htm`; `PRESENTATIONAL` vs structural) ·
 `eval/rollup.ts` (ledger, ranked `instances × severity × generality`) · `eval/score.ts` (**L1 only --
-never tune**) · `eval/facts.ts` · `eval/report.ts`.
+never tune**) · `eval/facts.ts` · `eval/report.ts` · `eval/reference-silent.ts` (**the one declared
+measurement exception**: a construct the reference tier predates is ignored per document while that
+reference contains none of it; self-retiring; only entry `anchor`).
 
 `l3/render.ts` (deterministic `.bio.md` → HTML, **one entry point, no side parameter**) ·
 `l3/geometry.ts` (row bands, reading ranks, lanes, alignment folding -- delegates to `ladom/style.ts`)

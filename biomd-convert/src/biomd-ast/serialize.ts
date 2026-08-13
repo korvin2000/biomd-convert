@@ -17,6 +17,7 @@ import { DEFAULT_PROFILE, type TargetProfile } from "./profile.js";
 import {
   DIRECTIVE_NAME,
   type BiomdAlign,
+  type BiomdAnchor,
   type BiomdColumn,
   type BiomdColumns,
   type BiomdDirective,
@@ -217,6 +218,13 @@ function makeHandlers(profile: TargetProfile): Record<string, AnyHandler> {
       exit();
       return out;
     }) as AnyHandler,
+
+    // The one directive with no fence. `::anchor{#id}` is a whole line and
+    // nothing else; `containerFlow` supplies the blank line on either side, so
+    // the marker can never be absorbed into the paragraph that follows it.
+    // Nothing is escaped here and nothing needs to be: `makeAnchor` has already
+    // refused every character that could end the shorthand early.
+    biomdAnchor: ((node: BiomdAnchor) => `::anchor{#${node.identifier}}`) as AnyHandler,
   };
 }
 
@@ -227,9 +235,14 @@ function makeHandlers(profile: TargetProfile): Record<string, AnyHandler> {
  * such runs — must not become a directive fence on the way back in. A leading
  * backslash renders as a literal colon in CommonMark and defeats the renderer's
  * line-anchored `^:::` match.
+ *
+ * The guard is on **two** colons, not three, because `::anchor{#x}` is a
+ * directive too and is one colon shorter. Widening it costs nothing on this
+ * corpus — no line in the 22 produced or 22 reference documents begins with
+ * `::` — and closes the case where source prose would be read back as a marker.
  */
 const BIOMD_UNSAFE: NonNullable<ToMarkdownOptions["unsafe"]> = [
-  { atBreak: true, character: ":", after: "::" },
+  { atBreak: true, character: ":", after: ":" },
 ];
 
 export function serialize(root: BiomdRoot, options: SerializeOptions = {}): string {

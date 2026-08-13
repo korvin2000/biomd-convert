@@ -20,6 +20,7 @@ import {
   type TargetProfile,
   downgradeNotice,
   makeAlign,
+  makeAnchor,
   makeColumn,
   makeColumns,
   makeGroupedImage,
@@ -34,6 +35,7 @@ import {
 import { type GridCell, type TableGrid, columnCells, rowCells, trailingEmptyRows } from "../ladom/grid.js";
 import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
+import { AnchorRegistry, harvestAnchors } from "./anchors.js";
 import { type Classification, classifyTable } from "./classify.js";
 import { stripLabelGlyphs } from "./headings.js";
 import {
@@ -210,6 +212,23 @@ interface Ctx {
   boundedDepth: number;
   /** Depth inside a `frame`, which is already a bounded group of its own. */
   frameDepth: number;
+  /** Named destinations the source declared, and which region has claimed each. */
+  anchors: AnchorRegistry;
+  /**
+   * Emitted block → the destinations that should precede it.
+   *
+   * A mark rather than an inserted node, because insertion has to wait until
+   * every adjacency-reading pass has run. See `anchors.ts` for why.
+   */
+  anchorMarks: WeakMap<object, string[]>;
+  /**
+   * Destinations claimed by the region currently being lowered, innermost last.
+   *
+   * Each `blocksFrom` call splices off its own suffix, so the array behaves as a
+   * stack without being one, and a claim can never be placed by the wrong
+   * container.
+   */
+  anchorPending: string[];
 }
 
 /**
@@ -228,6 +247,9 @@ interface Snapshot {
   warnings: number;
   counter: number;
   tables: number;
+  /** Destinations spoken for at the moment of the attempt. See `anchors.ts`. */
+  anchorClaims: boolean[];
+  anchorPending: number;
 }
 
 function begin(ctx: Ctx): Snapshot {
@@ -239,6 +261,8 @@ function begin(ctx: Ctx): Snapshot {
     warnings: ctx.warnings.length,
     counter: ctx.counter.n,
     tables: ctx.tables.length,
+    anchorClaims: ctx.anchors.claims(),
+    anchorPending: ctx.anchorPending.length,
   };
 }
 
@@ -250,6 +274,11 @@ function rollback(ctx: Ctx, snapshot: Snapshot): void {
   ctx.warnings.length = snapshot.warnings;
   ctx.counter.n = snapshot.counter;
   ctx.tables.length = snapshot.tables;
+  // A rejected attempt gives its destinations back, so the shape that is
+  // actually emitted can claim them. `min`, because a nested lowering may have
+  // already spliced its own suffix off the pending list.
+  ctx.anchors.restore(snapshot.anchorClaims);
+  ctx.anchorPending.length = Math.min(ctx.anchorPending.length, snapshot.anchorPending);
 }
 
 const HEADING_TAGS: Record<string, number> = { h1: 1, h2: 2, h3: 3, h4: 4, h5: 5, h6: 6 };
@@ -259,6 +288,7 @@ export function recoverStructure(
   grids: readonly TableGrid[],
   options: StructureOptions,
 ): StructureResult {
+  const harvest = harvestAnchors(root);
   const ctx: Ctx = {
     options: { layoutFidelity: "simplified", ...options },
     ledger: [],
@@ -288,11 +318,46 @@ export function recoverStructure(
     tableDepth: 0,
     boundedDepth: 0,
     frameDepth: 0,
+    anchors: new AnchorRegistry(harvest),
+    anchorMarks: new WeakMap(),
+    anchorPending: [],
   };
+
+  for (const drop of harvest.rejected) {
+    ctx.ledger.push(removed(drop.nodeId, `anchor #${drop.identifier} not emitted: ${drop.reason}`));
+  }
 
   ctx.subordinationRecurs = subordinationRecursIn(root, ctx.proseItalic);
 
-  const children = blocksFrom(root, ctx);
+  const lowered = blocksFrom(root, ctx);
+
+  // Markers go in **once, here, over the finished tree** — never inside
+  // `blocksFrom`, and the difference is not stylistic. A grouping pass runs at
+  // every level, and it groups across the blocks its *children* produced: an
+  // anchor inserted at the level that claimed it is a sibling by the time the
+  // level above looks, and adjacency is what those passes read. Placed one level
+  // too early, `goya2`'s 26 album markers stood between six covers and the
+  // caption lines that name them, unbinding three `::: images` groups and six
+  // captions. Placed here, no pass can see one.
+  const placed = new Set<string>();
+  const children = insertAnchors(lowered, ctx, placed);
+
+  // Two ways a destination fails to reach the output, both recorded, neither
+  // guessed at. A marker put in the wrong place is worse than an absent one:
+  // absent, the validator reports the `#x` link as unreachable and a human can
+  // see it; misplaced, it silently sends the reader somewhere else.
+  for (const orphan of ctx.anchors.unclaimed()) {
+    ctx.ledger.push(
+      removed(orphan.nodeId, `anchor #${orphan.identifier} not emitted: the content it named produced no block`),
+    );
+  }
+  for (const identifier of ctx.anchorPending) {
+    if (placed.has(identifier)) continue;
+    ctx.ledger.push(
+      review(`anchor:#${identifier}`, `anchor #${identifier} was claimed but the block it named did not survive lowering`),
+    );
+  }
+
   return {
     root: { type: "root", children },
     ledger: ctx.ledger,
@@ -318,7 +383,7 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   ctx.inCaptionContext = isCaptionContext(node, ctx);
   ctx.inCenteredBlock = node.kind === "element" && prominenceOf(node).centered;
 
-  const flushInline = (): void => {
+  const emitInline = (): void => {
     if (inlineRun.length === 0) return;
 
     // Furniture first: a spacer, a nav arrow or a rule image is not content,
@@ -396,6 +461,25 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     out.push(...blocksFromPhrasing(phrasing, ctx, out[out.length - 1], floats));
   };
 
+  /**
+   * Lower one inline run, and attach any destination declared inside it to the
+   * first block that run produced.
+   *
+   * The claim is taken *before* lowering, because lowering empties `inlineRun`,
+   * and released again when the run turned out to carry no block at all — a run
+   * of nothing but spacer images, for instance. Releasing rather than dropping
+   * lets the element above sweep the destination instead.
+   */
+  const flushInline = (): void => {
+    if (inlineRun.length === 0) return;
+    const claimed = ctx.anchors.claimInRun(inlineRun);
+    const before = out.length;
+    emitInline();
+    if (claimed.length === 0) return;
+    if (out.length > before) markAnchors(ctx, out[before] as BiomdContent, claimed);
+    else ctx.anchors.release(claimed);
+  };
+
   for (const child of node.children) {
     if (child.kind === "comment") continue;
     if (child.kind === "text") {
@@ -431,7 +515,8 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   // Subordination before alignment: a quoted letter is one block quote whose
   // interior alignment is the quote's own business, and wrapping its paragraphs
   // in `align` first would leave the quote holding directives instead of prose.
-  return bindCaptions(
+  const ungrouped = [...out];
+  const grouped = bindCaptions(
     groupAlignedRuns(
       groupSubordinatedRuns(
         groupSpannedQuotation(groupBulletedItems(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx))),
@@ -441,6 +526,176 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     ),
     ctx,
   );
+  return rehomeAnchors(ungrouped, grouped, ctx);
+}
+
+/**
+ * Containers an anchor may sit *inside*.
+ *
+ * Everything absent from this set is a construct whose interior cannot hold a
+ * directive line — a table cell, a nav item, a list, a blockquote whose `> `
+ * prefix defeats the renderer's line-anchored match — or one whose interior is
+ * type-constrained to something else. A destination declared in any of those
+ * hoists to just before the construct instead.
+ *
+ * `biomdColumns` is deliberately **not** here even though it is a container: its
+ * body admits `column` children only, and `read()` records that the target
+ * promotes any other line to a synthetic first column. Anchors inside a grid are
+ * pushed down into the column that owns them; see {@link insertAnchors}.
+ */
+const ANCHOR_CONTAINERS = new Set(["biomdAlign", "biomdColumn", "biomdFrame", "biomdLead"]);
+
+/** Note that `block` is preceded by these destinations, and record the claim. */
+function markAnchors(ctx: Ctx, block: BiomdContent, identifiers: readonly string[], record = true): void {
+  if (identifiers.length === 0) return;
+  const existing = ctx.anchorMarks.get(block);
+  if (existing) existing.push(...identifiers);
+  else ctx.anchorMarks.set(block, [...identifiers]);
+  if (record) ctx.anchorPending.push(...identifiers);
+}
+
+/**
+ * Move a mark off a block a grouping pass consumed, onto the block that took its
+ * place.
+ *
+ * The passes above replace rather than mutate: a caption line folded into an
+ * image's `caption:` leaves *two* dead objects behind — the caption and the
+ * image, which was rebuilt to carry it. A mark on either one would be lost, and
+ * on `goya2` six of twenty-six markers were: exactly the six albums whose title
+ * line became its cover's caption.
+ *
+ * The repair needs no knowledge of which pass ran. Every one of them replaces a
+ * contiguous run in place, so the replacement for a dead block sits immediately
+ * after the last block **before** it that survived. Finding that survivor and
+ * taking its next sibling therefore names the replacement without naming the
+ * transformation — and lands the marker before its content rather than after it,
+ * which is the direction that matters: a reader who arrives one block early
+ * scrolls down, and one who arrives one block late has already missed it.
+ */
+function rehomeAnchors(before: readonly BiomdContent[], after: BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const live = new Set<object>();
+  collectNodes(after, live);
+  if (!before.some((node) => !live.has(node) && hasAnyMark(node, ctx))) return after;
+
+  for (let i = 0; i < before.length; i += 1) {
+    const node = before[i] as BiomdContent;
+    if (live.has(node)) continue;
+    const marks = [...takeMarks(node, ctx), ...takeDeepMarks(node, ctx)];
+    if (marks.length === 0) continue;
+    const target = rehomeTarget(before, i, after, live);
+    if (target) markAnchors(ctx, target, marks, /* record */ false);
+  }
+  return after;
+}
+
+function rehomeTarget(
+  before: readonly BiomdContent[],
+  index: number,
+  after: readonly BiomdContent[],
+  live: ReadonlySet<object>,
+): BiomdContent | null {
+  for (let j = index - 1; j >= 0; j -= 1) {
+    const survivor = before[j] as BiomdContent;
+    if (!live.has(survivor)) continue;
+    const at = locate(after, survivor);
+    if (!at) continue;
+    // The replacement follows the survivor. When the survivor is last in its
+    // list there is nothing after it, and the mark goes on the survivor itself:
+    // one block early, never one block late.
+    return (at.list[at.index + 1] ?? at.list[at.index]) as BiomdContent;
+  }
+  return (after[0] as BiomdContent | undefined) ?? null;
+}
+
+function locate(
+  nodes: readonly BiomdContent[],
+  target: object,
+): { list: readonly BiomdContent[]; index: number } | null {
+  for (let i = 0; i < nodes.length; i += 1) {
+    const node = nodes[i] as BiomdContent;
+    if (node === target) return { list: nodes, index: i };
+    const found = locate(anchorChildrenOf(node), target);
+    if (found) return found;
+  }
+  return null;
+}
+
+function collectNodes(nodes: readonly BiomdContent[], into: Set<object>): void {
+  for (const node of nodes) {
+    into.add(node);
+    collectNodes(anchorChildrenOf(node), into);
+  }
+}
+
+function hasAnyMark(node: BiomdContent, ctx: Ctx): boolean {
+  if (ctx.anchorMarks.has(node)) return true;
+  return anchorChildrenOf(node).some((child) => hasAnyMark(child, ctx));
+}
+
+function insertAnchors(nodes: readonly BiomdContent[], ctx: Ctx, placed: Set<string>): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  for (const node of nodes) {
+    const own = takeMarks(node, ctx);
+
+    if (node.type === "biomdColumns") {
+      // Nothing may stand between `columns` and `column`. A mark on a column is
+      // therefore placed at the top of that column's own body.
+      for (const column of node.children) {
+        const inside = takeMarks(column, ctx);
+        column.children = [
+          ...anchorNodes(inside, placed),
+          ...insertAnchors(column.children as BiomdContent[], ctx, placed),
+        ] as typeof column.children;
+      }
+      out.push(...anchorNodes(own, placed), node);
+      continue;
+    }
+
+    if (ANCHOR_CONTAINERS.has(node.type)) {
+      const container = node as { children: BiomdContent[] };
+      // Mutated rather than copied: several passes above key WeakMaps on node
+      // identity, and a replacement node would silently lose its alignment,
+      // subordination and caption bindings.
+      container.children = insertAnchors(container.children, ctx, placed);
+      out.push(...anchorNodes(own, placed), node);
+      continue;
+    }
+
+    out.push(...anchorNodes([...own, ...takeDeepMarks(node, ctx)], placed), node);
+  }
+  return out;
+}
+
+function anchorNodes(identifiers: readonly string[], placed: Set<string>): BiomdContent[] {
+  const out: BiomdContent[] = [];
+  for (const identifier of identifiers) {
+    if (placed.has(identifier)) continue;
+    placed.add(identifier);
+    out.push(makeAnchor(identifier));
+  }
+  return out;
+}
+
+function takeMarks(node: object, ctx: Ctx): string[] {
+  const marks = ctx.anchorMarks.get(node);
+  if (!marks) return [];
+  ctx.anchorMarks.delete(node);
+  return marks;
+}
+
+/** Every mark below `node`, cleared, in reading order. */
+function takeDeepMarks(node: BiomdContent, ctx: Ctx): string[] {
+  const out: string[] = [];
+  for (const child of anchorChildrenOf(node)) {
+    out.push(...takeMarks(child, ctx), ...takeDeepMarks(child, ctx));
+  }
+  return out;
+}
+
+function anchorChildrenOf(node: BiomdContent): BiomdContent[] {
+  if (node.type === "biomdNav") return [node.list as unknown as BiomdContent];
+  const children = (node as { children?: unknown }).children;
+  return Array.isArray(children) ? (children as BiomdContent[]) : [];
 }
 
 /**
@@ -2812,7 +3067,28 @@ function isInline(node: LadomNode): boolean {
 }
 
 /** Convert one block-level element. */
+/**
+ * Lower one block element, then sweep up any destination nothing inside it
+ * claimed.
+ *
+ * The sweep is what rescues an anchor from a place a directive cannot go. A
+ * `<a name>` inside a cell of a region that became a Markdown table is never
+ * seen by `blocksFrom`, because the cell was lowered as inline content; here the
+ * table has just finished emitting, so the marker attaches to the table and
+ * lands immediately before it. The same path covers a nav item, a list item and
+ * an image's enclosing link.
+ */
 function blockFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
+  const produced = lowerBlock(el, ctx);
+  const claimed = ctx.anchors.claimIn(el);
+  if (claimed.length > 0) {
+    if (produced.length > 0) markAnchors(ctx, produced[0] as BiomdContent, claimed);
+    else ctx.anchors.release(claimed);
+  }
+  return produced;
+}
+
+function lowerBlock(el: LadomNode, ctx: Ctx): BiomdContent[] {
   // A heading the typography carried rather than a tag (see headings.ts).
   const recovered = Number.parseInt(el.attrs["data-biomd-heading"] ?? "", 10);
   if (Number.isFinite(recovered) && recovered >= 1 && recovered <= 6) {
@@ -3398,9 +3674,18 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx, keepEdgeSpace = false
       case "a": {
         const href = node.attrs["href"] ?? "";
         const rewritten = rewriteTarget(href, ctx.options.links);
+        const declared = ctx.anchors.declaredBy(node.id);
         if (rewritten.kind === "unsafe" || rewritten.href === "") {
-          // A link whose only destination was a script has no destination.
-          ctx.ledger.push(removed(node.id, "target carries no navigable destination"));
+          // An `<a name="x">` is not a link that lost its destination — it *is*
+          // the destination, and the marker for it has already been claimed by
+          // the enclosing block. Recording it as a removal would tell the
+          // conservation gate to excuse the text this element wraps, which is
+          // exactly the text that carries on into the run below.
+          ctx.ledger.push(
+            declared.length > 0
+              ? emitted(node.id, `anchor:#${declared.join(",#")}`)
+              : removed(node.id, "target carries no navigable destination"),
+          );
           out.push(...inlineFrom(node.children, ctx));
           break;
         }
@@ -4874,7 +5159,12 @@ function layoutFrom(
         // multi-block lane apart from its neighbour inside an ordinary layout
         // region, and their references keep that `align`.
         const bounded: BiomdContent[] = kept.filter(isBounded);
-        const grouped: BiomdContent[] = pager ? bounded : groupAlignedRunsCommitted(bounded, ctx, cell.node);
+        // The second grouping pass a lane's content goes through, and the only
+        // one outside `blocksFrom`'s chain — so it needs the same repair, for
+        // the same reason: it rebuilds blocks rather than mutating them.
+        const grouped: BiomdContent[] = pager
+          ? bounded
+          : rehomeAnchors(bounded, groupAlignedRunsCommitted(bounded, ctx, cell.node), ctx);
         row.push({
           blocks: grouped.filter(isBounded),
           folded: inner.filter((block) => block.type === "biomdNav"),
@@ -5316,7 +5606,12 @@ function decomposeFrom(grid: TableGrid, ctx: Ctx, el: LadomNode, alreadyLedgered
 
   rows.forEach((row, index) => {
     if (index > 0 && separateAt(index)) out.push(markDerivedRule());
-    out.push(...(imageRowFrom(row) ?? row));
+    const grouped = imageRowFrom(row);
+    // `makeGroupedImage` rebuilds each picture, so a destination attached to one
+    // has to move onto the group. A `::: images` body admits images only, which
+    // is why the marker ends up before the whole row rather than before the
+    // cover it named — the closest place a grid of pictures can carry one.
+    out.push(...(grouped === null ? row : rehomeAnchors(row, grouped, ctx)));
   });
 
   if (!alreadyLedgered) ctx.ledger.push(mergedInto(el.id, nextId(ctx, "flow")));

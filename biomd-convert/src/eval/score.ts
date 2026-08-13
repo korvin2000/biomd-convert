@@ -12,6 +12,7 @@
  */
 import { shingles } from "../convert-core/conservation.js";
 import { type DocumentFacts, type TableFacts, extractFacts, foldTarget, visibleText } from "./facts.js";
+import { foldSilentDirectives } from "./reference-silent.js";
 
 export interface AxisScore {
   recall: number;
@@ -65,7 +66,12 @@ export function scoreDocuments(name: string, expectedSource: string, actualSourc
   const headings = multisetScore(expected.headings, actual.headings);
   const links = multisetScore(expected.links.map(foldTarget), actual.links.map(foldTarget));
   const images = multisetScore(expected.images.map(foldTarget), actual.images.map(foldTarget));
-  const directives = multisetScore(flattenCounts(expected.directives), flattenCounts(actual.directives));
+  // A construct the reference tier predates is excluded from the inventory on
+  // *both* sides, per document, and only while that reference stays silent about
+  // it — see `reference-silent.ts` for why that is a truthfulness fix and not a
+  // thumb on the scale.
+  const inventory = foldSilentDirectives(expected.directives, actual.directives);
+  const directives = multisetScore(inventory.expected, inventory.actual);
   const tableCells = multisetScore(
     expected.tables.flatMap((t) => t.cells),
     actual.tables.flatMap((t) => t.cells),
@@ -94,12 +100,6 @@ export function scoreDocuments(name: string, expectedSource: string, actualSourc
     actualTables: actual.tables,
     overall,
   };
-}
-
-function flattenCounts(counts: ReadonlyMap<string, number>): string[] {
-  const out: string[] = [];
-  for (const [name, n] of counts) for (let i = 0; i < n; i += 1) out.push(name);
-  return out;
 }
 
 export function multisetScore(expected: readonly string[], actual: readonly string[]): AxisScore {

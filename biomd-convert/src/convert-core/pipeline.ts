@@ -547,6 +547,11 @@ export function plainTextOf(markdown: string): string {
   let inDirectiveHeader = false;
 
   for (const line of lines) {
+    // A leaf directive is a whole line of syntax carrying no reader-visible
+    // text. Left in, `::anchor{#12}` would reach the conservation gate as prose
+    // the source never had, and a page with a long fragment index would report
+    // dozens of invented words.
+    if (/^::[A-Za-z][\w-]*\{[^}]*\}\s*$/u.test(line)) continue;
     if (/^:::\s*[A-Za-z][\w-]*\s*$/u.test(line)) {
       inDirectiveHeader = true;
       continue;

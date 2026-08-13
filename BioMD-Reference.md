@@ -29,6 +29,7 @@ Canonical output SHOULD use compact, unambiguous syntax.
 | table | GFM pipe table | alignment: `:---`, `---:`, `:---:` |
 | separator | `---` or `***` | thematic/visual separation; the two spellings are **the same construct** |
 | hard break | trailing `\` | inside one logical block only |
+| named destination | `::anchor{#id}` | invisible marker a `#id` link arrives at; renders nothing (§2, §3) |
 | code | `` `x` `` / fenced ``` or `~~~` | preserve real `<code>/<pre>` content |
 | escape | `\*`, `\#`, … | literal syntax punctuation |
 
@@ -58,8 +59,17 @@ Optional Markdown body.
 
 Names/properties MUST be lowercase ASCII; one property/line; value = rest of line; not YAML; blank line separates properties/body; no indentation; fences MUST balance. Unknown directive/property/value SHOULD warn and retain readable content.
 
+**Leaf directives** have no body and are written on a line of their own, with attributes in braces and no closing fence:
+
+```md
+::anchor{#id}
+```
+
+Two colons, not three. The line MUST contain nothing else — a line that continues past the closing brace is prose, not a directive, and a generator MUST escape prose that would otherwise begin with `::`. `#id` is the identifier shorthand. `anchor` is the only leaf directive; an unknown one SHOULD warn and be preserved.
+
 | Directive | Required | Optional | Body |
 |---|---|---|---|
+| `anchor` | `#id` | — | none (leaf form) |
 | `lead` | — | — | Markdown + `align` |
 | `align` | `position` | — | Markdown + leaf media |
 | standalone `image` | `src`,`position`,`size` | `alt`,`caption`,`link`,`frame` | none |
@@ -72,15 +82,32 @@ Names/properties MUST be lowercase ASCII; one property/line; value = rest of lin
 | `frame` | — | `frame`,`title` | Markdown + leaf media + `align` |
 | `signature` | — | — | short Markdown |
 
-Leaf media = `image`,`images`,`document`.
+Leaf media = `image`,`images`,`document`. An `anchor` is a leaf directive but not leaf *media*: it carries no content, so it is admitted anywhere block content is, alongside whatever is already there rather than instead of it.
 
 Allowed nesting: `images→image`; `columns→column`; `column→Markdown+leaf+align+nav`; `frame→Markdown+leaf+align`; `lead→Markdown+align`; `align→Markdown+leaf+frame`.
 
 Forbidden: `columns` in `column`; nested `frame`; `nav` in `frame`; `columns|nav` in `align`; arbitrary deeper nesting. Invalid nesting MUST degrade in place to readable content, never deletion.
 
+An `anchor` MUST NOT appear where a line-anchored fence would be prefixed or where the body admits only one child kind: not inside a blockquote or list item (the `> ` / indent prefix defeats the match), not between `columns` and `column` (the line is promoted to a synthetic first column), and not inside `images`, `nav` or a table cell. In every such case the marker belongs immediately **before** the enclosing construct.
+
 **`align` and `frame` together.** `frame` inside `align` is permitted and is not an error, but it accomplishes nothing: a frame occupies the full width of its container, so the alignment has nothing to act on. `align` inside `frame` is the intended shape and is what a bordered notice with centred text should be written as. A converter SHOULD emit `frame→align`; a validator MAY advise on `align→frame` but MUST NOT reject it, and MUST NOT rewrite it.
 
 ## 3. Directive behavior
+
+### `anchor`
+```md
+::anchor{#works}
+
+## Произведения
+```
+
+A named destination and nothing else. It renders nothing, occupies no space and is announced to nobody; the only thing that can observe it is a link arriving at `#works`. It is the BioMD form of HTML's `<a name="x">` / `<a id="x">`.
+
+- The identifier MUST be non-empty and MUST NOT contain whitespace or any of `{ } # . [ ] " '` — every character that would end the shorthand early or start another attribute. It is otherwise unrestricted, and MAY be non-Latin.
+- Identifiers MUST be unique within a document. A fragment names one place; a second definition of the same identifier is unreachable and which one a renderer selects is unspecified.
+- The identifier is a **target**, not content — §0 ranks it directly behind visible text. A converter MUST copy it verbatim from the source and MUST NOT invent, transliterate or sanitize one: a repaired identifier stops matching the link that was meant to reach it, and a marker that silently points nowhere is worse than an absent one, which a validator can still see.
+- It SHOULD immediately precede the block it names. Where the source declares one in a position no block can occupy — mid-sentence, inside a table cell, inside a list item — it SHOULD be hoisted to just before the enclosing block. Earlier, never later: a reader who arrives one block early scrolls down, one who arrives late has already passed it.
+- A `#x` link with no `::anchor{#x}` in the same document navigates nowhere. A validator SHOULD report it and MUST NOT treat it as an error, since a document may legitimately predate the construct.
 
 ### `lead`
 Prominent intro block. MAY represent a semantic lead **or** a distinctly styled introductory source region.
@@ -169,6 +196,7 @@ Use direct structure first; visual fallback second.
 | `ul/ol/li` | lists |
 | checkboxes | task list |
 | `a[href]` | link; preserve target |
+| `a[name]` / `a[id]` | `::anchor{#id}`; the element's own content simply follows it |
 | simple `img` | Markdown image |
 | image + caption/link/layout/frame | `image` |
 | gallery/group | `images` |
@@ -204,7 +232,7 @@ Before output verify:
 2. source/mobile order coherent;
 3. no raw HTML/CSS/JS/JSX/MDX;
 4. directive fences/nesting/required fields/enums valid;
-5. footnote refs resolve;
+5. footnote refs resolve, anchor identifiers are unique, and every `#x` link has an `::anchor{#x}`;
 6. catalogue slugs are indexed;
 7. linked images retain `src` + distinct `link`;
 8. no fabricated factual captions/headings/targets;

@@ -175,6 +175,26 @@ export interface BiomdSignature extends BiomdBase {
   children: Paragraph[];
 }
 
+/**
+ * Reference §2, §3 — `::anchor{#id}`. A named destination and nothing else.
+ *
+ * The only **leaf** directive in the grammar: it is written on one line in the
+ * `::name{…}` shorthand rather than as a `:::` fence pair, because it has no
+ * body to fence. It is the BioMD form of HTML's `<a name="x">` / `<a id="x">`,
+ * it renders nothing, and it occupies no space — a reader never sees it, and
+ * the only thing that can observe it is a `#x` link arriving at the document.
+ *
+ * The identifier is therefore *not* content: it is a target, and Reference §0
+ * ranks targets directly behind visible text. Emitting one invents nothing
+ * (invariant 4) because the identifier is always copied from a source
+ * attribute; there is no case in which a converter may choose one.
+ */
+export interface BiomdAnchor extends BiomdBase {
+  type: "biomdAnchor";
+  /** Fragment identifier, without the leading `#`. See {@link ANCHOR_IDENTIFIER}. */
+  identifier: string;
+}
+
 /** Any BioMD directive node. */
 export type BiomdDirective =
   | BiomdLead
@@ -186,7 +206,8 @@ export type BiomdDirective =
   | BiomdColumn
   | BiomdNav
   | BiomdFrame
-  | BiomdSignature;
+  | BiomdSignature
+  | BiomdAnchor;
 
 export type BiomdDirectiveType = BiomdDirective["type"];
 
@@ -211,7 +232,15 @@ export type BiomdDirectiveType = BiomdDirective["type"];
  */
 export type BoundedContent = BlockContent | DefinitionContent | BiomdLeafDirective;
 
-/** Directives permitted in a bounded context (leaf media only). */
+/**
+ * Directives permitted in a bounded context (leaf media only).
+ *
+ * `anchor` is not listed and does not need to be: it is admitted everywhere
+ * block content is, through the `BlockContentMap` augmentation below, which is
+ * the whole point of an invisible marker. "Leaf media" names the three
+ * constructs a container may hold *instead of* Markdown; an anchor is held
+ * *alongside* whatever is already there.
+ */
 export type BiomdLeafDirective = BiomdImage | BiomdImages | BiomdDocument;
 
 /** Top-level document content. */
@@ -237,6 +266,7 @@ declare module "mdast" {
     biomdNav: BiomdNav;
     biomdFrame: BiomdFrame;
     biomdSignature: BiomdSignature;
+    biomdAnchor: BiomdAnchor;
   }
   interface BlockContentMap {
     biomdLead: BiomdLead;
@@ -248,6 +278,7 @@ declare module "mdast" {
     biomdNav: BiomdNav;
     biomdFrame: BiomdFrame;
     biomdSignature: BiomdSignature;
+    biomdAnchor: BiomdAnchor;
   }
 }
 
@@ -262,7 +293,32 @@ export const DIRECTIVE_TYPES: readonly BiomdDirectiveType[] = [
   "biomdNav",
   "biomdFrame",
   "biomdSignature",
+  "biomdAnchor",
 ] as const;
+
+/**
+ * Directives written on one line as `::name{…}` rather than as a fence pair.
+ *
+ * A leaf directive has no body by construction, so there is nothing for a
+ * closing `:::` to close. Kept as a set rather than a single name because the
+ * shorthand is a grammar production, not a property of `anchor`.
+ */
+export const LEAF_DIRECTIVE_TYPES: readonly BiomdDirectiveType[] = ["biomdAnchor"];
+
+/**
+ * What may appear between `{#` and `}`.
+ *
+ * Every character that would end the shorthand, start another attribute, or
+ * split the line is excluded; everything else — including Cyrillic, which this
+ * corpus's `<a name>` values do use — is admitted, because a fragment
+ * identifier is matched literally against the `#…` of a link and narrowing it
+ * further would break the pairing this construct exists to preserve.
+ */
+export const ANCHOR_IDENTIFIER = /^[^\s{}#.[\]"']+$/u;
+
+export function isAnchorIdentifier(value: string): boolean {
+  return ANCHOR_IDENTIFIER.test(value);
+}
 
 /** Maps an AST node type to the `::: name` written in the document. */
 export const DIRECTIVE_NAME: Record<BiomdDirectiveType, string> = {
@@ -276,6 +332,7 @@ export const DIRECTIVE_NAME: Record<BiomdDirectiveType, string> = {
   biomdNav: "nav",
   biomdFrame: "frame",
   biomdSignature: "signature",
+  biomdAnchor: "anchor",
 };
 
 /** Inverse of {@link DIRECTIVE_NAME}. */
@@ -295,6 +352,9 @@ export const DIRECTIVE_PROPERTIES: Record<BiomdDirectiveType, readonly string[]>
   biomdNav: ["title", "active"],
   biomdFrame: ["frame", "title"],
   biomdSignature: [],
+  // The identifier is carried by the `{#…}` shorthand, not by a property line;
+  // `anchor` has no property header at all.
+  biomdAnchor: [],
 };
 
 export const IMAGE_POSITIONS: readonly ImagePosition[] = ["left", "right", "center", "full"];
