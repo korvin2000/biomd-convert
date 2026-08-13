@@ -6034,8 +6034,7 @@ remains last; §40.6 already reverted three broad replacements.
 ## 46. The unlabelled corpus: 946 pages as a generalization instrument (2026-08-12)
 
 The author supplied `biomd-convert/fixtures/gen_corpus/` -- **946 source pages with no references**,
-disjoint from the 28 (the 15 pages the `new_*`/`xtra_*` fixtures were drawn from sit in
-`fixtures/aaaaaaaaaaaaaaa/` and are excluded). The brief: treat it as an unlabelled generalization
+disjoint from the 28. The brief: treat it as an unlabelled generalization
 corpus, never as ground truth; cluster by mechanism rather than by file; find inconsistencies where
 equivalent source structures produce different Markdown; and never invent expected Markdown to match
 current output.

@@ -32,7 +32,7 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 | regression corpus | the original **13** (`authors barrios borislova goya2 jovicic kiselev news news_2007 pavlov_azancheev segovia segovia1 tarrega williams2`) | the floor. Never regress it |
 | refinement set | **9** `new_*` + **4** `xtra_*` (`albeniz karta5 rodrigo shelechov`) | where the work happens |
 | holdout | **`xtra_oyanguren`**, **`xtra_mikulka`** -- sources in `fixtures/html/`, references in `fixtures/out2/` | never read, diff, score or tune against them. **Spent since §43.7** |
-| **generalization corpus** | **946** sources in `fixtures/gen_corpus/`, **no references at all** (the 15 pages the fixtures came from are held out in `fixtures/aaaaaaaaaaaaaaa/`) | **blind by construction** — nothing can be tuned to a page with no reference. Rung = conservation + validator + FAILED + routing consistency, **never** a similarity score. PROGRESS §46 |
+| **generalization corpus** | **946** sources in `fixtures/gen_corpus/`, **no references at all** | **blind by construction** — nothing can be tuned to a page with no reference. Rung = conservation + validator + FAILED + routing consistency, **never** a similarity score. PROGRESS §46 |
 
 > **Which count an instrument reports tells you whether the holdout leaked.** `eval`, `diff` and `l3`
 > all enumerate **`expectedDir`** (`fixtures/out/`), so they must say **26**; `corpus run` and
