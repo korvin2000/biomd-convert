@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-13**, after PROGRESS §49.
+Last touched **2026-08-13**, after PROGRESS §50.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,19 +32,26 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-13, after PROGRESS §49:**
+**Current state, *measured* 2026-08-13, after PROGRESS §50:**
 
 | rung | value |
 |---|---|
-| L0 | **713 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **725 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
-| L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
+| L2 | **316 findings -- 199 converter-defect** · 24 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 | **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
+| **wrap hyphens surviving** | **6 over 6** of the 946 (was 167/108); **0** of the 28 produced (was 7/7) |
 
-**Next:** re-probe §46.9's remaining corpus-only routing mechanisms. §49 closed the coherent adjacent
-gallery-caption residue without widening `DATA` routing; the broad reference frontier is unchanged.
+> **L2 rose 6 with converter-defect flat at 199.** All six are `paragraph.hyphenation.joined`, triaged
+> **ambiguous**, on the six references that keep a wrap hyphen the dictionary rejects. §50.5 states the
+> tradeoff: a priority-6 reference-fidelity loss bought with a priority-5 general gain. Quote the
+> split or the number reads as damage that did not happen.
+
+**Next:** the proper-name hyphenation tail (§50.6) needs a stem-tolerant lexicon lookup — it is the
+only thing that closes the three remaining reference-attested `paragraph.hyphenation.unjoined`
+defects. The broad reference frontier and every routing question are unchanged.
 
 > **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
 > left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
@@ -121,22 +128,32 @@ lost. · A picture lane beside a lane of matter is a lane (`a251a96`): `planData
 > writes `::: images`. **L1 did not move at all**: `goya2` sat at 99.5 on both sides. The two
 > refusals are now told apart by name, `media-lane` vs `media-catalog`, not by degree.
 
+**Landed in §50, one commit each.** A break the language forbids is still a break (`c5f37bc`): rule 6
+required a legal Hyphenopoly break *and* dictionary membership, and the break position is the 1998
+typist's choice, not the language's — rule 6b puts the second signal on the fragments instead (a wrap
+cuts one word into pieces that are not words; a compound joins two things that are). · A break markup
+put in a box of its own (`75b9b24`): `изда<span lang="en-us">-</span>вал` splits the word across three
+IR nodes, so no node holds a hyphen between two letters and the pre-filter skipped every one.
+**946: surviving wrap hyphens 167 → 6; the 28 produced 7 → 0; 115 documents changed and every applied
+edit is a hyphen removal.**
+
 **Next, in order. Probe before committing (SKILL §6).**
-0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — but
-   the routing survey re-run in §47.6 keeps the question open on the 946: `DATA`→flow is **34
-   `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, and `LAYOUT`→flat
-   flow is **2927** against 62 `::: columns`. `too-small` is the largest reachable class.
-1. **Closed in §49: one visible caption lane per gallery image.** Three post-§48 `too-small`/flat-flow
-   residues (`anido`, `buek`, `rom_lebedev`) had an `images` row immediately followed by equally many
-   ordered caption lanes, so every caption printed twice. Exact cardinality, centred text-only lanes
-   and bidirectional ordered-word coverage bind the visible wording into the images. The full 946
-   diff changed exactly those three documents; `domeniconi`, `galbraith`, `morkov` and `sor2` are
-   unchanged controls. Do not reopen as generic `DATA`→layout.
-2. **A layout fallback for an unplannable DATA table — remaining heterogeneous population (§46.9).**
-   Re-probe after subtracting §48/§49 caption mechanisms. A DATA table that cannot be planned still
-   flattens to flow, while a LAYOUT table of the same shape can reach `::: columns`; `LAYOUT t2`
-   splitting 17 flat against 5 `::: columns` is the related consistency question. Do not widen
-   `isSingleRecordRow` or use text length: both have recorded counterexamples.
+0. **Nothing table-shaped is both open and general *among the 26*.** §43.9 still holds there — and the
+   post-§50 routing survey leaves the corpus question exactly where §47.6 did: `DATA`→flow is **27
+   `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, `LAYOUT`→flat flow
+   **2048** against 14 `::: columns`, `UNKNOWN`→flat flow **974** against 56.
+1. **The proper-name hyphenation tail, §50.6 — the one open item with reference backing.**
+   `Бориславовна` (`borislova`), `Феррере` (`news_2007`), `аккомпанементов` (`xtra_shelechov`) are
+   still `paragraph.hyphenation.unjoined` **converter-defects**: the reference joined and we did not.
+   Hunspell rejects all three, and rule 4 cannot help because the lexicon indexes exact forms
+   (`lex(joined)=0`). A stem-tolerant lexicon lookup is the next signal; measure its false-friend rate
+   first. Corpus counterparts: `Чайковского` ×3, `Петропавловске`.
+2. ~~**A layout fallback for an unplannable DATA table.**~~ **Downgraded in §50.1 — stop returning to
+   it.** Probed four times now. `too-small` is 27 instances in four unrelated shapes: `1×3` 7, `1×2` 7,
+   `1×4` 3, `1×5` 1, and 9 that are a one-column table where flattening is correct. §48/§49 took the
+   coherent caption subsets. Do not widen `isSingleRecordRow` or use text length: both have recorded
+   counterexamples. `LAYOUT t2` splitting flat against `::: columns` remains the only live form of the
+   question.
 3. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
    directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
    `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or
@@ -169,6 +186,16 @@ bumblebee strip, its merged score table (1-to-1, §43.6) and its heading convent
 matrix) · **every wholly empty row is padding** (§43.4 — interior empty rows are separators; the
 general form cost L1 98.5 → 96.0 and 8 → 13 criticals) · **column alignment from a right-placed
 table** (§43.5 — 13 documents wrap a table in `<div align="right">` and 12 references write `| - |`).
+
+**Killed in §50** — reopen on new measurement only:
+**the adjacent title/caption echo is a defect** (§50.1 — 141 of the 174 produced echoes are the
+portrait caption repeating the document title, and `fixtures/out/barrios.bio.md` writes exactly that
+shape; 6 mid-document echoes remain, in 6 different shapes on 6 documents) ·
+**`::: align` sometimes wraps nothing** (§50.1 — the probe was misreading a `Location: …` body line as
+a property line; `read()` over all 946 reports 0 empty directive nodes and 0 warnings) ·
+**§41.3's "weakening the two-signal gate trades residue for corruption"** (§50.3 — the gate was never
+weakened; one of its two signals measured the wrong thing. 131 simulated joins, not one a compound,
+and the one true false friend `лит-ре` is refused by the replacement signal).
 
 **Killed in §47** — reopen on new measurement only:
 **every `media-lane` refusal is a lane** (§47.4 — `goya2` 3 → 23 converter-defects in one run. A

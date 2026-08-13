@@ -206,6 +206,10 @@ build** -- 4 are §43.6's 1-to-1 divergence, 3 the broken `link.label.content.em
 
 | **47 three silent losses** | 6233-end | **a list with no items is not a list -- an indent `<ul>` deleted a whole discography `47.2`** · **a merged nav anchor is accounted, not lost -- the corpus's last lost target was never lost `47.3`** · **a picture lane beside a lane of matter is a lane; the first version was too wide and `goya2` went 3 → 23 in one run `47.4`** · end state, reference rungs byte-identical `47.5` · **routing survey over the 946, after `47.6`** · what is next `47.7` | HOT |
 
+| 48 one row, one figure, one caption | 6400-6456 | one-row DATA grid holding one standalone image beside text repeating its source-backed label · the visible text becomes the caption · exactly `bogdanovic` fires; `assad`/`petrenco` are the false friends · recall 98.44 → 100 % | |
+| 49 gallery caption lanes | 6457-6491 | an `images` row followed by exactly-as-many ordered centred caption lanes · 0.7 bidirectional ordered-word coverage, reusing §48's relation predicate · `anido`/`buek`/`rom_lebedev` fire, `domeniconi`/`galbraith`/`morkov`/`sor2` are controls | |
+| **50 the wrap hyphen, twice** | 6493-end | **five candidates killed on cheap probes: `too-small` is four shapes, the title/caption echo is reference-attested, empty `align` was a probe bug, `\| \| 🔗 \|` headers are the ruling, `complexity-budget` is an uncalibrated default `50.1`** · **the measurement: 167 surviving wrap hyphens on 108 of the 946, 7 on the 28, invisible because the references keep them too `50.2`** · **rule 6b -- a break the language forbids is still a break; the second signal moves from break position to fragment wordhood `50.3`** · **a break markup put in a box of its own: `изда<span>-</span>вал` splits the word across three IR nodes `50.4`** · **167 → 6 and 7 → 0; L2 +6 all ambiguous, converter-defect flat at 199 `50.5`** · what is next `50.6` | **HOT** |
+
 ## Checkpoint -- §45, measured 2026-08-12 over **26 compared documents** (28 converted)
 
 | rung | value | reproduce with |
@@ -227,14 +231,15 @@ score. Scan is ~2.5-4 min.
 
 | rung | value | reproduce with |
 |---|---|---|
-| L0 | **700** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
+| L0 | **725** tests, typecheck clean, 0 FAILED, `read()` warnings 0, validator 0 on all **28** produced | `npx tsc -p tsconfig.json --noEmit && npm test` |
 | L1 | **98.6 %** over 26 | `sh bench/run.sh` -- must still say `Converted+Needs review = 28` |
-| L2 | **310** findings -- **199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
+| L2 | **316** findings -- **199 converter-defect** · 24 ambiguous · 93 reference-inconsistency · **8 critical** | `diff -c bench/biomd.config.json --json ../analyze/defects.json` |
 | L3 | **59** findings over **26** documents, identity 0, deterministic | `l3 -c bench/biomd.config.json --json ../analyze/l3.json` |
-| **946 unlabelled** | **0 FAILED · 0 lost targets · 0 lost images · 0 validator errors** | `corpus run` with a no-`expectedDir` config; conservation is in each job's `08-validation/report.json` |
+| **946 unlabelled** | **0 FAILED · 0 lost targets · 0 lost images · 0 validator errors** · **6 surviving wrap hyphens on 6 docs** | `corpus run` with a no-`expectedDir` config; conservation is in each job's `08-validation/report.json` |
 
-**Every conservation loss in the corpus is now closed** (§47.2, §47.3). The reference rungs are
-byte-identical to §45/§46 because none of the three shapes occurs in the 28 sources -- the second
-consecutive iteration whose whole value is invisible to L1, L2 and L3. Never quote the 199 bare:
-141 are recorded divergences, so the honest open count is ~58.
+**Every conservation loss in the corpus is now closed** (§47.2, §47.3). The reference rungs stayed
+byte-identical through §47, §48 and §49 because none of those shapes occurs in the 28 sources. §50 is
+the first movement since: **L2 310 → 316 with converter-defect flat at 199** — six new
+`paragraph.hyphenation.joined`, all triaged ambiguous, the priority-6 cost of a priority-5 gain
+(§50.5). Never quote the 199 bare: 141 are recorded divergences, so the honest open count is ~58.
 

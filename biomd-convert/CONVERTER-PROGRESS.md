@@ -6490,3 +6490,139 @@ The full blind-corpus output diff changed exactly three of 946 documents: `anido
 
 This is a structural and rendering improvement: one visible caption is now attached to each picture instead of duplicated beneath the gallery. The reference corpus contains no firing, so its three comparison rungs are correctly unchanged. The remaining `too-small`/layout population is heterogeneous and must be re-probed after subtracting the §48 and §49 caption mechanisms.
 
+
+## 50 -- the wrap hyphen, twice: a break the language forbids, and a break markup hid (2026-08-13)
+
+### 50.1 Five candidates killed on cheap probes before any survey
+
+The post-§49 baseline reproduced before attribution: L0 **713** tests, L1 **98.6**, L2 **310 / 199
+defect / 8 critical**, L3 **59 over 26**, validator 0 on all 28; `bench/run.sh` converted 28 and L3
+printed 26. The 946-page scan reproduced 0 FAILED, 0 lost targets, 0 lost images, 90
+`complexity-budget`.
+
+The ledger frontier was unchanged, so the iteration went to the corpus. Five candidates died on
+probes costing a few minutes each, and each removes work from every later session:
+
+1. **`DATA` to flow `too-small` is 27, not 34, and is four shapes.** `1×3` 7 · `1×2` 7 · `1×4` 3 ·
+   `1×5` 1 · "inferred 1 semantic column from 1 physical slot" 9. The last is a one-column table and
+   flattening is correct. §48/§49 took the coherent caption subsets. **Stop returning to this label**;
+   it has now been probed four times and what is left is a mixture, not a mechanism.
+2. **The title/caption echo is reference-attested, not a defect.** 174 produced captions repeat an
+   adjacent visible line across 147 documents; **141 of them are `caption@N == text@1`**, the portrait
+   caption repeating the document title. `fixtures/out/barrios.bio.md` writes exactly that shape --
+   `# Агустин Барриос` at line 1, `caption: Агустин Барриос` at line 7. Only 6 mid-document echoes
+   remain, on 6 documents, in 6 different shapes.
+3. **`::: align` wrapping nothing does not exist.** A probe reported 46 empty `align` directives on 24
+   documents; `biomd-ast/read()` over all 946 reports **0 empty directive nodes and 0 warnings**. The
+   probe was reading a body line of the form `Location: …` as a property line and ignoring the blank
+   line that ends the property block. *Check the instrument before the rule*, attested a sixth time.
+4. **150 tables emitted with "no header row in the source" are the author's own convention.** Every
+   emitted header on the 946 is `| | 🔗 |` or `| | |` -- OPEN §3.4's ruling, no fabrication.
+5. **`error:complexity-budget` on 90 documents is an uncalibrated default, not a finding.** Its own
+   comment says so ("a starting point to be calibrated on the golden corpus, not a claim"), the
+   density limit is 25/1000 words against a corpus median of 2 directives per document, and it changes
+   no output. Not conversion quality; left alone.
+
+### 50.2 The measurement that opened the iteration
+
+Reference-free, with the Hunspell dictionary as the oracle: count hyphenated forms in produced output
+whose **joined** spelling is a real Russian word and whose halves are not both words.
+
+| corpus | before | after |
+|---|---:|---:|
+| hand-made references (26) | 7 over 7 docs | 7 (unchanged -- they are the references) |
+| produced for the 28 sources | 7 over 7 docs | **0** |
+| produced, 946 unlabelled | **167 over 108 docs** | **6 over 6 docs** |
+
+The 7 in the reference set were invisible as work because the produced side matched the references
+exactly. The 946 showed the residue is 24× larger than the reference corpus can express -- §41's
+"the tail remains" was measured on 22 documents that happen to be nearly clean.
+
+### 50.3 A break the language forbids is still a break (`c5f37bc`)
+
+Rule 6 required **both** a legal Hyphenopoly break at the observed position **and** Hunspell
+membership of the joined form. The first is the wrong question for this corpus. These pages were
+typed from print by hand, so the hyphen is wherever the typist found it, and Russian patterns refuse
+a break inside the `-ств-` and `-ческ-` clusters that dominate the residue: `общест-ва`,
+`художест-венной`, `фес-тивалях`, `артистичес-кой` all have `legalBreak=false` and `dict(joined)=true`.
+
+Rule 6b moves the second signal off the break position and onto the fragments: **a wrap cuts one word
+into pieces that are not words; a compound joins two things that are.** It stays a two-signal gate --
+this is not §41.3's "weakening", it replaces a signal measuring where a 1998 typist pressed a key with
+one measuring what the language contains.
+
+Simulated over every candidate in all 974 documents before implementation: **131 occurrences of 112
+distinct forms** would newly join, and **not one is a compound**. The larger family is refused a step
+earlier because no dictionary holds their joined spelling -- `из-за`, `кто-то`, `во-первых`,
+`вице-президент`, `пресс-конференция`. The named false friend is `лит-ре`: `литре` is a real but
+*different* word and both halves are words, so the guard holds. It costs one true positive in the
+whole corpus (`Гали-не`), which is the right direction.
+
+**Known false positive, measured and deliberately not guarded.** `ТА-БО-СА` / `Та-Бо-су`, one work
+title on `rechin` and `rechin3`, joins to `ТА-БОСА` / `Та-Босу` because `боса`/`босу` are words.
+**2 of 130 applied joins.** Rule 3 already holds the title-cased `Та-Бо-Су`. Every guard tried against
+it -- capitalized fragment, short capitalized left fragment, capitalized first part of a multi-part
+token -- costs more correct joins than it saves (`Кар-ло`, `Анг-лия`, `Пальма-де-Маль-орка`,
+`Непрев-зойденный` and ~20 others). Recorded rather than special-cased.
+
+### 50.4 A break markup hid (`75b9b24`)
+
+`dehyphenateText` reads one text node. This corpus routinely breaks the word across three:
+`изда<span lang="en-us">-</span>вал` -- the spell-checker of the day tagged the hyphen it had just
+typed. After that no single node holds a hyphen between two letters, the pre-filter skips it, and the
+word ships broken at 100 % text recall. This was the *entire* residue rule 6b left: four documents
+(`sarenko` 12, `sichra1` 10, `tsimmermann` 5, `niedt` 4) held 31 of the remaining 52.
+
+Recognized structurally, and nothing else admitted: an inline wrapper whose whole subtree is exactly
+one hyphen, raw text siblings on both sides, letters touching both junctions, no whitespace at either.
+**Two raw text siblings cannot be in different blocks**, which is what makes the join unable to span
+one without any tag-level block model. The verdict is the ordinary cascade reading a synthesized view
+of the three nodes, so the identifier and proper-compound guards hold on this path unchanged.
+
+Multi-hyphen tokens keep the lexical hyphen and lose only the wrap: `гитарист-диле-тант` ->
+`гитарист-дилетант`, `му-зыкантов-профессионалов` -> `музыкантов-профессионалов`,
+`Пальма-де-Маль-орка` -> `Пальма-де-Мальорка`.
+
+### 50.5 Measured outcome
+
+| rung | before | after |
+|---|---|---|
+| L0 | 713 tests | **725**, typecheck clean, 0 FAILED |
+| L1 | 98.6 % over 26 | **98.6 %**, per-document table unchanged |
+| L2 | 310 / 199 defect / 8 critical | **316 / 199 defect / 8 critical**; ambiguous 18 -> 24 |
+| L3 | 59 over 26 | **59**, identity 0, deterministic |
+| validator | 0 on all 28 | **0** |
+| 946 unlabelled | 0 FAILED, 0 lost targets/images, 90 `complexity-budget` | **unchanged** |
+| surviving wrap hyphens, 946 | **167 / 108 docs** | **6 / 6 docs** |
+| surviving wrap hyphens, 28 produced | **7 / 7 docs** | **0** |
+
+115 documents changed across the two commits, and **every applied edit is a hyphen removal**: text
+recall, directive counts, routing outcomes and conservation are identical everywhere. This edits
+words, not structure.
+
+**The one tradeoff, stated.** L2 rose 6, all `paragraph.hyphenation.joined`, all triaged **ambiguous**,
+on the six references that keep a wrap hyphen the dictionary rejects (`authors`, `new_bach`,
+`new_kolpakov`, `segovia`, `tarrega`, `xtra_shelechov`). Converter-defects and criticals did not move.
+This is a **priority-6 reference-fidelity loss bought with a priority-5 general gain**, which the
+hierarchy permits in that direction and not the other. The references are not a convention here:
+`paragraph.hyphenation.unjoined` is already a **converter-defect** class on `borislova`, `news_2007`
+and `xtra_shelechov`, where the reference joined and the converter did not, so the preserved ones are
+misses. None of those three is closed by this work -- all are proper names Hunspell rejects.
+
+### 50.6 What is next
+
+1. **The proper-name tail, 3 reference instances + 4 corpus ones.** `Бориславовна`, `Феррере`,
+   `аккомпанементов`, `Чайковского`, `Петропавловске` -- Hunspell rejects them, and rule 4 cannot see
+   them because the lexicon indexes exact forms and `lex(joined)=0`. A stem-tolerant lexicon lookup is
+   the obvious next signal and would close the last three reference-attested hyphenation defects.
+   Measure the false-friend rate before building it.
+2. `paragraph.hyphenation.mixed` 3 instances / 2 docs (`jovicic` x2, `pavlov_azancheev`) -- unprobed
+   this iteration.
+3. The corpus routing questions are unchanged and untouched: `LAYOUT` to flat flow **2048** against 14
+   `::: columns`, `UNKNOWN` to flat flow **974** against 56. Nothing table-shaped is open and general
+   among the 26 (§43.9).
+4. Then §45's queue: `retyped.paragraph-to-align` on `segovia` alone, and §40.6's shell-depth root
+   cause.
+
+**The holdout stayed spent.** Both mechanisms were found by the 946 unlabelled pages; the shape of the
+second occurs in none of the 28 reference sources, so no holdout could have withheld it.

@@ -43,26 +43,32 @@ earlier note quotes is superseded: the author added six `xtra_*` pairs and promo
 > `xtra_karta5` *is* the former holdout `new_karta5`, promoted by the author into the measured corpus;
 > the stale copies still sit in `fixtures/html2/`+`out2/`. PROGRESS §42.1, §42.8.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §47** closed the **last two
-conservation losses in the 946** and the routing inconsistency the first one exposed -- an indent
-`<ul>` with no items was deleting a whole discography (`e4513f9`), the "last lost target" was a
-deliberate anchor merge the multiset gate mis-read (`d442c63`), and a picture lane beside a lane of
-matter now becomes a lane instead of flat flow (`a251a96`). §46 before it built the generalization
-instrument, closed the footer-pager loss (`558eafd`, `120e7b8`) and the mutation harness (`e0cdf3a`).
-Current floor: L0 **700 tests**, **0 validator errors on every produced document**, L1 **98.6**,
-L2 **310 · 199 defect · 8 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §50** closed the **wrap hyphen**,
+twice. Rule 6 demanded a *legal* Hyphenopoly break before it would join, but these pages were typed
+from print by hand and the hyphen is where the typist put it, not where Russian allows one, so
+`общест-ва` and `фес-тивалях` shipped broken; rule 6b puts the second signal on the fragments instead
+(`c5f37bc`). And `изда<span lang="en-us">-</span>вал` splits one word across three IR nodes, so no
+node held a hyphen between two letters and the pre-filter skipped every one (`75b9b24`). **Surviving
+wrap hyphens: 167 over 108 of the 946 → 6 over 6; the 28 produced 7 → 0.** §48 and §49 before it bound
+one visible caption to each figure and each gallery image (`743e463`, `ca78c45`); §47 closed the last
+two conservation losses (`e4513f9`, `d442c63`, `a251a96`).
+Current floor: L0 **725 tests**, **0 validator errors on every produced document**, L1 **98.6**,
+L2 **316 · 199 defect · 8 critical**, L3 **59 over 26**, and on the **946: 0 FAILED, 0 validator
 errors, 0 lost targets, 0 lost images**.
+**L2 rose 6 in §50 while converter-defect stayed at 199** — six `paragraph.hyphenation.joined`, all
+ambiguous, the priority-6 cost of a priority-5 gain. Quote the split.
 **141 of those 199 are recorded divergences and quirks, not work** — `xtra_shelechov`'s row-major grid
 (~96, 8 references to 1), `xtra_karta5`'s table headings (42, author-ruled ignorable) and
 `new_kolpakov`'s column alignment (3, killed 12-to-1 in §43.5). The honest open count is **~58**;
 the 8 criticals remain only in the two recorded-divergence documents. Quote the split.
 **`npm install` first** — §41's optional `dictionary-ru`/`nspell` are absent on a fresh clone and
 `tsc` fails on the missing declarations.
-Next candidates, reordered by §47.6's re-run survey: a **layout fallback for a `too-small` DATA
-table** (34 instances — *not* a widening of `isSingleRecordRow`); **`LAYOUT`→flat flow, 2927 against
-62 `::: columns`**, the same routing question from the other side; the **1×2 picture-beside-caption
-binding** (8 documents, blocked on one swept threshold — §46.7 names the reference-attested false
-friend); then `segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root cause.
+Next candidates after §50: the **proper-name hyphenation tail** — `Бориславовна`, `Феррере`,
+`аккомпанементов` are still reference-attested `paragraph.hyphenation.unjoined` **defects** and need a
+stem-tolerant lexicon lookup, since Hunspell rejects them and the lexicon indexes exact forms; then
+`segovia`'s `retyped.paragraph-to-align` and §40.6's shell-depth root cause. **`DATA`→flow
+`too-small` is downgraded — 27 instances in four unrelated shapes, probed five times (§50.1). Do not
+take it again.** `LAYOUT`→flat flow **2048** against 14 `::: columns` is the only live routing form.
 **Nothing table-shaped is open and general among the 26** (§43.9); every table candidate now lives
 on the 946.
 

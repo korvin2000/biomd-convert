@@ -233,3 +233,17 @@ Re-deriving these across sessions is the main tax on work of this length. `§` =
 label covers three shapes, and separating `bogdanovic`'s 64-character caption from `borislova`'s and
 `jovicic`'s reference-attested 1×2 text-lane-beside-cover needs a **swept** text-length threshold.
 Reopen with the sweep, not with an argument.
+
+## §50 -- killed on the 946-page corpus and on one reader call (2026-08-13)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **The adjacent title/caption echo is a defect.** 174 produced captions repeat an adjacent visible line across 147 documents -- the largest text-duplication signal in the corpus | **141 are the portrait caption repeating the document title**, and `fixtures/out/barrios.bio.md` writes exactly that: `# Агустин Барриос` at line 1, `caption: Агустин Барриос` at line 7. Reference-attested, in every biography. Only 6 mid-document echoes remain, in 6 different shapes on 6 documents | one `head -18` of a reference |
+| **`::: align` sometimes wraps nothing.** A probe found 46 empty `align` directives on 24 documents | The probe read a body line of the form `Location: Buenos Aires` as a directive property line and ignored the blank line that ends the property block. `biomd-ast/read()` over all 946 reports **0 empty directive nodes and 0 warnings** | one `read()` loop |
+| **§41.3: weakening rule 6's two-signal gate trades visible residue for silent corruption** | The gate was never weakened -- one of its two signals measured the wrong thing. Hyphenopoly answers "where *may* this word break", and these pages were typed from print by hand, so the hyphen is where the typist put it. Simulated over all 974 documents, the replacement signal joins **131 occurrences of 112 forms and not one is a compound**; the real false friend `лит-ре` (`литре` is a different word, both halves are words) is refused by it | the simulation, ~2 min |
+| **`DATA` to flow `too-small` is a mechanism.** Largest reachable routing class, four iterations running | 27 instances in four unrelated shapes -- `1×3` 7, `1×2` 7, `1×4` 3, `1×5` 1, and **9 that are a one-column table where flattening is correct**. §48 and §49 removed the two coherent caption subsets; what is left is a mixture. Probed §46.9, §47.7, §48.1, §49.1, §50.1 | one aggregate over the scan |
+
+**Not killed, still true and still unbuilt:** the proper-name hyphenation tail. `Бориславовна`,
+`Феррере`, `аккомпанементов` are reference-attested `paragraph.hyphenation.unjoined` **defects** --
+the reference joined and the converter did not -- and Hunspell rejects all three. Rule 4 cannot help
+because the lexicon indexes exact forms. A stem-tolerant lookup is the named next signal.
