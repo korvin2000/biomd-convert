@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-12**, after PROGRESS §48.
+Last touched **2026-08-13**, after PROGRESS §49.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -32,20 +32,19 @@ and refilled the holdout.
 > original 22 alone went L2 141/67 → 106/56, L3 44 → 25); and the six new pairs added 299 findings on
 > arrival. PROGRESS §42.2.
 
-**Current state, *measured* 2026-08-12, after PROGRESS §48:**
+**Current state, *measured* 2026-08-13, after PROGRESS §49:**
 
 | rung | value |
 |---|---|
-| L0 | **707 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
+| L0 | **713 tests**, typecheck clean, 0 FAILED, conservation ok, `read()` warnings 0 |
 | L1 | **98.6 %** over the 26 compared |
 | L2 | **310 findings -- 199 converter-defect** · 18 ambiguous · 93 reference-inconsistency · 8 critical |
 | L3 | **59** over 26 documents, identity 0, deterministic |
 | validator | **0 errors on all 28 produced documents**, holdout included |
 | **946 unlabelled** | **0 FAILED**, 0 validator errors, lost targets **0**, lost images **0** |
 
-**Next:** re-probe §46.9's remaining corpus-only mechanisms against the post-§48 scan. The broad
-reference frontier is unchanged; §48 closed one structural/data-quality loss invisible to all
-reference rungs.
+**Next:** re-probe §46.9's remaining corpus-only routing mechanisms. §49 closed the coherent adjacent
+gallery-caption residue without widening `DATA` routing; the broad reference frontier is unchanged.
 
 > **Every conservation loss in the corpus is closed (§47).** The only `severity: error` diagnostic
 > left on the 946 is `complexity-budget`, on **90** documents — a plan/lint threshold whose
@@ -127,20 +126,17 @@ lost. · A picture lane beside a lane of matter is a lane (`a251a96`): `planData
    the routing survey re-run in §47.6 keeps the question open on the 946: `DATA`→flow is **34
    `too-small` + 5 `media-lane` + 3 `media-catalog` + 3 `cell-crosses-band`**, and `LAYOUT`→flat
    flow is **2927** against 62 `::: columns`. `too-small` is the largest reachable class.
-1. **The 1×2 picture-beside-caption binding — 8 documents, the highest reach left (§46.7).** The
-   converter states a caption twice within 20 lines of its figure 9 times; the hand-made references do
-   it **zero** times at that distance (`goya2`'s three are 100+ lines apart and §32.1 ruled them
-   correct). `bindCaptions`/`captionRunAt` are already right — `ctx.captionEligible` is not set,
-   because the picture sits *beside* the text in a 1×2 grid and `isCaptionContext` wants it *under*.
-   **Blocked on a swept threshold:** `isSingleRecordRow`'s contract keeps `borislova`'s and
-   `jovicic`'s 1×2 text-lane-beside-cover on the `::: columns` path because the references want it
-   there, and only text length separates them. `anido`'s two are a third shape (1×3 caption/spacer/
-   caption, no image in the grid). Sweep before building.
-2. **A layout fallback for an unplannable DATA table — 28 instances, 27 documents (§46.9).** Probed:
-   these are figure/caption strips, *not* the record row §35.8 ruled on, so do **not** widen
-   `isSingleRecordRow`. A DATA table that cannot be planned flattens to flat flow and loses the
-   pairing, where a LAYOUT table of the same shape reaches `::: columns`. `LAYOUT t2` splitting 17
-   flat against 5 `::: columns` is the same mechanism from the other side.
+1. **Closed in §49: one visible caption lane per gallery image.** Three post-§48 `too-small`/flat-flow
+   residues (`anido`, `buek`, `rom_lebedev`) had an `images` row immediately followed by equally many
+   ordered caption lanes, so every caption printed twice. Exact cardinality, centred text-only lanes
+   and bidirectional ordered-word coverage bind the visible wording into the images. The full 946
+   diff changed exactly those three documents; `domeniconi`, `galbraith`, `morkov` and `sor2` are
+   unchanged controls. Do not reopen as generic `DATA`→layout.
+2. **A layout fallback for an unplannable DATA table — remaining heterogeneous population (§46.9).**
+   Re-probe after subtracting §48/§49 caption mechanisms. A DATA table that cannot be planned still
+   flattens to flow, while a LAYOUT table of the same shape can reach `::: columns`; `LAYOUT t2`
+   splitting 17 flat against 5 `::: columns` is the related consistency question. Do not widen
+   `isSingleRecordRow` or use text length: both have recorded counterexamples.
 3. **`paragraph.missing.in-paragraph` is downgraded, 3 → 2.** `new_lendle2` was the known
    directive-property parser artefact and dissolved when its frame returned. `new_lagq2` and
    `news_2007` visibly contain the named value on both sides and each has L3 0; no missing-data or

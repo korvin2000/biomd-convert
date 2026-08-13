@@ -1611,47 +1611,116 @@ function captionTextOf(run: readonly CaptionBlock[]): string {
     : lines.map((line) => line.text).join(" ");
 }
 
+interface GalleryCaptionRun {
+  captions: string[];
+  consumed: number;
+}
+
+/** Text-only caption payload; links/media or structural blocks disqualify it. */
+function galleryCaptionText(blocks: readonly BiomdContent[]): string {
+  if (blocks.length === 0) return "";
+  const safe = (node: unknown): boolean => {
+    if (node === null || typeof node !== "object") return true;
+    const value = node as { type?: string; children?: unknown[] };
+    if (value.type === "link" || value.type === "image" || value.type?.startsWith("biomd")) return false;
+    return !Array.isArray(value.children) || value.children.every(safe);
+  };
+  if (!blocks.every((block) => (block.type === "paragraph" || block.type === "heading") && safe(block))) return "";
+  return captionTextOf(blocks as CaptionBlock[]);
+}
+
 /**
- * Bind a figure to the caption the reader can actually see.
+ * Captions drawn as lanes immediately after an `images` row.
  *
- * ## Rule contract
+ * The three accepted lowerings are the same visible relationship: one centred
+ * caption lane per picture. A layout table arrives as `columns`; a flattened
+ * one arrives as one centred run or as adjacent centred runs. Exact cardinality
+ * keeps prose regions out and lets source order pair the captions without
+ * guessing from coordinates.
+ */
+function galleryCaptionRunAt(
+  nodes: readonly BiomdContent[],
+  from: number,
+  count: number,
+): GalleryCaptionRun | null {
+  const first = nodes[from];
+  if (first?.type === "biomdColumns" && first.children.length === count) {
+    const captions = first.children.map((column) => {
+      if (column.children.length !== 1 || column.children[0]?.type !== "biomdAlign") return "";
+      const align = column.children[0];
+      return align.position === "center" ? galleryCaptionText(align.children as BiomdContent[]) : "";
+    });
+    if (captions.every(Boolean)) return { captions, consumed: 1 };
+  }
+
+  if (first?.type === "biomdAlign" && first.position === "center" && first.children.length === count) {
+    const captions = first.children.map((child) => galleryCaptionText([child as BiomdContent]));
+    if (captions.every(Boolean)) return { captions, consumed: 1 };
+  }
+
+  const aligned = nodes.slice(from, from + count);
+  if (aligned.length !== count) return null;
+  const captions = aligned.map((block) =>
+    block.type === "biomdAlign" && block.position === "center"
+      ? galleryCaptionText(block.children as BiomdContent[])
+      : "",
+  );
+  return captions.every(Boolean) ? { captions, consumed: count } : null;
+}
+
+/** A visible gallery caption must substantially restate its image's source label. */
+function galleryCaptionMatches(sourceLabel: string | undefined, visible: string): boolean {
+  if (!sourceLabel || visible.length > 300) return false;
+  return relationTextMatches(sourceLabel, visible);
+}
+
+/**
+ * Bind a figure or gallery to the caption(s) the reader can actually see.
  *
- * **Invariant.** A standalone image immediately followed by a run of
- * caption-eligible blocks — centred, set in type smaller than the page's prose,
- * free of links and pictures, and short. Containment and sibling order decide
- * the binding; no filename, class or label vocabulary is consulted.
+ * ## Rule contract — one visible caption lane per image
  *
- * **The visible line outranks `alt`.** `alt` describes the picture for a reader
- * who cannot see it; a caption is visible editorial text, and the two are
- * different properties in §6.1. When a page states both, the visible one is the
- * caption and `alt` is only the fallback for a figure that has no visible line
- * at all. Before this rule the first writer won, which was `alt`, so `authors`
- * captioned a scan `Заметка о проекте…` while printing the three lines the
- * author actually wrote as a loose paragraph underneath — the caption wrong and
- * the text duplicated at once.
+ * **Invariant.** An `images` row immediately followed by equally many centred,
+ * text-only lanes, in the same source order. Every lane must substantially
+ * repeat its image's source-backed label; exact cardinality and ordered word
+ * coverage establish the pairings without filenames, classes or vocabulary.
  *
- * **A run, not a line.** `segovia`'s 1936 photographs caption in three lines:
- * a bold title, who is in the picture, and where it was taken. Taking only the
- * first left the other two orphaned below the figure. The run ends where
- * eligibility ends, which is the author's own boundary.
+ * **Recurrence.** The relationship recurs within the row: at least two images
+ * and two independently matching captions. A single figure remains on the
+ * stricter figure-caption path below.
  *
- * **False friend.** Prose that merely follows a figure — excluded because
- * `captionEligible` requires centring *and* small type together: `ДИСКОГРАФИЯ`
- * above its album list is small but not centred, and binding it to the cover
- * above it deleted a section of the document. A block *preceding* an image is
- * never a caption: `news` sets an obituary's subject in bold above the
- * photograph, and the reference keeps it as prose.
+ * **False friends.** A record lane beside a cover, an unrelated centred region,
+ * reordered or missing captions, a link-bearing label and a generic one-word
+ * `alt` all fail independently. A gallery caption region preceding the images
+ * also fails because sibling order is part of the relationship.
  *
- * **Subsumes "the same caption twice".** A page that puts the caption in `alt`
- * and repeats it on a visible line no longer needs a separate absorb rule: the
- * visible line replaces the property and is consumed. It also fixes what that
- * rule got wrong — it kept `alt`'s wording, so `williams2` read `Джон Вильямс в
- * 1971 г.` where the visible line, and the reference, say `в 1971 году.`
+ * The visible line outranks `alt` for both paths. `alt` describes the picture
+ * for a reader who cannot see it; a caption is visible editorial text, and the
+ * two are different properties in §6.1. When a page states both, the visible
+ * wording replaces the fallback and is consumed rather than printed twice.
  */
 function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
   const out: BiomdContent[] = [];
   for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i] as BiomdContent;
+
+    if (node.type === "biomdImages") {
+      const run = galleryCaptionRunAt(nodes, i + 1, node.children.length);
+      if (
+        run !== null &&
+        run.captions.every((caption, index) => {
+          const image = node.children[index];
+          return galleryCaptionMatches(image?.caption ?? image?.alt, caption);
+        })
+      ) {
+        out.push({
+          ...node,
+          children: node.children.map((image, index) => ({ ...image, caption: run.captions[index] as string })),
+        });
+        i += run.consumed;
+        continue;
+      }
+    }
+
     const next = nodes[i + 1];
     if (node.type === "biomdImage" && node.standalone && next !== undefined) {
       const run = captionRunAt(nodes, i + 1, ctx);
@@ -4343,15 +4412,19 @@ function sideCaptionText(
   if (!sourceLabel) return "";
   // Captions may insert relation words and punctuation into the image's `alt`.
   // Require substantial source-label coverage in order, not literal equality.
-  const sourceWords = normalizedRelationText(sourceLabel).split(" ").filter(Boolean);
-  const visibleWords = normalizedRelationText(text).split(" ").filter(Boolean);
-  const forward = orderedWordCoverage(sourceWords, visibleWords) / sourceWords.length;
-  const reverse = orderedWordCoverage(visibleWords, sourceWords) / visibleWords.length;
-  if (sourceWords.length < 2 || visibleWords.length < 2 || Math.max(forward, reverse) < 0.7) return "";
+  if (!relationTextMatches(sourceLabel, text)) return "";
 
   const candidates = blocks.every((block) => isCaptionCandidate(block, ctx));
   const boundedText = blocks.every((block) => block.type === "paragraph" || block.type === "heading");
   return candidates || boundedText ? text : "";
+}
+function relationTextMatches(sourceLabel: string, visible: string): boolean {
+  const sourceWords = normalizedRelationText(sourceLabel).split(" ").filter(Boolean);
+  const visibleWords = normalizedRelationText(visible).split(" ").filter(Boolean);
+  if (sourceWords.length < 2 || visibleWords.length < 2) return false;
+  const forward = orderedWordCoverage(sourceWords, visibleWords) / sourceWords.length;
+  const reverse = orderedWordCoverage(visibleWords, sourceWords) / visibleWords.length;
+  return Math.max(forward, reverse) >= 0.7;
 }
 function normalizedRelationText(value: string): string {
   return value.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();

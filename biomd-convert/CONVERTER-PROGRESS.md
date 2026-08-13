@@ -6453,3 +6453,40 @@ post-change full 946-page Chromium run has **0 FAILED**, **0 validator errors**,
 **0 lost images**. No priority 1-4 regression was observed. The remaining §46.9 corpus candidates stay
 open; the next iteration should re-probe them against this post-§48 scan rather than return to ledger
 rank order.
+
+## 49 -- one visible caption lane per gallery image (2026-08-13)
+
+### 49.1 Selection and probe
+
+The post-§48 baseline reproduced before attribution: L0 **707** tests, L1 **98.6**, L2 **310 / 199 defect / 8 critical**, L3 **59 over 26**, validator 0 on all 28; `bench/run.sh` converted 28 and L3 printed 26.
+
+The broad `DATA` `too-small` population was not one mechanism. Representative positives and controls separated a narrower upstream relationship: `anido`, `buek` and `rom_lebedev` each draw two adjacent images followed immediately by two ordered visible caption lanes. The converter had already grouped the pictures as `::: images`, but left the lanes loose, so each source caption appeared twice: first from image `alt`, then as visible text. `domeniconi` is a record lane rather than a caption row; `galbraith`, `morkov` and `sor2` fail adjacency, ordering or label relation. Widening `DATA` routing remained contradicted by §35.8's record-row contract and §47.4's gallery regression.
+
+### 49.2 The rule
+
+A late pass beside `bindCaptions` now accepts an `images` row followed by caption lanes only when:
+
+- the gallery contains at least two images;
+- the following representation is exactly equally cardinal `columns`, one centred run with one block per image, or equally many adjacent centred runs;
+- every lane is text-only, link/image-free paragraph or heading content;
+- every image has a source-backed label and both label and visible caption contain at least two words;
+- each ordered pair reaches **0.7 bidirectional ordered-word coverage**; and
+- the caption region follows the gallery immediately.
+
+The visible wording replaces the `alt`-derived caption and the loose region is consumed. The threshold is not a new guess: it is the existing §48 relation predicate extracted for reuse. Six contracts cover all three accepted lowerings, extended visible wording, unrelated/reordered matter, wrong cardinality, generic labels, links, and captions preceding images.
+
+### 49.3 Measured outcome
+
+The full blind-corpus output diff changed exactly three of 946 documents: `anido`, `buek`, `rom_lebedev`. `anido` loses two redundant `align` directives and preserves the extra source detail `16 апреля`; `buek` replaces terse alt labels with the full visible book/journal captions and removes the redundant two-column caption region; `rom_lebedev` preserves `в спектакле "Дочь шатров"` inside the second image caption and removes the duplicate aligned text. `domeniconi`, `galbraith`, `morkov` and `sor2` are byte-identical controls. No target or image is lost; the corpus still has 0 FAILED and 90 `complexity-budget` diagnostics, the only error code.
+
+| rung | before | after |
+|---|---|---|
+| L0 | 707 tests | **713**, typecheck clean, 0 FAILED |
+| L1 | 98.6 % over 26 | **98.6 %**, per-document table unchanged |
+| L2 | 310 / 199 defect / 8 critical | **310 / 199 / 8**, per-document unchanged |
+| L3 | 59 over 26 | **59**, identity 0, deterministic |
+| validator | 0 on all 28 | **0** |
+| 946 unlabelled | 0 FAILED, 0 lost targets, 0 lost images | **unchanged; exactly 3 intended firings** |
+
+This is a structural and rendering improvement: one visible caption is now attached to each picture instead of duplicated beneath the gallery. The reference corpus contains no firing, so its three comparison rungs are correctly unchanged. The remaining `too-small`/layout population is heterogeneous and must be re-probed after subtracting the §48 and §49 caption mechanisms.
+

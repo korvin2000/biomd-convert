@@ -1922,6 +1922,102 @@ describe("captions bind to the visible line", () => {
   });
 });
 
+describe("gallery captions bind by ordered lane", () => {
+  const gallery = (first: string, second: string): string =>
+    '<p align="center">' +
+    `<img src="first.jpg" width="200" height="300" alt="${first}"> ` +
+    `<img src="second.jpg" width="200" height="300" alt="${second}">` +
+    "</p>";
+  const centred = (text: string): string =>
+    `<div><p style="text-align: center; font-size: 9pt">${text}</p></div>`;
+  const first = "Обложка книги мастера";
+  const withCaptionTable = async (captions: string): Promise<string> => {
+    const html = page(PROSE + gallery(first, second) + captions + PROSE);
+    const doc = parseHtml(html);
+    const tables = [...walkElements(doc.root)].filter((element) => element.tag === "table");
+    const target = tables[tables.length - 1];
+    const classifications = new Map([
+      [target!.id, { class: "UNKNOWN" as const, confidence: 0.4, tier: 4 as const, reason: "forced by test" }],
+    ]);
+    const result = await convert(Buffer.from(html, "utf8"), {
+      profile: SPEC,
+      layoutFidelity: "faithful",
+      classifications,
+      measurer: new InlineAlignMeasurer(),
+    });
+    return result.markdown;
+  };
+
+  const second = "Страница старого журнала";
+
+  it("absorbs a following caption table into its ordered image row", async () => {
+    const captions =
+      '<table border="0" width="80%"><tr>' +
+      `<td width="50%" style="text-align: center">${first}</td>` +
+      `<td width="50%" style="text-align: center">${second}</td>` +
+      "</tr></table>";
+    const out = await withCaptionTable(captions);
+    expect(out).toContain(`caption: ${first}`);
+    expect(out).toContain(`caption: ${second}`);
+    expect(out.match(new RegExp(first, "gu")) ?? []).toHaveLength(1);
+    expect(out.match(new RegExp(second, "gu")) ?? []).toHaveLength(1);
+  });
+
+  it("absorbs one centred caption region with one line per image", async () => {
+    const captions = `<div style="text-align: center"><p>${first}</p><p>${second} за 1914 год</p></div>`;
+    const out = await mdMeasured(PROSE + gallery(first, second) + captions + PROSE);
+    expect(out).toContain(`caption: ${second} за 1914 год`);
+    expect(out.match(new RegExp(second, "gu")) ?? []).toHaveLength(1);
+  });
+
+  it("absorbs adjacent independently centred caption lanes", async () => {
+    const out = await mdMeasured(
+      PROSE + gallery(first, second) + centred(first) + centred(second) + PROSE,
+    );
+    expect(out.match(new RegExp(first, "gu")) ?? []).toHaveLength(1);
+    expect(out.match(new RegExp(second, "gu")) ?? []).toHaveLength(1);
+  });
+
+  it("leaves unrelated or reordered centred matter outside the gallery", async () => {
+    const unrelated = await mdMeasured(
+      PROSE + gallery(first, second) + centred("Биографическая справка автора") + centred("Продолжение статьи") + PROSE,
+    );
+    expect(unrelated.match(new RegExp(first, "gu")) ?? []).toHaveLength(1);
+    expect(unrelated).toContain("Биографическая справка автора");
+
+    const reversed = await mdMeasured(
+      PROSE + gallery(first, second) + centred(second) + centred(first) + PROSE,
+    );
+    expect(reversed.match(new RegExp(first, "gu")) ?? []).toHaveLength(2);
+    expect(reversed.match(new RegExp(second, "gu")) ?? []).toHaveLength(2);
+  });
+
+  it("requires exact cardinality, source-backed labels and text-only lanes", async () => {
+    const missing = await mdMeasured(PROSE + gallery(first, second) + centred(first) + PROSE);
+    expect(missing.match(new RegExp(first, "gu")) ?? []).toHaveLength(2);
+
+    const generic = await mdMeasured(
+      PROSE + gallery("Photo", "Scan") + centred("Photo by the author") + centred("Scan from the archive") + PROSE,
+    );
+    expect(generic).toContain("Photo by the author");
+
+    const linked = await mdMeasured(
+      PROSE +
+        gallery(first, second) +
+        centred(`<a href="first.htm">${first}</a>`) +
+        centred(second) +
+        PROSE,
+    );
+    expect(linked).toContain(`[${first}](/#/first)`);
+  });
+
+  it("never binds a caption region that precedes the images", async () => {
+    const out = await mdMeasured(PROSE + centred(first) + centred(second) + gallery(first, second) + PROSE);
+    expect(out.match(new RegExp(first, "gu")) ?? []).toHaveLength(2);
+    expect(out.match(new RegExp(second, "gu")) ?? []).toHaveLength(2);
+  });
+});
+
 describe("links", () => {
   it("merges adjacent anchors that share one destination", async () => {
     const out = await md(PROSE + '<p><a href="cd1.htm">1995</a><a href="cd1.htm">-2002</a></p>');
