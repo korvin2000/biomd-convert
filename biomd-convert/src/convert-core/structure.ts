@@ -62,6 +62,7 @@ import {
   phrasingText,
   splitLines,
 } from "./lines.js";
+import { preformattedText } from "./preformatted.js";
 import { frameEvidenceFor } from "./frames.js";
 import { prominenceOf } from "./prominence.js";
 import {
@@ -3221,8 +3222,16 @@ function lowerBlock(el: LadomNode, ctx: Ctx): BiomdContent[] {
       return [{ type: "thematicBreak" }];
 
     case "pre": {
+      // The one block whose whitespace is its content — see `preformatted.ts`.
+      // `textOf` collapses it, which turned every poem on the page into a
+      // single line inside a fence while losing no word, so no rung noticed.
+      const value = preformattedText(el);
+      if (value === null) {
+        ctx.ledger.push(removed(el.id, "preformatted spacer with no content"));
+        return [];
+      }
       ctx.ledger.push(emitted(el.id, nextId(ctx, "code")));
-      return [{ type: "code", value: textOf(el) }];
+      return [{ type: "code", value }];
     }
 
     case "img": {
