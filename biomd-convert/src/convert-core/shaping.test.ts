@@ -144,6 +144,89 @@ describe("heading recovery", () => {
     expect(result.markdown).toContain("(дискография)");
   });
 
+  /**
+   * A section label stands alone.
+   *
+   * **Invariant.** Two or more blocks *of one template*, set one after another
+   * with no text at all between them, are one label the author broke across
+   * lines — never two sections. Nothing follows the first but the second, so
+   * neither introduces a section, and a run of `##` with nothing between them
+   * reads as poor design however the reference happens to spell it (*ruled
+   * 2026-08-14*).
+   *
+   * **Recurrence** is what the rule reads, and it reads it *inverted*: the
+   * repetition here is evidence against the shape, not for it. The gate is two,
+   * because two is already the whole claim.
+   *
+   * **False friends, both tested below.** A genuine section label that happens
+   * to stand immediately above such a stack — separated from it only by being
+   * set from a different template — and two labels of one template that *are*
+   * sections, with the body of the first standing between them.
+   */
+  const stackPage = (blocks: string): string =>
+    `<html><head><title>Словарь</title></head><body>${CHROME}
+      <table border="0" width="760"><tr><td width="458">
+        <div class="vt1" style="COLOR: #A7876F; FONT: bold 20pt Arial; WIDTH: 100%">
+          <p align="center"><span>Федерико Лорка</span></p>
+        </div>
+      </td></tr></table>
+      <table border="0" width="760"><tr><td width="529">${blocks}</td></tr></table>
+      </body></html>`;
+
+  it("refuses a stack of same-template labels as headings", async () => {
+    const stacked =
+      '<p class="t2"><i><b>Из книги Якова Хелемского</b></i></p>' +
+      '<p class="t2"><i><b>"За холмами - Гренада"</b></i></p>';
+    const result = await convert(Buffer.from(stackPage(stacked + PROSE), "utf8"));
+    expect(result.markdown).not.toMatch(/^##+ Из книги Якова Хелемского$/mu);
+    expect(result.markdown).not.toMatch(/^##+ "За холмами - Гренада"$/mu);
+    // Refused, not dropped: the lines keep the prominence the source gave them.
+    expect(result.markdown).toContain("Из книги Якова Хелемского");
+    expect(result.markdown).toContain("За холмами - Гренада");
+  });
+
+  it("false friend: a label of another template above the stack is still a section", async () => {
+    // The template is what carries the claim, never adjacency alone. This line
+    // is set apart from the stack by nothing but the way the author set it.
+    const stacked =
+      '<p class="s"><b>О Федерико Гарсиа Лорке</b></p>' +
+      '<p class="t2"><i><b>Из книги Якова Хелемского</b></i></p>' +
+      '<p class="t2"><i><b>"За холмами - Гренада"</b></i></p>';
+    const result = await convert(Buffer.from(stackPage(stacked + PROSE), "utf8"));
+    expect(result.markdown).toMatch(/^## О Федерико Гарсиа Лорке$/mu);
+    expect(result.markdown).not.toMatch(/^##+ Из книги Якова Хелемского$/mu);
+  });
+
+  it("false friend: same-template labels with a section between them are sections", async () => {
+    const separated =
+      `<p class="t2"><b>Ранние годы</b></p>${PROSE}` + `<p class="t2"><b>Зрелость мастера</b></p>${PROSE}`;
+    const result = await convert(Buffer.from(stackPage(separated), "utf8"));
+    expect(result.markdown).toMatch(/^## Ранние годы$/mu);
+    expect(result.markdown).toMatch(/^## Зрелость мастера$/mu);
+  });
+
+  it("reads the same stack through a renamed class and permuted attributes", async () => {
+    // Mutation robustness: nothing in the rule may be able to name this corpus.
+    const stacked =
+      '<p id="a1" class="q7" align="left"><i><b>Из книги Якова Хелемского</b></i></p>' +
+      '<p align="left" class="q7" id="a2"><i><b>"За холмами - Гренада"</b></i></p>';
+    const result = await convert(Buffer.from(stackPage(stacked + PROSE), "utf8"));
+    expect(result.markdown).not.toMatch(/^##+ Из книги Якова Хелемского$/mu);
+    expect(result.markdown).not.toMatch(/^##+ "За холмами - Гренада"$/mu);
+  });
+
+  it("a spacer block between two lines of one label does not make them two", async () => {
+    // `<p>&nbsp;</p>` carries no visible character, so the gap it draws is
+    // typography and not the body a section heading exists to introduce.
+    const stacked =
+      '<p class="t2"><i><b>Роберт Рождественский</b></i></p>' +
+      '<p class="t2">&nbsp;</p>' +
+      '<p class="t2"><i><b>Гитара Гарсиа Лорки</b></i></p>';
+    const result = await convert(Buffer.from(stackPage(stacked + PROSE), "utf8"));
+    expect(result.markdown).not.toMatch(/^##+ Роберт Рождественский$/mu);
+    expect(result.markdown).not.toMatch(/^##+ Гитара Гарсиа Лорки$/mu);
+  });
+
   it("keeps adjacent title lines but demotes a title that stands apart", () => {
     // The false friend §20.6 named, stated on the pass that decides it: two
     // headings *separated by content* are two competing titles and the later

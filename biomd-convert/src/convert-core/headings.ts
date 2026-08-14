@@ -154,9 +154,12 @@ export function recoverHeadings(root: LadomNode, options: HeadingOptions = {}): 
   // are a catalog.
   const nested = accepted.filter((c) => tableAncestors(c.node) > 1);
   const catalogLabels = nested.length > 4 ? new Set(nested.map((c) => c.node.id)) : new Set<string>();
+  const stacked = stackedTemplates(accepted, root, baseline);
 
   for (const candidate of accepted) {
     if (catalogLabels.has(candidate.node.id)) continue;
+    // One label the author set over several lines, not several sections.
+    if (stacked.has(candidate.node.id)) continue;
     // False friend: the masthead's own second line. `Френсис Гойя` over a
     // smaller `(дискография)` is a page title and what the page is about — the
     // qualifier names *this page*, not the content that follows it, so it is
@@ -208,6 +211,89 @@ function templateSignature(el: LadomNode, prominence: Prominence, baseline: numb
   return el.attrs["class"]
     ? `${el.tag}.${el.attrs["class"]}`
     : `${el.tag}|${prominence.bold ? "b" : ""}|${Math.round(prominence.fontPx ?? baseline)}`;
+}
+
+/**
+ * Visible characters standing before each element, in document order.
+ *
+ * Turns "how much text is between these two blocks?" into a subtraction, which
+ * is the only form of the question a loop full of `continue`s can be trusted
+ * with — an accumulator inside the loop forgets on every skip.
+ */
+function textOffsets(root: LadomNode): Map<string, number> {
+  const at = new Map<string, number>();
+  let seen = 0;
+  const count = (node: LadomNode): void => {
+    if (node.kind === "text") {
+      seen += (node.value ?? "").trim().length;
+      return;
+    }
+    if (node.kind === "element") at.set(node.id, seen);
+    for (const child of node.children) count(child);
+  };
+  count(root);
+  return at;
+}
+
+/**
+ * Section labels the page stacked, and which are therefore not section labels.
+ *
+ * **A section label stands alone.** Where two or more blocks *of the same
+ * template* follow one another with no text at all between them, they are one
+ * label the author broke across lines — a book credit over the book's title, a
+ * poet's name over the name of their poem — and not two sections of the
+ * document. Nothing follows the first of them but the second, so neither
+ * introduces the body that a section heading exists to introduce.
+ *
+ * The same reading is already law one level up: {@link enforceSingleTitle}
+ * keeps *adjacent* `#` lines as the halves of one wrapped headline and demotes
+ * only a title that stands apart. This is that rule at section depth, where the
+ * author's own judgement (2026-08-14) is that the stack must not be headings at
+ * all: a run of `##` with nothing between them reads as poor design, whichever
+ * side of the comparison writes it.
+ *
+ * **The false friend is a genuine section label that happens to sit next to
+ * one.** `О Федерико Гарсиа Лорке` stands immediately above `Из книги Якова
+ * Хелемского`, and is a section: the two are set from *different* templates, so
+ * the run is one member long and survives. The template is what carries the
+ * claim, never adjacency alone — which is why this reads
+ * {@link templateSignature} and not the gap.
+ *
+ * Titles are excluded by construction: this runs over section candidates only,
+ * and a masthead split across two blocks is the one stack that BioMD writes as
+ * consecutive headings, inside the alignment that makes them one headline.
+ */
+function stackedTemplates(
+  accepted: readonly { node: LadomNode; prominence: Prominence; order: number }[],
+  root: LadomNode,
+  baseline: number,
+): Set<string> {
+  const at = textOffsets(root);
+  const inOrder = [...accepted].sort((a, b) => a.order - b.order);
+  const stacked = new Set<string>();
+  let run: typeof inOrder = [];
+
+  const close = (): void => {
+    if (run.length >= 2) for (const c of run) stacked.add(c.node.id);
+    run = [];
+  };
+  for (const candidate of inOrder) {
+    const previous = run[run.length - 1];
+    if (previous !== undefined) {
+      const sameTemplate =
+        templateSignature(previous.node, previous.prominence, baseline) ===
+        templateSignature(candidate.node, candidate.prominence, baseline);
+      const start = at.get(candidate.node.id) ?? 0;
+      const previousEnd = (at.get(previous.node.id) ?? 0) + textOf(previous.node).trim().length;
+      // Strictly nothing: a spacer block carries no visible characters, so the
+      // author's `<p>&nbsp;</p>` between two lines of one label does not make
+      // them two labels. Any real word between them does.
+      if (!sameTemplate || start - previousEnd > 0) close();
+    }
+    run.push(candidate);
+  }
+  close();
+  return stacked;
 }
 
 /** The heading depth already marked on this block, or undefined. */
@@ -481,20 +567,7 @@ function recoverCenteredSections(root: LadomNode, opts: Required<HeadingOptions>
   const baseline = bodyBaseline(root);
   const docTextLen = root.metrics.textLen;
   const candidates: CenteredCandidate[] = [];
-  /** Running count of visible characters, so "how much prose is between two
-   * candidates?" is a subtraction rather than an accumulation that every
-   * `continue` in the loop could forget. */
-  const textAt = new Map<string, number>();
-  let seen = 0;
-  const countText = (node: LadomNode): void => {
-    if (node.kind === "text") {
-      seen += (node.value ?? "").trim().length;
-      return;
-    }
-    if (node.kind === "element") textAt.set(node.id, seen);
-    for (const child of node.children) countText(child);
-  };
-  countText(root);
+  const textAt = textOffsets(root);
 
   const proseBefore: number[] = [];
   let previousEnd = 0;
