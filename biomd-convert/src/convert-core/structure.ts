@@ -1520,34 +1520,74 @@ function blockTextLength(node: BiomdContent): number {
  * authored as a `<ul>` — and six is recurrence enough to satisfy this rule's
  * own floor of two. A record's own field label is not a document section,
  * however many times the record repeats.
+ *
+ * ## The solitary label, and why recurrence cannot decide it
+ *
+ * A page has one discography. Requiring the shape to repeat refuses the very
+ * construct the rule was written for — `segovia`'s `ДИСКОГРАФИЯ`, named above —
+ * and `CLAUDE.md` §5's recurrence law is explicitly a law about shapes that
+ * repeat *within* a document, not about ones that occur once by definition.
+ * What stands in for it is evidence the author left in the line itself:
+ *
+ *   - **it shouts, or it is wholly bold.** A lead-in is written in running
+ *     case because it is running prose; a section label is set apart.
+ *   - **it does not end in a colon.** A colon is the mark of a sentence
+ *     handing over to what follows — `Примечания:` above its numbered notes,
+ *     `См. также:` above its related pages — and both of those are paragraphs
+ *     in the references, not headings.
+ *
+ * Both are required, and either one alone admits the false friend the other
+ * excludes. The depth differs from the recurring branch for a stated reason:
+ * several labels enumerating the parts of one region are peers *inside* a
+ * section (`###`), while a single label opening a list nobody else labels is a
+ * section of the document (`##`) — the same reading {@link headingLineOf} takes
+ * of a solitary shouted line, and the one `segovia`'s reference writes.
  */
 export function promoteLabelBeforeList(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
   if (ctx.tableDepth >= 2) return [...nodes];
   const candidates: number[] = [];
+  const standalone: number[] = [];
   nodes.forEach((node, index) => {
     if (node.type !== "paragraph") return;
     const next = nodes[index + 1];
     if (!next || next.type !== "list") return;
     if (node.children.some((c) => c.type === "link" || c.type === "image" || c.type === "break")) return;
-    const text = phrasingText(node.children).replace(/\s+/gu, " ").trim().replace(/[:\s]+$/u, "");
+    const raw = phrasingText(node.children).replace(/\s+/gu, " ").trim();
+    const text = raw.replace(/[:\s]+$/u, "");
     if (text.length < 4 || text.length > 60) return;
     if (text.split(/\s+/u).filter(Boolean).length > 8) return;
     if (/[.!?]/u.test(text)) return;
     candidates.push(index);
+    if (raw === text && (isShoutedLabel(text) || isWhollyStrong(node.children))) standalone.push(index);
   });
-  if (candidates.length < 2) return [...nodes];
+
+  const promote = candidates.length >= 2 ? candidates : standalone;
+  if (promote.length === 0) return [...nodes];
+  const depth: 2 | 3 = candidates.length >= 2 ? 3 : 2;
 
   const out = [...nodes];
-  for (const index of candidates) {
+  for (const index of promote) {
     const paragraph = out[index] as Paragraph;
     const children = headingPhrasing(paragraph.children);
     const last = children[children.length - 1];
     if (last?.type === "text") last.value = last.value.replace(/[:\s]+$/u, "");
-    const heading: BiomdContent = { type: "heading", depth: 3, children };
+    const heading: BiomdContent = { type: "heading", depth, children };
     ctx.recoveredHeadings.add(heading);
     out[index] = heading;
   }
   return out;
+}
+
+/**
+ * A line written in capitals — the era's other spelling of a section label.
+ *
+ * The same test {@link headingLineOf} applies to a line inside a run, lifted
+ * out so both callers ask one question. Case-insensitive scripts (digits,
+ * punctuation, CJK) fail the `!== toLowerCase()` half and never qualify.
+ */
+function isShoutedLabel(text: string): boolean {
+  const letters = text.replace(/[^\p{L}]/gu, "");
+  return letters.length >= 3 && letters === letters.toUpperCase() && letters !== letters.toLowerCase();
 }
 
 function promoteEntryDates(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
@@ -1823,6 +1863,15 @@ function captionRunAt(
   let i = from;
   for (; i < nodes.length; i += 1) {
     const block = nodes[i] as BiomdContent;
+    // A caption closes a figure; a label opens what follows it. When the very
+    // next block is a list, the line between them belongs to the list — and
+    // binding it upwards does not merely mislabel it, it *deletes* it, because
+    // a `caption:` property is not a block any outline can reach. `segovia`'s
+    // `ДИСКОГРАФИЯ` is the corpus's instance: a section of the document was
+    // absorbed into the cover above it. Asking what claims the block from
+    // below costs one lookahead and needs no typography, no vocabulary and no
+    // knowledge of the page.
+    if (nodes[i + 1]?.type === "list") break;
     if (isCaptionCandidate(block, ctx)) {
       blocks.push(block as CaptionBlock);
       continue;
@@ -2356,9 +2405,7 @@ function headingLineOf(lines: readonly RunLine[], ctx: Ctx, followingText: numbe
   if (body.length + followingText < 60) return null;
 
   const bold = isWhollyStrong(first.content);
-  const letters = text.replace(/[^\p{L}]/gu, "");
-  const shouted = letters.length >= 3 && letters === letters.toUpperCase() && letters !== letters.toLowerCase();
-  if (!bold && !shouted) return null;
+  if (!bold && !isShoutedLabel(text)) return null;
   // A label names a thing; a sentence says something about it. A short label
   // may still contain a full stop — `Положение рук. Правая рука.` is a
   // heading — but a long one with sentence punctuation is prose.
@@ -4206,6 +4253,16 @@ function tableRegionFrom(el: LadomNode, ctx: Ctx): BiomdContent[] {
   const menu = navFromGrid(grid, ctx, el);
   if (menu) return menu;
 
+  // Asked here for the same reason, and stated in `navFromGrid`'s own false
+  // friends: "a figure table, image in one row and caption in the next".
+  // See {@link stackedCaptionFigureFrom}.
+  const stacked = stackedCaptionFigureFrom(grid, ctx);
+  if (stacked) {
+    ctx.tables.push({ tableId: el.id, classification: "LAYOUT", emittedTable: false, failure: "figure-caption" });
+    ctx.ledger.push(review(el.id, "a column of its own holding one picture over one caption; bound as one figure"));
+    return [stacked];
+  }
+
   const classification = ctx.options.classifications?.get(el.id) ?? classifyTable(grid);
 
   switch (classification.class) {
@@ -4839,6 +4896,91 @@ function pairsPictureWithMatter(grid: TableGrid): boolean {
     if (cells.some((cell) => cell.images === 0 && cell.text.trim().length >= 3)) matterLane = true;
   }
   return pictureLane && matterLane;
+}
+
+/**
+ * One standalone figure above its visible caption, in a column of its own.
+ *
+ * ## Rule contract — the figure box this era drew with a table
+ *
+ * **Invariant.** A grid whose occupied cells all sit in **one** column and fill
+ * exactly **two** rows: the earlier lowering to exactly one standalone image
+ * and nothing else, the later to short, link-free, picture-free text that the
+ * author set apart typographically — centred, or smaller than the page's body
+ * prose. Containment, cardinality, column occupancy and source order carry the
+ * whole relationship; no class, id, width, filename or vocabulary is read.
+ *
+ * **Why the typography and not `alt`.** §48's side-by-side sibling requires the
+ * visible line to restate the image's `alt`, because there the two cells are
+ * peers and only the wording says which is the caption. Here the author has
+ * already said it, by putting a picture and one short line alone in a column
+ * and stacking them — and the corpus's stacked figure boxes routinely carry no
+ * `alt` at all, so requiring one would refuse every true positive. What takes
+ * its place is the author's own typographic distinction, read with the same
+ * {@link isCaptionContext} test the inline path uses. It has to be read off the
+ * source here: a cell's blocks are flattened before lowering, so the paragraph
+ * never passes through the descent that sets `captionEligible`.
+ *
+ * **Recurrence does not apply, and saying so is part of the contract** — a
+ * figure box holds one figure by construction, the same standing as
+ * {@link sideCaptionFigureFrom} and {@link isUiIcon}. What replaces it is that
+ * the test is closed on both sides: one column, two rows, and *nothing else in
+ * the table*, so there is no third thing for a wrong reading to swallow.
+ *
+ * **False friends**, each excluded by a different clause and tested for
+ * non-firing:
+ *   - **a section label over its list** — `segovia`'s `ДИСКОГРАФИЯ` is not in a
+ *     table with the picture at all, and a labelled list is not one image;
+ *   - **a prose paragraph that merely follows a picture** — body prose is
+ *     neither centred nor set smaller, so {@link isCaptionContext} refuses it;
+ *   - **a menu under a banner** — the caption cell may hold no link;
+ *   - **a two-picture stack** — the caption row may hold no image;
+ *   - **a stack of three or more rows** — that is a region, not a figure;
+ *   - **a record row beside a cover** — two occupied columns, not one.
+ */
+function stackedCaptionFigureFrom(grid: TableGrid, ctx: Ctx): BiomdContent | null {
+  const occupied = grid.cells.filter((cell) => !cell.isEmpty);
+  if (occupied.length !== 2) return null;
+  const columns = new Set(occupied.map((cell) => cell.col));
+  if (columns.size !== 1) return null;
+
+  const [above, below] = [...occupied].sort((a, b) => a.row - b.row) as [GridCell, GridCell];
+  if (above.row === below.row) return null;
+  if (below.links > 0 || below.images > 0 || above.links > 0) return null;
+
+  const snapshot = begin(ctx);
+  const figureBlocks = framedCell(above.node, ctx);
+  const figure = figureBlocks[0];
+  if (figureBlocks.length !== 1 || figure?.type !== "biomdImage" || !figure.standalone) {
+    rollback(ctx, snapshot);
+    return null;
+  }
+
+  const captionBlocks = framedCell(below.node, ctx);
+  const caption = stackedCaptionText(captionBlocks, below, ctx);
+  if (caption === "") {
+    rollback(ctx, snapshot);
+    return null;
+  }
+
+  ctx.ledger.push(mergedInto(below.id, nextId(ctx, "image-caption")));
+  return { ...figure, caption };
+}
+
+/**
+ * The caption text a stacked figure box accepts, or `""`.
+ *
+ * Line structure is read the same way the inline caption path reads it, so a
+ * `<br>`-broken label collapses to one line exactly as it does there.
+ */
+function stackedCaptionText(blocks: readonly BiomdContent[], cell: GridCell, ctx: Ctx): string {
+  if (blocks.length === 0) return "";
+  if (!blocks.every((block) => block.type === "paragraph" || block.type === "heading")) return "";
+  const text = captionTextOf(blocks as CaptionBlock[]);
+  if (text === "" || text.length > 300) return "";
+  // The author's own typographic distinction is the evidence that this line is
+  // a caption and not the next paragraph of the article.
+  return [...walkElements(cell.node)].some((node) => isCaptionContext(node, ctx)) ? text : "";
 }
 
 /**

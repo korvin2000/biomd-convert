@@ -3126,6 +3126,201 @@ describe("a one-row figure-and-caption grid preserves the binding", () => {
 });
 
 /**
+ * Rule contract — **a picture over a caption, alone in a column, is a figure.**
+ *
+ * *Invariant.* Every occupied cell in one column, exactly two of them, the
+ * earlier lowering to one standalone image and nothing else, the later to
+ * short link-free picture-free text the author set apart typographically.
+ * Containment, cardinality, occupancy and source order; no class, id, width,
+ * filename or vocabulary is read.
+ *
+ * *Recurrence.* Not applicable and stated: a figure box holds one figure. The
+ * closure of the test replaces it — one column, two rows, nothing else in the
+ * table, so no third thing exists for a wrong reading to swallow.
+ *
+ * *Why not `alt`.* Its side-by-side sibling matches the visible line against
+ * the image's `alt`, because two peer cells need the wording to say which is
+ * the caption. A stacked box has already said it structurally, and the corpus's
+ * stacked boxes routinely carry no `alt` — `xtra_alexandro`'s postage stamp has
+ * none — so requiring one refuses every true positive.
+ *
+ * *False friends*, each tested for non-firing.
+ */
+describe("a picture over its caption in a column of its own", () => {
+  async function converted(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  const STAMP =
+    '<table border="0" width="150" align="right">' +
+    '<tr><td width="100%"><p><img border="0" src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
+    '<tr><td width="100%"><p style="text-align: center">Почтовая марка,<br>выпущенная в Уругвае<br>(1999)</p></td></tr>' +
+    "</table>";
+
+  it("binds the line under the picture as its caption", async () => {
+    const out = await converted(STAMP);
+    expect(out).toContain("caption: Почтовая марка, выпущенная в Уругвае (1999)");
+    expect(out.match(/Почтовая марка/gu)).toHaveLength(1);
+  });
+
+  it("decides identically under renamed attributes and permuted order — mutation", async () => {
+    const permuted =
+      '<table align="right" class="figbox" id="fig-7" width="150" border="0">' +
+      '<tr><td class="pic"><p><img width="150" src="photo/stamp.jpg" height="212" border="0"></p></td></tr>' +
+      '<tr><td class="cap"><p class="podpis" style="text-align: center">Почтовая марка,<br>выпущенная в Уругвае<br>(1999)</p></td></tr>' +
+      "</table>";
+    expect(await converted(permuted)).toContain("caption: Почтовая марка, выпущенная в Уругвае (1999)");
+  });
+
+  it("leaves body prose under a picture as prose — non-firing", async () => {
+    const prose =
+      '<table border="0" width="150" align="right">' +
+      '<tr><td><p><img src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
+      "<tr><td><p>Почтовая марка была выпущена в Уругвае в 1999 году.</p></td></tr>" +
+      "</table>";
+    const out = await converted(prose);
+    expect(out).not.toContain("caption: Почтовая марка была выпущена");
+    expect(out).toContain("Почтовая марка была выпущена в Уругвае в 1999 году.");
+  });
+
+  it("leaves a menu under a banner alone — non-firing", async () => {
+    const menu =
+      '<table border="0" width="150" align="right">' +
+      '<tr><td><p><img src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
+      '<tr><td><p style="text-align: center"><a href="disc.htm">Дискография</a></p></td></tr>' +
+      "</table>";
+    expect(await converted(menu)).not.toContain("caption: Дискография");
+  });
+
+  it("leaves a two-picture stack as two pictures — non-firing", async () => {
+    const stack =
+      '<table border="0" width="150" align="right">' +
+      '<tr><td><p><img src="photo/one.jpg" width="150" height="212"></p></td></tr>' +
+      '<tr><td><p style="text-align: center"><img src="photo/two.jpg" width="150" height="212"></p></td></tr>' +
+      "</table>";
+    expect(await converted(stack)).not.toContain("caption:");
+  });
+
+  it("leaves a three-row column alone — non-firing", async () => {
+    const three =
+      '<table border="0" width="150" align="right">' +
+      '<tr><td><p><img src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
+      '<tr><td><p style="text-align: center">Почтовая марка</p></td></tr>' +
+      '<tr><td><p style="text-align: center">Уругвай, 1999</p></td></tr>' +
+      "</table>";
+    expect(await converted(three)).not.toContain("caption: Почтовая марка");
+  });
+
+  it("does not read a caption above the picture it would name — non-firing", async () => {
+    const inverted =
+      '<table border="0" width="150" align="right">' +
+      '<tr><td><p style="text-align: center">Почтовая марка, Уругвай</p></td></tr>' +
+      '<tr><td><p><img src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
+      "</table>";
+    expect(await converted(inverted)).not.toContain("caption: Почтовая марка, Уругвай");
+  });
+});
+
+/**
+ * Rule contract — **a solitary shouted label above a list opens a section.**
+ *
+ * *Invariant.* A paragraph immediately above a `list`, short, no link, image or
+ * hard break, no sentence punctuation — and, where it is the page's only such
+ * label, written in capitals or wholly bold and *not* ending in a colon. The
+ * evidence is position, cardinality and letter case; no vocabulary is read.
+ *
+ * *Recurrence.* Deliberately not required for the solitary branch, and the
+ * reason is stated: a page has one discography. `CLAUDE.md` §5's recurrence law
+ * governs shapes that repeat within a document, and cannot govern one that
+ * occurs once by definition. Typography and the absent colon stand in for it,
+ * and both are required.
+ *
+ * *Depth is not arbitrary.* Several such labels are peers inside one region
+ * (`###`, unchanged); one label that nothing else labels is a section of the
+ * document (`##`), which is what `headingLineOf` reads of a solitary shouted
+ * line and what `segovia`'s reference writes.
+ *
+ * *False friends*, each tested for non-firing: a colon-terminated lead-in
+ * handing over to an enumeration (`Примечания:`, a paragraph in
+ * `new_geyzel04`'s reference); a running-case sentence above a list; a label
+ * inside a record region.
+ */
+describe("a solitary shouted label above a list", () => {
+  const ALBUMS = "<ul><li>Centenary Celebration</li><li>Poet of the Guitar</li><li>Recital Intimo</li></ul>";
+
+  it("opens a section of the document", async () => {
+    const out = await md(PROSE + "<p><font size=2>ДИСКОГРАФИЯ</font></p>" + ALBUMS);
+    expect(out).toContain("## ДИСКОГРАФИЯ");
+  });
+
+  it("leaves a colon-terminated lead-in as prose — non-firing", async () => {
+    const out = await md(PROSE + "<p><font size=2>ПРИМЕЧАНИЯ:</font></p>" + ALBUMS);
+    expect(out).not.toMatch(/^#+ ПРИМЕЧАНИЯ/mu);
+    expect(out).toContain("ПРИМЕЧАНИЯ:");
+  });
+
+  it("leaves a running-case line above a list as prose — non-firing", async () => {
+    const out = await md(PROSE + "<p><font size=2>Среди них</font></p>" + ALBUMS);
+    expect(out).not.toMatch(/^#+ Среди них/mu);
+    expect(out).toContain("Среди них");
+  });
+
+  // Unit-level for the same reason the record-region guard above is: which
+  // container a block lands in, and therefore how many labels one call sees,
+  // depends on how many page-frame tables the classifier collapses first.
+  it("keeps several labels as peers and a lone one as a section", () => {
+    const label = (text: string): Paragraph => ({ type: "paragraph", children: [{ type: "text", value: text }] });
+    const albums: List = {
+      type: "list",
+      ordered: false,
+      spread: false,
+      children: [{ type: "listItem", spread: false, children: [label("Poet of the Guitar")] }],
+    };
+    const ctx = (): Parameters<typeof promoteLabelBeforeList>[1] =>
+      ({ tableDepth: 1, recoveredHeadings: new Set(), blockAlign: new Map() }) as unknown as Parameters<
+        typeof promoteLabelBeforeList
+      >[1];
+
+    const several = promoteLabelBeforeList([label("ДИСКОГРАФИЯ"), albums, label("ФИЛЬМОГРАФИЯ"), albums], ctx());
+    expect(several.filter((n) => n.type === "heading" && n.depth === 3)).toHaveLength(2);
+
+    const lone = promoteLabelBeforeList([label("ДИСКОГРАФИЯ"), albums], ctx());
+    expect(lone.filter((n) => n.type === "heading" && n.depth === 2)).toHaveLength(1);
+
+    // The two signals the solitary branch stands on, each removed in turn.
+    expect(promoteLabelBeforeList([label("ДИСКОГРАФИЯ:"), albums], ctx()).some((n) => n.type === "heading")).toBe(
+      false,
+    );
+    expect(promoteLabelBeforeList([label("Среди которых"), albums], ctx()).some((n) => n.type === "heading")).toBe(
+      false,
+    );
+  });
+
+  it("does not absorb the label into the picture above it — non-firing", async () => {
+    const body =
+      PROSE +
+      '<p style="text-align: center"><img src="cover.jpg" width="400" height="562"></p>' +
+      '<p style="text-align: center"><font size=2>ДИСКОГРАФИЯ</font></p>' +
+      ALBUMS;
+    const out = (
+      await convert(Buffer.from(page(body), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+    expect(out).not.toContain("caption: ДИСКОГРАФИЯ");
+    expect(out).toContain("## ДИСКОГРАФИЯ");
+  });
+});
+
+/**
  * Rule contract — **a word boundary inside a mark belongs outside it.**
  *
  * *Invariant.* Evidence is the characters on the two sides of the boundary and
