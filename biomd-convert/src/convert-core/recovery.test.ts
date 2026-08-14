@@ -1697,6 +1697,71 @@ describe("a row of nothing but links is a pager, not an abandoned record", () =>
     const result = await convertWith("UNKNOWN", page(PROSE + plain));
     expect(result.markdown).not.toContain("::: columns");
   });
+
+  /**
+   * A record grid gets no rule between its rows.
+   *
+   * A `---` between laned rows claims "one thing ended here and the next
+   * began". That is true of a catalog — an album title over its track list
+   * beside its cover — and of a dated archive, and the corpus asks for it on
+   * both. It is false of a concert programme, where every lane of every row
+   * holds one short line and the row boundary is the grid's own. Ruling between
+   * those rows takes a table the source draws in a screenful and spreads it
+   * down the page: 21 rules on one document, all of them the converter's own
+   * claim (*ruled 2026-08-14*).
+   *
+   * **Invariant.** Block cardinality and role inside the lanes — compound, or
+   * labelled by a date — never a width, a class or a row count.
+   *
+   * **Recurrence is the region, not the row:** the question is asked once over
+   * every laned row a region produced, so a catalog stays a catalog on the one
+   * row whose cover art is missing. `goya2` has such a row.
+   *
+   * **False friends, both tested for non-firing:** the compound row, and the
+   * dated row whose lanes are each a single paragraph and which is an entry all
+   * the same.
+   */
+  const programmeRows = (rows: readonly [string, string][]): string =>
+    '<table width="75%" border="0" cellspacing="0" cellpadding="0"><tr>' +
+    rows.map(([a, b]) => `<td width="25%">${a}</td><td width="75%">${b}</td>`).join("</tr><tr>") +
+    "</tr></table>";
+
+  it("draws no rule between the rows of a record grid", async () => {
+    const programme = programmeRows([
+      ["Ф. Таррега", "Воспоминанье об Альгамбре"],
+      ["Л. Ален", 'Испанская фантазия "Огонь сердца"'],
+      ["Х. Мостаццо", "Сапатеадо"],
+    ]);
+    const result = await convertWith("UNKNOWN", page(PROSE + programme));
+    expect(result.markdown).toContain("::: columns");
+    expect(result.markdown).toContain("Сапатеадо");
+    expect(result.markdown.split("\n").filter((l) => l.trim() === "---")).toHaveLength(0);
+  });
+
+  it("false friend: a compound row is an entry and keeps its rules", async () => {
+    // One lane carries more than a single line — a title over its track list.
+    // Without a rule the first album's tracks read as the second album's.
+    const catalog = programmeRows([
+      ["<p><b>Vol. 1</b></p><p>01. Melodia<br>02. Sacrifice</p>", "Ф. Гойя"],
+      ["<p><b>Vol. 2</b></p><p>01. Hello Again<br>02. Secret Love</p>", "Ф. Гойя"],
+      ["<p><b>Vol. 3</b></p><p>01. Winds Of Time<br>02. Promise Me</p>", "Ф. Гойя"],
+    ]);
+    const result = await convertWith("UNKNOWN", page(PROSE + catalog));
+    expect(result.markdown.split("\n").filter((l) => l.trim() === "---").length).toBeGreaterThan(0);
+  });
+
+  it("false friend: a dated row is an entry however few blocks its lanes hold", async () => {
+    // The archive shape: a date beside what was published that day. Every lane
+    // is one paragraph, exactly like the programme above, and the label is what
+    // the rule divides.
+    const archive = programmeRows([
+      ["<b>11 декабря 2007 г.</b>", "Добавлена биография венгерского гитариста Ласло Сендрей-Карпера."],
+      ["<b>9 декабря 2007 г.</b>", "Размещены статьи о Висенте Эспинеле и Хосе Феррере."],
+      ["<b>25 ноября 2007 г.</b>", "Словарь пополнился статьями о Милане Зеленке и Яне Обровской."],
+    ]);
+    const result = await convertWith("UNKNOWN", page(PROSE + archive));
+    expect(result.markdown.split("\n").filter((l) => l.trim() === "---").length).toBeGreaterThan(0);
+  });
 });
 
 /**

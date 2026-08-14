@@ -12,6 +12,7 @@
  */
 import type { BlockContent, List, ListItem, Paragraph, PhrasingContent, RootContent, Table, TableRow } from "mdast";
 import {
+  type BiomdColumn,
   type BiomdContent,
   type BiomdRoot,
   type BoundedContent,
@@ -5126,6 +5127,37 @@ export function rowBandsOf(grid: TableGrid): Array<{ start: number; end: number 
 }
 
 /**
+ * Whether a laned row is an *entry* rather than a *record*.
+ *
+ * A `---` between laned rows says "one thing ended here and the next began",
+ * and that claim is only worth making about rows that are things. Two shapes
+ * earn it, and the corpus states both:
+ *
+ *   an album card — a title, a track list, a cover — is compound, and without a
+ *   rule between them one album's tracks read as the next album's;
+ *   a diary entry — `11 декабря 2007 г.` beside what was published that day —
+ *   is labelled, and the label is what the rule divides.
+ *
+ * A concert programme is neither. Every lane of every row holds one short line
+ * — a composer beside the piece he wrote — and the row boundary is the grid's
+ * own, drawn tight and unremarkable. Ruling between them takes a table the
+ * source renders in a screenful and spreads it down the page, which is a claim
+ * about structure the author never made and a layout worse than the source's.
+ *
+ * Judged over the whole region, not per row: a catalog stays a catalog on the
+ * one row whose cover art is missing, and `goya2` has such a row.
+ */
+function isEntryRow(columns: readonly BiomdColumn[]): boolean {
+  return columns.some((column) =>
+    column.children.length > 1
+      ? true
+      : column.children.some(
+          (block) => block.type !== "paragraph" || isDateLabel(phrasingText(block.children as PhrasingContent[])),
+        ),
+  );
+}
+
+/**
  * A layout or catalog region.
  *
  * Under `simplified` this flattens to linear reading order. `columns` is
@@ -5151,6 +5183,10 @@ function layoutFrom(
     const snapshot = begin(ctx);
     const regions: BiomdContent[] = [];
     let lanedRows = 0;
+    /** Where in `regions` a row-boundary `---` was drawn, so it can be undrawn. */
+    const derivedRuleAt: number[] = [];
+    /** How many laned rows carry an entry rather than a record. */
+    let entryRows = 0;
 
     // One region per **row**, not one region spanning the table.
     //
@@ -5281,7 +5317,15 @@ function layoutFrom(
         // альбомов дисков с песнями можно ставить разделитель строки".
         // Layout, not text — §16.3 constrains invented *content*, and drawing a
         // separator invents none.
-        if (lanedRows > 0) regions.push(markDerivedRule());
+        //
+        // Provisionally: whether these rows *are* entries is a property of the
+        // whole region, and the loop is one row in. {@link isEntryRow} counts
+        // them, and the region withdraws every rule below if none is.
+        if (lanedRows > 0) {
+          derivedRuleAt.push(regions.length);
+          regions.push(markDerivedRule());
+        }
+        if (isEntryRow(columns)) entryRows += 1;
         // Reference §3: the legacy form may omit `columns:` for 2–3 children,
         // but a 4-lane group has no legacy spelling, so the count is the only
         // way a reader learns the arity. `resolveColumnsCount` omits it again
@@ -5309,7 +5353,12 @@ function layoutFrom(
         emittedTable: false,
         failure: "emitted-as-columns",
       });
-      return regions;
+      // A grid of records is not a sequence of entries, and a rule between every
+      // pair of its rows is the difference between a concert programme and a
+      // page of dividers.
+      const withdrawn = entryRows === 0 ? new Set(derivedRuleAt) : new Set<number>();
+      if (withdrawn.size > 0) ctx.ledger.push(removed(el.id, `row separators withdrawn: ${withdrawn.size} record rows`));
+      return withdrawn.size === 0 ? regions : regions.filter((_, index) => !withdrawn.has(index));
     }
     rollback(ctx, snapshot);
   }
