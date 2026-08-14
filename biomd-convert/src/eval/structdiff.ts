@@ -30,7 +30,7 @@ import {
   inlineOf,
   readBlocks,
 } from "./blocks.js";
-import { dropDirectives, silentIn } from "./reference-silent.js";
+import { dropDirectives, foldSilentHighlights, silentIn } from "./reference-silent.js";
 
 export type Severity = "critical" | "major" | "minor";
 export type EditOp = "insert" | "delete" | "move" | "substitute";
@@ -93,11 +93,14 @@ interface Context {
 }
 
 export function diffDocuments(doc: string, producedSource: string, referenceSource: string): DiffResult {
-  const reference = readBlocks(referenceSource).blocks;
+  // Same policy, applied to the one *inline* construct it covers, and applied
+  // to both sides at once so the fold cannot become asymmetric.
+  const folded = foldSilentHighlights(producedSource, referenceSource);
+  const reference = readBlocks(folded.reference).blocks;
   // A reference that has never heard of a construct cannot adjudicate it. The
   // exception is per document and per construct and reverses itself the moment
   // the reference uses one; `reference-silent.ts` states the whole policy.
-  const produced = dropDirectives(readBlocks(producedSource).blocks, silentIn(reference));
+  const produced = dropDirectives(readBlocks(folded.produced).blocks, silentIn(reference));
   const ctx: Context = {
     doc,
     findings: [],

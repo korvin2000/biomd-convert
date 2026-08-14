@@ -13,7 +13,14 @@
  */
 import { describe, expect, it } from "vitest";
 import { readBlocks } from "./blocks.js";
-import { REFERENCE_SILENT_DIRECTIVES, dropDirectives, foldSilentDirectives, silentIn } from "./reference-silent.js";
+import {
+  REFERENCE_SILENT_DIRECTIVES,
+  dropDirectives,
+  foldSilentDirectives,
+  foldSilentHighlights,
+  highlightSilentIn,
+  silentIn,
+} from "./reference-silent.js";
 import { diffDocuments } from "./structdiff.js";
 import { scoreDocuments } from "./score.js";
 
@@ -89,5 +96,47 @@ describe("L1 — the scalar tripwire", () => {
     const folded = foldSilentDirectives(new Map([["align", 1]]), new Map([["align", 1], ["nav", 1]]));
     expect(folded.expected).toEqual(["align"]);
     expect(folded.actual).toEqual(["align", "nav"]);
+  });
+});
+
+/**
+ * The same three properties, for the one *inline* construct the policy covers.
+ *
+ * `==highlight==` was added when the converter began marking the distinctions
+ * the source draws inline. Three references use it — `jovicic`,
+ * `new_blackmore`, `new_rechin4` — and are adjudicated in full; the rest have
+ * never written one, and `new_rules.md` states in the author's own words that
+ * their silence is not a disagreement: *"Если в reference файлах текст в
+ * кавычках не выделен `==`, считать что он выделен, игнорировать такие
+ * различия"*.
+ */
+describe("an inline construct the reference tier predates", () => {
+  const REF = "# Гойя\n\nОн сказал: \"это было давно\", и мы поверили ему.\n";
+  const OUT = "# Гойя\n\nОн сказал: ==\"это было давно\"==, и мы поверили ему.\n";
+
+  it("folds both sides when the reference has never written one", () => {
+    const folded = foldSilentHighlights(OUT, REF);
+    expect(folded.produced).toBe(REF);
+    expect(folded.reference).toBe(REF);
+    expect(diffDocuments("goya2", OUT, REF).findings).toEqual([]);
+  });
+
+  it("one highlight anywhere makes the reference an authority", () => {
+    const speaks = "# Гойя\n\nОн сказал: ==\"это было давно\"==, и мы поверили ему.\n\n==иное==\n";
+    expect(highlightSilentIn(speaks)).toBe(false);
+    expect(foldSilentHighlights(OUT, speaks).produced).toBe(OUT);
+  });
+
+  it("still reports a disagreement about which run is marked", () => {
+    // Both sides speak, and they mark different text. The fold is off and the
+    // difference survives — this is the property that separates hiding an
+    // absence from hiding a disagreement.
+    const theirs = "# Гойя\n\nОн ==сказал==: \"это было давно\", и мы поверили ему.\n";
+    expect(diffDocuments("goya2", OUT, theirs).findings.length).toBeGreaterThan(0);
+  });
+
+  it("never touches a lone `=` or a table rule", () => {
+    const rule = "# Гойя\n\n| a | b |\n| - | - |\n| 1 | 2 |\n\nE = mc2\n";
+    expect(foldSilentHighlights(rule, "# Гойя\n").produced).toBe(rule);
   });
 });

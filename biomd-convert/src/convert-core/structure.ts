@@ -342,7 +342,7 @@ export function recoverStructure(
   // caption lines that name them, unbinding three `::: images` groups and six
   // captions. Placed here, no pass can see one.
   const placed = new Set<string>();
-  const children = insertAnchors(lowered, ctx, placed);
+  const children = highlightEmbeddedQuotations(insertAnchors(lowered, ctx, placed), ctx);
 
   // Two ways a destination fails to reach the output, both recorded, neither
   // guessed at. A marker put in the wrong place is worse than an absent one:
@@ -374,6 +374,281 @@ export function recoverStructure(
 function nextId(ctx: Ctx, prefix: string): string {
   ctx.counter.n += 1;
   return `${prefix}:${ctx.counter.n}`;
+}
+
+/**
+ * A quotation the author left inside a paragraph, marked as one.
+ *
+ * ## Rule contract — a long quotation embedded in prose is highlighted
+ *
+ * **Invariant.** `new_rules.md`, stated by the author and quoted here because
+ * it is the whole of the rule: *"Предложения внутри большого блока параграфа
+ * текста, заключенные в кавычки, если они не выделены как цитата и имеют длину
+ * более 64 символов — выделять `==`"*. Four conditions, none of which reads a
+ * document, class, id or word:
+ *
+ *   1. **a paragraph**, not a heading, a table cell, a menu or a code block;
+ *   2. **not already marked as a quotation** — anything inside a `blockquote`
+ *      is excluded, which is the "если они не выделены как цитата" clause;
+ *   3. **embedded**, not the whole block: at least 64 characters of the
+ *      paragraph stand outside the quotation, so a paragraph that *is* a
+ *      quotation keeps its own shape and is not wrapped end to end;
+ *   4. **longer than 64 characters** between the marks — the author's number,
+ *      used unchanged in both places;
+ *   5. **it is a sentence.** The author wrote *"Предложения"*, and this is what
+ *      separates a quoted sentence from a quoted *name*: a work title, a prize
+ *      citation, a thesis heading and a two-word phrase are all in quotation
+ *      marks too, and `borislova`'s `"La procesion de las cucarachas por Rusia
+ *      o La procesion del diablo"` is 66 characters of pure title. The test is
+ *      sentence-final punctuation, read where Russian typography puts it —
+ *      *outside* the closing mark (`…струн гитары".`) as well as inside — so a
+ *      single-sentence quotation qualifies on the period that follows it.
+ *
+ * **Where the marks go.** Outside the highlight: `"==текст=="`. The author
+ * writes the operand as `<текст в кавычках>` — *the text, which is in quotes* —
+ * so the quotation marks are the sentence's punctuation and the highlight
+ * covers what they enclose. This is the same shape {@link isHighlightedRun}
+ * produces, where the mark wraps exactly the distinguished run.
+ *
+ * **Quote pairing is computed over the whole paragraph, not per text node**,
+ * and a pair is wrapped only when both of its marks land in the *same* text
+ * node. A quotation broken by a link, a bold run or a hard break is left alone
+ * rather than guessed at: wrapping it would have to invent where the mark goes
+ * relative to the other construct, and §0 ranks content above visible
+ * distinction. A paragraph with an odd number of marks is skipped entirely,
+ * because nothing can be paired reliably in it.
+ *
+ * **Deliberate divergence from the references, authorised by name.** No
+ * reference marks these, and `new_rules.md` says so explicitly in the next
+ * line: *"Если в reference файлах текст в кавычках не выделен `==`, считать
+ * что он выделен, игнорировать такие различия (т.е. не считать это нарушением.
+ * это улучшение визуала)"*. The cost is measured and stated in the commit; it
+ * falls entirely on `CLAUDE.md`'s priority 6, reference fidelity, and on
+ * nothing above it.
+ */
+function highlightEmbeddedQuotations(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const opaque = new Set(["blockquote", "heading", "tableCell", "code", "inlineCode", "biomdNav"]);
+  const visit = (node: unknown): void => {
+    if (node === null || typeof node !== "object") return;
+    const value = node as { type?: string; children?: unknown[] };
+    if (value.type !== undefined && opaque.has(value.type)) return;
+    if (value.type === "paragraph") {
+      markQuotationsIn(value as unknown as Paragraph, ctx);
+      return;
+    }
+    if (Array.isArray(value.children)) for (const child of value.children) visit(child);
+  };
+  for (const node of nodes) visit(node);
+  return [...nodes];
+}
+
+/** The quotation mark this corpus writes, and the pair `analyze` also uses. */
+const QUOTE_MARKS: ReadonlyMap<string, string> = new Map([
+  ['"', '"'],
+  ["«", "»"],
+]);
+
+/** The author's figure, used for both the span and the prose around it. */
+const EMBEDDED_QUOTATION_MIN_CHARS = 64;
+
+const SENTENCE_FINAL = /[.!?…]/u;
+
+/** What may stand before a mark that is opening rather than closing a quotation. */
+const BEFORE_OPENING_QUOTE = /[\s(\[{«–—-]/u;
+
+/** Whether the mark at `index` reads as an opening one in its context. */
+function opensHere(chars: readonly { ch: string }[], index: number): boolean {
+  if (index === 0) return true;
+  return BEFORE_OPENING_QUOTE.test((chars[index - 1] as { ch: string }).ch);
+}
+
+/**
+ * Is the quotation *inside* the paragraph rather than the whole of it?
+ *
+ * The author's "внутри большого блока параграфа текста" clause, stated
+ * structurally instead of as a length: the paragraph must carry words of its
+ * own outside the marks. A block that *is* a quotation has none, and marking it
+ * end to end says nothing — `segovia` writes one as a whole italic paragraph
+ * with a single full stop outside the marks, and its reference leaves it
+ * italic. `new_blackmore` writes the shape this exists for, and its reference
+ * highlights it: thirty-three characters of lead-in, `Как говорит сам Ричи
+ * Блэкмор, он`, then the quotation. A length floor set anywhere between those
+ * two is arbitrary; "has words of its own" is not, and needs no number.
+ */
+function isEmbedded(
+  chars: readonly { ch: string }[],
+  openIndex: number,
+  closeIndex: number,
+): boolean {
+  let outside = "";
+  for (let i = 0; i < chars.length; i += 1) {
+    if (i >= openIndex && i <= closeIndex) continue;
+    outside += (chars[i] as { ch: string }).ch;
+  }
+  return /\p{L}/u.test(outside);
+}
+
+/**
+ * Does the quoted run contain a sentence, rather than name a thing?
+ *
+ * The clause that separates a quoted *sentence* from a quoted *title*, and the
+ * two references that use `==` on a quotation settle it between them:
+ * `jovicic` highlights `"Я с большим удовольствием констатирую… отношениях. Его
+ * ждёт блестящая карьера…"` and leaves the prize citation `"за высокий уровень
+ * исполнения серьёзной музыки и утверждение гитары в концертной жизни"`
+ * unmarked, in the same document, four paragraphs apart. The first carries a
+ * full stop; the second carries none, and neither does `borislova`'s 66-
+ * character work title or `new_rechin4`'s quoted thesis heading.
+ */
+function holdsASentence(
+  chars: readonly { ch: string }[],
+  openIndex: number,
+  closeIndex: number,
+): boolean {
+  for (let i = openIndex + 1; i < closeIndex; i += 1) {
+    if (SENTENCE_FINAL.test((chars[i] as { ch: string }).ch)) return true;
+  }
+  return false;
+}
+
+/**
+ * Where the highlight ends: after the closing mark, and after the stop that
+ * belongs to it.
+ *
+ * Russian typography puts the full stop outside the quotation mark, and
+ * `jovicic`'s reference takes it inside the highlight — `…педагога".==` — so
+ * the mark covers the whole sentence rather than stopping one character short
+ * of its end.
+ */
+function sentenceEnd(
+  chars: readonly { owner: { value: string }; at: number; ch: string }[],
+  closeIndex: number,
+  owner: { value: string },
+): number {
+  let at = (chars[closeIndex] as { at: number }).at + 1;
+  for (let i = closeIndex + 1; i < chars.length; i += 1) {
+    const c = chars[i] as { owner: { value: string }; at: number; ch: string };
+    // Only characters that are still contiguous in the same text node: a stop
+    // that lives past a `<br>` or a bold run is not this sentence's to take.
+    if (c.owner !== owner || c.at !== at || !SENTENCE_FINAL.test(c.ch)) break;
+    at += 1;
+  }
+  return at;
+}
+
+/**
+ * Does the quoted run end a sentence?
+ *
+ * Read on both sides of the closing mark, because the two conventions the
+ * corpus mixes put the full stop in different places: `"…гитары."` keeps it
+ * inside and `"…гитары".` puts it outside, and a rule that looked only inward
+ * would refuse every single-sentence quotation written the Russian way. A
+ * title, a prize citation or a quoted phrase has neither.
+ */
+function closesASentence(
+  chars: readonly { ch: string }[],
+  openIndex: number,
+  closeIndex: number,
+): boolean {
+  for (let i = closeIndex - 1; i > openIndex; i -= 1) {
+    const ch = (chars[i] as { ch: string }).ch;
+    if (/\s/u.test(ch)) continue;
+    if (SENTENCE_FINAL.test(ch)) return true;
+    break;
+  }
+  for (let i = closeIndex + 1; i < chars.length; i += 1) {
+    const ch = (chars[i] as { ch: string }).ch;
+    // The serializer's escape of a following `[`, and nothing else, is skipped.
+    if (ch === "\\") continue;
+    return SENTENCE_FINAL.test(ch);
+  }
+  return false;
+}
+
+function markQuotationsIn(paragraph: Paragraph, ctx: Ctx): void {
+  // One flat reading of the paragraph, with every character still knowing which
+  // text node it came from. Pairing has to be global — a node that begins
+  // mid-quotation would pair its own marks the wrong way round — while the
+  // rewrite has to be local.
+  const chars: Array<{ owner: { value: string }; at: number; ch: string }> = [];
+  const collect = (list: readonly PhrasingContent[]): void => {
+    for (const node of list) {
+      if (node.type === "text") {
+        for (let i = 0; i < node.value.length; i += 1) {
+          chars.push({ owner: node as { value: string }, at: i, ch: node.value[i] as string });
+        }
+      } else if ("children" in node) collect(node.children as PhrasingContent[]);
+    }
+  };
+  collect(paragraph.children as PhrasingContent[]);
+  if (chars.length < EMBEDDED_QUOTATION_MIN_CHARS * 2) return;
+
+  // Straight quotes carry no direction, so the role of each mark is read from
+  // the character before it — after a space or an opening bracket it opens,
+  // after a letter it closes — and the marks are matched on a stack. Pairing
+  // them 1-2, 3-4 instead makes an *inner* quotation close the outer one, and
+  // the span that survives starts mid-sentence: `xtra_shelechov` quotes a
+  // review that names `"Чардаш"` inside itself, twice.
+  const spans: Array<{ owner: { value: string }; from: number; to: number }> = [];
+  const stack: Array<{ owner: { value: string }; at: number; index: number; closer: string }> = [];
+  chars.forEach((c, index) => {
+    const top = stack[stack.length - 1];
+    if (top !== undefined && c.ch === top.closer && !opensHere(chars, index)) {
+      stack.pop();
+      const inner = index - top.index - 1;
+      if (
+        inner > EMBEDDED_QUOTATION_MIN_CHARS &&
+        isEmbedded(chars, top.index, index) &&
+        c.owner === top.owner &&
+        holdsASentence(chars, top.index, index) &&
+        closesASentence(chars, top.index, index)
+      ) {
+        // The marks and the stop that closes them are inside the highlight —
+        // `=="…педагога".==`, exactly as `jovicic` and `new_blackmore` write it.
+        spans.push({ owner: top.owner, from: top.at, to: sentenceEnd(chars, index, top.owner) });
+      }
+      return;
+    }
+    const closer = QUOTE_MARKS.get(c.ch);
+    if (closer !== undefined && opensHere(chars, index)) {
+      stack.push({ owner: c.owner, at: c.at, index, closer });
+    }
+  });
+  if (spans.length === 0) return;
+
+  const rewrite = (list: PhrasingContent[]): PhrasingContent[] => {
+    const out: PhrasingContent[] = [];
+    for (const node of list) {
+      if (node.type !== "text") {
+        if ("children" in node) {
+          (node as { children: PhrasingContent[] }).children = rewrite(node.children as PhrasingContent[]);
+        }
+        out.push(node);
+        continue;
+      }
+      const mine = spans.filter((s) => s.owner === (node as unknown as { value: string })).sort((a, b) => a.from - b.from);
+      if (mine.length === 0) {
+        out.push(node);
+        continue;
+      }
+      let cut = 0;
+      for (const span of mine) {
+        if (span.from < cut) continue;
+        const before = node.value.slice(cut, span.from);
+        if (before !== "") out.push({ type: "text", value: before });
+        out.push({
+          type: "biomdHighlight",
+          children: [{ type: "text", value: node.value.slice(span.from, span.to) }],
+        } as unknown as PhrasingContent);
+        ctx.ledger.push(emitted(nextId(ctx, "quotation"), nextId(ctx, "highlight")));
+        cut = span.to;
+      }
+      const rest = node.value.slice(cut);
+      if (rest !== "") out.push({ type: "text", value: rest });
+    }
+    return out;
+  };
+  paragraph.children = rewrite(paragraph.children as PhrasingContent[]);
 }
 
 /** Convert a node's children into top-level block content. */

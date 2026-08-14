@@ -3349,6 +3349,83 @@ describe("a run of a sentence the author set apart", () => {
 });
 
 /**
+ * Rule contract — **a long quotation embedded in prose is highlighted.**
+ *
+ * *Invariant.* `new_rules.md`, in the author's own words: sentences inside a
+ * large paragraph block, in quotation marks, not already marked as a quotation,
+ * longer than 64 characters. Position, cardinality, letter case and punctuation;
+ * no document, class, id or word list is read.
+ *
+ * *Reference-backed on both sides of the boundary.* Two references mark a
+ * quotation with `==` and the converter reproduces both **byte for byte** —
+ * `jovicic`'s 285-character Segovia testimonial and `new_blackmore`'s
+ * 169-character Blackmore quote, marks and closing stop included. The same two
+ * documents supply the negatives: `jovicic` leaves its 99-character prize
+ * citation unmarked four paragraphs later, and `segovia` leaves a paragraph
+ * that *is* a quotation as plain italic.
+ *
+ * *False friends*, each excluded by a different clause and each real:
+ *   - a quoted **title** — `borislova`'s 66-character work title, `news`'s
+ *     article heading, `new_rechin4`'s quoted thesis heading: no sentence-final
+ *     punctuation inside the marks;
+ *   - a paragraph that **is** the quotation — nothing of its own outside;
+ *   - a quotation **already marked as one** — anything inside a `blockquote`;
+ *   - a **nested** quotation — `xtra_shelechov` quotes a review that names
+ *     `"Чардаш"` inside itself; pairing marks 1-2, 3-4 would close the outer
+ *     quotation on the inner one and highlight a span starting mid-sentence.
+ */
+describe("a long quotation embedded in prose", () => {
+  const LEAD = "4 августа 1961 года, давая характеристику Йовану Йовичичу, Андрес Сеговия писал: ";
+  const QUOTE =
+    '"Я с большим удовольствием констатирую, что югославский гитарист Йован Йовичич за время ' +
+    "обучения в Академии Киджана в моем классе добился огромных успехов. Его ждет блестящая " +
+    'карьера исполнителя и педагога".';
+  const TAIL = " Значительно позднее А. Сеговия подтвердил данную им ранее характеристику.";
+
+  it("takes the marks and the stop that closes them inside the highlight", async () => {
+    const out = await md(PROSE + `<p>${LEAD}${QUOTE}${TAIL}</p>`);
+    expect(out).toContain(`==${QUOTE}==`);
+  });
+
+  it("leaves a quoted title unmarked — non-firing", async () => {
+    const title = '"24 прелюдии и фуги для гитары соло: особенности стиля Игоря Рехина".';
+    const out = await md(PROSE + `<p>${LEAD}${title}${TAIL}</p>`);
+    expect(out).not.toContain("==");
+  });
+
+  it("leaves a paragraph that is itself the quotation unmarked — non-firing", async () => {
+    const out = await md(PROSE + `<p>${QUOTE}</p>` + PROSE);
+    expect(out).not.toContain("==");
+  });
+
+  // The clause reads the *output* construct, not the source tag: this corpus
+  // wraps whole pages in `<blockquote>` as an indent, so a source blockquote is
+  // layout and proves nothing. A recovered one — lead-in, colon, quotation — is
+  // the real thing, and it must stay unmarked.
+  it("leaves a quotation already marked as one unmarked — non-firing", async () => {
+    const out = await md(PROSE + `<p>Андрес Сеговия писал:<br>${QUOTE}</p>` + PROSE);
+    expect(out).toMatch(/^> /mu);
+    expect(out).not.toContain("==");
+  });
+
+  it("closes the outer quotation, not the inner one", async () => {
+    const nested =
+      '"Анатолий Шелехов – один из немногих российских гитаристов, показавший полноценную ' +
+      'концертную программу, и его исполнение "Чардаша" В. Монти было настоящим событием. ' +
+      'Он блеснул в этой пьесе тем, что сыграл её солью, а это редкость в гитарном мире".';
+    const out = await md(PROSE + `<p>Владимир Маркушевич после концерта отметил, что ${nested}${TAIL}</p>`);
+    expect(out).toContain(`==${nested}==`);
+    expect(out.match(/==/gu)).toHaveLength(2);
+  });
+
+  it("leaves a quotation shorter than the author's floor alone — non-firing", async () => {
+    const short = '"Он был большим мастером гитары".';
+    const out = await md(PROSE + `<p>${LEAD}${short}${TAIL}</p>`);
+    expect(out).not.toContain("==");
+  });
+});
+
+/**
  * Rule contract — **a solitary shouted label above a list opens a section.**
  *
  * *Invariant.* A paragraph immediately above a `list`, short, no link, image or

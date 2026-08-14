@@ -29,6 +29,58 @@ import type { Block } from "./blocks.js";
 export const REFERENCE_SILENT_DIRECTIVES: readonly string[] = ["anchor"];
 
 /**
+ * The same policy for an inline mark: `==highlight==`.
+ *
+ * The second entry, added when the converter began marking the distinctions the
+ * source draws inline. It qualifies for exactly the reasons the anchor did, and
+ * fails none of the three tests above:
+ *
+ *  - **the reference tier predates it.** One reference uses `==` —
+ *    `new_rechin4`, five spans — and that document is therefore adjudicated
+ *    normally, in full, in both directions. The rest contain none at all.
+ *  - **the author declared the difference a non-finding, by name.**
+ *    `new_rules.md`: *"Если в reference файлах текст в кавычках не выделен
+ *    `==`, считать что он выделен, игнорировать такие различия (т.е. не
+ *    считать это нарушением. это улучшение визуала)"*.
+ *  - **it hides an absence, never a disagreement.** The fold removes the two
+ *    marks from **both** sides' text; where both sides mark the same run, the
+ *    run still compares character for character, and where they mark
+ *    *different* runs the surrounding text differs and the finding stands.
+ *
+ * It is self-retiring in the same way: the first reference to write a `==` for
+ * a document turns full comparison back on for that document and nothing has to
+ * be undone.
+ *
+ * Unlike the directive fold this one is textual, because the mark is inline and
+ * lives inside a paragraph's characters rather than in the block inventory.
+ */
+const HIGHLIGHT_MARK = "==";
+
+/** Whether this reference has anything to say about inline highlighting. */
+export function highlightSilentIn(referenceSource: string): boolean {
+  return !referenceSource.includes(HIGHLIGHT_MARK);
+}
+
+/**
+ * Both sides with the highlight marks removed, or both unchanged.
+ *
+ * Returned as a pair for the reason {@link foldSilentDirectives} is: applying a
+ * fold to one side and forgetting the other is the instrument tuning the
+ * invariant forbids, and a signature that cannot express it prevents it.
+ */
+export function foldSilentHighlights(
+  produced: string,
+  reference: string,
+): { produced: string; reference: string } {
+  if (!highlightSilentIn(reference)) return { produced, reference };
+  return { produced: stripHighlights(produced), reference: stripHighlights(reference) };
+}
+
+function stripHighlights(source: string): string {
+  return source.split(HIGHLIGHT_MARK).join("");
+}
+
+/**
  * Which silent constructs this reference has nothing to say about.
  *
  * A name is returned only when the reference document uses it **nowhere**, at
