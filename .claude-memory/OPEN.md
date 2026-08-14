@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-14**, after PROGRESS §54.
+Last touched **2026-08-14**, after PROGRESS §55.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -25,15 +25,19 @@ superseded: the author added `xtra_garcia_lorca`, edited eighteen references, pa
 > is fully outside the pipeline now -- outside the conservation and validator gate as well as outside
 > L1/L2/L3 -- so it costs nothing and proves nothing until it is measured deliberately.
 
-**Current state, *measured* 2026-08-14, after PROGRESS §53:**
+**Current state, *measured* 2026-08-14, after PROGRESS §55:**
 
 | rung | value |
 |---|---|
-| L0 | **809 tests**, typecheck clean, 0 FAILED, conservation ok |
+| L0 | **828 tests**, typecheck clean, 0 FAILED, **0 validator errors**, conservation ok |
 | L1 | **98.9 %** over the 27 |
-| L2 | **203 findings -- 138 converter-defect** · 18 ambiguous · 47 reference-inconsistency · 2 critical |
-| L3 | **23** over 27 documents, **0 critical** |
+| L2 | **150 findings -- 85 converter-defect** · 17 ambiguous · 48 reference-inconsistency · 3 critical · 41 major |
+| L3 | **22** over 27 documents, **0 critical** |
 | removals, all 30 sources | **0 targets missing, 0 images missing**; no removal reason discards prose (§53.5) |
+
+> **The author committed `bd40160` mid-session** ("updated reference file", `xtra_garcia_lorca`).
+> The §55 baseline was therefore re-measured with the code stashed: **L2 201/137/2, L3 22**.
+> The 203/138/2 written here before §55 predates that edit. Baseline before attribution.
 
 > **The author's baseline moved before any code did.** The reference edits alone took L2 from
 > 320/198/9 to **206/141/2** and L3 to 36. Quote that, or §53's three commits read as five times the
@@ -64,7 +68,25 @@ consumers, and the CLI now prints the pipeline's warnings, which it never had. �
 what it took (`f9c4eed`): a `Chrome:` line on every conversion. Author's workflow **5931 → 9882 bytes**;
 the 27 unchanged on every rung.
 
+**Landed in §55, one commit each.** A section label stands alone (`67b377d`): two or more
+blocks of one template with nothing between them are one label the author broke across
+lines, not two sections. Closes `xtra_garcia_lorca`'s three stacked `##`; L1 that document
+97.1 → 97.5, head axis 71.4 → 75.0. · A record grid is not a sequence of entries
+(`d90d9b8`): a `---` between laned rows claims one entry ended and the next began, and
+`isEntryRow` asks whether the rows are entries — compound, or date-labelled. `xtra_shelechov`
+21 rules → 0, `goya2`/`news_2007`/`kiselev`/`new_lagq2`/`new_lendle2`/`segovia1`/`barrios`
+unchanged. **L2 201/137 → 150/85, major 79 → 41.**
+
 **Next, in order. Probe before committing (SKILL §6).**
+0a. **`xtra_shelechov`'s `align.spurious` x2** — new frontier, and the clearest thing left on
+   that page now the 55 shadows are gone. `**I отделение**` and `**II отделение**` are wrapped
+   in `::: align position: right`; the source cell is `<td class="t1" colspan="2">` and
+   declares no alignment. Two `paragraph.containment` findings are its shadows, so the real
+   count is 4 of the document's remaining 7.
+0b. **The two `break.missing` on the same page** (§55.4). The reference divides the concert
+   at the source's own spacer row, before the spanning `II отделение` label. A spanning
+   single-cell band inside a laned region is the candidate signal; the spacer-driven form
+   modelled on `layoutFrom` lands the divider one band late and was rejected on paper.
 0. **The conservation gate still cannot audit boilerplate removal** (§54.6). The `Chrome:` line makes
    it visible, not gated; `sourceText` is captured after the pass, and moving it means moving it before
    dehyphenation and normalization too. A `SHELL` verdict deletes a table on `corpusFrequency` alone,
@@ -81,6 +103,15 @@ the 27 unchanged on every rung.
 5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
    glyph/footer family. §44.1.
 6. **The shell-depth root cause, §40.6.** Three replacements built, all three reverted on measurement.
+
+**Killed in §55** -- reopen on new measurement only:
+**`xtra_shelechov`'s grid divergence is a ceiling, "8 references to 1"** (§55.3 -- 55 of its
+62 findings were the shadow of 21 separators on a different code path; `column.containment`,
+`retyped.column-to-paragraph`, `column.missing`, `columns.spurious`, `column.spurious` and
+`paragraph.containment` all went to 0 with no rule written about any of them) ·
+**`retyped.heading2-to-paragraph` is unworkable** (§55.1 -- §53.6 killed it for want of a
+*source* discriminator; the author supplied an *output-shape* one instead, and the reference's
+two `##` are now a named divergence rather than a target).
 
 **Killed in §53** -- reopen on new measurement only:
 **the gen-corpus rules (§46--§51) cost `xtra_garcia_lorca` content** (§53 -- byte-identical build
@@ -175,6 +206,20 @@ below is where it lives now.
 12. **`williams2`'s two smaller-font indented blocks are italic by the author's own choice**
     (`snapshot_25`, `snapshot_26`), and **`jovicic`'s trailing `-` list is a design decision** --
     *"Чисто человеческое дизайнерское решение."* Both reference-inconsistency by declaration.
+14. **A stack of same-level `##`/`###` is poor design, in the output *and in a reference*.**
+    *Ruled 2026-08-14:* *"if reference files overuse such headings too, treat it as poor
+    design in reference files and ignore such references... The main goal is a beautiful
+    visual result and good design in output markdown documents, not 100% adherence to
+    metrics and reference files."* Implemented in §55.1. It retires §53.6's reading of
+    `xtra_garcia_lorca`'s six-`p.t2` family as a reference-internal ceiling: the four written
+    `**bold**` are the rule and the two written `##` are a named divergence. **Depth 1 is
+    excluded** — a masthead split across two blocks is consecutive `#` inside `::: align`,
+    which is §3.1/§3.2 above and `enforceSingleTitle`'s standing contract.
+15. **A `---` after every single row of a table is poor design.** *Ruled 2026-08-14*, on
+    `xtra_shelechov`: it *"makes the page too long and cluttered... takes up too much
+    vertical space compared to the compact visual representation in the original HTML."*
+    Implemented in §55.2 as "a record grid is not a sequence of entries". The `goya2` and
+    `news_2007` separators `analyze.md` asks for are unaffected and tested for non-firing.
 13. **`xtra_karta5`'s table headings are the outlier; work the table *content*.** *Ruled 2026-08-11:*
     *"the table headings in `xtra_karta5.bio.md` may conflict with the rules for table headings in the
     other reference files, so for the time being, please ignore the table headings in
@@ -183,38 +228,35 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-14 after §53
+## 4. Open defect classes -- *measured* 2026-08-14 after §55
 
-**Read the ceiling column first.** Recorded divergences and quirks account for 141 of the 199
-converter-defects; see PROGRESS §42.4, §43.5 and §43.6 before treating any large class here as
-available work.
+**Read the ceiling column first**, and read §55.3 before trusting it: five of the classes
+that stood here as "ceiling" through thirteen sections went to **0** in §55 without a rule
+being written about any of them. They were the shadow of a construct in another class on
+another code path. A ceiling with a document count of 1 is a hypothesis, not a finding.
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
-| 87 | `column.containment` | 29 | 29 | 1 | **ceiling** — `xtra_shelechov`'s row-major grid, 8 references to 1 |
 | 75 | `retyped.paragraph-to-align` | 5 | 5 | 5 | **split mechanisms.** 4 are the twice-killed glyph/footer family; `segovia` is a long italic quotation shifted by margin (§44.1) |
-| 66 | `retyped.column-to-paragraph` | 22 | 22 | 1 | **ceiling** — same divergence |
-| 58 | `table.align` | 29 | 29 | 2 | **ceiling, both documents** — `xtra_karta5`'s 26 author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
-| 48 | `paragraph.spurious.in-table` | 16 | 16 | 1 | **ceiling** — `xtra_karta5`'s name-in-header-cell |
-| 24 | `column.missing` · `columns.spurious` · `column.spurious` | 8 · 5 · 3 | | 1 | **ceiling** — same divergence |
-| 24 | `retyped.align-to-paragraph` | 4 | 4 | 2 | `goya2`'s author-declared alternative (§37.8) |
-| 21 | `emphasis.span` | 23 | 3 | 7 | downgraded; §39.6.2 has the cause. Do not implement |
-| 20 | `break.spurious` | 20 | 20 | 1 | **ceiling** — the rules between `xtra_shelechov`'s programme rows |
-| 18 | `paragraph.containment` | 6 | 6 | 1 | `xtra_shelechov` divergence; `new_lendle2` shadow closed in §45 |
-| 15 | `table.row.missing` | 3 | 3 | 1 | **ceiling, checked in §43.6** — the source holds two `<table>`s, `xtra_karta5`'s reference merges them, `xtra_rodrigo`'s does not. 1 to 1 |
-| 12 | `paragraph.missing.in-paragraph` | 2 | 2 | 2 | **evaluator/placement artefacts; downgraded §45.1** |
-| 12 | `link.inline.missing` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail; `align.missing` is now 1 |
-| -- | ~~`table.cell.content`~~ | 6 -> **0** | 0 | 0 | closed by §43.3 — was 6 of the corpus's 14 criticals |
-| -- | ~~`retyped.columns-to-table`~~ | 1 -> **0** | 0 | 0 | closed by §43.4 |
-| -- | ~~`align.spurious`~~ | 26 -> **2** | 2 | 1 | closed by §42.5; one more shadow dissolved in §45 |
-| -- | ~~`paragraph.missing.in-table`~~ | 3 -> **0** | 0 | 0 | closed by §42.6 |
-| -- | ~~`image.position.value`~~ | 2 -> **0** | 0 | 0 | closed by §44 — computed placement + floated one-column figure containment |
+| 68 | `table.align` | 34 | 34 | 2 | **ceiling, both documents** — `xtra_karta5`'s author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
+| 28 | `emphasis.span` | 25 | 4 | 7 | downgraded; §39.6.2 has the cause. **And the reader mis-splits `***x***`** — OPEN §5.0aaaaa. Do not implement |
+| 18 | `retyped.paragraph-to-heading2` | 3 | 3 | 2 | **named divergence, §55.1** — 2 are `xtra_garcia_lorca`'s stacked `##`, which the author ruled poor design in the reference. Not a target |
+| 12 | `link.inline.missing` · `paragraph.spurious.in-paragraph` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail |
+| 10 | `paragraph.content` | 2 | 1 | 2 | **severity artefact** — blanket `critical`, OPEN §5.0aa |
+| 9 | `paragraph.hyphenation.unjoined` | 3 | 3 | 3 | the proper-name tail, §50.6 |
+| 6 | `align.spurious` | 2 | 2 | 1 | **new frontier, §55.4** — `xtra_shelechov`'s two spanning programme labels, source declares no alignment |
+| 6 | `break.missing` | 3 | 3 | 2 | 2 are `xtra_shelechov`'s section boundary and grid close (§55.4) |
+| -- | ~~`column.containment` 29 · `retyped.column-to-paragraph` 22 · `column.missing` 8 · `columns.spurious` 5 · `column.spurious` 3~~ | **0** | 0 | 0 | **not a ceiling.** All shadows of §55.2's 21 separators; dissolved with their cause |
+| -- | ~~`break.spurious`~~ | 20 -> **0** | 0 | 0 | closed by §55.2 |
+| -- | ~~`paragraph.spurious.in-table`~~ | 16 -> **0** | 0 | 0 | dissolved in §55 |
+| -- | ~~`paragraph.containment`~~ | 6 -> **2** | 2 | 1 | the 2 are `align.spurious`'s shadows |
+| -- | ~~`table.cell.content`~~ · ~~`retyped.columns-to-table`~~ · ~~`paragraph.missing.in-table`~~ · ~~`image.position.value`~~ | **0** | 0 | 0 | closed by §43.3, §43.4, §42.6, §44 |
 
-Per document, converter-defect: `xtra_shelechov` 101 (**~96 ceiling**) · `xtra_karta5` 50
-(**42 ceiling**) · `new_rechin4` 5 · `new_karta` 5 · `news` 5 · `new_kolpakov` 4
-(**all 4 ceiling**) · `news_2007` 4 · `segovia` 3 · `goya2` 3 · `new_lendle2` 2 · rest <= 3.
-`authors`, `barrios`, `new_bach`, `new_dyens`, `segovia1`, `williams2` and **`xtra_albeniz`** are at
-**0**. `xtra_rodrigo` is at **1** and at **L1 100.0 on every axis**.
+Per document, converter-defect: `xtra_karta5` 33 (**ceiling**) · `xtra_shelechov` **7** (was
+62) · `xtra_garcia_lorca` 6 (**2 the named divergence**) · `new_karta` 5 · `new_rechin4` 5 ·
+`new_kolpakov` 4 (**all 4 ceiling**) · `news_2007` 4 · `jovicic` 3 · `kiselev` 3 ·
+`pavlov_azancheev` 3 · `segovia` 3 · rest <= 2. **`authors`, `barrios`, `goya2`, `new_bach`,
+`new_dyens`, `new_lagq2`, `segovia1`, `williams2`, `xtra_albeniz` and `xtra_rodrigo` are at 0.**
 
 **The holdout is spent.** Measured once at the end of §43, exactly as §42.8 intended:
 `xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 / 2 L3 — unchanged, both §43 rules
@@ -232,6 +274,10 @@ target/image/validator loss. Seven contract tests cover positive, mutation and f
    eats — 18.1 % of a page in §54, under `Text recall: 100.00%`, `Targets: conserved`,
    `Images: conserved`. `SHELL` removal is equally invisible. **A removal reason is a claim, not a
    measurement**, and §53.5's audit read the claims.
+0aaaaa. **`structdiff`'s `emphasis.span` mis-splits a triple delimiter.** `***x***` is
+   reported as three spans — `em:*`, `em:*`, `strong:*x`. The produced markup is
+   well-formed and the validator is silent; the reader in `facts.ts` is wrong. New in §55.1,
+   where the refused labels keep the `<i><b>` their source gave them. Fix the class.
 0aaa. **`structdiff`'s `code.text` compares whitespace-collapsed values.** It could not see
    §53.2's defect -- six poems emitted as six single lines -- and it cannot see the fix either: the
    class reported "ambiguous, sides equal" before and after. A fenced block's *line structure* is

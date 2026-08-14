@@ -272,3 +272,16 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 54.5` | **a clean conservation report is not a clean conversion, and a removal reason is not evidence** |
 | `### 54.6` | still open: the gate cannot audit chrome removal, `SHELL` has no share bound, no test covers the CLI report |
 
+## §55 -- two claims the converter was making that the source never made (2026-08-14), ln 7189-7326
+
+| where | what |
+|---|---|
+| `## 55` | the re-measured baseline: the author committed `bd40160` mid-session, so 203/138/2 was stale and **201/137/2** is the number §55's deltas are taken against |
+| `### 55.1` | **a section label stands alone** — two blocks of one template with nothing between them are one label broken across lines; `templateSignature` is the discriminator, adjacency alone is not; recurrence read *inverted*; depth ≥ 2 only, `enforceSingleTitle` owns depth 1 |
+| `### 55.2` | **a record grid is not a sequence of entries** — `isEntryRow` asks compound-or-dated, once per region; `goya2` 35 and `news_2007` 6 unaffected, `xtra_shelechov` 21 → 0 |
+| `### 55.3` | **55 findings, one mechanism.** Five classes recorded as a "ceiling, 8 references to 1" went to 0 with no rule written about them — block-pairing shadows. **A ceiling with a document count of 1 is a hypothesis** |
+| `### 55.4` | not closed: `xtra_shelechov`'s 2 reference separators (spanning-label-row is the candidate signal), `***` vs `**` on the refused labels, and a new `emphasis.span` reader artefact |
+| `### 55.5` | killed: "`xtra_shelechov`'s grid divergence is a ceiling" |
+
+**Two author rulings recorded in OPEN §3.14 and §3.15** — a stack of same-level `##` is poor design
+*including in a reference*, and a `---` after every single table row is poor design. Both implemented.

@@ -40,27 +40,28 @@ disagree, the repository file wins and this index gets fixed.
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §53** landed three mechanisms on
-the author's new page and killed the report that prompted the iteration. **A build at `b8704e2`, before
-every gen-corpus rule, converts `xtra_garcia_lorca` byte-identically to HEAD** -- so §46--§51 deleted
-nothing there. The real defect was `case "pre"` collapsing whitespace, present since the initial commit
-and never exercised because **no earlier fixture contained a `<pre>`**: six poems on the page were
-emitted as six single lines, at 99.46 % text recall, 0 validator errors and a flat L1. Then a
-`too-small` DATA refusal that never asked the lane question, and a `::: align` a code block could not
-qualify for.
-Current floor: L0 **809 tests**, **0 validator errors**, L1 **98.9**, L2 **203 · 138 defect ·
-2 critical**, L3 **23 over 27 with no criticals**, and over **all 30 sources 0 lost targets, 0 lost
-images and no removal reason that discards prose**.
-**Read the baseline before reading the delta:** the author's reference edits alone moved L2 from
-320/198/9 to **206/141/2** with no code change at all.
-**Two ceilings on the new page are reference-internal and closed to work** (§53.6): six blocks in one
-identical `<p class="t2">` template that the reference writes four ways bold and two ways `##`, and a
-`<pre>` title merged into its poem in one lane and kept separate in the other.
-Next candidates: **`layout.containment.mismatch`, 13 over 9** -- the broadest untouched L3 class; then
-the isolated instrument-truthfulness step for `paragraph.content`'s blanket `critical` (OPEN §5.0aa),
-the property-line-as-paragraph artefact (§5.0b) and **`code.text`'s whitespace-collapsed comparison**,
-new in §53 and blind to line structure in both directions (§5.0aaa); then the proper-name hyphenation
-tail and §40.6's shell-depth root cause.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §55** landed two author-directed
+mechanisms, both of them the converter *asserting structure the source never asserted*. A section
+label stands alone: two or more blocks of one template with nothing between them are one label broken
+across lines, not two sections -- `xtra_garcia_lorca`'s three stacked `##` are gone. A record grid is
+not a sequence of entries: a `---` between laned rows claims an entry boundary, and a concert
+programme has none -- `xtra_shelechov` went from 21 rules to 0 while `goya2`'s 35 and `news_2007`'s 6
+are untouched.
+Current floor: L0 **828 tests**, **0 validator errors**, L1 **98.9**, L2 **150 · 85 defect ·
+3 critical · 41 major**, L3 **22 over 27 with no criticals**, and over **all 30 sources 0 lost
+targets, 0 lost images and no removal reason that discards prose**.
+**Read the baseline before reading the delta.** The author committed `bd40160` mid-session, so §55's
+baseline was re-measured with the code stashed: **201/137/2**, not the 203/138/2 that was recorded.
+**The biggest lesson is §55.3, and it is about the ledger, not the converter.** Five classes that had
+stood as a recorded *ceiling* for thirteen sections -- `column.containment` 29, `retyped.column-to-
+paragraph` 22, `column.missing`, `columns.spurious`, `column.spurious`, "8 references to 1" -- went to
+**0** with no rule written about any of them. They were block-pairing shadows cast by 21 separators in
+a different class on a different code path. **A ceiling with a document count of 1 is a hypothesis.**
+Next candidates: **`xtra_shelechov`'s `align.spurious` x2** and its 2 `break.missing` (OPEN §1.0a/0b),
+now the clearest work on that page; then **`layout.containment.mismatch`, 13 over 9**, the broadest
+untouched L3 class; then the isolated instrument-truthfulness steps -- `paragraph.content`'s blanket
+`critical` (OPEN §5.0aa), the property-line-as-paragraph artefact (§5.0b), `code.text`'s
+whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split of `***x***`** (§5.0aaaaa).
 
 > **A conservation finding is a pointer, not the defect.** Both of §46.9's named losses were
 > mis-diagnosed by the finding that raised them: `williams1`'s "lost target" had lost nothing (the

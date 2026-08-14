@@ -32,7 +32,7 @@
     ]
   },
   "totals": {
-    "findings": 23,
+    "findings": 22,
     "alignmentRows": 240
   },
   "classes": [
@@ -45,11 +45,6 @@
       "class": "layout.containment.mismatch",
       "instances": 13,
       "documents": 9
-    },
-    {
-      "class": "layout.lane.mismatch",
-      "instances": 1,
-      "documents": 1
     }
   ],
   "findings": [
@@ -402,23 +397,6 @@
       }
     },
     {
-      "id": "89d3338f",
-      "doc": "xtra_garcia_lorca",
-      "class": "layout.lane.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/columns[4]/column[1]/code[0]",
-      "producedLine": 67,
-      "referenceLine": 63,
-      "produced": "Начинается плач гитары, Разбивается чаша утра. Начинается плач гитары. О, не жди от нее молчанья! не проси у нее молчан…",
-      "reference": "ГИТАРА Начинается плач гитары, Разбивается чаша утра. Начинается плач гитары. О, не жди от нее молчанья! не проси у нее…",
-      "geometry": {
-        "producedLane": 2,
-        "referenceLane": 1
-      }
-    },
-    {
       "id": "64881278",
       "doc": "xtra_shelechov",
       "class": "layout.align.mismatch",
@@ -449,7 +427,7 @@
       "evidence": "structure",
       "op": "substitute",
       "path": "/paragraph[23]",
-      "producedLine": 189,
+      "producedLine": 175,
       "referenceLine": 169,
       "produced": "II отделение",
       "reference": "II отделение",
@@ -489,7 +467,7 @@
       "evidence": "structure",
       "op": "move",
       "path": "/paragraph[23]",
-      "producedLine": 189,
+      "producedLine": 175,
       "referenceLine": 169,
       "produced": "II отделение",
       "reference": "II отделение",
@@ -3467,7 +3445,7 @@
     {
       "doc": "xtra_garcia_lorca",
       "producedLine": 93,
-      "referenceLine": 89,
+      "referenceLine": 92,
       "text": "(перевод М. Цветаевой)",
       "producedAlignment": "right",
       "referenceAlignment": "right",
@@ -3583,7 +3561,7 @@
     },
     {
       "doc": "xtra_shelechov",
-      "producedLine": 189,
+      "producedLine": 175,
       "referenceLine": 169,
       "text": "II отделение",
       "producedAlignment": "right",
@@ -3596,7 +3574,7 @@
     },
     {
       "doc": "xtra_shelechov",
-      "producedLine": 443,
+      "producedLine": 401,
       "referenceLine": 396,
       "text": "По очерку Альберта Федоровича МОСКВИНА для готовящейся к изданию книги \"История развития …",
       "producedAlignment": "right",
@@ -3609,7 +3587,7 @@
     },
     {
       "doc": "xtra_shelechov",
-      "producedLine": 447,
+      "producedLine": 405,
       "referenceLine": 400,
       "text": "Впервые опубликовано на сайте журнала \"Гитаристъ\" 05.10.2007: www.guitarists.ru",
       "producedAlignment": "right",

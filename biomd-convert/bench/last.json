@@ -1,5 +1,5 @@
 {
-  "overall": 0.9887521211852777,
+  "overall": 0.9888843963175528,
   "documents": [
     {
       "name": "authors",
@@ -3207,13 +3207,16 @@
         "missing": []
       },
       "headings": {
-        "recall": 1,
-        "precision": 0.5555555555555556,
-        "f1": 0.7142857142857143,
+        "recall": 0.6,
+        "precision": 1,
+        "f1": 0.7499999999999999,
         "expected": 5,
-        "actual": 9,
-        "matched": 5,
-        "missing": []
+        "actual": 3,
+        "matched": 3,
+        "missing": [
+          "2\tевгений долматовский",
+          "2\tроманс о гарсиа лорке"
+        ]
       },
       "links": {
         "recall": 1,
@@ -3280,7 +3283,7 @@
           ]
         }
       ],
-      "overall": 0.9714285714285714
+      "overall": 0.975
     },
     {
       "name": "xtra_karta5",

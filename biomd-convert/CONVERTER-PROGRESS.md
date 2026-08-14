@@ -7186,3 +7186,141 @@ operator's output. When the report is about a produced file, find the file the o
    stays right when a site's article template genuinely recurs.
 3. **No test covered the CLI's report.** Two of the three reasons this was silent were presentation,
    not conversion, and the suite has no eyes there.
+
+## 55 -- two claims the converter was making that the source never made (2026-08-14)
+
+Author-directed iteration, two named documents, two mechanisms, one acceptance run. Both
+defects are the converter *asserting structure* -- an outline, an entry boundary -- where
+the source asserts none, and both were reported as design faults before any instrument
+raised them above the noise.
+
+**Baseline first.** The author committed `bd40160` ("updated reference file") during the
+session, splitting `xtra_garcia_lorca`'s `ГИТАРА` into its own `<pre>` block and adding a
+blank line to the Rozhdestvensky poem. `OPEN.md`'s recorded L2 (203/138/2) predates it, so
+every number below was re-measured against the edited references with the code stashed:
+
+| rung | baseline at `bd40160` | after §55 |
+|---|---|---|
+| L0 | 820 tests, 0 FAILED, 0 validator errors | **828** tests, same |
+| L1 | 98.9 | **98.9** |
+| L2 | 201 findings · 137 defect · 2 crit · 79 major | **150 · 85 · 3 crit · 41 major** |
+| L3 | 22 findings, 0 critical | **22**, 0 critical |
+
+`OPEN.md`'s "`xtra_shelechov` 101 (~96 ceiling)" was stale by one iteration; the real
+baseline was 62. The ceiling was not stale -- it was wrong, see §55.3.
+
+### 55.1 A section label stands alone
+
+`recoverHeadings`'s main `accepted` loop asks whether a block is prominent, short and
+followed by content. It never asked whether the block *beside* it is the same block. Six
+`<p class="t2"><i><b>` on `xtra_garcia_lorca` -- one identical template -- became six `##`
+in three stacks, the first of them three deep under a seventh from a different template:
+
+```
+## О Федерико Гарсиа Лорке
+## Из книги Якова Хелемского
+## "За холмами - Гренада"
+```
+
+Two or more blocks of one template with **no text at all** between them are one label the
+author broke across lines. Nothing follows the first but the second, so neither introduces
+the body a heading exists to introduce. `stackedTemplates` refuses the run whole.
+
+**The discriminator is the template, never adjacency.** `О Федерико Гарсиа Лорке` stands
+immediately above the stack and survives, because `p.s` is not `p.t2` -- it is set outside
+the `<center>` that holds the rest, after an author-drawn `<hr>`. Reading the gap alone
+would have taken it with them. `templateSignature` already existed for
+`recoverCenteredSections` and is opaque by construction: nothing reads a value out of it.
+
+**Recurrence, inverted.** Everywhere else in this converter repetition is what makes a
+shape real. Here it is the evidence against: the gate is two, because two is the whole
+claim. `recoverCenteredSections` had reached the same conclusion for its own family
+("three labels in a row with nothing between them is a stanza") and the main loop had not.
+
+**Depth 2 and below only.** `enforceSingleTitle` rules that adjacent `#` lines are the
+halves of one wrapped headline and that demoting either asserts a hierarchy a name split
+in half does not have -- `shaping.test.ts` has carried that contract since §20.6. The
+three mastheads depending on it (`new_bach`, `new_lagq2`, `xtra_garcia_lorca`) are untouched.
+
+Measured: L1 `xtra_garcia_lorca` 97.1 -> 97.5, head axis 71.4 -> 75.0. Over the produced
+side of all 27, depth-2 stacks existed on exactly one document, so this closed every
+instance the corpus has and its value is entirely in the other ~987 pages.
+
+**Author ruling, 2026-08-14, recorded because it overturns a reference:** *"if reference
+files overuse such headings too, treat it as poor design in reference files and ignore such
+references... The main goal is a beautiful visual result and good design in output markdown
+documents, not 100% adherence to metrics and reference files."* This retires §53.6's
+"reference-internal ceiling" reading of the six-`p.t2` family: the four the reference writes
+`**bold**` are now the rule, and the two it writes `##` (`Евгений Долматовский`, `Романс о
+Гарсиа Лорке`) are a named divergence, reported as `retyped.paragraph-to-heading2` x2 and
+not to be closed.
+
+### 55.2 A record grid is not a sequence of entries
+
+`layoutFrom`'s band path drew `---` before every laned row after the first, unconditionally.
+Its justification is sound and cited in place: `analyze.md` asks for exactly that on `goya2`
+("после каждой группы альбомов дисков с песнями можно ставить разделитель строки"), and
+without it one album's tracks read as the next album's.
+
+`xtra_shelechov`'s concert programme is one `<table>` of 27 rows -- composer, piece -- and
+got 21 of them. The author's report named the cost precisely: *"makes the page too long and
+cluttered... takes up too much vertical space compared to the compact visual representation
+in the original HTML."*
+
+A `---` between laned rows claims one thing ended and the next began. `isEntryRow` asks
+whether the rows are things. Two shapes earn it and the corpus states both -- a lane holding
+more than one block (the album card), and a lane the source labelled with a date (the diary
+entry). Asked **once over the whole region**, not per row: a catalog stays a catalog on the
+one row whose cover art is missing, and `goya2` has such a row.
+
+The date half is load-bearing, not decoration. `news_2007`'s six rows are a date beside a
+paragraph -- structurally identical to the programme's composer beside a title -- and the
+label is what the rule divides. Without `isDateLabel` in the test, four of its six rules
+would have gone with `xtra_shelechov`'s.
+
+Separator counts, produced, before and after: `goya2` 35/35, `news_2007` 6/6, `kiselev` 5/5,
+`new_lagq2` 6/6, `new_lendle2` 4/4, `segovia1` 1/1, `barrios` 2/2, `xtra_shelechov` **21/0**.
+Rendered page height, `xtra_shelechov` at 1024 px: produced 5263 px against the reference's
+5354 px, with 0 `<hr>` against its 2.
+
+### 55.3 Fifty-five findings, one mechanism -- the shadow class in its clearest form
+
+`xtra_shelechov` went 62 findings / 62 converter-defects to **7 / 7**. Nineteen of those
+were the spurious rules. The other thirty-six were **shadows**: `column.containment` 29,
+`retyped.column-to-paragraph` 22, `column.missing` 8, `columns.spurious` 5,
+`column.spurious` 3, `paragraph.containment` 6 -- every one of which `OPEN.md` recorded as
+a **ceiling**, "`xtra_shelechov`'s row-major grid, 8 references to 1", and none of which
+survived the removal of a construct in a different class on a different code path.
+
+They were block-pairing noise. Twenty-one rules interleaved into the block sequence shifted
+every subsequent pairing in `blocks.ts`, and the aligner reported the misalignment as
+containment disagreement. **A ceiling that dissolves when an unrelated defect is fixed was
+never a ceiling** -- and this one had a document count of 1 and a rank of 87, the shape
+`SKILL.md` §13 names as an instrument artefact and this campaign has now attested six times.
+
+The seven that remain are legible and localized: `align.spurious` x2 (`I отделение` and
+`II отделение` wrapped in `::: align position: right` with no source attestation --
+`<td class="t1" colspan="2">` declares no alignment), their two `paragraph.containment`
+shadows, `break.missing` x2, and one hyphenation.
+
+### 55.4 What is not closed
+
+- **`xtra_shelechov`'s two reference separators.** The reference divides the concert's two
+  halves at the source's own spacer row -- between the last piece of part I and the spanning
+  `II отделение` label -- and closes the grid when prose resumes. Neither is a row boundary.
+  A spacer-driven rule modelled on `layoutFrom`'s "use the spacers when the author used
+  spacers" lands the divider one band late (after the label, not before it) and was not
+  built. The spanning-label-row reading would land it correctly and is the candidate.
+- **`***` against `**` on the refused labels.** The source writes `<i><b>`; the references
+  write bold alone. Source-attested, so it stands, and `emphasis.span` is §39.6.2's
+  downgraded class. Reported, not chased.
+- **A new instrument artefact:** `structdiff`'s `emphasis.span` renders `***x***` as three
+  spans -- `em:*`, `em:*`, `strong:*x`. The produced markup is well-formed; the reader in
+  `facts.ts` mis-splits the triple delimiter. Listed in `OPEN.md` §5.
+
+### 55.5 Killed here
+
+**"`xtra_shelechov`'s grid divergence is a ceiling, 8 references to 1."** Recorded across
+§42-§54 and carried into every queue since. Fifty-five of its sixty-two findings were the
+shadow of twenty-one separators on a different code path, and the divergence it named is not
+visible in the seven that remain. Reopen on new measurement only.

@@ -286,3 +286,16 @@ will be.
 job directory with its own profile. The profile is what decides how much of a page is deleted.
 **`bench/out/` is not the operator's output.**
 
+
+## §55 -- killed by fixing something else entirely (2026-08-14)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **`xtra_shelechov`'s row-major grid is a reference divergence and a ceiling, "8 references to 1".** Recorded from §42 through §54 and carried into every queue since; 96 of its ~101 converter-defects were attributed to it, across `column.containment` 29, `retyped.column-to-paragraph` 22, `column.missing` 8, `columns.spurious` 5, `column.spurious` 3, `paragraph.containment` 6 | §55.2 removed 21 spurious `---` between the rows of the concert programme -- a **different class, on a different code path**, about which no claim was made -- and **every one of those classes went to 0**. They were block-pairing noise: rules interleaved into the sequence shifted every later pairing in `blocks.ts`, and the aligner reported the misalignment as containment disagreement. The document went 62 findings to 7 | one `diff` |
+| **`retyped.heading2-to-paragraph` is unworkable** (§53.6 -- six blocks in one identical `<p class="t2">`, four written `**bold**` and two `##`, nothing in the source separating them) | Correct about the *source*, and irrelevant. The author supplied an **output-shape** discriminator instead -- a stack of same-level `##` is poor design whichever side writes it -- and the two the reference spells `##` are now a named divergence. §55.1. A killed hypothesis reopens on new **evidence about a different question**, not on argument about the same one | one `diff` |
+
+**The standing trap this attests, for the sixth time in this campaign.** A defect class whose document
+count is **1** and whose rank is high is the signature of an instrument artefact or a shadow, not of a
+mechanism -- `SKILL.md` §13 says so and this is its sharpest case. **A ceiling that dissolves when an
+unrelated defect is fixed was never a ceiling.** Before recording any large single-document class as a
+ceiling again, remove the largest *other* defect on that page first and re-measure.
