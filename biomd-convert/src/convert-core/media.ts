@@ -156,11 +156,14 @@ export function isDecorative(el: LadomNode): boolean {
  * site badge that carries a real caption and is *not* in the table, and it must
  * keep its `::: image`.
  *
- * The `<a>` requirement is deliberate and narrower than the guide, and
- * {@link inControlStrip} states the one exemption: an *unlinked* known icon is
- * usually a score mark inside a table cell, where a glyph substitution would
- * move table planning, so it stays a picture unless the company it keeps says
- * otherwise.
+ * The `<a>` requirement is deliberate and narrower than the guide, which asks
+ * for a glyph whenever a known mapping exists and states the unlinked case
+ * outright — *"unlinked meaningful icon -> replacement"*. Two exemptions restore
+ * that reach where the reason for the narrowing does not apply:
+ * {@link inControlStrip} for the current-page marker of a pager, and
+ * {@link inRunningProse} for an icon a sentence carries. What both leave alone
+ * is the reason the narrowing exists at all — a score mark opening a resource
+ * cell, where a glyph substitution would move table planning.
  */
 export function isUiIcon(el: LadomNode): boolean {
   if (el.tag !== "img") return false;
@@ -174,8 +177,70 @@ export function isUiIcon(el: LadomNode): boolean {
   for (let cur = el.parent; cur; cur = cur.parent) {
     if (cur.tag === "a") return (cur.attrs["href"] ?? "") !== "";
   }
-  return inControlStrip(el);
+  return inControlStrip(el) || inRunningProse(el);
 }
+
+/**
+ * Is this unlinked known icon punctuation inside a sentence?
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** The icon is not the first thing in its block, and what stands
+ * before it *in that block* is a sentence's worth of visible text. Ordering and
+ * occupancy, both relational, both read off the source tree; no class, id,
+ * filename, alt or document is consulted, and the asset table has already had
+ * its say in {@link isUiIcon}. `news_2007` ends a news item with
+ * `main/smile.gif` after two hundred characters of prose, and it shipped as
+ * `![](/../main/smile.gif)` — a broken picture where the author wrote a smiley,
+ * and the only `main/` asset still surviving as an image anywhere in the corpus.
+ *
+ * **Recurrence does not apply**, the same standing {@link isUiIcon} claims and
+ * for the same reason: the recurring evidence is cross-document — the same
+ * shared asset on every page of the site — and that is what the icon table
+ * records. A sentence carries its smiley once.
+ *
+ * **False friend: the score mark that opens a resource cell.** `tarrega` writes
+ * `<td> <img src="../main/score3.jpg"> Ноты (*.jpg)</td>` ten times, and those
+ * must keep their `::: image` because a glyph there moves table planning. Both
+ * clauses refuse it independently: the mark is the cell's first content, and
+ * what precedes it is two non-breaking spaces.
+ *
+ * **The length is a limit, not a discriminator, and that was measured.** Over
+ * the 28 reference sources there are eleven unlinked known icons. Ten are
+ * `tarrega`'s score marks and every one of them has **0** characters before it
+ * in its block; the eleventh is `news_2007`'s smiley with **189**. Every
+ * threshold from 1 to 188 decides the corpus identically, which is the flat
+ * curve a limit should have — a cliff here would mean the number was masking a
+ * missing exclusion.
+ */
+function inRunningProse(el: LadomNode): boolean {
+  let block = el.parent;
+  while (block && !BLOCK_CONTEXT.has(block.tag)) block = block.parent;
+  if (!block) return false;
+
+  let before = "";
+  let reached = false;
+  const visit = (node: LadomNode): void => {
+    if (reached) return;
+    if (node === el) {
+      reached = true;
+      return;
+    }
+    if (node.kind === "text") before += node.value ?? "";
+    for (const child of node.children) visit(child);
+  };
+  visit(block);
+  return reached && before.replace(/[\s ]+/gu, " ").trim().length >= PROSE_BEFORE_ICON_MIN;
+}
+
+/**
+ * How much text before an icon makes its block a sentence rather than a label.
+ *
+ * The same figure `headingLineOf` uses for "a section needs a section", and for
+ * the same reason: it is the length at which a run of words stops being a
+ * caption or a field label and starts being prose.
+ */
+const PROSE_BEFORE_ICON_MIN = 60;
 
 /**
  * Is this unlinked known icon standing in a strip of linked ones?

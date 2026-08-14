@@ -2807,6 +2807,44 @@ describe("an unlinked icon in a strip of linked ones is a control too", () => {
   });
 });
 
+  // The guide's other unlinked form — *"unlinked meaningful icon ->
+  // replacement"* — where the company is a sentence rather than another icon.
+  it("draws an icon a sentence carries as its glyph", async () => {
+    const out = await md(
+      PROSE +
+        '<p>Загружен, пожалуй, самый крупный за последние полтора года пакет обновлений и новой ' +
+        'информации, а это значит, что проект жив. Иногда мы все-таки оживаем!&nbsp;' +
+        '<img border="0" src="main/smile.gif" width="15" height="15"></p>',
+    );
+    expect(out).toContain("оживаем! ☻");
+    expect(out).not.toContain("smile.gif");
+  });
+
+  // False friend, the shape the `<a>` requirement exists to protect: the mark
+  // that *opens* a resource cell. Both clauses refuse it — it is the cell's
+  // first content, and nothing but spacing precedes it.
+  it("leaves a score mark that opens a labelled cell", async () => {
+    const out = await md(
+      PROSE +
+        '<table border="0" width="90%"><tr>' +
+        '<td><p>Adelita (в исп. Дэвида Рассела), мазурка для гитары соло</p></td>' +
+        '<td><p>&nbsp;&nbsp;<img src="../main/score3.gif" width="16" height="16">&nbsp;&nbsp;Ноты (*.jpg)</p></td>' +
+        "</tr><tr>" +
+        '<td><p>Recuerdos de la Alhambra, тремоло для гитары соло</p></td>' +
+        '<td><p>&nbsp;&nbsp;<img src="../main/score3.gif" width="16" height="16">&nbsp;&nbsp;Ноты (*.jpg)</p></td>' +
+        "</tr></table>" +
+        PROSE,
+    );
+    expect(out).toContain("score3.gif");
+  });
+
+  // The block boundary bounds the sentence too: prose in the paragraph above
+  // does not carry an icon in the cell below it.
+  it("does not borrow a sentence from a neighbouring block", async () => {
+    const out = await md(PROSE + '<p><img src="main/smile.gif" width="15" height="15"> Ноты</p>');
+    expect(out).toContain("smile.gif");
+  });
+
 /**
  * A list with no items is not a list.
  *
