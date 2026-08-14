@@ -600,6 +600,7 @@ export function plainTextOf(markdown: string): string {
     .replace(/^\s*-{3,}\s*$/gmu, "")
     .replace(/!\[([^\]]*)\]\([^)]*\)/gu, "$1")
     .replace(/\[([^\]]*)\]\([^)]*\)/gu, "$1")
+    .replace(/==/gu, "")
     .replace(/[*_`~]/gu, "")
     .replace(/\\(.)/gu, "$1")
     .replace(/\s+/gu, " ")

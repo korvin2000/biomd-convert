@@ -18,6 +18,7 @@ import {
   DIRECTIVE_NAME,
   type BiomdAlign,
   type BiomdAnchor,
+  type BiomdHighlight,
   type BiomdColumn,
   type BiomdColumns,
   type BiomdDirective,
@@ -225,6 +226,20 @@ function makeHandlers(profile: TargetProfile): Record<string, AnyHandler> {
     // Nothing is escaped here and nothing needs to be: `makeAnchor` has already
     // refused every character that could end the shorthand early.
     biomdAnchor: ((node: BiomdAnchor) => `::anchor{#${node.identifier}}`) as AnyHandler,
+
+    // The one BioMD-only phrasing mark. `state.containerPhrasing` runs the
+    // ordinary inline machinery on the children, so escaping, nesting and word
+    // boundaries behave exactly as they do inside `**` or `*`.
+    biomdHighlight: ((node: BiomdHighlight, _p: unknown, state: State, info: unknown) => {
+      const exit = state.enter("emphasis" as never);
+      const inner = state.containerPhrasing(node as unknown as Parents, {
+        ...(info as Parameters<State["containerPhrasing"]>[1]),
+        before: "=",
+        after: "=",
+      });
+      exit();
+      return `==${inner}==`;
+    }) as AnyHandler,
   };
 }
 

@@ -35,6 +35,8 @@ export interface ResolvedStyle {
   fontSize: number;
   fontWeight: number;
   fontStyle: string;
+  /** `small-caps` and friends — a visible inline distinction no other field carries. */
+  fontVariant: string;
   color: string;
   backgroundColor: string;
   backgroundImage: string;

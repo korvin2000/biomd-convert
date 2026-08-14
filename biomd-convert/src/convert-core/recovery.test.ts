@@ -158,6 +158,7 @@ const NEUTRAL_STYLE: ResolvedStyle = {
   fontSize: 16,
   fontWeight: 400,
   fontStyle: "normal",
+  fontVariant: "normal",
   color: "rgb(0, 0, 0)",
   backgroundColor: "rgba(0, 0, 0, 0)",
   backgroundImage: "none",
@@ -2805,7 +2806,6 @@ describe("an unlinked icon in a strip of linked ones is a control too", () => {
     );
     expect(out).toContain("h2.gif");
   });
-});
 
   // The guide's other unlinked form — *"unlinked meaningful icon ->
   // replacement"* — where the company is a sentence rather than another icon.
@@ -2844,6 +2844,7 @@ describe("an unlinked icon in a strip of linked ones is a control too", () => {
     const out = await md(PROSE + '<p><img src="main/smile.gif" width="15" height="15"> Ноты</p>');
     expect(out).toContain("smile.gif");
   });
+});
 
 /**
  * A list with no items is not a list.
@@ -3262,6 +3263,88 @@ describe("a picture over its caption in a column of its own", () => {
       '<tr><td><p><img src="photo/stamp.jpg" width="150" height="212"></p></td></tr>' +
       "</table>";
     expect(await converted(inverted)).not.toContain("caption: Почтовая марка, Уругвай");
+  });
+});
+
+/**
+ * Rule contract — **`==` is the mark for a distinction with no other name.**
+ *
+ * *Invariant.* A wrapper computing a typographic variant its containing prose
+ * does not, standing inside a sentence rather than opening one, carrying no
+ * link and no image. Relational throughout — the variant is compared with the
+ * ancestors up to the block, and "inside a sentence" is text since the last
+ * hard break in the same run. No document, class, id or word is read.
+ *
+ * *Recurrence measured, not assumed.* `new_rechin4` sets five phrases in small
+ * capitals inside four long paragraphs and its reference marks exactly those
+ * five with `==` — 5 of 5, nothing unmatched on either side.
+ *
+ * *False friends*, each present in the corpus and each excluded by a different
+ * clause: the small-caps `MP3`/`WMA` link label (`new_karta` ×6, `williams2`,
+ * `xtra_garcia_lorca`); the run-in section label that opens its line after a
+ * `<br><br>` (`xtra_alexandro`'s `Сочинения:`); and a page that sets a whole
+ * block in small capitals, where the variant distinguishes nothing.
+ */
+describe("a run of a sentence the author set apart", () => {
+  async function converted(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(body), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  const SENTENCE =
+    "<p>И ещё одна мечта, которая вдохновляла его все эти долгие годы работы над циклом – " +
+    '<span style="font-variant: small-caps">чтобы гитаристы открыли для себя новый звуковой мир</span>' +
+    " Возможно, что 150 лет тому назад такая мечта была бы совершенно абсурдной.</p>";
+
+  it("marks it with a highlight", async () => {
+    const out = await converted(PROSE + SENTENCE);
+    expect(out).toContain("==чтобы гитаристы открыли для себя новый звуковой мир==");
+  });
+
+  it("leaves a styled link label alone — non-firing", async () => {
+    const out = await converted(
+      PROSE +
+        '<p>Bach: BWV 996 - Prelude <a href="music/mp/bach.mp3">' +
+        '<span style="font-variant: small-caps">MP3</span></a></p>' +
+        PROSE,
+    );
+    expect(out).not.toContain("==");
+    expect(out).toContain("[MP3](music/mp/bach.mp3)");
+  });
+
+  it("leaves a run-in label that opens its line alone — non-firing", async () => {
+    const out = await converted(
+      PROSE +
+        "<p>В 1942 году он вернулся в Уругвай и выступал с концертами по всей Южной Америке.<br><br>" +
+        '<span style="font-variant: small-caps">Сочинения</span>: Arabia; Sisi Maria; Fantasia Gitana.</p>',
+    );
+    expect(out).not.toContain("==");
+    expect(out).toContain("Сочинения: Arabia");
+  });
+
+  it("distinguishes nothing when the whole block shares the variant — non-firing", async () => {
+    const out = await converted(
+      PROSE +
+        '<p style="font-variant: small-caps">И ещё одна мечта, которая вдохновляла его все эти годы – ' +
+        '<span style="font-variant: small-caps">чтобы гитаристы открыли для себя новый мир</span> ' +
+        "и это было вполне реально.</p>",
+    );
+    expect(out).not.toContain("==");
+  });
+
+  it("keeps the run out of the conservation gate's text", async () => {
+    const result = await convert(Buffer.from(page(PROSE + SENTENCE), "utf8"), {
+      profile: SPEC,
+      layoutFidelity: "faithful",
+      measurer: new InlineAlignMeasurer(),
+    });
+    expect(result.conservation.ok).toBe(true);
+    expect(result.conservation.text.recall).toBeGreaterThan(0.99);
   });
 });
 

@@ -17,7 +17,7 @@
  * from the type system: the reader must still be able to represent a document
  * that contains them, and the validator must be able to diagnose them precisely.
  */
-import type { BlockContent, DefinitionContent, List, Paragraph, RootContent } from "mdast";
+import type { BlockContent, DefinitionContent, List, Paragraph, PhrasingContent, RootContent } from "mdast";
 
 /** Reference §3 — position semantics for a standalone image. */
 export type ImagePosition = "left" | "right" | "center" | "full";
@@ -195,6 +195,23 @@ export interface BiomdAnchor extends BiomdBase {
   identifier: string;
 }
 
+/**
+ * `==x==` — BioMD's inline highlight.
+ *
+ * Not a directive: it is a phrasing mark, the fourth alongside `**`, `*` and
+ * `~~`, and Reference §1 lists it in the same row as them. It is BioMD-only,
+ * so mdast has no node for it and this is where one is declared; the
+ * augmentation below makes it assignable wherever phrasing content is.
+ *
+ * It maps a *visible distinction* the source made inline and that no other
+ * mark claims — Reference §0's "map a visible distinction to the nearest
+ * supported construct" — never a semantic the source does not state.
+ */
+export interface BiomdHighlight extends BiomdBase {
+  type: "biomdHighlight";
+  children: PhrasingContent[];
+}
+
 /** Any BioMD directive node. */
 export type BiomdDirective =
   | BiomdLead
@@ -279,6 +296,9 @@ declare module "mdast" {
     biomdFrame: BiomdFrame;
     biomdSignature: BiomdSignature;
     biomdAnchor: BiomdAnchor;
+  }
+  interface PhrasingContentMap {
+    biomdHighlight: BiomdHighlight;
   }
 }
 

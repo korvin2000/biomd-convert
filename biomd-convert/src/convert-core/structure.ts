@@ -3817,19 +3817,118 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx, keepEdgeSpace = false
         out.push(emittedImage);
         break;
       }
-      default:
+      default: {
+        // A wrapper is transparent unless the author used it to set a run of a
+        // sentence apart from the sentence. See {@link isHighlightedRun}.
+        const children = inlineFrom(node.children, ctx, /* keepEdgeSpace */ true);
+        if (isHighlightedRun(node, out, children)) {
+          ctx.ledger.push(emitted(node.id, nextId(ctx, "highlight")));
+          pushMark(out, children, (kids) => ({ type: "biomdHighlight", children: kids }), nextChar());
+          break;
+        }
         // A transparent wrapper — `<span>`, `<font>`, anything with no Markdown
         // of its own. Its children are spliced straight into this run, and its
         // edge whitespace is subject to the same word-boundary question a mark's
         // is: `Ровшан </span>Шахбазович` fuses two words, while `В.И.</font>
         // Яшнева` and a footnote marker are punctuation boundaries that stay
         // tight. `pushMark` with an identity splice asks exactly that question.
-        pushMark(out, inlineFrom(node.children, ctx, /* keepEdgeSpace */ true), null, nextChar());
+        pushMark(out, children, null, nextChar());
         break;
+      }
     }
   }
 
   return collapseAdjacentText(out, keepEdgeSpace);
+}
+
+/**
+ * A run of a sentence the author set apart, and no existing mark claims.
+ *
+ * ## Rule contract — `==` is the mark for a distinction with no other name
+ *
+ * **Invariant.** Three conditions, all relational, none naming a document,
+ * class, id or word:
+ *
+ *   1. **The wrapper computes a typographic variant its containing prose does
+ *      not.** Bold, italic and strike already have marks and are lowered above;
+ *      what is left is the era's fourth device, small capitals. `analyze`'s
+ *      house rules ask for exactly this — *"текст отличающийся от других
+ *      соседних блоков… желательно как-то выделять"* — and Reference §0 says
+ *      how: map a visible distinction to the nearest supported construct, which
+ *      for "set apart, but neither emphasis nor quotation" is `==`.
+ *   2. **It is inside a sentence, not at the head of one.** Visible text must
+ *      already stand before it *since the last hard break in the same run*. A
+ *      run-in label opens its line; a highlighted phrase is embedded in one.
+ *   3. **It carries no link and no image.** A styled link label is a control's
+ *      appearance, not a distinction in prose.
+ *
+ * **Recurrence is present and was measured, not assumed.** `new_rechin4` sets
+ * five phrases this way inside four long paragraphs, and its reference marks
+ * **exactly those five** with `==` — a 5-of-5 correspondence with no
+ * unmatched span on either side.
+ *
+ * **False friends**, each excluded by a different clause and each present in
+ * the corpus:
+ *   - **the small-caps `MP3`/`WMA` link label** — `new_karta` ×6, `williams2`,
+ *     `xtra_garcia_lorca` — refused by clause 3, and again by clause 2, since
+ *     the label is the whole of its own run;
+ *   - **the run-in section label** — `xtra_alexandro`'s `Сочинения:` opens its
+ *     paragraph after a `<br><br>` and is refused by clause 2; its reference
+ *     writes it as plain text;
+ *   - **a wrapper that changes only colour or size**, which clause 1 does not
+ *     look at: `new_rules.md` assigns those their own treatments, and reading
+ *     them here would claim a highlight the author asked to be something else.
+ */
+function isHighlightedRun(
+  node: LadomNode,
+  before: readonly PhrasingContent[],
+  children: readonly PhrasingContent[],
+): boolean {
+  if (!isSetApartInline(node)) return false;
+  if (phrasingText(children).trim() === "") return false;
+  if (containsLinkOrImage(children)) return false;
+  for (let cur = node.parent; cur; cur = cur.parent) {
+    if (cur.tag === "a") return false;
+  }
+  return textSinceLastBreak(before).trim() !== "";
+}
+
+/** Visible text of a run since its last hard break — "already inside a sentence". */
+function textSinceLastBreak(nodes: readonly PhrasingContent[]): string {
+  const last = nodes.map((n) => n.type).lastIndexOf("break");
+  return phrasingText(nodes.slice(last + 1));
+}
+
+function containsLinkOrImage(nodes: readonly PhrasingContent[]): boolean {
+  return nodes.some(
+    (node) =>
+      node.type === "link" ||
+      node.type === "image" ||
+      ("children" in node && containsLinkOrImage(node.children as PhrasingContent[])),
+  );
+}
+
+/**
+ * Does this wrapper compute a typographic variant its prose context does not?
+ *
+ * Measured where measurement ran, and read off the declaration where it did
+ * not — the same two-tier shape {@link isCentered} uses, and for the same
+ * reason: a class in a `<style>` block is invisible to the attribute tier, and
+ * a computed value is invisible without a browser.
+ */
+function isSetApartInline(node: LadomNode): boolean {
+  if (node.kind !== "element") return false;
+  const variant = (value: string | undefined): boolean => /small-caps/iu.test(value ?? "");
+  const here = node.style ? variant(node.style.fontVariant) : variant(node.attrs["style"]);
+  if (!here) return false;
+  // Relational: a page that sets *everything* in small capitals distinguishes
+  // nothing by it, so the enclosing prose must not share the variant.
+  for (let cur = node.parent; cur; cur = cur.parent) {
+    const outer = cur.style ? variant(cur.style.fontVariant) : variant(cur.attrs["style"]);
+    if (outer) return false;
+    if (BLOCK_TAGS.has(cur.tag)) break;
+  }
+  return true;
 }
 
 /** The inner node when a wrapper's only child already carries the same mark. */

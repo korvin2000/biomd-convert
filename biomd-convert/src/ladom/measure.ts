@@ -73,6 +73,7 @@ const COLLECT_SCRIPT = `() => {
         fontSize: num(cs.fontSize),
         fontWeight: num(cs.fontWeight) || (cs.fontWeight === 'bold' ? 700 : 400),
         fontStyle: cs.fontStyle,
+        fontVariant: cs.fontVariantCaps || cs.fontVariant,
         color: cs.color,
         backgroundColor: cs.backgroundColor,
         backgroundImage: cs.backgroundImage,
