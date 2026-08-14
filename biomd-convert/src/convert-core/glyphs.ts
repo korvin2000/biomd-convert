@@ -63,26 +63,36 @@ export interface IconGlyph {
   readonly text: string;
   /** `letter` renders as `***text***`; the default renders as-is. */
   readonly mark?: "letter";
+  /**
+   * What the mark stands for, in the site's own terms.
+   *
+   * This was a trailing comment until the escalation boundary needed to *state*
+   * the vocabulary to something outside the compiler. A gloss a machine can read
+   * is the same lexical data the comment was, moved where {@link
+   * iconGlyphVocabulary} can reach it — and it stays data under invariant 5, not
+   * a detector literal: nothing branches on it.
+   */
+  readonly meaning?: string;
 }
 
 const ICON_GLYPHS: ReadonlyMap<string, IconGlyph> = new Map([
-  ["reply", { text: "↩" }], // ↩ reply / return
-  ["www", { text: "↗" }], // ↗ external link
-  ["up", { text: "▲" }], // ▲ up / previous level
-  ["kkk", { text: "▲" }], // ▲ up / previous level
-  ["smile", { text: "☻" }], // ☻
-  ["score3", { text: "♫" }], // ♫ sheet music
-  ["sad", { text: "☹" }], // ☹
-  ["previous", { text: "◀" }], // ◀ previous / backward
-  ["back", { text: "◀" }], // ◀ back / return
-  ["next", { text: "▶" }], // ▶ next / forward
-  ["forward", { text: "▶" }], // ▶ next / forward
-  ["go", { text: "▶" }], // ▶ next / forward
-  ["new", { text: "★" }], // ★ newly added
-  ["h1", { text: "⌂" }], // ⌂ home
-  ["h2", { text: "●" }], // ● current page / selected item
-  ["kk", { text: "▪" }], // ▪ small square marker
-  ["bggb1", { text: "■" }], // ■ square marker
+  ["reply", { text: "↩", meaning: "reply / return" }],
+  ["www", { text: "↗", meaning: "external link" }],
+  ["up", { text: "▲", meaning: "up / previous level" }],
+  ["kkk", { text: "▲", meaning: "up / previous level" }],
+  ["smile", { text: "☻", meaning: "a smiley the author set in the text" }],
+  ["score3", { text: "♫", meaning: "sheet music" }],
+  ["sad", { text: "☹", meaning: "an unhappy face the author set in the text" }],
+  ["previous", { text: "◀", meaning: "previous / backward" }],
+  ["back", { text: "◀", meaning: "back / return" }],
+  ["next", { text: "▶", meaning: "next / forward" }],
+  ["forward", { text: "▶", meaning: "next / forward" }],
+  ["go", { text: "▶", meaning: "next / forward" }],
+  ["new", { text: "★", meaning: "newly added" }],
+  ["h1", { text: "⌂", meaning: "home" }],
+  ["h2", { text: "●", meaning: "current page / selected item" }],
+  ["kk", { text: "▪", meaning: "small square marker" }],
+  ["bggb1", { text: "■", meaning: "square marker" }],
   ["v", { text: "В", mark: "letter" }], // В
   ["p", { text: "Р", mark: "letter" }], // Р
   ["o", { text: "О", mark: "letter" }], // О
@@ -104,6 +114,29 @@ const ICON_GLYPHS: ReadonlyMap<string, IconGlyph> = new Map([
  * Returning `null` is the graceful degradation invariant 5 requires: an asset
  * this table has never heard of is left exactly as it was.
  */
+/**
+ * The closed set of marks an escalation may choose from, with their glosses.
+ *
+ * Asking a model "what does this unknown icon stand for?" is only safe if the
+ * answer space is finite and already sanctioned. This derives that space from
+ * the table above rather than restating it, so a mark can never be offered that
+ * the guide does not already license.
+ *
+ * **Letter marks are excluded on purpose.** `А-К` and its siblings are one
+ * site's alphabet index tabs; they mean "the range of names this page lists",
+ * which is a fact about *that* page. Offering them for an unknown asset would
+ * invite a plausible-looking answer that invents an index the page never had.
+ */
+export function iconGlyphVocabulary(): ReadonlyArray<{ glyph: string; meaning: string }> {
+  const seen = new Map<string, string>();
+  for (const entry of ICON_GLYPHS.values()) {
+    if (entry.mark === "letter") continue;
+    if (!seen.has(entry.text)) seen.set(entry.text, entry.meaning ?? "");
+  }
+  seen.set(LINK_GLYPH, "a link to a resource");
+  return [...seen].map(([glyph, meaning]) => ({ glyph, meaning }));
+}
+
 export function iconGlyphFor(src: string): IconGlyph | null {
   const path = src.split(/[?#]/u)[0] ?? "";
   const file = path.slice(path.lastIndexOf("/") + 1);

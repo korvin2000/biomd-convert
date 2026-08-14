@@ -158,7 +158,36 @@ export class GatewayTransport implements Transport {
    * Only a *structured-output* failure walks the ladder. A network error or a
    * 5xx is a different problem and propagates for the hook's model-tier retry.
    */
+  /**
+   * The tail of the request queue — one at a time, always.
+   *
+   * The CLI already converts one file at a time whenever a resolver is active,
+   * so in the shipped path this holds nothing back. It exists because that is a
+   * policy in a command, and "how many requests can this program have in flight"
+   * should be a property of the client that makes them. A caller that converts
+   * a hundred documents concurrently from a script gets one request at a time
+   * and a legible progress log, rather than a hundred-way race against one
+   * budget.
+   *
+   * Serialization is not throughput lost, either: the budget, the retry ladder
+   * and the model-identity check are all shared mutable state, and interleaving
+   * requests through them is how a run overspends its cap and cannot say which
+   * call did it.
+   */
+  #queue: Promise<unknown> = Promise.resolve();
+
   async chat(request: ChatRequest): Promise<ChatResponse> {
+    // Chain onto the tail, and make the tail a promise that never rejects —
+    // otherwise one failed request poisons every request queued behind it.
+    const mine = this.#queue.then(
+      () => this.#chat(request),
+      () => this.#chat(request),
+    );
+    this.#queue = mine.catch(() => undefined);
+    return mine;
+  }
+
+  async #chat(request: ChatRequest): Promise<ChatResponse> {
     const ladder = this.#ladder();
     let last: TransportError | null = null;
 

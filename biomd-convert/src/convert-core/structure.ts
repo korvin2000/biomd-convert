@@ -71,6 +71,7 @@ import {
   contentWidthOf,
   formsImageRow,
   groupColumnsFor,
+  iconGlyphOf,
   imageWidthOf,
   isDecorative,
   isUiIcon,
@@ -4057,7 +4058,7 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx, keepEdgeSpace = false
         // stood for on this page, where the glyph is only what the asset means
         // site-wide, and the corpus is unanimous: the two icons carrying `alt`
         // are labelled with it and the six without are drawn as glyphs.
-        const icon = isUiIcon(node) ? iconGlyphFor(src) : null;
+        const icon = isUiIcon(node) ? iconGlyphOf(node) : null;
         if (icon) {
           // `removed`, not `mergedInto`: the *asset* really does leave the
           // output, and the images conservation ledger accounts only for

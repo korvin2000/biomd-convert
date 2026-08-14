@@ -38,13 +38,16 @@ import { L3Probe, compareRendered, renderBiomd, type L3Result } from "../l3/inde
 import { ENGINE_VERSION, JobStore, hashOf, writeAtomic } from "./store.js";
 import {
   Budget,
+  DEFAULT_HOOKS,
   FileCache,
   GatewayResolver,
   GatewayTransport,
+  HOOK_CATALOGUE,
   MemoryCache,
+  hookIds,
   runTransportProbe,
 } from "../llm/index.js";
-import type { DecisionResolver, ResolverStats } from "../convert-core/index.js";
+import type { ConvertEvent, DecisionResolver, ResolverStats } from "../convert-core/index.js";
 import { ConfigError, loadConfig, resolveGateway, redactKey, type Config } from "./config.js";
 import { registerConfigCommands } from "./config-cmd.js";
 
@@ -56,13 +59,79 @@ import { registerConfigCommands } from "./config-cmd.js";
  * pipeline is deterministic-first and a null resolver simply means the residual
  * ambiguity becomes review items instead of requests.
  */
+/**
+ * Which escalations a run may make, from the flag, the config, or the default.
+ *
+ * The default is nothing. `--llm assist` configures a gateway and asks it
+ * nothing; a hook fires because somebody named it. `--llm review` is the one
+ * shorthand, and it names exactly one hook — the whole-document reading pass,
+ * which cannot change a byte of output.
+ *
+ * `none` is accepted and beats everything, including a config file, so a project
+ * that has hooks configured can still be run clean from the command line without
+ * editing anything.
+ */
+function hookSelection(cfg: Config, mode: string, flag?: string): readonly string[] | undefined {
+  const explicit = flag ?? (cfg.llm.hooks.length > 0 ? cfg.llm.hooks.join(",") : undefined);
+  if (explicit !== undefined) {
+    const names = explicit
+      .split(",")
+      .map((n) => n.trim())
+      .filter(Boolean);
+    if (names.includes("none") || names.includes("off")) return [];
+    if (names.includes("*") || names.includes("all")) return hookIds();
+    return names;
+  }
+  return mode === "review" ? ["document.review"] : undefined;
+}
+
+/**
+ * Reject hook ids that name nothing, loudly, before anything runs.
+ *
+ * A typo used to be silent: the id went into a `Set`, matched no catalogue
+ * entry, and the run proceeded with one fewer escalation than the operator
+ * believed he had asked for. Since a hook now only ever fires because it was
+ * named, a name that matches nothing is a broken instruction, not a preference.
+ */
+function checkHookNames(names: readonly string[]): void {
+  const known = new Set(hookIds());
+  const unknown = names.filter((n) => !known.has(n));
+  if (unknown.length > 0) {
+    throw new ConfigError(
+      `unknown escalation id(s): ${unknown.join(", ")}\n` +
+        `known ids: ${hookIds().join(", ")}\n` +
+        "Run `biomd llm-plan` to see what each one is asked and what checks its answer.",
+    );
+  }
+}
+
 function makeResolver(
   cfg: Config,
-  options: { llm?: string; gateway?: string; replay?: boolean },
+  options: { llm?: string; gateway?: string; replay?: boolean; hooks?: string },
   onEvent?: (event: { type: string; hook: string }) => void,
 ): { resolver: DecisionResolver | null; budget: Budget | null; note: string } {
   const mode = (options.llm as string | undefined) ?? (cfg.llm.enabled ? "assist" : "off");
   if (mode === "off") return { resolver: null, budget: null, note: "llm off — fully deterministic" };
+
+  // An enabled gateway with no hook named is a run that would make no requests.
+  // Say so and hand back no resolver at all, so the pipeline takes exactly the
+  // deterministic path — rather than carrying a resolver that answers every
+  // question with null and reporting escalation points nothing could reach.
+  const selection = hookSelection(cfg, mode, options.hooks);
+  if (selection !== undefined) checkHookNames(selection);
+  if (selection !== undefined && selection.length === 0) {
+    return { resolver: null, budget: null, note: "llm off — no escalation enabled (`--hooks <id>` turns one on)" };
+  }
+  if (selection === undefined && DEFAULT_HOOKS.length === 0) {
+    return {
+      resolver: null,
+      budget: null,
+      note:
+        `llm ${mode} requested, but no escalation is enabled, so nothing will be asked.\n` +
+        "Escalations are opt-in: name one with `--hooks <id>` or `llm.hooks` in the config.\n" +
+        "`biomd llm-plan` lists them, what each is asked, and what checks its answer.",
+    };
+  }
 
   let gateway;
   try {
@@ -95,19 +164,24 @@ function makeResolver(
   });
   const cache = cfg.llm.cacheDir ? new FileCache(resolve(cfg.llm.cacheDir)) : new MemoryCache();
 
+  const hooks = selection;
   const resolver = new GatewayResolver({
     transport,
     cache,
     budget,
     models: gateway.models,
     lang: cfg.lang,
+    ...(hooks ? { hooks } : {}),
     ...(options.replay ? { replay: true } : {}),
     ...(onEvent ? { onEvent } : {}),
   });
   return {
     resolver,
     budget,
-    note: `llm ${mode} via "${gateway.name}" (${gateway.models.fast} → ${gateway.models.deep}), key ${redactKey(gateway.apiKey)}`,
+    note:
+      `llm ${mode} via "${gateway.name}" (${gateway.models.fast} → ${gateway.models.deep}), ` +
+      `key ${redactKey(gateway.apiKey)}\n` +
+      `escalations enabled: ${resolver.enabledHooks().join(", ")}`,
   };
 }
 
@@ -150,6 +224,100 @@ function describeResolverStats(stats: ResolverStats, budget: Budget | null): str
 }
 
 /**
+ * Print the conversion as it happens.
+ *
+ * ## Two audiences, two thresholds
+ *
+ * **Escalations print whenever one happens, verbose or not.** A model call costs
+ * money and can change the document; there is no run in which the operator
+ * should have to have guessed the right flag beforehand to find out one
+ * occurred. `-v` adds the deterministic passes — which stage ran, how long it
+ * took, and what it decided.
+ *
+ * ## What a line has to carry
+ *
+ * The version this replaces printed an outcome and a count, which reads the same
+ * whether a hook did something right or wrote `когдато` into the text. Every
+ * line that corresponds to a change therefore shows the change:
+ *
+ * ```
+ *   1243ms  text      412 hyphen decision(s), 7 unresolved
+ *             join  раз-\nные → разные
+ *             kept  когда-\nто → когда-то
+ *           + table.classify   t3   UNKNOWN → DATA
+ *                              why: three repeating columns with a consistent shape
+ *           ✗ table.records    t7   refused: 4 labels for 3 columns
+ * ```
+ *
+ * `refused` is the line worth watching: a model answered, an acceptance check
+ * turned it down, and the deterministic answer stands. It is invisible in a call
+ * count and it is exactly what says a prompt has drifted.
+ *
+ * `label` prefixes every line during a corpus run, because otherwise interleaved
+ * files are unreadable — though a run with escalations on is single-file at a
+ * time anyway, for reasons the `corpus run` command explains.
+ */
+function progressPrinter(label?: string): (event: ConvertEvent) => void {
+  const MARK: Record<string, string> = { asked: "?", resolved: "+", declined: "·", refused: "✗" };
+  const prefix = label ? `${label}  ` : "";
+  const out = (line: string): void => {
+    process.stderr.write(`${prefix}${line}\n`);
+  };
+  return (event) => {
+    if (event.type === "stage") {
+      out(`  ${String(event.elapsedMs).padStart(5)}ms  ${event.stage.padEnd(9)} ${event.detail}`);
+      for (const change of event.changes ?? []) out(`            ${change}`);
+      return;
+    }
+    if (event.type === "escalation") {
+      const mark = MARK[event.outcome] ?? " ";
+      const detail = event.detail ? `  ${event.detail}` : "";
+      out(`          ${mark} ${event.hook.padEnd(16)} ${event.item}${detail}`);
+      if (event.before !== undefined || event.after !== undefined) {
+        out(`                             ${event.before ?? "?"} → ${event.after ?? "?"}`);
+      }
+      if (event.reason) out(`                             why: ${event.reason}`);
+      return;
+    }
+    out(`          ${event.text}`);
+  };
+}
+
+/**
+ * The printer a run should use, given its flags.
+ *
+ * Returns `undefined` only when there is genuinely nothing to say: no verbose
+ * flag *and* no resolver, so no escalation can occur. Anywhere else the pipeline
+ * gets a printer, and the printer itself decides what is loud enough to show.
+ */
+function progressFor(
+  options: { verbose?: boolean; quiet?: boolean },
+  resolver: DecisionResolver | null,
+  label?: string,
+): ((event: ConvertEvent) => void) | undefined {
+  if (options.quiet) return undefined;
+  if (!options.verbose && !resolver) return undefined;
+  const print = progressPrinter(label);
+  if (options.verbose) return print;
+  // Escalations only: a run that did not ask for the deterministic narration
+  // still gets told, in full, about every question that went to a model.
+  return (event) => {
+    if (event.type === "escalation") print(event);
+  };
+}
+
+/** Findings from the reading review, which change nothing and are worth reading. */
+function printReviewFindings(findings: ReadonlyArray<{ severity: string; class: string; quote: string; note: string }>): void {
+  if (findings.length === 0) return;
+  process.stdout.write(`\nReading review — ${findings.length} finding(s), advisory, nothing was changed:\n`);
+  for (const finding of findings) {
+    process.stdout.write(`  [${finding.severity}] ${finding.class}\n`);
+    process.stdout.write(`      ${JSON.stringify(finding.quote.slice(0, 100))}\n`);
+    process.stdout.write(`      ${finding.note}\n`);
+  }
+}
+
+/**
  * Resolve settings for a command: config file first, CLI flags on top.
  *
  * Every flag is optional. A configured project needs `biomd corpus run` and
@@ -189,10 +357,12 @@ program
   .option("--asset-root <dir>", "resolve relative assets from here during measurement")
   .option("--lang <code>", "primary language for hyphenation")
   .option("--corpus <file>", "corpus-profile.json from `biomd corpus scan`")
-  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
+  .option("--llm <mode>", "off | assist | review — escalate the residual ambiguity to a model")
+  .option("--hooks <ids>", "comma-separated escalation ids, or `all` (see `biomd llm-plan`)")
   .option("-g, --gateway <name>", "which configured gateway to use")
   .option("--replay", "use only cached model decisions; never call the network")
   .option("-c, --config <file>", "explicit config file")
+  .option("-v, --verbose", "print each stage and each escalation as it happens")
   .option("--quiet", "only print the output path")
   .action(async (input: string, options) => {
     const cfg = settings(options);
@@ -205,6 +375,7 @@ program
     const dictionary = await createWordDictionary(cfg.lang);
     const { resolver, budget, note } = makeResolver(cfg, options);
     if (!options.quiet) process.stderr.write(`${note}\n`);
+    const onProgress = progressFor(options, resolver);
 
     try {
       const store = await JobStore.open(resolve(cfg.workDir), basename(input), bytes, profile.id);
@@ -218,6 +389,7 @@ program
         dictionary,
         lang: cfg.lang,
         ...(resolver ? { resolver } : {}),
+        ...(onProgress ? { onProgress } : {}),
         ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
         ...(corpus ? { lexicon: Lexicon.fromJSON(corpus.lexicon) } : {}),
         ...(corpus ? { corpusProfile: corpus } : {}),
@@ -258,6 +430,7 @@ program
       } else {
         printResult(input, outPath, result, store.root);
         if (resolver) process.stdout.write(`LLM:          ${describeResolverStats(result.resolverStats, budget)}\n`);
+        printReviewFindings(result.reviewFindings);
       }
       process.exitCode = result.state === "conversion-review-required" ? 2 : 0;
     } finally {
@@ -326,10 +499,12 @@ corpus
   .option("--corpus <file>", "corpus-profile.json")
   .option("--lang <code>", "primary language")
   .option("-j, --jobs <n>", "concurrent conversions")
-  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
+  .option("--llm <mode>", "off | assist | review — escalate the residual ambiguity to a model")
+  .option("--hooks <ids>", "comma-separated escalation ids, or `all` (see `biomd llm-plan`)")
   .option("-g, --gateway <name>", "which configured gateway to use")
   .option("--replay", "use only cached model decisions; never call the network")
   .option("-c, --config <file>", "explicit config file")
+  .option("-v, --verbose", "print each stage and each escalation as it happens")
   .action(async (dirArg: string | undefined, options) => {
     const cfg = settings(options);
     const dir = dirArg ?? cfg.inputDir;
@@ -348,8 +523,6 @@ corpus
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
     const dictionary = await createWordDictionary(cfg.lang);
-    // Browser contexts are the scarce resource; conversions are cheap.
-    const queue = new PQueue({ concurrency: measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs });
 
     // One resolver for the whole run: the budget is a corpus-wide cap, and the
     // decision cache is shared, so the same ambiguous table on forty pages costs
@@ -357,9 +530,37 @@ corpus
     const { resolver, budget, note } = makeResolver(cfg, options);
     process.stderr.write(`${note}\n`);
 
+    // Browser contexts are the scarce resource; conversions are cheap — but a
+    // resolver makes them expensive in a way concurrency multiplies. Four
+    // conversions in flight is four independent streams of requests against one
+    // budget, four interleaved progress printers, and no order an operator can
+    // read. It also makes the run's cost depend on `jobs`, which is supposed to
+    // be a speed knob.
+    //
+    // So escalation forces one file at a time. It is slower and it is the only
+    // setting in which "stop, that hook is wrong" is a thing you can act on
+    // before the bill arrives.
+    const concurrency = resolver ? 1 : measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs;
+    if (resolver && cfg.jobs > 1) {
+      process.stderr.write(`jobs: 1 (escalation is enabled; requests are made one at a time)\n`);
+    }
+    const queue = new PQueue({ concurrency });
+
     const tally = { complete: 0, review: 0, failed: 0 };
-    const escalationTotals = { consulted: 0, resolved: 0 };
+    const escalationTotals: Pick<ResolverStats, "consulted" | "resolved" | "byHook"> = {
+      consulted: 0,
+      resolved: 0,
+      byHook: {},
+    };
     const rows: string[] = [];
+    /**
+     * Reading-review findings, kept across the whole run.
+     *
+     * Reported per class rather than per file: a thousand pages producing the
+     * same finding once each is one defect in the rule system, and a thousand
+     * lines of it is noise that hides that.
+     */
+    const findingsByClass = new Map<string, { count: number; severity: string; example: string; file: string }>();
 
     try {
       await Promise.all(
@@ -378,6 +579,10 @@ corpus
                 lexicon,
                 lang: cfg.lang,
                 ...(resolver ? { resolver } : {}),
+                ...(() => {
+                  const onProgress = progressFor(options, resolver, basename(path));
+                  return onProgress ? { onProgress } : {};
+                })(),
                 ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
                 ...(corpusProfile ? { corpusProfile } : {}),
               });
@@ -396,6 +601,30 @@ corpus
               else tally.complete += 1;
               escalationTotals.consulted += result.resolverStats.consulted;
               escalationTotals.resolved += result.resolverStats.resolved;
+              for (const [hook, counts] of Object.entries(result.resolverStats.byHook)) {
+                const bucket = (escalationTotals.byHook[hook] ??= {
+                  consulted: 0,
+                  calls: 0,
+                  cacheHits: 0,
+                  unresolved: 0,
+                });
+                bucket.consulted += counts.consulted;
+                bucket.calls += counts.calls;
+                bucket.cacheHits += counts.cacheHits;
+                bucket.unresolved += counts.unresolved;
+              }
+              for (const finding of result.reviewFindings) {
+                const existing = findingsByClass.get(finding.class);
+                if (existing) existing.count += 1;
+                else {
+                  findingsByClass.set(finding.class, {
+                    count: 1,
+                    severity: finding.severity,
+                    example: finding.quote.slice(0, 80),
+                    file: basename(path),
+                  });
+                }
+              }
               const wantTables = result.tables.filter((t) => t.classification === "DATA").length;
               const gotTables = result.tables.filter((t) => t.emittedTable).length;
               rows.push(
@@ -432,6 +661,37 @@ corpus
         "",
       ].join("\n"),
     );
+
+    // Per hook, whether or not a model ran. This is the number that answers
+    // "which escalation would be worth turning on, and what would it cost?",
+    // and it is only obtainable from a deterministic run.
+    const ranked = [...Object.entries(escalationTotals.byHook)]
+      .filter(([, counts]) => counts.consulted > 0)
+      .sort((a, b) => b[1].consulted - a[1].consulted);
+    if (ranked.length > 0) {
+      process.stdout.write("Escalation points the rules left open, by hook:\n");
+      for (const [hook, counts] of ranked) {
+        const spent = counts.calls > 0 || counts.cacheHits > 0 ? `  (${counts.calls} call(s), ${counts.cacheHits} cached)` : "";
+        process.stdout.write(`  ${String(counts.consulted).padStart(5)}  ${hook}${spent}\n`);
+      }
+      process.stdout.write("\n");
+    }
+
+    if (findingsByClass.size > 0) {
+      const order = { critical: 0, major: 1, minor: 2 } as Record<string, number>;
+      const ranked = [...findingsByClass].sort(
+        (a, b) => (order[a[1].severity] ?? 3) - (order[b[1].severity] ?? 3) || b[1].count - a[1].count,
+      );
+      process.stdout.write(
+        `Reading review — ${ranked.length} class(es) over ${[...findingsByClass.values()].reduce((n, f) => n + f.count, 0)} finding(s). Advisory; no output was changed.\n`,
+      );
+      for (const [name, info] of ranked) {
+        process.stdout.write(`  [${info.severity}] ${name}  ×${info.count}\n`);
+        process.stdout.write(`      e.g. ${info.file}: ${JSON.stringify(info.example)}\n`);
+      }
+      process.stdout.write("\n");
+    }
+
     process.exitCode = tally.failed > 0 ? 1 : 0;
   });
 
@@ -640,6 +900,59 @@ program
       `\n${errors} error(s), ${diagnostics.length - errors} warning(s), ${skeleton.warnings.length} parse note(s)\n`,
     );
     process.exitCode = errors > 0 ? 1 : 0;
+  });
+
+// ---------------------------------------------------------------------------
+
+program
+  .command("llm-plan")
+  .description("List every escalation the compiler can make, what it is asked, and whether it is on")
+  .option("--llm <mode>", "off | assist | review — the mode to report for")
+  .option("--hooks <ids>", "comma-separated escalation ids, or `all`")
+  .option("-c, --config <file>", "explicit config file")
+  .action((options) => {
+    const cfg = settings(options);
+    const mode = (options.llm as string | undefined) ?? (cfg.llm.enabled ? "assist" : "off");
+    const selected = new Set(hookSelection(cfg, mode, options.hooks) ?? DEFAULT_HOOKS);
+
+    process.stdout.write(
+      `Escalation catalogue — ${HOOK_CATALOGUE.length} hook(s). Mode: ${mode}.\n` +
+        "Every one is OFF unless you name it. Each is consulted only where the deterministic\n" +
+        "path produced no answer at all, and every reply passes the stated acceptance check\n" +
+        "before it can reach the document.\n\n",
+    );
+
+    let stage = "";
+    for (const entry of HOOK_CATALOGUE) {
+      if (entry.stage !== stage) {
+        stage = entry.stage;
+        process.stdout.write(`${stage}\n`);
+      }
+      const on = mode !== "off" && selected.has(entry.hook.id) && entry.wired;
+      process.stdout.write(`  ${!entry.wired ? "---" : on ? "ON " : "off"}  ${entry.hook.id.padEnd(18)} ${entry.templates}\n`);
+      process.stdout.write(`       asked when:  ${entry.abstention}\n`);
+      process.stdout.write(`       checked by:  ${entry.acceptanceCheck}\n`);
+      if (!entry.wired) {
+        process.stdout.write("       NOT WIRED:   the pipeline has no consult site for this; naming it does nothing.\n");
+      }
+    }
+
+    process.stdout.write(
+      `\n${selected.size === 0 ? "Nothing is enabled; this run would make no requests." : `Enabled: ${[...selected].sort().join(", ")}`}\n` +
+        "Turn one on with `--hooks <id>`, several with `--hooks a,b`, all with `--hooks all`,\n" +
+        "and back off with `--hooks none`. `llm.hooks` in the config file is the persistent form.\n\n" +
+        "Deleted in this revision, and why — so nobody re-adds them:\n" +
+        "  layout.chrome-audit  reviewed deletions the boilerplate pass was sure of; put the site\n" +
+        "                       masthead back onto pages the profile had correctly stripped.\n" +
+        "  text.hyphenation     applied every JOIN it was given; wrote `когда-то` as `когдато`.\n" +
+        "  image.caption        bound the wrong nearby line to a picture; a wrong caption is\n" +
+        "                       invisible in the output and reads as a fact.\n" +
+        "  image.role DECORATION  deleted images outright; ICON, which only substitutes one\n" +
+        "                       licensed mark for another, is what remains of that hook.\n" +
+        "  + 12 more that had no consult site at all.\n\n" +
+        "Prompts are editable Markdown under src/llm/prompts; editing one invalidates exactly the\n" +
+        "cached decisions it produced.\n",
+    );
   });
 
 // ---------------------------------------------------------------------------

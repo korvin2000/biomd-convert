@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-14**, after PROGRESS §56.
+Last touched **2026-08-14**, after PROGRESS §57.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -23,14 +23,29 @@ stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2
 outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
 946 pages.
 
-**Current state, *measured* 2026-08-14, after PROGRESS §56:**
+**Current state, *measured* 2026-08-14, after PROGRESS §57:**
 
 | rung | value |
 |---|---|
-| L0 | **863 tests**, typecheck clean, 0 FAILED, conservation ok |
+| L0 | **923 tests**, typecheck clean, 0 FAILED, conservation ok |
 | L1 | **99.5 %** over the 28 |
 | L2 | **138 findings — 76 converter-defect** · 15 ambiguous · 47 reference-inconsistency · 2 critical · 36 major |
 | L3 | **22** over 28 documents, **0 critical** |
+
+> **§57 moved no rung and was not supposed to.** It widened the escalation surface from
+> **68 reachable points to 423 questions asked** and left the deterministic output
+> byte-identical — L2's JSON differs only in its `generated` timestamp. L1, L2 and L3 are
+> the §56 numbers, re-measured. The new number to watch is the per-hook open-question
+> count, which `corpus run --llm off` now prints: `text.hyphenation` **175** ·
+> `layout.chrome-audit` **114** · `text.block-role` **46** · `table.classify` **38** ·
+> `table.records` **30** · `image.caption` **20**.
+>
+> **423 is questions asked, not raw residual.** Per-page caps apply, and measuring them
+> found one that was wrong: the hyphenation batch was capped at 24 on a *call* argument,
+> but the hook sends one request per document however many candidates it carries — it is a
+> payload bound, now 48. The block-role cap of 6 is a real call bound and stays. The figure
+> also moves with configuration: without the oracle and dictionary the hyphen count is 220.
+> Quote the command with any escalation count.
 
 > **Baseline before attribution, every time.** §56's baseline is 28 documents at **`4b5d1b0`**
 > (L1 99.0, L2 145/81/2/38, L3 22) -- the author committed the `xtra_alexandro` pair mid-session,
@@ -61,7 +76,25 @@ outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach
 > adjudicated in full, the rest are folded on both sides. `new_rules.md` authorises it by name.
 > Both sides re-baselined; four contracts, including the disagreement case.
 
+**Landed in §57 — the escalation surface.** The hook mechanism reached two decisions, both
+about tables; the catalogue is now **21** hooks over seven stages, with prompts as
+Markdown files under `src/llm/prompts/`, and **7 of them wired** (`table.classify`,
+`table.records`, `layout.chrome-audit`, `text.hyphenation`, `text.block-role`,
+`image.role`, `image.caption`) plus opt-in `document.review`. The other **13 are named in
+`UNWIRED_HOOKS`** and printed by `biomd llm-plan` as `--- NOT WIRED`: defined, prompted
+and tested, with no consult site. Do not report them as working.
+
+> **The subordination contract is measured, not asserted.** `advice.test.ts` runs an
+> adversarial resolver that answers every question with the most disruptive verdict its
+> schema allows and requires **byte-identical** output on a page whose rules were all
+> confident. It also asserts the *queue*: an item a rule decided is never offered.
+
 **Next, in order. Probe before committing (SKILL §6).**
+0aa. **One `--llm assist` run over the 28 against a real gateway** — the surface is
+   measured and the wiring is not yet paid for. Count how many of the 411 resolve and how
+   many are **refused** by an acceptance check. *Falsifier:* a hook whose refusal rate is
+   near zero is not working, it is a check that is not checking; `text.hyphenation` at 163
+   points has a single confidence floor and will show it first.
 0a. **`xtra_shelechov`'s `align.spurious` x2** — unchanged from §55 and still the clearest
    thing on that page. `**I отделение**` / `**II отделение**` are wrapped in
    `::: align position: right`; the source cell is `<td class="t1" colspan="2">` and declares

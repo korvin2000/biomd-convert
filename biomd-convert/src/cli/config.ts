@@ -129,8 +129,24 @@ export const ConfigSchema = z.object({
       prices: PricesSchema,
       /** Where cached decisions live, so re-runs are free. */
       cacheDir: z.string().default(".biomd-cache"),
+      /**
+       * Which escalations this project makes, by hook id.
+       *
+       * Empty means the catalogue's own default set — every targeted hook, and
+       * not `document.review`, which reads two whole documents per page. `["*"]`
+       * turns on everything. `biomd llm-plan` lists the ids and what each one
+       * is asked when.
+       */
+      hooks: z.array(z.string()).default([]),
     })
-    .default({ enabled: false, gateways: {}, budget: {}, prices: { input: {}, output: {}, cachedInputMultiplier: 0.1 }, cacheDir: ".biomd-cache" }),
+    .default({
+      enabled: false,
+      gateways: {},
+      budget: {},
+      prices: { input: {}, output: {}, cachedInputMultiplier: 0.1 },
+      cacheDir: ".biomd-cache",
+      hooks: [],
+    }),
 });
 export type Config = z.infer<typeof ConfigSchema>;
 

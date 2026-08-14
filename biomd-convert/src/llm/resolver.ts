@@ -15,8 +15,16 @@
  *     a code change costs nothing and produces byte-identical output.
  */
 import type {
+  BlockRoleAnswer,
+  BlockRoleRequest,
+  BreakKind,
+  BreakRunRequest,
   Classification,
   DecisionResolver,
+  DocumentReviewRequest,
+  ReviewFinding,
+  ImageRoleAnswer,
+  ImageRoleRequest,
   ResolverStats,
   TableClassifyRequest,
   TableHeaderRequest,
@@ -28,9 +36,18 @@ import type { DecisionCache } from "./cache.js";
 import { type HookEvent, runHook } from "./hook.js";
 import {
   type TableHeaderContext,
+  MAX_FINDINGS,
+  blockRoleHook,
+  documentReviewHook,
+  imageRoleHook,
+  isSanctionedGlyph,
+  numbered,
+  quote,
   replyToClassification,
   tableClassifyHook,
   tableHeaderHook,
+  textSegmentHook,
+  trimRationale,
 } from "./hooks.js";
 import type { Transport } from "./transport.js";
 
@@ -45,16 +62,84 @@ export interface GatewayResolverOptions {
   /** Replay only: never call the network. */
   replay?: boolean;
   onEvent?: (event: HookEvent) => void;
+  /**
+   * Which escalations this run may make, by hook id.
+   *
+   * **Omitted means none.** Not a default set — none. Turning a hook on is a
+   * decision an operator makes per run, out loud, and the CLI prints the list it
+   * ended up with before it converts anything.
+   *
+   * That is a reversal, and it is the lesson of the version this replaces. That
+   * one shipped seven hooks in a default set on the reasoning that each fired
+   * only on some rule's residual, so the blast radius was small. The reasoning
+   * was wrong twice over: three of the seven were not firing on a residual at
+   * all but overriding rules that had decided, and the operator who typed
+   * `--llm assist` had no way to know which seven he had bought. Opting in per
+   * hook makes both failures impossible to have by accident — an escalation that
+   * damages a page is now one somebody chose.
+   */
+  hooks?: readonly string[];
 }
+
+/**
+ * The escalations a run makes when nobody says which — deliberately empty.
+ *
+ * `--llm assist` on its own configures a gateway and asks nothing. The
+ * deterministic compiler is the product; escalation is an instrument you point
+ * at a specific problem, with `--hooks <id>`, having read `biomd llm-plan` to
+ * see what each one is asked and what checks its answer.
+ *
+ * Kept as a named export rather than inlined so the CLI, the tests and
+ * `llm-plan` all agree on what "the default" is, and so that changing it later
+ * is one edit in a file that has to explain itself.
+ */
+export const DEFAULT_HOOKS: readonly string[] = [];
 
 export class GatewayResolver implements DecisionResolver {
   readonly #options: GatewayResolverOptions;
   // `consulted` and `resolved` are the pipeline's to count — it knows which
   // decision points exist, including the ones a null resolver never sees.
   readonly #stats: ResolverStats = emptyStats();
+  readonly #enabled: ReadonlySet<string>;
+
+  // Declared, not defined. Each is installed in the constructor only when its
+  // hook is enabled, so "this resolver cannot answer that" and "this resolver
+  // answered null" stay distinguishable at the call site — which is what keeps
+  // the escalation counters honest.
+  blockRole?: DecisionResolver["blockRole"];
+  imageRole?: DecisionResolver["imageRole"];
+  classifyBreaks?: DecisionResolver["classifyBreaks"];
+  reviewDocument?: DecisionResolver["reviewDocument"];
 
   constructor(options: GatewayResolverOptions) {
     this.#options = options;
+    this.#enabled = new Set(options.hooks ?? DEFAULT_HOOKS);
+
+    const self = this as Record<string, unknown>;
+    const install = (id: string, key: string, method: unknown): void => {
+      if (this.#enabled.has(id)) self[key] = method;
+    };
+    install("text.block-role", "blockRole", this.#blockRole.bind(this));
+    install("image.role", "imageRole", this.#imageRole.bind(this));
+    install("text.segment", "classifyBreaks", this.#classifyBreaks.bind(this));
+    install("document.review", "reviewDocument", this.#reviewDocument.bind(this));
+  }
+
+  /** Which escalations this resolver may make, for the run report. */
+  enabledHooks(): string[] {
+    return [...this.#enabled].sort();
+  }
+
+  /**
+   * Whether a hook is switched on.
+   *
+   * The optional methods answer this by existing; `classifyTable` and
+   * `tableHeaders` are required by the interface and always present, so without
+   * this the pipeline cannot tell "switched off" from "declined" for exactly the
+   * two hooks that predate the rest.
+   */
+  canAnswer(hookId: string): boolean {
+    return this.#enabled.has(hookId);
   }
 
   readonly #failures = new Map<string, number>();
@@ -76,7 +161,7 @@ export class GatewayResolver implements DecisionResolver {
       budget: this.#options.budget,
       ...(this.#options.replay ? { replay: true } : {}),
       onEvent: (event: HookEvent) => {
-        const bucket = (this.#stats.byHook[event.hook] ??= { calls: 0, cacheHits: 0, unresolved: 0 });
+        const bucket = (this.#stats.byHook[event.hook] ??= { consulted: 0, calls: 0, cacheHits: 0, unresolved: 0 });
         if (event.type === "deterministic") this.#stats.deterministic += 1;
         if (event.type === "cache-hit") {
           this.#stats.cacheHits += 1;
@@ -110,6 +195,7 @@ export class GatewayResolver implements DecisionResolver {
   }
 
   async classifyTable(request: TableClassifyRequest): Promise<Classification | null> {
+    if (!this.#enabled.has("table.classify")) return null;
     const hook = { ...tableClassifyHook, models: this.#tiers() };
     // The deterministic tiers already ran in the pipeline and abstained; running
     // them again here would answer the question with the same "no".
@@ -128,6 +214,7 @@ export class GatewayResolver implements DecisionResolver {
   }
 
   async tableHeaders(request: TableHeaderRequest): Promise<string[] | null> {
+    if (!this.#enabled.has("table.records")) return null;
     const hook = { ...tableHeaderHook, models: this.#tiers() };
     const context: TableHeaderContext = {
       columns: request.plan.bands.length,
@@ -148,7 +235,131 @@ export class GatewayResolver implements DecisionResolver {
     if (outcome.value.headers.length !== request.plan.bands.length) return null;
     return outcome.value.headers.map((h) => h.trim());
   }
+
+  // -------------------------------------------------------------------------
+  // The escalations added beyond table classification.
+  //
+  // Every one of them ends the same way: a reply that does not satisfy its
+  // acceptance check returns `null`, and `null` means the deterministic answer
+  // stands. There is no path from here by which a model changes a decision the
+  // compiler was sure of, because none of these methods is called unless a rule
+  // has already abstained — and the pipeline, not this class, is what enforces
+  // that.
+  // -------------------------------------------------------------------------
+
+  async #imageRole(request: ImageRoleRequest): Promise<ImageRoleAnswer | null> {
+    const hook = { ...imageRoleHook, models: this.#tiers() };
+    const outcome = await runHook(
+      hook,
+      {
+        lang: this.#options.lang,
+        size: request.size,
+        ...(request.alt ? { alt: request.alt } : {}),
+        inLink: request.inLink,
+        ...(request.linkTarget ? { linkTarget: request.linkTarget } : {}),
+        occurrences: request.occurrences,
+        ...(request.inRunningProse !== undefined ? { inRunningProse: request.inRunningProse } : {}),
+      },
+      { surroundings: request.surroundings },
+      this.#runtime(),
+      `${request.sourceName ?? "?"}:${request.id}:image-role`,
+    );
+    if (outcome.status !== "ok") return null;
+    const { role, glyph } = outcome.value;
+    if (role === "UNCERTAIN") return null;
+    // The vocabulary is closed on both sides of the boundary. An `ICON` whose
+    // mark the project's own table does not sanction is not an icon this
+    // compiler can emit, so it is dropped rather than approximated.
+    if (role === "ICON" && (glyph === null || glyph === "" || !isSanctionedGlyph(glyph))) return null;
+    return {
+      role,
+      ...(role === "ICON" && glyph ? { glyph } : {}),
+      confidence: outcome.value.confidence,
+      reason: trimRationale(outcome.value.rationale),
+    };
+  }
+
+  async #blockRole(request: BlockRoleRequest): Promise<BlockRoleAnswer | null> {
+    const hook = { ...blockRoleHook, models: this.#tiers() };
+    const outcome = await runHook(
+      hook,
+      {
+        lang: this.#options.lang,
+        typography: request.typography,
+        ...(request.openHeading !== undefined ? { openHeading: request.openHeading } : {}),
+        ...(request.openDepth !== undefined ? { openDepth: request.openDepth } : {}),
+      },
+      {
+        line: quote(request.line),
+        before: quote(request.before),
+        after: quote(request.after),
+        siblings:
+          request.siblingLines && request.siblingLines.length > 0
+            ? numbered(request.siblingLines.map((text) => ({ text })))
+            : "(none — this is the only unplaced line on the page)",
+      },
+      this.#runtime(),
+      `${request.sourceName ?? "?"}:${request.id}:block-role`,
+    );
+    if (outcome.status !== "ok") return null;
+    if (outcome.value.role === "UNCERTAIN") return null;
+    return {
+      role: outcome.value.role,
+      ...(outcome.value.depth !== null ? { depth: outcome.value.depth } : {}),
+      confidence: outcome.value.confidence,
+      reason: trimRationale(outcome.value.rationale),
+    };
+  }
+
+  async #classifyBreaks(request: BreakRunRequest): Promise<readonly BreakKind[] | null> {
+    const hook = { ...textSegmentHook, models: this.#tiers() };
+    const outcome = await runHook(
+      hook,
+      { lang: this.#options.lang, context: request.context, count: request.breaks.length },
+      { breaks: request.breaks },
+      this.#runtime(),
+      `${request.sourceName ?? "?"}:${request.id}:breaks`,
+    );
+    if (outcome.status !== "ok") return null;
+    // The kinds are positional, so a single abstention cannot be dropped without
+    // shifting every verdict after it onto the wrong break. A run the model
+    // half-read is one the geometry rule's reading should keep, whole.
+    if (outcome.value.kinds.some((k) => k === "UNCERTAIN")) return null;
+    return outcome.value.kinds as readonly BreakKind[];
+  }
+
+  async #reviewDocument(request: DocumentReviewRequest): Promise<readonly ReviewFinding[] | null> {
+    const hook = { ...documentReviewHook, models: this.#tiers().slice(-1) };
+    const outcome = await runHook(
+      hook,
+      {
+        lang: this.#options.lang,
+        sourceName: request.sourceName,
+        summary: request.summary,
+        ...(request.warnings && request.warnings.length > 0
+          ? { warnings: request.warnings.map((w) => `  - ${w}`).join("\n") }
+          : {}),
+        maxFindings: MAX_FINDINGS,
+      },
+      { sourceText: request.sourceText, output: request.output },
+      this.#runtime(),
+      `${request.sourceName}:review`,
+    );
+    if (outcome.status !== "ok") return null;
+    return outcome.value.findings;
+  }
 }
+
+/**
+ * How sure a rejoin has to be before it is applied.
+ *
+ * Not tuned against a metric and not derived from one. It is the number at which
+ * "the model was fairly sure" stops being enough for an edit whose failure mode
+ * is a corrupted word that no later gate detects, and it sits above the hook's
+ * own escalation floor so that a reply which already escalated once and came
+ * back merely acceptable does not silently rewrite the page.
+ */
+const JOIN_CONFIDENCE_FLOOR = 0.75;
 
 /**
  * Strip the item-specific tail off a failure reason so identical causes group.

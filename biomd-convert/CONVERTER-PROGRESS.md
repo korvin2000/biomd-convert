@@ -7513,3 +7513,364 @@ recorded defect wearing a justification.
 And `new_rechin4`, `jovicic` and `new_blackmore` had all carried `==` in their references
 for at least an iteration before anything read it. **A construct the converter cannot emit
 is a construct no instrument will report as missing.**
+
+## 57 -- the escalation surface was 68 points wide, and the rules had left 411 (2026-08-14)
+
+The hook mechanism was built, tested, cached, budgeted and wired -- to **two** decisions,
+both about tables. `table.classify` names a region the two scored tiers declined to name,
+and `table.records` invents column labels for a matrix whose source wrote no header. Both
+are real, and neither is where this compiler's hard judgements are. Everything else the
+rules abstained on became a review item nobody would ever read -- and reviewing a thousand
+pages by hand is the cost the mechanism existed to remove.
+
+**Measured deterministically over the 28 sources** with
+`corpus run -c bench/biomd.config.json --visual never --llm off`, which counts open
+questions without spending anything:
+
+| hook | questions the pipeline would ask |
+|---|---:|
+| `text.hyphenation` | **175** |
+| `layout.chrome-audit` | **114** |
+| `text.block-role` | **46** |
+| `table.classify` | 38 |
+| `table.records` | 30 |
+| `image.caption` | 20 |
+| **total** | **423** |
+
+> **Read the column heading, not the number.** These are *questions asked*, not the raw
+> residual, and the two differ because every collector carries a per-page cap.
+>
+> **One of those caps was wrong, and measuring it is what found it.** The hyphenation batch
+> was capped at 24, which bound on `new_blackmore`, `new_geyzel04` and `xtra_shelechov` and
+> left fifteen or more words unresolved on each. The cap confused a *payload* bound with a
+> *call* bound: the hook sends one request per document however many candidates it carries,
+> so limiting the count saved nothing and only decided how much of the page got an answer.
+> Re-derived from what one request can afford — about 220 characters of sentence per
+> candidate, so 48 is roughly 10 kB — it is now 48 and the total rose 411 → **423**.
+>
+> **The block-role cap of 6 is a genuine call bound and stays.** A line's role depends on
+> what surrounds it, so it is one request per line; it binds on `news`, `segovia1` and
+> `xtra_karta5`, all three of which carry a menu or an index, which is the shape it is for.
+>
+> **The number also moves with configuration, and that is the cascade working.** Without the
+> hyphenation oracle and the word dictionary the same corpus asks **220** hyphen questions;
+> the deterministic path resolves the difference. Any escalation count is a statement about a
+> configuration, so quote the command with it.
+
+The two hooks that existed reach **68 of 423**. The catalogue now holds **21**, and the
+count is itself part of the work: `consulted` is counted by the pipeline from the residual
+the rules actually left, so it is reported with no model configured. That was already the
+documented contract for the two old points; it is now honoured for all of them, per hook, so
+an operator can read "what would turning this on do, and what would it cost" off a free run.
+
+**No rung moved.** L1 **99.5** (unchanged), L2 **138 findings / 76 converter-defect /
+2 critical / 36 major** (unchanged), L3 unchanged, L0 **922 tests** (863 + 59), typecheck
+clean, 0 FAILED, conservation ok. Byte-identical deterministic output is not an inference
+here: `--llm off` reaches none of the new code, and §57.1 measures the stronger claim.
+
+### 57.1 The rule decides; the hook fills what it left
+
+The binding constraint, stated by the project author mid-iteration: *"LLM hooks should not
+break and disrupt existing deterministic rules -- they should rather support and extend them
+and come into effect when the usual rules reach an impasse."* Three mechanisms enforce it,
+and only the third is evidence.
+
+1. **Every consult site sits behind an abstention predicate.** Not "an image" but an image
+   whose asset the known-icon table has never seen; not "a short line" but one the prominence
+   rule scored between prose and its own section threshold; not "a hyphen" but one the
+   cascade recorded as `review`. `escalation.ts` collects those residuals and nothing else,
+   and `headings.ts` `residualLabelCandidates` **derives** its population from the outline
+   rule's own candidate collection rather than restating it -- a restatement would drift the
+   first time the rule changed, and drift silently in both directions.
+2. **Every reply passes a deterministic acceptance check before it applies.** A glyph must be
+   one the project's own icon table already sanctions; a promoted heading may not be deeper
+   than one step below the open section; a `JOIN` needs 0.75 confidence and a `PRESERVE` needs
+   none, because a wrongly preserved hyphen is visible and a wrongly joined word is a silent
+   corruption; a `DECORATION` may not silence an image whose author wrote an `alt`; a review
+   finding must quote the produced document verbatim.
+3. **An adversarial resolver measures the claim.** `advice.test.ts` answers *every* question
+   with the most disruptive verdict its schema allows -- every recurring structure is content,
+   every hyphen joins, every line is a section heading, every unknown image is an icon, the
+   first candidate is always the caption -- and asserts the output is **byte-identical** to
+   the deterministic run on a page whose rules were all confident. It also asserts the queue:
+   a picture with an author-written `alt` is never offered to the caption hook, and a 300x400
+   picture is never offered to the icon hook.
+
+That third test earned its keep immediately. Its first fixture used `вице-президентом`, on
+the strength of a comment in `dehyphenate.ts` naming it as a compound the rules refuse to
+join -- but that refusal comes from the **dictionary**, and a conversion with none configured
+leaves the word a review item. The adversarial resolver joined it, correctly: it was in the
+residual. A fixture that is "confident" has to be confident under the configuration it is
+converted with, and the comment describes a different one.
+
+### 57.2 The catalogue, and the abstention each entry fills
+
+Twenty-one hooks over seven stages, listed by `biomd llm-plan`. Each carries a one-line
+statement of the abstention it fills and `catalogue.test.ts` requires it: a hook for which
+that sentence cannot be written is second-guessing a rule, not answering an impasse.
+
+- **chrome** -- `layout.chrome-audit`
+- **text** -- `text.hyphenation`, `text.segment`, `text.lineation`
+- **headings** -- `text.block-role`
+- **structure** -- `text.emphasis-role`, `text.list-intent`, `text.quote-intent`,
+  `layout.align-intent`, `layout.separator`, `layout.region-role`, `layout.lane-order`
+- **table** -- `table.classify`, `table.header-row`, `table.orientation`,
+  `table.cell-overflow`, `table.records`
+- **media** -- `image.role`, `image.caption`, `link.label`
+- **review** -- `document.review`
+
+Three are worth naming for *why* they exist rather than for what they do.
+
+**`layout.chrome-audit` sits in front of the one pass that deletes**, and that pass is the
+only place in this compiler where being wrong is both catastrophic and invisible: OPEN
+§5.0aaaa records that the conservation gate captures its inventory *after* `removeBoilerplate`
+detaches, so a page that lost 18.1 % of its text reported `Text recall: 100.00%`. Recurrence
+across the corpus is the whole of that pass's evidence, and recurrence cannot tell a standing
+`## ДИСКОГРАФИЯ` from a footer -- a template section recurs by template while its *text* is
+this page's. The audit is **asymmetric by construction**: a `CONTENT` verdict cancels a
+deletion and a `CHROME` verdict changes nothing, because `CHROME` is what the pass already
+decided. It is incapable of removing content and capable only of keeping it, and
+`escalation.test.ts` asserts exactly that against an all-`CHROME` resolver. `removeBoilerplate`
+gained `dryRun` for it: the pass has always decided and detached in one call, which left no
+moment at which the proposal exists and the page is still whole.
+
+**`text.hyphenation` is the largest residual in the corpus at 163 points**, and the residual
+is not arbitrary -- it is by construction the set of words a word list does not hold:
+surnames, patronymics, transliterated foreign names. OPEN §4 names three by hand
+(`Бориславовна`, `Феррере`, `аккомпанементов`) and asks for "a stem-tolerant lexicon lookup".
+A larger word list is the wrong instrument for a class defined as *what word lists lack*.
+`applyHyphenJoins` is a separate repair pass rather than a branch in the cascade, so the
+cascade stays synchronous and unchanged; it filters `accepted` against `status === "review"`
+itself, so a resolver naming an accepted operation changes nothing.
+
+**`table.header-row` is ranked above `table.records` on purpose.** A source that wrote its own
+header row and failed to mark it with `<th>` -- most of them, because 1998 tools rarely emitted
+`<th>` -- needs that row **promoted**, not a new one written. Asking this first replaces a
+fabrication with a recovery wherever the answer is HEADER, and §16.3 prefers that in every
+case. `table.records` remains the catalogue's only hook licensed to produce text the source
+never carried, and its prompt says so in those words.
+
+### 57.3 Prompts are files now
+
+Every instruction moved out of `.join("\n")` arrays into
+`src/llm/prompts/<domain>/<judgement>.{system,user}.md` -- 42 templates plus a README, named
+for the judgement rather than for the function that calls it. `prompt-template.ts` renders
+three constructs and no more: `{{slot}}`, `{{#section}}` and its inverse. There are no loops;
+a prompt needing a repeated part gets it pre-rendered by the caller, which is the only place
+it can be sampled, truncated and budgeted.
+
+Two properties the decision cache rests on are now tested rather than assumed. Line endings
+are **normalized at load**, so a Windows checkout and a Linux one hash identically -- without
+it `core.autocrlf` would silently invalidate every cached decision across platforms. And an
+**unfilled slot throws**: it would otherwise reach a model as the literal text `{{rows}}` and
+come back as a confident answer about nothing. Editing a template invalidates exactly the
+decisions that template produced, because `requestHash` hashes the *rendered* text;
+`Hook.version` remains for schema changes, which the hash cannot see. `npm run build` copies
+the tree into `dist/`, and the loader falls back to the source tree when it is absent, so a
+half-built checkout degrades to "the prompts are the ones in git" rather than to a throw.
+
+### 57.4 Two hooks could not abstain, and the contract found both
+
+`catalogue.test.ts` asserts that every verdict enum in the catalogue contains `UNCERTAIN`. It
+failed twice, on the two hooks that predate it.
+
+`text.segment` classified a run of line breaks into four kinds with no way out, so a run the
+model could not read came back as four confident guesses. The kinds are positional, so a
+single abstention cannot be dropped without shifting every verdict after it onto the wrong
+break -- the caller now refuses the **whole run**, and the geometry rule's reading stands.
+
+`table.classify` was worse, and the reason is selection: the item reaching it is a region
+*two* scored tiers already declined to name, so it is ambiguous by construction. Being unable
+to say so meant every one of them came back as a confident `LAYOUT` or `HYBRID`. The
+pipeline's own guard caught the expensive half -- a fabricated `DATA` verdict promoting an
+abstention straight to a record matrix -- and nothing caught the rest. `replyToClassification`
+now returns `null` for an abstention rather than an `UNKNOWN` classification, because the
+deterministic answer already *is* `UNKNOWN`, and handing back a reworded copy of it would let
+the ledger record an escalation as having resolved something.
+
+### 57.5 What the operator sees
+
+`--verbose` prints one line per stage with what that stage found, and one line per escalation
+with its **outcome** rather than its reply:
+
+```
+     30ms  decode    utf-8 via declared, 35410 bytes
+     51ms  chrome    0 structure(s) removed, 0 of 0 chars
+     59ms  text      40 hyphen decision(s), 3 unresolved
+     84ms  headings  2 recovered from typography
+     95ms  tables    8 grid(s): LAYOUT×3 UNKNOWN×3 DATA×2
+```
+
+`refused` is the interesting outcome and the reason the channel names outcomes at all: it
+means a model answered and an acceptance check turned the answer down, which is invisible in
+a call count and is exactly what says a prompt is drifting. `biomd llm-plan` lists the whole
+catalogue with its abstentions and whether each is on, before anything is spent. `--hooks
+<ids>` selects; `--llm review` is `assist` plus the whole-document reading pass, which is
+**not** in the default set -- it reads two full documents per page, so it belongs to a pass
+the operator asks for and not to every conversion.
+
+### 57.6 `document.review` reports and never edits
+
+The only hook that runs on a document nothing abstained about, and the only one that cannot
+change a byte. It exists because every failure this project has actually shipped passed every
+automatic gate at the moment it shipped: §53.2's six poems flattened into paragraph-shaped
+strings under a clean conservation report and an unmoved L1; §56.1's section label absorbed
+into an image's `caption:` property, which is not a block, so nothing compared it; §56.2's
+construct the compiler could not emit, which no instrument reports as missing. A reader
+catches all three in a minute.
+
+Its acceptance check is the only one available for an open-ended reading: **a finding must
+quote the produced document verbatim.** One that does not is about a document that does not
+exist, and it is dropped alone rather than discrediting the rest of the reply. Findings become
+`REVIEW` ledger entries and a per-class rollup at the end of a corpus run -- a thousand pages
+producing the same finding once each is one defect in the rule system, and a thousand lines of
+it is noise that hides that. Most of the prompt is spent on what is *not* a finding: source
+wording, spelling and hyphenation are reproduced and never corrected, and every asset
+reference in this corpus is dead by design.
+
+### 57.7 What is wired, and what is not -- stated plainly
+
+**Seven hooks reach a decision point today**: `table.classify`, `table.records`,
+`layout.chrome-audit`, `text.hyphenation`, `text.block-role`, `image.role`, `image.caption`.
+Plus `document.review`, which is opt-in. Their answers reach the tree through `advice.ts` --
+typed `data-biomd-advice-*` attributes read at the decision site, which is the channel
+`recoverHeadings` has always used for `data-biomd-heading`, and which survives the stages
+because an attribute travels with the node it describes while a `Map` keyed on node id goes
+stale the moment a node is replaced.
+
+**The other thirteen are defined, prompted, schema-checked and tested, and have no consult
+site.** They are named in `UNWIRED_HOOKS`, excluded from the default set, and printed by
+`llm-plan` as `--- NOT WIRED`; `catalogue.test.ts` asserts the partition covers the catalogue,
+so a hook cannot be added without someone deciding in code which side it is on. Most of them
+belong inside `structure.ts`, which is 6 465 lines and synchronous -- the advice channel is
+the mechanism for reaching them and each consult site is a small edit, but the abstention
+predicate at each site is the part that needs measuring rather than writing. **Do not report
+these as working.**
+
+### 57.8 The next measurement, and the one that would falsify this
+
+The surface is measured; the wiring is not yet paid for. The honest next step is a single
+`--llm assist` run over the 28 with a real gateway, compared against the deterministic
+baseline above -- **not** to watch the numbers rise, which would make an instrument the
+objective, but to count how many of the 411 resolve, how many are *refused* by an acceptance
+check, and which hook's refusal rate says its prompt is wrong.
+
+The falsifier to watch for: **a hook whose refusal rate is near zero is not a hook that is
+working, it is an acceptance check that is not checking.** `text.hyphenation` at 163 points is
+where that will show first, and its check is a single confidence floor.
+
+## 58 -- the escalation surface was built wrong, and the author's run found it (2026-08-15)
+
+§57 measured an escalation surface of 411 open questions across 21 hooks and reported the
+mechanism as sound pending a paid run. The paid run happened. **Most of the hooks made the
+output worse**, and the author's report is the record:
+
+- the site masthead, `Иллюстрированный биографический энциклопедический словарь`, back on
+  pages the deterministic chrome profile had correctly stripped it from;
+- `когда-то` written into the text as `когдато`;
+- tables reshaped and column headers invented where the deterministic plan was already
+  what the author wanted;
+- headings, styles and paragraph names altered on pages that needed no help;
+- no visible account of what was being asked or changed, and requests issued concurrently.
+
+### 58.1 What was actually wrong, which is not "the prompts needed tuning"
+
+Three of the seven default hooks were **not filling an abstention**. They were re-deciding
+questions a rule had already answered:
+
+| hook | what the rule had done | what the hook did |
+| --- | --- | --- |
+| `layout.chrome-audit` | decided to delete, on recurrence across ~1000 pages | cancelled the deletion, on a reading of 400 characters of one page |
+| `text.hyphenation` | decided to **preserve** a hyphen | joined it anyway |
+| `image.caption` | found no caption | asserted one |
+
+§57.8 named the falsifier -- *"a hook whose refusal rate is near zero is not a hook that is
+working, it is an acceptance check that is not checking"* -- and named `text.hyphenation` as
+where it would show first. It did. Its acceptance check verified that the text had not moved
+since the cascade ran, and verified nothing whatever about the word it was about to write.
+Deciding whether `когда-то` keeps its hyphen **is** the deterministic question, so a check
+strong enough to catch the bad answer would have answered it without asking. **A hook whose
+acceptance check cannot be written is a hook that must not exist.**
+
+The `abstention` field in `catalogue.ts` was supposed to prevent exactly this and did not,
+because it was written as prose and never tested against the code beneath it. `auditChrome`'s
+own doc comment said it was *"the only method here that is asked to disagree with a
+deterministic pass rather than to fill in for one"* -- the violation was documented, argued
+for, and shipped.
+
+### 58.2 What the catalogue is now
+
+21 hooks -> 6. Twelve had no consult site at all; three damaged output; `image.role` kept its
+`ICON` verdict and lost `DECORATION`, which could delete an image outright.
+
+| hook | wired | fires when |
+| --- | --- | --- |
+| `text.block-role` | yes | a standalone line scores above prose and below the section threshold |
+| `table.classify` | yes | both scored tiers declined to name a region |
+| `table.records` | yes | no header row exists to promote |
+| `image.role` | yes | the known-icon table has never seen this asset |
+| `document.review` | yes | never changes output; reports findings for a human |
+| `text.segment` | **no** | declared unwired rather than listed as available |
+
+`text.block-role` is the one the author confirmed useful: `БЛАГОДАРНОСТИ:` on its own line is
+a section heading, typography cannot distinguish that from a caption or a menu item, and the
+rule correctly declines. Rare, genuinely undecidable from available evidence, trivially
+decidable by anything that can read -- **and a wrong answer is visible in the output.** That
+last clause is the rule `image.caption` failed: it also filled a real blank, but a wrong
+caption reads as a fact and nothing downstream questions it.
+
+### 58.3 Two entry tests, both asserted
+
+`CatalogueEntry` now requires `abstention` *and* `acceptanceCheck`, and `catalogue.test.ts`
+asserts both are stated, that `DEFAULT_HOOKS` is empty, that the `wired` flags match the
+pipeline's consult sites, and that the deleted hooks stay deleted by name.
+
+### 58.4 Default: nothing
+
+`DEFAULT_HOOKS = []`. `--llm assist` alone configures a gateway and asks nothing; it prints
+so and hands back no resolver, so the run takes the deterministic path exactly. A hook fires
+because an operator named it -- `--hooks <id>`, `--hooks all`, `--hooks none`, or
+`llm.hooks` in the config. An unknown id is a startup error, not a silent no-op.
+
+### 58.5 Visibility and concurrency
+
+Escalations print **whenever one happens**, verbose or not: a model call costs money and can
+change the document, so it is never silent. `-v` adds the deterministic passes, each with its
+decisions -- every hyphen as `join`/`kept  before → after`, every heading with the reason it
+was recovered, every table with its classification and margin, every chrome structure with
+its recurrence. Escalation lines carry `before → after` and the model's reason.
+
+`corpus run` forces `jobs: 1` whenever a resolver is active and says so, and
+`GatewayTransport.chat` serializes on a promise chain, so concurrency is a property of the
+client rather than a policy in one command.
+
+### 58.6 Measured after the change
+
+`npm test` 910 passed / 27 files. `sh bench/run.sh`: 0 FAILED, **L1 99.5**, identical to
+HEAD -- confirmed by scoring a stashed tree. The deterministic path is byte-unchanged; every
+revert was to code that only ran with a resolver attached.
+
+The deterministic run now reports the surface per hook, which is the number worth having
+before spending anything:
+
+| hook | open questions over the 28 sources |
+| --- | --- |
+| `table.classify` | 44 |
+| `table.records` | 28 |
+| `text.block-role` | 23 |
+
+95 points, against §57's 411. The difference is not progress -- it is 316 questions that were
+being asked and should not have been.
+
+### 58.7 The rule this leaves
+
+**Escalate only where the deterministic path produced no answer at all, and only where a
+wrong answer would be visible to whoever reads the result.** Where a rule produced a *wrong*
+answer, the fix is the rule. Everything else is a second, unaccountable author.
+
+The next hooks worth building are the two the author named and neither exists yet: a block
+that is a **list** (each line takes `- `), and a block that is **verse or lyrics** (line
+breaks are the author's and must not be collapsed). `text.segment`'s `LINEATION` verdict is
+the second one and has no consult site; wiring it means finding where breaks are collapsed in
+`structure.ts` and naming the abstention there. That is the work, and the prompt is the easy
+half.

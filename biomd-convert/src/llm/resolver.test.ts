@@ -29,7 +29,17 @@ class StubTransport implements Transport {
   }
 }
 
-function makeResolver(reply: (request: ChatRequest) => unknown) {
+/**
+ * The two table hooks, named explicitly — because nothing is on by default.
+ *
+ * These tests are about what happens *when* a hook is consulted, so they have to
+ * turn one on. Naming them here rather than relying on a default is also the
+ * point: a resolver constructed without `hooks` asks nothing at all, and the
+ * assertion for that is its own test below.
+ */
+const TABLE_HOOKS = ["table.classify", "table.records"];
+
+function makeResolver(reply: (request: ChatRequest) => unknown, hooks: readonly string[] = TABLE_HOOKS) {
   const transport = new StubTransport(reply);
   const resolver = new GatewayResolver({
     transport,
@@ -37,6 +47,7 @@ function makeResolver(reply: (request: ChatRequest) => unknown) {
     budget: new Budget({ maxCalls: 20 }),
     models: { fast: "stub-fast", balanced: "stub-fast", deep: "stub-deep" },
     lang: "ru",
+    hooks,
   });
   return { transport, resolver };
 }
@@ -160,10 +171,27 @@ describe("the pipeline consults the resolver", () => {
       budget: new Budget({ maxCalls: 0 }),
       models: { fast: "stub", balanced: "stub", deep: "stub" },
       lang: "ru",
+      hooks: TABLE_HOOKS,
     });
     const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
     expect(transport.requests).toHaveLength(0);
     // And the conversion still produced its table.
+    expect(result.markdown).toContain("Choro Da Saudade");
+  });
+
+  it("asks nothing at all when no hook is named", async () => {
+    // The default, and the property the whole opt-in design rests on: a
+    // configured gateway with no hook selected is a fully deterministic run. A
+    // page that would otherwise have cost a request costs nothing, and the
+    // output is the output the compiler produces on its own.
+    const { transport, resolver } = makeResolver(
+      () => ({ headers: ["a", "b", "c"], confidence: 0.9, rationale: "x" }),
+      [],
+    );
+    const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
+    expect(transport.requests).toHaveLength(0);
+    expect(resolver.stats().calls).toBe(0);
+    expect(resolver.canAnswer("table.records")).toBe(false);
     expect(result.markdown).toContain("Choro Da Saudade");
   });
 });

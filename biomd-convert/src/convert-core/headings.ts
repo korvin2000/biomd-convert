@@ -1039,6 +1039,89 @@ function isLabelLike(text: string): boolean {
   return text.split(/\s+/u).filter(Boolean).length <= 10;
 }
 
+/** A line the outline rule examined and did not take. */
+export interface ResidualLabel {
+  /** The block that would carry the heading, if it turned out to be one. */
+  node: LadomNode;
+  text: string;
+  /** Prominence relative to this page's body text. 1.0 means "set exactly as prose". */
+  relative: number;
+  /** How the line is set, in words, for the escalation payload. */
+  typography: string;
+}
+
+/**
+ * The lines the outline rule weighed and declined — its abstention, enumerated.
+ *
+ * ## What this is for
+ *
+ * A page writes `БЛАГОДАРНОСТИ:` on its own line, a little bolder than the
+ * prose around it and nowhere near as prominent as its title. It is a section
+ * heading, and the outline rule cannot say so: on these pages the only channel
+ * for structure is typography, and at that prominence a section label, a
+ * caption, a menu item, a signature and a date are indistinguishable. The rule
+ * is right to decline — guessing here is how a caption becomes an `##` — and
+ * declining leaves a real heading flattened into prose.
+ *
+ * That is the shape of question worth a request: **rare, genuinely undecidable
+ * from the evidence available, and cheap to answer for anything that can read.**
+ *
+ * ## Why this is derived rather than restated
+ *
+ * The population a `text.block-role` escalation may look at is *exactly* the one
+ * {@link recoverHeadings} considered and did not mark. Re-deriving it in another
+ * module would work today and drift the first time the candidate rule changes,
+ * and the drift would be silent: an escalation would start being offered lines
+ * the outline rule had already claimed, or stop being offered lines it had let
+ * go. So it is computed here, from the same candidate collection and the same
+ * baseline, and it depends on `recoverHeadings` having already run — the marks
+ * it left are what excludes its own decisions.
+ *
+ * ## The band
+ *
+ * A line at or below the body baseline is set exactly as prose and is not a
+ * label candidate under any reading; a line above the section threshold was
+ * already taken. What is left is the band between them, which is where the
+ * question actually lives.
+ */
+export function residualLabelCandidates(root: LadomNode, options: HeadingOptions = {}): ResidualLabel[] {
+  const opts = { ...DEFAULTS, ...options };
+  const baseline = bodyBaseline(root);
+  const out: ResidualLabel[] = [];
+
+  for (const el of walkElements(root)) {
+    if (!CANDIDATE_TAGS.has(el.tag)) continue;
+    if (el.attrs["data-biomd-heading"] !== undefined) continue;
+    if (el.attrs["data-biomd-subtitle"] !== undefined) continue;
+    if (isInsideHeading(el) || containsHeading(el)) continue;
+
+    const text = textOf(el).replace(/\s+/gu, " ").trim();
+    if (text.length < 2 || text.length > opts.maxSectionLength) continue;
+    if (!isTightWrapper(el, textOf(el))) continue;
+    // A line that is entirely a link is a destination, and the outline rule
+    // excludes it for that reason. Keeping the exclusion here means the
+    // escalation is never asked to re-litigate it.
+    if (el.metrics.links > 0 && el.metrics.textLen === linkTextLength(el)) continue;
+
+    const prominence = prominenceOf(el);
+    const relative = prominence.score / baseline;
+    // Above the section threshold the rule would have taken it; at or below the
+    // body baseline the line is not set apart from prose at all.
+    if (relative >= opts.sectionThreshold || relative <= 1) continue;
+
+    const marks: string[] = [`prominence ${relative.toFixed(2)}× this page's body text`];
+    if (prominence.bold) marks.push("bold");
+    if (prominence.centered) marks.push("centred");
+    if (prominence.upperRatio > 0.6) marks.push(`${(prominence.upperRatio * 100).toFixed(0)}% upper case`);
+    const px = textFontPx(el);
+    if (px !== undefined) marks.push(`${Math.round(px)} px`);
+
+    out.push({ node: blockHost(el), text, relative, typography: marks.join(", ") });
+  }
+
+  return out;
+}
+
 /**
  * Lift a heading to the outermost block element carrying exactly its text.
  *

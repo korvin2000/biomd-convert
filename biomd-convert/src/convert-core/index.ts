@@ -13,3 +13,7 @@ export * from "./headings.js";
 export * from "./prominence.js";
 export * from "./resolver.js";
 export * from "./boilerplate.js";
+export * from "./advice.js";
+export * from "./escalation.js";
+export * from "./glyphs.js";
+export * from "./media.js";

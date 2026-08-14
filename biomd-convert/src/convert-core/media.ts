@@ -16,7 +16,8 @@
  * the decisions are testable without a browser and reproducible without one.
  */
 import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
-import { iconGlyphFor } from "./glyphs.js";
+import { adviceOf } from "./advice.js";
+import { type IconGlyph, iconGlyphFor, iconGlyphVocabulary } from "./glyphs.js";
 
 export type ImageSizeToken = "small" | "medium" | "large" | "full";
 export type ImagePositionToken = "left" | "right" | "center" | "full";
@@ -167,7 +168,13 @@ export function isDecorative(el: LadomNode): boolean {
  */
 export function isUiIcon(el: LadomNode): boolean {
   if (el.tag !== "img") return false;
-  if (iconGlyphFor(el.attrs["src"] ?? "") === null) return false;
+  // The table has its say first. Only where it has never seen the asset — its
+  // documented no-match path, and the one place this rule is most likely to be
+  // silently wrong across the ~987 pages it has not been measured on — may an
+  // escalation stand in for it. Nothing below is relaxed: the geometry ceiling
+  // and the containment requirement still have to be met, so advice can supply
+  // the *identity* of an asset and never the shape of a control.
+  if (iconGlyphFor(el.attrs["src"] ?? "") === null && advisedGlyph(el) === null) return false;
 
   const w = imageWidthOf(el);
   const h = imageHeightOf(el);
@@ -316,6 +323,33 @@ const BLOCK_CONTEXT: ReadonlySet<string> = new Set([
 const ICON_MAX_PX = 32;
 
 /**
+ * The mark an escalation proposed for an asset the icon table does not hold.
+ *
+ * Returns null unless the advice is both `ICON` and a glyph the project's own
+ * table already sanctions. The vocabulary check is the second of two — the hook
+ * schema refuses an unsanctioned mark at the boundary — and it is here as well
+ * because this is the side that has to be safe when the boundary changes.
+ */
+function advisedGlyph(el: LadomNode): IconGlyph | null {
+  const advice = adviceOf(el);
+  if (advice.imageRole !== "ICON" || advice.imageGlyph === undefined) return null;
+  const sanctioned = iconGlyphVocabulary().some((entry) => entry.glyph === advice.imageGlyph);
+  return sanctioned ? { text: advice.imageGlyph } : null;
+}
+
+/**
+ * The glyph this image stands for, table first and advice only after.
+ *
+ * Callers used to ask {@link iconGlyphFor} with the raw `src`, which cannot see
+ * an escalation because it takes a string. This takes the node, so the two
+ * sources of the same fact are consulted in the one order that keeps the table
+ * authoritative.
+ */
+export function iconGlyphOf(el: LadomNode): IconGlyph | null {
+  return iconGlyphFor(el.attrs["src"] ?? "") ?? advisedGlyph(el);
+}
+
+/**
  * A caption for one image, from the source only.
  *
  * §7.1 permits copying a legacy `alt` label to `caption` when it is the only
@@ -324,13 +358,24 @@ const ICON_MAX_PX = 32;
  */
 export function captionFor(el: LadomNode): string | undefined {
   const alt = (el.attrs["alt"] ?? "").replace(/\s+/gu, " ").trim();
-  if (alt === "") return undefined;
-  // A filename is not a caption (§7.1), and neither is the placeholder text
-  // FrontPage inserted for an image it could not describe.
-  if (/\.(?:jpe?g|gif|png|bmp)$/iu.test(alt)) return undefined;
-  if (/^(?:image|picture|photo|img|foto)\s*\d*$/iu.test(alt)) return undefined;
-  if (alt.length > 300) return undefined;
-  return alt;
+  if (alt !== "") {
+    // A filename is not a caption (§7.1), and neither is the placeholder text
+    // FrontPage inserted for an image it could not describe.
+    const usable =
+      !/\.(?:jpe?g|gif|png|bmp)$/iu.test(alt) &&
+      !/^(?:image|picture|photo|img|foto)\s*\d*$/iu.test(alt) &&
+      alt.length <= 300;
+    if (usable) return alt;
+  }
+
+  // Only now, and only for a picture the source labelled with nothing usable:
+  // a line an escalation bound to this image out of candidates the page already
+  // carries. It cannot displace an `alt` the rule accepted, because that
+  // returned above; and the same length bound applies to it, because a bound
+  // that a chosen line may exceed is not a bound.
+  const advised = adviceOf(el).caption?.replace(/\s+/gu, " ").trim();
+  if (advised !== undefined && advised !== "" && advised.length <= 300) return advised;
+  return undefined;
 }
 
 /**
