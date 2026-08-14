@@ -24,44 +24,48 @@ disagree, the repository file wins and this index gets fixed.
 | the deliverable | (1) a rule system that generalizes to the other ~987 pages; (2) an evaluation apparatus that localizes defects. Both. |
 | the objective | source fidelity > visual layout quality > generality. **Never** byte-agreement with the references. |
 
-**Corpus roles -- verified 2026-08-14.** **27 sources convert; 27 are compared.** Every earlier count
-("22", "28 / 26") is superseded. The author parked the holdout **source and reference together** and
-**deleted `fixtures/gen_corpus/`**.
+**Corpus roles -- verified 2026-08-14, after §56.** **28 sources convert; 28 are compared.** Every
+earlier count ("22", "27", "28 / 26") is superseded. The author added the `xtra_alexandro` pair in
+§56, parked the holdout **source and reference together**, and **deleted `fixtures/gen_corpus/`**.
 
 | role | members | rule |
 |---|---|---|
 | regression corpus | the original **13** (`authors barrios borislova goya2 jovicic kiselev news news_2007 pavlov_azancheev segovia segovia1 tarrega williams2`) | the floor. Never regress it |
-| refinement set | **9** `new_*` + **5** `xtra_*` (`albeniz garcia_lorca karta5 rodrigo shelechov`) | where the work happens |
+| refinement set | **9** `new_*` + **6** `xtra_*` (`albeniz alexandro garcia_lorca karta5 rodrigo shelechov`) | where the work happens |
 | holdout | `xtra_oyanguren`, `xtra_mikulka`, `new_karta5` -- sources in `fixtures/html2/`, references in `fixtures/out2/` | never read, diff, score or tune against them. **Spent since §43.7** |
 | ~~generalization corpus~~ | **removed.** `fixtures/gen_corpus/` is gone and gitignored | do not reach for it; §46--§52's 946-page numbers are history, not a signal you can re-take |
 
 > **The old leak detector is retired.** `eval`, `diff`, `l3`, `corpus run` and `bench/run.sh` all say
-> **27** now, because the holdout's source moved out with its reference. That also means the holdout
+> **28** now, because the holdout's source moved out with its reference and `xtra_alexandro` moved in. That also means the holdout
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §55** landed two author-directed
-mechanisms, both of them the converter *asserting structure the source never asserted*. A section
-label stands alone: two or more blocks of one template with nothing between them are one label broken
-across lines, not two sections -- `xtra_garcia_lorca`'s three stacked `##` are gone. A record grid is
-not a sequence of entries: a `---` between laned rows claims an entry boundary, and a concert
-programme has none -- `xtra_shelechov` went from 21 rules to 0 while `goya2`'s 35 and `news_2007`'s 6
-are untouched.
-Current floor: L0 **828 tests**, **0 validator errors**, L1 **98.9**, L2 **150 · 85 defect ·
-3 critical · 41 major**, L3 **22 over 27 with no criticals**, and over **all 30 sources 0 lost
-targets, 0 lost images and no removal reason that discards prose**.
-**Read the baseline before reading the delta.** The author committed `bd40160` mid-session, so §55's
-baseline was re-measured with the code stashed: **201/137/2**, not the 203/138/2 that was recorded.
-**The biggest lesson is §55.3, and it is about the ledger, not the converter.** Five classes that had
-stood as a recorded *ceiling* for thirteen sections -- `column.containment` 29, `retyped.column-to-
-paragraph` 22, `column.missing`, `columns.spurious`, `column.spurious`, "8 references to 1" -- went to
-**0** with no rule written about any of them. They were block-pairing shadows cast by 21 separators in
-a different class on a different code path. **A ceiling with a document count of 1 is a hypothesis.**
-Next candidates: **`xtra_shelechov`'s `align.spurious` x2** and its 2 `break.missing` (OPEN §1.0a/0b),
-now the clearest work on that page; then **`layout.containment.mismatch`, 13 over 9**, the broadest
-untouched L3 class; then the isolated instrument-truthfulness steps -- `paragraph.content`'s blanket
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §56** landed four
+author-directed mechanisms over 28 documents. A caption belongs to the picture it shares a box
+with -- a one-column two-row figure box binds (`xtra_alexandro`'s stamp, which has no `alt`
+anywhere), and a caption run now stops at a block the *next* block claims, which un-swallows
+`segovia`'s `## ДИСКОГРАФИЯ`. An icon a sentence carries is a glyph, not a picture --
+`main/smile.gif` was the last `main/` asset still shipping as an image. And the corpus gained
+the mark it had no name for: `==` for a run the author set apart inline, and for a long
+quotation embedded in prose.
+Current floor: L0 **863 tests**, 0 FAILED, conservation ok, L1 **99.5**, L2 **138 · 76 defect ·
+2 critical · 36 major**, L3 **22 over 28 with no criticals**.
+**Read the baseline before reading the delta.** The author added a pair mid-iteration, so §56's
+baseline was re-measured over 28: **145/81/2/38**, L1 99.0.
+**The biggest lesson is §56.6, and like §55.3 it is about the ledger, not the converter.** Two of
+the four mechanisms were **named in the code that refused them** -- `promoteLabelBeforeList`'s doc
+comment cites `ДИСКОГРАФИЯ` as its motivating example while its recurrence floor makes that
+example unreachable, and `isUiIcon`'s cites the guide's unlinked clause while requiring an
+`<a href>`. Neither was in `analyze/defects.json` at any rank: a `caption:` property is not a
+block, so nothing compared it, and a construct the converter cannot emit is one no instrument
+reports as missing. **Grep the contracts for the shape you are about to build, and read what they
+refuse and why.**
+Next candidates: **`xtra_shelechov`'s `align.spurious` x2** and its 2 `break.missing`
+(OPEN §1.0a/0b); then **`layout.containment.mismatch`, 13 over 9**, the broadest untouched L3
+class; then the isolated instrument-truthfulness steps -- `paragraph.content`'s blanket
 `critical` (OPEN §5.0aa), the property-line-as-paragraph artefact (§5.0b), `code.text`'s
-whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split of `***x***`** (§5.0aaaaa).
+whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split of `***x***`**
+(§5.0aaaaa).
 
 > **A conservation finding is a pointer, not the defect.** Both of §46.9's named losses were
 > mis-diagnosed by the finding that raised them: `williams1`'s "lost target" had lost nothing (the
@@ -94,7 +98,7 @@ repo's midx is a version git 2.45 rejects).
 | the iteration procedure | `.claude/skills/refine-biomd-converter/SKILL.md` | cheap |
 | harness lessons that cost hours (debug probes, `/dev/null` on Git Bash, NullMeasurer) | `.claude/skills/refine-biomd-converter/learned-patterns.md` | cheap |
 | the human quality record (Russian, per page) -- **rung 1, above the syntax reference** | `analyze/analyze.md` (614 ln) + `analyze-2.md` (386 ln, `news`/`goya2`/`new_karta`/`kiselev` + house rules) + `analyze-3.md` (337 ln, 12 documents + 6 rulings, `snapshot_23`-`27`) + `analyze/design.png` | grep by page name |
-| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` -- normative; the map is built for **linked** icons (`glyphs.ts` `ICON_GLYPHS`), unlinked half still open, OPEN.md §2.4. No reference conflicts remain | cheap |
+| mini-image / icon → glyph policy | `mini_images_to_md_guide.md` -- normative; the map is `glyphs.ts` `ICON_GLYPHS`. Linked icons, pager markers and (since §56.2) an icon a sentence carries all become glyphs; a score mark that opens a resource cell stays a picture. **`analyze.md`:431 and the guide:111 disagree on the smiley** -- the guide is normative and the author confirmed it | cheap |
 | the author's house conventions, newest ground truth | `/new_rules.md` (repo root) -- the column vocabulary is built (`column-labels.ts`); the rest is **not yet implemented**, inventory in PROGRESS §29.1 | cheap |
 | the manual procedure behind the references | `html-to-biomd_guide.md`, `html-to-biomd_ext_guide.md` -- advisory, possibly stale | grep |
 | history, superseded | `CONVERTER-ASSESSMENT.md`, `htm-to-md_utility_plan.md`, `how_to_fix_table_parsing_and_reconstruction.md` | avoid |

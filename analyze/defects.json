@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-14T00:27:59.731Z",
+  "generated": "2026-08-14T11:44:26.013Z",
   "totals": {
-    "findings": 150,
-    "converterDefects": 85,
+    "findings": 138,
+    "converterDefects": 76,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 48,
-    "ambiguous": 17,
+    "referenceInconsistencies": 47,
+    "ambiguous": 15,
     "bySeverity": {
-      "critical": 3,
-      "major": 41,
-      "minor": 106
+      "critical": 2,
+      "major": 36,
+      "minor": 100
     }
   },
   "perDocument": [
@@ -47,11 +47,11 @@
     },
     {
       "doc": "jovicic",
-      "findings": 4,
+      "findings": 3,
       "converterDefects": 3,
       "critical": 0,
       "major": 1,
-      "minor": 3
+      "minor": 2
     },
     {
       "doc": "kiselev",
@@ -72,7 +72,7 @@
     {
       "doc": "new_blackmore",
       "findings": 6,
-      "converterDefects": 1,
+      "converterDefects": 0,
       "critical": 0,
       "major": 0,
       "minor": 6
@@ -127,11 +127,11 @@
     },
     {
       "doc": "new_rechin4",
-      "findings": 8,
-      "converterDefects": 5,
+      "findings": 6,
+      "converterDefects": 4,
       "critical": 0,
       "major": 3,
-      "minor": 5
+      "minor": 3
     },
     {
       "doc": "news",
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 7,
-      "converterDefects": 3,
+      "findings": 5,
+      "converterDefects": 2,
       "critical": 0,
-      "major": 2,
-      "minor": 5
+      "major": 1,
+      "minor": 4
     },
     {
       "doc": "segovia1",
@@ -198,12 +198,20 @@
       "minor": 0
     },
     {
+      "doc": "xtra_alexandro",
+      "findings": 1,
+      "converterDefects": 0,
+      "critical": 0,
+      "major": 0,
+      "minor": 1
+    },
+    {
       "doc": "xtra_garcia_lorca",
-      "findings": 14,
-      "converterDefects": 6,
-      "critical": 1,
-      "major": 4,
-      "minor": 9
+      "findings": 6,
+      "converterDefects": 0,
+      "critical": 0,
+      "major": 0,
+      "minor": 6
     },
     {
       "doc": "xtra_karta5",
@@ -279,55 +287,6 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 25,
-      "documents": [
-        "new_blackmore",
-        "new_lendle2",
-        "news_2007",
-        "segovia",
-        "williams2",
-        "xtra_garcia_lorca",
-        "xtra_rodrigo"
-      ],
-      "verdicts": {
-        "converter-defect": 4,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 21,
-        "ambiguous": 0
-      },
-      "rank": 28,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[7]/align[1]/paragraph[0]",
-        "produced": "(none)",
-        "reference": "strong:Agustin Barrios Mangore"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "instances": 3,
-      "documents": [
-        "tarrega",
-        "xtra_garcia_lorca"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 18,
-      "example": {
-        "doc": "tarrega",
-        "path": "/heading[13]",
-        "produced": "Сборник произведений Франсиско Тарреги",
-        "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
-      }
-    },
-    {
       "class": "link.inline.missing",
       "severity": "major",
       "instances": 2,
@@ -394,28 +353,6 @@
       }
     },
     {
-      "class": "paragraph.content",
-      "severity": "critical",
-      "instances": 2,
-      "documents": [
-        "barrios",
-        "xtra_garcia_lorca"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 10,
-      "example": {
-        "doc": "xtra_garcia_lorca",
-        "path": "/paragraph[9]",
-        "produced": "***Из книги Якова Хелемского***",
-        "reference": "**Из книги Якова Хелемского** **\"За холмами - Гренада\"**"
-      }
-    },
-    {
       "class": "paragraph.hyphenation.unjoined",
       "severity": "minor",
       "instances": 3,
@@ -439,27 +376,29 @@
       }
     },
     {
-      "class": "paragraph.content.edited",
+      "class": "emphasis.span",
       "severity": "minor",
-      "instances": 7,
+      "instances": 22,
       "documents": [
-        "jovicic",
         "new_blackmore",
-        "new_rechin4",
-        "segovia"
+        "new_lendle2",
+        "news_2007",
+        "segovia",
+        "williams2",
+        "xtra_rodrigo"
       ],
       "verdicts": {
-        "converter-defect": 2,
+        "converter-defect": 1,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 5
+        "reference-inconsistency": 21,
+        "ambiguous": 0
       },
-      "rank": 8,
+      "rank": 6,
       "example": {
-        "doc": "new_blackmore",
-        "path": "/paragraph[5]",
-        "produced": "Как говорит сам Ричи Блэкмор, он \"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать на …",
-        "reference": "*Как говорит сам Ричи Блэкмор, он ==\"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать …"
+        "doc": "new_lendle2",
+        "path": "/frame[7]/align[1]/paragraph[0]",
+        "produced": "(none)",
+        "reference": "strong:Agustin Barrios Mangore"
       }
     },
     {
@@ -633,27 +572,6 @@
       }
     },
     {
-      "class": "heading.missing.caption-echo",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "segovia",
-        "path": "/heading[40]",
-        "produced": null,
-        "reference": "ДИСКОГРАФИЯ"
-      }
-    },
-    {
       "class": "paragraph.missing.in-paragraph",
       "severity": "major",
       "instances": 1,
@@ -735,6 +653,27 @@
         "path": "/align[2]/frame[0]",
         "produced": "Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запозданием.",
         "reference": "frame: gold Поскольку биографические страницы сайта обновляются значительно чаще, новые пополнения иногда могут отображаться на 'аудио-карте' с некоторым запоз… — at /align[2]/paragraph[1]"
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-heading2",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "tarrega",
+        "path": "/heading[13]",
+        "produced": "Сборник произведений Франсиско Тарреги",
+        "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
       }
     },
     {
@@ -971,25 +910,26 @@
       }
     },
     {
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "instances": 2,
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 4,
       "documents": [
-        "borislova",
-        "xtra_garcia_lorca"
+        "new_blackmore",
+        "new_rechin4",
+        "segovia"
       ],
       "verdicts": {
         "converter-defect": 0,
         "acceptable-alternative": 0,
-        "reference-inconsistency": 2,
-        "ambiguous": 0
+        "reference-inconsistency": 0,
+        "ambiguous": 4
       },
       "rank": 0,
       "example": {
-        "doc": "borislova",
-        "path": "/paragraph[3]",
-        "produced": "Надя Борислова:",
-        "reference": "Надя Борислова: — 0 of 1 hard breaks"
+        "doc": "new_blackmore",
+        "path": "/paragraph[40]",
+        "produced": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
+        "reference": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…"
       }
     },
     {
@@ -1036,11 +976,32 @@
       }
     },
     {
-      "class": "image.caption.spurious",
-      "severity": "minor",
+      "class": "hardbreak.missing",
+      "severity": "major",
       "instances": 1,
       "documents": [
-        "segovia"
+        "borislova"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 1,
+        "ambiguous": 0
+      },
+      "rank": 0,
+      "example": {
+        "doc": "borislova",
+        "path": "/paragraph[3]",
+        "produced": "Надя Борислова:",
+        "reference": "Надя Борислова: — 0 of 1 hard breaks"
+      }
+    },
+    {
+      "class": "paragraph.content",
+      "severity": "critical",
+      "instances": 1,
+      "documents": [
+        "barrios"
       ],
       "verdicts": {
         "converter-defect": 0,
@@ -1050,10 +1011,31 @@
       },
       "rank": 0,
       "example": {
-        "doc": "segovia",
-        "path": "/image[39]@caption",
-        "produced": "caption: ДИСКОГРАФИЯ",
-        "reference": null
+        "doc": "barrios",
+        "path": "/paragraph[10]",
+        "produced": "[1](#2) Другая транскрипция – Баррьос.",
+        "reference": "[1](#2)Другая транскрипция – Баррьос."
+      }
+    },
+    {
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "instances": 1,
+      "documents": [
+        "xtra_alexandro"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 1
+      },
+      "rank": 0,
+      "example": {
+        "doc": "xtra_alexandro",
+        "path": "/paragraph[7]",
+        "produced": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнительское искусство Александро …",
+        "reference": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнитель-ское искусство Александро…"
       }
     },
     {
@@ -1075,27 +1057,6 @@
         "path": "/align[39]/paragraph[0]",
         "produced": null,
         "reference": "◀ 🞈"
-      }
-    },
-    {
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "xtra_garcia_lorca"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "xtra_garcia_lorca",
-        "path": "/paragraph[10]",
-        "produced": "\"За холмами - Гренада\"",
-        "reference": null
       }
     },
     {
@@ -1374,20 +1335,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "209e4c5f",
-      "doc": "jovicic",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[1]",
-      "producedLine": 3,
-      "referenceLine": 3,
-      "produced": "ЙОВИЧИЧ Йован (Јован Јовичић), род. 5 июля 1926, – югославский/сербский гитарист и композитор. Родился в небольшом городке Врдник в Воеводине (ныне северная ча…",
-      "reference": "ЙОВИЧИЧ Йован (Јован Јовичић), род. 5 июля 1926, – югославский/сербский гитарист и композитор. Родился в небольшом городке Врдник в Воеводине (ныне северная ча…",
-      "verdict": "ambiguous"
-    },
-    {
       "id": "0ba166e4",
       "doc": "jovicic",
       "class": "paragraph.hyphenation.mixed",
@@ -1486,20 +1433,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "8b16e066",
-      "doc": "new_blackmore",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[5]",
-      "producedLine": 11,
-      "referenceLine": 11,
-      "produced": "Как говорит сам Ричи Блэкмор, он \"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать на …",
-      "reference": "*Как говорит сам Ричи Блэкмор, он ==\"превратился из музыканта самой громкой в мире группы в музыканта самой тихой в мире! Невозможно бегать по сцене, вставать …",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "98f1101c",
       "doc": "new_blackmore",
       "class": "emphasis.span",
@@ -1554,6 +1487,20 @@
       "produced": "(none)",
       "reference": "em:Накануне своего приезда в Москву один из главных гитаристов прошлого столетия рассказывает о накладных ногтях, злых менеджерах и добрых старых временах",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "7d0800be",
+      "doc": "new_blackmore",
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[40]",
+      "producedLine": 154,
+      "referenceLine": 154,
+      "produced": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
+      "reference": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
+      "verdict": "ambiguous"
     },
     {
       "id": "36bb1a06",
@@ -1929,22 +1876,8 @@
       "path": "/paragraph[7]",
       "producedLine": 24,
       "referenceLine": 24,
-      "produced": "И ещё одна мечта, которая вдохновляла – Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их в…",
+      "produced": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
       "reference": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "70513092",
-      "doc": "new_rechin4",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[8]",
-      "producedLine": 26,
-      "referenceLine": 26,
-      "produced": "Но тогда в 1984 году я ещё не знал, сколько прелюдий и фуг мне удастся написать. Меня очень беспокоили тональности с большим количеством знаков (Des, b, As, as…",
-      "reference": "Но тогда в 1984 году я ещё не знал, сколько прелюдий и фуг мне удастся написать. Меня очень беспокоили тональности с большим количеством знаков (Des, b, As, as…",
       "verdict": "ambiguous"
     },
     {
@@ -1959,20 +1892,6 @@
       "referenceLine": 30,
       "produced": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
       "reference": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "826417ef",
-      "doc": "new_rechin4",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[14]",
-      "producedLine": 38,
-      "referenceLine": 38,
-      "produced": "Полифоническая техника – это интеллектуальная игра композитора с исполнителем. Композитор предлагает – исполнитель реализует. Просмотрев сочинения для гитары в…",
-      "reference": "Полифоническая техника – это интеллектуальная игра композитора с исполнителем. Композитор предлагает – исполнитель реализует. Просмотрев сочинения для гитары в…",
       "verdict": "ambiguous"
     },
     {
@@ -2256,34 +2175,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "4bd5ee4f",
-      "doc": "segovia",
-      "class": "image.caption.spurious",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "insert",
-      "path": "/image[39]@caption",
-      "producedLine": 133,
-      "referenceLine": 138,
-      "produced": "caption: ДИСКОГРАФИЯ",
-      "reference": null,
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "2bc4221b",
-      "doc": "segovia",
-      "class": "heading.missing.caption-echo",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/heading[40]",
-      "producedLine": null,
-      "referenceLine": 143,
-      "produced": null,
-      "reference": "ДИСКОГРАФИЯ",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "0cf42354",
       "doc": "tarrega",
       "class": "retyped.paragraph-to-heading2",
@@ -2354,17 +2245,17 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "a20c4222",
-      "doc": "xtra_garcia_lorca",
-      "class": "paragraph.spurious.in-break-run",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/paragraph[10]",
-      "producedLine": 112,
-      "referenceLine": null,
-      "produced": "\"За холмами - Гренада\"",
-      "reference": null,
+      "id": "0b92b9d6",
+      "doc": "xtra_alexandro",
+      "class": "paragraph.hyphenation.joined",
+      "severity": "minor",
+      "evidence": "content",
+      "op": "substitute",
+      "path": "/paragraph[7]",
+      "producedLine": 89,
+      "referenceLine": 89,
+      "produced": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнительское искусство Александро …",
+      "reference": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнитель-ское искусство Александро…",
       "verdict": "ambiguous"
     },
     {
@@ -2424,127 +2315,29 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "36c4d983",
-      "doc": "xtra_garcia_lorca",
-      "class": "hardbreak.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/paragraph[9]",
-      "producedLine": 110,
-      "referenceLine": 108,
-      "produced": "Из книги Якова Хелемского",
-      "reference": "Из книги Якова Хелемского \"За холмами - Гренада\" — 0 of 1 hard breaks",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "866560a6",
-      "doc": "xtra_garcia_lorca",
-      "class": "paragraph.content",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[9]",
-      "producedLine": 110,
-      "referenceLine": 108,
-      "produced": "***Из книги Якова Хелемского***",
-      "reference": "**Из книги Якова Хелемского** **\"За холмами - Гренада\"**",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1108ea90",
-      "doc": "xtra_garcia_lorca",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[9]",
-      "producedLine": 110,
-      "referenceLine": 108,
-      "produced": "em:* · em:* · strong:*Из книги Якова Хелемского",
-      "reference": "strong:\"За холмами - Гренада\" · strong:Из книги Якова Хелемского",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d8d14cd6",
-      "doc": "xtra_garcia_lorca",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[13]",
-      "producedLine": 120,
-      "referenceLine": 117,
-      "produced": "em:* · em:* · strong:*Роберт Рождественский",
-      "reference": "strong:Роберт Рождественский",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7f1791b7",
-      "doc": "xtra_garcia_lorca",
-      "class": "emphasis.span",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[14]",
-      "producedLine": 122,
-      "referenceLine": 119,
-      "produced": "em:* · em:* · strong:*Гитара Гарсиа Лорки",
-      "reference": "strong:Гитара Гарсиа Лорки",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "06628f02",
+      "id": "f39d7e7b",
       "doc": "xtra_garcia_lorca",
       "class": "code.text",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/columns[15]/column[1]/code[0]",
+      "path": "/columns[16]/column[1]/code[0]",
       "producedLine": 149,
-      "referenceLine": 146,
+      "referenceLine": 147,
       "produced": "А четвертая в небе живет. А четвертая схожа с зарей. Это - радуга, что плывет над моею бедной землей. Вместо пятой струны - лоза. Поскорее друзей зови! Начинат…",
       "reference": "А четвертая в небе живет. А четвертая схожа с зарей. Это - радуга, что плывет над моею бедной землей. Вместо пятой струны - лоза. Поскорее друзей зови! Начинат…",
       "verdict": "ambiguous"
     },
     {
-      "id": "c344b0dc",
-      "doc": "xtra_garcia_lorca",
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/heading[16]",
-      "producedLine": 171,
-      "referenceLine": 167,
-      "produced": "Евгений Долматовский",
-      "reference": "Евгений Долматовский — at /paragraph[18]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b4066805",
-      "doc": "xtra_garcia_lorca",
-      "class": "retyped.paragraph-to-heading2",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/heading[17]",
-      "producedLine": 173,
-      "referenceLine": 169,
-      "produced": "Романс о Гарсиа Лорке",
-      "reference": "Романс о Гарсиа Лорке — at /paragraph[18]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d0367d7c",
+      "id": "26fc345f",
       "doc": "xtra_garcia_lorca",
       "class": "code.text",
       "severity": "minor",
       "evidence": "content",
       "op": "substitute",
-      "path": "/columns[18]/column[0]/code[0]",
+      "path": "/columns[19]/column[0]/code[0]",
       "producedLine": 179,
-      "referenceLine": 175,
+      "referenceLine": 177,
       "produced": "В Гренаде, точней — в Гранаде Земля — как хлебная корка, На этой земле золотистой Родился Гарсиа Лорка, Ждала и встречала сына, Дарила ему Гранаде Солнышко апе…",
       "reference": "В Гренаде, точней — в Гранаде Земля — как хлебная корка, На этой земле золотистой Родился Гарсиа Лорка, Ждала и встречала сына, Дарила ему Гранаде Солнышко апе…",
       "verdict": "ambiguous"

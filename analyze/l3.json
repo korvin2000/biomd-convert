@@ -25,6 +25,7 @@
       "tarrega",
       "williams2",
       "xtra_albeniz",
+      "xtra_alexandro",
       "xtra_garcia_lorca",
       "xtra_karta5",
       "xtra_rodrigo",
@@ -33,7 +34,7 @@
   },
   "totals": {
     "findings": 22,
-    "alignmentRows": 240
+    "alignmentRows": 243
   },
   "classes": [
     {
@@ -2884,6 +2885,19 @@
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/table[4]/tbody[1]/tr[1]/td[3]/div[1]/p[1]"
     },
     {
+      "doc": "segovia",
+      "producedLine": 133,
+      "referenceLine": 138,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/center[2]/p[10]/img[1]"
+    },
+    {
       "doc": "segovia1",
       "producedLine": 6,
       "referenceLine": 6,
@@ -3402,6 +3416,32 @@
       "sourceProse": "left",
       "sourceDistinctive": false,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[6]/img[1]"
+    },
+    {
+      "doc": "xtra_alexandro",
+      "producedLine": 13,
+      "referenceLine": 13,
+      "text": "Александро М. Оянгурен (Alexandro J. Martinez Oyanguren)",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "justify",
+      "sourceAlignment": "justify",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[1]/img[2]"
+    },
+    {
+      "doc": "xtra_alexandro",
+      "producedLine": 83,
+      "referenceLine": 83,
+      "text": "Почтовая марка, в память Александро Мартинеса ОЯНГУРЕНА, выпущенная в Уругвае в серии Art…",
+      "producedAlignment": "right",
+      "referenceAlignment": "right",
+      "sourceTextAlignRaw": "center",
+      "sourceAlignment": "center",
+      "sourceProse": "left",
+      "sourceDistinctive": true,
+      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/p[2]/table[1]/tbody[1]/tr[2]/td[1]/p[1]/font[1]"
     },
     {
       "doc": "xtra_garcia_lorca",

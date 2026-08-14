@@ -1,5 +1,5 @@
 {
-  "overall": 0.9888843963175528,
+  "overall": 0.9949361440681163,
   "documents": [
     {
       "name": "authors",
@@ -2299,10 +2299,10 @@
       },
       "images": {
         "recall": 1,
-        "precision": 0,
-        "f1": 0,
+        "precision": 1,
+        "f1": 1,
         "expected": 0,
-        "actual": 1,
+        "actual": 0,
         "matched": 0,
         "missing": []
       },
@@ -2327,7 +2327,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.8869200316706255
+      "overall": 0.9869200316706255
     },
     {
       "name": "pavlov_azancheev",
@@ -2402,15 +2402,13 @@
         "missing": []
       },
       "headings": {
-        "recall": 0.5,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.6666666666666666,
+        "f1": 1,
         "expected": 2,
-        "actual": 1,
-        "matched": 1,
-        "missing": [
-          "2\tдискография"
-        ]
+        "actual": 2,
+        "matched": 2,
+        "missing": []
       },
       "links": {
         "recall": 1,
@@ -2549,7 +2547,7 @@
           ]
         }
       ],
-      "overall": 0.9614035087719297
+      "overall": 0.9947368421052631
     },
     {
       "name": "segovia1",
@@ -3196,6 +3194,67 @@
       "overall": 1
     },
     {
+      "name": "xtra_alexandro",
+      "text": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 450,
+        "actual": 450,
+        "matched": 450,
+        "missing": []
+      },
+      "headings": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 1,
+        "actual": 1,
+        "matched": 1,
+        "missing": []
+      },
+      "links": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "images": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 3,
+        "actual": 3,
+        "matched": 3,
+        "missing": []
+      },
+      "directives": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 7,
+        "actual": 7,
+        "matched": 7,
+        "missing": []
+      },
+      "tableCells": {
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 0,
+        "actual": 0,
+        "matched": 0,
+        "missing": []
+      },
+      "tableShape": 1,
+      "expectedTables": [],
+      "actualTables": [],
+      "overall": 1
+    },
+    {
       "name": "xtra_garcia_lorca",
       "text": {
         "recall": 1,
@@ -3207,16 +3266,13 @@
         "missing": []
       },
       "headings": {
-        "recall": 0.6,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.7499999999999999,
-        "expected": 5,
+        "f1": 1,
+        "expected": 3,
         "actual": 3,
         "matched": 3,
-        "missing": [
-          "2\tевгений долматовский",
-          "2\tроманс о гарсиа лорке"
-        ]
+        "missing": []
       },
       "links": {
         "recall": 1,
@@ -3283,7 +3339,7 @@
           ]
         }
       ],
-      "overall": 0.975
+      "overall": 1
     },
     {
       "name": "xtra_karta5",

@@ -7324,3 +7324,192 @@ shadows, `break.missing` x2, and one hyphenation.
 §42-§54 and carried into every queue since. Fifty-five of its sixty-two findings were the
 shadow of twenty-one separators on a different code path, and the divergence it named is not
 visible in the seven that remain. Reopen on new measurement only.
+
+## 56 -- five author-named defects, and the marks the corpus had no name for (2026-08-14)
+
+Author-directed iteration, five named points, four mechanisms landed and one refused as
+fabrication. The corpus grew to **28** sources: the author added the `xtra_alexandro`
+pair, a near-clone of the spent holdout `xtra_oyanguren` (same 1998 template, different
+subject and dates), and re-edited `xtra_garcia_lorca` -- the three stacked `##` that §55.1
+closed are now `***bold italic***` on the reference side.
+
+**Baseline first.** Measured with 28 documents at **`4b5d1b0`**, before any change. The author
+committed that pair mid-session, exactly as `bd40160` was committed during §55 -- the fixture
+content was already in the working tree when the baseline was taken, so the numbers are for 28
+either way, but `f791673` is **not** the commit they belong to:
+
+| rung | baseline (28 docs) | after §56 |
+|---|---|---|
+| L0 | not measured before the first change; 845 immediately after | **863** tests, typecheck clean, 0 FAILED, conservation ok |
+| L1 | 99.0 | **99.5** |
+| L2 | 145 findings · 81 defect · 2 crit · 38 major | **138 · 76 · 2 crit · 36 major** |
+| L3 | 22 findings over 28, 0 critical | **22**, 0 critical |
+
+Per document, converter-defect: `xtra_alexandro` 2 -> **0** · `segovia` 3 -> **2** ·
+`new_rechin4` 5 -> **4** · `new_blackmore` 1 -> **0** · `jovicic` 4 findings -> **3** ·
+`news_2007` unchanged at 4 but its L1 rose 88.7 -> **98.7** (image axis 0.0 -> 100.0).
+No document regressed on any rung.
+
+### 56.1 A caption belongs to the picture it shares a box with (`43f59ac`)
+
+Two errors in one relationship, on two pages, in opposite directions.
+
+`xtra_alexandro` draws its postage stamp the way FrontPage drew every figure box: a
+one-column table, picture in the first row and caption in the second. §48's side-by-side
+rule needs two cells in **one** row and matches the visible line against the image's
+`alt`; this stamp has no `alt` at all, so nothing bound them and the caption shipped as a
+stray hard-broken paragraph after a floated `::: image`. `stackedCaptionFigureFrom` reads
+the box structurally -- every occupied cell in one column, exactly two of them, the
+earlier lowering to one standalone image and nothing else, the later to short link-free
+picture-free text the author set apart typographically. Asked beside `navFromGrid`, before
+the classifier, for the reason `navFromGrid` already states in its own false friends
+("a figure table, image in one row and caption in the next").
+
+The typographic clause has to be read off the **source**: a cell's blocks are flattened
+before lowering, so the caption paragraph never passes through the descent that sets
+`captionEligible`. Instrumented at runtime rather than reasoned from the stylesheet --
+`ctxCap=false centered=false` was the whole answer.
+
+`segovia` has the opposite fault. `ДИСКОГРАФИЯ` sits under a magazine cover and above its
+album list, and `bindCaptions` swallowed it. That does not merely mislabel a section, it
+**deletes** it: a `caption:` property is not a block any outline can reach. A caption
+closes a figure; a label opens what follows it, so a caption run now stops at a block the
+next block claims from below. One lookahead, no typography, no vocabulary.
+
+What the label then becomes was blocked by a recurrence floor the construct can never
+clear. `promoteLabelBeforeList`'s own doc comment named `ДИСКОГРАФИЯ` as the shape it was
+written for *while refusing it*, because a page has one discography and the rule demanded
+two. `CLAUDE.md` §5's recurrence law governs shapes that repeat **within** a document; for
+a solitary label the evidence is in the line -- capitals or wholly bold, and no trailing
+colon, since a colon is a sentence handing over (`Примечания:` is a paragraph in
+`new_geyzel04`'s reference). Both required; either alone admits the false friend the other
+excludes. Depth follows `headingLineOf`: peers inside a region stay `###`, a lone section
+label is `##`, which is what `segovia`'s reference writes.
+
+L1 99.0 -> 99.1 (`segovia` 96.1 -> 99.5); L2 145/81 -> 141/78; L3 flat. Twelve contracts.
+
+### 56.2 An icon a sentence carries is a glyph, not a picture (`6cf1c84`)
+
+`mini_images_to_md_guide.md` is normative for the family and states the unlinked case
+outright -- *"unlinked meaningful icon -> replacement"* -- but `isUiIcon` required
+containment in an `<a href>`, with one exemption for a pager's current-page marker. The
+recorded reason for that narrowing is real: an unlinked known icon is usually a score mark
+opening a resource cell, where a glyph moves table planning. It does not apply to an icon
+at the end of a sentence. `inRunningProse` restores the guide's reach exactly where the
+narrowing has no purchase -- the icon is not its block's first content, and a sentence's
+worth of visible text stands before it in that block.
+
+**The threshold is a limit, and that was measured rather than asserted.** Over the 28
+sources there are eleven unlinked known icons: ten are `tarrega`'s score marks with **0**
+characters before them, one is `news_2007`'s smiley with **189**. Every value from 1 to 188
+decides the corpus identically -- the flat curve `learned-patterns.md` says a limit should
+have.
+
+`main/smile.gif` was the last `main/` asset still surviving as an image anywhere in the
+corpus. L1 99.1 -> 99.5, driven by `news_2007` 88.7 -> 98.7. Three contracts.
+
+**One discrepancy in the sources, recorded not resolved.** `analyze.md` line 431 asks for
+`&#128578;` and `mini_images_to_md_guide.md` line 111 for `&#9787;`. The guide is normative
+for the icon map (`CLAUDE.md` §2.5) and the author confirmed `&#9787;` in the iteration
+brief; `glyphs.ts` already carried it and was not changed.
+
+### 56.3 `==` is the mark for a distinction with no other name (`1363486`)
+
+`new_rechin4` sets five phrases of its long paragraphs in small capitals and its reference
+marks **exactly those five** with `==` -- 5 of 5, nothing unmatched on either side. The
+converter emitted none: the span was a transparent wrapper and the distinction was
+dropped. Bold, italic and strike already have marks; what was left is the era's fourth
+device, and `BioMD-Reference.md` §0 says what to do with it.
+
+Three clauses, all relational: the wrapper computes a typographic variant its containing
+prose does not, compared against the ancestors up to the block; it stands **inside** a
+sentence -- visible text since the last hard break in the same run -- rather than opening
+one; it carries no link and no image. Each excludes a false friend that is in the corpus:
+the small-caps `MP3`/`WMA` link label (`new_karta` x6, `williams2`, `xtra_garcia_lorca`),
+and `xtra_alexandro`'s run-in `Сочинения:` which opens its line after a `<br><br>` and
+whose reference writes it plain.
+
+Four supporting pieces: `BiomdHighlight` as a **phrasing** node (not a directive -- mdast
+has none because `==` is BioMD-only); one serializer handler running the children through
+`containerPhrasing`; `ResolvedStyle.fontVariant` captured from `getComputedStyle`, read
+measured-first with a declaration fallback, the two-tier shape `isCentered` already uses;
+and `plainTextOf` stripping `==` before the conservation gate, since the markers are
+markup and a shingle straddling one would otherwise read as invented content.
+
+Corpus reach: exactly one document gains `==`, with exactly the five spans the reference
+marks. Five contracts including the conservation round-trip.
+
+### 56.4 A long quotation embedded in prose is highlighted (`cb64256`)
+
+`new_rules.md`, in the author's words: sentences inside a large paragraph block, in
+quotation marks, not already marked as a quotation, longer than 64 characters. **Two
+references had already done it by hand and no session had noticed** -- `jovicic` marks a
+285-character Segovia testimonial and `new_blackmore` a 169-character Blackmore quote. The
+converter now reproduces both **byte for byte**, marks and closing full stop included: the
+highlight is `=="…педагога".==`, quotation marks inside, which settles a boundary the
+author's notation left open.
+
+The two clauses that are not in the author's sentence are read off those same references,
+and each has its negative in the corpus:
+
+- **it must hold a sentence.** `jovicic` marks the testimonial and leaves its 99-character
+  prize citation unmarked four paragraphs later; `borislova`'s 66-character work title and
+  `new_rechin4`'s quoted thesis heading are the same shape. Sentence-final punctuation
+  inside the marks separates them -- a title has none.
+- **it must be embedded.** Stated structurally rather than as a length, because the two
+  references bracket every length: `new_blackmore` marks a quotation with 33 characters of
+  lead-in, and `segovia` leaves a paragraph that *is* a quotation as plain italic. The test
+  is that the paragraph has words of its own outside the marks. No number is needed.
+
+Quote marks are matched on a **stack**, each mark's role read from the character before it.
+Pairing 1-2, 3-4 makes an inner quotation close the outer one: `xtra_shelechov` quotes a
+review that names a work inside itself, and the span that survived started mid-sentence.
+
+**One declared instrument change (invariant 2).** `==` joins `anchor` in
+`reference-silent.ts`. It passes that module's three tests: three references use it and are
+adjudicated in full, the rest have never written one, and the fold removes the marks from
+**both** sides so a disagreement about *which* run is marked still reports. `new_rules.md`
+states the justification by name. Both sides re-baselined; four contracts, including the
+disagreement case.
+
+L2 139/77 -> **138/76** -- the rule *lowered* the ledger: `jovicic` 4/3 -> 3/3 and
+`new_blackmore` 6/1 -> **6/0**. Reach: 14 spans over 6 documents, 12 of them on references
+that write no `==` and therefore folded out of adjudication.
+
+### 56.5 Refused: `williams2`'s escaped asterisks are not in the source
+
+The brief asked for `J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em**` to have
+its trailing `**` escaped rather than stripped. **The source contains no asterisks at
+all.** The cell is one italic wrapping a single non-breaking space, after the title text:
+`…in Em<font size="2" color="#800080" face="Arial Narrow"><i>&nbsp;</i></font>`. The
+reference's `Em\*\*` is an artefact of the manual conversion -- an empty emphasis
+serialized as two adjacent `*`, then escaped so it would not become markup. Emitting it
+would invent two characters no reader of the source ever saw, which invariant 4 forbids.
+
+**The escaping the brief was worried about is already correct**, and this was verified
+rather than assumed. A probe page carrying a literal `…in Em**` produces `…in Em\*\*`;
+`*`, `_` and `\` all escape; `borislova` (18) and `tarrega` (12) carry escaped footnote
+asterisks that come from real source characters. What the converter does with an empty
+inline mark is drop it, which the "a mark that holds nothing but whitespace" contract
+already fixes by name.
+
+Verdict: **reference-inconsistency**, one instance, `williams2`. Reopens only if the author
+states that an empty inline mark should leave a visible artefact.
+
+### 56.6 What this iteration says about the ledger
+
+Two of the four mechanisms had been **named in the code that refused them**.
+`promoteLabelBeforeList`'s doc comment cited `ДИСКОГРАФИЯ` as its motivating example while
+its recurrence floor made that example unreachable; `isUiIcon`'s comment cited the guide's
+unlinked clause while requiring an `<a href>`. Neither appeared in `analyze/defects.json`
+at any rank -- `segovia`'s absorbed section was invisible to L2 because a `caption:`
+property is not a block, and `news_2007`'s icon cost an L1 image axis nobody reads per
+document.
+
+**Grep the contracts for the shape you are about to build, then read what they refuse and
+why.** A comment that names a document as the reason for a rule, and then excludes it, is a
+recorded defect wearing a justification.
+
+And `new_rechin4`, `jovicic` and `new_blackmore` had all carried `==` in their references
+for at least an iteration before anything read it. **A construct the converter cannot emit
+is a construct no instrument will report as missing.**

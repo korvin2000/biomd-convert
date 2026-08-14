@@ -3,7 +3,7 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-14**, after PROGRESS §55.
+Last touched **2026-08-14**, after PROGRESS §56.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
@@ -16,122 +16,110 @@ Facts marked *measured* were taken then; facts marked *recorded* are quoted and 
 
 ## 1. Where we are, and the exact next step
 
-Reference-guided refinement, **27 sources / 27 compared**. Every number written before 2026-08-14 is
-superseded: the author added `xtra_garcia_lorca`, edited eighteen references, parked the holdout
-**source and reference together** in `fixtures/html2/` + `out2/`, and **removed
-`fixtures/gen_corpus/`**. Do not reach for the 946 pages; they are gone and gitignored.
+Reference-guided refinement, **28 sources / 28 compared**. The author added the
+`xtra_alexandro` pair during §56 — a near-clone of the spent holdout `xtra_oyanguren`, same
+1998 template, different subject and dates — and re-edited `xtra_garcia_lorca`, whose three
+stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2/`) is
+outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
+946 pages.
 
-> **The "28 convert / 26 compared" leak detector no longer applies.** Both counts are 27. The holdout
-> is fully outside the pipeline now -- outside the conservation and validator gate as well as outside
-> L1/L2/L3 -- so it costs nothing and proves nothing until it is measured deliberately.
-
-**Current state, *measured* 2026-08-14, after PROGRESS §55:**
+**Current state, *measured* 2026-08-14, after PROGRESS §56:**
 
 | rung | value |
 |---|---|
-| L0 | **828 tests**, typecheck clean, 0 FAILED, **0 validator errors**, conservation ok |
-| L1 | **98.9 %** over the 27 |
-| L2 | **150 findings -- 85 converter-defect** · 17 ambiguous · 48 reference-inconsistency · 3 critical · 41 major |
-| L3 | **22** over 27 documents, **0 critical** |
-| removals, all 30 sources | **0 targets missing, 0 images missing**; no removal reason discards prose (§53.5) |
+| L0 | **863 tests**, typecheck clean, 0 FAILED, conservation ok |
+| L1 | **99.5 %** over the 28 |
+| L2 | **138 findings — 76 converter-defect** · 15 ambiguous · 47 reference-inconsistency · 2 critical · 36 major |
+| L3 | **22** over 28 documents, **0 critical** |
 
-> **The author committed `bd40160` mid-session** ("updated reference file", `xtra_garcia_lorca`).
-> The §55 baseline was therefore re-measured with the code stashed: **L2 201/137/2, L3 22**.
-> The 203/138/2 written here before §55 predates that edit. Baseline before attribution.
+> **Baseline before attribution, every time.** §56's baseline is 28 documents at **`4b5d1b0`**
+> (L1 99.0, L2 145/81/2/38, L3 22) -- the author committed the `xtra_alexandro` pair mid-session,
+> as they did with `bd40160` during §55. `OPEN.md`'s pre-§56 numbers were for 27 and do not
+> compare. **Check `git log` for an author commit before attributing any delta to your own work.**
 
-> **The author's baseline moved before any code did.** The reference edits alone took L2 from
-> 320/198/9 to **206/141/2** and L3 to 36. Quote that, or §53's three commits read as five times the
-> work they were.
+> **`bench/out/` is not the operator's output** (§54). The author converts through
+> `my-migration/` with its own corpus profile, and the profile decides how much of a page
+> is deleted. When a report is about a produced file, find the file the operator is looking at.
 
-> **`bench/out/` is not the operator's output, and §53 forgot that.** The author converts through a
-> job directory (`my-migration/`) with its **own corpus profile**, and the profile decides how much of
-> a page is deleted. §53's audit measured one configuration and reported it as covering the workflow.
-> **When a report is about a produced file, find the file the operator is looking at** (§54).
+**Landed in §56, one commit each.**
+- A caption belongs to the picture it shares a box with (`43f59ac`). `stackedCaptionFigureFrom`
+  binds a one-column two-row figure box (`xtra_alexandro`'s stamp, no `alt` anywhere); a caption
+  run now stops at a block the *next* block claims, which un-swallows `segovia`'s `ДИСКОГРАФИЯ`;
+  and `promoteLabelBeforeList` gains a solitary branch — shouted or wholly bold, no trailing
+  colon — at depth 2. L1 99.0 → 99.1, L2 145/81 → 141/78.
+- An icon a sentence carries is a glyph (`6cf1c84`). `inRunningProse`; `main/smile.gif` was the
+  last `main/` asset still an image anywhere. L1 → 99.5 (`news_2007` 88.7 → 98.7).
+- `==` is the mark for a distinction with no other name (`1363486`). `BiomdHighlight` phrasing
+  node + `ResolvedStyle.fontVariant`; small-caps inside a sentence. 5-of-5 against
+  `new_rechin4`'s reference, and exactly one document gains `==`.
+- A long quotation embedded in prose is highlighted (`cb64256`). `jovicic` and `new_blackmore`
+  reproduced **byte for byte**; quote marks matched on a stack. L2 139/77 → **138/76** — the
+  rule *lowered* the ledger.
 
-**The report that the gen-corpus *rules* deleted content on `xtra_garcia_lorca` is disproved** (§53) --
-but the report that *content was being deleted* was correct, and §54 found the cause.
-A build at `b8704e2` -- before §46, before every gen-corpus rule -- converts that page
-**byte-identically to HEAD**. The real defect was `case "pre"` collapsing whitespace, present since
-the initial commit and never exercised because no earlier fixture had a `<pre>`.
-
-**Landed in §53, one commit each.**
-- A preformatted block's whitespace is its content (`9ab1f86`). L2 206 → 204, L3 36 → 30, L1 flat.
-- A gutter between two lanes is the author saying "side by side" (`43ec047`). L1 98.8 → 98.9,
-  L2 → 203/139, L3 30 → 25, L3's last critical closes.
-- A preformatted block is placed by its container (`3944fa2`). L2 defects → 138, L3 25 → 23.
-
-**Landed in §54, one commit each.** Recurrence needs two observations to exist (`eba86c8`): a corpus
-of one makes `frequency = 1/1` for every structure on the page, so 43 of 45 fingerprints became
-`stableChrome` and **`removeBoilerplate` took 18.1 % of the page while `classify.ts`'s `SHELL` deleted
-three whole tables** -- at a reported `Text recall: 100.00%`. Guarded at the producer and at both
-consumers, and the CLI now prints the pipeline's warnings, which it never had. · Chrome removal reports
-what it took (`f9c4eed`): a `Chrome:` line on every conversion. Author's workflow **5931 → 9882 bytes**;
-the 27 unchanged on every rung.
-
-**Landed in §55, one commit each.** A section label stands alone (`67b377d`): two or more
-blocks of one template with nothing between them are one label the author broke across
-lines, not two sections. Closes `xtra_garcia_lorca`'s three stacked `##`; L1 that document
-97.1 → 97.5, head axis 71.4 → 75.0. · A record grid is not a sequence of entries
-(`d90d9b8`): a `---` between laned rows claims one entry ended and the next began, and
-`isEntryRow` asks whether the rows are entries — compound, or date-labelled. `xtra_shelechov`
-21 rules → 0, `goya2`/`news_2007`/`kiselev`/`new_lagq2`/`new_lendle2`/`segovia1`/`barrios`
-unchanged. **L2 201/137 → 150/85, major 79 → 41.**
+> **One declared instrument change (invariant 2).** `==` joined `anchor` in
+> `reference-silent.ts`, symmetric and self-retiring: three references write `==` and are
+> adjudicated in full, the rest are folded on both sides. `new_rules.md` authorises it by name.
+> Both sides re-baselined; four contracts, including the disagreement case.
 
 **Next, in order. Probe before committing (SKILL §6).**
-0a. **`xtra_shelechov`'s `align.spurious` x2** — new frontier, and the clearest thing left on
-   that page now the 55 shadows are gone. `**I отделение**` and `**II отделение**` are wrapped
-   in `::: align position: right`; the source cell is `<td class="t1" colspan="2">` and
-   declares no alignment. Two `paragraph.containment` findings are its shadows, so the real
-   count is 4 of the document's remaining 7.
-0b. **The two `break.missing` on the same page** (§55.4). The reference divides the concert
-   at the source's own spacer row, before the spanning `II отделение` label. A spanning
+0a. **`xtra_shelechov`'s `align.spurious` x2** — unchanged from §55 and still the clearest
+   thing on that page. `**I отделение**` / `**II отделение**` are wrapped in
+   `::: align position: right`; the source cell is `<td class="t1" colspan="2">` and declares
+   no alignment. Two `paragraph.containment` findings are its shadows: 4 of the document's 7.
+0b. **The two `break.missing` on the same page** (§55.4). The reference divides the concert at
+   the source's own spacer row, before the spanning `II отделение` label. A spanning
    single-cell band inside a laned region is the candidate signal; the spacer-driven form
    modelled on `layoutFrom` lands the divider one band late and was rejected on paper.
-0. **The conservation gate still cannot audit boilerplate removal** (§54.6). The `Chrome:` line makes
-   it visible, not gated; `sourceText` is captured after the pass, and moving it means moving it before
-   dehyphenation and normalization too. A `SHELL` verdict deletes a table on `corpusFrequency` alone,
-   with no share bound. **And no test covers the CLI's report** -- two of the three reasons §54 was
-   silent were presentation, not conversion.
-1. **`layout.containment.mismatch`, 13 over 9** -- the broadest untouched L3 class and the rung that
-   answers priority 4. Unchanged from §51.6, and now L3's largest by a wider margin.
-2. **One isolated instrument-truthfulness step**: `paragraph.content`'s blanket `critical` severity
-   (§5.0aa) and the property-line-as-paragraph artefact (§5.0b).
-3. **`structdiff`'s `code.text`** compares whitespace-collapsed values -- new debt from §53.2, listed
-   in §5 below.
-4. **The proper-name hyphenation tail, §50.6** -- `Бориславовна`, `Феррере`, `аккомпанементов`.
+0. **The conservation gate still cannot audit boilerplate removal** (§54.6). `sourceText` is
+   captured after the pass, so recall is 100 % by construction; a `SHELL` verdict deletes a
+   table on `corpusFrequency` alone with no share bound; and **no test covers the CLI's report**.
+1. **`layout.containment.mismatch`, 13 over 9** — the broadest untouched L3 class and the rung
+   that answers priority 4. Unchanged since §51.6.
+2. **One isolated instrument-truthfulness step**: `paragraph.content`'s blanket `critical`
+   severity (§5.0aa) and the property-line-as-paragraph artefact (§5.0b).
+3. **`structdiff`'s `code.text`** compares whitespace-collapsed values — §53.2 debt, §5 below.
+4. **The proper-name hyphenation tail, §50.6** — `Бориславовна`, `Феррере`, `аккомпанементов`.
    Needs a stem-tolerant lexicon lookup; measure its false-friend rate first.
 5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
    glyph/footer family. §44.1.
-6. **The shell-depth root cause, §40.6.** Three replacements built, all three reverted on measurement.
+6. **The shell-depth root cause, §40.6.** Three replacements built, all three reverted.
 
-**Killed in §55** -- reopen on new measurement only:
-**`xtra_shelechov`'s grid divergence is a ceiling, "8 references to 1"** (§55.3 -- 55 of its
-62 findings were the shadow of 21 separators on a different code path; `column.containment`,
-`retyped.column-to-paragraph`, `column.missing`, `columns.spurious`, `column.spurious` and
-`paragraph.containment` all went to 0 with no rule written about any of them) ·
-**`retyped.heading2-to-paragraph` is unworkable** (§55.1 -- §53.6 killed it for want of a
-*source* discriminator; the author supplied an *output-shape* one instead, and the reference's
-two `##` are now a named divergence rather than a target).
+**§56.5 refused, and it is not a defect:** `williams2`'s `Em\*\*`. The source carries **no
+asterisks** — the cell is one italic wrapping a single `&nbsp;` — so the reference's two
+escaped stars are an artefact of the manual conversion, and emitting them would be
+fabrication (invariant 4). The escaping itself was probed and is already correct: a literal
+`Em**` in source becomes `Em\*\*`, and `borislova` (18) and `tarrega` (12) carry real escaped
+footnote asterisks. **reference-inconsistency**, one instance.
 
-**Killed in §53** -- reopen on new measurement only:
-**the gen-corpus rules (§46--§51) cost `xtra_garcia_lorca` content** (§53 -- byte-identical build
-comparison across the whole span, plus a removal-reason audit over all 30 sources in which no reason
-discards prose and no document loses a target or an image) ·
-**`retyped.heading2-to-paragraph` is workable** (§53.6 -- six blocks in one identical source template,
-four written `**bold**` and two `##` by the reference, nothing in the source separating them) ·
-**the unconditional `too-small` → `layoutFrom` reconsideration** (§53.3 -- it *is* §18.3's killed form
-and three existing contracts caught it in one run; the guttered-lane guard is the survivor).
+**Two false positives of the quotation rule, named rather than patched.** It marks
+`new_rechin4`'s quoted thesis heading and `jovicic`'s prize citation only if the
+"holds a sentence" clause is removed; with it, both are excluded and no known false positive
+remains in the 28. Reach is 14 spans over 6 documents; 12 sit on references that write no `==`.
 
-**No open author question.**
+**Killed in §55** — reopen on new measurement only: **`xtra_shelechov`'s grid divergence is a
+ceiling, "8 references to 1"** (§55.3) · **`retyped.heading2-to-paragraph` is unworkable**
+(§55.1).
 
-**`npm install` before anything** -- §41's `dictionary-ru`/`nspell` optional deps are not in a fresh
-clone and `tsc` fails on the missing declarations.
+**Killed in §53** — reopen on new measurement only: **the gen-corpus rules cost
+`xtra_garcia_lorca` content** (§53) · **`retyped.heading2-to-paragraph` is workable** (§53.6) ·
+**the unconditional `too-small` → `layoutFrom` reconsideration** (§53.3).
 
-> **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) -- run
-> `npx playwright install chromium` or every document reports "no output produced". And this repo
-> carries a multi-pack-index git 2.45 cannot read; `git config core.multiPackIndex false` unblocks it.
-> `corpus scan` is **not** needed: `bench/corpus/corpus-profile.json` is committed and built from 22
-> files. Without it the masthead banner survives and every page gains a spurious frame (§39.5).
+**No open author question**, but two things the author may want to rule on:
+the two escaped asterisks above, and whether a quotation highlight should also cover
+`xtra_shelechov`'s four long review quotes, which no reference adjudicates.
+
+**`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a
+fresh clone and `tsc` fails on the missing declarations.
+
+> **Two environment traps.** `sh bench/run.sh` needs Chromium (`visual: always`) — run
+> `npx playwright install chromium` or every document reports "no output produced". And this
+> repo carries a multi-pack-index git 2.45 cannot read; `git config core.multiPackIndex false`
+> unblocks it. `corpus scan` is **not** needed: `bench/corpus/corpus-profile.json` is committed.
+
+> **Two of §56's four mechanisms were named in the code that refused them**, and neither
+> appeared in `analyze/defects.json` at any rank. Grep the contracts for the shape you are
+> about to build and read what they refuse and why — a comment that names a document as the
+> reason for a rule and then excludes it is a recorded defect wearing a justification.
 
 ---
 ## 2. Closed -- the spec was amended, not the converter
@@ -228,44 +216,50 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-14 after §55
+## 4. Open defect classes -- *measured* 2026-08-14 after §56
 
-**Read the ceiling column first**, and read §55.3 before trusting it: five of the classes
-that stood here as "ceiling" through thirteen sections went to **0** in §55 without a rule
-being written about any of them. They were the shadow of a construct in another class on
-another code path. A ceiling with a document count of 1 is a hypothesis, not a finding.
+**Read the ceiling column last, not first.** §55.3 dissolved five classes that had stood here
+as "ceiling" for thirteen sections, without a rule being written about any of them, and §56
+closed two mechanisms that appeared in this table at **no rank at all**. A ceiling with a
+document count of 1 is a hypothesis; an empty ledger row is not evidence of a clean document.
 
 | rank | class | inst | defect | docs | note |
 |---:|---|---:|---:|---:|---|
 | 75 | `retyped.paragraph-to-align` | 5 | 5 | 5 | **split mechanisms.** 4 are the twice-killed glyph/footer family; `segovia` is a long italic quotation shifted by margin (§44.1) |
 | 68 | `table.align` | 34 | 34 | 2 | **ceiling, both documents** — `xtra_karta5`'s author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
-| 28 | `emphasis.span` | 25 | 4 | 7 | downgraded; §39.6.2 has the cause. **And the reader mis-splits `***x***`** — OPEN §5.0aaaaa. Do not implement |
-| 18 | `retyped.paragraph-to-heading2` | 3 | 3 | 2 | **named divergence, §55.1** — 2 are `xtra_garcia_lorca`'s stacked `##`, which the author ruled poor design in the reference. Not a target |
 | 12 | `link.inline.missing` · `paragraph.spurious.in-paragraph` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail |
-| 10 | `paragraph.content` | 2 | 1 | 2 | **severity artefact** — blanket `critical`, OPEN §5.0aa |
 | 9 | `paragraph.hyphenation.unjoined` | 3 | 3 | 3 | the proper-name tail, §50.6 |
-| 6 | `align.spurious` | 2 | 2 | 1 | **new frontier, §55.4** — `xtra_shelechov`'s two spanning programme labels, source declares no alignment |
+| 6 | `emphasis.span` | 22 | 1 | 6 | downgraded; §39.6.2 has the cause. **And the reader mis-splits `***x***`** — §5.0aaaaa. Do not implement |
+| 6 | `align.spurious` | 2 | 2 | 1 | **the frontier, §55.4** — `xtra_shelechov`'s two spanning programme labels; source declares no alignment |
+| 6 | `paragraph.containment` | 2 | 2 | 1 | the shadows of `align.spurious` above |
 | 6 | `break.missing` | 3 | 3 | 2 | 2 are `xtra_shelechov`'s section boundary and grid close (§55.4) |
-| -- | ~~`column.containment` 29 · `retyped.column-to-paragraph` 22 · `column.missing` 8 · `columns.spurious` 5 · `column.spurious` 3~~ | **0** | 0 | 0 | **not a ceiling.** All shadows of §55.2's 21 separators; dissolved with their cause |
-| -- | ~~`break.spurious`~~ | 20 -> **0** | 0 | 0 | closed by §55.2 |
-| -- | ~~`paragraph.spurious.in-table`~~ | 16 -> **0** | 0 | 0 | dissolved in §55 |
-| -- | ~~`paragraph.containment`~~ | 6 -> **2** | 2 | 1 | the 2 are `align.spurious`'s shadows |
+| 6 | `paragraph.hyphenation.mixed` | 3 | 3 | 2 | the same lexicon tail as `.unjoined` |
+| 3 | `align.missing` · `align.moved` · `align.position.missing` · `heading.missing.absorbed` · `paragraph.missing.in-paragraph` · `retyped.columns-to-paragraph` · `retyped.paragraph-to-break` · `retyped.paragraph-to-frame` · `retyped.paragraph-to-heading2` · `retyped.paragraph-to-heading3` · `retyped.paragraph-to-lead` · `retyped.paragraph-to-quote` | 1 each | 1 | 1 | singletons |
+| -- | ~~`paragraph.spurious.caption-echo`~~ · ~~`image.caption.missing`~~ | **0** | 0 | 0 | closed by §56.1 |
+| -- | ~~`heading.missing.caption-echo`~~ | **0** | 0 | 0 | closed by §56.1 — `segovia`'s absorbed `ДИСКОГРАФИЯ` |
+| -- | ~~`column.containment` · `retyped.column-to-paragraph` · `column.missing` · `columns.spurious` · `column.spurious` · `break.spurious` · `paragraph.spurious.in-table`~~ | **0** | 0 | 0 | **not a ceiling.** All shadows of §55.2's 21 separators |
 | -- | ~~`table.cell.content`~~ · ~~`retyped.columns-to-table`~~ · ~~`paragraph.missing.in-table`~~ · ~~`image.position.value`~~ | **0** | 0 | 0 | closed by §43.3, §43.4, §42.6, §44 |
 
-Per document, converter-defect: `xtra_karta5` 33 (**ceiling**) · `xtra_shelechov` **7** (was
-62) · `xtra_garcia_lorca` 6 (**2 the named divergence**) · `new_karta` 5 · `new_rechin4` 5 ·
-`new_kolpakov` 4 (**all 4 ceiling**) · `news_2007` 4 · `jovicic` 3 · `kiselev` 3 ·
-`pavlov_azancheev` 3 · `segovia` 3 · rest <= 2. **`authors`, `barrios`, `goya2`, `new_bach`,
-`new_dyens`, `new_lagq2`, `segovia1`, `williams2`, `xtra_albeniz` and `xtra_rodrigo` are at 0.**
+Per document, converter-defect: `xtra_karta5` 33 (**ceiling**) · `xtra_shelechov` **7** ·
+`new_karta` 5 · `new_kolpakov` 4 (**all 4 ceiling**) · `new_rechin4` 4 · `news_2007` 4 ·
+`jovicic` 3 · `kiselev` 3 · `pavlov_azancheev` 3 · rest <= 2. **`authors`, `barrios`,
+`goya2`, `new_bach`, `new_blackmore`, `new_dyens`, `new_lagq2`, `segovia1`, `williams2`,
+`xtra_albeniz`, `xtra_alexandro`, `xtra_garcia_lorca` and `xtra_rodrigo` are at 0** — but see
+§56.6: `segovia`'s deleted section and `news_2007`'s broken icon were both at 0 too.
 
-**The holdout is spent.** Measured once at the end of §43, exactly as §42.8 intended:
-`xtra_oyanguren` 3 findings / 3 defects, `xtra_mikulka` 2 / 2 / 2 L3 — unchanged, both §43 rules
-neutral there. §44 and §45 had no holdout.
+**Two classes L2 cannot see at all**, and §56 found both by reading the source rather than
+the ledger: a section label absorbed into an image's `caption:` property (a property is not a
+block, so nothing compares it), and an inline construct the converter could not emit (nothing
+reports a missing `==`).
+
+**The holdout is spent.** Measured once at the end of §43: `xtra_oyanguren` 3 findings / 3
+defects, `xtra_mikulka` 2 / 2 / 2 L3. §56 added `xtra_alexandro`, a near-clone of
+`xtra_oyanguren` from the same template — the holdout is now also *represented* in the
+refinement set, which is a further reason not to re-take it as evidence.
 
 **Closed in §48:** one-row DATA grid holding one standalone image beside text that substantially
-repeats its source-backed image label. The converter now binds the visible text as that figure's
-caption. Corpus reach: exactly `bogdanovic`; text recall 98.44% -> 100%, directives 4 -> 3, no
-target/image/validator loss. Seven contract tests cover positive, mutation and false-friend shapes.
+repeats its source-backed image label. **Closed in §56.1:** the same relationship stacked — one
+column, image row over caption row, with no `alt` anywhere to match against.
 
 ## 5. Instrument debt -- what to distrust, in order
 

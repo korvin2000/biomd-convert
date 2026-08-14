@@ -299,3 +299,17 @@ count is **1** and whose rank is high is the signature of an instrument artefact
 mechanism -- `SKILL.md` §13 says so and this is its sharpest case. **A ceiling that dissolves when an
 unrelated defect is fixed was never a ceiling.** Before recording any large single-document class as a
 ceiling again, remove the largest *other* defect on that page first and re-measure.
+
+## §56 -- one refusal, and two rules that were refusing themselves (2026-08-14)
+
+| hypothesis | falsifier | cost to re-kill |
+|---|---|---|
+| **`williams2`'s cell should end in escaped asterisks**, because the reference writes `…in Em\*\*` and the converter strips them | **The source contains no asterisks at all.** The cell is `…in Em<font size="2" color="#800080" face="Arial Narrow"><i>&nbsp;</i></font>` — an italic wrapping one non-breaking space. The reference's two stars are an artefact of the manual conversion: an empty emphasis serialized as two adjacent `*`, then escaped. Emitting them is fabrication (invariant 4). **The escaping was probed and is already correct** — a literal `Em**` in source becomes `Em\*\*`, `borislova` (18) and `tarrega` (12) carry real escaped footnote stars | one `convert` on a four-line probe page |
+| **`promoteLabelBeforeList` needs its recurrence floor**, and `segovia`'s solitary `ДИСКОГРАФИЯ` is the price | Half right, and the half that was wrong cost two iterations. Recurrence is the right evidence for a label that *repeats*; it cannot be evidence for a construct that occurs once per page by definition, and the rule's own doc comment named `ДИСКОГРАФИЯ` as its motivating example while excluding it. Typography plus the absent trailing colon carry a solitary label; both are required and each admits the false friend the other excludes. §56.1 | one `diff --doc segovia` |
+| **`isUiIcon`'s `<a href>` requirement protects the score marks**, so an unlinked known icon stays a picture | Right about the score marks, wrong about the scope. The guide states the unlinked case outright and the narrowing's only recorded reason is table planning, which has no purchase on an icon at the end of a sentence. **Swept**: 11 unlinked known icons in the 28 sources, 10 of them score marks with **0** characters of prose before them and one smiley with **189** — every threshold from 1 to 188 decides the corpus identically. §56.2 | one sweep script over `fixtures/html` |
+
+**The standing trap this attests.** Both of the second and third rows were *documented decisions with
+named justifications*, and both justifications were about a narrower case than the guard they were
+attached to. **A comment that names a document as the reason for a rule, and then excludes that
+document, is a recorded defect wearing a justification** — grep the contracts before building, and
+read what they refuse and why, not only what they accept.

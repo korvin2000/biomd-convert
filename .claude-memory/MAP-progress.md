@@ -282,6 +282,13 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 55.3` | **55 findings, one mechanism.** Five classes recorded as a "ceiling, 8 references to 1" went to 0 with no rule written about them — block-pairing shadows. **A ceiling with a document count of 1 is a hypothesis** |
 | `### 55.4` | not closed: `xtra_shelechov`'s 2 reference separators (spanning-label-row is the candidate signal), `***` vs `**` on the refused labels, and a new `emphasis.span` reader artefact |
 | `### 55.5` | killed: "`xtra_shelechov`'s grid divergence is a ceiling" |
+| `## 56` | **five author-named defects, 28 documents.** Corpus grew (`xtra_alexandro` added; `xtra_garcia_lorca` re-edited). L1 99.0 → **99.5**, L2 145/81 → **138/76**, L3 22 flat, L0 → **863** |
+| `### 56.1` | **a caption belongs to the picture it shares a box with** — `stackedCaptionFigureFrom` (one column, two rows, image over caption); and a caption run stops at a block the next block claims; `promoteLabelBeforeList` gains a solitary-shouted branch at depth 2 |
+| `### 56.2` | **an icon a sentence carries is a glyph** — `inRunningProse`; threshold swept and flat (10 near-misses at 0 chars, 1 positive at 189) |
+| `### 56.3` | **`==` for a distinction with no other name** — `BiomdHighlight` phrasing node, `ResolvedStyle.fontVariant`, small-caps inside a sentence; 5-of-5 against `new_rechin4`'s reference |
+| `### 56.4` | **a long quotation embedded in prose is highlighted** — `jovicic` and `new_blackmore` reproduced byte for byte; stack-matched quote marks; **`==` added to `reference-silent.ts`** (declared instrument change) |
+| `### 56.5` | refused: `williams2`'s `\*\*` — the source has no asterisks; escaping verified already correct. reference-inconsistency |
+| `### 56.6` | **two of four mechanisms were named in the code that refused them**, and neither was in the ledger at any rank |
 
 **Two author rulings recorded in OPEN §3.14 and §3.15** — a stack of same-level `##` is poor design
 *including in a reference*, and a `---` after every single table row is poor design. Both implemented.
