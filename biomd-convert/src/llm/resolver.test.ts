@@ -12,9 +12,13 @@ import { Budget } from "./budget.js";
 import { MemoryCache } from "./cache.js";
 import { GatewayResolver } from "./resolver.js";
 import type { ChatRequest, ChatResponse, Transport } from "./transport.js";
+import { discoverHooks } from "./kernel/registry.js";
+import { type PreparedHook, prepareHook } from "./kernel/runner.js";
+import type { ModelTier } from "./kernel/contract.js";
 import { convert } from "../convert-core/pipeline.js";
 
 class StubTransport implements Transport {
+  readonly id = "stub";
   readonly requests: ChatRequest[] = [];
   constructor(private readonly reply: (request: ChatRequest) => unknown) {}
   async chat(request: ChatRequest): Promise<ChatResponse> {
@@ -29,14 +33,38 @@ class StubTransport implements Transport {
   }
 }
 
-function makeResolver(reply: (request: ChatRequest) => unknown) {
+const MODELS: Record<ModelTier, string> = { fast: "stub-fast", balanced: "stub-fast", deep: "stub-deep" };
+
+/**
+ * The hooks a default run enables, discovered rather than named.
+ *
+ * The test asks the same question the CLI does — "what is on by default?" — so
+ * a plugin that changes its own default is caught here as well as in
+ * `defaults.test.ts`.
+ */
+async function defaultHooks(): Promise<PreparedHook[]> {
+  const registry = await discoverHooks();
+  return registry
+    .all()
+    .filter((entry) => entry.hook.enabledByDefault)
+    .map((entry) => prepareHook(entry.hook, entry.hook.defaults, MODELS));
+}
+
+async function makeResolver(
+  reply: (request: ChatRequest) => unknown,
+  budget = new Budget({ maxCalls: 20 }),
+  extra: { breakerAfter?: number } = {},
+) {
   const transport = new StubTransport(reply);
   const resolver = new GatewayResolver({
     transport,
     cache: new MemoryCache(),
-    budget: new Budget({ maxCalls: 20 }),
-    models: { fast: "stub-fast", balanced: "stub-fast", deep: "stub-deep" },
-    lang: "ru",
+    budget,
+    hooks: await defaultHooks(),
+    endpoint: "stub",
+    models: MODELS,
+    context: { lang: "ru" },
+    ...extra,
   });
   return { transport, resolver };
 }
@@ -64,7 +92,7 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("asks for column labels and emits them", async () => {
-    const { transport, resolver } = makeResolver(() => ({
+    const { transport, resolver } = await makeResolver(() => ({
       headers: ["Произведение", "Табулатура", "Аудио"],
       confidence: 0.9,
       rationale: "columns hold a work title, a tablature link and an audio link",
@@ -81,7 +109,7 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("keeps the table and the review item when the model declines", async () => {
-    const { resolver } = makeResolver(() => ({ headers: [], confidence: 0.1, rationale: "unclear" }));
+    const { resolver } = await makeResolver(() => ({ headers: [], confidence: 0.1, rationale: "unclear" }));
     const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
     // A rejected reply must never take the reconstructed table down with it.
     expect(result.markdown).toMatch(/^\|.*Choro Da Saudade.*\|$/mu);
@@ -89,7 +117,7 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("never lets a transport failure fail the conversion", async () => {
-    const { resolver } = makeResolver(() => {
+    const { resolver } = await makeResolver(() => {
       throw new Error("gateway unreachable");
     });
     const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
@@ -101,7 +129,7 @@ describe("the pipeline consults the resolver", () => {
     // "3 calls, 0 resolved" is not a diagnosis, and a mistyped model id used to
     // produce exactly that line and nothing else — every abandonment returned
     // without emitting, so the reason never reached the report.
-    const { resolver } = makeResolver(() => {
+    const { resolver } = await makeResolver(() => {
       throw new Error("Gateway returned neither a tool call nor content.");
     });
     const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
@@ -113,7 +141,7 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("collapses identical failures instead of listing every item", async () => {
-    const { resolver } = makeResolver(() => {
+    const { resolver } = await makeResolver(() => {
       throw new Error("Gateway returned neither a tool call nor content.");
     });
     await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "a.htm" });
@@ -125,8 +153,44 @@ describe("the pipeline consults the resolver", () => {
     expect(stats.failures[0]?.count).toBe(stats.unresolved);
   });
 
+  it("stops calling a gateway that is not answering", async () => {
+    // A budget cannot catch this: it counts settled usage, and a request that
+    // never reached a model settles nothing. Without the breaker, one dead
+    // endpoint produced one refused connection per escalation — 72 of them on
+    // the bench corpus, all reporting the same thing.
+    const { transport, resolver } = await makeResolver(
+      () => {
+        throw new Error("Gateway request failed: fetch failed");
+      },
+      new Budget({ maxCalls: 100 }),
+      { breakerAfter: 2 },
+    );
+    const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "a.htm" });
+    await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "b.htm" });
+
+    expect(resolver.circuitOpen).toBe(true);
+    expect(transport.requests.length).toBe(2);
+    // And the conversions still produced their output.
+    expect(result.markdown).toContain("Choro Da Saudade");
+    expect(resolver.stats().failures.some((f) => f.reason.includes("circuit opened"))).toBe(true);
+  });
+
+  it("keeps calling while the gateway answers, however it answers", async () => {
+    // A refused reply is not a dead gateway. Confusing the two would open the
+    // circuit on the first hook that guards its own quality.
+    const { transport, resolver } = await makeResolver(
+      () => ({ headers: ["one"], confidence: 0.9, rationale: "wrong width on purpose" }),
+      new Budget({ maxCalls: 100 }),
+      { breakerAfter: 2 },
+    );
+    await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "a.htm" });
+    await convert(Buffer.from(HEADERLESS, "utf8"), { resolver, sourceName: "b.htm" });
+    expect(resolver.circuitOpen).toBe(false);
+    expect(transport.requests.length).toBeGreaterThan(2);
+  });
+
   it("rejects a label set of the wrong width rather than emitting a ragged table", async () => {
-    const { resolver } = makeResolver(() => ({
+    const { resolver } = await makeResolver(() => ({
       headers: ["Только одна"],
       confidence: 0.9,
       rationale: "one label",
@@ -136,7 +200,7 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("serves a repeated decision from the cache instead of calling again", async () => {
-    const { transport, resolver } = makeResolver(() => ({
+    const { transport, resolver } = await makeResolver(() => ({
       headers: ["Произведение", "Табулатура", "Аудио"],
       confidence: 0.9,
       rationale: "as above",
@@ -149,18 +213,10 @@ describe("the pipeline consults the resolver", () => {
   });
 
   it("stops calling once the budget is exhausted", async () => {
-    const transport = new StubTransport(() => ({
-      headers: ["a", "b", "c"],
-      confidence: 0.9,
-      rationale: "x",
-    }));
-    const resolver = new GatewayResolver({
-      transport,
-      cache: new MemoryCache(),
-      budget: new Budget({ maxCalls: 0 }),
-      models: { fast: "stub", balanced: "stub", deep: "stub" },
-      lang: "ru",
-    });
+    const { transport, resolver } = await makeResolver(
+      () => ({ headers: ["a", "b", "c"], confidence: 0.9, rationale: "x" }),
+      new Budget({ maxCalls: 0 }),
+    );
     const result = await convert(Buffer.from(HEADERLESS, "utf8"), { resolver });
     expect(transport.requests).toHaveLength(0);
     // And the conversion still produced its table.

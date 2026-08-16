@@ -12,4 +12,5 @@ export * from "./data-table.js";
 export * from "./headings.js";
 export * from "./prominence.js";
 export * from "./resolver.js";
+export * from "./decisions.js";
 export * from "./boilerplate.js";

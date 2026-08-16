@@ -68,6 +68,16 @@ export interface ChatRequest {
   schema: { name: string; schema: Record<string, unknown> };
   maxOutputTokens?: number;
   temperature?: number;
+  /**
+   * Identity that must key the cache but must not reach the model.
+   *
+   * Prompt template hashes and the hook's contract version live here. Two runs
+   * whose rendered prompts happen to coincide across a contract change are still
+   * different questions, and a cache that cannot tell them apart answers the new
+   * one with the old one's reply. Hashed by {@link requestHash}, dropped by the
+   * request builder.
+   */
+  contract?: Record<string, string>;
 }
 
 export interface ChatResponse {
@@ -381,7 +391,14 @@ function modelsMatch(requested: string, resolved: string): boolean {
   return a === b || a.startsWith(b) || b.startsWith(a);
 }
 
-/** Deterministic cache key over everything that can change an answer. */
+/**
+ * Deterministic cache key over everything that can change an answer.
+ *
+ * `contract` is included and is the reason a prompt-template edit invalidates
+ * the decisions it produced. It is omitted from the canonical form when absent,
+ * so a request that carries none hashes exactly as it did before the field
+ * existed.
+ */
 export function requestHash(request: ChatRequest, resolvedModel: string): string {
   const canonical = JSON.stringify({
     model: resolvedModel,
@@ -390,8 +407,14 @@ export function requestHash(request: ChatRequest, resolvedModel: string): string
     schema: request.schema,
     images: (request.images ?? []).map((i) => createHash("sha256").update(i.data).digest("hex")),
     temperature: request.temperature ?? 0,
+    ...(request.contract ? { contract: sortedEntries(request.contract) } : {}),
   });
   return createHash("sha256").update(canonical).digest("hex");
+}
+
+/** Key order must not decide a cache key. */
+function sortedEntries(value: Record<string, string>): Array<[string, string]> {
+  return Object.entries(value).sort(([a], [b]) => a.localeCompare(b));
 }
 
 /** A transport that refuses to call anything — the `--llm off` default. */

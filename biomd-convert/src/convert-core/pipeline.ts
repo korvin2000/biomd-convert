@@ -49,6 +49,7 @@ import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
 import { planDataTable } from "./data-table.js";
 import { recoverHeadings } from "./headings.js";
 import { type DecisionResolver, NULL_RESOLVER, type ResolverStats } from "./resolver.js";
+import { TABLE_CLASSIFY, TABLE_HEADERS, isWideEnoughForData } from "./decisions.js";
 import { type LayoutFidelity, type TableOutcome, enforceSingleTitle, recoverStructure } from "./structure.js";
 import { checkConservation, type ConservationReport } from "./conservation.js";
 import {
@@ -98,6 +99,15 @@ export interface ConvertOptions {
    * escalates, so a run with no gateway behaves exactly as it always did.
    */
   resolver?: DecisionResolver;
+  /**
+   * Called as each stage begins, for progress reporting.
+   *
+   * Purely observational — it cannot change a decision, and a conversion with
+   * no listener behaves identically. It exists because measurement and
+   * de-hyphenation can each take seconds on a large page, and a compiler that
+   * prints nothing while they run is indistinguishable from one that has hung.
+   */
+  onStage?: (stage: string) => void;
 }
 
 export interface ConvertResult {
@@ -152,12 +162,15 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   const lexicon = options.lexicon ?? new Lexicon();
   const warnings: string[] = [];
   const ledger = new Ledger();
+  const stage = options.onStage ?? ((): void => undefined);
 
   // ---- Stage 1: decode ---------------------------------------------------
+  stage("decode");
   const decoded = decodeHtml(bytes);
   warnings.push(...decoded.decision.warnings);
 
   // ---- Stage 2a: quarantine, then parse ----------------------------------
+  stage("parse");
   const quarantined = quarantineServerMarkup(decoded.text);
   warnings.push(...quarantined.warnings);
 
@@ -183,6 +196,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   }
 
   // ---- Stage 3: measure --------------------------------------------------
+  stage("measure");
   const measurement = await measurer.measure(repairedHtml, doc, {
     ...(options.assetRoot ? { assetRoot: options.assetRoot } : {}),
   });
@@ -202,6 +216,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   // ---- Stage 5: boilerplate removal --------------------------------------
   // Before normalization, while the chrome is still a table rather than a
   // paragraph, and after measurement, so nothing that was measured has moved.
+  stage("boilerplate");
   const boilerplate = removeBoilerplate(doc.root, options.corpusProfile ?? null);
   warnings.push(...boilerplate.warnings);
   for (const record of boilerplate.removals) {
@@ -229,6 +244,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     lang: options.lang ?? "ru",
     dictionary: options.dictionary,
   };
+  stage("text");
   const dehyphenation = dehyphenateDocument(doc.root as never, dehyphenateOptions);
   const textOperations: TextOperation[] = dehyphenation.operations;
   for (const op of textOperations) {
@@ -248,6 +264,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   // ---- Stage 8: document outline ----------------------------------------
   // After normalization, because `<font size>` has to be folded onto the nodes
   // that carried it before prominence can be read off them.
+  stage("headings");
   const headings = recoverHeadings(doc.root, {
     ...(options.recoverSections === false ? { sections: false } : {}),
   });
@@ -297,6 +314,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   const cleanHtml = doc.root.children.map((c) => htmlOf(c)).join("");
 
   // ---- Stage 7: classify tables ------------------------------------------
+  stage("classify");
   const grids: TableGrid[] = materializeAllGrids(doc.root);
   for (const grid of grids) warnings.push(...grid.warnings);
   // Computed here, against the tree the grids came from, so ids line up.
@@ -320,27 +338,17 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
 
     // Escalation point 1. An abstention is not a verdict, and flattening an
     // ambiguous region to prose is a decision with consequences — so ask,
-    // rather than defaulting quietly.
+    // rather than defaulting quietly. Whether the answer may be applied is
+    // decided by `TABLE_CLASSIFY.accept`, deterministically, in `decisions.ts`.
     if (!override && classification.class === "UNKNOWN") {
       escalations.consulted += 1;
-      const resolved = await resolver.classifyTable({
+      const resolved = await resolver.decide(TABLE_CLASSIFY, {
         grid,
         deterministic: classification,
         ...(frequency !== undefined ? { corpusFrequency: frequency } : {}),
         ...(options.sourceName ? { sourceName: options.sourceName } : {}),
       });
-      // A model verdict promoting an abstention straight to DATA is the one
-      // upgrade that *fabricates* structure rather than describing it, so it
-      // carries its own evidence bar. Asked "is this a data table?", a model
-      // says yes to a dated news list and to a two-lane album catalog alike,
-      // and the result is two invented headers over something that was never a
-      // matrix. Measured against the reference conversions, the discriminator is
-      // width: a record matrix the deterministic tiers missed has three or more
-      // semantic columns, while "label plus paragraph" — the classic false
-      // positive — has exactly two.
-      const fabricating =
-        resolved?.class === "DATA" && (resolved.confidence < 0.75 || !isWideEnoughForData(grid));
-      if (resolved && !fabricating) {
+      if (resolved) {
         escalations.resolved += 1;
         classification = resolved;
         ledger.record({
@@ -351,11 +359,6 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
           confidence: resolved.confidence,
           note: resolved.reason,
         });
-      } else if (fabricating && resolved) {
-        warnings.push(
-          `${grid.id}: model called this DATA at confidence ${resolved.confidence.toFixed(2)}, but the ` +
-            "region does not carry its own evidence for a record matrix. Left as a review item.",
-        );
       }
     }
     classifications.push({ tableId: grid.id, classification });
@@ -379,7 +382,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     if (!planned.plan || !planned.plan.headerSynthesized) continue;
 
     escalations.consulted += 1;
-    const headers = await resolver.tableHeaders({
+    const headers = await resolver.decide(TABLE_HEADERS, {
       grid,
       plan: planned.plan,
       classification,
@@ -399,6 +402,7 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   }
 
   // ---- Stage 9: structure recovery ---------------------------------------
+  stage("structure");
   const structure = recoverStructure(doc.root, grids, {
     profile,
     links,
@@ -415,9 +419,11 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
   warnings.push(...title.changes);
 
   // ---- Stage 12: serialize ------------------------------------------------
+  stage("serialize");
   const markdown = serialize(structure.root, { profile });
 
   // ---- Stage 13: verify ---------------------------------------------------
+  stage("verify");
   const validation = validate(structure.root, { profile });
   const diagnostics = [...validation.diagnostics, ...lintText(markdown, { profile })];
 
@@ -478,20 +484,6 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     state,
     measured: measurement.measured,
   };
-}
-
-/**
- * Whether a region carries enough of its own evidence to become a table on a
- * model's say-so.
- *
- * A source header row is the author stating the column model outright. Failing
- * that, three or more inferred semantic columns is the width at which "these are
- * records" stops being an interpretation.
- */
-function isWideEnoughForData(grid: TableGrid): boolean {
-  const planned = planDataTable(grid);
-  if (!planned.plan) return false;
-  return !planned.plan.headerSynthesized || planned.plan.bands.length >= 3;
 }
 
 /**

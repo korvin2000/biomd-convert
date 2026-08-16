@@ -1,63 +1,104 @@
 /**
- * The gateway-backed resolver: where the hook runtime meets the compiler.
+ * The gateway-backed resolver: where the hook kernel meets the compiler.
  *
  * Everything above this file speaks in classifications and column labels;
  * everything below speaks in requests, schemas and budgets. The join is
- * deliberately thin, and it is the only place the two vocabularies meet.
+ * deliberately thin — one generic method — and it is the only place the two
+ * vocabularies meet. It contains no hook names: a decision point is matched to
+ * whatever enabled plugin declares the same id, and adding a hook never edits
+ * this file.
  *
- * Two behaviours are worth stating because they are what make an unattended
- * thousand-file run safe:
+ * Three behaviours make an unattended thousand-file run safe:
  *
- *   - a resolver *never* fails a conversion. Budget exhaustion, a dead gateway
- *     and a malformed reply all resolve to null, and null means "the
- *     deterministic answer stands and the item stays flagged";
- *   - every decision is cached on the resolved model identity, so a re-run after
- *     a code change costs nothing and produces byte-identical output.
+ *   - a resolver *never* fails a conversion. A closed gate, an exhausted
+ *     budget, a dead gateway, a malformed reply and a refused acceptance check
+ *     all resolve to null, and null means "the deterministic answer stands and
+ *     the item stays flagged";
+ *   - the compiler's own acceptance check runs last, on data the hook framework
+ *     has already schema-validated, and it is the only thing that can authorise
+ *     an application;
+ *   - every decision is cached on the resolved model identity *and* the prompt
+ *     template hashes, so a re-run after a code change costs nothing and
+ *     produces byte-identical output, while an edited prompt is a new question.
  */
 import type {
-  Classification,
+  DecisionPoint,
   DecisionResolver,
+  HookCounts,
   ResolverStats,
-  TableClassifyRequest,
-  TableHeaderRequest,
 } from "../convert-core/index.js";
-import { emptyStats } from "../convert-core/resolver.js";
-import { cellText, describePlan } from "../convert-core/data-table.js";
-import { type Budget } from "./budget.js";
+import { emptyHookCounts, emptyStats } from "../convert-core/resolver.js";
+import type { Budget } from "./budget.js";
 import type { DecisionCache } from "./cache.js";
-import { type HookEvent, runHook } from "./hook.js";
-import {
-  type TableHeaderContext,
-  replyToClassification,
-  tableClassifyHook,
-  tableHeaderHook,
-} from "./hooks.js";
+import type { HookRunContext, ModelTier } from "./kernel/contract.js";
+import { Limiter } from "./kernel/concurrency.js";
+import type { HookEvent, HookEventSink } from "./kernel/events.js";
+import type { PreparedHook } from "./kernel/runner.js";
+import { runHook } from "./kernel/runner.js";
 import type { Transport } from "./transport.js";
 
 export interface GatewayResolverOptions {
   transport: Transport;
   cache: DecisionCache;
   budget: Budget;
+  /** Enabled hooks, already prepared: policy applied, prompts loaded. */
+  hooks: ReadonlyArray<PreparedHook>;
+  /** Names the queue that protects the server. Usually the gateway name. */
+  endpoint: string;
   /** Model per escalation tier, from the resolved gateway config. */
-  models: { fast: string; balanced: string; deep: string };
-  /** Document language, so generated labels match the page. */
-  lang: string;
+  models: Record<ModelTier, string>;
+  /** Facts about the run, handed to every hook unchanged. */
+  context: HookRunContext;
+  limiter?: Limiter;
+  /**
+   * Stop calling after this many consecutive transport failures. 0 disables it.
+   *
+   * A budget cannot carry this weight: it counts *settled* usage, and a request
+   * that never reached a model settles nothing — so a dead gateway is invisible
+   * to `maxCalls` and a corpus run against one produces one doomed request per
+   * escalation. Measured on the 28-document bench: 72 of them, in nine seconds,
+   * every one reporting the same refused connection. That is a batch conversion
+   * hammering a server that is already unwell, and the first failure had
+   * already told us everything the other seventy-one did.
+   */
+  breakerAfter?: number;
   /** Replay only: never call the network. */
   replay?: boolean;
-  onEvent?: (event: HookEvent) => void;
+  onEvent?: HookEventSink;
+  startedAt?: number;
 }
 
 export class GatewayResolver implements DecisionResolver {
   readonly #options: GatewayResolverOptions;
+  readonly #limiter: Limiter;
+  readonly #byPoint = new Map<string, PreparedHook>();
+  readonly #callsByHook = new Map<string, number>();
+  readonly #failures = new Map<string, number>();
   // `consulted` and `resolved` are the pipeline's to count — it knows which
   // decision points exist, including the ones a null resolver never sees.
   readonly #stats: ResolverStats = emptyStats();
 
   constructor(options: GatewayResolverOptions) {
     this.#options = options;
+    this.#limiter = options.limiter ?? new Limiter();
+    for (const prepared of options.hooks) {
+      const point = prepared.definition.decisionPoint;
+      const existing = this.#byPoint.get(point);
+      if (existing) {
+        throw new Error(
+          `Hooks ${existing.definition.id} and ${prepared.definition.id} both serve the decision point ` +
+            `${JSON.stringify(point)}. Two hooks may compete for a point, but only one may be enabled at ` +
+            "a time — a run in which both answer is a run whose output nobody can attribute.",
+        );
+      }
+      this.#byPoint.set(point, prepared);
+    }
   }
 
-  readonly #failures = new Map<string, number>();
+  /** Which decision points this resolver can actually answer. */
+  servedPoints(): string[] {
+    return [...this.#byPoint.keys()].sort();
+  }
 
   stats(): ResolverStats {
     return {
@@ -65,88 +106,152 @@ export class GatewayResolver implements DecisionResolver {
       failures: [...this.#failures]
         .map(([reason, count]) => ({ reason, count }))
         .sort((a, b) => b.count - a.count),
-      byHook: { ...this.#stats.byHook },
+      byHook: Object.fromEntries(Object.entries(this.#stats.byHook).map(([k, v]) => [k, { ...v }])),
     };
   }
 
-  #runtime() {
-    return {
-      transport: this.#options.transport,
-      cache: this.#options.cache,
-      budget: this.#options.budget,
-      ...(this.#options.replay ? { replay: true } : {}),
-      onEvent: (event: HookEvent) => {
-        const bucket = (this.#stats.byHook[event.hook] ??= { calls: 0, cacheHits: 0, unresolved: 0 });
-        if (event.type === "deterministic") this.#stats.deterministic += 1;
-        if (event.type === "cache-hit") {
-          this.#stats.cacheHits += 1;
-          bucket.cacheHits += 1;
-        }
-        if (event.type === "call") {
-          this.#stats.calls += 1;
-          bucket.calls += 1;
-        }
-        if (event.type === "review") {
-          this.#stats.unresolved += 1;
-          bucket.unresolved += 1;
-          // Collapse the per-item detail: forty items failing on one dead model
-          // is one problem, and forty lines of it is noise that hides it.
-          const reason = `${event.hook}: ${generalize(event.reason)}`;
-          this.#failures.set(reason, (this.#failures.get(reason) ?? 0) + 1);
-        }
-        if (event.type === "invalid") {
-          const reason = `${event.hook}: reply rejected — ${generalize(event.issues.join("; "))}`;
-          this.#failures.set(reason, (this.#failures.get(reason) ?? 0) + 1);
-        }
-        this.#options.onEvent?.(event);
-      },
-    };
+  #counts(hook: string): HookCounts {
+    return (this.#stats.byHook[hook] ??= emptyHookCounts());
   }
 
-  /** Substitute the configured tiers for the hook's declared placeholders. */
-  #tiers(): readonly string[] {
-    const { fast, balanced, deep } = this.#options.models;
-    return [...new Set([fast, balanced, deep])];
+  #record(event: HookEvent): void {
+    const bucket = this.#counts(event.hook);
+    switch (event.type) {
+      case "gate":
+        if (!event.call) {
+          this.#stats.skipped += 1;
+          bucket.skipped += 1;
+        }
+        break;
+      case "cache-hit":
+        this.#stats.cacheHits += 1;
+        bucket.cacheHits += 1;
+        break;
+      case "call":
+        this.#stats.calls += 1;
+        bucket.calls += 1;
+        break;
+      case "reply":
+        this.#stats.inputTokens += event.usage.inputTokens;
+        this.#stats.outputTokens += event.usage.outputTokens;
+        // Something answered. Whatever it said, the gateway is alive.
+        this.#consecutiveTransportFailures = 0;
+        break;
+      case "rejected":
+        this.#stats.rejected += 1;
+        bucket.rejected += 1;
+        this.#note(`${event.hook}: ${event.reason}`);
+        break;
+      case "review":
+        this.#stats.unresolved += 1;
+        bucket.unresolved += 1;
+        this.#note(`${event.hook}: ${event.reason}`);
+        if (event.reason.startsWith("transport failure")) this.#tripCheck();
+        break;
+      case "invalid":
+        this.#note(`${event.hook}: reply rejected — ${event.issues.join("; ")}`);
+        break;
+      default:
+        break;
+    }
+    this.#options.onEvent?.(event);
   }
 
-  async classifyTable(request: TableClassifyRequest): Promise<Classification | null> {
-    const hook = { ...tableClassifyHook, models: this.#tiers() };
-    // The deterministic tiers already ran in the pipeline and abstained; running
-    // them again here would answer the question with the same "no".
-    const { deterministic: _ignored, ...rest } = hook;
+  /**
+   * Collapse the per-item detail.
+   *
+   * Forty items failing on one dead model is one problem, and forty lines of it
+   * is noise that hides it.
+   */
+  #note(reason: string): void {
+    const key = generalize(reason);
+    this.#failures.set(key, (this.#failures.get(key) ?? 0) + 1);
+  }
+
+  #since(): number {
+    return Date.now() - (this.#options.startedAt ?? Date.now());
+  }
+
+  /** Open the circuit once the gateway has failed to answer often enough. */
+  #tripCheck(): void {
+    const limit = this.#options.breakerAfter ?? 0;
+    if (limit <= 0) return;
+    this.#consecutiveTransportFailures += 1;
+    if (this.#consecutiveTransportFailures < limit || this.#breakerOpen) return;
+    this.#breakerOpen = true;
+    // Once, not once per remaining item: the whole point is to stop repeating.
+    this.#note(
+      `circuit opened after ${limit} consecutive transport failures — the rest of this run ` +
+        "escalated nothing. Fix the gateway and re-run; cached decisions are kept.",
+    );
+  }
+
+  /** Consecutive transport failures; reset by any reply that arrives. */
+  #consecutiveTransportFailures = 0;
+  #breakerOpen = false;
+
+  /** True once the resolver has stopped calling a gateway that is not answering. */
+  get circuitOpen(): boolean {
+    return this.#breakerOpen;
+  }
+
+  async decide<TRequest, TDecision>(
+    point: DecisionPoint<TRequest, TDecision>,
+    request: TRequest,
+  ): Promise<TDecision | null> {
+    const prepared = this.#byPoint.get(point.id);
+    if (!prepared) return null;
+
+    const itemId = point.itemId(request);
+    const hookId = prepared.definition.id;
+
+    if (this.#breakerOpen) {
+      this.#record({
+        type: "review",
+        reason: "gateway is not answering; no further calls this run",
+        hook: hookId,
+        item: itemId,
+        at: this.#since(),
+      });
+      return null;
+    }
     const outcome = await runHook(
-      rest as typeof tableClassifyHook,
+      prepared,
+      { request, context: this.#options.context },
       {
-        ...(request.corpusFrequency !== undefined ? { corpusFrequency: request.corpusFrequency } : {}),
+        transport: this.#options.transport,
+        cache: this.#options.cache,
+        budget: this.#options.budget,
+        limiter: this.#limiter,
+        endpoint: this.#options.endpoint,
+        ...(this.#options.replay ? { replay: true } : {}),
+        ...(this.#options.startedAt !== undefined ? { startedAt: this.#options.startedAt } : {}),
+        calls: this.#callsByHook,
+        onEvent: (event) => this.#record(event),
       },
-      request.grid,
-      this.#runtime(),
-      `${request.sourceName ?? "?"}:${request.grid.id}`,
+      itemId,
     );
-    if (outcome.status !== "ok") return null;
-    return replyToClassification(outcome.value, outcome.source === "deterministic" ? 2 : 3);
-  }
 
-  async tableHeaders(request: TableHeaderRequest): Promise<string[] | null> {
-    const hook = { ...tableHeaderHook, models: this.#tiers() };
-    const context: TableHeaderContext = {
-      columns: request.plan.bands.length,
-      planSummary: describePlan(request.plan, 0),
-      lang: this.#options.lang,
-      ...(request.grid.captionText ? { caption: request.grid.captionText } : {}),
-      ...(precedingHeading(request) ? { precedingHeading: precedingHeading(request) as string } : {}),
-    };
-
-    const outcome = await runHook(
-      hook,
-      context,
-      { rows: sampleRows(request) },
-      this.#runtime(),
-      `${request.sourceName ?? "?"}:${request.grid.id}:headers`,
-    );
     if (outcome.status !== "ok") return null;
-    if (outcome.value.headers.length !== request.plan.bands.length) return null;
-    return outcome.value.headers.map((h) => h.trim());
+
+    // The last word, and it is the compiler's. A well-formed reply has proved
+    // nothing about this document; `accept` re-establishes every property the
+    // escalation site depends on before a single node is touched.
+    const verdict = point.accept(outcome.value, request);
+    if (!verdict.ok) {
+      this.#record({
+        type: "rejected",
+        reason: verdict.reason,
+        detail: `acceptance check at ${point.id}`,
+        hook: hookId,
+        item: itemId,
+        at: this.#since(),
+      });
+      return null;
+    }
+
+    this.#counts(hookId).resolved += 1;
+    return verdict.value;
   }
 }
 
@@ -164,59 +269,4 @@ function generalize(reason: string): string {
     .replace(/\b[0-9a-f]{16,}\b/giu, "…")
     .trim()
     .slice(0, 160);
-}
-
-/**
- * A sample of the planned matrix, not the whole thing.
- *
- * Naming a column needs a handful of representative values; a twenty-seven-row
- * discography adds nothing but tokens. Rows are taken from the head, middle and
- * tail so an irregular column is still visible.
- */
-function sampleRows(request: TableHeaderRequest, limit = 8): string {
-  const body = request.plan.body;
-  const indices = new Set<number>();
-  for (let i = 0; i < Math.min(limit, body.length); i += 1) {
-    indices.add(Math.floor((i * (body.length - 1)) / Math.max(1, Math.min(limit, body.length) - 1)));
-  }
-  return [...indices]
-    .sort((a, b) => a - b)
-    .map((i) => {
-      const row = body[i];
-      if (!row) return "";
-      return `  ${row.cells.map((c) => JSON.stringify(cellText(c, 48))).join(" | ")}`;
-    })
-    .filter(Boolean)
-    .join("\n");
-}
-
-/** The nearest heading above the table, which usually names what it lists. */
-function precedingHeading(request: TableHeaderRequest): string | undefined {
-  let node = request.grid.node.parent;
-  const seen = new Set<string>();
-  while (node && !seen.has(node.id)) {
-    seen.add(node.id);
-    const siblings = node.children;
-    for (let i = siblings.length - 1; i >= 0; i -= 1) {
-      const sibling = siblings[i];
-      if (!sibling || sibling.kind !== "element") continue;
-      const marked = sibling.attrs["data-biomd-heading"];
-      if (marked !== undefined || /^h[1-6]$/u.test(sibling.tag)) {
-        const text = textContent(sibling);
-        if (text) return text;
-      }
-    }
-    node = node.parent;
-  }
-  return undefined;
-}
-
-function textContent(node: { children: Array<{ kind: string; value?: string; children: unknown[] }> }): string {
-  let out = "";
-  const visit = (n: { kind: string; value?: string; children: unknown[] }): void => {
-    if (n.kind === "text") out += n.value ?? "";
-    for (const child of n.children) visit(child as never);
-  };
-  visit(node as never);
-  return out.replace(/\s+/gu, " ").trim().slice(0, 120);
 }
