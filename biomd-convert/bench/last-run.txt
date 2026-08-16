@@ -32,4 +32,6 @@ Converted:      6
 Needs review:   22
 Failed:         0
 Clean share:    21.4%
+Elapsed:        6s
 LLM:            off — 72 escalation point(s) left as review items
+Report:         bench\work\runs\2026-08-16T11-12-54-464\report.json

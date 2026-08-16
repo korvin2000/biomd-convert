@@ -36,88 +36,34 @@ import {
 } from "../eval/index.js";
 import { L3Probe, compareRendered, renderBiomd, type L3Result } from "../l3/index.js";
 import { ENGINE_VERSION, JobStore, hashOf, writeAtomic } from "./store.js";
-import {
-  Budget,
-  FileCache,
-  GatewayResolver,
-  GatewayTransport,
-  MemoryCache,
-  runTransportProbe,
-} from "../llm/index.js";
-import type { DecisionResolver, ResolverStats } from "../convert-core/index.js";
+import { GatewayTransport, runTransportProbe } from "../llm/index.js";
+import type { Budget } from "../llm/index.js";
+import { type ResolverStats, emptyStats } from "../convert-core/index.js";
 import { ConfigError, loadConfig, resolveGateway, redactKey, type Config } from "./config.js";
 import { registerConfigCommands } from "./config-cmd.js";
+import { registerHookCommands } from "./hooks-cmd.js";
+import { HookConfigError, type LlmSession, openLlmSession } from "./llm-session.js";
+import { type LogLevel, RunReporter, displayPath, formatDuration, runId } from "./reporter.js";
 
 /**
- * Build the escalation boundary from configuration.
+ * What an escalation boundary did, in one block.
  *
- * Returns null whenever a model must not be used — `llm.enabled` off, `--llm
- * off`, no gateway, no key. Every one of those is a normal, supported state: the
- * pipeline is deterministic-first and a null resolver simply means the residual
- * ambiguity becomes review items instead of requests.
+ * Calls that resolved nothing are the case that most needs explaining: a
+ * mistyped model id, an expired key and an exhausted budget all look like "the
+ * LLM does nothing" until the reason is on screen. Skipped and rejected are
+ * listed beside them because they are *successes* of the same machinery —
+ * a gate that declined and an acceptance check that refused both cost the
+ * conversion nothing and both leave the deterministic answer standing.
  */
-function makeResolver(
-  cfg: Config,
-  options: { llm?: string; gateway?: string; replay?: boolean },
-  onEvent?: (event: { type: string; hook: string }) => void,
-): { resolver: DecisionResolver | null; budget: Budget | null; note: string } {
-  const mode = (options.llm as string | undefined) ?? (cfg.llm.enabled ? "assist" : "off");
-  if (mode === "off") return { resolver: null, budget: null, note: "llm off — fully deterministic" };
-
-  let gateway;
-  try {
-    gateway = resolveGateway(cfg, options.gateway);
-  } catch (error) {
-    return { resolver: null, budget: null, note: `llm unavailable: ${(error as Error).message.split("\n")[0]}` };
-  }
-  if (!gateway.apiKey && !options.replay) {
-    return {
-      resolver: null,
-      budget: null,
-      note: `llm unavailable: no API key for gateway "${gateway.name}" (${gateway.apiKeySource}). ` +
-        "Run `biomd config set-key <gateway>`.",
-    };
-  }
-
-  const transport = new GatewayTransport({
-    baseUrl: gateway.baseUrl,
-    ...(gateway.apiKey ? { apiKey: gateway.apiKey } : {}),
-    headers: gateway.headers,
-    structuredOutput: gateway.structuredOutput,
-    extraBody: gateway.extraBody,
-    enforceModelIdentity: gateway.enforceModelIdentity,
-    timeoutMs: gateway.timeoutMs,
-  });
-  const budget = new Budget(cfg.llm.budget, {
-    input: cfg.llm.prices.input,
-    output: cfg.llm.prices.output,
-    cachedInputMultiplier: cfg.llm.prices.cachedInputMultiplier,
-  });
-  const cache = cfg.llm.cacheDir ? new FileCache(resolve(cfg.llm.cacheDir)) : new MemoryCache();
-
-  const resolver = new GatewayResolver({
-    transport,
-    cache,
-    budget,
-    models: gateway.models,
-    lang: cfg.lang,
-    ...(options.replay ? { replay: true } : {}),
-    ...(onEvent ? { onEvent } : {}),
-  });
-  return {
-    resolver,
-    budget,
-    note: `llm ${mode} via "${gateway.name}" (${gateway.models.fast} → ${gateway.models.deep}), key ${redactKey(gateway.apiKey)}`,
-  };
-}
-
 function describeResolverStats(stats: ResolverStats, budget: Budget | null): string {
   const usage = budget?.usage();
   const parts = [
     `escalations: ${stats.resolved}/${stats.consulted} resolved`,
+    `gate skipped: ${stats.skipped}`,
     `model calls: ${stats.calls}`,
     `cache hits: ${stats.cacheHits}`,
   ];
+  if (stats.rejected > 0) parts.push(`refused: ${stats.rejected}`);
   if (usage && usage.calls > 0) {
     parts.push(
       `tokens: ${usage.inputTokens} in / ${usage.outputTokens} out`,
@@ -127,9 +73,6 @@ function describeResolverStats(stats: ResolverStats, budget: Budget | null): str
 
   const lines = [parts.join("  ")];
 
-  // Calls that resolved nothing are the case that most needs explaining: a
-  // mistyped model id, an expired key and an exhausted budget all look like
-  // "the LLM does nothing" until the reason is on screen.
   if (stats.failures.length > 0) {
     lines.push("");
     if (stats.calls > 0 && stats.resolved === 0) {
@@ -137,7 +80,7 @@ function describeResolverStats(stats: ResolverStats, budget: Budget | null): str
         `                ${stats.calls} model call(s) were made and none produced a usable decision:`,
       );
     } else {
-      lines.push("                unresolved escalations:");
+      lines.push("                unresolved or refused escalations:");
     }
     for (const failure of stats.failures.slice(0, 5)) {
       lines.push(`                  ${failure.count}× ${failure.reason}`);
@@ -160,12 +103,115 @@ function settings(options: Record<string, unknown>): Config {
   for (const key of ["profile", "layoutFidelity", "visual", "lang", "outDir", "workDir", "corpus", "assetRoot", "jobs"]) {
     if (options[key] !== undefined) flags[key] = key === "jobs" ? Number(options[key]) : options[key];
   }
+  const level = logLevelFrom(options);
+  if (level) flags["log"] = { level };
   const loaded = loadConfig({
     flags,
     ...(options["config"] ? { configPath: options["config"] as string } : {}),
   });
   for (const warning of loaded.warnings) process.stderr.write(`warning: ${warning}\n`);
   return loaded.config;
+}
+
+/** `--quiet`, `-v`, `--debug` and `--log-level` all name the same setting. */
+function logLevelFrom(options: Record<string, unknown>): LogLevel | undefined {
+  if (options["logLevel"] !== undefined) return options["logLevel"] as LogLevel;
+  if (options["debug"] === true) return "debug";
+  if (options["verbose"] === true) return "verbose";
+  if (options["quiet"] === true) return "quiet";
+  return undefined;
+}
+
+/**
+ * Common flags, declared once.
+ *
+ * Notably absent: a flag per hook. Hooks are named by id through `--hooks`, so
+ * the command line does not grow when a plugin directory is added.
+ */
+function withRunOptions(command: Command): Command {
+  return command
+    .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
+    .option("-g, --gateway <name>", "which configured gateway to use")
+    .option("--hooks <ids>", "comma-separated hook ids to enable for this run")
+    .option("--no-hooks", "disable every hook for this run")
+    .option("--replay", "use only cached model decisions; never call the network")
+    .option("--log-level <level>", "quiet | normal | verbose | debug")
+    .option("--debug", "shorthand for --log-level debug")
+    .option("-v, --verbose", "shorthand for --log-level verbose")
+    .option("--no-run-log", "do not write the structured run log and report");
+}
+
+/** Options a session needs, read off a commander options object. */
+function sessionOptions(options: Record<string, unknown>, reporter: RunReporter, startedAt: number) {
+  return {
+    ...(options["llm"] !== undefined ? { llm: options["llm"] as string } : {}),
+    ...(options["gateway"] !== undefined ? { gateway: options["gateway"] as string } : {}),
+    ...(options["hooks"] !== undefined && typeof options["hooks"] === "string"
+      ? { hooks: options["hooks"] }
+      : {}),
+    // commander sets `hooks: false` for `--no-hooks`.
+    ...(options["hooks"] === false ? { noHooks: true } : {}),
+    ...(options["replay"] === true ? { replay: true } : {}),
+    startedAt,
+    onEvent: (event: Parameters<RunReporter["hookEvent"]>[0]) => reporter.hookEvent(event),
+  };
+}
+
+/** Where a run writes its structured log, or null when it was turned off. */
+function runLogDir(cfg: Config, options: Record<string, unknown>, id: string): string | null {
+  if (cfg.log.runLog === false || options["runLog"] === false) return null;
+  return join(resolve(cfg.workDir), "runs", id);
+}
+
+/** The header every run log opens with: enough to reproduce the run. */
+function runHeader(cfg: Config, session: LlmSession, extra: Record<string, unknown>): Record<string, unknown> {
+  return {
+    engine: ENGINE_VERSION,
+    node: process.version,
+    platform: process.platform,
+    config: {
+      profile: cfg.profile,
+      layoutFidelity: cfg.layoutFidelity,
+      visual: cfg.visual,
+      lang: cfg.lang,
+      jobs: cfg.jobs,
+      corpus: cfg.corpus,
+      logLevel: cfg.log.level,
+    },
+    llm: {
+      note: session.note,
+      concurrency: cfg.llm.concurrency,
+      budget: cfg.llm.budget,
+      hooks: session.hooks.map((h) => ({
+        id: h.definition.id,
+        version: h.definition.version,
+        decisionPoint: h.definition.decisionPoint,
+        models: h.models,
+        policy: h.policy,
+        templates: {
+          system: h.templates.system.hash,
+          user: h.templates.user.hash,
+        },
+      })),
+    },
+    ...extra,
+  };
+}
+
+/**
+ * Which deterministic passes actually did something, aggregated.
+ *
+ * The run report has to say what the *rules* did, not only what the model did —
+ * otherwise the one subsystem that carries the corpus is the one the report is
+ * silent about.
+ */
+function rulesApplied(ledger: ReadonlyArray<{ pass: string; decidedBy: string }>): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const entry of ledger) {
+    const key = entry.decidedBy.startsWith("llm:") ? entry.decidedBy : entry.pass;
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  return counts;
 }
 
 const program = new Command();
@@ -177,36 +223,48 @@ program
 
 // ---------------------------------------------------------------------------
 
-program
-  .command("convert")
-  .description("Convert one HTML file")
-  .argument("<input>", "source .htm/.html file")
-  .option("-o, --out <file>", "write the .bio.md here (default: alongside the input)")
-  .option("-w, --work-dir <dir>", "job artifact directory")
-  .option("-p, --profile <id>", `target profile (${Object.keys(PROFILES).join(" | ")})`)
-  .option("--layout-fidelity <mode>", "simplified | faithful")
-  .option("--visual <mode>", "never | auto | always")
-  .option("--asset-root <dir>", "resolve relative assets from here during measurement")
-  .option("--lang <code>", "primary language for hyphenation")
-  .option("--corpus <file>", "corpus-profile.json from `biomd corpus scan`")
-  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
-  .option("-g, --gateway <name>", "which configured gateway to use")
-  .option("--replay", "use only cached model decisions; never call the network")
-  .option("-c, --config <file>", "explicit config file")
-  .option("--quiet", "only print the output path")
+withRunOptions(
+  program
+    .command("convert")
+    .description("Convert one HTML file")
+    .argument("<input>", "source .htm/.html file")
+    .option("-o, --out <file>", "write the .bio.md here (default: alongside the input)")
+    .option("-w, --work-dir <dir>", "job artifact directory")
+    .option("-p, --profile <id>", `target profile (${Object.keys(PROFILES).join(" | ")})`)
+    .option("--layout-fidelity <mode>", "simplified | faithful")
+    .option("--visual <mode>", "never | auto | always")
+    .option("--asset-root <dir>", "resolve relative assets from here during measurement")
+    .option("--lang <code>", "primary language for hyphenation")
+    .option("--corpus <file>", "corpus-profile.json from `biomd corpus scan`")
+    .option("-c, --config <file>", "explicit config file")
+    .option("--quiet", "only print the output path"),
+)
   .action(async (input: string, options) => {
     const cfg = settings(options);
     const bytes = await readFile(resolve(input));
     const profile = resolveProfile(cfg.profile);
     const corpus = await loadCorpus(cfg.corpus, true);
 
+    const startedAt = Date.now();
+    const id = runId();
+    const reporter = new RunReporter({
+      level: cfg.log.level,
+      heartbeatSeconds: cfg.log.heartbeatSeconds,
+      total: 1,
+    });
+    const session = await openLlmSession(cfg, sessionOptions(options, reporter, startedAt));
+    await reporter.open(runLogDir(cfg, options, id), runHeader(cfg, session, { command: "convert", input }));
+    reporter.start();
+    for (const warning of session.warnings) reporter.warn(warning);
+    if (!options.quiet) process.stderr.write(`${session.note}\n`);
+
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
     const dictionary = await createWordDictionary(cfg.lang);
-    const { resolver, budget, note } = makeResolver(cfg, options);
-    if (!options.quiet) process.stderr.write(`${note}\n`);
+    const { resolver, budget } = session;
 
     try {
+      reporter.fileStart(basename(input));
       const store = await JobStore.open(resolve(cfg.workDir), basename(input), bytes, profile.id);
       const result = await convert(bytes, {
         sourceName: basename(input),
@@ -217,6 +275,7 @@ program
         oracle,
         dictionary,
         lang: cfg.lang,
+        onStage: (name) => reporter.stage(name, basename(input)),
         ...(resolver ? { resolver } : {}),
         ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
         ...(corpus ? { lexicon: Lexicon.fromJSON(corpus.lexicon) } : {}),
@@ -253,12 +312,34 @@ program
         measured: result.measured,
       });
 
+      reporter.fileDone({
+        name: basename(input),
+        state: result.state,
+        status: result.state === "conversion-review-required" ? "review" : "ok",
+        ms: reporter.elapsedMs,
+        detail: {
+          textRecall: Number(result.conservation.text.recall.toFixed(4)),
+          errors: result.diagnostics.filter((d) => d.severity === "error").length,
+          reviews: result.ledger.filter((e) => e.terminal.kind === "REVIEW").length,
+          escalations: { consulted: result.resolverStats.consulted, resolved: result.resolverStats.resolved },
+          rules: rulesApplied(result.ledger),
+          warnings: result.warnings,
+        },
+      });
+
       if (options.quiet) {
         process.stdout.write(`${outPath}\n`);
       } else {
         printResult(input, outPath, result, store.root);
         if (resolver) process.stdout.write(`LLM:          ${describeResolverStats(result.resolverStats, budget)}\n`);
       }
+      const reportPath = await reporter.finish({
+        command: "convert",
+        input,
+        output: outPath,
+        llm: { stats: result.resolverStats, usage: budget?.usage() ?? null },
+      });
+      if (reportPath && !options.quiet) process.stdout.write(`Report:       ${displayPath(reportPath)}\n`);
       process.exitCode = result.state === "conversion-review-required" ? 2 : 0;
     } finally {
       await measurer.close();
@@ -313,23 +394,22 @@ corpus
     for (const warning of profile.warnings) process.stderr.write(`warning: ${warning}\n`);
   });
 
-corpus
-  .command("run")
-  .description("Convert every file in a directory, resumable")
-  .argument("[dir]", "directory of .htm/.html files (defaults to config inputDir)")
-  .option("-w, --work-dir <dir>", "job artifact directory")
-  .option("-O, --out-dir <dir>", "write .bio.md files here")
-  .option("-p, --profile <id>", "target profile")
-  .option("--layout-fidelity <mode>", "simplified | faithful")
-  .option("--visual <mode>", "never | auto | always")
-  .option("--asset-root <dir>", "resolve relative assets from here")
-  .option("--corpus <file>", "corpus-profile.json")
-  .option("--lang <code>", "primary language")
-  .option("-j, --jobs <n>", "concurrent conversions")
-  .option("--llm <mode>", "off | assist — escalate the residual ambiguity to a model")
-  .option("-g, --gateway <name>", "which configured gateway to use")
-  .option("--replay", "use only cached model decisions; never call the network")
-  .option("-c, --config <file>", "explicit config file")
+withRunOptions(
+  corpus
+    .command("run")
+    .description("Convert every file in a directory, resumable")
+    .argument("[dir]", "directory of .htm/.html files (defaults to config inputDir)")
+    .option("-w, --work-dir <dir>", "job artifact directory")
+    .option("-O, --out-dir <dir>", "write .bio.md files here")
+    .option("-p, --profile <id>", "target profile")
+    .option("--layout-fidelity <mode>", "simplified | faithful")
+    .option("--visual <mode>", "never | auto | always")
+    .option("--asset-root <dir>", "resolve relative assets from here")
+    .option("--corpus <file>", "corpus-profile.json")
+    .option("--lang <code>", "primary language")
+    .option("-j, --jobs <n>", "concurrent conversions")
+    .option("-c, --config <file>", "explicit config file"),
+)
   .action(async (dirArg: string | undefined, options) => {
     const cfg = settings(options);
     const dir = dirArg ?? cfg.inputDir;
@@ -345,17 +425,40 @@ corpus
     const corpusProfile = await loadCorpus(cfg.corpus, true);
     const lexicon = corpusProfile ? Lexicon.fromJSON(corpusProfile.lexicon) : new Lexicon();
 
+    const startedAt = Date.now();
+    const id = runId();
+    const reporter = new RunReporter({
+      level: cfg.log.level,
+      heartbeatSeconds: cfg.log.heartbeatSeconds,
+      total: files.length,
+    });
+
+    // One session for the whole run: the budget is a corpus-wide cap, and the
+    // decision cache is shared, so the same ambiguous table on forty pages costs
+    // one request rather than forty.
+    const session = await openLlmSession(cfg, sessionOptions(options, reporter, startedAt));
+    const { resolver, budget } = session;
+    await reporter.open(
+      runLogDir(cfg, options, id),
+      runHeader(cfg, session, { command: "corpus run", inputDir: resolve(dir), files: files.length }),
+    );
+    reporter.start();
+    for (const warning of session.warnings) reporter.warn(warning);
+    process.stderr.write(`${session.note}\n`);
+
     const measurer = await createMeasurer(cfg.visual as VisualMode);
     const oracle = await createHyphenopolyOracle([cfg.lang, "en-us"]);
     const dictionary = await createWordDictionary(cfg.lang);
-    // Browser contexts are the scarce resource; conversions are cheap.
-    const queue = new PQueue({ concurrency: measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs });
-
-    // One resolver for the whole run: the budget is a corpus-wide cap, and the
-    // decision cache is shared, so the same ambiguous table on forty pages costs
-    // one request rather than forty.
-    const { resolver, budget, note } = makeResolver(cfg, options);
-    process.stderr.write(`${note}\n`);
+    // Browser contexts are the scarce resource; conversions are cheap. With a
+    // resolver active the bound tightens again: escalations are serialized by
+    // the limiter anyway, and interleaving four documents' worth of them makes
+    // the live report unreadable without making the run faster.
+    const measurerBound = measurer.available ? Math.min(cfg.jobs, 4) : cfg.jobs;
+    const concurrency = resolver ? Math.min(measurerBound, Math.max(1, cfg.llm.concurrency.default)) : measurerBound;
+    if (resolver && concurrency < measurerBound) {
+      reporter.note(`concurrency reduced to ${concurrency} while hooks are active (llm.concurrency.default)`);
+    }
+    const queue = new PQueue({ concurrency });
 
     const tally = { complete: 0, review: 0, failed: 0 };
     const escalationTotals = { consulted: 0, resolved: 0 };
@@ -365,11 +468,14 @@ corpus
       await Promise.all(
         files.map((path) =>
           queue.add(async () => {
+            const name = basename(path);
+            const fileStarted = Date.now();
+            reporter.fileStart(name);
             try {
               const bytes = await readFile(path);
-              const store = await JobStore.open(resolve(cfg.workDir), basename(path), bytes, profile.id);
+              const store = await JobStore.open(resolve(cfg.workDir), name, bytes, profile.id);
               const result = await convert(bytes, {
-                sourceName: basename(path),
+                sourceName: name,
                 profile,
                 layoutFidelity: cfg.layoutFidelity,
                 measurer,
@@ -377,6 +483,7 @@ corpus
                 dictionary,
                 lexicon,
                 lang: cfg.lang,
+                onStage: (s) => reporter.stage(s, name),
                 ...(resolver ? { resolver } : {}),
                 ...(cfg.assetRoot ? { assetRoot: resolve(cfg.assetRoot) } : {}),
                 ...(corpusProfile ? { corpusProfile } : {}),
@@ -392,23 +499,52 @@ corpus
               }, "verify", hashOf(bytes));
               await store.finish(result.state);
 
-              if (result.state === "conversion-review-required") tally.review += 1;
+              const review = result.state === "conversion-review-required";
+              if (review) tally.review += 1;
               else tally.complete += 1;
               escalationTotals.consulted += result.resolverStats.consulted;
               escalationTotals.resolved += result.resolverStats.resolved;
               const wantTables = result.tables.filter((t) => t.classification === "DATA").length;
               const gotTables = result.tables.filter((t) => t.emittedTable).length;
+              const errors = result.diagnostics.filter((d) => d.severity === "error").length;
+              const reviews = result.ledger.filter((e) => e.terminal.kind === "REVIEW").length;
               rows.push(
-                `${result.state === "conversion-review-required" ? "REVIEW " : "ok     "} ${basename(path)}  ` +
+                `${review ? "REVIEW " : "ok     "} ${name}  ` +
                   `recall=${(result.conservation.text.recall * 100).toFixed(1)}%  ` +
-                  `errors=${result.diagnostics.filter((d) => d.severity === "error").length}  ` +
-                  `reviews=${result.ledger.filter((e) => e.terminal.kind === "REVIEW").length}  ` +
+                  `errors=${errors}  ` +
+                  `reviews=${reviews}  ` +
                   `tables=${gotTables}/${wantTables}  ` +
                   `llm=${result.resolverStats.resolved}/${result.resolverStats.consulted}`,
               );
+              reporter.fileDone({
+                name,
+                state: result.state,
+                status: review ? "review" : "ok",
+                ms: Date.now() - fileStarted,
+                detail: {
+                  textRecall: Number(result.conservation.text.recall.toFixed(4)),
+                  errors,
+                  reviews,
+                  tables: { emitted: gotTables, expected: wantTables },
+                  escalations: {
+                    consulted: result.resolverStats.consulted,
+                    resolved: result.resolverStats.resolved,
+                  },
+                  rules: rulesApplied(result.ledger),
+                  chrome: result.chrome,
+                  warnings: result.warnings,
+                },
+              });
             } catch (error) {
               tally.failed += 1;
-              rows.push(`FAILED  ${basename(path)}  ${(error as Error).message}`);
+              rows.push(`FAILED  ${name}  ${(error as Error).message}`);
+              reporter.fileDone({
+                name,
+                state: "failed",
+                status: "failed",
+                ms: Date.now() - fileStarted,
+                detail: { error: (error as Error).message, stack: (error as Error).stack },
+              });
             }
           }),
         ),
@@ -420,15 +556,28 @@ corpus
     rows.sort();
     process.stdout.write(`${rows.join("\n")}\n\n`);
 
+    const stats: ResolverStats = resolver
+      ? { ...resolver.stats(), ...escalationTotals }
+      : { ...emptyStats(), ...escalationTotals };
+    const reportPath = await reporter.finish({
+      command: "corpus run",
+      inputDir: resolve(dir),
+      outDir: resolve(cfg.outDir),
+      tally: { ...tally, total: files.length },
+      llm: { note: session.note, stats, usage: budget?.usage() ?? null },
+    });
+
     process.stdout.write(
       [
         `Converted:      ${tally.complete}`,
         `Needs review:   ${tally.review}`,
         `Failed:         ${tally.failed}`,
         `Clean share:    ${((tally.complete / Math.max(1, files.length)) * 100).toFixed(1)}%`,
+        `Elapsed:        ${formatDuration(reporter.elapsedMs)}`,
         resolver
-          ? `LLM:            ${describeResolverStats({ ...resolver.stats(), ...escalationTotals }, budget)}`
+          ? `LLM:            ${describeResolverStats(stats, budget)}`
           : `LLM:            off — ${escalationTotals.consulted} escalation point(s) left as review items`,
+        ...(reportPath ? [`Report:         ${displayPath(reportPath)}`] : []),
         "",
       ].join("\n"),
     );
@@ -1079,6 +1228,7 @@ function describeChrome(result: { chrome: { documentText: number; removedText: n
 }
 
 registerConfigCommands(program);
+registerHookCommands(program);
 
 /**
  * A stack trace is for a bug in this program, not for a missing directory.
@@ -1093,7 +1243,7 @@ program.parseAsync(process.argv).catch((error: unknown) => {
   if (err?.code && expected.has(err.code)) {
     process.stderr.write(`${err.message}\n`);
     if (err.code === "ENOENT") process.stderr.write("The path above does not exist.\n");
-  } else if (err instanceof ConfigError) {
+  } else if (err instanceof ConfigError || err instanceof HookConfigError) {
     process.stderr.write(`${err.message}\n`);
   } else {
     process.stderr.write(`${err?.stack ?? String(error)}\n`);
