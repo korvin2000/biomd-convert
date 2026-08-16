@@ -1729,11 +1729,62 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   // per block so one long paragraph cannot drag a run of labels with it.
   const text = blockTextOf(block);
   if (text.trim() === "" || text.length > ALIGN_LABEL_MAX_CHARS) return null;
-  if (!isAlignableLabelText(text)) return null;
+  if (!isAlignableLabelText(text) && !carriesOnlyTargets(block)) return null;
 
   return align;
 }
 
+/**
+ * Whether everything visible in this block is a link.
+ *
+ * ## Rule contract — a strip of nothing but targets is a bounded group
+ *
+ * {@link isAlignableLabelText} demands a letter or a digit, and the false
+ * friend it exists for is a rule the author drew out of punctuation (`* * *`,
+ * `— — —`). A pager strip — `[◀](…) [●](…) [▶](…)` — carries no letter either,
+ * so it was refused for the separator's reason while being the opposite thing:
+ * the source states `align="center"` on it in **four** documents
+ * (`new_karta`, `new_lendle2`, `new_rechin4`, `xtra_karta5`) and all four
+ * references write `::: align / position: center` around it. Three of the five
+ * `retyped.paragraph-to-align` findings were this one refusal.
+ *
+ * **Invariant: cardinality and containment, no vocabulary.** At least one
+ * target, and nothing visible outside one — no prose, no bare picture. The
+ * glyphs themselves are never named: a strip of `[«](…) [»](…)`, of numbered
+ * page links, or of any other marker the icon map resolves passes the same
+ * test, and a strip whose labels are words passes {@link isAlignableLabelText}
+ * already and never reaches here.
+ *
+ * **False friends, both tested for non-firing.**
+ *
+ *   1. **The separator.** `* * *` and `— — —` carry no target, so they stay
+ *      refused — which is the whole reason the letter test was written.
+ *   2. **The labelled back-link.** `williams2` writes
+ *      `[◀ К началу биографии](/#/williams1)`; it carries words, so the letter
+ *      test decides it, and its reference leaves it unwrapped. This rule
+ *      changes nothing about it in either direction.
+ *
+ * **Recurrence does not apply and saying so is the point.** A page has one
+ * pager, at its foot, by construction. Containment is the substitute
+ * `CLAUDE.md` §5 names for exactly this case.
+ */
+function carriesOnlyTargets(block: BiomdContent): boolean {
+  let targets = 0;
+  let loose = "";
+  const visit = (node: unknown, inTarget: boolean): void => {
+    if (node === null || typeof node !== "object") return;
+    const n = node as { type?: string; value?: string; children?: unknown[] };
+    const linked = inTarget || n.type === "link";
+    if (n.type === "link") targets += 1;
+    if (!linked && n.type === "text" && typeof n.value === "string") loose += n.value;
+    // A picture standing outside a link is matter the strip is carrying, not a
+    // target it is made of.
+    if (!linked && (n.type === "image" || n.type === "biomdImage")) loose += "•";
+    if (Array.isArray(n.children)) for (const child of n.children) visit(child, linked);
+  };
+  visit(block, false);
+  return targets > 0 && loose.trim() === "";
+}
 
 /** Visible text of an emitted block, for the length and label guards. */
 function blockTextOf(block: BiomdContent): string {

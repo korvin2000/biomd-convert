@@ -4021,3 +4021,47 @@ describe("an underline the author drew outside a link", () => {
     expect(out).not.toContain("*\\**");
   });
 });
+
+describe("a strip of nothing but targets", () => {
+  async function aligned(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(body), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  const PAGER =
+    '<p align="center" style="text-align: center">' +
+    '<a href="karta4.htm"><img border="0" src="main/previous.gif" width="16" height="16"></a>' +
+    '<a href="karta.htm"><img border="0" src="main/h2.gif" width="16" height="16"></a></p>';
+
+  it("keeps the placement the source gave it", async () => {
+    // Four sources state `align="center"` on their pager and all four
+    // references wrap it. `isAlignableLabelText` refused it for the separator's
+    // reason — no letter, no digit — and three of the five
+    // `retyped.paragraph-to-align` findings were that one refusal.
+    const out = await aligned(PROSE + PAGER);
+    expect(out).toContain("position: center");
+  });
+
+  it("still refuses a rule drawn out of punctuation — non-firing", async () => {
+    // The false friend the letter test exists for. It carries no target, so
+    // cardinality keeps it out however it is placed.
+    const out = await aligned(PROSE + '<p align="center" style="text-align: center">* * *</p>' + PROSE);
+    expect(out).not.toContain("position: center");
+  });
+
+  it("leaves a back-link that carries words to the letter test — non-firing", async () => {
+    // `williams2` writes `[◀ К началу биографии](…)` unwrapped in its reference.
+    // Words put it under `isAlignableLabelText`, which decided it before this
+    // rule existed and still does; nothing here changes it in either direction.
+    const words =
+      '<p style="text-align: left"><a href="williams1.htm">' +
+      '<img border="0" src="main/previous.gif" width="16" height="16"> К началу биографии</a></p>';
+    const out = await aligned(PROSE + words + PROSE);
+    expect(out).not.toContain("position: center");
+  });
+});
