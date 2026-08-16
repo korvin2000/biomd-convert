@@ -86,7 +86,7 @@ export const hook = defineHook<TextListInput, RunKindReply>({
   version: "1",
   stability: "experimental",
   decisionPoint: "text.list",
-  enabledByDefault: false,
+  enabledByDefault: true,
   moduleUrl: import.meta.url,
   input: InputSchema,
   output: RunKindSchema,
