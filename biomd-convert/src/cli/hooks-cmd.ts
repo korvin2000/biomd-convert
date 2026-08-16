@@ -318,7 +318,7 @@ export function registerHookCommands(program: Command): void {
  * It is a *report*, not a registry: nothing dispatches through it, and a hook
  * missing from it still works the moment its decision point is declared.
  */
-const KNOWN_DECISION_POINTS = ["table.classify", "table.records", "text.list"] as const;
+const KNOWN_DECISION_POINTS = ["table.classify", "table.records", "text.list", "text.label"] as const;
 
 /**
  * Accept a bare request as well as a full invocation.

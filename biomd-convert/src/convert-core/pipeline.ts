@@ -49,7 +49,7 @@ import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
 import { planDataTable } from "./data-table.js";
 import { recoverHeadings } from "./headings.js";
 import { type DecisionResolver, NULL_RESOLVER, type ResolverStats } from "./resolver.js";
-import { TABLE_CLASSIFY, TABLE_HEADERS, TEXT_LIST, isWideEnoughForData } from "./decisions.js";
+import { TABLE_CLASSIFY, TABLE_HEADERS, TEXT_LABEL, TEXT_LIST, isWideEnoughForData } from "./decisions.js";
 import { type LayoutFidelity, type TableOutcome, enforceSingleTitle, recoverStructure } from "./structure.js";
 import { checkConservation, type ConservationReport } from "./conservation.js";
 import {
@@ -431,8 +431,31 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
     escalations.resolved += 1;
     promoted.add(candidate.id);
   }
-  if (promoted.size > 0) {
-    structure = recoverStructure(doc.root, grids, { ...structureOptions, listRuns: promoted });
+  // Escalation point 4. A standalone line the label classifier could not decide.
+  //
+  // Discoverable only after lowering, like point 3, and re-run the same way:
+  // the pass reports what it declined and a second pass applies whatever came
+  // back. With no hook enabled `decide` returns null for every candidate,
+  // `confirmed` stays empty and the second pass never happens, so the output is
+  // byte-identical by construction.
+  const confirmed = new Set<string>();
+  for (const candidate of structure.labelCandidates) {
+    escalations.consulted += 1;
+    const decided = await resolver.decide(TEXT_LABEL, {
+      text: candidate.id,
+      score: candidate.score,
+      ...(options.sourceName ? { sourceName: options.sourceName } : {}),
+    });
+    if (!decided) continue;
+    escalations.resolved += 1;
+    confirmed.add(candidate.id);
+  }
+  if (promoted.size > 0 || confirmed.size > 0) {
+    structure = recoverStructure(doc.root, grids, {
+      ...structureOptions,
+      ...(promoted.size > 0 ? { listRuns: promoted } : {}),
+      ...(confirmed.size > 0 ? { labelLines: confirmed } : {}),
+    });
   }
 
   warnings.push(...structure.warnings);

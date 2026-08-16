@@ -8,7 +8,7 @@
  * refused when this escalation site cannot support it.
  */
 import { describe, expect, it } from "vitest";
-import { TEXT_LIST, type TextListRequest } from "./decisions.js";
+import { TEXT_LABEL, TEXT_LIST, type TextLabelRequest, type TextListRequest } from "./decisions.js";
 import { breakRunId } from "./lines.js";
 
 function runOf(lines: string[], sourceName = "kiselev.htm"): TextListRequest {
@@ -89,5 +89,66 @@ describe("TEXT_LIST.accept", () => {
     expect(TEXT_LIST.itemId(runOf(VOLUMES))).toBe(`kiselev.htm:${breakRunId(VOLUMES)}`);
     // The same run on two pages is the same question and shares one answer.
     expect(TEXT_LIST.itemId(runOf(VOLUMES, "a.htm"))).not.toBe(TEXT_LIST.itemId(runOf(VOLUMES, "b.htm")));
+  });
+});
+
+describe("TEXT_LABEL.accept", () => {
+  const lineOf = (text: string, sourceName = "new_geyzel04.htm"): TextLabelRequest => ({
+    text,
+    score: 6,
+    sourceName,
+  });
+  const NOTES = "Примечания:";
+
+  it("accepts an asserted LABEL on the line it was asked about", () => {
+    const verdict = TEXT_LABEL.accept(
+      { kind: "LABEL", confidence: 0.92, rationale: "names the numbered notes below it" },
+      lineOf(NOTES),
+    );
+    expect(verdict.ok).toBe(true);
+    if (verdict.ok) expect(verdict.value.reason).toContain("names");
+  });
+
+  it("refuses the plausible-but-wrong verdict: a hedged LABEL", () => {
+    // The case this check exists for. A reply that is well formed, names a
+    // known kind and is about the right line can still be a guess, and marking
+    // a line is a visible claim about it.
+    const verdict = TEXT_LABEL.accept({ kind: "LABEL", confidence: 0.6, rationale: "probably" }, lineOf(NOTES));
+    expect(verdict.ok).toBe(false);
+    if (!verdict.ok) expect(verdict.reason).toContain("asserted");
+  });
+
+  it("treats SENTENCE and UNCERTAIN as successful refusals", () => {
+    // Not failures: the plain paragraph the compiler already emitted is the
+    // right treatment for both.
+    for (const kind of ["SENTENCE", "UNCERTAIN"]) {
+      const verdict = TEXT_LABEL.accept({ kind, confidence: 1, rationale: "…" }, lineOf(NOTES));
+      expect(verdict.ok).toBe(false);
+      if (!verdict.ok) expect(verdict.reason).toContain(kind);
+    }
+  });
+
+  it("refuses a request whose text is not the normalized line", () => {
+    // A decision is keyed by the words themselves, so a request assembled by
+    // hand or a stale cache entry must not mark a different line.
+    const verdict = TEXT_LABEL.accept({ kind: "LABEL", confidence: 1, rationale: "…" }, lineOf("  Примечания:  "));
+    expect(verdict.ok).toBe(false);
+    if (!verdict.ok) expect(verdict.reason).toContain("normalized");
+  });
+
+  it("refuses a line past the classifier's own ceiling", () => {
+    const verdict = TEXT_LABEL.accept({ kind: "LABEL", confidence: 1, rationale: "…" }, lineOf("я".repeat(200)));
+    expect(verdict.ok).toBe(false);
+    if (!verdict.ok) expect(verdict.reason).toContain("ceiling");
+  });
+
+  it("refuses a kind it has no name for, and a reply with no kind at all", () => {
+    expect(TEXT_LABEL.accept({ kind: "HEADING", confidence: 1, rationale: "" }, lineOf(NOTES)).ok).toBe(false);
+    expect(TEXT_LABEL.accept({ confidence: 1 }, lineOf(NOTES)).ok).toBe(false);
+  });
+
+  it("keys an item by source and content, so one line is one question", () => {
+    expect(TEXT_LABEL.itemId(lineOf(NOTES))).toBe(`new_geyzel04.htm:${NOTES}`);
+    expect(TEXT_LABEL.itemId(lineOf(NOTES, "a.htm"))).not.toBe(TEXT_LABEL.itemId(lineOf(NOTES, "b.htm")));
   });
 });

@@ -16,6 +16,7 @@ import type { TableGrid } from "../ladom/grid.js";
 import type { Classification } from "./classify.js";
 import { type LogicalTablePlan, planDataTable } from "./data-table.js";
 import { type BreakRunCandidate, breakRunId } from "./lines.js";
+import { LABEL_MAX_CHARS, labelLineId } from "./section-labels.js";
 import { type Acceptance, type DecisionPoint, accepted, refused } from "./resolver.js";
 
 // ---------------------------------------------------------------------------
@@ -265,6 +266,102 @@ export const TEXT_LIST: DecisionPoint<TextListRequest, TextListDecision> = {
     // the one property `accept` can establish that nothing upstream can.
     if (breakRunId(request.lines) !== request.id) {
       return refused("the reply does not belong to these lines");
+    }
+
+    const rationale = typeof verdict.rationale === "string" ? verdict.rationale : "";
+    return accepted({ confidence, reason: rationale.slice(0, RATIONALE_LIMIT) });
+  },
+};
+
+// ---------------------------------------------------------------------------
+// text.label — whether a standalone line names a section or predicates about it
+// ---------------------------------------------------------------------------
+
+export interface TextLabelRequest {
+  /** The line's own normalized text; also its id. */
+  text: string;
+  /** What the brief's five terms summed to, for the audit trail. */
+  score: number;
+  sourceName?: string;
+}
+
+/** What the compiler does with a `LABEL` verdict: mark the line `**bold**`. */
+export interface TextLabelDecision {
+  confidence: number;
+  reason: string;
+}
+
+/** The names a standalone line can be given, plus the one meaning "do not use me". */
+const LINE_CLASSES = new Set(["LABEL", "SENTENCE", "UNCERTAIN"]);
+
+/**
+ * Marking a line is a visible claim about it, so it is asserted, not preferred.
+ *
+ * The same bar `text.list` sets for restructuring a paragraph, for the same
+ * reason: the deterministic output is already correct-and-plain, so a hedged
+ * answer buys nothing and a wrong one is on the page.
+ */
+const LABEL_PROMOTION_CONFIDENCE = 0.75;
+
+/**
+ * `text.label` — the standalone line the brief's terms could not decide.
+ *
+ * **Abstention.** `analyze/TODO_Rules.md` §1's classifier scored the line at or
+ * above its threshold, but on terms prose satisfies as readily as a label — a
+ * trailing colon, shortness, standing clear. Neither of the two terms that only
+ * a label has fired: the line is not shouted and does not open with a word from
+ * the section vocabulary. The compiler emits the plain paragraph and records
+ * the question. `Примечания:` above a numbered list and
+ * `В автобиографии Сеговия описал встречу со своим первым гитарным учителем:`
+ * above a quotation are the same shape by every deterministic measure
+ * available, and the difference between them is what the words mean.
+ *
+ * **What this check can and cannot do.** It re-establishes every property the
+ * emission depends on — an asserted `LABEL` rather than a hedged one, a line
+ * still inside the brief's own ceiling, and a reply whose text *is* the line it
+ * claims to be about, which is what stops a stale cache entry or a mis-plumbed
+ * request from marking a neighbour. It deliberately does **not** try to catch a
+ * wrong `LABEL` on a sentence: a test strong enough to do that would have
+ * decided deterministically, and the four-word sentence
+ * `Формулируя цели Сеговия писал:` is the measurement that says no such test
+ * exists here either.
+ *
+ * That residue is why the hook ships disabled and why the failure mode was
+ * chosen to be visible: a bolded sentence is obvious on the page and invents no
+ * text, which is the difference between this and the two shapes `LLM-HOOKS.md`
+ * §8 rules out.
+ */
+export const TEXT_LABEL: DecisionPoint<TextLabelRequest, TextLabelDecision> = {
+  id: "text.label",
+  question: "Neither a shout nor a section word marked this line: does it name a section, or say something?",
+
+  itemId(request) {
+    return `${request.sourceName ?? "?"}:${request.text}`;
+  },
+
+  accept(reply, request): Acceptance<TextLabelDecision> {
+    const verdict = reply as { kind?: unknown; confidence?: unknown; rationale?: unknown };
+    const kind = verdict.kind;
+    const confidence = verdict.confidence;
+    if (typeof kind !== "string" || typeof confidence !== "number") {
+      return refused("reply carried no kind and confidence");
+    }
+    if (!LINE_CLASSES.has(kind)) return refused(`unknown kind ${JSON.stringify(kind)}`);
+    // A `SENTENCE` answer is a *successful* outcome: the plain paragraph the
+    // compiler already emitted is the right treatment for prose.
+    if (kind !== "LABEL") return refused(`the line reads as ${kind}`);
+
+    if (confidence < LABEL_PROMOTION_CONFIDENCE) {
+      return refused(
+        `LABEL at confidence ${confidence.toFixed(2)} — marking a line must be asserted ` +
+          `above ${LABEL_PROMOTION_CONFIDENCE}`,
+      );
+    }
+    if (labelLineId(request.text) !== request.text || request.text === "") {
+      return refused("the request does not carry a normalized line");
+    }
+    if (request.text.length > LABEL_MAX_CHARS) {
+      return refused(`${request.text.length} characters — past the classifier's own ceiling`);
     }
 
     const rationale = typeof verdict.rationale === "string" ? verdict.rationale : "";

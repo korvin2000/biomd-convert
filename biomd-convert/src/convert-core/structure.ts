@@ -55,6 +55,7 @@ import {
   LABEL_MAX_CHARS,
   LABEL_SCORE_THRESHOLD,
   carriesLabelEvidence,
+  labelLineId,
   scoreLabelLine,
 } from "./section-labels.js";
 import { UNNAMED_COLUMN_MARK, canonicalColumnLabel } from "./column-labels.js";
@@ -114,6 +115,12 @@ export interface StructureOptions {
    * abstaining run stays the hard-break paragraph it is today.
    */
   listRuns?: ReadonlySet<string>;
+  /**
+   * Standalone lines an operator's judgement confirmed as section labels, keyed
+   * by {@link labelLineId}. Supplied by the `text.label` hook; absent means
+   * every abstaining line stays the plain paragraph it is today.
+   */
+  labelLines?: ReadonlySet<string>;
 }
 
 /** What happened to one source table, for the structural conservation audit. */
@@ -150,6 +157,21 @@ export interface StructureResult {
    * what turning a hook on would be worth — and it is unknowable otherwise.
    */
   listCandidates: BreakRunCandidate[];
+  /**
+   * Standalone lines that scored as section labels on evidence prose also has.
+   *
+   * Collected for the reason `listCandidates` is: an abstention is invisible to
+   * every rung, so the count is the only statement of how much judgement the
+   * compiler is declining to make.
+   */
+  labelCandidates: LabelCandidate[];
+}
+
+/** A standalone line the label rule scored but could not decide. */
+export interface LabelCandidate {
+  /** The line's own normalized text — content-derived, so it is self-verifying. */
+  id: string;
+  score: number;
 }
 
 interface Ctx {
@@ -165,6 +187,8 @@ interface Ctx {
   tables: TableOutcome[];
   /** Break-runs the four list rules all declined, in document order. */
   listCandidates: BreakRunCandidate[];
+  /** Standalone lines the label rule scored but could not decide, in order. */
+  labelCandidates: LabelCandidate[];
   /**
    * Width of the article's content box, in CSS px, when measurement ran.
    *
@@ -336,6 +360,7 @@ export function recoverStructure(
     counter: { n: 0 },
     tables: [],
     listCandidates: [],
+    labelCandidates: [],
     contentWidth: contentWidthOf(root),
     bodyProminence: bodyProminenceOf(root),
     proseItalic: proseItalicOf(root),
@@ -412,6 +437,7 @@ export function recoverStructure(
     // dissolve the containment the outer rule reads. Six of the corpus's 53
     // candidates were exactly that.
     listCandidates: ctx.listCandidates.filter((c) => surfaced.has(c.id)),
+    labelCandidates: ctx.labelCandidates,
   };
 }
 
@@ -571,13 +597,14 @@ function promoteScoredLabel(nodes: readonly BiomdContent[], ctx: Ctx): BiomdCont
     const text = children.map((child) => (child as { value: string }).value).join("").replace(/\s+/gu, " ").trim();
     if (text === "" || text.length > LABEL_MAX_CHARS) return node;
     if (scoreLabelLine(text, /* standsClearBelow */ true) < LABEL_SCORE_THRESHOLD) return node;
-    if (!carriesLabelEvidence(text)) {
+    if (!carriesLabelEvidence(text) && !ctx.options.labelLines?.has(labelLineId(text))) {
+      ctx.labelCandidates.push({ id: labelLineId(text), score: scoreLabelLine(text, true) });
       ctx.ledger.push(
-        review(`label:${text.slice(0, 40)}`, "a standalone line scores as a label on evidence prose also has"),
+        review(`label:${labelLineId(text)}`, "a standalone line scores as a label on evidence prose also has"),
       );
       return node;
     }
-    ctx.ledger.push(emitted(`label:${text.slice(0, 40)}`, nextId(ctx, "label")));
+    ctx.ledger.push(emitted(`label:${labelLineId(text)}`, nextId(ctx, "label")));
     return { ...node, children: [{ type: "strong", children: [...children] } as PhrasingContent] };
   });
 }

@@ -98,6 +98,18 @@ export function carriesLabelEvidence(text: string): boolean {
 }
 
 /**
+ * The identity of a candidate line: its own normalized text.
+ *
+ * Content-derived on purpose. A decision keyed by position would be applied to
+ * a different line the moment anything above it moved, and a cached one would
+ * be applied to a different document; keyed by the words themselves, the
+ * acceptance check can re-derive it and refuse a reply that does not belong.
+ */
+export function labelLineId(text: string): string {
+  return text.replace(/\s+/gu, " ").trim();
+}
+
+/**
  * Whether every letter in the line is a capital.
  *
  * Two letters minimum: a single initial is not a shout, and a line with no
