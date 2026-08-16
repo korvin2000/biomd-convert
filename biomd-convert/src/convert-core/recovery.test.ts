@@ -3982,3 +3982,42 @@ describe("a spanning band inherits the grid's placement, not its own", () => {
     expect(out).not.toContain("position: right");
   });
 });
+
+describe("an underline the author drew outside a link", () => {
+  async function converted(body: string): Promise<string> {
+    return (await convert(Buffer.from(page(body), "utf8"), { profile: SPEC })).markdown;
+  }
+
+  it("marks the words it holds", async () => {
+    // `xtra_rodrigo` writes `<u>Сочинения для гитары соло</u>:` for each of its
+    // five section labels and its reference marks each one. Markdown has no
+    // underline, so §0's "map a visible distinction to the nearest supported
+    // construct" applies; `<u>` had no case at all and fell through the
+    // transparent-wrapper default.
+    const out = await converted(PROSE + "<p><u>Сочинения для гитары соло</u>:</p>" + PROSE);
+    expect(out).toContain("*Сочинения для гитары соло*:");
+  });
+
+  it("leaves a hand-underlined link label alone — non-firing", async () => {
+    // The false friend, and the overwhelming majority: over 400 of the corpus's
+    // 414 `<u>` elements are a link label restating the decoration the control
+    // already carries. Marking them would put `*TAB*` in thousands of cells.
+    const out = await converted(
+      PROSE + '<p><a href="music/tab/x.txt"><font size="2"><u>TAB</u></font></a></p>' + PROSE,
+    );
+    expect(out).toContain("[TAB](music/tab/x.txt)");
+    expect(out).not.toContain("*TAB*");
+  });
+
+  it("leaves an underlined footnote marker alone — non-firing", async () => {
+    // The second false friend: `tarrega` underlines the `*` that *follows* a
+    // link, so it survives the ancestor walk. An underline over punctuation
+    // marks no words, and the emitted `[WMA](…)*\**` was indistinguishable
+    // from an escape.
+    const out = await converted(
+      PROSE + '<p><a href="music/wma/x.wma"><u>WMA</u></a><font size="2"><u>*</u></font></p>' + PROSE,
+    );
+    expect(out).toContain("[WMA](music/wma/x.wma)\\*");
+    expect(out).not.toContain("*\\**");
+  });
+});

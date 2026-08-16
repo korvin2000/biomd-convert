@@ -1734,6 +1734,7 @@ function alignableRunMember(block: BiomdContent, ctx: Ctx): "center" | "right" |
   return align;
 }
 
+
 /** Visible text of an emitted block, for the length and label guards. */
 function blockTextOf(block: BiomdContent): string {
   const parts: string[] = [];
@@ -4147,6 +4148,18 @@ function inlineFrom(nodes: readonly LadomNode[], ctx: Ctx, keepEdgeSpace = false
         );
         break;
       }
+      case "u": {
+        const children = inlineFrom(node.children, ctx, /* keepEdgeSpace */ true);
+        pushMark(
+          out,
+          children,
+          underlineIsDistinction(node, children)
+            ? (kids) => unwrapRedundant(kids, "emphasis") ?? { type: "emphasis", children: kids }
+            : null,
+          nextChar(),
+        );
+        break;
+      }
       case "s":
       case "strike":
       case "del":
@@ -4324,6 +4337,56 @@ function isHighlightedRun(
     if (cur.tag === "a") return false;
   }
   return textSinceLastBreak(before).trim() !== "";
+}
+
+/**
+ * Whether an underline distinguishes the words it holds, or only decorates a link.
+ *
+ * ## Rule contract — an underline outside a link is a visible distinction
+ *
+ * Markdown has no underline, and `BioMD-Reference.md` §0 says what to do about
+ * that: map a visible distinction to the nearest supported construct where
+ * readability or fidelity improves. `<u>` had no case at all and fell through
+ * the transparent-wrapper default, so the distinction was dropped in silence —
+ * `xtra_rodrigo` writes `<u>Сочинения для гитары соло</u>:` for each of its
+ * five section labels, its reference writes `_…_` for each, and the converter
+ * wrote plain text for each. Five `emphasis.span` findings, one missing case.
+ *
+ * **Invariant: containment, and nothing else.** No vocabulary, no length, no
+ * class, no filename. A browser draws an underline under every link by default,
+ * so an author who wrote one *inside* an anchor restated the decoration the
+ * control already carries; an author who wrote one in prose, where nothing
+ * would otherwise draw it, marked those words.
+ *
+ * **Two false friends, both tested for non-firing.**
+ *
+ *   1. **The hand-underlined link label**, the overwhelming majority —
+ *      `<a …><u>TAB</u></a>`, `<u>MP3</u>`, `<u>MIDI</u>` and their kin account
+ *      for over 400 of the corpus's 414 `<u>` elements across 14 documents, and
+ *      every reference writes them as a bare link label. Marking them would put
+ *      `*TAB*` in several thousand table cells. The ancestor walk separates
+ *      them, and it is the same walk {@link isHighlightedRun} makes for the
+ *      same reason.
+ *   2. **The underlined footnote marker**, which sits *outside* the anchor and
+ *      so survives clause 1. `tarrega` writes `<u>*</u>` after a `WMA` link;
+ *      emphasising it produced `[WMA](…)*\**`, where the escape and the mark
+ *      are indistinguishable to a reader. An underline over punctuation
+ *      distinguishes no words, so there is nothing for a mark to hold — the
+ *      same test {@link isAlignableLabelText} applies to a centred line, and
+ *      for the same reason.
+ *
+ * **Recurrence deliberately does not apply.** A section label occurs once per
+ * section by construction, and requiring a second occurrence is what hid
+ * `promoteLabelBeforeList`'s own motivating example for an iteration (PROGRESS
+ * §56.6). Containment is the substitute `CLAUDE.md` §5 names.
+ */
+function underlineIsDistinction(node: LadomNode, children: readonly PhrasingContent[]): boolean {
+  if (!isAlignableLabelText(phrasingText(children))) return false;
+  for (let cur = node.parent; cur; cur = cur.parent) {
+    if (cur.tag === "a") return false;
+    if (BLOCK_TAGS.has(cur.tag)) break;
+  }
+  return true;
 }
 
 /** Visible text of a run since its last hard break — "already inside a sentence". */
