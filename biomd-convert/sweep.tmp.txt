@@ -1,0 +1,47 @@
+last char of every list item across the 28 references:
+  ')'    99
+  '*'    66
+  'e'    63
+  's'    49
+  'a'    46
+  '\\'   32
+  'r'    24
+  'o'    24
+  't'    23
+  'n'    19
+  'y'    14
+  'u'    9
+  'g'    9
+  'l'    9
+  'd'    8
+  ','    6
+  'w'    4
+  'z'    4
+  '.'    3
+  ';'    3
+  'x'    2
+  'p'    2
+  "'"    2
+  'и'    2
+  '2'    2
+  'm'    1
+  'k'    1
+  'h'    1
+  'v'    1
+  '`'    1
+  'е'    1
+  '6'    1
+  'Я'    1
+
+items ending in , ; . :
+  [,] news :: - 1-я премия и приз зрительских симпатий от фирмы Savarez – **Артём Де
+  [,] news :: - 2-я премия – **Антон Баранов** (Россия, Санкт-Петербург),
+  [,] news :: - 1 место – **Ровшан Мамедкулиев** (Россия),
+  [,] news :: - 2 место – **Артём Дервоед** (Россия),
+  [,] williams2 :: - **Together** – Julian Bream and John Williams \[RCA RD 83257], в США
+  [;] xtra_alexandro :: - Prelude No. 13;
+  [;] xtra_alexandro :: - Prelude No. 14;
+  [;] xtra_alexandro :: - Prelude No. 15;
+  [.] goya2 :: - 11\. If...
+  [.] news :: - 3-я премия – **Юрий Алешников** (Россия, Белгород) и **Марк Топчий**
+  [.] williams2 :: - **Julian Bream & John Williams Live** \[RCA 03090] - концертные запи

@@ -1,5 +1,5 @@
 {
-  "overall": 0.9951895412054208,
+  "overall": 0.9952405616135841,
   "documents": [
     {
       "name": "authors",
@@ -4395,10 +4395,10 @@
       },
       "directives": {
         "recall": 1,
-        "precision": 0.971830985915493,
-        "f1": 0.9857142857142858,
+        "precision": 1,
+        "f1": 1,
         "expected": 69,
-        "actual": 71,
+        "actual": 69,
         "matched": 69,
         "missing": []
       },
@@ -4414,7 +4414,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9985714285714287
+      "overall": 1
     }
   ]
 }

@@ -33,19 +33,19 @@
     ]
   },
   "totals": {
-    "findings": 24,
-    "alignmentRows": 244
+    "findings": 20,
+    "alignmentRows": 242
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 10,
-      "documents": 7
+      "instances": 8,
+      "documents": 6
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 14,
-      "documents": 10
+      "instances": 12,
+      "documents": 9
     }
   ],
   "findings": [
@@ -435,86 +435,6 @@
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "64881278",
-      "doc": "xtra_shelechov",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[13]",
-      "producedLine": 40,
-      "referenceLine": 36,
-      "produced": "I отделение",
-      "reference": "I отделение",
-      "geometry": {
-        "producedAlign": "right",
-        "referenceAlign": "left",
-        "producedRaw": "right",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "aa693d1a",
-      "doc": "xtra_shelechov",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/paragraph[23]",
-      "producedLine": 175,
-      "referenceLine": 169,
-      "produced": "II отделение",
-      "reference": "II отделение",
-      "geometry": {
-        "producedAlign": "right",
-        "referenceAlign": "left",
-        "producedRaw": "right",
-        "referenceRaw": "start",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "ffb14599",
-      "doc": "xtra_shelechov",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[13]",
-      "producedLine": 40,
-      "referenceLine": 36,
-      "produced": "I отделение",
-      "reference": "I отделение",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "(root)"
-      }
-    },
-    {
-      "id": "393df65d",
-      "doc": "xtra_shelechov",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[23]",
-      "producedLine": 175,
-      "referenceLine": 169,
-      "produced": "II отделение",
-      "reference": "II отделение",
-      "geometry": {
-        "producedContainer": "align",
-        "referenceContainer": "(root)"
       }
     }
   ],
@@ -3641,33 +3561,7 @@
     },
     {
       "doc": "xtra_shelechov",
-      "producedLine": 40,
-      "referenceLine": 36,
-      "text": "I отделение",
-      "producedAlignment": "right",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/b[1]"
-    },
-    {
-      "doc": "xtra_shelechov",
-      "producedLine": 175,
-      "referenceLine": 169,
-      "text": "II отделение",
-      "producedAlignment": "right",
-      "referenceAlignment": "left",
-      "sourceTextAlignRaw": "justify",
-      "sourceAlignment": "justify",
-      "sourceProse": "left",
-      "sourceDistinctive": false,
-      "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/blockquote[1]/div[1]/table[1]/tbody[1]/tr[12]/td[1]/b[1]"
-    },
-    {
-      "doc": "xtra_shelechov",
-      "producedLine": 401,
+      "producedLine": 391,
       "referenceLine": 396,
       "text": "По очерку Альберта Федоровича МОСКВИНА для готовящейся к изданию книги \"История развития …",
       "producedAlignment": "right",
@@ -3680,7 +3574,7 @@
     },
     {
       "doc": "xtra_shelechov",
-      "producedLine": 405,
+      "producedLine": 395,
       "referenceLine": 400,
       "text": "Впервые опубликовано на сайте журнала \"Гитаристъ\" 05.10.2007: www.guitarists.ru",
       "producedAlignment": "right",

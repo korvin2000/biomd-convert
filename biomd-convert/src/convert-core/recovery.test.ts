@@ -3907,3 +3907,78 @@ describe("a run of hand-drawn lines the list rules all declined", () => {
     expect(first.markdown).toBe(second.markdown);
   });
 });
+
+/**
+ * A band lifted out of a grid is placed by the grid, not by itself.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Containment, expressed once: a row with a single populated
+ * cell is not a lane, so its content joins the flow — and it joins the flow
+ * *already positioned*, because whatever places the table places the band.
+ * §3.8 says a table carries its own position, and an `::: align` around one
+ * band alone claims a group the author never drew and puts the label in a
+ * different bounded container from the rows it heads. Node shape and
+ * containment only; no class, id, width or word.
+ *
+ * **Recurrence cannot apply** — a programme has one heading per section by
+ * definition, and `xtra_shelechov` has exactly two on one page.
+ *
+ * **False friends, tested for non-firing:**
+ *   - a paragraph the source aligned *outside* any grid still takes its
+ *     wrapper; nothing about ordinary alignment changed;
+ *   - a grid inside no aligned container gains nothing, so a page that states
+ *     no placement is untouched either way.
+ */
+describe("a spanning band inherits the grid's placement, not its own", () => {
+  async function aligned(body: string): Promise<string> {
+    return (
+      await convert(Buffer.from(page(PROSE + body + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+  }
+
+  /** The `xtra_shelechov` shape: a right-placed grid whose first row spans it. */
+  const programme = (wrapper: [string, string]): string =>
+    `${wrapper[0]}<table border="0" width="75%"><tr>` +
+    '<td colspan="2"><b>I отделение</b></td></tr><tr>' +
+    '<td width="25%">Ф. Таррега</td><td width="75%">Воспоминанье об Альгамбре</td></tr><tr>' +
+    '<td width="25%">Л. Ален</td><td width="75%">Тико-тико</td></tr><tr>' +
+    '<td width="25%">С. Орехов</td><td width="75%">Вариации</td></tr>' +
+    `</table>${wrapper[1]}`;
+
+  const RIGHT: [string, string] = ['<div align="right" style="text-align: right">', "</div>"];
+  const NONE: [string, string] = ["", ""];
+
+  it("leaves the spanning label bare inside a right-placed grid", async () => {
+    const out = await aligned(programme(RIGHT));
+    expect(out).toContain("**I отделение**");
+    expect(out).not.toMatch(/::: align\s*\n\s*position: right\s*\n\s*\n\*\*I отделение\*\*/u);
+  });
+
+  it("keeps the label and every row of the grid on both paths", async () => {
+    for (const wrapper of [RIGHT, NONE]) {
+      const out = await aligned(programme(wrapper));
+      for (const text of ["I отделение", "Ф. Таррега", "Воспоминанье об Альгамбре", "С. Орехов"]) {
+        expect(out).toContain(text);
+      }
+    }
+  });
+
+  it("still wraps a paragraph the source aligned outside any grid — non-firing", async () => {
+    // Not the label itself: a short shouted line outside a grid is recovered as
+    // a heading, and §3.1 rules that a recovered label drops its centring — so
+    // it would prove nothing about this rule. A credit line is the shape that
+    // does take a wrapper, and it still does.
+    const out = await aligned('<p align="right" style="text-align: right">(перевод М. Цветаевой)</p>');
+    expect(out).toContain("position: right");
+  });
+
+  it("changes nothing on a grid the source placed nowhere — non-firing", async () => {
+    const out = await aligned(programme(NONE));
+    expect(out).not.toContain("position: right");
+  });
+});

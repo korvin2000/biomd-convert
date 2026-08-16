@@ -1,14 +1,14 @@
 {
-  "generated": "2026-08-16T17:55:34.383Z",
+  "generated": "2026-08-16T18:12:54.768Z",
   "totals": {
-    "findings": 130,
-    "converterDefects": 76,
+    "findings": 126,
+    "converterDefects": 72,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 41,
     "ambiguous": 13,
     "bySeverity": {
       "critical": 2,
-      "major": 36,
+      "major": 32,
       "minor": 92
     }
   },
@@ -231,10 +231,10 @@
     },
     {
       "doc": "xtra_shelechov",
-      "findings": 7,
-      "converterDefects": 7,
+      "findings": 3,
+      "converterDefects": 3,
       "critical": 0,
-      "major": 4,
+      "major": 0,
       "minor": 3
     }
   ],
@@ -443,48 +443,6 @@
         "path": "/paragraph[3]",
         "produced": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…",
         "reference": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…"
-      }
-    },
-    {
-      "class": "align.spurious",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "xtra_shelechov",
-        "path": "/align[14]",
-        "produced": "I отделение",
-        "reference": null
-      }
-    },
-    {
-      "class": "paragraph.containment",
-      "severity": "major",
-      "instances": 2,
-      "documents": [
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 2,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "xtra_shelechov",
-        "path": "/paragraph[13]",
-        "produced": "I отделение",
-        "reference": "I отделение — produced at /align[14]/paragraph[0]"
       }
     },
     {
@@ -2783,34 +2741,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "4b8f172c",
-      "doc": "xtra_shelechov",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[14]",
-      "producedLine": 37,
-      "referenceLine": null,
-      "produced": "I отделение",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "495322aa",
-      "doc": "xtra_shelechov",
-      "class": "align.spurious",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "insert",
-      "path": "/align[24]",
-      "producedLine": 172,
-      "referenceLine": null,
-      "produced": "II отделение",
-      "reference": null,
-      "verdict": "converter-defect"
-    },
-    {
       "id": "8217ad90",
       "doc": "xtra_shelechov",
       "class": "paragraph.hyphenation.unjoined",
@@ -2825,20 +2755,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "25e0768b",
-      "doc": "xtra_shelechov",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[13]",
-      "producedLine": 40,
-      "referenceLine": 36,
-      "produced": "I отделение",
-      "reference": "I отделение — produced at /align[14]/paragraph[0]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "5fca833e",
       "doc": "xtra_shelechov",
       "class": "break.missing",
@@ -2850,20 +2766,6 @@
       "referenceLine": 167,
       "produced": null,
       "reference": "---",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "9e8c64df",
-      "doc": "xtra_shelechov",
-      "class": "paragraph.containment",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/paragraph[23]",
-      "producedLine": 175,
-      "referenceLine": 169,
-      "produced": "II отделение",
-      "reference": "II отделение — produced at /align[24]/paragraph[0]",
       "verdict": "converter-defect"
     },
     {

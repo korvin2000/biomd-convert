@@ -6015,7 +6015,23 @@ function layoutFrom(
       // heading, a spacer row, a footnote under the grid. Its content belongs in
       // the flow, and wrapping it in a one-lane `columns` would claim a layout
       // the author did not draw.
-      for (const column of columns) regions.push(...(column.children as BiomdContent[]));
+      //
+      // It also arrives already positioned. A band left the grid, but it did not
+      // leave the *construct*: whatever places the table places the band, which
+      // §3.8 says the table carries itself. `xtra_shelechov` is the measured
+      // case — its programme sits in `<div align="right">` around a 75 %-wide
+      // table, and the two spanning `I отделение` / `II отделение` labels
+      // inherited that `right` and were each wrapped in an `::: align` the
+      // source never drew for them. Their own cells declare no alignment at all;
+      // `.t1` computes `justify`. This is the same reasoning that already marks
+      // a table's lifted caption, and the alignment gate reads one flag for
+      // both.
+      for (const column of columns) {
+        for (const block of column.children as BiomdContent[]) {
+          ctx.positionedByConstruct.add(block);
+          regions.push(block);
+        }
+      }
       regions.push(...folded);
     }
 

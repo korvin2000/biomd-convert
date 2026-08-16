@@ -34,4 +34,4 @@ Failed:         0
 Clean share:    21.4%
 Elapsed:        6s
 LLM:            off — 106 escalation point(s) left as review items
-Report:         bench\work\runs\2026-08-16T17-55-07-599\report.json
+Report:         bench\work\runs\2026-08-16T18-08-46-673\report.json
