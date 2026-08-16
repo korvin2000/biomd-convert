@@ -3,21 +3,25 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-16**, after PROGRESS §57.
+Last touched **2026-08-16**, after PROGRESS §59.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
-> **§57 was architecture, not conversion.** The LLM subsystem is now a plugin framework
-> (`docs/LLM-HOOKS.md`). L1, L2 and L3 were re-measured against the §56 baseline and are
-> **identical** — L1's 28 rows diff byte-for-byte, `defects.json` differs only in its
-> timestamp, the L3 report not at all. L0 863 → **914**. Nothing in §1 below moved, and
-> **the next conversion work is still §1.0a**.
+> **§59 landed two mechanisms and killed three hypotheses.** A run of hand-drawn lines
+> can now be *asked* what it is (`text.list`, the third decision point and third plugin,
+> **shipped disabled**), and a `colspan` band lifted out of a grid is placed by the grid
+> rather than by itself. The second one closed `OPEN §1.0a` and moved L2 **and** L3 in the
+> same direction on the same mechanism.
 >
-> Three things a later session needs from it: a hook is a **directory** under
-> `src/llm/plugins/` and there is no list of hook names anywhere; the **acceptance check**
-> for every escalation lives in `convert-core/decisions.ts`, not in the hook; and
-> `--llm assist` with nothing enabled is **measured** byte-identical to `--llm off`, with
-> the default-enabled set pinned by `plugins.test.ts` so it cannot grow by accident.
-> `biomd hooks list | show | test | cache-clear` is the refinement surface.
+> **The author's reference edits in `fc02636` moved L2 without any code change** — 138 → 130
+> findings, converter-defects unchanged at 76. Baseline before attribution, every time.
+>
+> Three things a later session needs. A hook is a **directory** under `src/llm/plugins/`
+> and there is no list of hook names anywhere; the **acceptance check** for every escalation
+> lives in `convert-core/decisions.ts`; and `--llm assist` with nothing enabled is
+> **measured** byte-identical to `--llm off`. `biomd hooks list | show | test | cache-clear`
+> is the refinement surface, and **hook-on runs go through
+> `bench/biomd.llm.config.json`** (`bench/out-llm/`) so they can never be read back as the
+> baseline.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
@@ -36,15 +40,20 @@ stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2
 outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
 946 pages.
 
-**Current state — conversion rungs *measured* 2026-08-14 after §56 and re-verified unchanged
-2026-08-16 after §57; L0 *measured* 2026-08-16:**
+**Current state — all four rungs *measured* 2026-08-16 after §59, LLM-off:**
 
 | rung | value |
 |---|---|
-| L0 | **914 tests** (863 before §57), typecheck clean, 0 FAILED, conservation ok |
+| L0 | **962 tests** (914 before §59), typecheck clean, 0 FAILED, conservation ok |
 | L1 | **99.5 %** over the 28 |
-| L2 | **138 findings — 76 converter-defect** · 15 ambiguous · 47 reference-inconsistency · 2 critical · 36 major |
-| L3 | **22** over 28 documents, **0 critical** |
+| L2 | **126 findings — 72 converter-defect** · 13 ambiguous · 41 reference-inconsistency · 2 critical · 32 major |
+| L3 | **20** over 28 documents, **0 critical** |
+
+With `--hooks text.list` on a self-hosted `gemma4-31b-local`: 34 candidates, 25 calls,
+11 LIST / 13 VERSE / 10 PROSE, 0 refused by the acceptance check, L2 **165 / 79 / 2 / 39**.
+`kiselev` and `jovicic` each close their `retyped.paragraph-to-list` major; nine promotions
+diverge from four references the author has ruled are behind (§3.16 below). **The hook is
+off, and every number the project reports is the LLM-off column.**
 
 > **Baseline before attribution, every time.** §56's baseline is 28 documents at **`4b5d1b0`**
 > (L1 99.0, L2 145/81/2/38, L3 22) -- the author committed the `xtra_alexandro` pair mid-session,
@@ -55,40 +64,33 @@ outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach
 > `my-migration/` with its own corpus profile, and the profile decides how much of a page
 > is deleted. When a report is about a produced file, find the file the operator is looking at.
 
-**Landed in §56, one commit each.**
-- A caption belongs to the picture it shares a box with (`43f59ac`). `stackedCaptionFigureFrom`
-  binds a one-column two-row figure box (`xtra_alexandro`'s stamp, no `alt` anywhere); a caption
-  run now stops at a block the *next* block claims, which un-swallows `segovia`'s `ДИСКОГРАФИЯ`;
-  and `promoteLabelBeforeList` gains a solitary branch — shouted or wholly bold, no trailing
-  colon — at depth 2. L1 99.0 → 99.1, L2 145/81 → 141/78.
-- An icon a sentence carries is a glyph (`6cf1c84`). `inRunningProse`; `main/smile.gif` was the
-  last `main/` asset still an image anywhere. L1 → 99.5 (`news_2007` 88.7 → 98.7).
-- `==` is the mark for a distinction with no other name (`1363486`). `BiomdHighlight` phrasing
-  node + `ResolvedStyle.fontVariant`; small-caps inside a sentence. 5-of-5 against
-  `new_rechin4`'s reference, and exactly one document gains `==`.
-- A long quotation embedded in prose is highlighted (`cb64256`). `jovicic` and `new_blackmore`
-  reproduced **byte for byte**; quote marks matched on a stack. L2 139/77 → **138/76** — the
-  rule *lowered* the ledger.
-
-> **One declared instrument change (invariant 2).** `==` joined `anchor` in
-> `reference-silent.ts`, symmetric and self-retiring: three references write `==` and are
-> adjudicated in full, the rest are folded on both sides. `new_rules.md` authorises it by name.
-> Both sides re-baselined; four contracts, including the disagreement case.
+**Landed in §59, one commit each.**
+- A run of hand-drawn lines can be asked what it is (`f8d5a11`). `text.list` — the third
+  decision point, the third plugin, **shipped disabled**. The item is the **whole run**,
+  because parallelism between the lines is the entire evidence. The gate is where the
+  deterministic half lives: three lines minimum, breaks already structural, no picture, and
+  **a run whose members are not all peers is never asked about** — `borislova`'s three
+  movements sit indented and numbered under their concerto, and a flat list would make them
+  siblings of their own parent. A candidate is reported only if it *shipped* as a hard-break
+  paragraph, which drops the six runs `listFromBlockquoteRun` already claimed: 53 → 34.
+  LLM-off output byte-identical on all 28.
+- A band lifted out of a grid is placed by the grid (`55d8765`). `positionedByConstruct` at
+  the one site that lifts a `colspan` band into the flow. `xtra_shelechov` 7 → 3 defects,
+  L1 99.9 → 100.0, L2 130/76/36 → **126/72/32**, L3 24 → **20**. 27 documents untouched.
 
 **Next, in order. Probe before committing (SKILL §6).**
-0a. **`xtra_shelechov`'s `align.spurious` x2** — unchanged from §55 and still the clearest
-   thing on that page. `**I отделение**` / `**II отделение**` are wrapped in
-   `::: align position: right`; the source cell is `<td class="t1" colspan="2">` and declares
-   no alignment. Two `paragraph.containment` findings are its shadows: 4 of the document's 7.
-0b. **The two `break.missing` on the same page** (§55.4). The reference divides the concert at
-   the source's own spacer row, before the spanning `II отделение` label. A spanning
-   single-cell band inside a laned region is the candidate signal; the spacer-driven form
-   modelled on `layoutFrom` lands the divider one band late and was rejected on paper.
+0b. **`xtra_shelechov`'s two `break.missing`** (§55.4) — now the *only* thing left on that
+   page besides one hyphenation instance. The reference divides the concert at the source's
+   own spacer row, before the spanning `II отделение` label. A spanning single-cell band
+   inside a laned region is the candidate signal, and §59.2 just gave that band a name in
+   the code — the spacer-driven form modelled on `layoutFrom` was rejected on paper because
+   it lands the divider one band late.
 0. **The conservation gate still cannot audit boilerplate removal** (§54.6). `sourceText` is
    captured after the pass, so recall is 100 % by construction; a `SHELL` verdict deletes a
    table on `corpusFrequency` alone with no share bound; and **no test covers the CLI's report**.
-1. **`layout.containment.mismatch`, 13 over 9** — the broadest untouched L3 class and the rung
-   that answers priority 4. Unchanged since §51.6.
+1. **`layout.containment.mismatch`, 12 over 9** — still the broadest untouched L3 class, and
+   §59.2 took two off it without being aimed at it. Worth re-probing before assuming the
+   remainder is one mechanism.
 2. **One isolated instrument-truthfulness step**: `paragraph.content`'s blanket `critical`
    severity (§5.0aa) and the property-line-as-paragraph artefact (§5.0b).
 3. **`structdiff`'s `code.text`** compares whitespace-collapsed values — §53.2 debt, §5 below.
@@ -97,6 +99,10 @@ outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach
 5. **`retyped.paragraph-to-align`: probe `segovia` alone.** The other four are the twice-killed
    glyph/footer family. §44.1.
 6. **The shell-depth root cause, §40.6.** Three replacements built, all three reverted.
+
+**The hook budget is spent for this iteration.** `CLAUDE.md` allows at most one new hook per
+round, and `text.list` is it. A second candidate found now is a rule that has not been found
+yet — go back to §10.1 step 1.
 
 **§56.5 refused, and it is not a defect:** `williams2`'s `Em\*\*`. The source carries **no
 asterisks** — the cell is one italic wrapping a single `&nbsp;` — so the reference's two
@@ -217,6 +223,18 @@ below is where it lives now.
     `**bold**` are the rule and the two written `##` are a named divergence. **Depth 1 is
     excluded** — a masthead split across two blocks is consecutive `#` inside `::: align`,
     which is §3.1/§3.2 above and `enforceSingleTitle`'s standing contract.
+16. **A catalogue is a list, everywhere — and its items carry no trailing hard break.**
+    *Ruled 2026-08-16*, on the two questions `text.list` raised. A run of parallel work,
+    track, volume or programme titles is a list wherever it appears, so `xtra_rodrigo`,
+    `borislova`, `new_lendle2` and `new_bach` — whose references keep exactly that shape as
+    hard-break paragraphs — are **named divergences, not defects**. Do not build a
+    document-specific rule to preserve their reading, and do not read their
+    `retyped.list-to-paragraph` findings as converter-defects. And the item is written clean:
+    the references write `- Том I …\` with a trailing break on every item but the last, but
+    a break at the end of a list item separates nothing, and `listFromBlockquoteRun` — which
+    produces `kiselev`'s own album track lists **without** the backslash, in the very same
+    reference file — is the reading that leaves the rule system least contradictory. One
+    emission (`listOfLines`) serves all five list rules. PROGRESS §59.1.
 15. **A `---` after every single row of a table is poor design.** *Ruled 2026-08-14*, on
     `xtra_shelechov`: it *"makes the page too long and cluttered... takes up too much
     vertical space compared to the compact visual representation in the original HTML."*
@@ -230,7 +248,7 @@ below is where it lives now.
     header cell, leaves link columns unheaded, and right-aligns them. 42 of that document's 50
     converter-defects are this and are a ceiling. PROGRESS §42.4.
 
-## 4. Open defect classes -- *measured* 2026-08-14 after §56
+## 4. Open defect classes -- *measured* 2026-08-16 after §59, LLM-off
 
 **Read the ceiling column last, not first.** §55.3 dissolved five classes that had stood here
 as "ceiling" for thirteen sections, without a rule being written about any of them, and §56
@@ -241,30 +259,33 @@ document count of 1 is a hypothesis; an empty ledger row is not evidence of a cl
 |---:|---|---:|---:|---:|---|
 | 75 | `retyped.paragraph-to-align` | 5 | 5 | 5 | **split mechanisms.** 4 are the twice-killed glyph/footer family; `segovia` is a long italic quotation shifted by margin (§44.1) |
 | 68 | `table.align` | 34 | 34 | 2 | **ceiling, both documents** — `xtra_karta5`'s author-ruled ignorable; `new_kolpakov`'s 3 killed on a 12-to-1 sweep (§43.5) |
-| 12 | `link.inline.missing` · `paragraph.spurious.in-paragraph` · `retyped.paragraph-to-list` | 2 each | 2 | 2 | the tail |
+| 12 | `link.inline.missing` · `paragraph.spurious.in-paragraph` | 2 each | 2 | 2 | the tail |
+| 12 | `retyped.paragraph-to-list` | 2 | 2 | 2 | `kiselev` + `jovicic`. **Closed by `text.list` when the hook is on** (§59.1) and open in the LLM-off column, which is the column the project reports. Not a rule to write |
 | 9 | `paragraph.hyphenation.unjoined` | 3 | 3 | 3 | the proper-name tail, §50.6 |
 | 6 | `emphasis.span` | 22 | 1 | 6 | downgraded; §39.6.2 has the cause. **And the reader mis-splits `***x***`** — §5.0aaaaa. Do not implement |
-| 6 | `align.spurious` | 2 | 2 | 1 | **the frontier, §55.4** — `xtra_shelechov`'s two spanning programme labels; source declares no alignment |
-| 6 | `paragraph.containment` | 2 | 2 | 1 | the shadows of `align.spurious` above |
-| 6 | `break.missing` | 3 | 3 | 2 | 2 are `xtra_shelechov`'s section boundary and grid close (§55.4) |
+| 6 | `break.missing` | 3 | 3 | 2 | **the frontier now.** 2 are `xtra_shelechov`'s section boundary and grid close (§55.4), and §59.2 just named the spanning band the divider sits beside |
 | 6 | `paragraph.hyphenation.mixed` | 3 | 3 | 2 | the same lexicon tail as `.unjoined` |
 | 3 | `align.missing` · `align.moved` · `align.position.missing` · `heading.missing.absorbed` · `paragraph.missing.in-paragraph` · `retyped.columns-to-paragraph` · `retyped.paragraph-to-break` · `retyped.paragraph-to-frame` · `retyped.paragraph-to-heading2` · `retyped.paragraph-to-heading3` · `retyped.paragraph-to-lead` · `retyped.paragraph-to-quote` | 1 each | 1 | 1 | singletons |
+| -- | ~~`align.spurious`~~ · ~~`paragraph.containment`~~ | **0** | 0 | 0 | closed by §59.2 — a lifted band is placed by its grid. Was rank 6 twice, and its 4 findings were 4 of `xtra_shelechov`'s 7 |
 | -- | ~~`paragraph.spurious.caption-echo`~~ · ~~`image.caption.missing`~~ | **0** | 0 | 0 | closed by §56.1 |
 | -- | ~~`heading.missing.caption-echo`~~ | **0** | 0 | 0 | closed by §56.1 — `segovia`'s absorbed `ДИСКОГРАФИЯ` |
 | -- | ~~`column.containment` · `retyped.column-to-paragraph` · `column.missing` · `columns.spurious` · `column.spurious` · `break.spurious` · `paragraph.spurious.in-table`~~ | **0** | 0 | 0 | **not a ceiling.** All shadows of §55.2's 21 separators |
 | -- | ~~`table.cell.content`~~ · ~~`retyped.columns-to-table`~~ · ~~`paragraph.missing.in-table`~~ · ~~`image.position.value`~~ | **0** | 0 | 0 | closed by §43.3, §43.4, §42.6, §44 |
 
-Per document, converter-defect: `xtra_karta5` 33 (**ceiling**) · `xtra_shelechov` **7** ·
-`new_karta` 5 · `new_kolpakov` 4 (**all 4 ceiling**) · `new_rechin4` 4 · `news_2007` 4 ·
-`jovicic` 3 · `kiselev` 3 · `pavlov_azancheev` 3 · rest <= 2. **`authors`, `barrios`,
+Per document, converter-defect: `xtra_karta5` 33 (**ceiling**) · `new_karta` 5 ·
+`new_kolpakov` 4 (**all 4 ceiling**) · `new_rechin4` 4 · `news_2007` 4 · `xtra_shelechov` **3**
+(was 7) · `jovicic` 3 · `kiselev` 3 · `pavlov_azancheev` 3 · rest <= 2. **`authors`, `barrios`,
 `goya2`, `new_bach`, `new_blackmore`, `new_dyens`, `new_lagq2`, `segovia1`, `williams2`,
 `xtra_albeniz`, `xtra_alexandro`, `xtra_garcia_lorca` and `xtra_rodrigo` are at 0** — but see
 §56.6: `segovia`'s deleted section and `news_2007`'s broken icon were both at 0 too.
 
-**Two classes L2 cannot see at all**, and §56 found both by reading the source rather than
-the ledger: a section label absorbed into an image's `caption:` property (a property is not a
-block, so nothing compares it), and an inline construct the converter could not emit (nothing
-reports a missing `==`).
+**Three classes L2 cannot see at all.** §56 found two by reading the source rather than the
+ledger — a section label absorbed into an image's `caption:` property, and an inline construct
+the converter could not emit. §59 adds the third: **an abstention is invisible to every rung**.
+`retyped.paragraph-to-list` was rank 12 and named only two of the 34 runs the compiler declines
+to classify; the other 32 produce no finding at all, because a hard-break paragraph is a
+perfectly valid block and no instrument asks whether it should have been something else.
+`escalations: consulted` in the run report is the only place that number appears.
 
 **The holdout is spent.** Measured once at the end of §43: `xtra_oyanguren` 3 findings / 3
 defects, `xtra_mikulka` 2 / 2 / 2 L3. §56 added `xtra_alexandro`, a near-clone of

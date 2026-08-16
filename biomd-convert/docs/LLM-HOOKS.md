@@ -305,14 +305,23 @@ token usage, cost and the grouped failure reasons. `--no-run-log` turns it off.
 
 ## 8. Promising future hook categories
 
-Recorded so a later iteration starts from evidence rather than enthusiasm. None
-of these is implemented. Each names its abstention, its acceptance check and its
-failure visibility, because a category that cannot fill in all three is not
-ready.
+Recorded so a later iteration starts from evidence rather than enthusiasm. Each
+names its abstention, its acceptance check and its failure visibility, because a
+category that cannot fill in all three is not ready.
+
+**One of them has since been built, and it is worth reading before the next.**
+`text.list` (PROGRESS §59.1) found that most of the work is in the *gate*, not
+the prompt: it refuses a run whose members are not all peers, and it refuses a
+run a rule already claimed one level up, which took 53 raw candidates to 34
+before a single request. It also found the trap §3.1 warns about, the hard way —
+an acceptance check strong enough to catch a wrong verdict on shape refused the
+very case the hook was written for (`Том VII Ура! Каникулы!` read as two
+sentences). If a check can veto on the same evidence a rule would have used, it
+is the rule, and it will misfire.
 
 | candidate | abstention | acceptance check | visible when wrong |
 |---|---|---|---|
-| **is this block a list** | a multi-line block where geometry gives no bullet glyph, no consistent indent and no numbering | line count preserved, no text added or removed, every line non-empty | a paragraph rendered as bullets, immediately |
+| ~~is this block a list~~ | **built in PROGRESS §59.1 as `text.list`** — read that plugin before writing the next one; it is the worked example this table was written for | | |
 | **is this verse or lyrics** | a `<br>` run whose lineation the deterministic reader could not settle — the `text.segment` plugin already exists, unwired | one verdict per break, count preserved, and joining is refused unless every break agrees | poetry flattened to a paragraph — this is `PROGRESS §53.2`, six poems as six strings |
 | **is this a section label or a caption** | a short shouted line with no trailing colon that both the heading recogniser and the caption binder declined | the line is unchanged; only its role changes | a heading that reads as a caption, or the reverse |
 | **which of two lanes continues the reading order** | a multi-column region where geometry ties | the permutation is a permutation — no block gained, lost or duplicated | reading order visibly wrong |

@@ -306,3 +306,8 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 57.6` | quiet/normal/verbose/debug + heartbeat; the level decides the terminal, never `run.jsonl`/`report.json` |
 | `### 57.7` | zod's `.partial()` keeps inner defaults — a per-hook override would have silently reset the plugin's tier ceiling |
 | `### 57.8` | future hook categories, with abstention + acceptance check + failure visibility named → `docs/LLM-HOOKS.md` §8 |
+| `## 59` | 7718 | the run of lines the source marked as nothing -- `text.list` hook + the lifted-band placement fix |
+| `### 59.1` | | `text.list`: abstention named, gate refuses non-peer runs and already-claimed runs (53→34), acceptance check refuses a stale reply. **Two killed**: a sentence-shape test in `accept` (refused `Ура! Каникулы!`) and end-of-line punctuation (`xtra_alexandro` writes `- Prelude No. 13;`) |
+| `### 59.2` | | a `colspan` band lifted out of a grid is `positionedByConstruct` -- `xtra_shelechov` 7→3, L3 24→20 |
+| `### 59.3` | | state table: L0 962 · L1 99.5 · L2 126/72/2/32 · L3 20; hook-on 165/79/2/39 |
+

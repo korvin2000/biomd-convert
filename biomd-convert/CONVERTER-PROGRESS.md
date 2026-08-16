@@ -7714,3 +7714,137 @@ answers correctly by reading the question. The probe now asks which colour is on
 unanswerable from the wording -- and reports "not tested" when the transport is not sending
 images at all, rather than passing a capability that was never exercised. Invariant 7: this
 made the measurement more truthful and cost one green line.
+
+## 59 -- the run of lines the source marked as nothing (2026-08-16)
+
+Two mechanisms, one commit each, and three killed hypotheses. Both land **LLM-off** except
+where stated; the hook the first one introduces ships **disabled**, and every number the
+project reports is still taken with `bench/biomd.config.json`.
+
+Baseline before attribution, re-measured after the author's reference edits in `fc02636`
+(`==` highlights on `new_blackmore`, `segovia1`, `xtra_garcia_lorca`, `xtra_shelechov`;
+em-dashes in `new_dyens`; decoded `☻`/`◀`/`●` in `news_2007` and `xtra_karta5`; two blank
+lines removed in `new_karta`): **L1 99.5, L2 130 / 76 defect / 2 critical / 36 major, L3 24
+over 28, L0 914.** L1 did not move -- the `==` edits are folded on both sides by
+`reference-silent.ts` for the references that write none -- but **L2 total fell 138 → 130**
+because eight highlight disagreements became agreements. Converter-defects were unchanged at
+76, so no reference edit created or closed a defect.
+
+### 59.1 A list the author drew with `<br>` and nothing else
+
+`kiselev` writes nineteen volume titles and `jovicic` fifteen track titles as `<br>`-separated
+lines in a plain `<p>`. Both references write them as list items; the converter wrote hard-break
+lines. The four list rules each declined for a reason that is correct on its own evidence: no
+bullet glyph, no ascending ordinal, no uniform indent under an announcing colon, no
+`<blockquote>` containment. **§15.2 had already measured that nothing else is available** --
+line count, line length and variance overlap totally between `kiselev`'s tracks and
+`borislova`'s poems. That measurement is what makes this an abstention rather than a rule
+nobody had written yet.
+
+`text.list` is the third decision point (`convert-core/decisions.ts`) and the third plugin
+(`src/llm/plugins/text-list/`). **The item is the whole run**: parallelism between the lines is
+the entire evidence, so asking per line would destroy the question before putting it.
+
+The deterministic half is the gate, and it does most of the work:
+
+- three lines minimum, breaks already structural by `groupIsLineated`, no picture, no empty
+  line, not a caption run;
+- **a run whose members are not all peers is never asked about** -- one indent some lines carry
+  and others do not, or an ordinal on a proper subset. `borislova`'s works catalogue is the
+  measured case: three movements sit indented and numbered under the concerto they belong to,
+  and a flat list would make them siblings of their own parent. Structural loss (priority 3)
+  traded for reference agreement (priority 6), which the order forbids outright;
+- a candidate is reported only if it **shipped** as a hard-break paragraph. Six of the corpus's
+  53 raw candidates were `kiselev`'s own blockquote track lists -- already recovered one level
+  up, and an answer there would have dissolved the containment `listFromBlockquoteRun` reads.
+  **53 → 34 candidates over 12 documents.**
+
+`TEXT_LIST.accept` refuses anything that is not an asserted `LIST` above 0.75, a run under three
+lines, an empty line, and a reply whose content hash does not match the lines it would
+restructure.
+
+**Killed, and worth the record: a shape test inside the acceptance check.** "A line holding two
+sentences is prose" refused `Том VII Ура! Каникулы! (2000)` -- an exclamation inside a title is
+not a sentence boundary -- and with it the list the hook exists for. It was re-deriving exactly
+the discriminator §15.2 killed, one layer down. A check that refuses the case the hook was
+written for is worse than no check. What is left cannot catch a wrong `LIST` on verse, and that
+is stated rather than papered over: the hook ships disabled and its failure mode is visible.
+
+**Killed on a corpus sweep: end-of-line punctuation.** "A line ending in `,`/`;`/`.` is a member
+of a punctuated series, not an entry" would have separated `kiselev`/`jovicic`/`xtra_rodrigo`
+from `new_lendle2`/`new_bach` exactly. It is false: across the 28 references, list items end in
+`,` six times, `;` three times and `.` three times -- and `xtra_alexandro` writes
+`- Prelude No. 13;` as list items, the same shape `new_lendle2` keeps as prose.
+
+**Measured, LLM-off:** L0 914 → 958, L1 99.5, **all 28 outputs byte-identical**, L2 and L3
+unmoved. `--llm assist` with nothing named byte-identical to `--llm off`; `--replay` with the
+hook on 0 calls / 34 cache hits / byte-identical.
+
+**Measured with `--hooks text.list`** (self-hosted `gemma4-31b-local`, one slot, 34 candidates,
+25 calls, 23 156 input / 2 252 output tokens, ~44 s, unpriced): **11 LIST, 13 VERSE, 10 PROSE,
+0 refused by the acceptance check.** `kiselev` and `jovicic` each close their
+`retyped.paragraph-to-list` major and go 3 → 2 converter-defects. Nine promotions diverge from
+their reference: `xtra_rodrigo` 1, `borislova` 2, `new_lendle2` 5, `new_bach` 1. Against the
+post-§59.2 baseline that is **126 / 72 / 32 → 165 / 79 / 39**, of which +32 are `ambiguous`
+`list.item.content.edited` -- the trailing `\` the references keep on every item but the last.
+
+**Author ruling, 2026-08-16, two of them.** *Uniform: a catalogue is a list everywhere*, so the
+four disagreeing references are recorded as named divergences and not patched around; and *clean
+items, no trailing hard break*, matching `listFromBlockquoteRun` -- which is what produces
+`kiselev`'s album track lists, written **without** the backslash in the very same reference file.
+One emission (`listOfLines`) now serves all five list rules.
+
+Hook-on output goes to `bench/biomd.llm.config.json` (`bench/out-llm/`, `jobs: 1`, gateway
+`llama`) so it can never be read back as the baseline by `eval`, `diff` or `l3`. No hook is
+enabled in that file either; the run names it.
+
+Also fixed: `hooks test --live` demanded an API key from a gateway declaring
+`requiresApiKey: false`. `llm-session` never did and the transport already omits the header --
+only this command insisted, which made a self-hosted endpoint testable by a corpus run but not
+by one item.
+
+### 59.2 A band lifted out of a grid is placed by the grid
+
+`xtra_shelechov` draws its concert programme as a 75 %-wide table inside `<div align="right">`
+and heads each half with a `colspan="2"` band. A row with one populated cell is not a lane, so
+its content already joined the flow -- but it joined **unplaced**, carrying the `right` its
+container computed, and `I отделение` / `II отделение` were each wrapped in an `::: align` the
+source never drew for them. Their own cells declare no alignment at all; `.t1` computes
+`justify`.
+
+The band left the grid; it did not leave the construct. §3.8 says a table carries its own
+position, so whatever places the table places the band. This is the reasoning that already
+marks a table's lifted caption, and `alignableRunMember`'s own comment names it -- *"anything a
+construct kept hold of while lowering it out of itself"*. The band was the case it named and
+did not cover; the fix is `ctx.positionedByConstruct.add(block)` at the one site that lifts one.
+
+**Measured, LLM-off, one document touched, 27 byte-identical:**
+L0 958 → **962** · L1 99.5 overall, `xtra_shelechov` 99.9 → **100.0** ·
+L2 130 / 76 / 36 → **126 / 72 / 32** (`align.spurious` 2 → 0, `paragraph.containment` 2 → 0,
+both wholly this document; `xtra_shelechov` 7 → 3) ·
+L3 24 → **20** (`layout.containment.mismatch` 14 → 12, `layout.align.mismatch` 10 → 8).
+
+The rendered rung agreeing with the structural one is the part worth keeping: this class stood
+as `OPEN §1.0a` for four sections, and both instruments moved in the same direction on the same
+mechanism.
+
+**A third hypothesis died here**, cheaply and before any code: the non-firing control written
+for the rule contract -- *an aligned bold label outside any grid still takes its wrapper* --
+fails, and correctly so. A short shouted line outside a grid is recovered as a heading, and
+§3.1's author ruling drops a recovered label's alignment. The control had to be a credit line;
+the label proved nothing about this rule.
+
+### 59.3 State at the end of §59
+
+| rung | before §59 | after §59, LLM-off | with `--hooks text.list` |
+|---|---|---|---|
+| L0 | 914 | **962**, typecheck clean, 0 FAILED | same |
+| L1 | 99.5 | **99.5** | not re-scored -- L1 is a tripwire, not a hook metric |
+| L2 | 130 / 76 / 2 / 36 | **126 / 72 / 2 / 32** | 165 / 79 / 2 / 39 |
+| L3 | 24 | **20** | not re-measured |
+
+Per document, converter-defect, LLM-off: `xtra_karta5` 33 (**author-ruled ceiling**) ·
+`new_karta` 5 · `new_kolpakov` 4 (**ceiling**) · `new_rechin4` 4 · `news_2007` 4 ·
+`xtra_shelechov` 3 · `jovicic` 3 · `kiselev` 3 · `pavlov_azancheev` 3 · rest ≤ 2.
+
+`text.segment` remains the only inert plugin. `hooks list` now reports `text.list` as wired.

@@ -40,35 +40,37 @@ earlier count ("22", "27", "28 / 26") is superseded. The author added the `xtra_
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §56** landed four
-author-directed mechanisms over 28 documents. A caption belongs to the picture it shares a box
-with -- a one-column two-row figure box binds (`xtra_alexandro`'s stamp, which has no `alt`
-anywhere), and a caption run now stops at a block the *next* block claims, which un-swallows
-`segovia`'s `## ДИСКОГРАФИЯ`. An icon a sentence carries is a glyph, not a picture --
-`main/smile.gif` was the last `main/` asset still shipping as an image. And the corpus gained
-the mark it had no name for: `==` for a run the author set apart inline, and for a long
-quotation embedded in prose.
-Current floor: L0 **914 tests** (863 before §57), 0 FAILED, conservation ok, L1 **99.5**,
-L2 **138 · 76 defect · 2 critical · 36 major**, L3 **22 over 28 with no criticals**.
-**PROGRESS §57 rebuilt the LLM subsystem as a plugin framework and moved no conversion byte** —
-L1/L2/L3 re-measured identical. A hook is a directory under `src/llm/plugins/`; the acceptance
-check lives in `convert-core/decisions.ts`; authoring contract in `biomd-convert/docs/LLM-HOOKS.md`.
-**Read the baseline before reading the delta.** The author added a pair mid-iteration, so §56's
-baseline was re-measured over 28: **145/81/2/38**, L1 99.0.
-**The biggest lesson is §56.6, and like §55.3 it is about the ledger, not the converter.** Two of
-the four mechanisms were **named in the code that refused them** -- `promoteLabelBeforeList`'s doc
-comment cites `ДИСКОГРАФИЯ` as its motivating example while its recurrence floor makes that
-example unreachable, and `isUiIcon`'s cites the guide's unlinked clause while requiring an
-`<a href>`. Neither was in `analyze/defects.json` at any rank: a `caption:` property is not a
-block, so nothing compared it, and a construct the converter cannot emit is one no instrument
-reports as missing. **Grep the contracts for the shape you are about to build, and read what they
-refuse and why.**
-Next candidates: **`xtra_shelechov`'s `align.spurious` x2** and its 2 `break.missing`
-(OPEN §1.0a/0b); then **`layout.containment.mismatch`, 13 over 9**, the broadest untouched L3
-class; then the isolated instrument-truthfulness steps -- `paragraph.content`'s blanket
-`critical` (OPEN §5.0aa), the property-line-as-paragraph artefact (§5.0b), `code.text`'s
-whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split of `***x***`**
-(§5.0aaaaa).
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §59** landed two
+mechanisms. A run of hand-drawn lines can now be *asked* what it is -- `text.list`, the
+third decision point and third plugin, **shipped disabled** -- because §15.2 had already
+measured that no shape signal separates `kiselev`'s track list from `borislova`'s poems.
+And a `colspan` band lifted out of a grid is placed by the grid rather than by itself,
+which closed `xtra_shelechov`'s two `align.spurious` and their two `paragraph.containment`
+shadows and moved **L2 and L3 in the same direction on the same mechanism**.
+Current floor, LLM-off: L0 **962 tests** (914 before §59), 0 FAILED, conservation ok,
+L1 **99.5**, L2 **126 · 72 defect · 2 critical · 32 major**, L3 **20 over 28**.
+With `--hooks text.list`: 34 candidates, 25 calls, 11 LIST / 13 VERSE / 10 PROSE, L2
+165/79/2/39 -- `kiselev` and `jovicic` fixed, nine promotions diverging from four
+references the author has ruled are behind (OPEN §3.16).
+**Read the baseline before reading the delta.** The author edited nine references in
+`fc02636` and L2 fell **138 → 130 with no code change**; converter-defects were unchanged
+at 76, so no edit created or closed a defect.
+**The biggest lesson of §59 is that an abstention is invisible to every rung.**
+`retyped.paragraph-to-list` sat at rank 12 and named **two** of the 34 runs the compiler
+declines to classify. The other 32 produce no finding at all, because a hard-break
+paragraph is a valid block and nothing asks whether it should have been something else.
+`escalations: consulted` in `report.json` is the only place that number appears -- and it
+is reported with the model **off**, which is the whole point of counting it there.
+Next candidates: **`xtra_shelechov`'s two `break.missing`** (OPEN §1.0b, now the only thing
+left on that page besides one hyphenation instance); then **`layout.containment.mismatch`,
+12 over 9**; then the isolated instrument-truthfulness steps -- `paragraph.content`'s
+blanket `critical` (OPEN §5.0aa), the property-line-as-paragraph artefact (§5.0b),
+`code.text`'s whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split
+of `***x***`** (§5.0aaaaa).
+
+> **Hook-on output never goes in `bench/out/`.** Use `bench/biomd.llm.config.json`
+> (`bench/out-llm/`, `jobs: 1`, gateway `llama` at `http://192.168.1.26:8080/v1`, keyless).
+> No hook is enabled in that file either -- the run names it with `--hooks <id>`.
 
 > **A conservation finding is a pointer, not the defect.** Both of §46.9's named losses were
 > mis-diagnosed by the finding that raised them: `williams1`'s "lost target" had lost nothing (the

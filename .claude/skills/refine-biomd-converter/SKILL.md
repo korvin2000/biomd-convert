@@ -408,8 +408,10 @@ filesystem. There is no list of hook names and no CLI flag per hook.
 - **All adjudication is LLM-off.** `bench/run.sh` uses `bench/biomd.config.json`, which pins
   `"llm": { "enabled": false }`. L1/L2/L3, `defects.json` and every PROGRESS number stay on that side.
   Never report a hook-on number as the project number; label the delta separately (`CLAUDE.md`).
-- Current state: `table.classify` and `table.records` are wired but off; `text.segment` is migrated,
-  has no escalation site, and is **inert** — `hooks list` says so. That is a report, not a bug.
+- Current state: `table.classify`, `table.records` and `text.list` are wired but off; `text.segment`
+  is migrated, has no escalation site, and is **inert** — `hooks list` says so. That is a report, not
+  a bug. `text.list` (PROGRESS §59.1) is the worked example: read its gate before writing the next
+  hook, because most of the work turned out to be there rather than in the prompt.
 
 ### 10.5 Turning one on, and measuring it
 
