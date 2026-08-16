@@ -4121,3 +4121,56 @@ describe("a resource matrix sets its resources against its names", () => {
     expect(out).not.toContain("-:");
   });
 });
+
+describe("a line the source left standing alone and marked in no way", () => {
+  it("marks a shouted section label", async () => {
+    // `analyze/TODO_Rules.md` §1, and the author demonstrated the intended
+    // output in the same commit by rewriting `new_geyzel04`'s reference from
+    // `### БЛАГОДАРНОСТИ:` to `**БЛАГОДАРНОСТИ:**`.
+    const out = await md(PROSE + "<p>БЛАГОДАРНОСТИ:</p>" + PROSE);
+    expect(out).toContain("**БЛАГОДАРНОСТИ:**");
+  });
+
+  it("marks a line that opens with a section word", async () => {
+    const out = await md(PROSE + "<p>Сборник произведений Франсиско Тарреги</p>" + PROSE);
+    expect(out).toContain("**Сборник произведений Франсиско Тарреги**");
+  });
+
+  it("abstains on a lead-in sentence rather than guessing â non-firing", async () => {
+    // The named false friend. A trailing colon alone clears the brief's
+    // threshold, so the terms cannot tell `ÐÑÐ¸Ð¼ÐµÑÐ°Ð½Ð¸Ñ:` from a sentence that
+    // introduces the quotation below it. Neither line is shouted and neither
+    // opens with a section word, so both are left alone and recorded.
+    const lead = "<p>Ð Ð°Ð²ÑÐ¾Ð±Ð¸Ð¾Ð³ÑÐ°ÑÐ¸Ð¸ Ð¡ÐµÐ³Ð¾Ð²Ð¸Ñ Ð¾Ð¿Ð¸ÑÐ°Ð» Ð²ÑÑÑÐµÑÑ ÑÐ¾ ÑÐ²Ð¾Ð¸Ð¼ Ð¿ÐµÑÐ²ÑÐ¼ Ð³Ð¸ÑÐ°ÑÐ½ÑÐ¼ ÑÑÐ¸ÑÐµÐ»ÐµÐ¼:</p>";
+    expect(await md(PROSE + lead + PROSE)).not.toContain("**Ð Ð°Ð²ÑÐ¾Ð±Ð¸Ð¾Ð³ÑÐ°ÑÐ¸Ð¸");
+    // And the four-word one, which is what falsified the length reading.
+    const short = "<p>Ð¤Ð¾ÑÐ¼ÑÐ»Ð¸ÑÑÑ ÑÐµÐ»Ð¸ Ð¡ÐµÐ³Ð¾Ð²Ð¸Ñ Ð¿Ð¸ÑÐ°Ð»:</p>";
+    expect(await md(PROSE + short + PROSE)).not.toContain("**Ð¤Ð¾ÑÐ¼ÑÐ»Ð¸ÑÑÑ");
+  });
+
+  it("leaves a line the source already distinguished alone — non-firing", async () => {
+    // A link is a visible distinction too. `new_dyens` writes `ДИСКОГРАФИЯ` as
+    // a link and its reference leaves it unmarked, though it scores 10.
+    const out = await md(PROSE + '<p><a href="dyens2.htm">ДИСКОГРАФИЯ</a></p>' + PROSE);
+    expect(out).toContain("[ДИСКОГРАФИЯ](/#/dyens2)");
+    expect(out).not.toContain("**[ДИСКОГРАФИЯ]");
+  });
+
+  it("leaves a line inside a construct to that construct — non-firing", async () => {
+    // `goya2`'s `(дискография)` sits under the masthead inside `::: align`; it
+    // is a centred subtitle placed by its wrapper, not a section label. The
+    // pass runs over the document flow only, so this is out of scope by
+    // construction rather than by an exclusion list. It scores 6 out of the
+    // brief's terms and would otherwise be marked.
+    const out = (
+      await convert(Buffer.from(page(PROSE + '<p align="center" style="text-align: center">(дискография)</p>' + PROSE), "utf8"), {
+        profile: SPEC,
+        layoutFidelity: "faithful",
+        measurer: new InlineAlignMeasurer(),
+      })
+    ).markdown;
+    expect(out).toContain("position: center");
+    expect(out).toContain("(дискография)");
+    expect(out).not.toContain("**(дискография)**");
+  });
+});

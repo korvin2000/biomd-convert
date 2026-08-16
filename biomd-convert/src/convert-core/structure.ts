@@ -51,6 +51,12 @@ import {
   planDataTable,
 } from "./data-table.js";
 import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import {
+  LABEL_MAX_CHARS,
+  LABEL_SCORE_THRESHOLD,
+  carriesLabelEvidence,
+  scoreLabelLine,
+} from "./section-labels.js";
 import { UNNAMED_COLUMN_MARK, canonicalColumnLabel } from "./column-labels.js";
 import { type LinkProfile, rewriteTarget, siteRelativeAsset } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
@@ -370,7 +376,7 @@ export function recoverStructure(
   // caption lines that name them, unbinding three `::: images` groups and six
   // captions. Placed here, no pass can see one.
   const placed = new Set<string>();
-  const children = highlightEmbeddedQuotations(insertAnchors(lowered, ctx, placed), ctx);
+  const children = promoteScoredLabel(highlightEmbeddedQuotations(insertAnchors(lowered, ctx, placed), ctx), ctx);
 
   // Two ways a destination fails to reach the output, both recorded, neither
   // guessed at. A marker put in the wrong place is worse than an absent one:
@@ -504,6 +510,76 @@ function highlightEmbeddedQuotations(nodes: readonly BiomdContent[], ctx: Ctx): 
   };
   for (const node of nodes) visit(node);
   return [...nodes];
+}
+
+/**
+ * A line the source left standing alone and marked in no way at all.
+ *
+ * ## Rule contract — `analyze/TODO_Rules.md` §1
+ *
+ * The brief asks for a classifier over *"одиноко стоящих строк"*: a line no
+ * longer than 120 characters, carrying no heading and no inline style, clear of
+ * the block above it. It is scored out of five terms — shouted, clear below,
+ * trailing colon, section-opening word, short, ordinal — and marked `**bold**`
+ * at four points or more, *"даже если это портит статистику по-сравнению с
+ * reference файлами"*. The scoring and the vocabulary are `section-labels.ts`;
+ * this is the half that decides which lines are asked and what happens to the
+ * answer.
+ *
+ * **The document flow, and only the document flow.** The pass runs once over
+ * the finished top-level tree, so a table cell, a list item, a quotation, a
+ * column interior and an `::: align` body are all out of scope by construction
+ * rather than by exclusion list. That is what "standing alone" means here: a
+ * line inside a construct is placed by that construct, and `goya2`'s
+ * `(дискография)` under the masthead is a centred subtitle, not a section
+ * label. `OPEN.md` §3.1's ruling — a recovered centred label drops its
+ * centring — says the same thing from the other side.
+ *
+ * **Nothing already distinguished.** The brief's own gate, read strictly: the
+ * paragraph's children must be plain text throughout. Emphasis, a highlight,
+ * code and — the addition the corpus forced — **a link** all count as visible
+ * distinction. `new_dyens` writes `ДИСКОГРАФИЯ` as a link and its reference
+ * leaves it unmarked; scoring 10 out of the brief's terms, it would otherwise
+ * have been bolded on top of being a link.
+ *
+ * **One line, not a run.** A paragraph carrying a hard break is a run, and its
+ * members are the business of the four list rules and `promoteLabelBeforeList`.
+ * That also settles term 2: a whole one-line paragraph always stands clear
+ * below, so the term is a constant for this shape — see `MAX_LABEL_WORDS` for
+ * what that costs and what pays for it.
+ *
+ * **False friend, named and tested: the lead-in sentence.** A line ending in a
+ * colon that introduces the quotation or list below it is prose, and the
+ * brief's terms cannot tell it from `Примечания:` — a colon alone clears the
+ * threshold, and nine such sentences are in the corpus. Only two of the brief's
+ * six terms are evidence a label has and prose does not; `carriesLabelEvidence`
+ * records which, and why the length reading that looked like it worked was
+ * falsified by a contract older than this rule. Without one of them the pass
+ * **abstains** and leaves a review item rather than guessing, because whether a
+ * phrase names a section or predicates something about it is exactly what the
+ * source does not state.
+ *
+ * **Recurrence does not apply.** A section label occurs once per section by
+ * construction. The evidence here is typographic and positional, which
+ * `CLAUDE.md` §5 admits where recurrence cannot.
+ */
+function promoteScoredLabel(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  return nodes.map((node) => {
+    if (node.type !== "paragraph") return node;
+    const children = node.children;
+    if (children.length === 0 || children.some((child) => child.type !== "text")) return node;
+    const text = children.map((child) => (child as { value: string }).value).join("").replace(/\s+/gu, " ").trim();
+    if (text === "" || text.length > LABEL_MAX_CHARS) return node;
+    if (scoreLabelLine(text, /* standsClearBelow */ true) < LABEL_SCORE_THRESHOLD) return node;
+    if (!carriesLabelEvidence(text)) {
+      ctx.ledger.push(
+        review(`label:${text.slice(0, 40)}`, "a standalone line scores as a label on evidence prose also has"),
+      );
+      return node;
+    }
+    ctx.ledger.push(emitted(`label:${text.slice(0, 40)}`, nextId(ctx, "label")));
+    return { ...node, children: [{ type: "strong", children: [...children] } as PhrasingContent] };
+  });
 }
 
 /** The quotation mark this corpus writes, and the pair `analyze` also uses. */
