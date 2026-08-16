@@ -319,3 +319,8 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 60.5` | | Rule 1: promote only on a shout or a section word; abstain on the terms prose shares. **Killed: length separates a label from a lead-in** |
 | `### 60.6` | | `text.label`, the fourth decision point and plugin, shipped disabled. Hook-on delta measured, `--replay` byte-identical |
 | `### 60.7` | | state table: L0 991 (was RED at 958/962) · L1 99.7 · L2 135/87/1/27 · L3 14; hook-on 137/89 |
+| `## 61` | 8012 | **§60.4 retracted by the author; alignment now read from the HTML.** `TODO_Rules.md` §2 said *"могут"* — a permission read as an instruction |
+| `### 61.1` | | `cellAlign`: measured `text-align` first, attribute walked cell → row → row group, stopping below `<table>`. Unanimous per column, header row excluded, a joined band carries none |
+| `### 61.2` | | L0 998 · L1 99.7 · L2 161/114/1/27 · L3 14. Whole delta is `table.align` 48 → 75, priority 6; non-alignment 87 → 86 |
+| `### 61.3` | | **Open for the author:** no reference writes `:-:` anywhere, though the source states centre and the spec admits it |
+| `### 61.4` | | Two author edits found in the tree: `williams2` loses `Em\*\*` (**closes §56.5**); `TODO_Rules.md` §1/§3 restated, both already implemented |

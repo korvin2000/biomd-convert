@@ -8008,3 +8008,110 @@ one finding, and twelve documents carry a minor alignment divergence each -- whi
 rung-1 instruction against a 12-reference majority looks like in a ledger.
 
 Four plugins now, `text.segment` still the only inert one.
+
+## 61 -- the alignment the source had written down all along (2026-08-17)
+
+**§60.4 is retracted by the author, one iteration after it landed**, and the retraction is the
+general form of the rule rather than a reversal of it:
+
+> *"Don't try to align automatically all columns starting with the second column - to right margin,
+> it's false. Don't try to guess align, but rather determine it based on the HTML layout and table
+> layout; this is the only correct way."* -- and, later in the same session, *"ignore my previous
+> instruction to align all tables starting from 2-nd column, it should be done in a smart way, based
+> on the actual layout and styles provided by the HTML"*.
+
+Named on `xtra_rodrigo`'s last two tables: a column of numerals and a column of work titles
+(*Villano y Recercarre*, *Espanoleta e Fanfare de la Caballeria de Napoles*, *Danza de Las Hachas*,
+*Canario*) set against the right margin by a rule that had asked what **kind** of table it was.
+
+Note the written brief never demanded more than this: `TODO_Rules.md` §2 says the columns after the
+first *"могут быть отцентрированы вправо"* -- **may**, not must. §60.4 read a permission as an
+instruction, and that is the whole of the defect.
+
+### 61.1 The source states it per cell, and always did (`b74008b`)
+
+The first probe answered the question, before any code: `xtra_rodrigo`'s last table carries
+`align="right"` on its durations and formats, `align="center"` on its dash column, and **nothing** on
+the numerals and the titles -- exactly the two columns the author boxed in red.
+
+**Measured in Chromium over `fixtures/`, not read off the stylesheet.** The page wraps its whole body
+in `<center>`, so the live question was whether that leaks into the cells and makes every column look
+centred. It does not: unstated cells compute `start`, stated ones `-webkit-center` / `-webkit-right`.
+The `.jr` and `.sc` classes the cells carry set no `text-align` at all.
+
+`cellAlign` therefore asks the browser first -- folded through `foldTextAlign`, which is why the
+vendor forms read as keywords -- and falls back to the stated attribute walked cell → row → row
+group. **It stops below `<table>`**, because `align` there positions the table inside its parent and
+says nothing about its text; reading it as text alignment would centre every column of every centred
+table, and this corpus centres most of its tables.
+
+Three narrowings, each with a measurement behind it:
+
+- **A column, not a cell.** GFM aligns columns, so every populated body cell must agree. One
+  dissenting row and the column keeps the default -- picking a winner is the guess this replaces.
+- **The header row is excluded.** Every UA stylesheet centres `<th>`, so a header cell states nothing
+  a body cell has not said better.
+- **A band several physical cells were joined into carries no alignment.** `xtra_rodrigo`'s eight
+  `[ 1 ] … [ 8 ]` score links each state `center` in their own box, and `coalesceOrdinalStrips` joins
+  them into one semantic column. Each `align` describes a box the reader never sees. Measured: those
+  cells hold **20 px of content in a 22 px box**, so the centring they declare moves nothing even
+  where it is stated. The `zip` column beside them is one cell per row and keeps its centring --
+  same table, same attribute, opposite answer, which is what makes this a branch and not a blanket
+  refusal.
+
+Only `center` and `right` are written. `left` and `justify` fold to no marker: GFM already starts a
+column at the left edge and `:-` restates the default in a form no reference uses.
+
+### 61.2 What it cost, and why the largest number is the least important one
+
+| rung | after §60 | after §61 |
+|---|---|---|
+| L0 | 991/991 | **998/998**, typecheck clean, 0 FAILED, replay byte-identical |
+| L1 | 99.7 | **99.7** -- unmoved |
+| L2 | 135 / 87 / 1 crit / 27 maj | **161 / 114 / 1 crit / 27 maj** |
+| L3 | 14 | **14** -- unmoved |
+
+**The whole delta is `table.align`, 48 → 75, minor and priority 6 throughout.** Non-alignment
+findings went 87 → 86: nothing else regressed and one thing improved. Criticals and majors are
+unmoved.
+
+Inside that class the movement runs both ways, and the direction is the point:
+
+- **`new_karta` 20 → 17 and `segovia` 8 → 7** lose alignment the converter had invented.
+- **`xtra_karta5` 0 → 31 and `new_kolpakov` 1 → 3** are the two references that write `--:`. Their
+  sources state `center` on those cells, and the centring is **real**: measured at 26-60 % slack in
+  Chromium, `MIDI` / `MP3` / `TAB` genuinely sit centred in wide columns. So `:-:` is the reading of
+  the source and `--:` is a hand choice.
+- **Eleven further documents** carry one or two divergences each, all of the same shape: a source
+  that states `center`, a reference that writes nothing.
+
+`xtra_karta5`'s 31 are **not** avoidable by suppressing centre. Its reference writes `--:` where the
+source states `center`, so any honest reading of that source disagrees with it -- the cost belongs to
+retracting the guess, not to emitting centre.
+
+**L3 is unmoved at 14 and that is instrument debt, not evidence of no effect.** L3 does not model
+table cell alignment at all; §60.4 moved 48 findings without it noticing and §61 moves 75 the same
+way. This is now the second iteration in a row where the rung that adjudicates rendering is blind to
+the thing being changed.
+
+### 61.3 The open question this leaves
+
+**No reference writes `:-:` anywhere in the corpus** -- 14 references with tables, 2 of which align at
+all, and both write only `--:`. The author's own vocabulary in `TODO_Rules.md` §2 lists `-`, `--:`
+and `:--` and never mentions centre, though `BioMD-Reference.md` §1 admits `:---:` normatively and
+the validator is silent.
+
+So the source says centre, the layout confirms it, the spec allows it, and the hand-made corpus has
+never once used it. **Recorded for the author, not decided here**: whether a column the HTML centres
+should be written `:-:` or left at the default. Nothing above priority 6 turns on the answer, and the
+rule is one predicate away from either reading.
+
+### 61.4 Two author edits found in the working tree, not made here
+
+- **`fixtures/out/williams2.bio.md` no longer writes `Em\*\*`.** It reads `Em`, which is what the
+  converter already produced. **This closes §56.5 and the standing question in `OPEN.md`**: the
+  source's `<i>&nbsp;</i>` is an empty italic, the two stars were an artefact of the manual
+  conversion, and the author has removed them rather than asking for them to be emitted.
+- **`analyze/TODO_Rules.md` §1's threshold is restated** as `> 3 (>=4)`, which is the threshold §60.5
+  already implements, and §3 gains three further pager shapes -- all of which `8feb967` already
+  covers, since it keys on a strip of nothing but targets rather than on a glyph list.

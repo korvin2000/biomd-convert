@@ -40,25 +40,26 @@ earlier count ("22", "27", "28 / 26") is superseded. The author added the `xtra_
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §60** implemented
-all four rules of `analyze/TODO_Rules.md`, a new rung-1 document. Three were rules,
-one (asterisk escaping) was already correct and is now *measured* rather than quoted,
-and probing the fourth found a case no rung had ever reported: **`<u>` had no case in
-the inline lowering at all**, so every underline outside a link was dropped in silence.
-**L0 was RED in HEAD** -- `b645b7b` flipped `text.list`'s `enabledByDefault` to `true`,
-breaking the four tests that pin the empty default set; restored first.
-Current floor, LLM-off: L0 **991 tests**, 0 FAILED, conservation ok, L1 **99.7**,
-L2 **135 · 87 defect · 1 critical · 27 major**, L3 **14 over 28**.
-**L2 rose by design and the whole rise is `table.align`** (34 → 48, minor,
-priority 6): Rule 2 right-aligns a resource matrix's non-leading columns, which two
-references write and **twelve do not**. Everything above priority 6 improved --
-1 critical closed, 4 majors closed, L3 20 → 14, L1 99.6 → 99.7.
-`text.label` is the **fourth decision point and fourth plugin, shipped disabled**;
-it fills the one abstention Rule 1 leaves.
-**The lesson of §60 is that a contract can falsify a rule before it ships.** Word
-count separated every section label from every lead-in sentence in the corpus -- and
-`recovery.test.ts` already asserted that a **four-word sentence** stays plain. A cap
-fitted to 28 documents would have been wrong on the other ~987.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §61** retracted
+§60.4 on the author's instruction and replaced the guess with the source. Table
+column alignment is now read from the HTML -- measured `text-align` first, stated
+attribute as fallback, walked cell → row → row group and **stopping below
+`<table>`** -- folded per column, unanimous over populated body cells, with a
+band several cells were joined into carrying none.
+Current floor, LLM-off: L0 **998 tests**, 0 FAILED, conservation ok, replay
+byte-identical, L1 **99.7**, L2 **161 · 114 defect · 1 critical · 27 major**,
+L3 **14 over 28**.
+**`table.align` is 75 over 13 documents and none of it is work** -- every emitted
+alignment is attested by the source; these are references that write something else.
+Strip it before ranking anything.
+**The lesson of §61 is that a permission was read as an instruction.**
+`TODO_Rules.md` §2 says the later columns *"могут"* be right-aligned -- **may**, not
+must -- and §60.4 turned that into "always", across twelve references that disagreed.
+The probe that would have caught it took one parse5 script: the source had stated
+the answer per cell the whole time.
+**The lesson of §60 still stands: a contract can falsify a rule before it ships.**
+Word count separated every section label from every lead-in sentence in the corpus --
+and `recovery.test.ts` already asserted that a **four-word sentence** stays plain.
 
 > **Hook-on output never goes in `bench/out/`.** Use `bench/biomd.llm.config.json`
 > (`bench/out-llm/`, `jobs: 1`, gateway `llama` at `http://192.168.1.26:8080/v1`, keyless).

@@ -3,27 +3,31 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-16**, after PROGRESS §60.
+Last touched **2026-08-17**, after PROGRESS §61.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
 
-> **§60 implemented all four rules in `analyze/TODO_Rules.md`** — a new rung-1 document.
-> Three were rules, one was already done, and probing the fourth found a missing
-> case in the inline lowering that no rung had ever reported: **`<u>` had no case
-> at all** and every underline outside a link was dropped in silence.
+> **§61 retracted §60.4 on the author's instruction and replaced it with the source.**
+> *"Don't try to guess align, but rather determine it based on the HTML layout and
+> table layout"* — named on `xtra_rodrigo`'s last two tables, whose numerals and work
+> titles had been set against the right margin. The written brief never asked for
+> more: `TODO_Rules.md` §2 says the later columns *"могут"* be right-aligned — **may**,
+> not must. §60.4 read a permission as an instruction.
 >
-> **L0 was RED in HEAD and that came first.** `b645b7b` flipped `text.list`'s
-> `enabledByDefault` to `true`, breaking the four tests that pin the empty
-> default set. Restored in `114d501`. Every measurement below is on the fixed tree.
+> **The source states alignment per cell and always did.** Measured in Chromium:
+> `xtra_rodrigo` computes `start` on exactly the two columns the author boxed, and
+> the `<center>` wrapping the page does **not** leak into the cells. `cellAlign`
+> asks the browser first, falls back to the attribute walked cell → row → row
+> group, and stops below `<table>` — `align` there positions the table, not its text.
 >
-> **L2 rose by design: 126 → 135, and the whole rise is `table.align`.** Rule 2
-> right-aligns a resource matrix's non-leading columns, which `xtra_karta5` and
-> `new_kolpakov` write and **twelve other references do not**. Priority 6 only.
-> Everything above it improved — 1 critical closed, 4 majors closed, L3 20 → 14,
-> L1 99.6 → 99.7.
+> **L2 135 → 161, and the whole delta is `table.align` 48 → 75**, minor, priority 6.
+> Non-alignment findings 87 → 86. Criticals and majors unmoved, L1 unmoved, L3 unmoved.
+> Movement runs both ways: `new_karta` 20 → 17 and `segovia` 8 → 7 lose invented
+> alignment; `xtra_karta5` 0 → 31 and `new_kolpakov` 1 → 3 are the two references
+> that write `--:` over cells their source states `center` on.
 >
-> **`text.label` is the fourth plugin and it ships disabled.** It fills the one
-> abstention Rule 1 leaves: a line that clears the brief's threshold on evidence
-> prose shares. Hook-on delta measured and byte-identical under `--replay`.
+> **§56.5 is closed by an author edit, not by a rule.** `fixtures/out/williams2.bio.md`
+> now reads `Em`, not `Em\*\*` — the reference agrees with what the converter already
+> produced, and the standing question below is answered.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
@@ -42,13 +46,13 @@ stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2
 outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
 946 pages.
 
-**Current state — all four rungs *measured* 2026-08-16 after §60, LLM-off:**
+**Current state — all four rungs *measured* 2026-08-17 after §61, LLM-off:**
 
 | rung | value |
 |---|---|
-| L0 | **991 tests** (962 before §60; 958/962 **failing** in HEAD), typecheck clean, 0 FAILED |
+| L0 | **998 tests**, typecheck clean, 0 FAILED, `--replay` byte-identical |
 | L1 | **99.7 %** over the 28 |
-| L2 | **135 findings — 87 converter-defect** · 13 ambiguous · 35 reference-inconsistency · **1 critical** · 27 major |
+| L2 | **161 findings — 114 converter-defect** · 12 ambiguous · 35 reference-inconsistency · **1 critical** · 27 major |
 | L3 | **14** over 28 documents, 0 critical |
 
 With `--hooks text.label` on a self-hosted `gemma4-31b-local`: 113 escalation points,
@@ -84,9 +88,20 @@ is the LLM-off column.**
 - **`text.label`, the fourth decision point and plugin, shipped disabled** (`f9d36d2`).
 
 **Next, in order. Probe before committing (SKILL §6).**
-0a. **`new_karta` is now the largest single document at 20 converter-defects**, 16 of
-   them `table.align` under §60.4's rung-1 divergence and therefore a recorded
-   ceiling, not work. The other 4 are the real queue there.
+0. **One question for the author, and it is the only thing §61 left open.**
+   **No reference writes `:-:` anywhere** — 14 references with tables, 2 that align
+   at all, both writing only `--:`. `TODO_Rules.md` §2's vocabulary lists `-`, `--:`
+   and `:--` and never mentions centre, while `BioMD-Reference.md` §1 admits `:---:`
+   normatively and the validator is silent. So the source says centre, the measured
+   layout confirms it (26-60 % slack), the spec allows it, and the hand-made corpus
+   has never used it. Whether a column the HTML centres should be written `:-:` or
+   left at the default is one predicate either way; nothing above priority 6 turns
+   on it. **Do not re-derive this — ask.**
+0a. **`table.align` is 75 over 13 documents and is not work.** 31 are `xtra_karta5`
+   and 3 `new_kolpakov` — references that write `--:` over cells their source states
+   `center` on — and the rest are references that write nothing where the source
+   states something. Every instance is priority 6. `new_karta`'s 13 and
+   `xtra_rodrigo`'s 7 are this, not defects.
 0b. **`xtra_shelechov`'s two `break.missing`** (§55.4) — unchanged by §60 and still
    the cleanest untouched mechanism. §59.2 named the spanning band the divider sits
    beside.
@@ -108,17 +123,14 @@ is the LLM-off column.**
 **The hook budget is spent for this iteration.** `text.label` is it. A second candidate
 found now is a rule that has not been found yet — go back to `LLM-HOOKS.md` §10.1 step 1.
 
-**§56.5 is reopened by `TODO_Rules.md` §4, and the premise still does not hold.**
-The brief now says *"Одиночный `*` или несколько подряд стоящих `*` в оригинальном htm не
-должны фильтроваться"*, with `Em**` as the example. **Measured, not quoted:** every
-literal asterisk in all 28 sources already survives and escapes, and a probe page
-confirms `Em**` → `Em\*\*`, `Em*` → `Em\*`, `Em***` → `Em\*\*\*`, a lone `*` → `\*`.
-`williams2`'s cell has **no asterisk in the source** — it is `<i>&nbsp;</i>`, an empty
-italic, and the reference's two stars are an artefact of the manual conversion.
-**Blast radius measured: exactly one empty inline mark in the whole corpus.** Emitting
-`\*\*` for it would invent two visible characters (invariant 4) and would put them on
-every page in the other ~987 that has an empty `<i>`. **Open question for the author**
-— one cell, not a rule.
+**§56.5 is CLOSED, by an author edit rather than by a rule.** The brief's §4
+(*"Одиночный `*` или несколько подряд стоящих `*` … не должны фильтроваться"*) never
+applied to `williams2`: that cell has **no asterisk in the source** — it is
+`<i>&nbsp;</i>`, an empty italic, and the reference's two stars were an artefact of the
+manual conversion. Every literal asterisk in all 28 sources already survives and escapes
+(`Em**` → `Em\*\*`, `Em*` → `Em\*`, a lone `*` → `\*`), which was measured in §60.
+**`fixtures/out/williams2.bio.md` now reads `Em`** — the author removed the stars rather
+than asking for them to be emitted. Do not re-investigate.
 
 **Two false positives of the quotation rule, named rather than patched.** It marks
 `new_rechin4`'s quoted thesis heading and `jovicic`'s prize citation only if the
@@ -133,9 +145,10 @@ ceiling, "8 references to 1"** (§55.3) · **`retyped.heading2-to-paragraph` is 
 `xtra_garcia_lorca` content** (§53) · **`retyped.heading2-to-paragraph` is workable** (§53.6) ·
 **the unconditional `too-small` → `layoutFrom` reconsideration** (§53.3).
 
-**No open author question**, but two things the author may want to rule on:
-the two escaped asterisks above, and whether a quotation highlight should also cover
-`xtra_shelechov`'s four long review quotes, which no reference adjudicates.
+**One open author question — §1.0 above:** whether a column the HTML centres should be
+written `:-:` or left at the default. One further thing the author may want to rule on:
+whether a quotation highlight should also cover `xtra_shelechov`'s four long review
+quotes, which no reference adjudicates.
 
 **`npm install` before anything** — §41's `dictionary-ru`/`nspell` optional deps are not in a
 fresh clone and `tsc` fails on the missing declarations.
@@ -268,7 +281,7 @@ class in the ledger **because a rung-1 instruction was obeyed**.
 
 | class | inst | defect | docs | note |
 |---|---:|---:|---:|---|
-| `table.align` | 48 | 48 | 13 | **not work.** §60.4's rung-1 divergence: `xtra_karta5` 31 → 0, twelve references that write the default 0 → 47. Minor, priority 6. Do not "fix" it back |
+| `table.align` | 75 | 75 | 13 | **not work, and re-measured after §61.** Every emitted alignment is now attested by the source; these are references that write something else. `xtra_karta5` 31 · `new_karta` 13 · `xtra_rodrigo` 7 · `segovia` 5 · `kiselev`/`new_kolpakov`/`tarrega` 3 · rest ≤ 2. Minor, priority 6. **Do not "fix" it by guessing again** |
 | `emphasis.span` | 22 | 6 | 6 | 5 of the 6 defects are `xtra_rodrigo`'s one-colon scope disagreement (§60.2) — the source puts the colon outside `<u>`, the reference inside. **And the reader mis-splits `***x***`** (§5.0aaaaa) |
 | `break.missing` | 4 | 4 | 3 | **the frontier.** 2 are `xtra_shelechov`'s section boundary and grid close (§55.4); 1 is `xtra_karta5`'s footer rule, newly visible |
 | `paragraph.hyphenation.unjoined` · `.mixed` | 3 each | 3 | 3 / 2 | the proper-name lexicon tail, §50.6 |
@@ -279,11 +292,12 @@ class in the ledger **because a rung-1 instruction was obeyed**.
 | 11 singleton classes | 1 each | 1 | 1 | `align.moved` · `align.position.missing` · `heading.missing.absorbed` · `paragraph.missing.in-paragraph` · `retyped.columns-to-paragraph` · `retyped.paragraph-to-frame` · `retyped.paragraph-to-heading2` · `retyped.paragraph-to-lead` · `retyped.paragraph-to-quote` · `signature.position.spurious` · `heading.content.edited` |
 | -- | 0 | 0 | 0 | ~~`align.missing`~~ · ~~`retyped.paragraph-to-heading3`~~ · ~~`align.spurious`~~ · ~~`paragraph.containment`~~ closed by §59.2 and §60 |
 
-Per document, converter-defect: `new_karta` 20 (**16 are `table.align`**) · `xtra_rodrigo` 12
-(**7 `table.align`, 5 the colon scope**) · `segovia` 8 · `kiselev` 6 · `tarrega` 5 ·
-`new_rechin4` 4 · `news_2007` 4 · `jovicic` 3 · `new_dyens` 3 · `pavlov_azancheev` 3 ·
-`xtra_shelechov` 3 · **`xtra_karta5` 1, was 33** · rest <= 2. **`authors`, `goya2`,
-`new_bach`... no longer at 0** — twelve documents gained exactly their alignment divergence.
+Per document, converter-defect, *measured* after §61: **`xtra_karta5` 32** (**31 are
+`table.align`**) · `new_karta` 17 (**13**) · `xtra_rodrigo` 12 (**7 `table.align`, 5 the
+colon scope**) · `segovia` 7 (**5**) · `kiselev` 6 · `tarrega` 5 · `new_kolpakov` 4 (**3**) ·
+`new_rechin4` 4 · `news_2007` 4 · `jovicic` 3 · `pavlov_azancheev` 3 · `xtra_shelechov` 3 ·
+rest <= 2. **Read the `table.align` column out before ranking anything**: strip it and the
+real queue is `kiselev` 6, `tarrega` 5, `new_rechin4` 4, `news_2007` 4, `new_karta` 4.
 
 **Three classes L2 cannot see at all.** §56 found two by reading the source rather than the
 ledger — a section label absorbed into an image's `caption:` property, and an inline construct
