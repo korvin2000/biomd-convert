@@ -33,19 +33,19 @@
     ]
   },
   "totals": {
-    "findings": 22,
-    "alignmentRows": 243
+    "findings": 24,
+    "alignmentRows": 244
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 9,
-      "documents": 6
+      "instances": 10,
+      "documents": 7
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 13,
-      "documents": 9
+      "instances": 14,
+      "documents": 10
     }
   ],
   "findings": [
@@ -104,7 +104,7 @@
       "op": "substitute",
       "path": "/align[23]/paragraph[0]",
       "producedLine": 138,
-      "referenceLine": 150,
+      "referenceLine": 148,
       "produced": "▶",
       "reference": "▶",
       "geometry": {
@@ -161,7 +161,7 @@
       "op": "move",
       "path": "/align[23]/paragraph[0]",
       "producedLine": 138,
-      "referenceLine": 150,
+      "referenceLine": 148,
       "produced": "▶",
       "reference": "▶",
       "geometry": {
@@ -392,6 +392,46 @@
       "referenceLine": 131,
       "produced": "Список произведений для гитары соло ▶",
       "reference": "Список произведений для гитары соло ▶",
+      "geometry": {
+        "producedContainer": "(root)",
+        "referenceContainer": "align"
+      }
+    },
+    {
+      "id": "1d409aae",
+      "doc": "xtra_karta5",
+      "class": "layout.align.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/align[39]/paragraph[0]",
+      "producedLine": 176,
+      "referenceLine": 182,
+      "produced": "◀ ●",
+      "reference": "◀ ●",
+      "geometry": {
+        "producedAlign": "left",
+        "referenceAlign": "center",
+        "producedRaw": "start",
+        "referenceRaw": "center",
+        "producedEvidence": "keyword",
+        "referenceEvidence": "keyword",
+        "producedProse": "unknown",
+        "referenceProse": "unknown"
+      }
+    },
+    {
+      "id": "430be539",
+      "doc": "xtra_karta5",
+      "class": "layout.containment.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/align[39]/paragraph[0]",
+      "producedLine": 176,
+      "referenceLine": 182,
+      "produced": "◀ ●",
+      "reference": "◀ ●",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
@@ -1704,7 +1744,7 @@
     {
       "doc": "new_karta",
       "producedLine": 138,
-      "referenceLine": 150,
+      "referenceLine": 148,
       "text": "▶",
       "producedAlignment": "left",
       "referenceAlignment": "center",
@@ -3520,6 +3560,19 @@
       "sourceProse": "left",
       "sourceDistinctive": false,
       "sourcePath": "/html[1]/body[1]/center[1]/table[1]/tbody[1]/tr[1]/td[1]/center[1]/table[1]/tbody[1]/tr[1]/td[2]/div[14]/table[1]/tbody[1]/tr[1]/td[1]/p[1]"
+    },
+    {
+      "doc": "xtra_karta5",
+      "producedLine": 176,
+      "referenceLine": 182,
+      "text": "◀ ●",
+      "producedAlignment": "left",
+      "referenceAlignment": "center",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
     },
     {
       "doc": "xtra_rodrigo",

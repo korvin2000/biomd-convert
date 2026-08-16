@@ -15,6 +15,7 @@
 import type { TableGrid } from "../ladom/grid.js";
 import type { Classification } from "./classify.js";
 import { type LogicalTablePlan, planDataTable } from "./data-table.js";
+import { type BreakRunCandidate, breakRunId } from "./lines.js";
 import { type Acceptance, type DecisionPoint, accepted, refused } from "./resolver.js";
 
 // ---------------------------------------------------------------------------
@@ -165,5 +166,108 @@ export const TABLE_HEADERS: DecisionPoint<TableHeaderRequest, string[]> = {
     if (distinct.size !== headers.length) return refused("column labels are not distinct");
 
     return accepted(headers);
+  },
+};
+
+// ---------------------------------------------------------------------------
+// text.list — whether a run of hand-drawn lines is an enumeration
+// ---------------------------------------------------------------------------
+
+export interface TextListRequest extends BreakRunCandidate {
+  sourceName?: string;
+}
+
+/** What the compiler does with a `LIST` verdict: emit the run as list items. */
+export interface TextListDecision {
+  confidence: number;
+  /** The class the reply actually named, for the audit trail. */
+  reason: string;
+}
+
+/** The names a run can be given, plus the one that means "do not use me". */
+const RUN_CLASSES = new Set(["LIST", "PROSE", "VERSE", "UNCERTAIN"]);
+
+/**
+ * Three lines is the shortest run that can *recur*.
+ *
+ * Two lines are a name and its subtitle — `jovicic`'s own block opens with
+ * `Jovan Jovicic` / `Classical guitar` and continues with a label and a
+ * catalogue number, and neither pair is a list. Below three there is no
+ * parallelism to read, only a pair.
+ */
+const MIN_LIST_ITEMS = 3;
+
+/**
+ * Turning a paragraph into a list restructures a block, so it carries the same
+ * evidence bar as promoting a region to DATA: asserted, not merely preferred.
+ */
+const LIST_PROMOTION_CONFIDENCE = 0.75;
+
+/**
+ * `text.list` — the run the four list rules all declined.
+ *
+ * **Abstention.** No bullet glyph, no ascending ordinal, no announced indent
+ * and no `<blockquote>` containment claimed the run, so the compiler emitted
+ * hard-break lines. That is safe and it is also, for `kiselev` and `jovicic`,
+ * wrong: the references write both runs as list items.
+ *
+ * **What this check can and cannot do.** It re-establishes every property the
+ * emission depends on — enough lines, none empty, an asserted `LIST` rather
+ * than a hedged one, and a reply that belongs to these lines and not to a
+ * cached neighbour. It deliberately does **not** try to catch a wrong `LIST` on
+ * verse: a test strong enough to do that would have answered the question
+ * deterministically, and PROGRESS §15.2 measured that no such test exists.
+ *
+ * A shape test was tried here and removed: "a line holding two sentences is
+ * prose" refused `kiselev`'s own volume list on `Том VII Ура! Каникулы!`,
+ * because an exclamation inside a title is not a sentence boundary. A check
+ * that refuses the case the hook was written for is worse than no check, and it
+ * was re-deriving exactly the discriminator §15.2 had already killed.
+ *
+ * That residue is why the hook ships disabled and why its failure mode was
+ * chosen to be visible — a paragraph rendered as bullets is obvious on the
+ * page, unlike a corrupted word.
+ */
+export const TEXT_LIST: DecisionPoint<TextListRequest, TextListDecision> = {
+  id: "text.list",
+  question: "No bullet, ordinal, indent or containment claimed this run: are these lines a list?",
+
+  itemId(request) {
+    return `${request.sourceName ?? "?"}:${request.id}`;
+  },
+
+  accept(reply, request): Acceptance<TextListDecision> {
+    const verdict = reply as { kind?: unknown; confidence?: unknown; rationale?: unknown };
+    const kind = verdict.kind;
+    const confidence = verdict.confidence;
+    if (typeof kind !== "string" || typeof confidence !== "number") {
+      return refused("reply carried no kind and confidence");
+    }
+    if (!RUN_CLASSES.has(kind)) return refused(`unknown kind ${JSON.stringify(kind)}`);
+    // Every non-LIST answer is a *successful* outcome: the deterministic
+    // hard-break paragraph is already the right treatment for prose and verse.
+    if (kind !== "LIST") return refused(`the run reads as ${kind}`);
+
+    if (confidence < LIST_PROMOTION_CONFIDENCE) {
+      return refused(
+        `LIST at confidence ${confidence.toFixed(2)} — restructuring a paragraph must be asserted ` +
+          `above ${LIST_PROMOTION_CONFIDENCE}`,
+      );
+    }
+    if (request.lines.length < MIN_LIST_ITEMS) {
+      return refused(`${request.lines.length} line(s) — fewer than ${MIN_LIST_ITEMS} is a pair, not a list`);
+    }
+    if (request.lines.some((line) => line.trim() === "")) {
+      return refused("a line of the run is empty");
+    }
+    // The reply is keyed to a run by content, so a stale cached decision or a
+    // mis-plumbed request would be applied to lines nobody asked about. This is
+    // the one property `accept` can establish that nothing upstream can.
+    if (breakRunId(request.lines) !== request.id) {
+      return refused("the reply does not belong to these lines");
+    }
+
+    const rationale = typeof verdict.rationale === "string" ? verdict.rationale : "";
+    return accepted({ confidence, reason: rationale.slice(0, RATIONALE_LIMIT) });
   },
 };

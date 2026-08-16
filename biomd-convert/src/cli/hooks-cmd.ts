@@ -243,7 +243,12 @@ export function registerHookCommands(program: Command): void {
         return;
       }
 
-      if (!gateway?.apiKey) {
+      // A key is required only where the gateway says one is. A self-hosted
+      // `llama-server` on a private address authenticates nobody, `llm-session`
+      // has always allowed it, and the transport already omits the header —
+      // only this command insisted, which made the local endpoint testable by
+      // a corpus run but not by one item.
+      if (!gateway || (gateway.requiresApiKey && !gateway.apiKey)) {
         process.stderr.write("A live run needs a configured gateway and key. Run `biomd config show`.\n");
         process.exitCode = 1;
         return;
@@ -313,7 +318,7 @@ export function registerHookCommands(program: Command): void {
  * It is a *report*, not a registry: nothing dispatches through it, and a hook
  * missing from it still works the moment its decision point is declared.
  */
-const KNOWN_DECISION_POINTS = ["table.classify", "table.records"] as const;
+const KNOWN_DECISION_POINTS = ["table.classify", "table.records", "text.list"] as const;
 
 /**
  * Accept a bare request as well as a full invocation.

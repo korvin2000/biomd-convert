@@ -49,7 +49,7 @@ import { type CorpusProfile, frequencyForDocument } from "./corpus.js";
 import { planDataTable } from "./data-table.js";
 import { recoverHeadings } from "./headings.js";
 import { type DecisionResolver, NULL_RESOLVER, type ResolverStats } from "./resolver.js";
-import { TABLE_CLASSIFY, TABLE_HEADERS, isWideEnoughForData } from "./decisions.js";
+import { TABLE_CLASSIFY, TABLE_HEADERS, TEXT_LIST, isWideEnoughForData } from "./decisions.js";
 import { type LayoutFidelity, type TableOutcome, enforceSingleTitle, recoverStructure } from "./structure.js";
 import { checkConservation, type ConservationReport } from "./conservation.js";
 import {
@@ -403,13 +403,38 @@ export async function convert(bytes: Uint8Array | Buffer, options: ConvertOption
 
   // ---- Stage 9: structure recovery ---------------------------------------
   stage("structure");
-  const structure = recoverStructure(doc.root, grids, {
+  const structureOptions = {
     profile,
     links,
     ...(options.layoutFidelity ? { layoutFidelity: options.layoutFidelity } : {}),
     classifications: classificationMap,
     tableHeaders,
-  });
+  };
+  let structure = recoverStructure(doc.root, grids, structureOptions);
+
+  // Escalation point 3. A run of hand-drawn lines that no list rule claimed.
+  //
+  // Unlike the two above, this question is only *discoverable* by lowering the
+  // document: a break-run is not a node, it is what a run of `<br>` turned out
+  // to mean. So the pass runs, reports what it could not decide, and — only if
+  // an answer came back — runs again with those runs promoted. With no hook
+  // enabled `decide` returns null for every candidate, nothing is promoted, and
+  // the second pass never happens: the output is byte-identical by construction.
+  const promoted = new Set<string>();
+  for (const candidate of structure.listCandidates) {
+    escalations.consulted += 1;
+    const decided = await resolver.decide(TEXT_LIST, {
+      ...candidate,
+      ...(options.sourceName ? { sourceName: options.sourceName } : {}),
+    });
+    if (!decided) continue;
+    escalations.resolved += 1;
+    promoted.add(candidate.id);
+  }
+  if (promoted.size > 0) {
+    structure = recoverStructure(doc.root, grids, { ...structureOptions, listRuns: promoted });
+  }
+
   warnings.push(...structure.warnings);
   for (const entry of structure.ledger) ledger.record({ ...entry, pass: entry.pass || "structure" });
 

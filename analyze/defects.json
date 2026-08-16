@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-14T11:44:26.013Z",
+  "generated": "2026-08-16T17:55:34.383Z",
   "totals": {
-    "findings": 138,
+    "findings": 130,
     "converterDefects": 76,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 47,
-    "ambiguous": 15,
+    "referenceInconsistencies": 41,
+    "ambiguous": 13,
     "bySeverity": {
       "critical": 2,
       "major": 36,
-      "minor": 100
+      "minor": 92
     }
   },
   "perDocument": [
@@ -71,19 +71,19 @@
     },
     {
       "doc": "new_blackmore",
-      "findings": 6,
+      "findings": 5,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 6
+      "minor": 5
     },
     {
       "doc": "new_dyens",
-      "findings": 6,
+      "findings": 0,
       "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 6
+      "minor": 0
     },
     {
       "doc": "new_geyzel04",
@@ -127,11 +127,11 @@
     },
     {
       "doc": "new_rechin4",
-      "findings": 6,
+      "findings": 5,
       "converterDefects": 4,
       "critical": 0,
       "major": 3,
-      "minor": 3
+      "minor": 2
     },
     {
       "doc": "news",
@@ -505,7 +505,7 @@
         "doc": "xtra_karta5",
         "path": "/align[39]",
         "produced": null,
-        "reference": "◀ 🞈"
+        "reference": "◀ ●"
       }
     },
     {
@@ -889,50 +889,6 @@
       }
     },
     {
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "instances": 6,
-      "documents": [
-        "new_dyens"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 6,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_dyens",
-        "path": "/table[8]/cell[2][1]",
-        "produced": "—",
-        "reference": "-"
-      }
-    },
-    {
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "instances": 4,
-      "documents": [
-        "new_blackmore",
-        "new_rechin4",
-        "segovia"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 4
-      },
-      "rank": 0,
-      "example": {
-        "doc": "new_blackmore",
-        "path": "/paragraph[40]",
-        "produced": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
-        "reference": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…"
-      }
-    },
-    {
       "class": "hardbreak.spurious",
       "severity": "minor",
       "instances": 2,
@@ -952,6 +908,28 @@
         "path": "/paragraph[45]",
         "produced": "* Запись предоставлена автором и размещается с ее согласия.",
         "reference": "* Запись предоставлена автором и размещается с ее согласия. — 1 hard breaks, reference has 0"
+      }
+    },
+    {
+      "class": "paragraph.content.edited",
+      "severity": "minor",
+      "instances": 2,
+      "documents": [
+        "new_rechin4",
+        "segovia"
+      ],
+      "verdicts": {
+        "converter-defect": 0,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 2
+      },
+      "rank": 0,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/paragraph[7]",
+        "produced": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
+        "reference": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…"
       }
     },
     {
@@ -1056,7 +1034,7 @@
         "doc": "xtra_karta5",
         "path": "/align[39]/paragraph[0]",
         "produced": null,
-        "reference": "◀ 🞈"
+        "reference": "◀ ●"
       }
     },
     {
@@ -1489,20 +1467,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "7d0800be",
-      "doc": "new_blackmore",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[40]",
-      "producedLine": 154,
-      "referenceLine": 154,
-      "produced": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
-      "reference": "ЛЕГЕНДАРНОГО лидера Deep Purple и создателя Rainbow Ричи Блэкмора принято считать человеком \"тяжелого поведения\": скандалистом и вообще крайне мрачной личность…",
-      "verdict": "ambiguous"
-    },
-    {
       "id": "36bb1a06",
       "doc": "new_blackmore",
       "class": "emphasis.span",
@@ -1514,90 +1478,6 @@
       "referenceLine": 284,
       "produced": "(none)",
       "reference": "em:На закате своей карьеры один из основателей Deep Purple стал менестрелем. Виновата, как обычно, женщина.",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "0caecea4",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[2][1]",
-      "producedLine": 30,
-      "referenceLine": 30,
-      "produced": "—",
-      "reference": "-",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "22a3a307",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[2][2]",
-      "producedLine": 30,
-      "referenceLine": 30,
-      "produced": "—",
-      "reference": "-",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "e93d83ff",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[3][1]",
-      "producedLine": 31,
-      "referenceLine": 31,
-      "produced": "—",
-      "reference": "-",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "5ad9761c",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[3][2]",
-      "producedLine": 31,
-      "referenceLine": 31,
-      "produced": "—",
-      "reference": "-",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "31a6ae26",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[4][1]",
-      "producedLine": 32,
-      "referenceLine": 32,
-      "produced": "—",
-      "reference": "-",
-      "verdict": "reference-inconsistency"
-    },
-    {
-      "id": "e7466d25",
-      "doc": "new_dyens",
-      "class": "table.cell.typography.dash",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[8]/cell[4][2]",
-      "producedLine": 32,
-      "referenceLine": 32,
-      "produced": "—",
-      "reference": "-",
       "verdict": "reference-inconsistency"
     },
     {
@@ -1679,7 +1559,7 @@
       "op": "substitute",
       "path": "/align[23]",
       "producedLine": 138,
-      "referenceLine": 147,
+      "referenceLine": 145,
       "produced": "▶",
       "reference": "▶ — at /paragraph[24]",
       "verdict": "converter-defect"
@@ -1878,20 +1758,6 @@
       "referenceLine": 24,
       "produced": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
       "reference": "И ещё одна мечта, которая вдохновляла – ==Мне хотелось, чтобы гитаристы открыли бы для себя новый звуковой мир, почувствовали бы красоту новых тональностей, их…",
-      "verdict": "ambiguous"
-    },
-    {
-      "id": "51e006b2",
-      "doc": "new_rechin4",
-      "class": "paragraph.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/paragraph[10]",
-      "producedLine": 30,
-      "referenceLine": 30,
-      "produced": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
-      "reference": "Следующей моей творческой задачей в практическом плане было определение движения пьес по \"тональному кругу\". В гитарной практике использовалось лишь 8-10 прост…",
       "verdict": "ambiguous"
     },
     {
@@ -2791,7 +2657,7 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "9eea49c1",
+      "id": "cb58dec9",
       "doc": "xtra_karta5",
       "class": "align.missing",
       "severity": "major",
@@ -2801,11 +2667,11 @@
       "producedLine": null,
       "referenceLine": 179,
       "produced": null,
-      "reference": "◀ 🞈",
+      "reference": "◀ ●",
       "verdict": "converter-defect"
     },
     {
-      "id": "f81d0d5a",
+      "id": "c3f3ed00",
       "doc": "xtra_karta5",
       "class": "paragraph.missing.unattested",
       "severity": "critical",
@@ -2815,7 +2681,7 @@
       "producedLine": null,
       "referenceLine": 182,
       "produced": null,
-      "reference": "◀ 🞈",
+      "reference": "◀ ●",
       "verdict": "reference-inconsistency"
     },
     {

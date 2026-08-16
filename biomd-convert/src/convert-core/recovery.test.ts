@@ -17,6 +17,7 @@ import {
   promoteLabelBeforeList,
 } from "./structure.js";
 import type { Classification } from "./classify.js";
+import { type DecisionResolver, emptyStats } from "./resolver.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
 import { iconGlyphFor, isDrawnRule } from "./glyphs.js";
 import { groupColumnsFor, isDecorative, isUiIcon, sizeTokenFor } from "./media.js";
@@ -3802,5 +3803,107 @@ describe("a code block keeps the placement its container declares", () => {
       expect(out).toContain("так плачет стрела без цели.");
       expect(out).toContain("(перевод М. Цветаевой)");
     }
+  });
+});
+
+/**
+ * `text.list` — the abstention, the gate around it, and what an answer does.
+ *
+ * ## Rule contract
+ *
+ * **Invariant.** Everything asserted here is about *which runs the compiler
+ * declines to decide*, and it reads no class, id, tag, filename or word — only
+ * line count, indent equality and ordinal cardinality. The judgement itself is
+ * not tested, because there is nothing deterministic in it to test: the
+ * resolver below accepts, so what the assertions see is the escalation site,
+ * not a model.
+ *
+ * **Recurrence** is the run: three lines minimum, so a pair cannot carry it.
+ *
+ * **False friends, each tested for non-firing:**
+ *   - a run with a *subordinate* member (`borislova`'s movements, indented and
+ *     numbered under the concerto they belong to). Flattening it would make
+ *     them siblings of their own parent — structural loss traded for reference
+ *     agreement, which the priority order forbids;
+ *   - a run a rule already claimed one level up (`kiselev`'s six album track
+ *     lists, recognised by the `<blockquote>` around them). It must not even be
+ *     asked about: an answer would dissolve the containment the outer rule
+ *     reads, and a paid answer to a settled question is the failure mode a gate
+ *     exists to prevent.
+ */
+describe("a run of hand-drawn lines the list rules all declined", () => {
+  /** A resolver that says LIST to everything, so the *gate* is what is measured. */
+  const alwaysList: DecisionResolver = {
+    async decide(point, request) {
+      if (point.id !== "text.list") return null;
+      const verdict = point.accept({ kind: "LIST", confidence: 1, rationale: "test" }, request);
+      return verdict.ok ? verdict.value : null;
+    },
+    stats: emptyStats,
+  };
+
+  async function both(body: string): Promise<{ off: string; on: string }> {
+    const off = await convert(Buffer.from(page(body), "utf8"), { profile: SPEC });
+    const on = await convert(Buffer.from(page(body), "utf8"), { profile: SPEC, resolver: alwaysList });
+    return { off: off.markdown, on: on.markdown };
+  }
+
+  const VOLUMES =
+    "<p>Том I Клубника со сливками (1984-1993)<br>Том VII Ура! Каникулы! (2000)<br>" +
+    "Том XII Почему ты не любишь джаз? (2004)<br>Том XIX Сотворчество (2017)</p>";
+
+  it("stays hard-break lines with no answer, and becomes items with one", async () => {
+    const { off, on } = await both(PROSE + VOLUMES);
+    expect(off).toContain("Том I Клубника со сливками (1984-1993)\\");
+    expect(off).not.toContain("- Том I");
+    expect(on).toContain("- Том I Клубника со сливками (1984-1993)");
+    expect(on).toContain("- Том XIX Сотворчество (2017)");
+  });
+
+  it("neither adds, drops nor reorders a line when the answer is applied", async () => {
+    const { off, on } = await both(PROSE + VOLUMES);
+    const lines = (md: string): string[] =>
+      md
+        .split("\n")
+        .filter((l) => l.includes("Том "))
+        .map((l) => l.replace(/^- /u, "").replace(/\\$/u, "").trim());
+    expect(lines(on)).toEqual(lines(off));
+    expect(lines(on)).toHaveLength(4);
+  });
+
+  it("never asks about a run whose members are not all peers — the indented case", async () => {
+    const nested =
+      "<p>Concierto para guitarra y piano<br>&nbsp;&nbsp; 1. Moscu-Mexico<br>" +
+      "&nbsp;&nbsp; 2. Rielazul<br>&nbsp;&nbsp; 3. Locomarina<br>Espejismo #3</p>";
+    const { off, on } = await both(PROSE + nested);
+    expect(on).toBe(off);
+    expect(on).not.toContain("- Concierto");
+  });
+
+  it("never asks about a run whose members are not all peers — the numbered case", async () => {
+    const partly =
+      "<p>Английская сюита<br>1. Прелюдия<br>2. Песня с вариацией<br>3. Танец</p>";
+    const { off, on } = await both(PROSE + partly);
+    expect(on).toBe(off);
+  });
+
+  it("never asks about a pair", async () => {
+    const pair = "<p>Jovan Jovicic<br>Classical guitar</p>";
+    const { off, on } = await both(PROSE + pair);
+    expect(on).toBe(off);
+  });
+
+  it("never asks about a run a rule already claimed one level up", async () => {
+    const claimed =
+      '<p>Детская сюита (1984)</p><blockquote style="margin-left: 25"><p>Игра<br>Колыбельная<br>Сон<br>Утро</p></blockquote>';
+    const { off, on } = await both(PROSE + claimed);
+    expect(off).toContain("- Игра");
+    expect(on).toBe(off);
+  });
+
+  it("is deterministic — the same answer applied twice writes the same bytes", async () => {
+    const first = await convert(Buffer.from(page(PROSE + VOLUMES), "utf8"), { profile: SPEC, resolver: alwaysList });
+    const second = await convert(Buffer.from(page(PROSE + VOLUMES), "utf8"), { profile: SPEC, resolver: alwaysList });
+    expect(first.markdown).toBe(second.markdown);
   });
 });

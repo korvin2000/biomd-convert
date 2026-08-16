@@ -1,0 +1,62 @@
+{
+  // Hook-on measurement only. Everything the project reports is taken with
+  // `bench/biomd.config.json`, which pins the LLM off; this file exists so a
+  // hook-on run can never overwrite `bench/out/` and be read back as the
+  // baseline by `eval`, `diff` or `l3`.
+  //
+  //   node dist/cli/index.js corpus run -c bench/biomd.llm.config.json --hooks text.list
+  //   node dist/cli/index.js diff -c bench/biomd.llm.config.json
+  //
+  // No hook is enabled here either: `llm.enabled` builds a transport and
+  // nothing else. Name the hook on the command line for the run that measures
+  // it, so the file cannot leave one quietly switched on.
+  "profile": "spec-1.6",
+  "layoutFidelity": "faithful",
+  "visual": "always",
+  "lang": "ru",
+  "inputDir": "./fixtures/html",
+  "assetRoot": "./fixtures/html",
+  "expectedDir": "./fixtures/out",
+  "outDir": "./bench/out-llm",
+  "workDir": "./bench/work-llm",
+  "corpus": "./bench/corpus/corpus-profile.json",
+
+  // The local llama-server processes one request at a time. More workers than
+  // that queue behind each other and only make the progress line lie.
+  "jobs": 1,
+
+  "llm": {
+    "enabled": true,
+    "gateway": "llama",
+    "cacheDir": "./bench/.biomd-cache",
+    "hooks": {
+      "enable": [],
+      "disable": [],
+      "overrides": {
+        "text.list": { "tier": "balanced", "maxTier": "balanced", "maxCalls": 200 }
+      }
+    },
+    "concurrency": { "default": 1 },
+    "gateways": {
+      "llama": {
+        "baseUrl": "http://192.168.1.26:8080/v1",
+        "requiresApiKey": false,
+        "models": {
+          "fast": "gemma4-31b-local",
+          "balanced": "gemma4-31b-local",
+          "deep": "gemma4-31b-local"
+        },
+        "structuredOutput": "json_schema",
+        "extraBody": {
+          "chat_template_kwargs": { "enable_thinking": false }
+        },
+        "vision": false,
+        "enforceModelIdentity": false
+      }
+    },
+    "budget": {
+      "maxCalls": 400,
+      "maxEstimatedCostUsd": 5
+    }
+  }
+}

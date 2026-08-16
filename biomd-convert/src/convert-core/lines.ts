@@ -20,7 +20,44 @@
  * `<b>Посадка.<br></b>` puts the break inside the emphasis: after inline
  * lowering the break is a sibling, which is where the decision belongs.
  */
+import { createHash } from "node:crypto";
 import type { PhrasingContent } from "mdast";
+
+/**
+ * A break-run no rule could claim, offered for judgement.
+ *
+ * The converter recognises a list from four kinds of evidence — a bullet glyph,
+ * ascending ordinals, a uniform indent under an announcing colon, and a native
+ * `<blockquote>` around a single flat run. A run that carries none of them is
+ * an *abstention*: `kiselev`'s nineteen volume titles and `jovicic`'s fifteen
+ * track titles are `<br>`-separated lines in a plain `<p>`, and PROGRESS §15.2
+ * measured line count, line length and variance across every multi-line run in
+ * the references and found total overlap with verse that must stay a paragraph.
+ * Shape cannot separate them; only meaning can.
+ *
+ * The candidate is therefore the **whole run**, never one line: what makes a
+ * set of lines an enumeration is that they are parallel to each other, which is
+ * a property of the block.
+ */
+export interface BreakRunCandidate {
+  /** Content-derived, so the same run gets the same id in every run and cache. */
+  id: string;
+  /** Every line of the run, in order, as a reader sees it. */
+  lines: string[];
+  /** Visible text of the block immediately above, when the run has one. */
+  lead?: string;
+}
+
+/**
+ * Identity of a run, from the run's own words.
+ *
+ * Deliberately not a node id: the same discography block appears on many pages
+ * of this corpus, and a content-derived id lets one decision serve all of them
+ * while staying stable across a re-parse that renumbers nodes.
+ */
+export function breakRunId(lines: readonly string[]): string {
+  return createHash("sha1").update(lines.join("\n")).digest("hex").slice(0, 16);
+}
 
 /** One line of a run, plus how many breaks closed it. */
 export interface RunLine {
@@ -322,6 +359,11 @@ export function enumeratedItems(lines: readonly RunLine[]): RunLine[][] | null {
     if ((ordinals[i + 1] as number) <= (ordinals[i] as number)) return null;
   }
   return items;
+}
+
+/** Whether a line opens with the ordinal token {@link enumeratedItems} reads. */
+export function opensWithOrdinal(text: string): boolean {
+  return leadingOrdinal(text) !== null;
 }
 
 /** `NN.` / `NN)` at the head of a line, followed by content. Null when absent. */

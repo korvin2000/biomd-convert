@@ -1,5 +1,5 @@
 {
-  "overall": 0.9949361440681163,
+  "overall": 0.9951895412054208,
   "documents": [
     {
       "name": "authors",
@@ -2265,19 +2265,13 @@
     {
       "name": "news_2007",
       "text": {
-        "recall": 0.976303317535545,
-        "precision": 0.9809523809523809,
-        "f1": 0.9786223277909738,
-        "expected": 211,
+        "recall": 1,
+        "precision": 1,
+        "f1": 1,
+        "expected": 210,
         "actual": 210,
-        "matched": 206,
-        "missing": [
-          "иногда мы всетаки оживаем 9787",
-          "мы всетаки оживаем 9787 frame",
-          "всетаки оживаем 9787 frame black",
-          "оживаем 9787 frame black россия",
-          "9787 frame black россия г"
-        ]
+        "matched": 210,
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -2327,7 +2321,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9869200316706255
+      "overall": 0.9933333333333334
     },
     {
       "name": "pavlov_azancheev",
@@ -3344,16 +3338,13 @@
     {
       "name": "xtra_karta5",
       "text": {
-        "recall": 0.9954648526077098,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9977272727272727,
-        "expected": 441,
+        "f1": 1,
+        "expected": 439,
         "actual": 439,
         "matched": 439,
-        "missing": [
-          "м о п я 9664",
-          "о п я 9664 128904"
-        ]
+        "missing": []
       },
       "headings": {
         "recall": 1,
@@ -4151,7 +4142,7 @@
           ]
         }
       ],
-      "overall": 0.9850324675324675
+      "overall": 0.9857142857142858
     },
     {
       "name": "xtra_rodrigo",

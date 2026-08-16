@@ -53,13 +53,16 @@ import { UNNAMED_COLUMN_MARK, canonicalColumnLabel } from "./column-labels.js";
 import { type LinkProfile, rewriteTarget, siteRelativeAsset } from "./links.js";
 import { type LedgerEntry, emitted, mergedInto, removed, review } from "./ledger.js";
 import {
+  type BreakRunCandidate,
   type RunLine,
+  breakRunId,
   enumeratedItems,
   groupIsLineated,
   groupLines,
   isWrapBreak,
   lineText,
   collapseSpace,
+  opensWithOrdinal,
   phrasingText,
   splitLines,
 } from "./lines.js";
@@ -97,6 +100,12 @@ export interface StructureOptions {
    * back to labels the column repeats, and to a review item if there are none.
    */
   tableHeaders?: Map<string, string[]>;
+  /**
+   * Break-runs an operator's judgement promoted to lists, keyed by
+   * {@link breakRunId}. Supplied by the `text.list` hook; absent means every
+   * abstaining run stays the hard-break paragraph it is today.
+   */
+  listRuns?: ReadonlySet<string>;
 }
 
 /** What happened to one source table, for the structural conservation audit. */
@@ -125,6 +134,14 @@ export interface StructureResult {
   warnings: string[];
   /** Per-table record, so structural loss is auditable independently of text recall. */
   tables: TableOutcome[];
+  /**
+   * Runs of hand-drawn lines that no list rule could claim.
+   *
+   * Collected on every run, with or without a model, because "how many
+   * judgements is the compiler declining to make?" is the one number that says
+   * what turning a hook on would be worth — and it is unknowable otherwise.
+   */
+  listCandidates: BreakRunCandidate[];
 }
 
 interface Ctx {
@@ -138,6 +155,8 @@ interface Ctx {
   emittedIds: Set<string>;
   counter: { n: number };
   tables: TableOutcome[];
+  /** Break-runs the four list rules all declined, in document order. */
+  listCandidates: BreakRunCandidate[];
   /**
    * Width of the article's content box, in CSS px, when measurement ran.
    *
@@ -249,6 +268,7 @@ interface Snapshot {
   warnings: number;
   counter: number;
   tables: number;
+  listCandidates: number;
   /** Destinations spoken for at the moment of the attempt. See `anchors.ts`. */
   anchorClaims: boolean[];
   anchorPending: number;
@@ -263,6 +283,7 @@ function begin(ctx: Ctx): Snapshot {
     warnings: ctx.warnings.length,
     counter: ctx.counter.n,
     tables: ctx.tables.length,
+    listCandidates: ctx.listCandidates.length,
     anchorClaims: ctx.anchors.claims(),
     anchorPending: ctx.anchorPending.length,
   };
@@ -276,6 +297,10 @@ function rollback(ctx: Ctx, snapshot: Snapshot): void {
   ctx.warnings.length = snapshot.warnings;
   ctx.counter.n = snapshot.counter;
   ctx.tables.length = snapshot.tables;
+  // A run that a rejected shape asked about was never emitted, so the question
+  // was never really asked. Leaving it behind would spend a call on a block the
+  // reader never sees.
+  ctx.listCandidates.length = snapshot.listCandidates;
   // A rejected attempt gives its destinations back, so the shape that is
   // actually emitted can claim them. `min`, because a nested lowering may have
   // already spliced its own suffix off the pending list.
@@ -302,6 +327,7 @@ export function recoverStructure(
     emittedIds: new Set(),
     counter: { n: 0 },
     tables: [],
+    listCandidates: [],
     contentWidth: contentWidthOf(root),
     bodyProminence: bodyProminenceOf(root),
     proseItalic: proseItalicOf(root),
@@ -360,6 +386,8 @@ export function recoverStructure(
     );
   }
 
+  const surfaced = surfacedRuns(children);
+
   return {
     root: { type: "root", children },
     ledger: ctx.ledger,
@@ -368,7 +396,41 @@ export function recoverStructure(
     images: ctx.images,
     warnings: ctx.warnings,
     tables: ctx.tables,
+    // Only runs that actually *shipped* as hard-break paragraphs are still
+    // undecided. A run the group pass asked about may be claimed a level up —
+    // `kiselev`'s six album track lists are recognised by the `<blockquote>`
+    // around them, long after the lines inside were grouped — and asking about
+    // an answered question would both waste a call and, if it were answered,
+    // dissolve the containment the outer rule reads. Six of the corpus's 53
+    // candidates were exactly that.
+    listCandidates: ctx.listCandidates.filter((c) => surfaced.has(c.id)),
   };
+}
+
+/**
+ * Ids of the multi-line hard-break paragraphs a finished tree actually carries.
+ *
+ * Computed from the emitted nodes rather than from what a pass intended, so a
+ * block that was rewritten, re-parented or rolled back cannot leave a question
+ * behind it.
+ */
+function surfacedRuns(children: readonly BiomdContent[]): Set<string> {
+  const ids = new Set<string>();
+  const visit = (nodes: readonly unknown[]): void => {
+    for (const node of nodes) {
+      const block = node as { type?: string; children?: unknown[] };
+      if (block.type === "paragraph" && Array.isArray(block.children)) {
+        const lines = splitLines(block.children as PhrasingContent[])
+          .map((line) => lineText(line))
+          .filter((t) => t.trim() !== "");
+        if (lines.length >= MIN_RUN_LINES) ids.add(breakRunId(lines));
+        continue;
+      }
+      if (Array.isArray(block.children)) visit(block.children);
+    }
+  };
+  visit(children);
+  return ids;
 }
 
 function nextId(ctx: Ctx, prefix: string): string {
@@ -2393,7 +2455,11 @@ function blocksFromPhrasing(
     }
     consumed += length;
     const previous = out[out.length - 1] ?? precededBy;
-    out.push(...blocksFromGroup(group.lines, ctx, after, previous?.type === "biomdImage"));
+    // The line above a run is what tells a reader the run is an enumeration
+    // rather than a stanza — `Номера и названия томов…:` announces nineteen
+    // volumes. It is context for a judgement, never evidence a rule acts on.
+    const lead = index > 0 ? (groupText[index - 1] as string) : undefined;
+    out.push(...blocksFromGroup(group.lines, ctx, after, previous?.type === "biomdImage", lead));
   });
   return out;
 }
@@ -2462,6 +2528,7 @@ function blocksFromGroup(
   ctx: Ctx,
   followingText: number,
   afterFigure: boolean,
+  lead?: string,
 ): BiomdContent[] {
   const out: BiomdContent[] = [];
   let rest = lines;
@@ -2525,6 +2592,18 @@ function blocksFromGroup(
   if (drawn) {
     out.push(...drawn);
     return out;
+  }
+
+  // Nothing above claimed the run, so the compiler has no answer to "are these
+  // lines the items of a list?" — only a safe default. Record the question, and
+  // apply an answer if an operator's hook supplied one. See `TEXT_LIST`.
+  const candidate = breakRunCandidateOf(rest, ctx, lead);
+  if (candidate) {
+    ctx.listCandidates.push(candidate);
+    if (ctx.options.listRuns?.has(candidate.id)) {
+      out.push(listOfLines(rest));
+      return out;
+    }
   }
 
   const paragraph = paragraphFromLines(rest);
@@ -3043,6 +3122,19 @@ function listFromBlockquoteRun(inner: readonly BiomdContent[]): List | null {
   if (!only || only.type !== "paragraph") return null;
   const lines = splitLines(only.children).filter((line) => lineText(line).trim() !== "");
   if (lines.length < 2) return null;
+  return listOfLines(lines);
+}
+
+/**
+ * One line, one item — the emission every list rule in this file shares.
+ *
+ * Shared deliberately. The four rules recognise a list from four unrelated
+ * kinds of evidence, but what they *emit* is the same thing, and a run promoted
+ * on a hook's judgement must be indistinguishable from one promoted on an
+ * indent. No trailing hard break: a break inside a list item separates nothing,
+ * and the item boundary already carries what the source `<br>` meant.
+ */
+function listOfLines(lines: readonly RunLine[]): List {
   return {
     type: "list",
     ordered: false,
@@ -3054,6 +3146,72 @@ function listFromBlockquoteRun(inner: readonly BiomdContent[]): List | null {
     })),
   };
 }
+
+/**
+ * A break-run the four list rules all declined, when it is worth asking about.
+ *
+ * ## Rule contract
+ *
+ * This is a **gate**, not a detector: everything it passes is still a
+ * paragraph unless an operator's hook says otherwise, and everything it stops
+ * is a paragraph either way. Its job is to spend nothing on runs whose answer
+ * is already known, and it reads no class, id, tag, filename or word.
+ *
+ * **Invariant.** Three relations: the run has at least {@link MIN_RUN_LINES}
+ * lines (a pair is a name and its subtitle, not an enumeration); its breaks are
+ * already *structural* by `groupIsLineated`, so the lines are lines rather than
+ * a hand-wrapped sentence; and it carries no picture, because a run of figures
+ * is a strip and its lines are captions.
+ *
+ * **Recurrence** is the run itself — the parallelism between its own lines is
+ * the evidence, which is why the item escalated is the whole block. Asking per
+ * line would destroy exactly the evidence the question turns on.
+ *
+ * **False friends, and which of them this gate can see.** A *caption* run under
+ * a picture is excluded here, by context rather than by shape. Prose and verse
+ * are **not** excluded here and cannot be: PROGRESS §15.2 measured line count,
+ * line length and variance over every multi-line run in the references and
+ * found `kiselev`'s tracks and `borislova`'s poems totally overlapping. That
+ * separation is the judgement the hook exists to make, and `TEXT_LIST.accept`
+ * catches only the part of it that is deterministic — a line holding two
+ * sentences is prose whatever a model says.
+ */
+function breakRunCandidateOf(lines: readonly RunLine[], ctx: Ctx, lead?: string): BreakRunCandidate | null {
+  if (lines.length < MIN_RUN_LINES) return null;
+  // A hand-wrapped paragraph has no lines to make items of.
+  if (!groupIsLineated(lines)) return null;
+  if (lines.some((line) => line.content.some((c) => c.type === "image"))) return null;
+  // A line under a picture is that picture's caption; `bindCaptions` owns it.
+  if (ctx.inCaptionContext && ctx.inCenteredBlock) return null;
+
+  const texts = lines.map((line) => lineText(line));
+  if (texts.some((t) => t.trim() === "")) return null;
+
+  // A run whose members are not all peers is not a *flat* list, and the only
+  // list this escalation can emit is flat. `borislova`'s works catalogue is the
+  // measured case: three movements sit indented and numbered under the concerto
+  // they belong to, and promoting the run would make them siblings of it —
+  // structural loss (§1 priority 3) in exchange for reference agreement, which
+  // the priority order forbids outright. Both forms of subordination this
+  // corpus writes are read here, and neither reads a class or a word: an indent
+  // some lines carry and others do not, and an ordinal on a proper subset.
+  if (new Set(lines.map((line) => line.indent)).size > 1) return null;
+  const numbered = texts.filter((t) => opensWithOrdinal(t)).length;
+  if (numbered > 0 && numbered < texts.length) return null;
+
+  const trimmed = lead?.trim();
+  return {
+    id: breakRunId(texts),
+    lines: texts,
+    ...(trimmed ? { lead: trimmed.slice(0, LEAD_LIMIT) } : {}),
+  };
+}
+
+/** Three lines is the shortest run whose members can be parallel to each other. */
+const MIN_RUN_LINES = 3;
+
+/** Enough of the preceding block to recognise an announcement; not a payload. */
+const LEAD_LIMIT = 300;
 
 /**
  * The label a block carries, when that label can title the menu below it.
