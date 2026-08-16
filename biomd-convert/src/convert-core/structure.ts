@@ -5439,69 +5439,109 @@ function tableFromPlan(plan: LogicalTablePlan, ctx: Ctx, supplied?: readonly str
     rows.push(node);
   }
 
-  return { type: "table", align: resourceMatrixAlign(plan), children: rows };
+  return { type: "table", align: statedColumnAlign(plan), children: rows };
 }
 
 /**
- * Column alignment for a planned matrix.
+ * Column alignment for a planned matrix — read from the source, never inferred.
  *
- * ## Rule contract — a resource matrix sets its resources against its names
+ * ## Rule contract — a column is aligned the way its own cells are aligned
  *
- * `analyze/TODO_Rules.md` §2: *"1-ый столбец всегда отцентрирован по
- * умолчанию, а 2-ой и последующие могут быть отцентрированы вправо, особенно
- * если такие таблицы содержат ссылки на аудио и ноты"*, naming `xtra_karta5`
- * and `new_kolpakov` as the shape. Every column was emitted with no alignment
- * at all before this.
+ * *Ruled 2026-08-17*, retracting `analyze/TODO_Rules.md` §2 and the rule
+ * PROGRESS §60.4 built from it: *"ignore my previous instruction to align all
+ * tables starting from 2-nd column, it should be done in a smart way, based on
+ * the actual layout and styles provided by the HTML"*, on `xtra_rodrigo`'s last
+ * two tables — a column of numerals and a column of work titles, both set
+ * against the right edge by a rule that had asked what *kind* of table it was
+ * instead of what the source said.
  *
- * **Invariant.** One question, asked of the table and not of the page: does
- * any column *other than the leading one* hold links and nothing else worth
- * calling it by — {@link isLinkColumn}, the same test that heads such a column
- * `LINK_GLYPH`. If so the matrix lists what is available for each record, the
- * leading column carries the record's name and keeps the reading flow, and
- * every column after it is set against the right edge, where a reader scanning
- * for a format finds the tokens in one straight line. No width, no filename,
- * no format vocabulary, no document.
+ * **Invariant.** A cell's alignment is the browser's, and the browser is asked
+ * first: measured `text-align`, folded through {@link foldTextAlign} so the
+ * vendor forms an `align` attribute produces (`-webkit-center`, `-webkit-right`)
+ * read as the keywords they are. Unmeasured, the stated attribute is the
+ * fallback, walked cell → row → row group exactly as the cascade would — and
+ * stopping below `<table>`, because `align` there positions the *table* and says
+ * nothing about its text. No width, no class, no filename, no table kind.
  *
- * **Why the whole table and not each column.** `xtra_karta5` is the reference
- * the author points at and it right-aligns *all* seventeen of its tables'
- * non-leading columns — including a column of bare roman numerals and a fourth
- * column holding a second work title. Aligning only the link columns would
- * reproduce none of them. The gate is therefore "is this a resource matrix",
- * and the answer places the columns.
+ * **A column, not a cell.** GFM aligns columns, so the evidence has to hold
+ * down the whole band: every populated body cell must state the same thing.
+ * One dissenting row and the column keeps the default, because a column cannot
+ * be two things and picking a winner would be the guess this replaces. The
+ * header row is excluded — every UA stylesheet centres `<th>`, so a header cell
+ * states nothing a body cell has not already said better.
  *
- * **False friend, tested for non-firing: the prose table.** A two-column
- * record grid whose second column holds sentences has no link column, so it
- * keeps the default and its text still starts at the left edge where prose is
- * read from. `xtra_karta5`'s own tables are all resource matrices; the
- * non-firing case has to be constructed, and it is.
+ * **A merged box states nothing.** Where a band takes several physical cells
+ * from one row — the eight `[ 1 ] … [ 8 ]` score links `xtra_rodrigo` joins into
+ * one cell — each `align` describes its own 22 px box, and the box they are
+ * joined into is not any of them. Carrying one of them across would assert a
+ * placement the source never made about that column. Measured in the browser:
+ * those eight cells hold 20 px of content in a 22 px box, so the centring they
+ * declare moves nothing even where it is stated.
  *
- * **Recurrence does not apply.** A table's column set exists once per table by
- * construction; `isLinkColumn` already carries the homogeneity requirement
- * *down* each column, which is the recurrence that is available here.
+ * **Only a departure is written.** `left` and `justify` fold to no marker: GFM
+ * already starts a column at the left edge, so `:-` would restate the default in
+ * a form the references never use. `center` and `right` are the two a reader
+ * can see.
  *
- * **The cost is stated, not hidden.** The corpus divides 1-to-12 on this:
- * `xtra_karta5` right-aligns and `new_bach`, `tarrega`, `barrios`,
- * `new_karta`, `xtra_albeniz`, `new_dyens`, `kiselev`, `borislova`,
- * `williams2`, `segovia`, `xtra_garcia_lorca` and `xtra_rodrigo` write the
- * default over structurally identical `| | 🔗 |` matrices. There is no
- * discriminator in the references — `new_karta` and `xtra_karta5` are the same
- * generator, the same shape and opposite answers — so this is a case where
- * `CLAUDE.md`'s rung 1 decides and the fixtures record a divergence.
- * `new_kolpakov` right-aligns its leading column too; the author's rule says
- * the leading column keeps the default, so that one cell stays divergent.
+ * **False friend, tested for non-firing: the boilerplate-centred matrix.** A
+ * FrontPage resource table centres every cell it has; that is house style, not
+ * layout, and the unanimity requirement does not save it — so the emitted
+ * alignment must still be what the source states, and the test asserts the
+ * *stated* answer rather than a preferred one. The second false friend is the
+ * header-only signal: a `<th>` row over unstated body cells leaves the column
+ * default.
+ *
+ * **Recurrence does not apply.** A column exists once per table by
+ * construction; the unanimity requirement *down* the column is the recurrence
+ * available here, and it is exhaustive rather than a count.
+ *
+ * **The cost is stated, not hidden.** `xtra_karta5` writes `--:` over all
+ * seventeen of its tables' non-leading columns and its source states `center`
+ * on those cells, so this reads them as centred and that reference stays
+ * divergent — as it was before §60.4, and as `analyze/analyze.md`'s standing
+ * ruling on that document's tables already records.
  */
-function resourceMatrixAlign(plan: LogicalTablePlan): (AlignType | null)[] {
-  const columnAt = (band: number): PlannedCell[] => plan.body.map((r) => r.cells[band] as PlannedCell);
-  let resources = false;
-  for (let band = 1; band < plan.bands.length; band += 1) {
-    if (isLinkColumn(columnAt(band))) {
-      resources = true;
-      break;
+function statedColumnAlign(plan: LogicalTablePlan): (AlignType | null)[] {
+  return plan.bands.map((_, band) => {
+    let agreed: PhysicalAlign = null;
+    let seen = false;
+    for (const row of plan.body) {
+      const cell = row.cells[band] as PlannedCell;
+      if (cell.isEmpty) continue;
+      // Several boxes joined into one carry no single placement.
+      if (cell.sources.length !== 1) return null;
+      const stated = cellAlign((cell.sources[0] as GridCell).node);
+      if (!seen) {
+        agreed = stated;
+        seen = true;
+        continue;
+      }
+      if (stated !== agreed) return null;
     }
+    return agreed === "center" || agreed === "right" ? agreed : null;
+  });
+}
+
+/**
+ * One cell's horizontal alignment, as the browser resolves it.
+ *
+ * Measured style first — it already carries the attribute, the stylesheet and
+ * inheritance, which is why `estimatePosition` and `floatOf` ask it first too.
+ * The attribute walk is the batch-conversion fallback, and it stops below
+ * `<table>`: `align` on a table floats or centres the table itself, and reading
+ * it as text alignment would centre every column of every centred table.
+ */
+function cellAlign(cell: LadomNode): PhysicalAlign {
+  const measured = foldTextAlign(cell.style?.textAlign);
+  if (measured !== null) return measured;
+  let node: LadomNode | null = cell;
+  while (node && node.tag !== "table") {
+    const inline = /(?:^|;)\s*text-align\s*:\s*([a-z-]+)/iu.exec(node.attrs["style"] ?? "");
+    const stated = foldTextAlign(inline?.[1] ?? node.attrs["align"]);
+    if (stated !== null) return stated;
+    node = node.parent;
   }
-  return Array.from({ length: plan.bands.length }, (_, band) =>
-    resources && band > 0 ? ("right" as AlignType) : null,
-  );
+  return null;
 }
 
 function plannedRowTo(row: PlannedRow, ctx: Ctx): TableRow | null {

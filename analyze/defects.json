@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-16T20:30:59.902Z",
+  "generated": "2026-08-16T23:22:15.651Z",
   "totals": {
-    "findings": 135,
-    "converterDefects": 87,
+    "findings": 161,
+    "converterDefects": 114,
     "acceptableAlternatives": 0,
     "referenceInconsistencies": 35,
-    "ambiguous": 13,
+    "ambiguous": 12,
     "bySeverity": {
       "critical": 1,
       "major": 27,
-      "minor": 107
+      "minor": 133
     }
   },
   "perDocument": [
@@ -79,11 +79,11 @@
     },
     {
       "doc": "new_dyens",
-      "findings": 3,
-      "converterDefects": 3,
+      "findings": 2,
+      "converterDefects": 2,
       "critical": 0,
       "major": 0,
-      "minor": 3
+      "minor": 2
     },
     {
       "doc": "new_geyzel04",
@@ -95,19 +95,19 @@
     },
     {
       "doc": "new_karta",
-      "findings": 20,
-      "converterDefects": 20,
+      "findings": 17,
+      "converterDefects": 17,
       "critical": 0,
       "major": 4,
-      "minor": 16
+      "minor": 13
     },
     {
       "doc": "new_kolpakov",
-      "findings": 2,
-      "converterDefects": 2,
+      "findings": 4,
+      "converterDefects": 4,
       "critical": 0,
       "major": 0,
-      "minor": 2
+      "minor": 4
     },
     {
       "doc": "new_lagq2",
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 11,
-      "converterDefects": 8,
+      "findings": 10,
+      "converterDefects": 7,
       "critical": 0,
       "major": 1,
-      "minor": 10
+      "minor": 9
     },
     {
       "doc": "segovia1",
@@ -183,11 +183,11 @@
     },
     {
       "doc": "williams2",
-      "findings": 4,
-      "converterDefects": 1,
+      "findings": 2,
+      "converterDefects": 0,
       "critical": 0,
       "major": 0,
-      "minor": 4
+      "minor": 2
     },
     {
       "doc": "xtra_albeniz",
@@ -215,11 +215,11 @@
     },
     {
       "doc": "xtra_karta5",
-      "findings": 1,
-      "converterDefects": 1,
+      "findings": 32,
+      "converterDefects": 32,
       "critical": 0,
       "major": 0,
-      "minor": 1
+      "minor": 32
     },
     {
       "doc": "xtra_rodrigo",
@@ -242,7 +242,7 @@
     {
       "class": "table.align",
       "severity": "minor",
-      "instances": 48,
+      "instances": 75,
       "documents": [
         "barrios",
         "borislova",
@@ -253,22 +253,22 @@
         "new_kolpakov",
         "segovia",
         "tarrega",
-        "williams2",
         "xtra_albeniz",
         "xtra_garcia_lorca",
+        "xtra_karta5",
         "xtra_rodrigo"
       ],
       "verdicts": {
-        "converter-defect": 48,
+        "converter-defect": 75,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 624,
+      "rank": 975,
       "example": {
         "doc": "barrios",
         "path": "/table[15]/col[1]",
-        "produced": "column 1: right",
+        "produced": "column 1: center",
         "reference": "column 1: none"
       }
     },
@@ -940,27 +940,6 @@
         "produced": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнительское искусство Александро …",
         "reference": "В 1942 году вернулся в Уругвай. Выступал с концертами в Бразилии, Аргентине и других странах Южной и Центральной Америки. Исполнитель-ское искусство Александро…"
       }
-    },
-    {
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "instances": 1,
-      "documents": [
-        "williams2"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 1
-      },
-      "rank": 0,
-      "example": {
-        "doc": "williams2",
-        "path": "/table[26]/cell[0][0]",
-        "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em",
-        "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em\\*\\*"
-      }
     }
   ],
   "findings": [
@@ -988,7 +967,7 @@
       "path": "/table[15]/col[1]",
       "producedLine": 84,
       "referenceLine": 84,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1002,7 +981,7 @@
       "path": "/table[15]/col[2]",
       "producedLine": 84,
       "referenceLine": 84,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1072,7 +1051,7 @@
       "path": "/table[44]/col[1]",
       "producedLine": 289,
       "referenceLine": 290,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1324,7 +1303,7 @@
       "path": "/table[8]/col[1]",
       "producedLine": 111,
       "referenceLine": 111,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1338,7 +1317,7 @@
       "path": "/table[8]/col[2]",
       "producedLine": 111,
       "referenceLine": 111,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1394,7 +1373,7 @@
       "path": "/table[16]/col[1]",
       "producedLine": 181,
       "referenceLine": 180,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1408,7 +1387,7 @@
       "path": "/table[26]/col[1]",
       "producedLine": 66,
       "referenceLine": 66,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1422,7 +1401,7 @@
       "path": "/table[26]/col[2]",
       "producedLine": 66,
       "referenceLine": 66,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1506,22 +1485,8 @@
       "path": "/table[8]/col[1]",
       "producedLine": 28,
       "referenceLine": 28,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "55664ea2",
-      "doc": "new_dyens",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[8]/col[2]",
-      "producedLine": 28,
-      "referenceLine": 28,
-      "produced": "column 2: right",
-      "reference": "column 2: none",
       "verdict": "converter-defect"
     },
     {
@@ -1534,7 +1499,7 @@
       "path": "/table[8]/col[3]",
       "producedLine": 28,
       "referenceLine": 28,
-      "produced": "column 3: right",
+      "produced": "column 3: center",
       "reference": "column 3: none",
       "verdict": "converter-defect"
     },
@@ -1595,20 +1560,6 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "d51531af",
-      "doc": "new_karta",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[5]/col[1]",
-      "producedLine": 29,
-      "referenceLine": 34,
-      "produced": "column 1: right",
-      "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "542b2603",
       "doc": "new_karta",
       "class": "table.align",
@@ -1618,7 +1569,7 @@
       "path": "/table[5]/col[2]",
       "producedLine": 29,
       "referenceLine": 34,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1632,22 +1583,8 @@
       "path": "/table[5]/col[3]",
       "producedLine": 29,
       "referenceLine": 34,
-      "produced": "column 3: right",
+      "produced": "column 3: center",
       "reference": "column 3: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "be035655",
-      "doc": "new_karta",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[7]/col[1]",
-      "producedLine": 37,
-      "referenceLine": 42,
-      "produced": "column 1: right",
-      "reference": "column 1: none",
       "verdict": "converter-defect"
     },
     {
@@ -1660,22 +1597,8 @@
       "path": "/table[9]/col[1]",
       "producedLine": 43,
       "referenceLine": 48,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8391b44f",
-      "doc": "new_karta",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[9]/col[2]",
-      "producedLine": 43,
-      "referenceLine": 48,
-      "produced": "column 2: right",
-      "reference": "column 2: none",
       "verdict": "converter-defect"
     },
     {
@@ -1688,7 +1611,7 @@
       "path": "/table[11]/col[1]",
       "producedLine": 52,
       "referenceLine": 57,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1702,7 +1625,7 @@
       "path": "/table[11]/col[2]",
       "producedLine": 52,
       "referenceLine": 57,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1716,7 +1639,7 @@
       "path": "/table[13]/col[1]",
       "producedLine": 59,
       "referenceLine": 65,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1730,7 +1653,7 @@
       "path": "/table[13]/col[2]",
       "producedLine": 59,
       "referenceLine": 65,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1744,7 +1667,7 @@
       "path": "/table[15]/col[1]",
       "producedLine": 76,
       "referenceLine": 82,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1758,7 +1681,7 @@
       "path": "/table[17]/col[1]",
       "producedLine": 84,
       "referenceLine": 90,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1772,7 +1695,7 @@
       "path": "/table[17]/col[2]",
       "producedLine": 84,
       "referenceLine": 90,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1786,7 +1709,7 @@
       "path": "/table[19]/col[1]",
       "producedLine": 116,
       "referenceLine": 122,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1800,7 +1723,7 @@
       "path": "/table[21]/col[1]",
       "producedLine": 122,
       "referenceLine": 128,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -1814,7 +1737,7 @@
       "path": "/table[21]/col[2]",
       "producedLine": 122,
       "referenceLine": 128,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -1830,6 +1753,34 @@
       "referenceLine": 69,
       "produced": "column 0: none",
       "reference": "column 0: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "423b1a70",
+      "doc": "new_kolpakov",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[1]",
+      "producedLine": 69,
+      "referenceLine": 69,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "c921eeac",
+      "doc": "new_kolpakov",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[2]",
+      "producedLine": 69,
+      "referenceLine": 69,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
       "verdict": "converter-defect"
     },
     {
@@ -2262,7 +2213,7 @@
       "path": "/table[42]/col[1]",
       "producedLine": 159,
       "referenceLine": 164,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -2276,7 +2227,7 @@
       "path": "/table[42]/col[2]",
       "producedLine": 159,
       "referenceLine": 164,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -2290,22 +2241,8 @@
       "path": "/table[44]/col[1]",
       "producedLine": 168,
       "referenceLine": 173,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "410371f0",
-      "doc": "segovia",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[44]/col[2]",
-      "producedLine": 168,
-      "referenceLine": 173,
-      "produced": "column 2: right",
-      "reference": "column 2: none",
       "verdict": "converter-defect"
     },
     {
@@ -2360,7 +2297,7 @@
       "path": "/table[22]/col[1]",
       "producedLine": 84,
       "referenceLine": 83,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -2374,7 +2311,7 @@
       "path": "/table[22]/col[2]",
       "producedLine": 84,
       "referenceLine": 83,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -2388,7 +2325,7 @@
       "path": "/table[22]/col[3]",
       "producedLine": 84,
       "referenceLine": 83,
-      "produced": "column 3: right",
+      "produced": "column 3: center",
       "reference": "column 3: none",
       "verdict": "converter-defect"
     },
@@ -2435,34 +2372,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "42e6d566",
-      "doc": "williams2",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[26]/col[1]",
-      "producedLine": 83,
-      "referenceLine": 83,
-      "produced": "column 1: right",
-      "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "bff85a60",
-      "doc": "williams2",
-      "class": "table.cell.content.edited",
-      "severity": "minor",
-      "evidence": "content",
-      "op": "substitute",
-      "path": "/table[26]/cell[0][0]",
-      "producedLine": 83,
-      "referenceLine": 83,
-      "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em",
-      "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em\\*\\*",
-      "verdict": "ambiguous"
-    },
-    {
       "id": "9652a74b",
       "doc": "xtra_albeniz",
       "class": "table.align",
@@ -2472,7 +2381,7 @@
       "path": "/table[8]/col[1]",
       "producedLine": 31,
       "referenceLine": 31,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
       "verdict": "converter-defect"
     },
@@ -2486,7 +2395,7 @@
       "path": "/table[8]/col[2]",
       "producedLine": 31,
       "referenceLine": 31,
-      "produced": "column 2: right",
+      "produced": "column 2: center",
       "reference": "column 2: none",
       "verdict": "converter-defect"
     },
@@ -2598,8 +2507,442 @@
       "path": "/table[20]/col[1]",
       "producedLine": 237,
       "referenceLine": 235,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "bd4e6c79",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[3]/col[1]",
+      "producedLine": 11,
+      "referenceLine": 11,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "162b0ceb",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[5]/col[1]",
+      "producedLine": 17,
+      "referenceLine": 17,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "65d09c55",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[7]/col[1]",
+      "producedLine": 23,
+      "referenceLine": 23,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "40331d67",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[9]/col[1]",
+      "producedLine": 30,
+      "referenceLine": 30,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "70425f4e",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[11]/col[1]",
+      "producedLine": 36,
+      "referenceLine": 36,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "83ef2412",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[11]/col[2]",
+      "producedLine": 36,
+      "referenceLine": 36,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b1bd0922",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[11]/col[3]",
+      "producedLine": 36,
+      "referenceLine": 36,
+      "produced": "column 3: center",
+      "reference": "column 3: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "d5db4bfc",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[1]",
+      "producedLine": 45,
+      "referenceLine": 45,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "70e64a25",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[14]/col[1]",
+      "producedLine": 55,
+      "referenceLine": 55,
+      "produced": "column 1: none",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "884ec8c1",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[14]/col[2]",
+      "producedLine": 55,
+      "referenceLine": 55,
+      "produced": "column 2: none",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "6c94fef1",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[14]/col[3]",
+      "producedLine": 55,
+      "referenceLine": 55,
+      "produced": "column 3: center",
+      "reference": "column 3: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "d41e993b",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[16]/col[1]",
+      "producedLine": 63,
+      "referenceLine": 63,
+      "produced": "column 1: none",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "fffe68e1",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[18]/col[1]",
+      "producedLine": 69,
+      "referenceLine": 69,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "1ce8eec6",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[1]",
+      "producedLine": 75,
+      "referenceLine": 75,
+      "produced": "column 1: none",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "1ef21e2a",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[2]",
+      "producedLine": 75,
+      "referenceLine": 75,
+      "produced": "column 2: none",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0ec6b19a",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[3]",
+      "producedLine": 75,
+      "referenceLine": 75,
+      "produced": "column 3: none",
+      "reference": "column 3: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e5d77256",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[4]",
+      "producedLine": 75,
+      "referenceLine": 75,
+      "produced": "column 4: none",
+      "reference": "column 4: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "ca2000d6",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[5]",
+      "producedLine": 75,
+      "referenceLine": 75,
+      "produced": "column 5: none",
+      "reference": "column 5: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "800b2214",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[1]",
+      "producedLine": 91,
+      "referenceLine": 91,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "12694850",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[2]",
+      "producedLine": 91,
+      "referenceLine": 91,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "2f1282a0",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[3]",
+      "producedLine": 91,
+      "referenceLine": 91,
+      "produced": "column 3: center",
+      "reference": "column 3: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "009d9752",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[24]/col[1]",
+      "producedLine": 116,
+      "referenceLine": 116,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "491f3fb0",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[26]/col[1]",
+      "producedLine": 122,
+      "referenceLine": 122,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "144a73ec",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[26]/col[2]",
+      "producedLine": 122,
+      "referenceLine": 122,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "93ad1f47",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[30]/col[1]",
+      "producedLine": 140,
+      "referenceLine": 140,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "6f2ef231",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[32]/col[1]",
+      "producedLine": 147,
+      "referenceLine": 147,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "8285b34d",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[32]/col[2]",
+      "producedLine": 147,
+      "referenceLine": 147,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "92a19ae3",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[34]/col[1]",
+      "producedLine": 155,
+      "referenceLine": 155,
+      "produced": "column 1: center",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "f3c35957",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[34]/col[2]",
+      "producedLine": 155,
+      "referenceLine": 155,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "469f418d",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[36]/col[1]",
+      "producedLine": 161,
+      "referenceLine": 161,
+      "produced": "column 1: none",
+      "reference": "column 1: right",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "196e5409",
+      "doc": "xtra_karta5",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[36]/col[2]",
+      "producedLine": 161,
+      "referenceLine": 161,
+      "produced": "column 2: center",
+      "reference": "column 2: right",
       "verdict": "converter-defect"
     },
     {
@@ -2687,6 +3030,48 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "20e5ded8",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[17]/col[1]",
+      "producedLine": 106,
+      "referenceLine": 106,
+      "produced": "column 1: center",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "a723e3fc",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[17]/col[3]",
+      "producedLine": 106,
+      "referenceLine": 106,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "c1a402c0",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[17]/col[4]",
+      "producedLine": 106,
+      "referenceLine": 106,
+      "produced": "column 4: right",
+      "reference": "column 4: none",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "371a1446",
       "doc": "xtra_rodrigo",
       "class": "table.header.cell",
@@ -2715,34 +3100,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "21e8d957",
-      "doc": "xtra_rodrigo",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[18]/col[1]",
-      "producedLine": 112,
-      "referenceLine": 112,
-      "produced": "column 1: right",
-      "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "7e45b72b",
-      "doc": "xtra_rodrigo",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[18]/col[2]",
-      "producedLine": 112,
-      "referenceLine": 112,
-      "produced": "column 2: right",
-      "reference": "column 2: none",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "dceb262b",
       "doc": "xtra_rodrigo",
       "class": "table.align",
@@ -2752,7 +3109,7 @@
       "path": "/table[18]/col[3]",
       "producedLine": 112,
       "referenceLine": 112,
-      "produced": "column 3: right",
+      "produced": "column 3: center",
       "reference": "column 3: none",
       "verdict": "converter-defect"
     },
@@ -2766,22 +3123,8 @@
       "path": "/table[20]/col[1]",
       "producedLine": 121,
       "referenceLine": 121,
-      "produced": "column 1: right",
+      "produced": "column 1: center",
       "reference": "column 1: none",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c8463ce2",
-      "doc": "xtra_rodrigo",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]/col[2]",
-      "producedLine": 121,
-      "referenceLine": 121,
-      "produced": "column 2: right",
-      "reference": "column 2: none",
       "verdict": "converter-defect"
     },
     {

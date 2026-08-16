@@ -4066,55 +4066,149 @@ describe("a strip of nothing but targets", () => {
   });
 });
 
-describe("a resource matrix sets its resources against its names", () => {
-  const grid = (rows: string) => `<table border="0" width="90%">${rows}</table>`;
+describe("a column is aligned the way its own cells are aligned", () => {
+  const grid = (rows: string, tableAttrs = "") =>
+    `<table border="0" width="90%"${tableAttrs}>${rows}</table>`;
   const record = (title: string, a: string, b: string) =>
     `<tr><td width="60%"><p>${title}</p></td>` +
     `<td width="20%"><p>${a}</p></td><td width="20%"><p>${b}</p></td></tr>`;
   const res = (href: string, label: string) => `<a href="${href}">${label}</a>`;
+  const RECORDS = ["La Catedral", "Julia Florida", "Vals Op 8 No 4"] as const;
+  /** The same resource matrix throughout, with one alignment applied per run. */
+  const matrix = (stated: string, tableAttrs?: string) =>
+    grid(
+      RECORDS.map(
+        (title, i) =>
+          `<tr><td width="60%"><p>${title}</p></td>` +
+          `<td width="20%"${stated}><p>${res(`music/tab/${i}.txt`, "TAB")}</p></td>` +
+          `<td width="20%"${stated}><p>${res(`music/midi/${i}.mid`, "MIDI")}</p></td></tr>`,
+      ).join(""),
+      tableAttrs,
+    );
 
-  it("right-aligns every column but the leading one", async () => {
-    // TODO_Rules §2, on the shape `xtra_karta5` and `new_kolpakov` write. The
-    // leading column carries the record's name and keeps the reading flow.
+  it("takes the alignment the source states on the cells", async () => {
+    // The invariant. `xtra_rodrigo`'s last table states `align="right"` on its
+    // duration and format columns, and that — not the kind of table it is — is
+    // what places them.
+    const out = await md(PROSE + matrix(' align="right"') + PROSE);
+    expect(out).toContain("| - | -: | -: |");
+  });
+
+  it("reads measured alignment ahead of the attribute", async () => {
+    // The browser has already resolved the cascade, so it is asked first and
+    // the attribute walk is only the batch-conversion fallback. Here the
+    // stylesheet states centre and there is no attribute at all.
+    const out = await mdMeasured(PROSE + matrix(' style="text-align: center"') + PROSE);
+    expect(out).toContain("| - | :-: | :-: |");
+  });
+
+  it("leaves a matrix the source never aligned at the default — non-firing", async () => {
+    // The regression the author named on `xtra_rodrigo`: this same matrix was
+    // being set against the right edge from the second column on, because of
+    // what it *held*. Retracted 2026-08-17 — it holds links either way.
+    const out = await md(PROSE + matrix("") + PROSE);
+    expect(out).not.toContain("-:");
+  });
+
+  it("keeps the default when one row disagrees — non-firing", async () => {
+    // A column cannot be two things, and picking a winner is the guess this
+    // rule replaces. Two rows state `right` and the third states nothing.
+    const mixed = grid(
+      `<tr><td width="60%"><p>La Catedral</p></td>` +
+        `<td width="20%" align="right"><p>${res("music/tab/a.txt", "TAB")}</p></td>` +
+        `<td width="20%" align="right"><p>${res("music/midi/a.mid", "MIDI")}</p></td></tr>` +
+        `<tr><td width="60%"><p>Julia Florida</p></td>` +
+        `<td width="20%" align="right"><p>${res("music/tab/b.txt", "TAB")}</p></td>` +
+        `<td width="20%" align="right"><p>${res("music/midi/b.mid", "MIDI")}</p></td></tr>` +
+        record("Vals Op 8 No 4", res("music/tab/c.txt", "TAB"), res("music/midi/c.mid", "MIDI")),
+    );
+    const out = await md(PROSE + mixed + PROSE);
+    expect(out).not.toContain("-:");
+  });
+
+  it("does not read a table's own align as its columns' — non-firing", async () => {
+    // The false friend the attribute walk stops below: `align` on a `<table>`
+    // positions the table inside its parent and says nothing about the text in
+    // its cells. Reading it as text alignment would centre every column of
+    // every centred table, and this corpus centres most of its tables.
+    const out = await md(PROSE + matrix("", ' align="center"') + PROSE);
+    expect(out).not.toContain(":-:");
+  });
+
+  it("does not take a header cell's alignment for the column — non-firing", async () => {
+    // Every UA stylesheet centres `<th>`, so a header cell states nothing a
+    // body cell has not said better. Body rows alone decide the column.
+    const headed = grid(
+      '<tr><th align="center">Название</th><th align="center">TAB</th><th align="center">MIDI</th></tr>' +
+        RECORDS.map(
+          (title, i) => `<tr><td width="60%"><p>${title}</p></td>` +
+            `<td width="20%"><p>${res(`music/tab/${i}.txt`, "TAB")}</p></td>` +
+            `<td width="20%"><p>${res(`music/midi/${i}.mid`, "MIDI")}</p></td></tr>`,
+        ).join(""),
+    );
+    const out = await md(PROSE + headed + PROSE);
+    expect(out).not.toContain(":-:");
+  });
+
+  it("writes no marker for a column the source left at the reading edge — non-firing", async () => {
+    // `left` and `justify` fold to nothing: GFM already starts a column there,
+    // so `:-` would restate the default in a form no reference uses.
+    const out = await md(PROSE + matrix(' align="left"') + PROSE);
+    expect(out).not.toContain(":-");
+  });
+
+  it("aligns a prose column the source aligned, whatever it holds", async () => {
+    // What a column *holds* is not evidence in either direction any more. A
+    // record grid of years and words states `right` and gets it, on the same
+    // reading that gives `xtra_rodrigo`'s durations theirs.
     const out = await md(
       PROSE +
         grid(
-          record("La Catedral", res("music/tab/a.txt", "TAB"), res("music/midi/a.mid", "MIDI")) +
-            record("Julia Florida", res("music/tab/b.txt", "TAB"), "") +
-            record("Vals Op 8 No 4", res("music/tab/c.txt", "TAB"), res("music/mp/c.mp3", "MP3")),
+          '<tr><td width="60%"><p>La Catedral</p></td>' +
+            '<td width="20%" align="right"><p>1921</p></td>' +
+            '<td width="20%" align="right"><p>Три части</p></td></tr>' +
+            '<tr><td width="60%"><p>Julia Florida</p></td>' +
+            '<td width="20%" align="right"><p>1938</p></td>' +
+            '<td width="20%" align="right"><p>Баркарола</p></td></tr>' +
+            '<tr><td width="60%"><p>Vals Op 8 No 4</p></td>' +
+            '<td width="20%" align="right"><p>1923</p></td>' +
+            '<td width="20%" align="right"><p>Вальс</p></td></tr>',
         ) +
         PROSE,
     );
     expect(out).toContain("| - | -: | -: |");
   });
 
-  it("leaves a table with no resource column at the default — non-firing", async () => {
-    // The false friend: a record grid whose other columns hold words. Prose is
-    // read from the left edge and stays there. Same geometry, same row count,
-    // no link anywhere — the gate is what a column holds, not how wide it is.
+  it("gives a band several cells were joined into no alignment — non-firing", async () => {
+    // `xtra_rodrigo`'s score table: eight `[ 1 ] … [ 8 ]` links per row, each
+    // stating `center` in its own 22 px box, coalesced into one semantic
+    // column. Each `align` describes a box the reader never sees, and the box
+    // they are joined into is not any of them. The `zip` column beside them is
+    // one cell per row and keeps the centring it states — same table, same
+    // attribute, opposite answer, which is what makes this the branch and not a
+    // blanket refusal.
+    const strip = (part: number) =>
+      `<tr><td width="23%"><p>${part === 1 ? "<b>Ноты</b>" : ""}</p></td>` +
+      `<td width="23%"><p>${["I", "II", "III"][part - 1]}.</p></td>` +
+      Array.from(
+        { length: 8 },
+        (_, i) =>
+          `<td width="6%" align="center"><p>${res(`music/scores/${part}/${i + 1}.gif`, `[ ${i + 1} ]`)}</p></td>`,
+      ).join("") +
+      `<td width="6%" align="center"><p>${res(`music/scores/${part}.zip`, "zip")}</p></td></tr>`;
+    const out = await md(PROSE + grid(strip(1) + strip(2) + strip(3)) + PROSE);
+    expect(out).toContain("| - | - | - | :-: |");
+  });
+
+  it("leaves a table the source never aligned at the default, links or not — non-firing", async () => {
+    // The same grid stating nothing. Under the retracted rule the *presence* of
+    // a link column decided this; now nothing does but the source.
     const out = await md(
       PROSE +
         grid(
           record("La Catedral", "1921", "Три части") +
             record("Julia Florida", "1938", "Баркарола") +
             record("Vals Op 8 No 4", "1923", "Вальс"),
-        ) +
-        PROSE,
-    );
-    expect(out).not.toContain("-:");
-  });
-
-  it("does not right-align on a leading link column alone — non-firing", async () => {
-    // A matrix whose *first* column is the links and whose rest is prose is not
-    // "resources listed against a name"; the rule asks only about the columns
-    // after the leading one, so the shape it is named for is the shape it fires
-    // on.
-    const out = await md(
-      PROSE +
-        grid(
-          record(res("music/tab/a.txt", "TAB"), "La Catedral", "Три части") +
-            record(res("music/tab/b.txt", "TAB"), "Julia Florida", "Баркарола") +
-            record(res("music/tab/c.txt", "TAB"), "Vals Op 8 No 4", "Вальс"),
         ) +
         PROSE,
     );
