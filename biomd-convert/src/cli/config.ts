@@ -18,6 +18,7 @@ import { chmod, mkdir, writeFile } from "node:fs/promises";
 import { homedir, platform } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { z } from "zod";
+import { HookPolicyOverrideSchema } from "../llm/kernel/contract.js";
 
 // ---------------------------------------------------------------------------
 // Schema
@@ -83,6 +84,70 @@ export const BudgetConfigSchema = z
   })
   .default({});
 
+/**
+ * Per-hook control.
+ *
+ * The shape has to accept hooks that do not exist yet, so nothing here names
+ * one: `enable`/`disable` are lists of ids, `overrides` is a map keyed by id,
+ * and the policy fields come from the hook contract itself rather than being
+ * restated. Adding a plugin therefore needs no schema change and no new flag —
+ * which is the whole point, since a flag per hook is how the previous
+ * generation of this subsystem became unusable.
+ */
+export const HookOverrideSchema = HookPolicyOverrideSchema.extend({
+  /** Override the hook's own default. Wins over `enable` and `disable`. */
+  enabled: z.boolean().optional(),
+});
+
+export const HooksConfigSchema = z
+  .object({
+    /**
+     * Extra plugin directories, each holding one subdirectory per hook.
+     *
+     * A candidate hook can live outside the repository while it is evaluated
+     * and be promoted by moving it into `src/llm/plugins/`.
+     */
+    paths: z.array(z.string()).default([]),
+    /**
+     * Ids to enable, in addition to the hooks that enable themselves.
+     *
+     * `[]` means "the hooks' own defaults"; to run with none, use `disable: ["*"]`
+     * or `--no-hooks`.
+     */
+    enable: z.array(z.string()).default([]),
+    /** Ids to disable. `"*"` disables every hook. Applied after `enable`. */
+    disable: z.array(z.string()).default([]),
+    /** Applied to every hook, before its own override. */
+    defaults: HookPolicyOverrideSchema.default({}),
+    /** Per-hook policy, keyed by hook id. */
+    overrides: z.record(z.string(), HookOverrideSchema).default({}),
+  })
+  .default({ paths: [], enable: [], disable: [], defaults: {}, overrides: {} });
+
+/**
+ * How hard a batch run is allowed to push the gateway.
+ *
+ * The default is 1. Escalations are serialized unless an operator asks
+ * otherwise, because a shared gateway meeting four concurrent workers is how a
+ * batch conversion becomes a rate-limit storm — and because interleaved
+ * escalations from four documents cannot be read.
+ */
+export const ConcurrencySchema = z
+  .object({
+    default: z.number().int().positive().default(1),
+    perModel: z.record(z.string(), z.number().int().positive()).default({}),
+    /**
+     * Stop escalating after this many consecutive transport failures. 0 disables.
+     *
+     * The budget cannot do this job: it counts settled usage, and a request that
+     * never reached a model settles nothing, so a dead gateway is invisible to
+     * `maxCalls`. Without this, one unreachable endpoint turns a corpus run into
+     * one refused connection per escalation.
+     */
+    breakerAfter: z.number().int().nonnegative().default(5),
+  })
+  .default({ default: 1, perModel: {}, breakerAfter: 5 });
+
 export const PricesSchema = z
   .object({
     input: z.record(z.string(), z.number()).default({}),
@@ -129,8 +194,34 @@ export const ConfigSchema = z.object({
       prices: PricesSchema,
       /** Where cached decisions live, so re-runs are free. */
       cacheDir: z.string().default(".biomd-cache"),
+      hooks: HooksConfigSchema,
+      concurrency: ConcurrencySchema,
     })
-    .default({ enabled: false, gateways: {}, budget: {}, prices: { input: {}, output: {}, cachedInputMultiplier: 0.1 }, cacheDir: ".biomd-cache" }),
+    .default({
+      enabled: false,
+      gateways: {},
+      budget: {},
+      prices: { input: {}, output: {}, cachedInputMultiplier: 0.1 },
+      cacheDir: ".biomd-cache",
+      hooks: { paths: [], enable: [], disable: [], defaults: {}, overrides: {} },
+      concurrency: { default: 1, perModel: {}, breakerAfter: 5 },
+    }),
+
+  /** How much a run says about itself. See `src/cli/reporter.ts`. */
+  log: z
+    .object({
+      level: z.enum(["quiet", "normal", "verbose", "debug"]).default("normal"),
+      /**
+       * Seconds between heartbeat lines when nothing else has happened.
+       *
+       * A long measurement or a slow model must never look like a hang. 0 turns
+       * the heartbeat off.
+       */
+      heartbeatSeconds: z.number().nonnegative().default(20),
+      /** Write the structured per-run log and final report under `workDir/runs/`. */
+      runLog: z.boolean().default(true),
+    })
+    .default({ level: "normal", heartbeatSeconds: 20, runLog: true }),
 });
 export type Config = z.infer<typeof ConfigSchema>;
 
@@ -677,6 +768,27 @@ export const STARTER_CONFIG = `{
       }
     },
 
+    // Which hooks run. A hook is a directory under src/llm/plugins/, so there
+    // is no list of names here and no flag per hook.
+    //   biomd hooks list          what exists, what is on, and why
+    //   biomd hooks show <id>     its prompts, schema and policy
+    // A new hook ships disabled: "assist" with nothing enabled is
+    // byte-identical to "off".
+    "hooks": {
+      // "enable": ["text.segment"],
+      // "disable": ["*"],
+      // "overrides": { "table.classify": { "tier": "balanced", "acceptAbove": 0.8 } }
+    },
+
+    // Escalations are serialized by default — a shared gateway meeting four
+    // workers is how a batch run becomes a rate-limit storm. breakerAfter stops
+    // calling a gateway that is not answering; the budget cannot, because a
+    // request that never reached a model settles no usage.
+    "concurrency": {
+      "default": 1,
+      "breakerAfter": 5
+    },
+
     // Hard caps. Reserved before each call, so concurrent workers cannot
     // collectively overspend.
     "budget": {
@@ -691,6 +803,16 @@ export const STARTER_CONFIG = `{
       "output": {},
       "cachedInputMultiplier": 0.1
     }
+  },
+
+  // ---- reporting ----------------------------------------------------------
+  // "normal" shows a live progress line and every escalation decision.
+  // "verbose"/"debug" add rule- and hook-level traces. Whatever the level, the
+  // full timeline is written to <workDir>/runs/<id>/run.jsonl.
+  "log": {
+    "level": "normal",
+    "heartbeatSeconds": 20,
+    "runLog": true
   }
 }
 `;
