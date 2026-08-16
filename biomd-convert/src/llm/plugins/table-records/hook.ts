@@ -79,8 +79,8 @@ export const hook = defineHook<TableHeaderInput, TableHeaderReply>({
   version: "3",
   stability: "stable",
   decisionPoint: "table.records",
-  // Grandfathered; see `defaults.test.ts`.
-  enabledByDefault: true,
+  // No hook is on by default; see `plugins.test.ts`.
+  enabledByDefault: false,
   moduleUrl: import.meta.url,
   input: InputSchema,
   output: TableHeaderSchema,

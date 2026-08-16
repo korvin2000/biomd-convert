@@ -53,6 +53,24 @@ export const GatewayConfigSchema = z.object({
   apiKey: z.string().optional(),
   /** Name of an environment variable holding the key. */
   apiKeyEnv: z.string().optional(),
+  /**
+   * Whether this gateway needs an API key at all.
+   *
+   * Unset means "decide from the URL": an endpoint on loopback or a private
+   * network is a server the operator is running, and demanding a key from it
+   * only turns a working local model into a silently deterministic run. A
+   * public URL still requires one, because a missing key there is a mistake
+   * rather than a configuration.
+   */
+  requiresApiKey: z.boolean().optional(),
+  /**
+   * Whether the endpoint accepts image input.
+   *
+   * Unset means "discover": images are sent until the endpoint refuses them.
+   * A `llama-server` started without `--mmproj` is text-only however
+   * multimodal the model is, and `false` states that up front.
+   */
+  vision: z.boolean().optional(),
   /** Extra request headers, e.g. OpenRouter's optional attribution headers. */
   headers: z.record(z.string(), z.string()).default({}),
   /** Model per escalation tier. `fast` handles volume; `deep` handles hard cases. */
@@ -554,12 +572,39 @@ export interface ResolvedGateway {
   apiKey: string | undefined;
   /** Where the key came from, for diagnostics. Never the key itself. */
   apiKeySource: string;
+  /** Resolved from `requiresApiKey`, or from the URL when it is unset. */
+  requiresApiKey: boolean;
   headers: Record<string, string>;
   models: { fast: string; balanced: string; deep: string };
   structuredOutput: StructuredOutputMode;
+  /** Undefined means the transport discovers it on first refusal. */
+  vision: boolean | undefined;
   extraBody: Record<string, unknown>;
   enforceModelIdentity: boolean;
   timeoutMs: number;
+}
+
+/**
+ * Is this URL a server the operator is running themselves?
+ *
+ * Loopback and the private ranges are not the public internet, and nothing
+ * behind them was ever issued an API key. The question is settled by the host
+ * alone: a private address that turns out to be a proxy to a paid service is a
+ * deliberate arrangement, and `requiresApiKey` states it in one line.
+ */
+export function isLocalEndpoint(baseUrl: string): boolean {
+  let host: string;
+  try {
+    host = new URL(baseUrl).hostname.replace(/^\[|\]$/gu, "").toLowerCase();
+  } catch {
+    return false;
+  }
+  if (host === "localhost" || host === "::1" || host === "0.0.0.0") return true;
+  if (/\.(?:local|lan|internal|home|localdomain)$/u.test(host)) return true;
+  const v4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.\d{1,3}$/u.exec(host);
+  if (!v4) return false;
+  const [a, b] = [Number(v4[1]), Number(v4[2])];
+  return a === 127 || a === 10 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31) || (a === 169 && b === 254);
 }
 
 export class ConfigError extends Error {
@@ -606,17 +651,23 @@ export function resolveGateway(config: Config, override?: string): ResolvedGatew
     );
   }
 
+  const requiresApiKey = gateway.requiresApiKey ?? !isLocalEndpoint(gateway.baseUrl);
+
   let apiKey = gateway.apiKey;
   let apiKeySource = "config (apiKey)";
   if (!apiKey && gateway.apiKeyEnv) {
     apiKey = process.env[gateway.apiKeyEnv];
     apiKeySource = `environment (${gateway.apiKeyEnv})`;
   }
-  if (!apiKey) {
+  // The catch-all variable is for the gateway that wants a key and was not
+  // given one by name. Applying it to a keyless endpoint would put a
+  // provider's secret in an `Authorization` header addressed to a machine on
+  // the local network, which nobody asked for.
+  if (!apiKey && requiresApiKey) {
     apiKey = process.env["BIOMD_GATEWAY_KEY"];
     if (apiKey) apiKeySource = "environment (BIOMD_GATEWAY_KEY)";
   }
-  if (!apiKey) apiKeySource = "not set";
+  if (!apiKey) apiKeySource = requiresApiKey ? "not set" : "not needed (local endpoint)";
 
   const models = gateway.models;
   const fallback = models.balanced ?? models.fast ?? models.deep;
@@ -638,6 +689,7 @@ export function resolveGateway(config: Config, override?: string): ResolvedGatew
     baseUrl: gateway.baseUrl,
     apiKey,
     apiKeySource,
+    requiresApiKey,
     headers: gateway.headers,
     models: {
       fast: models.fast ?? fallback,
@@ -645,6 +697,7 @@ export function resolveGateway(config: Config, override?: string): ResolvedGatew
       deep: models.deep ?? fallback,
     },
     structuredOutput: gateway.structuredOutput,
+    vision: gateway.vision,
     extraBody: gateway.extraBody,
     enforceModelIdentity: gateway.enforceModelIdentity,
     timeoutMs: gateway.timeoutMs,
@@ -765,6 +818,34 @@ export const STARTER_CONFIG = `{
         },
         "structuredOutput": "tools",
         "enforceModelIdentity": true
+      },
+
+      // A model you are hosting yourself — llama.cpp's llama-server, or
+      // anything else that samples against a grammar built from the schema.
+      // See docs/CONFIGURATION.md; the three lines after the models are the
+      // ones that are easy to omit and expensive to debug.
+      "llama": {
+        "baseUrl": "http://localhost:8080/v1",
+        // llama-server authenticates nobody. Loopback and private-network
+        // hosts are treated as keyless anyway; this states it.
+        "requiresApiKey": false,
+        "models": {
+          "fast": "my-local-model",
+          "balanced": "my-local-model",
+          "deep": "my-local-model"
+        },
+        // llama.cpp compiles this into a sampling grammar and enforces it.
+        "structuredOutput": "json_schema",
+        // For a model that thinks before answering: the thinking is charged to
+        // the same allowance as the answer, and a hook only wants a one-word
+        // verdict. Drop this block for a model that does not think.
+        "extraBody": {
+          "chat_template_kwargs": { "enable_thinking": false }
+        },
+        // A server started without --mmproj is text-only however multimodal
+        // the weights are. Remove once a projector is loaded.
+        "vision": false,
+        "enforceModelIdentity": false
       }
     },
 
@@ -772,10 +853,11 @@ export const STARTER_CONFIG = `{
     // is no list of names here and no flag per hook.
     //   biomd hooks list          what exists, what is on, and why
     //   biomd hooks show <id>     its prompts, schema and policy
-    // A new hook ships disabled: "assist" with nothing enabled is
-    // byte-identical to "off".
+    // NO HOOK IS ON BY DEFAULT, including with "enabled": true above. Until an
+    // id appears in "enable" (or in --hooks for one run), "assist" is
+    // byte-identical to "off". An unknown id is a startup error.
     "hooks": {
-      // "enable": ["text.segment"],
+      // "enable": ["table.classify", "table.records"],
       // "disable": ["*"],
       // "overrides": { "table.classify": { "tier": "balanced", "acceptAbove": 0.8 } }
     },

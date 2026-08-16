@@ -36,18 +36,26 @@ class StubTransport implements Transport {
 const MODELS: Record<ModelTier, string> = { fast: "stub-fast", balanced: "stub-fast", deep: "stub-deep" };
 
 /**
- * The hooks a default run enables, discovered rather than named.
+ * The hooks these tests exercise, named because nothing is on by default.
  *
- * The test asks the same question the CLI does — "what is on by default?" — so
- * a plugin that changes its own default is caught here as well as in
- * `defaults.test.ts`.
+ * This used to filter on `enabledByDefault` and so asked the CLI's question,
+ * "what is on by default?" — which is now answered "nothing", and would leave
+ * every test below with an empty resolver that trivially passes. What is under
+ * test here is the resolver *mechanism* — escalation, caching, the breaker, the
+ * budget — so the fixture states which decision points it needs and
+ * `plugins.test.ts` keeps sole custody of the default set.
  */
+const EXERCISED = ["table.classify", "table.records"];
+
 async function defaultHooks(): Promise<PreparedHook[]> {
   const registry = await discoverHooks();
-  return registry
-    .all()
-    .filter((entry) => entry.hook.enabledByDefault)
-    .map((entry) => prepareHook(entry.hook, entry.hook.defaults, MODELS));
+  const entries = registry.all().filter((entry) => EXERCISED.includes(entry.hook.id));
+  // A renamed or deleted plugin must fail loudly rather than silently shrink
+  // the resolver these tests are built around.
+  if (entries.length !== EXERCISED.length) {
+    throw new Error(`expected ${EXERCISED.join(", ")}; discovered ${registry.ids().join(", ")}`);
+  }
+  return entries.map((entry) => prepareHook(entry.hook, entry.hook.defaults, MODELS));
 }
 
 async function makeResolver(

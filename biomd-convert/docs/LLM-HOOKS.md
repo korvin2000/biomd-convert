@@ -225,19 +225,28 @@ An override says only what it overrides.
 Command line: `--llm off|assist`, `-g/--gateway`, `--hooks a,b`, `--no-hooks`,
 `--replay`, `--log-level`, `-v`, `--debug`, `--no-run-log`.
 
-### The default set cannot grow
+### The default set is empty
 
-`table.classify` and `table.records` are enabled by default. They are
-grandfathered: both predate the ruling below and both are wired to abstentions
-that predate it too.
+**No hook is enabled by default — not even with `llm.enabled: true`.** Turning
+the subsystem on builds a transport and nothing else; the hooks that run are the
+ones an operator named, in `llm.hooks.enable` or `--hooks`.
 
-> **A new hook ships disabled.** A previous generation of this subsystem shipped
+> **A hook ships disabled.** A previous generation of this subsystem shipped
 > twenty-one hooks with seven on by default, three of which re-decided questions
-> rules had already answered. `--llm assist` with nothing named must be
-> byte-identical to `--llm off`.
+> rules had already answered. `table.classify` and `table.records` were
+> grandfathered through the first cleanup and are no longer. `--llm assist` with
+> nothing named is byte-identical to `--llm off`, unconditionally.
 
-`src/llm/plugins/plugins.test.ts` pins the default-enabled set, so a hook that
-turns itself on fails the build rather than the corpus.
+`src/llm/plugins/plugins.test.ts` pins the set empty and asserts every
+discovered plugin declares `enabledByDefault: false`, so a hook that turns
+itself on fails the build rather than the corpus.
+
+Two consequences worth stating, because both look like bugs otherwise:
+
+- a fresh checkout with `llm.enabled: true` and a working gateway converts
+  **exactly** as it does with the model off, and `hooks list` shows why;
+- enabling a hook is a **conversion change**. It belongs to a run that measures
+  it against the LLM-off baseline, not to a plugin's own opinion of itself.
 
 ### Cost control
 
@@ -318,5 +327,6 @@ outside the source (invented text under §16.3, invisible when wrong).
 ## 9. Related
 
 - `CLAUDE.md` — invariants, the evaluation ladder, rules-vs-hooks policy
-- `docs/CONFIGURATION.md` — gateways, keys, budgets, the R1/R2/R3 transport rules
+- `docs/CONFIGURATION.md` — gateways, keys, budgets, the R1/R2/R3 transport rules,
+  and what a self-hosted `llama-server` needs that a hosted gateway does not
 - `biomd-convert/CONVERTER-PROGRESS.md` — measured state

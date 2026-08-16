@@ -25,10 +25,11 @@ function config(patch: Record<string, unknown> = {}): Config {
 }
 
 describe("resolveEnabled", () => {
-  it("starts from the hooks that declare themselves on", async () => {
+  it("starts from nothing, because no hook declares itself on", async () => {
     const registry = await loadRegistry(config());
     const { enabled } = resolveEnabled(registry, config());
     expect(enabled).toEqual(registry.defaults());
+    expect(enabled).toEqual([]);
   });
 
   it("turns a named hook on", async () => {
@@ -40,8 +41,10 @@ describe("resolveEnabled", () => {
   });
 
   it("turns one off, and says which setting did it", async () => {
+    // Enabled first, so this proves `disable` removes a hook that was on rather
+    // than agreeing with a default that already left it off.
     const registry = await loadRegistry(config());
-    const cfg = config({ llm: { hooks: { disable: ["table.records"] } } });
+    const cfg = config({ llm: { hooks: { enable: ["table.records"], disable: ["table.records"] } } });
     const { enabled, reasons } = resolveEnabled(registry, cfg);
     expect(enabled).not.toContain("table.records");
     expect(reasons.get("table.records")).toBe("llm.hooks.disable");
@@ -152,13 +155,46 @@ describe("openLlmSession", () => {
           enabled: true,
           gateway: "g",
           gateways: { g: { baseUrl: "http://gw.local/v1", apiKey: "k", models: { fast: "m" } } },
-          hooks: { disable: ["table.records"] },
+          hooks: { enable: ["table.classify"] },
         },
       }),
     );
     expect(session.resolver).not.toBeNull();
     expect(session.hooks.map((h) => h.definition.id)).toEqual(["table.classify"]);
     expect(session.note).toContain("table.classify");
+  });
+
+  it("builds a resolver for a local gateway that has no key to give", async () => {
+    // The symptom this replaces: a working llama-server on the LAN, a named
+    // hook, and a run that was silently fully deterministic because the session
+    // demanded a key nobody had issued.
+    const session = await openLlmSession(
+      config({
+        llm: {
+          enabled: true,
+          gateway: "llama",
+          gateways: { llama: { baseUrl: "http://192.168.1.26:8080/v1", models: { fast: "m" } } },
+          hooks: { enable: ["table.classify"] },
+        },
+      }),
+    );
+    expect(session.resolver).not.toBeNull();
+    expect(session.note).toContain("not needed (local endpoint)");
+  });
+
+  it("still refuses a public gateway with no key, and names the way out", async () => {
+    const session = await openLlmSession(
+      config({
+        llm: {
+          enabled: true,
+          gateway: "or",
+          gateways: { or: { baseUrl: "https://openrouter.ai/api/v1", models: { fast: "m" } } },
+          hooks: { enable: ["table.classify"] },
+        },
+      }),
+    );
+    expect(session.resolver).toBeNull();
+    expect(session.note).toMatch(/no API key/u);
   });
 
   it("refuses two hooks competing for one decision point", async () => {
@@ -175,8 +211,13 @@ describe("openLlmSession", () => {
         gateways: { g: { baseUrl: "http://gw.local/v1", apiKey: "k", models: { fast: "m" } } },
       },
     });
-    const { enabled } = resolveEnabled(registry, { ...cfg, llm: { ...cfg.llm, hooks: { ...cfg.llm.hooks, enable: ["table.classify.alt"] } } });
-    expect(enabled).toContain("table.classify.alt");
+    // Both named explicitly: nothing is on by default, so the collision has to
+    // be arranged rather than inherited.
+    const { enabled } = resolveEnabled(registry, {
+      ...cfg,
+      llm: { ...cfg.llm, hooks: { ...cfg.llm.hooks, enable: ["table.classify", "table.classify.alt"] } },
+    });
+    expect(enabled).toEqual(["table.classify", "table.classify.alt"]);
     const prepared = prepareEnabled(registry, enabled, cfg, { fast: "m", balanced: "m", deep: "m" });
     expect(
       () =>

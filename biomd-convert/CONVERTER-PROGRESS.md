@@ -7652,3 +7652,65 @@ For the hook subsystem specifically, the categories worth a later iteration are 
 **section label or caption**, **which lane continues the reading order**. Two shapes are
 excluded there and should not be revisited without new measurement: anything touching
 de-hyphenation, and anything supplying an image caption the source does not have.
+
+## 58 -- the hook subsystem met a gateway that samples against a grammar (2026-08-16)
+
+A first run against a self-hosted `llama-server` (Gemma 27B, single slot, no key, on the LAN)
+resolved **0 of 76** escalations. Five defects, none of them in a hook and none of them in
+`convert-core`; the deterministic pipeline was never involved and L1 is byte-identical across
+the whole change. Measured after: **38 of 76 escalations resolved, 20 model calls, 28 cache
+hits, 0 transport failures**, and the remaining 38 refused on the operator's own
+`acceptAbove: 0.8` rather than on transport. Conversion output is unchanged -- the accepted
+verdicts agreed with the deterministic fallbacks, which is the monotonicity property behaving
+as designed rather than a null result: a resolved abstention stops being a review item whether
+or not it changes a byte.
+
+### 58.1 The one that took the run down
+
+Both wired hooks carry `rationale: z.string().max(4000)`. llama.cpp compiles a reply schema
+into GBNF and emits a string bound literally as `char{0,N}`; past ~2000 the generated grammar
+no longer parses and the server answers **every** request with
+`400 Failed to initialize samplers: failed to parse grammar` (llama.cpp #25746, #25923;
+reproduced here -- 1000 compiles, 2000 does not). Two failures compounded it: the message names
+neither `response_format` nor a tool, so the `json_schema` → `tools` → `json_object` ladder read
+it as a dead-end 4xx and never walked, and five of them opened the circuit breaker, which is why
+43 of the 48 log lines said *gateway is not answering* about a gateway that was answering
+promptly and identically every time.
+
+Fixed on the wire, not in the hook. A bound above 256 is a sanity cap, not a sampler
+constraint, and R3 already makes local validation the authority -- zod still rejects an
+over-long rationale. `grammarSafeSchema` drops oversized `maxLength`/`minLength`/`maxItems`/
+`minItems` and `$schema` from the transmitted copy only, so the cache stays keyed on the hook's
+schema and the same question through two gateways stays one question. `plugins.test.ts` now
+fails the build if any discovered hook would send an uncompilable bound or a `$ref` (#21228).
+
+### 58.2 Three more, each of which alone would have looked like "the model does not work"
+
+**No key is a configuration, not an omission.** `openLlmSession` refused to build a transport
+without an `apiKey`, so a working local server produced a silently fully deterministic run whose
+only symptom was that no hook ever fired. `requiresApiKey` now defaults from the host --
+loopback and RFC1918 are not the public internet -- and the catch-all `BIOMD_GATEWAY_KEY` is no
+longer applied to a keyless endpoint, which had been putting a provider secret in an
+`Authorization` header addressed to a machine on the LAN.
+
+**Thinking is charged to the answer's allowance.** Gemma spends `max_tokens` deliberating
+first, so a 512-token budget returned `finish_reason: "length"` with empty `content` --
+previously reported as "neither a tool call nor content", which points at the model id. The
+transport now separates the two, widens the allowance once, and names the cheaper remedy:
+measured on one classification prompt, **32 completion tokens with thinking off against 2048
+and no answer with it on** (`chat_template_kwargs: {enable_thinking: false}`; `reasoning_budget:
+0` had no effect on that build). Inline `<think>` blocks are stripped, and an unterminated one
+is read as no answer rather than as malformed JSON.
+
+**Vision is a build flag, not a model property.** A server started without `--mmproj` answers
+`table.classify`'s crop with a 500. The refusal is now recognised, the request retried without
+the image, and no crop attached again for the rest of the run.
+
+### 58.3 An instrument that was lying
+
+With crops suppressed, `biomd probe` **passed** its vision check: it asked the model to confirm
+it could see an image whose two colours the prompt itself named, which a text-only model
+answers correctly by reading the question. The probe now asks which colour is on the *left* --
+unanswerable from the wording -- and reports "not tested" when the transport is not sending
+images at all, rather than passing a capability that was never exercised. Invariant 7: this
+made the measurement more truthful and cost one green line.

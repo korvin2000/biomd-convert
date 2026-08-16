@@ -47,8 +47,23 @@ export interface GatewayConfig {
    * the authority in all three cases (R3).
    */
   structuredOutput?: "tools" | "json_schema" | "json_object";
+  /**
+   * Whether the endpoint accepts image content.
+   *
+   * `undefined` means "discover": images are sent until the endpoint refuses
+   * them, after which this transport stops attaching them for the rest of the
+   * run. A local `llama-server` started without an `--mmproj` projector answers
+   * every image request with a 500, so one wasted call per run is the cost of
+   * not being told; setting it to `false` avoids even that.
+   */
+  vision?: boolean;
   /** Merged into the request body — e.g. OpenRouter's `provider` routing block. */
   extraBody?: Record<string, unknown>;
+  /**
+   * Told once about anything an operator would want to know but that is not a
+   * failure — a dropped capability, a widened output budget.
+   */
+  onNotice?: (notice: string) => void;
 }
 
 export interface ChatImage {
@@ -97,8 +112,21 @@ export interface ChatResponse {
  * model and the model answered, but not through the typed channel we asked for.
  * Retrying that on a different model is pointless; retrying it through a
  * different channel is exactly right.
+ *
+ * `output-budget` and `vision` name the two failures a *local* server produces
+ * that look like a broken model and are neither. The first is a reasoning model
+ * spending the whole completion allowance on its own thinking; the second is a
+ * server built without a multimodal projector. Both are recovered from in
+ * {@link GatewayTransport.chat} rather than reported, because the operator
+ * cannot act on either from the error text alone.
  */
-export type TransportFailure = "network" | "http" | "structured-output" | "identity";
+export type TransportFailure =
+  | "network"
+  | "http"
+  | "structured-output"
+  | "identity"
+  | "output-budget"
+  | "vision";
 
 export class TransportError extends Error {
   readonly status?: number;
@@ -119,6 +147,14 @@ export class TransportError extends Error {
 export interface Transport {
   readonly id: string;
   chat(request: ChatRequest): Promise<ChatResponse>;
+  /**
+   * Whether images attached to a request actually leave the process.
+   *
+   * A transport that silently drops them would let a vision check pass on a
+   * prompt the model could answer from the text alone, which is a measurement
+   * saying the opposite of the truth.
+   */
+  readonly sendsImages?: boolean;
 }
 
 /**
@@ -144,6 +180,7 @@ export class GatewayTransport implements Transport {
       // Tolerate a pasted endpoint: the client appends /chat/completions itself.
       baseUrl: config.baseUrl.replace(/\/+$/u, "").replace(/\/chat\/completions$/iu, ""),
     };
+    this.#sendImages = config.vision ?? true;
   }
 
   /**
@@ -154,6 +191,22 @@ export class GatewayTransport implements Transport {
    * discovery it already made.
    */
   #activeMode: NonNullable<GatewayConfig["structuredOutput"]> | null = null;
+
+  /** Sticky for the same reason: an endpoint refuses images once, not per item. */
+  #sendImages: boolean;
+
+  get sendsImages(): boolean {
+    return this.#sendImages;
+  }
+
+  /** Everything the operator was told, in order. Read by the run report. */
+  readonly notices: string[] = [];
+
+  #notice(message: string): void {
+    if (this.notices.includes(message)) return;
+    this.notices.push(message);
+    this.#config.onNotice?.(message);
+  }
 
   /**
    * Ask for typed data, degrading through the channels until one answers.
@@ -175,7 +228,7 @@ export class GatewayTransport implements Transport {
     for (let i = 0; i < ladder.length; i += 1) {
       const mode = ladder[i] as NonNullable<GatewayConfig["structuredOutput"]>;
       try {
-        const reply = await this.#attempt(request, mode);
+        const reply = await this.#recover(request, mode);
         this.#activeMode = mode;
         return reply;
       } catch (error) {
@@ -191,6 +244,65 @@ export class GatewayTransport implements Transport {
     );
   }
 
+  /**
+   * One channel, with the two recoveries a local server makes necessary.
+   *
+   * Both are capability discoveries rather than retries in the usual sense, and
+   * both are made once per transport: an endpoint that has no projector will
+   * not grow one, and a model that thinks before answering will keep doing it.
+   * Neither changes what was asked — the same prompt is sent, without the crop
+   * or with room to finish — so an answer obtained this way is the answer to the
+   * original question, and the hook's own validation still adjudicates it.
+   */
+  async #recover(
+    request: ChatRequest,
+    mode: NonNullable<GatewayConfig["structuredOutput"]>,
+  ): Promise<ChatResponse> {
+    const budget = request.maxOutputTokens ?? 4096;
+    try {
+      return await this.#attempt(request, mode, { images: this.#images(request), maxOutputTokens: budget });
+    } catch (error) {
+      if (!(error instanceof TransportError)) throw error;
+
+      if (error.failure === "vision") {
+        this.#sendImages = false;
+        this.#notice(
+          "This gateway does not accept image input, so rendered crops are no longer being sent; " +
+            "hooks that ask for one decide from their text summary alone. For llama-server, start it " +
+            'with --mmproj <projector.gguf> to enable vision, or set "vision": false on the gateway to ' +
+            "skip the discovery call.",
+        );
+        return await this.#attempt(request, mode, { images: [], maxOutputTokens: budget });
+      }
+
+      // A reasoning model charges its thinking to the same allowance as its
+      // answer, so a budget sized for the answer alone returns nothing at all.
+      // Widened once, not repeatedly: if the answer does not fit in four times
+      // the room, the budget is not what is wrong.
+      if (error.failure === "output-budget") {
+        const widened = Math.max(budget * 4, 2048);
+        this.#notice(
+          `The model spent its whole ${budget}-token output allowance before answering — it emits ` +
+            `reasoning tokens, and they are charged to the same allowance. Retrying at ${widened}. ` +
+            "A hook wants a short typed verdict, so the cheaper fix is usually to turn the thinking " +
+            'off — for llama.cpp, "extraBody": { "chat_template_kwargs": { "enable_thinking": false } } ' +
+            'on the gateway — otherwise raise "maxOutputTokens" in the hook\'s override so the ' +
+            "discarded attempt is not paid for on every item.",
+        );
+        return await this.#attempt(request, mode, {
+          images: this.#images(request),
+          maxOutputTokens: widened,
+        });
+      }
+
+      throw error;
+    }
+  }
+
+  #images(request: ChatRequest): readonly ChatImage[] {
+    return this.#sendImages ? (request.images ?? []) : [];
+  }
+
   /** Configured channel first, then the rest — most portable last. */
   #ladder(): Array<NonNullable<GatewayConfig["structuredOutput"]>> {
     const configured = this.#activeMode ?? this.#config.structuredOutput ?? "tools";
@@ -200,9 +312,13 @@ export class GatewayTransport implements Transport {
   async #attempt(
     request: ChatRequest,
     mode: NonNullable<GatewayConfig["structuredOutput"]>,
+    options: { images: readonly ChatImage[]; maxOutputTokens: number },
   ): Promise<ChatResponse> {
+    // What the gateway is *asked* for and what it can compile are different
+    // questions. The hook's schema stays the contract; this is its wire form.
+    const schema = grammarSafeSchema(request.schema.schema);
     const content: unknown[] = [{ type: "text", text: request.user }];
-    for (const image of request.images ?? []) {
+    for (const image of options.images) {
       content.push({
         type: "image_url",
         image_url: { url: `data:${image.mediaType};base64,${Buffer.from(image.data).toString("base64")}` },
@@ -215,7 +331,7 @@ export class GatewayTransport implements Transport {
       ...this.#config.extraBody,
       model: request.model,
       temperature: request.temperature ?? 0,
-      max_tokens: request.maxOutputTokens ?? 4096,
+      max_tokens: options.maxOutputTokens,
       messages: [
         {
           role: "system",
@@ -235,7 +351,7 @@ export class GatewayTransport implements Transport {
           function: {
             name: request.schema.name,
             description: "Return the decision using exactly this schema.",
-            parameters: request.schema.schema,
+            parameters: schema,
           },
         },
       ];
@@ -243,7 +359,7 @@ export class GatewayTransport implements Transport {
     } else if (mode === "json_schema") {
       body["response_format"] = {
         type: "json_schema",
-        json_schema: { name: request.schema.name, strict: true, schema: request.schema.schema },
+        json_schema: { name: request.schema.name, strict: true, schema },
       };
     } else {
       body["response_format"] = { type: "json_object" };
@@ -255,7 +371,7 @@ export class GatewayTransport implements Transport {
           ...(content as unknown[]),
           {
             type: "text",
-            text: `Reply with JSON matching this schema exactly:\n${JSON.stringify(request.schema.schema)}`,
+            text: `Reply with JSON matching this schema exactly:\n${JSON.stringify(schema)}`,
           },
         ],
       };
@@ -286,10 +402,25 @@ export class GatewayTransport implements Transport {
 
     if (!response.ok) {
       const text = await response.text().catch(() => "");
+
+      // A server that cannot render an image says so with a 500, which is
+      // otherwise indistinguishable from a server that fell over.
+      if (options.images.length > 0 && IMAGE_UNSUPPORTED.test(text)) {
+        throw new TransportError(`Gateway refused image input: ${text.slice(0, 300)}`, {
+          status: response.status,
+          failure: "vision",
+        });
+      }
+
+      // Grammar-backed servers reject the *schema* rather than the channel, and
+      // say nothing about `response_format` while doing it — llama.cpp answers
+      // "failed to parse grammar". Read as a plain 4xx that is a dead end and
+      // a run stops on the fifth one; read as a channel rejection it degrades
+      // to `tools`, then to `json_object`, which is what recovers it.
       const channelRejected =
         response.status >= 400 &&
         response.status < 500 &&
-        /response_format|json_schema|tool[_ ]?(?:call|choice)|structured/iu.test(text);
+        CHANNEL_REJECTED.test(text);
       throw new TransportError(`Gateway returned ${response.status}: ${text.slice(0, 500)}`, {
         status: response.status,
         // 408/429/5xx are worth retrying; a 4xx schema rejection is not — unless
@@ -303,8 +434,11 @@ export class GatewayTransport implements Transport {
     const payload = (await response.json()) as {
       model?: string;
       choices?: Array<{
+        finish_reason?: string;
         message?: {
           content?: string | null;
+          /** Separate thinking channel, as llama.cpp and several gateways emit it. */
+          reasoning_content?: string | null;
           tool_calls?: Array<{ function?: { name?: string; arguments?: string } }>;
         };
       }>;
@@ -332,14 +466,29 @@ export class GatewayTransport implements Transport {
       );
     }
 
-    const call = payload.choices?.[0]?.message?.tool_calls?.[0];
+    const choice = payload.choices?.[0];
+    const call = choice?.message?.tool_calls?.[0];
     const rawArguments = call?.function?.arguments;
-    const rawContent = payload.choices?.[0]?.message?.content ?? "";
+    // A model whose thinking is not carried in its own field inlines it, and
+    // the answer is what follows the closing tag.
+    const rawContent = stripInlineReasoning(choice?.message?.content ?? "");
     const raw = typeof rawArguments === "string" && rawArguments !== "" ? rawArguments : rawContent;
 
     if (!raw) {
+      const reasoned = (choice?.message?.reasoning_content ?? "").trim() !== "";
+      if (choice?.finish_reason === "length") {
+        // Recovered in `#recover`, so the text here is only ever read when the
+        // widened attempt failed too.
+        throw new TransportError(
+          `The model produced ${payload.usage?.completion_tokens ?? "?"} tokens against a ` +
+            `${options.maxOutputTokens}-token allowance and stopped before answering` +
+            `${reasoned ? ", having spent the allowance on reasoning" : ""}.`,
+          { retryable: true, failure: "output-budget" },
+        );
+      }
       throw new TransportError(
-        `Gateway returned neither a tool call nor content (structured output mode ${JSON.stringify(mode)}).`,
+        `Gateway returned neither a tool call nor content (structured output mode ${JSON.stringify(mode)})` +
+          `${reasoned ? ", only a reasoning block" : ""}.`,
         { retryable: true, failure: "structured-output" },
       );
     }
@@ -352,6 +501,15 @@ export class GatewayTransport implements Transport {
       // silently repairing malformed output would hide a transport problem.
       const fenced = /```(?:json)?\s*([\s\S]*?)```/u.exec(raw);
       if (!fenced?.[1]) {
+        // Truncation and malformation look identical in the text; only
+        // `finish_reason` separates them, and they want opposite recoveries.
+        if (choice?.finish_reason === "length") {
+          throw new TransportError(
+            `The model's reply was cut off at the ${options.maxOutputTokens}-token output allowance: ` +
+              `${raw.slice(0, 120)}…`,
+            { retryable: true, failure: "output-budget" },
+          );
+        }
         throw new TransportError(`Gateway reply is not valid JSON: ${raw.slice(0, 200)}`, {
           retryable: true,
           failure: "structured-output",
@@ -377,6 +535,78 @@ export class GatewayTransport implements Transport {
 /** Drop explicit `undefined`s so they cannot overwrite a default via spread. */
 function pruneUndefined<T extends object>(value: T): T {
   return Object.fromEntries(Object.entries(value).filter(([, v]) => v !== undefined)) as T;
+}
+
+/** The typed channel was refused, whatever the gateway called it. */
+const CHANNEL_REJECTED =
+  /response_format|json[_ ]?schema|tool[_ ]?(?:call|choice|use)|structured|grammar|sampler/iu;
+
+/** No multimodal projector behind this endpoint. */
+const IMAGE_UNSUPPORTED = /image (?:input )?is not supported|mmproj|multimodal|does not support image/iu;
+
+/**
+ * Above this, a length or item bound is a sanity cap, not a sampler constraint.
+ *
+ * The two roles are worth separating because only one of them survives the trip
+ * to a grammar-backed server. A bound of 60 on a header label is describing the
+ * answer and helps the model produce it; a bound of 4000 on a free-text
+ * rationale is stopping a runaway reply, and no sampler needs to know about it.
+ */
+export const GRAMMAR_SAFE_BOUND = 256;
+
+/**
+ * The wire form of a reply schema: what a gateway is *asked* for.
+ *
+ * `llama.cpp` compiles a JSON Schema into a GBNF grammar and constrains
+ * sampling with it, and a string bound is emitted literally as `char{0,N}`. Past
+ * roughly two thousand repetitions the generated grammar no longer parses and
+ * the server answers `400 Failed to initialize samplers: failed to parse
+ * grammar` — for every request, so the whole run fails rather than one item.
+ * Upstream: ggml-org/llama.cpp#25746 and #25923.
+ *
+ * Dropping the oversized bounds costs nothing that matters. R3 already makes
+ * local validation the authority: the hook's zod schema still rejects a
+ * 5000-character rationale after the fact, which is the only place the cap was
+ * ever enforced. What changes is that the constraint stops being smuggled into
+ * the sampler of every server that takes schemas literally.
+ *
+ * `$schema` goes for a related reason — it is a dialect declaration, no gateway
+ * needs it, and it is one more node for a strict validator to object to.
+ */
+export function grammarSafeSchema(schema: Record<string, unknown>): Record<string, unknown> {
+  return visit(schema) as Record<string, unknown>;
+
+  function visit(node: unknown): unknown {
+    if (Array.isArray(node)) return node.map(visit);
+    if (typeof node !== "object" || node === null) return node;
+
+    const out: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(node as Record<string, unknown>)) {
+      if (key === "$schema") continue;
+      if (REPETITION_BOUNDS.has(key) && typeof value === "number" && value > GRAMMAR_SAFE_BOUND) continue;
+      out[key] = visit(value);
+    }
+    return out;
+  }
+}
+
+/** Bounds a grammar compiler turns into repetition counts. */
+const REPETITION_BOUNDS = new Set(["minLength", "maxLength", "minItems", "maxItems"]);
+
+/**
+ * Remove an inlined thinking block, keeping the answer that follows it.
+ *
+ * Reasoning models reached through an OpenAI-compatible surface place their
+ * thinking either in `reasoning_content` — which we never read — or, when the
+ * server is not configured to separate it, inline in `content` ahead of the
+ * answer. An unterminated block means the model was still thinking when its
+ * allowance ran out, and there is no answer behind it to keep.
+ */
+export function stripInlineReasoning(content: string): string {
+  const closed = /^\s*<(think|thinking|reasoning)>[\s\S]*?<\/\1>/iu.exec(content);
+  if (closed) return content.slice(closed[0].length).trim();
+  if (/^\s*<(?:think|thinking|reasoning)>/iu.test(content)) return "";
+  return content;
 }
 
 /**

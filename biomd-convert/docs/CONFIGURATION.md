@@ -188,6 +188,76 @@ to carry every capability this pipeline uses, including `cache_control`
 passthrough with cache-token reporting, and its virtual keys give you a
 server-side USD budget that a bug in this tool cannot bypass.
 
+### llama.cpp (`llama-server`, and anything else that samples against a grammar)
+
+```jsonc
+{
+  "llm": {
+    "enabled": true,
+    "gateway": "llama",
+    "gateways": {
+      "llama": {
+        "baseUrl": "http://192.168.1.26:8080/v1",
+        "requiresApiKey": false,
+        "models": { "fast": "my-local-model", "balanced": "my-local-model", "deep": "my-local-model" },
+        "structuredOutput": "json_schema",
+
+        // Only for a model that thinks before answering — see below.
+        "extraBody": { "chat_template_kwargs": { "enable_thinking": false } },
+
+        // Only if the server was started without --mmproj.
+        "vision": false,
+
+        "enforceModelIdentity": false
+      }
+    },
+    "hooks": { "enable": ["table.classify"] },
+    "concurrency": { "default": 1 }
+  }
+}
+```
+
+Four things differ from a hosted gateway, and each of them is a setting above.
+
+**No key.** `llama-server` authenticates nobody. A `baseUrl` on loopback or a
+private network is treated as keyless automatically; `requiresApiKey` states it
+outright, and also turns the requirement *back on* for a private address that
+fronts something that does authenticate. The catch-all `BIOMD_GATEWAY_KEY` is
+never sent to a keyless endpoint — a provider secret does not belong in an
+`Authorization` header addressed to a machine on the LAN.
+
+**The schema becomes a grammar.** llama.cpp compiles the reply schema into GBNF
+and constrains sampling with it, which makes it stricter than a hosted gateway
+and also more fragile: a string bound is emitted literally as `char{0,N}`, and
+past roughly two thousand repetitions the grammar no longer parses. The server
+then answers *every* request with `400 Failed to initialize samplers: failed to
+parse grammar` (upstream: llama.cpp
+[#25746](https://github.com/ggml-org/llama.cpp/issues/25746),
+[#25923](https://github.com/ggml-org/llama.cpp/issues/25923)). Nothing to
+configure: bounds too large to compile are dropped on the wire, and the hook's
+own schema still enforces them locally. A rejected grammar also degrades
+`json_schema` → `tools` → `json_object` rather than counting against the
+circuit breaker.
+
+**Thinking is charged to the answer's allowance.** A reasoning model spends
+`max_tokens` on its own deliberation first, so a budget sized for a one-word
+verdict comes back empty with `finish_reason: "length"`. The allowance is
+widened once automatically, but a hook wants a short typed verdict and the
+thinking buys nothing: turn it off with `chat_template_kwargs`. Measured on
+Gemma 27B through `llama-server`, one classification prompt — **32 completion
+tokens with thinking off, 2048 and no answer with it on**. (`reasoning_budget:
+0` had no effect on that build.) Where thinking is wanted, raise
+`maxOutputTokens` in the hook's override instead.
+
+**Vision is a build flag, not a model property.** A `llama-server` started
+without `--mmproj` answers image content with a 500 however multimodal the
+weights are. The first refusal is recovered from — the request is retried
+without the crop and no image is attached again for the rest of the run — so
+declaring `"vision": false` only saves that one call.
+
+Set `concurrency.default` to `1` (the default) for a server configured with a
+single slot.
+
 ### Gateway fields
 
 | Field | Default | Notes |
@@ -195,9 +265,11 @@ server-side USD budget that a bug in this tool cannot bypass.
 | `baseUrl` | — | API base, **not** the endpoint. |
 | `apiKey` | — | Literal key. Use only in the *user* config. |
 | `apiKeyEnv` | — | Name of an env var holding the key. Preferred in a project config. |
+| `requiresApiKey` | from the URL | `false` for loopback and private-network hosts, `true` otherwise. Set it to say so explicitly, either way. |
 | `headers` | `{}` | Extra request headers. |
 | `models.fast` / `.balanced` / `.deep` | — | Escalation tiers. `fast` handles volume; `deep` handles hard cases. Setting one is fine — the others fall back to it. |
 | `structuredOutput` | `tools` | `tools` · `json_schema` · `json_object`. See below. |
+| `vision` | discover | `false` skips the one call it takes to find out that the endpoint has no projector. |
 | `extraBody` | `{}` | Merged into the request body, for gateway-specific options. |
 | `enforceModelIdentity` | `true` | Fail if the gateway used a different model than requested. |
 | `timeoutMs` | `120000` | Per request. |
@@ -209,7 +281,9 @@ Every hook returns typed data, and there are three ways to ask for it:
 - **`tools`** — function calling. Universally supported; the default, and right
   for LiteLLM and most gateways.
 - **`json_schema`** — `response_format: {type: "json_schema", strict: true}`.
-  What OpenRouter documents. Enforcement varies by upstream provider.
+  What OpenRouter documents, and what `llama-server` enforces most strictly —
+  it compiles the schema into a sampling grammar. Enforcement varies by
+  upstream provider.
 - **`json_object`** — plain JSON mode with the schema stated in the prompt. Last
   resort for models supporting neither.
 

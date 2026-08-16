@@ -91,31 +91,55 @@ export async function runTransportProbe(transport: Transport, model: string): Pr
 
   // 2 — vision. Only Tier-3 table adjudication needs it; without it the pipeline
   // falls back to text-only summaries, which is worse but not broken.
-  try {
-    const reply = await transport.chat({
-      ...base,
-      user:
-        "The attached image is 2 pixels wide: one half is red, the other blue. " +
-        'Set echo to "red-blue" if you can see both colours, otherwise "cannot-see". Set count to 2.',
-      images: [{ data: Buffer.from(TWO_TONE_PNG, "base64"), mediaType: "image/png" }],
-    });
-    const parsed = EchoReply.safeParse(reply.data);
+  //
+  // The question must not be answerable from its own wording. An earlier
+  // version named both colours and asked whether the model could see them,
+  // which a text-only model answers correctly by reading the prompt — so the
+  // probe passed on an endpoint that had dropped the image entirely.
+  if (transport.sendsImages === false) {
     results.push({
       id: "vision",
       title: "Image input is accepted and reaches the model",
-      passed: parsed.success && !parsed.data.echo.includes("cannot-see"),
-      detail: parsed.success ? `echo=${JSON.stringify(parsed.data.echo)}` : "schema violation",
+      passed: undefined,
+      detail:
+        "not tested: this transport is not sending images — the gateway declares no vision, or it " +
+        "refused one earlier. Table adjudication uses text-only summaries.",
       costOnly: true,
     });
-  } catch (error) {
-    results.push({
-      id: "vision",
-      title: "Image input is accepted and reaches the model",
-      passed: false,
-      detail: `${describe(error)} — table adjudication will fall back to text-only summaries`,
-      costOnly: true,
-    });
-  }
+  } else
+    try {
+      const reply = await transport.chat({
+        ...base,
+        user:
+          "An image is attached. It is two pixels: one red, one blue, side by side. " +
+          'Set echo to "red-left" or "blue-left" for whichever colour is the left pixel, or to ' +
+          '"cannot-see" if no image reached you. Set count to 2.',
+        images: [{ data: Buffer.from(TWO_TONE_PNG, "base64"), mediaType: "image/png" }],
+      });
+      const parsed = EchoReply.safeParse(reply.data);
+      // The fixture's left pixel is red. A model guessing from the text has
+      // even odds, which is why this is reported as a capability check and not
+      // as proof of a model's eyesight.
+      results.push({
+        id: "vision",
+        title: "Image input is accepted and reaches the model",
+        passed: parsed.success && parsed.data.echo.includes("red-left"),
+        detail: parsed.success
+          ? parsed.data.echo.includes("red-left")
+            ? `echo=${JSON.stringify(parsed.data.echo)} — the left pixel was read correctly`
+            : `echo=${JSON.stringify(parsed.data.echo)}; the left pixel is red`
+          : "schema violation",
+        costOnly: true,
+      });
+    } catch (error) {
+      results.push({
+        id: "vision",
+        title: "Image input is accepted and reaches the model",
+        passed: false,
+        detail: `${describe(error)} — table adjudication will fall back to text-only summaries`,
+        costOnly: true,
+      });
+    }
 
   // 3 — prompt caching. A second identical system prefix should report cache
   // reads. Purely a cost question.

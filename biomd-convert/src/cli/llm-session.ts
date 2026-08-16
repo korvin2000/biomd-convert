@@ -62,6 +62,8 @@ export interface SessionOptions {
   /** `--no-hooks` — disable every hook for this run. */
   noHooks?: boolean;
   onEvent?: HookEventSink;
+  /** Something the operator should know, discovered after the session opened. */
+  onNotice?: (notice: string) => void;
   startedAt?: number;
 }
 
@@ -198,10 +200,11 @@ export async function openLlmSession(cfg: Config, options: SessionOptions = {}):
   } catch (error) {
     return off(`llm unavailable: ${(error as Error).message.split("\n")[0]}`);
   }
-  if (!gateway.apiKey && !options.replay) {
+  if (gateway.requiresApiKey && !gateway.apiKey && !options.replay) {
     return off(
       `llm unavailable: no API key for gateway "${gateway.name}" (${gateway.apiKeySource}). ` +
-        "Run `biomd config set-key <gateway>`.",
+        "Run `biomd config set-key <gateway>`, or set `requiresApiKey: false` on the gateway if it " +
+        "is a local server that authenticates nobody.",
     );
   }
 
@@ -227,9 +230,17 @@ export async function openLlmSession(cfg: Config, options: SessionOptions = {}):
     ...(gateway.apiKey ? { apiKey: gateway.apiKey } : {}),
     headers: gateway.headers,
     structuredOutput: gateway.structuredOutput,
+    ...(gateway.vision === undefined ? {} : { vision: gateway.vision }),
     extraBody: gateway.extraBody,
     enforceModelIdentity: gateway.enforceModelIdentity,
     timeoutMs: gateway.timeoutMs,
+    // Discovered mid-run — a capability the endpoint turns out not to have, an
+    // output allowance that had to be widened. Warnings collected at startup
+    // cannot carry these, and without a route out they are invisible.
+    onNotice: (notice) => {
+      warnings.push(notice);
+      options.onNotice?.(notice);
+    },
   });
   const budget = new Budget(cfg.llm.budget, {
     input: cfg.llm.prices.input,
@@ -264,7 +275,8 @@ export async function openLlmSession(cfg: Config, options: SessionOptions = {}):
     registry,
     note:
       `llm ${mode} via "${gateway.name}" (${gateway.models.fast} → ${gateway.models.deep}), ` +
-      `key ${redactKey(gateway.apiKey)}, hooks: ${enabled.join(", ")}`,
+      `key ${gateway.apiKey ? redactKey(gateway.apiKey) : gateway.apiKeySource}, ` +
+      `hooks: ${enabled.join(", ")}`,
     warnings,
   };
 }

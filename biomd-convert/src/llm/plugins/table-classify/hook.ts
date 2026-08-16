@@ -76,9 +76,10 @@ export const hook = defineHook<TableClassifyInput, TableClassReply>({
   version: "3",
   stability: "stable",
   decisionPoint: "table.classify",
-  // Grandfathered: this hook predates the standing ruling that a new hook ships
-  // disabled. `defaults.test.ts` pins the set that may say true.
-  enabledByDefault: true,
+  // No hook is on by default, this one included — the grandfather clause was
+  // withdrawn. `--llm assist` names its hooks or does nothing; see
+  // `plugins.test.ts`, which pins the default set empty.
+  enabledByDefault: false,
   requires: { vision: true },
   moduleUrl: import.meta.url,
   input: InputSchema,

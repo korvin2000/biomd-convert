@@ -99,6 +99,28 @@ re-read a per-document table after a full run is `eval`, and the expensive mista
 *builds* — stash the change, rebuild, and `eval` without re-running the bench and both sides report the
 newer output. One A/B in this campaign came back "no difference" for exactly that reason.
 
+## An LLM-on run leaves evidence behind in the baseline
+
+The same trap, one step nastier, because nothing about the output announces which side produced it.
+
+`bench/biomd.config.json` pins `"llm": { "enabled": false }` and `outDir: ./bench/out`. Adding `--llm assist
+--hooks <id>` to a corpus run over that config **overwrites the LLM-off baseline in place**, and `eval`,
+`diff` and `l3` then read hook-assisted output while reporting it as the project's deterministic number.
+Give an LLM-on run its own config and its own `outDir`, or re-run `bench/run.sh` before the next adjudication.
+
+Two more asymmetries between a hook and a rule:
+
+- **A prompt edit only counts if it reaches the run.** Templates are hashed and the hash keys the decision
+  cache, so an edited prompt is a different question — but a *stale* cache entry for the old prompt is still
+  a legitimate hit for the old prompt. `hooks cache-clear <id>` after every edit; a re-measure that comes
+  back byte-identical is usually a prompt that never arrived, not a prompt that did nothing.
+- **`TableClassifyRequest.crop` is a declared capability with no supplier.** The field exists, and
+  `table-classify/hook.ts` sends it as `images` when present — but nothing in the pipeline populates it
+  (`grep -rn "crop" src` finds only the declaration and the consumer). So the vision path is currently
+  unreachable in a real run, and any comparison that assumes the model saw the region is measuring the
+  text serialization alone. Exercising it at all means hand-building the invocation for
+  `hooks test <id> -i item.json`, which is dry unless you pass `--live`.
+
 ## A class that names one document is usually an instrument, not a rule
 
 Three of the five mechanisms in `CONVERTER-PROGRESS.md` §24 had this shape: a defect that appeared

@@ -154,6 +154,7 @@ function sessionOptions(options: Record<string, unknown>, reporter: RunReporter,
     ...(options["replay"] === true ? { replay: true } : {}),
     startedAt,
     onEvent: (event: Parameters<RunReporter["hookEvent"]>[0]) => reporter.hookEvent(event),
+    onNotice: (notice: string) => reporter.warn(notice),
   };
 }
 
@@ -810,6 +811,7 @@ program
     let structuredOutput: "tools" | "json_schema" | "json_object" = "tools";
     let extraBody: Record<string, unknown> = {};
     let enforceModelIdentity = true;
+    let vision: boolean | undefined;
 
     if (!baseUrl) {
       try {
@@ -821,7 +823,14 @@ program
         structuredOutput = gateway.structuredOutput;
         extraBody = gateway.extraBody;
         enforceModelIdentity = gateway.enforceModelIdentity;
-        process.stdout.write(`Gateway "${gateway.name}"  ${baseUrl}\n  key ${redactKey(apiKey)}\n\n`);
+        // Probe the transport the run will use, declarations included: a
+        // gateway that says it has no vision should be reported as untested,
+        // not as failing a capability nobody asked it for.
+        vision = gateway.vision;
+        process.stdout.write(
+          `Gateway "${gateway.name}"  ${baseUrl}\n` +
+            `  key ${apiKey ? redactKey(apiKey) : gateway.apiKeySource}\n\n`,
+        );
       } catch (error) {
         process.stderr.write(`${(error as Error).message}\n`);
         process.exitCode = 1;
@@ -834,6 +843,7 @@ program
       ...(apiKey ? { apiKey } : {}),
       headers,
       structuredOutput,
+      ...(vision === undefined ? {} : { vision }),
       extraBody,
       enforceModelIdentity,
     });

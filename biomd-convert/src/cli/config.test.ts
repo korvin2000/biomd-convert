@@ -208,6 +208,68 @@ describe("resolveGateway", () => {
   });
 });
 
+/**
+ * A model the operator is hosting themselves issued nobody a key.
+ *
+ * Before this, a keyless `llama-server` on the LAN produced a run that was
+ * silently fully deterministic — the session refused to build a transport, and
+ * the only visible symptom was that no hook ever fired.
+ */
+describe("gateways that authenticate nobody", () => {
+  const local = (url: string, extra = "") =>
+    `{ "llm": { "gateway": "gw", "gateways": { "gw": { "baseUrl": ${JSON.stringify(url)}, ` +
+    `"models": { "fast": "m" }${extra} } } } }`;
+
+  it("asks for no key from a loopback or private-network endpoint", async () => {
+    for (const url of ["http://localhost:8080/v1", "http://127.0.0.1:8080/v1", "http://192.168.1.26:8080/v1"]) {
+      const path = await writeConfig(local(url));
+      const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config);
+      expect(gateway.requiresApiKey).toBe(false);
+      expect(gateway.apiKeySource).toBe("not needed (local endpoint)");
+    }
+  });
+
+  it("still asks for one from a public endpoint", async () => {
+    const path = await writeConfig(local("https://openrouter.ai/api/v1"));
+    expect(
+      resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config).requiresApiKey,
+    ).toBe(true);
+  });
+
+  it("lets the setting overrule the URL in both directions", async () => {
+    const guarded = await writeConfig(local("http://192.168.1.26:8080/v1", ', "requiresApiKey": true'));
+    expect(
+      resolveGateway(loadConfig({ userConfigPath: null, configPath: guarded, cwd: dir }).config).requiresApiKey,
+    ).toBe(true);
+
+    const open = await writeConfig(local("https://gateway.example.com/v1", ', "requiresApiKey": false'));
+    expect(
+      resolveGateway(loadConfig({ userConfigPath: null, configPath: open, cwd: dir }).config).requiresApiKey,
+    ).toBe(false);
+  });
+
+  it("does not hand the catch-all key to a machine on the local network", async () => {
+    // BIOMD_GATEWAY_KEY is for the gateway that wants a key and was not given
+    // one by name. Sending a provider secret to a LAN address is not a
+    // convenience, and nothing about a keyless endpoint asked for it.
+    process.env["BIOMD_GATEWAY_KEY"] = "sk-or-v1-secret";
+    const path = await writeConfig(local("http://192.168.1.26:8080/v1"));
+    // Named explicitly: a bare BIOMD_GATEWAY_KEY also defines an implicit `env`
+    // gateway and selects it, which is a different feature.
+    const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config, "gw");
+    expect(gateway.apiKey).toBeUndefined();
+  });
+
+  it("still honours a key named explicitly for a local gateway", async () => {
+    // A private address can front a proxy that does authenticate; naming the
+    // variable is how that is said.
+    process.env["LOCAL_KEY"] = "sk-local";
+    const path = await writeConfig(local("http://127.0.0.1:4000/v1", ', "apiKeyEnv": "LOCAL_KEY"'));
+    const gateway = resolveGateway(loadConfig({ userConfigPath: null, configPath: path, cwd: dir }).config);
+    expect(gateway.apiKey).toBe("sk-local");
+  });
+});
+
 describe("redactKey", () => {
   it("shows enough to identify a key and no more", () => {
     const redacted = redactKey("sk-or-v1-abcdefghijklmnopqrstuvwxyz");
