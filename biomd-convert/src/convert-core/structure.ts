@@ -10,7 +10,9 @@
  * any judgement is needed — a region whose cells want block content is not a
  * data table, whatever it looked like in 1998.
  */
-import type { BlockContent, List, ListItem, Paragraph, PhrasingContent, RootContent, Table, TableRow } from "mdast";
+import type {
+  AlignType, BlockContent, List, ListItem, Paragraph, PhrasingContent, RootContent, Table, TableRow,
+} from "mdast";
 import {
   type BiomdColumn,
   type BiomdContent,
@@ -5334,7 +5336,69 @@ function tableFromPlan(plan: LogicalTablePlan, ctx: Ctx, supplied?: readonly str
     rows.push(node);
   }
 
-  return { type: "table", align: Array.from({ length: width }, () => null), children: rows };
+  return { type: "table", align: resourceMatrixAlign(plan), children: rows };
+}
+
+/**
+ * Column alignment for a planned matrix.
+ *
+ * ## Rule contract — a resource matrix sets its resources against its names
+ *
+ * `analyze/TODO_Rules.md` §2: *"1-ый столбец всегда отцентрирован по
+ * умолчанию, а 2-ой и последующие могут быть отцентрированы вправо, особенно
+ * если такие таблицы содержат ссылки на аудио и ноты"*, naming `xtra_karta5`
+ * and `new_kolpakov` as the shape. Every column was emitted with no alignment
+ * at all before this.
+ *
+ * **Invariant.** One question, asked of the table and not of the page: does
+ * any column *other than the leading one* hold links and nothing else worth
+ * calling it by — {@link isLinkColumn}, the same test that heads such a column
+ * `LINK_GLYPH`. If so the matrix lists what is available for each record, the
+ * leading column carries the record's name and keeps the reading flow, and
+ * every column after it is set against the right edge, where a reader scanning
+ * for a format finds the tokens in one straight line. No width, no filename,
+ * no format vocabulary, no document.
+ *
+ * **Why the whole table and not each column.** `xtra_karta5` is the reference
+ * the author points at and it right-aligns *all* seventeen of its tables'
+ * non-leading columns — including a column of bare roman numerals and a fourth
+ * column holding a second work title. Aligning only the link columns would
+ * reproduce none of them. The gate is therefore "is this a resource matrix",
+ * and the answer places the columns.
+ *
+ * **False friend, tested for non-firing: the prose table.** A two-column
+ * record grid whose second column holds sentences has no link column, so it
+ * keeps the default and its text still starts at the left edge where prose is
+ * read from. `xtra_karta5`'s own tables are all resource matrices; the
+ * non-firing case has to be constructed, and it is.
+ *
+ * **Recurrence does not apply.** A table's column set exists once per table by
+ * construction; `isLinkColumn` already carries the homogeneity requirement
+ * *down* each column, which is the recurrence that is available here.
+ *
+ * **The cost is stated, not hidden.** The corpus divides 1-to-12 on this:
+ * `xtra_karta5` right-aligns and `new_bach`, `tarrega`, `barrios`,
+ * `new_karta`, `xtra_albeniz`, `new_dyens`, `kiselev`, `borislova`,
+ * `williams2`, `segovia`, `xtra_garcia_lorca` and `xtra_rodrigo` write the
+ * default over structurally identical `| | 🔗 |` matrices. There is no
+ * discriminator in the references — `new_karta` and `xtra_karta5` are the same
+ * generator, the same shape and opposite answers — so this is a case where
+ * `CLAUDE.md`'s rung 1 decides and the fixtures record a divergence.
+ * `new_kolpakov` right-aligns its leading column too; the author's rule says
+ * the leading column keeps the default, so that one cell stays divergent.
+ */
+function resourceMatrixAlign(plan: LogicalTablePlan): (AlignType | null)[] {
+  const columnAt = (band: number): PlannedCell[] => plan.body.map((r) => r.cells[band] as PlannedCell);
+  let resources = false;
+  for (let band = 1; band < plan.bands.length; band += 1) {
+    if (isLinkColumn(columnAt(band))) {
+      resources = true;
+      break;
+    }
+  }
+  return Array.from({ length: plan.bands.length }, (_, band) =>
+    resources && band > 0 ? ("right" as AlignType) : null,
+  );
 }
 
 function plannedRowTo(row: PlannedRow, ctx: Ctx): TableRow | null {

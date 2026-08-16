@@ -4065,3 +4065,59 @@ describe("a strip of nothing but targets", () => {
     expect(out).not.toContain("position: center");
   });
 });
+
+describe("a resource matrix sets its resources against its names", () => {
+  const grid = (rows: string) => `<table border="0" width="90%">${rows}</table>`;
+  const record = (title: string, a: string, b: string) =>
+    `<tr><td width="60%"><p>${title}</p></td>` +
+    `<td width="20%"><p>${a}</p></td><td width="20%"><p>${b}</p></td></tr>`;
+  const res = (href: string, label: string) => `<a href="${href}">${label}</a>`;
+
+  it("right-aligns every column but the leading one", async () => {
+    // TODO_Rules §2, on the shape `xtra_karta5` and `new_kolpakov` write. The
+    // leading column carries the record's name and keeps the reading flow.
+    const out = await md(
+      PROSE +
+        grid(
+          record("La Catedral", res("music/tab/a.txt", "TAB"), res("music/midi/a.mid", "MIDI")) +
+            record("Julia Florida", res("music/tab/b.txt", "TAB"), "") +
+            record("Vals Op 8 No 4", res("music/tab/c.txt", "TAB"), res("music/mp/c.mp3", "MP3")),
+        ) +
+        PROSE,
+    );
+    expect(out).toContain("| - | -: | -: |");
+  });
+
+  it("leaves a table with no resource column at the default — non-firing", async () => {
+    // The false friend: a record grid whose other columns hold words. Prose is
+    // read from the left edge and stays there. Same geometry, same row count,
+    // no link anywhere — the gate is what a column holds, not how wide it is.
+    const out = await md(
+      PROSE +
+        grid(
+          record("La Catedral", "1921", "Три части") +
+            record("Julia Florida", "1938", "Баркарола") +
+            record("Vals Op 8 No 4", "1923", "Вальс"),
+        ) +
+        PROSE,
+    );
+    expect(out).not.toContain("-:");
+  });
+
+  it("does not right-align on a leading link column alone — non-firing", async () => {
+    // A matrix whose *first* column is the links and whose rest is prose is not
+    // "resources listed against a name"; the rule asks only about the columns
+    // after the leading one, so the shape it is named for is the shape it fires
+    // on.
+    const out = await md(
+      PROSE +
+        grid(
+          record(res("music/tab/a.txt", "TAB"), "La Catedral", "Три части") +
+            record(res("music/tab/b.txt", "TAB"), "Julia Florida", "Баркарола") +
+            record(res("music/tab/c.txt", "TAB"), "Vals Op 8 No 4", "Вальс"),
+        ) +
+        PROSE,
+    );
+    expect(out).not.toContain("-:");
+  });
+});
