@@ -259,6 +259,73 @@ even if the tool is invoked by hand.
 USD per million tokens. Left empty, cost reports read *unpriced* rather than
 showing a confidently wrong number. Take the rates from your gateway.
 
+### Hooks
+
+```jsonc
+"hooks": {
+  "paths": [],                      // extra plugin directories
+  "enable": [],                     // ids to turn on, beyond the defaults
+  "disable": [],                    // ids to turn off; "*" turns off everything
+  "defaults": { "maxTier": "balanced" },
+  "overrides": {
+    "table.classify": { "tier": "balanced", "acceptAbove": 0.8, "maxCalls": 50 }
+  }
+}
+```
+
+There is no flag per hook, and no list of hook names in the schema: a plugin
+directory is what makes a hook exist. `biomd hooks list` shows what was
+discovered, what is enabled and which setting decided. **An unknown id is a
+startup error**, never a silent no-op.
+
+Policy resolution is `hook's own defaults → hooks.defaults → overrides.<id>`,
+and an override says only what it overrides. Per-hook fields: `tier`, `maxTier`
+(the escalation floor and ceiling), `escalateBelow` (ask a better model),
+`acceptAbove` (abandon rather than apply), `maxOutputTokens`, `temperature`,
+`maxCalls`, `enabled`.
+
+Writing a hook: **[LLM-HOOKS.md](LLM-HOOKS.md)**.
+
+### Concurrency
+
+```jsonc
+"concurrency": {
+  "default": 1,
+  "perModel": { "local-model": 4 },
+  "breakerAfter": 5
+}
+```
+
+Escalations are queued per endpoint and **serialized by default**. A shared
+gateway meeting four concurrent workers is how a batch conversion becomes a
+rate-limit storm, and a 429 that arrives mid-run costs the call *and* leaves the
+item unresolved. A corpus run also clamps its own worker count to this number
+while hooks are active.
+
+`breakerAfter` stops escalating after that many consecutive transport failures.
+The budget cannot do this job: it counts *settled* usage, and a request that
+never reached a model settles nothing — so an unreachable endpoint is invisible
+to `maxCalls`, and one dead gateway means one refused connection per escalation.
+Set 0 to disable.
+
+Identical in-flight requests are coalesced, so the same ambiguous structure on
+forty pages costs one call even when the pages convert concurrently.
+
+### Logging
+
+```jsonc
+"log": {
+  "level": "normal",          // quiet | normal | verbose | debug
+  "heartbeatSeconds": 20,     // 0 disables
+  "runLog": true
+}
+```
+
+Progress goes to stderr; stdout stays machine-readable. The level decides the
+terminal, never the log: every run writes `<workDir>/runs/<id>/run.jsonl` and
+`report.json` unless `runLog` is false or `--no-run-log` is passed. Flags:
+`--log-level`, `-v`, `--debug`, `--quiet`.
+
 ---
 
 ## Environment variables

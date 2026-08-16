@@ -7513,3 +7513,142 @@ recorded defect wearing a justification.
 And `new_rechin4`, `jovicic` and `new_blackmore` had all carried `==` in their references
 for at least an iteration before anything read it. **A construct the converter cannot emit
 is a construct no instrument will report as missing.**
+
+## 57 -- the hook subsystem became an extension surface (2026-08-16)
+
+Architecture iteration, no conversion change intended and none measured. The LLM subsystem was
+a hard-coded catalogue: three hooks in one `src/llm/hooks.ts`, their prompts inline as
+TypeScript string arrays, and a `DecisionResolver` interface in `convert-core` carrying **one
+method per hook**. Adding a fourth meant editing the core interface, the null resolver, the
+gateway resolver, the catalogue and the pipeline -- five files, none of them the hook. This
+iteration replaces that with a plugin contract, and changes nothing a conversion can see.
+
+**Baseline first, and it is the acceptance criterion.** Measured at `b46184f`, 28 documents,
+LLM off -- which is how every rung in this file is measured:
+
+| rung | baseline (`b46184f`) | after §57 |
+|---|---|---|
+| L0 | **863** tests, typecheck clean, 0 FAILED, conservation ok | **914** tests, typecheck clean, 0 FAILED |
+| L1 | **99.5** | **99.5** -- the 28 per-document rows diff **byte-identical** |
+| L2 | 138 findings · 76 defect · 2 crit · 36 major | **identical**; `defects.json` differs only in its `generated` timestamp |
+| L3 | 22 findings over 28, 0 critical | **identical**, the whole report byte-for-byte |
+
+51 tests added, 0 conversion bytes moved. That is the shape this iteration was supposed to
+have, and the four rungs are the only reason to believe it.
+
+### 57.1 A hook is a directory, not an entry in a list
+
+`src/llm/plugins/<name>/` = `hook.ts` + `prompts/*.md` + `hook.test.ts`. `discoverHooks()`
+scans the directory, imports each module, checks the definition and refuses duplicate ids;
+`llm.hooks.paths` adds out-of-tree directories, so a candidate can live outside the repository
+while it is evaluated and be promoted by moving it in. Discovery is ordered by id, so a
+registry -- and therefore a run -- is reproducible (invariant 6).
+
+**There is no list of hook names anywhere in the program.** The one place a name is still
+written down is `hooks-cmd.ts`'s `KNOWN_DECISION_POINTS`, which is a *report* -- it lets
+`hooks list` mark a plugin whose decision point nothing raises as inert rather than looking
+like a bug -- and nothing dispatches through it.
+
+### 57.2 The seam is a decision point, and the acceptance check moved into the compiler
+
+`DecisionResolver` is now one generic method:
+
+```
+decide<TRequest, TDecision>(point: DecisionPoint<TRequest, TDecision>, request: TRequest)
+```
+
+A `DecisionPoint` is declared in `src/convert-core/decisions.ts` beside the rule that abstains
+and carries `id`, `question`, `itemId` and **`accept`**. The two checks that used to sit inline
+in `pipeline.ts` -- the DATA-promotion evidence bar (confidence >= 0.75 **and** three or more
+semantic columns) and the header-width check -- are now that `accept`, on the deterministic
+side of the boundary, where a reply's *shape* having been validated by a schema is explicitly
+not the same claim as its being applicable to this document.
+
+`convert-core` still does not import `src/llm`, and now imports no schema library either: a
+reply arrives as `unknown` and the point narrows it itself.
+
+### 57.3 Prompts are files, and their hashes key the cache
+
+Six `prompts/*.md` files, four constructs and no logic (`{{name}}`, `{{#name}}`, `{{^name}}`,
+`{{! }}`). **A variable nobody supplied throws** rather than rendering the literal text
+`{{caption}}` into a prompt -- a mistake that is invisible in a run and expensive in the reply.
+`plugins.test.ts` asserts that every template's variables are supplied by its plugin's
+`render`, so that failure is caught at test time and not on the four hundredth document.
+
+Each template is hashed and the hash travels in `ChatRequest.contract`, which `requestHash`
+folds into the cache key and the request builder drops. An edited prompt is therefore a
+different question, never a question answered from the previous prompt's cache -- which is what
+makes "edit the prompt, re-measure" a workflow rather than a hope. The field is omitted when
+absent, so a request carrying none hashes exactly as it did before it existed.
+
+**One consequence, stated rather than discovered later:** existing `.biomd-cache` entries for
+the two migrated hooks are keyed out. Local artefact, no measured rung touched, and the next
+LLM-on run repays it once.
+
+### 57.4 Cost control is a gate, a queue, a breaker and a budget -- in that order
+
+`gate(input)` is deterministic, free, and the only thing that authorises a call; its reason is
+what the progress line prints when it says why a hook fired. `table.classify` declines a
+single-cell region, `table.records` declines a plan under two columns or with no body rows.
+
+The limiter is per endpoint, **default 1** -- a shared gateway meeting four workers is how a
+batch conversion becomes a rate-limit storm -- and coalesces identical in-flight requests, so
+the same ambiguous structure on forty concurrent pages costs one call rather than forty.
+
+**The breaker is the one thing measurement forced.** Pointed at a dead endpoint with
+`budget.maxCalls: 4`, the bench corpus made **72** doomed requests in nine seconds and the cap
+never fired: a budget counts *settled* usage, and a request that never reached a model settles
+nothing. `concurrency.breakerAfter` (default 5) stops after that many consecutive transport
+failures. Re-measured: **72 calls -> 5**, output still byte-identical to `--llm off`, and the
+report names the cause once instead of seventy-two times.
+
+### 57.5 The default set is pinned, and "assist with nothing on" is verified
+
+`table.classify` and `table.records` remain on by default; `text.segment` is migrated,
+declares a decision point no stage raises, and is reported as inert by `hooks list`. Wiring it
+is a conversion change with its own measurement and was deliberately not done here.
+
+`plugins.test.ts` pins `enabledByDefault` to exactly those two, so a future hook that turns
+itself on fails the build rather than the corpus. And the standing ruling is now a measurement,
+not an intention: `--llm assist` against a configured gateway with `hooks.disable: ["*"]`
+produced output **byte-identical across all 28 documents** to `--llm off`. With nothing
+enabled no transport is built at all.
+
+### 57.6 What a run now says about itself
+
+Progress on stderr, stdout untouched, so `corpus run > last-run.txt` and everything that greps
+it are unaffected. `quiet | normal | verbose | debug`: `normal` carries a live line (elapsed,
+stage, n/total, file, review/failed tally, calls made / in flight / cached, active hook) plus
+every accepted, refused and abandoned escalation with its reason; `verbose` adds per-file lines
+and gate verdicts; `debug` adds everything. A heartbeat (default 20 s) fires when nothing else
+has, so a long measurement never looks like a hang.
+
+**The level decides the terminal, never the log.** Every run writes
+`<workDir>/runs/<id>/run.jsonl` and `report.json` -- engine and node versions, effective
+configuration, gateway, every enabled hook with its policy and template hashes, per-file recall
+/ errors / review items / table counts / escalations / **which deterministic passes fired**,
+and the LLM totals with tokens, cost and grouped failure reasons.
+
+`convert()` gained one additive, purely observational option, `onStage`. A conversion with no
+listener behaves identically.
+
+### 57.7 One latent defect found by a test, not by a run
+
+`llm.hooks.overrides.<id>` was built with zod's `.partial()`. `.partial()` keeps the inner
+`.default()` calls and fills them in, so an operator raising one hook's `escalateBelow` would
+have silently reset its tier ceiling to the schema default, overruling a policy the plugin
+declared deliberately -- invisibly, and only under configuration nobody had written yet.
+`HookPolicyOverrideSchema` is now written out with every field optional and none defaulted. An
+override must say only what it overrides.
+
+### 57.8 What is next here
+
+Nothing in this file's queue moved; §56.6's frontier is unchanged and `OPEN.md` §1 still names
+`xtra_shelechov`'s `align.spurious` as the next conversion work.
+
+For the hook subsystem specifically, the categories worth a later iteration are recorded in
+`docs/LLM-HOOKS.md` §8 with their abstention, acceptance check and failure visibility named --
+**is this block a list**, **is this verse or lyrics** (the migrated `text.segment`, unwired),
+**section label or caption**, **which lane continues the reading order**. Two shapes are
+excluded there and should not be revisited without new measurement: anything touching
+de-hyphenation, and anything supplying an image caption the source does not have.

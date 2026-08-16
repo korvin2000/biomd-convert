@@ -292,3 +292,17 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 
 **Two author rulings recorded in OPEN §3.14 and §3.15** — a stack of same-level `##` is poor design
 *including in a reference*, and a `---` after every single table row is poor design. Both implemented.
+
+## §57 — the hook subsystem (architecture, no conversion change)
+
+| section | what is there |
+|---|---|
+| `## 57` | **the hook subsystem became an extension surface** (2026-08-16). Architecture only; L1/L2/L3 byte-identical, L0 863 → 914 |
+| `### 57.1` | a hook is a directory (`plugins/<name>/`), discovered from the filesystem; no list of hook names anywhere |
+| `### 57.2` | the seam is `decide(point, request)`; the acceptance check moved from `pipeline.ts` into `convert-core/decisions.ts` |
+| `### 57.3` | prompts are external `.md` files; their hashes key the decision cache, so an edited prompt is a new question |
+| `### 57.4` | gate → queue → **breaker** → budget. A dead endpoint cost 72 doomed calls; a budget cannot see them (nothing settles). Now 5 |
+| `### 57.5` | default-enabled set pinned by test; `--llm assist` with nothing on measured byte-identical to `--llm off` |
+| `### 57.6` | quiet/normal/verbose/debug + heartbeat; the level decides the terminal, never `run.jsonl`/`report.json` |
+| `### 57.7` | zod's `.partial()` keeps inner defaults — a per-hook override would have silently reset the plugin's tier ceiling |
+| `### 57.8` | future hook categories, with abstention + acceptance check + failure visibility named → `docs/LLM-HOOKS.md` §8 |

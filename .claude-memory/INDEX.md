@@ -48,8 +48,11 @@ anywhere), and a caption run now stops at a block the *next* block claims, which
 `main/smile.gif` was the last `main/` asset still shipping as an image. And the corpus gained
 the mark it had no name for: `==` for a run the author set apart inline, and for a long
 quotation embedded in prose.
-Current floor: L0 **863 tests**, 0 FAILED, conservation ok, L1 **99.5**, L2 **138 · 76 defect ·
-2 critical · 36 major**, L3 **22 over 28 with no criticals**.
+Current floor: L0 **914 tests** (863 before §57), 0 FAILED, conservation ok, L1 **99.5**,
+L2 **138 · 76 defect · 2 critical · 36 major**, L3 **22 over 28 with no criticals**.
+**PROGRESS §57 rebuilt the LLM subsystem as a plugin framework and moved no conversion byte** —
+L1/L2/L3 re-measured identical. A hook is a directory under `src/llm/plugins/`; the acceptance
+check lives in `convert-core/decisions.ts`; authoring contract in `biomd-convert/docs/LLM-HOOKS.md`.
 **Read the baseline before reading the delta.** The author added a pair mid-iteration, so §56's
 baseline was re-measured over 28: **145/81/2/38**, L1 99.0.
 **The biggest lesson is §56.6, and like §55.3 it is about the ledger, not the converter.** Two of

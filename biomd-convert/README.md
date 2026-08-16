@@ -114,6 +114,20 @@ biomd corpus run --llm assist
 biomd corpus run --replay          # re-run offline from the decision cache
 ```
 
+Hooks are **plugins**, one directory each, discovered rather than listed. See
+what exists, what is on and why, and inspect or exercise one without converting:
+
+```bash
+biomd hooks list
+biomd hooks show table.classify
+biomd hooks test table.classify --input item.json     # dry by default
+biomd corpus run --llm assist --hooks table.records   # or --no-hooks
+```
+
+A new hook ships disabled, and `--llm assist` with nothing enabled is
+byte-identical to `--llm off`. Writing one:
+**[docs/LLM-HOOKS.md](docs/LLM-HOOKS.md)**.
+
 If a run reports calls that resolved nothing, it now says why -- a mistyped model
 id, an expired key and an exhausted budget all produce the same "0 resolved"
 line and only the reason distinguishes them. The transport also degrades
@@ -180,15 +194,18 @@ Exit codes: `0` converted · `2` converted but needs review · `1` failed.
 | `src/biomd-ast/` | Output contract: types, validating builders, serializer, reader, validator, target profiles |
 | `src/ladom/` | Input: encoding, server-markup quarantine, parse, S1 sanitize, grid materialization, Chromium measurement, normalize |
 | `src/convert-core/` | Ledger, corpus pass, lexicon, de-hyphenation, link policy, boilerplate removal, table classification, semantic table planning, heading recovery, structure recovery, conservation |
-| `src/llm/` | Hook runtime, gateway transport, decision cache, budget, conformance probe, the resolver that joins them to the compiler |
+| `src/llm/kernel/` | Hook framework: contract, filesystem discovery, prompt templates, runner, per-endpoint limiter, event stream |
+| `src/llm/plugins/` | One directory per hook — definition, prompts, tests |
+| `src/llm/` | Gateway transport, decision cache, budget, conformance probe, the resolver that joins the kernel to the compiler |
 | `src/eval/` | Similarity scoring against reference documents |
-| `src/cli/` | Commands, configuration, job artifact store |
+| `src/cli/` | Commands, configuration, job artifact store, run reporter |
 
 Layering is one-directional: `cli → {convert-core, llm, eval} → {ladom,
-biomd-ast}`. `convert-core` does not import `llm`; it declares a
-`DecisionResolver` interface in its own vocabulary, and `llm` implements it. The
-default implementation never escalates, which is what makes a run with no
-gateway behave exactly as it always did.
+biomd-ast}`. `convert-core` does not import `llm`; it declares **decision
+points** in its own vocabulary — one beside each rule that abstains, each
+carrying its own acceptance check — and a hook claims one by id. There is no
+list of hook names anywhere. The default resolver never escalates, which is what
+makes a run with no gateway behave exactly as it always did.
 
 ## The parts that carry the design
 

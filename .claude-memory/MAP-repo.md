@@ -129,18 +129,39 @@ reference contains none of it; self-retiring; only entry `anchor`).
 
 ### `llm/` -- hooks, **non-authoritative by contract**
 
-`hooks.ts` holds the three production hooks: **`table.classify`**, **`table.records`**,
-**`text.segment`** (WRAP / PARAGRAPH / LINEATION / SPACING). `hook.ts` runtime · `budget.ts` ·
-`cache.ts` · `transport.ts` · `resolver.ts` · `probe.ts`.
+**Rebuilt as a plugin framework in PROGRESS §57.** Authoring contract →
+`biomd-convert/docs/LLM-HOOKS.md`; do not re-derive it from the code.
 
-A hook proposes; a deterministic check accepts or rejects; the rejection path is tested; disabling it
-still yields sane output. **Adjudicate with LLM off**; measure any LLM-on delta as a separate labelled
-run. Keep the production hook path and any L4 judge path strictly separate.
+`kernel/` is the framework: `contract.ts` (`HookDefinition`, policy, `HookInvocation`) ·
+`registry.ts` (**filesystem discovery -- there is no list of hook names**) · `template.ts`
+(external `prompts/*.md`, hashed into cache identity) · `runner.ts` (gate → cache → budget →
+queue → schema → domain → confidence) · `concurrency.ts` (per-endpoint limiter + in-flight
+coalescing) · `events.ts` (the one stream progress, the run log and the stats all project from).
+
+`plugins/<name>/` is one hook: `hook.ts` + `prompts/*.md` + `hook.test.ts`. Three exist --
+**`table.classify`**, **`table.records`** (both wired, both on by default, both grandfathered)
+and **`text.segment`** (migrated, **no escalation site**, inert; `hooks list` says so).
+
+Beside them: `transport.ts` · `cache.ts` · `budget.ts` · `probe.ts` · `resolver.ts` (the only
+join to the compiler; carries the circuit breaker).
+
+**The seam lives in `convert-core/decisions.ts`**, not here: a `DecisionPoint` per abstaining
+rule, each carrying the **acceptance check that is the last word**. `convert-core` imports
+neither `llm` nor zod. A hook proposes; the point accepts or rejects; the rejection path is
+tested; disabling it still yields sane output. `plugins.test.ts` **pins the default-enabled
+set**, and `--llm assist` with nothing enabled is verified byte-identical to `--llm off`.
+**Adjudicate with LLM off**; measure any LLM-on delta as a separate labelled run.
 
 ## 3. `src/cli/index.ts` -- the commands
 
 `convert` · `corpus scan` · `corpus run` · `eval` · `validate` · `inspect` · `diff` (L2) · `render`
-(writes `analyze/rendered/`) · `l3` · `config`.
+(writes `analyze/rendered/`) · `l3` · `config` · **`hooks`** (`list | show | test | cache-clear` --
+the refinement surface; `test` is dry by default).
+
+Run flags are declared once in `withRunOptions`: `--llm`, `-g/--gateway`, `--hooks <ids>`,
+`--no-hooks`, `--replay`, `--log-level`, `-v`, `--debug`, `--no-run-log`. **Never add a flag per
+hook.** Assembly from config is `cli/llm-session.ts`; progress and the run log are
+`cli/reporter.ts`, which writes to **stderr** so stdout stays parseable.
 
 Two counts that are **not comparable**: `corpus run`'s per-file `errors=` column and the standalone
 `biomd validate` command resolve different profiles. Say which one you ran.

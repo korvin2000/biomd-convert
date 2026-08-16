@@ -3,8 +3,21 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-14**, after PROGRESS §56.
+Last touched **2026-08-16**, after PROGRESS §57.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
+
+> **§57 was architecture, not conversion.** The LLM subsystem is now a plugin framework
+> (`docs/LLM-HOOKS.md`). L1, L2 and L3 were re-measured against the §56 baseline and are
+> **identical** — L1's 28 rows diff byte-for-byte, `defects.json` differs only in its
+> timestamp, the L3 report not at all. L0 863 → **914**. Nothing in §1 below moved, and
+> **the next conversion work is still §1.0a**.
+>
+> Three things a later session needs from it: a hook is a **directory** under
+> `src/llm/plugins/` and there is no list of hook names anywhere; the **acceptance check**
+> for every escalation lives in `convert-core/decisions.ts`, not in the hook; and
+> `--llm assist` with nothing enabled is **measured** byte-identical to `--llm off`, with
+> the default-enabled set pinned by `plugins.test.ts` so it cannot grow by accident.
+> `biomd hooks list | show | test | cache-clear` is the refinement surface.
 
 - [1. Where we are, and the exact next step](#1-where-we-are-and-the-exact-next-step)
 - [2. Closed -- the spec was amended, not the converter](#2-closed----the-spec-was-amended-not-the-converter)
@@ -23,11 +36,12 @@ stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2
 outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
 946 pages.
 
-**Current state, *measured* 2026-08-14, after PROGRESS §56:**
+**Current state — conversion rungs *measured* 2026-08-14 after §56 and re-verified unchanged
+2026-08-16 after §57; L0 *measured* 2026-08-16:**
 
 | rung | value |
 |---|---|
-| L0 | **863 tests**, typecheck clean, 0 FAILED, conservation ok |
+| L0 | **914 tests** (863 before §57), typecheck clean, 0 FAILED, conservation ok |
 | L1 | **99.5 %** over the 28 |
 | L2 | **138 findings — 76 converter-defect** · 15 ambiguous · 47 reference-inconsistency · 2 critical · 36 major |
 | L3 | **22** over 28 documents, **0 critical** |
