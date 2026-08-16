@@ -93,6 +93,7 @@ claude-project/
 | `anchors.ts` | named destinations: `<a name>` / `<a id>` → `::anchor{#id}` | harvest + claim registry; **claims are part of the speculative-emission `Snapshot`**; placement is global, after every grouping pass (§52.3) |
 | `dehyphenate.ts` | seven-rule cascade + lexicon + oracle; defaults to PRESERVE | **the pre-filter is part of the rule** (§13.2) |
 | `lexicon.ts` | corpus lexicon | a same-corpus lexicon cannot vouch for a single occurrence |
+| `section-labels.ts` | lexical data + scoring for `analyze/TODO_Rules.md` §1 | `OPENERS` (language-tagged, degrades to no points), `scoreLabelLine`, `carriesLabelEvidence` -- the two terms only a label has. Consumed by `structure.ts`'s `promoteScoredLabel`, a root-level pass |
 | `text-ops.ts` | text operations | audited reversible edits |
 | `conservation.ts` | the conservation gate | `normalizeForCompare`; `text.recall` is a **structure** measure |
 | `ledger.ts` | provenance ledger + the `runPass` framework | `review()` = decisions the rules gave up on |
@@ -138,9 +139,11 @@ reference contains none of it; self-retiring; only entry `anchor`).
 queue → schema → domain → confidence) · `concurrency.ts` (per-endpoint limiter + in-flight
 coalescing) · `events.ts` (the one stream progress, the run log and the stats all project from).
 
-`plugins/<name>/` is one hook: `hook.ts` + `prompts/*.md` + `hook.test.ts`. Three exist --
-**`table.classify`**, **`table.records`** (both wired, both on by default, both grandfathered)
-and **`text.segment`** (migrated, **no escalation site**, inert; `hooks list` says so).
+`plugins/<name>/` is one hook: `hook.ts` + `prompts/*.md` + `hook.test.ts`. **Four exist, all
+disabled** -- `table.classify`, `table.records`, `text.list` and **`text.label`** (§60.6) are
+wired; **`text.segment`** has no escalation site and is inert, which `hooks list` reports.
+`KNOWN_DECISION_POINTS` in `cli/hooks-cmd.ts` is the *report* of what the compiler raises and
+has to be extended when a point is added.
 
 Beside them: `transport.ts` · `cache.ts` · `budget.ts` · `probe.ts` · `resolver.ts` (the only
 join to the compiler; carries the circuit breaker).

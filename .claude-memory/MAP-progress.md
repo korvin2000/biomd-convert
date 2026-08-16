@@ -311,3 +311,11 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 59.2` | | a `colspan` band lifted out of a grid is `positionedByConstruct` -- `xtra_shelechov` 7→3, L3 24→20 |
 | `### 59.3` | | state table: L0 962 · L1 99.5 · L2 126/72/2/32 · L3 20; hook-on 165/79/2/39 |
 
+| `## 60` | 7851 | four rules the author wrote down in `analyze/TODO_Rules.md`, and the `<u>` case the source had all along |
+| `### 60.1` | | Rule 4 was already implemented -- asterisk escaping verified end to end on a probe page, not quoted. `williams2` is one empty `<i>`, the only one in the corpus |
+| `### 60.2` | | `<u>` had **no case** in the inline lowering; two false friends tested (400+ link labels, `tarrega`'s footnote `<u>*</u>`) |
+| `### 60.3` | | Rule 3: a strip of nothing but targets keeps its `align="center"`. L2 126->122, L3 20->14, L1 99.6->99.7 |
+| `### 60.4` | | Rule 2: a resource matrix right-aligns its non-leading columns. Reopens §43.5 on rung-1 instruction. `xtra_karta5` 31->0, twelve others 0->47 |
+| `### 60.5` | | Rule 1: promote only on a shout or a section word; abstain on the terms prose shares. **Killed: length separates a label from a lead-in** |
+| `### 60.6` | | `text.label`, the fourth decision point and plugin, shipped disabled. Hook-on delta measured, `--replay` byte-identical |
+| `### 60.7` | | state table: L0 991 (was RED at 958/962) · L1 99.7 · L2 135/87/1/27 · L3 14; hook-on 137/89 |

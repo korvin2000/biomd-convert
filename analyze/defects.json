@@ -1,15 +1,15 @@
 {
-  "generated": "2026-08-16T18:12:54.768Z",
+  "generated": "2026-08-16T20:30:59.902Z",
   "totals": {
-    "findings": 126,
-    "converterDefects": 72,
+    "findings": 135,
+    "converterDefects": 87,
     "acceptableAlternatives": 0,
-    "referenceInconsistencies": 41,
+    "referenceInconsistencies": 35,
     "ambiguous": 13,
     "bySeverity": {
-      "critical": 2,
-      "major": 32,
-      "minor": 92
+      "critical": 1,
+      "major": 27,
+      "minor": 107
     }
   },
   "perDocument": [
@@ -23,19 +23,19 @@
     },
     {
       "doc": "barrios",
-      "findings": 1,
-      "converterDefects": 0,
+      "findings": 3,
+      "converterDefects": 2,
       "critical": 1,
       "major": 0,
-      "minor": 0
+      "minor": 2
     },
     {
       "doc": "borislova",
-      "findings": 5,
-      "converterDefects": 1,
+      "findings": 6,
+      "converterDefects": 2,
       "critical": 0,
       "major": 1,
-      "minor": 4
+      "minor": 5
     },
     {
       "doc": "goya2",
@@ -55,19 +55,19 @@
     },
     {
       "doc": "kiselev",
-      "findings": 4,
-      "converterDefects": 3,
+      "findings": 7,
+      "converterDefects": 6,
       "critical": 0,
       "major": 1,
-      "minor": 3
+      "minor": 6
     },
     {
       "doc": "new_bach",
-      "findings": 0,
-      "converterDefects": 0,
+      "findings": 2,
+      "converterDefects": 2,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 2
     },
     {
       "doc": "new_blackmore",
@@ -79,6 +79,14 @@
     },
     {
       "doc": "new_dyens",
+      "findings": 3,
+      "converterDefects": 3,
+      "critical": 0,
+      "major": 0,
+      "minor": 3
+    },
+    {
+      "doc": "new_geyzel04",
       "findings": 0,
       "converterDefects": 0,
       "critical": 0,
@@ -86,28 +94,20 @@
       "minor": 0
     },
     {
-      "doc": "new_geyzel04",
-      "findings": 1,
-      "converterDefects": 1,
-      "critical": 0,
-      "major": 1,
-      "minor": 0
-    },
-    {
       "doc": "new_karta",
-      "findings": 5,
-      "converterDefects": 5,
+      "findings": 20,
+      "converterDefects": 20,
       "critical": 0,
-      "major": 5,
-      "minor": 0
+      "major": 4,
+      "minor": 16
     },
     {
       "doc": "new_kolpakov",
-      "findings": 4,
-      "converterDefects": 4,
+      "findings": 2,
+      "converterDefects": 2,
       "critical": 0,
       "major": 0,
-      "minor": 4
+      "minor": 2
     },
     {
       "doc": "new_lagq2",
@@ -119,10 +119,10 @@
     },
     {
       "doc": "new_lendle2",
-      "findings": 6,
-      "converterDefects": 2,
+      "findings": 5,
+      "converterDefects": 1,
       "critical": 0,
-      "major": 1,
+      "major": 0,
       "minor": 5
     },
     {
@@ -159,11 +159,11 @@
     },
     {
       "doc": "segovia",
-      "findings": 5,
-      "converterDefects": 2,
+      "findings": 11,
+      "converterDefects": 8,
       "critical": 0,
       "major": 1,
-      "minor": 4
+      "minor": 10
     },
     {
       "doc": "segovia1",
@@ -175,27 +175,27 @@
     },
     {
       "doc": "tarrega",
-      "findings": 2,
-      "converterDefects": 2,
+      "findings": 5,
+      "converterDefects": 5,
       "critical": 0,
       "major": 2,
-      "minor": 0
-    },
-    {
-      "doc": "williams2",
-      "findings": 3,
-      "converterDefects": 0,
-      "critical": 0,
-      "major": 0,
       "minor": 3
     },
     {
-      "doc": "xtra_albeniz",
-      "findings": 0,
-      "converterDefects": 0,
+      "doc": "williams2",
+      "findings": 4,
+      "converterDefects": 1,
       "critical": 0,
       "major": 0,
-      "minor": 0
+      "minor": 4
+    },
+    {
+      "doc": "xtra_albeniz",
+      "findings": 2,
+      "converterDefects": 2,
+      "critical": 0,
+      "major": 0,
+      "minor": 2
     },
     {
       "doc": "xtra_alexandro",
@@ -207,27 +207,27 @@
     },
     {
       "doc": "xtra_garcia_lorca",
-      "findings": 6,
-      "converterDefects": 0,
+      "findings": 7,
+      "converterDefects": 1,
       "critical": 0,
       "major": 0,
-      "minor": 6
+      "minor": 7
     },
     {
       "doc": "xtra_karta5",
-      "findings": 34,
-      "converterDefects": 33,
-      "critical": 1,
-      "major": 2,
-      "minor": 31
+      "findings": 1,
+      "converterDefects": 1,
+      "critical": 0,
+      "major": 0,
+      "minor": 1
     },
     {
       "doc": "xtra_rodrigo",
-      "findings": 7,
-      "converterDefects": 0,
+      "findings": 14,
+      "converterDefects": 12,
       "critical": 0,
       "major": 2,
-      "minor": 5
+      "minor": 12
     },
     {
       "doc": "xtra_shelechov",
@@ -240,50 +240,85 @@
   ],
   "classes": [
     {
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "instances": 5,
+      "class": "table.align",
+      "severity": "minor",
+      "instances": 48,
       "documents": [
+        "barrios",
+        "borislova",
+        "kiselev",
+        "new_bach",
+        "new_dyens",
         "new_karta",
-        "new_lendle2",
-        "new_rechin4",
+        "new_kolpakov",
         "segovia",
-        "tarrega"
+        "tarrega",
+        "williams2",
+        "xtra_albeniz",
+        "xtra_garcia_lorca",
+        "xtra_rodrigo"
       ],
       "verdicts": {
-        "converter-defect": 5,
+        "converter-defect": 48,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 75,
+      "rank": 624,
       "example": {
-        "doc": "new_karta",
-        "path": "/align[23]",
-        "produced": "▶",
-        "reference": "▶ — at /paragraph[24]"
+        "doc": "barrios",
+        "path": "/table[15]/col[1]",
+        "produced": "column 1: right",
+        "reference": "column 1: none"
       }
     },
     {
-      "class": "table.align",
+      "class": "emphasis.span",
       "severity": "minor",
-      "instances": 34,
+      "instances": 22,
       "documents": [
-        "new_kolpakov",
-        "xtra_karta5"
+        "new_blackmore",
+        "new_lendle2",
+        "news_2007",
+        "segovia",
+        "williams2",
+        "xtra_rodrigo"
       ],
       "verdicts": {
-        "converter-defect": 34,
+        "converter-defect": 6,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 16,
+        "ambiguous": 0
+      },
+      "rank": 36,
+      "example": {
+        "doc": "new_lendle2",
+        "path": "/frame[7]/align[1]/paragraph[0]",
+        "produced": "(none)",
+        "reference": "strong:Agustin Barrios Mangore"
+      }
+    },
+    {
+      "class": "break.missing",
+      "severity": "minor",
+      "instances": 4,
+      "documents": [
+        "pavlov_azancheev",
+        "xtra_karta5",
+        "xtra_shelechov"
+      ],
+      "verdicts": {
+        "converter-defect": 4,
         "acceptable-alternative": 0,
         "reference-inconsistency": 0,
         "ambiguous": 0
       },
-      "rank": 68,
+      "rank": 12,
       "example": {
-        "doc": "new_kolpakov",
-        "path": "/table[13]/col[0]",
-        "produced": "column 0: none",
-        "reference": "column 0: right"
+        "doc": "pavlov_azancheev",
+        "path": "/break[7]",
+        "produced": null,
+        "reference": "---"
       }
     },
     {
@@ -328,6 +363,28 @@
         "path": "/align[2]/paragraph[1]",
         "produced": "frame: gold",
         "reference": null
+      }
+    },
+    {
+      "class": "retyped.paragraph-to-align",
+      "severity": "major",
+      "instances": 2,
+      "documents": [
+        "segovia",
+        "tarrega"
+      ],
+      "verdicts": {
+        "converter-defect": 2,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 12,
+      "example": {
+        "doc": "segovia",
+        "path": "/align[15]",
+        "produced": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа…",
+        "reference": "\"Все мое существо было охвачено неописуемым счастьем, когда я начал играть на гитаре, потому что звук в басах был глубок и сладок, а в верхах трепетным и дрожа… — at /paragraph[16]"
       }
     },
     {
@@ -376,54 +433,6 @@
       }
     },
     {
-      "class": "emphasis.span",
-      "severity": "minor",
-      "instances": 22,
-      "documents": [
-        "new_blackmore",
-        "new_lendle2",
-        "news_2007",
-        "segovia",
-        "williams2",
-        "xtra_rodrigo"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 21,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "new_lendle2",
-        "path": "/frame[7]/align[1]/paragraph[0]",
-        "produced": "(none)",
-        "reference": "strong:Agustin Barrios Mangore"
-      }
-    },
-    {
-      "class": "break.missing",
-      "severity": "minor",
-      "instances": 3,
-      "documents": [
-        "pavlov_azancheev",
-        "xtra_shelechov"
-      ],
-      "verdicts": {
-        "converter-defect": 3,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 6,
-      "example": {
-        "doc": "pavlov_azancheev",
-        "path": "/break[7]",
-        "produced": null,
-        "reference": "---"
-      }
-    },
-    {
       "class": "paragraph.hyphenation.mixed",
       "severity": "minor",
       "instances": 3,
@@ -443,27 +452,6 @@
         "path": "/paragraph[3]",
         "produced": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…",
         "reference": "Концертную деятельность Й.Йовович начал в 1948 году, когда его выступления впервые прозвучали в прямом эфире радио Дубровника и Белграда. Это были первые в ист…"
-      }
-    },
-    {
-      "class": "align.missing",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "xtra_karta5",
-        "path": "/align[39]",
-        "produced": null,
-        "reference": "◀ ●"
       }
     },
     {
@@ -506,6 +494,27 @@
         "path": "/align[2]@position",
         "produced": null,
         "reference": "position: center"
+      }
+    },
+    {
+      "class": "break.containment",
+      "severity": "major",
+      "instances": 1,
+      "documents": [
+        "new_rechin4"
+      ],
+      "verdicts": {
+        "converter-defect": 1,
+        "acceptable-alternative": 0,
+        "reference-inconsistency": 0,
+        "ambiguous": 0
+      },
+      "rank": 3,
+      "example": {
+        "doc": "new_rechin4",
+        "path": "/break[19]",
+        "produced": "---",
+        "reference": "--- — produced at /align[20]/break[0]"
       }
     },
     {
@@ -572,27 +581,6 @@
       }
     },
     {
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "xtra_karta5",
-        "path": "/break[37]",
-        "produced": "◀ ●",
-        "reference": "--- — at /paragraph[40]"
-      }
-    },
-    {
       "class": "retyped.paragraph-to-frame",
       "severity": "major",
       "instances": 1,
@@ -632,27 +620,6 @@
         "path": "/heading[13]",
         "produced": "Сборник произведений Франсиско Тарреги",
         "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]"
-      }
-    },
-    {
-      "class": "retyped.paragraph-to-heading3",
-      "severity": "major",
-      "instances": 1,
-      "documents": [
-        "new_geyzel04"
-      ],
-      "verdicts": {
-        "converter-defect": 1,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 0,
-        "ambiguous": 0
-      },
-      "rank": 3,
-      "example": {
-        "doc": "new_geyzel04",
-        "path": "/heading[78]",
-        "produced": "БЛАГОДАРНОСТИ:",
-        "reference": "БЛАГОДАРНОСТИ: — at /paragraph[79]"
       }
     },
     {
@@ -975,27 +942,6 @@
       }
     },
     {
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "instances": 1,
-      "documents": [
-        "xtra_karta5"
-      ],
-      "verdicts": {
-        "converter-defect": 0,
-        "acceptable-alternative": 0,
-        "reference-inconsistency": 1,
-        "ambiguous": 0
-      },
-      "rank": 0,
-      "example": {
-        "doc": "xtra_karta5",
-        "path": "/align[39]/paragraph[0]",
-        "produced": null,
-        "reference": "◀ ●"
-      }
-    },
-    {
       "class": "table.cell.content.edited",
       "severity": "minor",
       "instances": 1,
@@ -1031,6 +977,34 @@
       "produced": "[1](#2) Другая транскрипция – Баррьос.",
       "reference": "[1](#2)Другая транскрипция – Баррьос.",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "1a307e52",
+      "doc": "barrios",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[15]/col[1]",
+      "producedLine": 84,
+      "referenceLine": 84,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "eaf6465e",
+      "doc": "barrios",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[15]/col[2]",
+      "producedLine": 84,
+      "referenceLine": 84,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
     },
     {
       "id": "94361f51",
@@ -1087,6 +1061,20 @@
       "produced": null,
       "reference": "size: medium",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "0178734b",
+      "doc": "borislova",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[44]/col[1]",
+      "producedLine": 289,
+      "referenceLine": 290,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
     },
     {
       "id": "ca928aef",
@@ -1327,6 +1315,34 @@
       "verdict": "converter-defect"
     },
     {
+      "id": "3dc59ab9",
+      "doc": "kiselev",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[1]",
+      "producedLine": 111,
+      "referenceLine": 111,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "7d4f72c5",
+      "doc": "kiselev",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[2]",
+      "producedLine": 111,
+      "referenceLine": 111,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "403ae2c1",
       "doc": "kiselev",
       "class": "table.cell.hyphenation.mixed",
@@ -1367,6 +1383,48 @@
       "produced": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm",
       "reference": "Основные источники: www.urc.ac.ru/music/UnitedSound www.seicorde.it/Pocci/Kiselev.htm — 2 hard breaks, reference has 1",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "0e1bfcca",
+      "doc": "kiselev",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[16]/col[1]",
+      "producedLine": 181,
+      "referenceLine": 180,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9d438877",
+      "doc": "new_bach",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[26]/col[1]",
+      "producedLine": 66,
+      "referenceLine": 66,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "382c95cb",
+      "doc": "new_bach",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[26]/col[2]",
+      "producedLine": 66,
+      "referenceLine": 66,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
     },
     {
       "id": "98f1101c",
@@ -1439,17 +1497,45 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "8ec17e98",
-      "doc": "new_geyzel04",
-      "class": "retyped.paragraph-to-heading3",
-      "severity": "major",
+      "id": "9260f686",
+      "doc": "new_dyens",
+      "class": "table.align",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/heading[78]",
-      "producedLine": 168,
-      "referenceLine": 168,
-      "produced": "БЛАГОДАРНОСТИ:",
-      "reference": "БЛАГОДАРНОСТИ: — at /paragraph[79]",
+      "path": "/table[8]/col[1]",
+      "producedLine": 28,
+      "referenceLine": 28,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "55664ea2",
+      "doc": "new_dyens",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[2]",
+      "producedLine": 28,
+      "referenceLine": 28,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4e990452",
+      "doc": "new_dyens",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[3]",
+      "producedLine": 28,
+      "referenceLine": 28,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
       "verdict": "converter-defect"
     },
     {
@@ -1509,17 +1595,227 @@
       "verdict": "converter-defect"
     },
     {
-      "id": "4c7657a7",
+      "id": "d51531af",
       "doc": "new_karta",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
+      "class": "table.align",
+      "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[23]",
-      "producedLine": 138,
-      "referenceLine": 145,
-      "produced": "▶",
-      "reference": "▶ — at /paragraph[24]",
+      "path": "/table[5]/col[1]",
+      "producedLine": 29,
+      "referenceLine": 34,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "542b2603",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[5]/col[2]",
+      "producedLine": 29,
+      "referenceLine": 34,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "4df01603",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[5]/col[3]",
+      "producedLine": 29,
+      "referenceLine": 34,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "be035655",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[7]/col[1]",
+      "producedLine": 37,
+      "referenceLine": 42,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b24b182b",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[9]/col[1]",
+      "producedLine": 43,
+      "referenceLine": 48,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "8391b44f",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[9]/col[2]",
+      "producedLine": 43,
+      "referenceLine": 48,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "98bc61e8",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[11]/col[1]",
+      "producedLine": 52,
+      "referenceLine": 57,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "f544698c",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[11]/col[2]",
+      "producedLine": 52,
+      "referenceLine": 57,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e0276942",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[1]",
+      "producedLine": 59,
+      "referenceLine": 65,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "3d5d488e",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[13]/col[2]",
+      "producedLine": 59,
+      "referenceLine": 65,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "b4072574",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[15]/col[1]",
+      "producedLine": 76,
+      "referenceLine": 82,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e5f62f5e",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[17]/col[1]",
+      "producedLine": 84,
+      "referenceLine": 90,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "e84c95fa",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[17]/col[2]",
+      "producedLine": 84,
+      "referenceLine": 90,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "9eb1ec90",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[19]/col[1]",
+      "producedLine": 116,
+      "referenceLine": 122,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "3a6d9ed5",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[21]/col[1]",
+      "producedLine": 122,
+      "referenceLine": 128,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0cbd1f71",
+      "doc": "new_karta",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[21]/col[2]",
+      "producedLine": 122,
+      "referenceLine": 128,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
       "verdict": "converter-defect"
     },
     {
@@ -1534,34 +1830,6 @@
       "referenceLine": 69,
       "produced": "column 0: none",
       "reference": "column 0: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "423b1a70",
-      "doc": "new_kolpakov",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[13]/col[1]",
-      "producedLine": 69,
-      "referenceLine": 69,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "c921eeac",
-      "doc": "new_kolpakov",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[13]/col[2]",
-      "producedLine": 69,
-      "referenceLine": 69,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
       "verdict": "converter-defect"
     },
     {
@@ -1649,20 +1917,6 @@
       "verdict": "reference-inconsistency"
     },
     {
-      "id": "a5e3b2a8",
-      "doc": "new_lendle2",
-      "class": "retyped.paragraph-to-align",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[16]",
-      "producedLine": 232,
-      "referenceLine": 233,
-      "produced": "◀",
-      "reference": "◀ — at /paragraph[17]",
-      "verdict": "converter-defect"
-    },
-    {
       "id": "1d570053",
       "doc": "new_rechin4",
       "class": "heading.missing.absorbed",
@@ -1719,17 +1973,17 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "2c52d3bd",
+      "id": "3991b307",
       "doc": "new_rechin4",
-      "class": "retyped.paragraph-to-align",
+      "class": "break.containment",
       "severity": "major",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[20]",
-      "producedLine": 54,
-      "referenceLine": 55,
-      "produced": "◀ ●",
-      "reference": "◀ ● — at /paragraph[21]",
+      "op": "move",
+      "path": "/break[19]",
+      "producedLine": 56,
+      "referenceLine": 52,
+      "produced": "---",
+      "reference": "--- — produced at /align[20]/break[0]",
       "verdict": "converter-defect"
     },
     {
@@ -1999,6 +2253,90 @@
       "verdict": "reference-inconsistency"
     },
     {
+      "id": "160261aa",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[42]/col[1]",
+      "producedLine": 159,
+      "referenceLine": 164,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "918baeb6",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[42]/col[2]",
+      "producedLine": 159,
+      "referenceLine": 164,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "31b9af9c",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[44]/col[1]",
+      "producedLine": 168,
+      "referenceLine": 173,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "410371f0",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[44]/col[2]",
+      "producedLine": 168,
+      "referenceLine": 173,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "c08ce3e0",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[44]/col[3]",
+      "producedLine": 168,
+      "referenceLine": 173,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "3918aa64",
+      "doc": "segovia",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[44]/col[4]",
+      "producedLine": 168,
+      "referenceLine": 173,
+      "produced": "column 4: right",
+      "reference": "column 4: none",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "0cf42354",
       "doc": "tarrega",
       "class": "retyped.paragraph-to-heading2",
@@ -2010,6 +2348,48 @@
       "referenceLine": 45,
       "produced": "Сборник произведений Франсиско Тарреги",
       "reference": "Сборник произведений Франсиско Тарреги — at /paragraph[14]",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "efc9d464",
+      "doc": "tarrega",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[1]",
+      "producedLine": 84,
+      "referenceLine": 83,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "102f2878",
+      "doc": "tarrega",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[2]",
+      "producedLine": 84,
+      "referenceLine": 83,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "ac2c05e8",
+      "doc": "tarrega",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[22]/col[3]",
+      "producedLine": 84,
+      "referenceLine": 83,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
       "verdict": "converter-defect"
     },
     {
@@ -2055,6 +2435,20 @@
       "verdict": "reference-inconsistency"
     },
     {
+      "id": "42e6d566",
+      "doc": "williams2",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[26]/col[1]",
+      "producedLine": 83,
+      "referenceLine": 83,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
       "id": "bff85a60",
       "doc": "williams2",
       "class": "table.cell.content.edited",
@@ -2067,6 +2461,34 @@
       "produced": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em",
       "reference": "J.S. Bach: BWV 996 - Prelude - Suite for Lute No. 1 in Em\\*\\*",
       "verdict": "ambiguous"
+    },
+    {
+      "id": "9652a74b",
+      "doc": "xtra_albeniz",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[1]",
+      "producedLine": 31,
+      "referenceLine": 31,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "6e4c986f",
+      "doc": "xtra_albeniz",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[8]/col[2]",
+      "producedLine": 31,
+      "referenceLine": 31,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
     },
     {
       "id": "0b92b9d6",
@@ -2167,480 +2589,32 @@
       "verdict": "ambiguous"
     },
     {
-      "id": "bd4e6c79",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[3]/col[1]",
-      "producedLine": 11,
-      "referenceLine": 11,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "162b0ceb",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[5]/col[1]",
-      "producedLine": 17,
-      "referenceLine": 17,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "65d09c55",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[7]/col[1]",
-      "producedLine": 23,
-      "referenceLine": 23,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "40331d67",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[9]/col[1]",
-      "producedLine": 30,
-      "referenceLine": 30,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "70425f4e",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[11]/col[1]",
-      "producedLine": 36,
-      "referenceLine": 36,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "83ef2412",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[11]/col[2]",
-      "producedLine": 36,
-      "referenceLine": 36,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "b1bd0922",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[11]/col[3]",
-      "producedLine": 36,
-      "referenceLine": 36,
-      "produced": "column 3: none",
-      "reference": "column 3: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d5db4bfc",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[13]/col[1]",
-      "producedLine": 45,
-      "referenceLine": 45,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "70e64a25",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[14]/col[1]",
-      "producedLine": 55,
-      "referenceLine": 55,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "884ec8c1",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[14]/col[2]",
-      "producedLine": 55,
-      "referenceLine": 55,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6c94fef1",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[14]/col[3]",
-      "producedLine": 55,
-      "referenceLine": 55,
-      "produced": "column 3: none",
-      "reference": "column 3: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "d41e993b",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[16]/col[1]",
-      "producedLine": 63,
-      "referenceLine": 63,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "fffe68e1",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[18]/col[1]",
-      "producedLine": 69,
-      "referenceLine": 69,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "1ce8eec6",
-      "doc": "xtra_karta5",
+      "id": "04e08abf",
+      "doc": "xtra_garcia_lorca",
       "class": "table.align",
       "severity": "minor",
       "evidence": "structure",
       "op": "substitute",
       "path": "/table[20]/col[1]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
+      "producedLine": 237,
+      "referenceLine": 235,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
       "verdict": "converter-defect"
     },
     {
-      "id": "1ef21e2a",
+      "id": "078d9e13",
       "doc": "xtra_karta5",
-      "class": "table.align",
+      "class": "break.missing",
       "severity": "minor",
       "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]/col[2]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "0ec6b19a",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]/col[3]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "column 3: none",
-      "reference": "column 3: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "e5d77256",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]/col[4]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "column 4: none",
-      "reference": "column 4: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "ca2000d6",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[20]/col[5]",
-      "producedLine": 75,
-      "referenceLine": 75,
-      "produced": "column 5: none",
-      "reference": "column 5: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "800b2214",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[22]/col[1]",
-      "producedLine": 91,
-      "referenceLine": 91,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "12694850",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[22]/col[2]",
-      "producedLine": 91,
-      "referenceLine": 91,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "2f1282a0",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[22]/col[3]",
-      "producedLine": 91,
-      "referenceLine": 91,
-      "produced": "column 3: none",
-      "reference": "column 3: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "009d9752",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[24]/col[1]",
-      "producedLine": 116,
-      "referenceLine": 116,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "491f3fb0",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[26]/col[1]",
-      "producedLine": 122,
-      "referenceLine": 122,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "144a73ec",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[26]/col[2]",
-      "producedLine": 122,
-      "referenceLine": 122,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "93ad1f47",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[30]/col[1]",
-      "producedLine": 140,
-      "referenceLine": 140,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "6f2ef231",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[32]/col[1]",
-      "producedLine": 147,
-      "referenceLine": 147,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "8285b34d",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[32]/col[2]",
-      "producedLine": 147,
-      "referenceLine": 147,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "92a19ae3",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[34]/col[1]",
-      "producedLine": 155,
-      "referenceLine": 155,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "f3c35957",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[34]/col[2]",
-      "producedLine": 155,
-      "referenceLine": 155,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "469f418d",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[36]/col[1]",
-      "producedLine": 161,
-      "referenceLine": 161,
-      "produced": "column 1: none",
-      "reference": "column 1: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "196e5409",
-      "doc": "xtra_karta5",
-      "class": "table.align",
-      "severity": "minor",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/table[36]/col[2]",
-      "producedLine": 161,
-      "referenceLine": 161,
-      "produced": "column 2: none",
-      "reference": "column 2: right",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "152db7b1",
-      "doc": "xtra_karta5",
-      "class": "retyped.paragraph-to-break",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
+      "op": "delete",
       "path": "/break[37]",
-      "producedLine": 176,
+      "producedLine": null,
       "referenceLine": 165,
-      "produced": "◀ ●",
-      "reference": "--- — at /paragraph[40]",
-      "verdict": "converter-defect"
-    },
-    {
-      "id": "cb58dec9",
-      "doc": "xtra_karta5",
-      "class": "align.missing",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "delete",
-      "path": "/align[39]",
-      "producedLine": null,
-      "referenceLine": 179,
       "produced": null,
-      "reference": "◀ ●",
+      "reference": "---",
       "verdict": "converter-defect"
-    },
-    {
-      "id": "c3f3ed00",
-      "doc": "xtra_karta5",
-      "class": "paragraph.missing.unattested",
-      "severity": "critical",
-      "evidence": "content",
-      "op": "delete",
-      "path": "/align[39]/paragraph[0]",
-      "producedLine": null,
-      "referenceLine": 182,
-      "produced": null,
-      "reference": "◀ ●",
-      "verdict": "reference-inconsistency"
     },
     {
       "id": "df4820de",
@@ -2652,9 +2626,9 @@
       "path": "/columns[14]/column[0]/paragraph[0]",
       "producedLine": 46,
       "referenceLine": 46,
-      "produced": "(none)",
+      "produced": "em:Сочинения для гитары соло",
       "reference": "em:Сочинения для гитары соло:",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "6aa075cb",
@@ -2666,9 +2640,9 @@
       "path": "/columns[14]/column[0]/paragraph[2]",
       "producedLine": 68,
       "referenceLine": 68,
-      "produced": "(none)",
+      "produced": "em:Сочинения для 2-х гитар",
       "reference": "em:Сочинения для 2-х гитар:",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "6b020567",
@@ -2680,9 +2654,9 @@
       "path": "/columns[14]/column[1]/paragraph[0]",
       "producedLine": 76,
       "referenceLine": 76,
-      "produced": "(none)",
+      "produced": "em:Сочинения для гитары и оркестра",
       "reference": "em:Сочинения для гитары и оркестра:",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "ab826774",
@@ -2694,9 +2668,9 @@
       "path": "/columns[14]/column[1]/paragraph[6]",
       "producedLine": 88,
       "referenceLine": 88,
-      "produced": "(none)",
+      "produced": "em:Сочинения для голоса и гитары",
       "reference": "em:Сочинения для голоса и гитары:",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "f5fc9d2f",
@@ -2708,9 +2682,9 @@
       "path": "/columns[14]/column[1]/paragraph[8]",
       "producedLine": 93,
       "referenceLine": 93,
-      "produced": "(none)",
+      "produced": "em:Сочинения для флейты и гитары",
       "reference": "em:Сочинения для флейты и гитары:",
-      "verdict": "reference-inconsistency"
+      "verdict": "converter-defect"
     },
     {
       "id": "371a1446",
@@ -2739,6 +2713,104 @@
       "produced": "......",
       "reference": "column 4",
       "verdict": "reference-inconsistency"
+    },
+    {
+      "id": "21e8d957",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[18]/col[1]",
+      "producedLine": 112,
+      "referenceLine": 112,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "7e45b72b",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[18]/col[2]",
+      "producedLine": 112,
+      "referenceLine": 112,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "dceb262b",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[18]/col[3]",
+      "producedLine": 112,
+      "referenceLine": 112,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "0e8826c6",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[1]",
+      "producedLine": 121,
+      "referenceLine": 121,
+      "produced": "column 1: right",
+      "reference": "column 1: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "c8463ce2",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[2]",
+      "producedLine": 121,
+      "referenceLine": 121,
+      "produced": "column 2: right",
+      "reference": "column 2: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "22e4a492",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[3]",
+      "producedLine": 121,
+      "referenceLine": 121,
+      "produced": "column 3: right",
+      "reference": "column 3: none",
+      "verdict": "converter-defect"
+    },
+    {
+      "id": "7b6af916",
+      "doc": "xtra_rodrigo",
+      "class": "table.align",
+      "severity": "minor",
+      "evidence": "structure",
+      "op": "substitute",
+      "path": "/table[20]/col[4]",
+      "producedLine": 121,
+      "referenceLine": 121,
+      "produced": "column 4: right",
+      "reference": "column 4: none",
+      "verdict": "converter-defect"
     },
     {
       "id": "8217ad90",

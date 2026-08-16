@@ -33,19 +33,19 @@
     ]
   },
   "totals": {
-    "findings": 20,
-    "alignmentRows": 242
+    "findings": 14,
+    "alignmentRows": 243
   },
   "classes": [
     {
       "class": "layout.align.mismatch",
-      "instances": 8,
-      "documents": 6
+      "instances": 5,
+      "documents": 4
     },
     {
       "class": "layout.containment.mismatch",
-      "instances": 12,
-      "documents": 9
+      "instances": 9,
+      "documents": 7
     }
   ],
   "findings": [
@@ -96,29 +96,6 @@
       }
     },
     {
-      "id": "b0cb57ac",
-      "doc": "new_karta",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[23]/paragraph[0]",
-      "producedLine": 138,
-      "referenceLine": 148,
-      "produced": "▶",
-      "reference": "▶",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
       "id": "d5f4296b",
       "doc": "new_karta",
       "class": "layout.containment.mismatch",
@@ -153,23 +130,6 @@
       }
     },
     {
-      "id": "75633c07",
-      "doc": "new_karta",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[23]/paragraph[0]",
-      "producedLine": 138,
-      "referenceLine": 148,
-      "produced": "▶",
-      "reference": "▶",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
       "id": "220645a2",
       "doc": "new_kolpakov",
       "class": "layout.containment.mismatch",
@@ -187,22 +147,22 @@
       }
     },
     {
-      "id": "170c26a7",
-      "doc": "new_lendle2",
+      "id": "fd9f6162",
+      "doc": "new_rechin4",
       "class": "layout.align.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "substitute",
-      "path": "/align[16]/paragraph[0]",
-      "producedLine": 232,
-      "referenceLine": 236,
-      "produced": "◀",
-      "reference": "◀",
+      "path": "/break[19]",
+      "producedLine": 56,
+      "referenceLine": 52,
+      "produced": "",
+      "reference": "",
       "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
+        "producedAlign": "center",
+        "referenceAlign": "left",
+        "producedRaw": "center",
+        "referenceRaw": "start",
         "producedEvidence": "keyword",
         "referenceEvidence": "keyword",
         "producedProse": "left",
@@ -210,60 +170,20 @@
       }
     },
     {
-      "id": "45b67e54",
-      "doc": "new_lendle2",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[16]/paragraph[0]",
-      "producedLine": 232,
-      "referenceLine": 236,
-      "produced": "◀",
-      "reference": "◀",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "a1243bbc",
-      "doc": "new_rechin4",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[20]/paragraph[0]",
-      "producedLine": 54,
-      "referenceLine": 58,
-      "produced": "◀ ●",
-      "reference": "◀ ●",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "left",
-        "referenceProse": "left"
-      }
-    },
-    {
-      "id": "d3af8163",
+      "id": "b5cba605",
       "doc": "new_rechin4",
       "class": "layout.containment.mismatch",
       "severity": "major",
       "evidence": "structure",
       "op": "move",
-      "path": "/align[20]/paragraph[0]",
-      "producedLine": 54,
-      "referenceLine": 58,
-      "produced": "◀ ●",
-      "reference": "◀ ●",
+      "path": "/break[19]",
+      "producedLine": 56,
+      "referenceLine": 52,
+      "produced": "",
+      "reference": "",
       "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
+        "producedContainer": "align",
+        "referenceContainer": "(root)"
       }
     },
     {
@@ -392,46 +312,6 @@
       "referenceLine": 131,
       "produced": "Список произведений для гитары соло ▶",
       "reference": "Список произведений для гитары соло ▶",
-      "geometry": {
-        "producedContainer": "(root)",
-        "referenceContainer": "align"
-      }
-    },
-    {
-      "id": "1d409aae",
-      "doc": "xtra_karta5",
-      "class": "layout.align.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "substitute",
-      "path": "/align[39]/paragraph[0]",
-      "producedLine": 176,
-      "referenceLine": 182,
-      "produced": "◀ ●",
-      "reference": "◀ ●",
-      "geometry": {
-        "producedAlign": "left",
-        "referenceAlign": "center",
-        "producedRaw": "start",
-        "referenceRaw": "center",
-        "producedEvidence": "keyword",
-        "referenceEvidence": "keyword",
-        "producedProse": "unknown",
-        "referenceProse": "unknown"
-      }
-    },
-    {
-      "id": "430be539",
-      "doc": "xtra_karta5",
-      "class": "layout.containment.mismatch",
-      "severity": "major",
-      "evidence": "structure",
-      "op": "move",
-      "path": "/align[39]/paragraph[0]",
-      "producedLine": 176,
-      "referenceLine": 182,
-      "produced": "◀ ●",
-      "reference": "◀ ●",
       "geometry": {
         "producedContainer": "(root)",
         "referenceContainer": "align"
@@ -1663,10 +1543,10 @@
     },
     {
       "doc": "new_karta",
-      "producedLine": 138,
+      "producedLine": 142,
       "referenceLine": 148,
       "text": "▶",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -2053,10 +1933,10 @@
     },
     {
       "doc": "new_lendle2",
-      "producedLine": 232,
+      "producedLine": 236,
       "referenceLine": 236,
       "text": "◀",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -2092,10 +1972,23 @@
     },
     {
       "doc": "new_rechin4",
-      "producedLine": 54,
+      "producedLine": 56,
+      "referenceLine": 52,
+      "text": "",
+      "producedAlignment": "center",
+      "referenceAlignment": "left",
+      "sourceTextAlignRaw": null,
+      "sourceAlignment": "unknown",
+      "sourceProse": "left",
+      "sourceDistinctive": false,
+      "sourcePath": null
+    },
+    {
+      "doc": "new_rechin4",
+      "producedLine": 58,
       "referenceLine": 58,
       "text": "◀ ●",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",
@@ -3483,10 +3376,10 @@
     },
     {
       "doc": "xtra_karta5",
-      "producedLine": 176,
+      "producedLine": 180,
       "referenceLine": 182,
       "text": "◀ ●",
-      "producedAlignment": "left",
+      "producedAlignment": "center",
       "referenceAlignment": "center",
       "sourceTextAlignRaw": null,
       "sourceAlignment": "unknown",

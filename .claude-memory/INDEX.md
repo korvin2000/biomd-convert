@@ -40,33 +40,25 @@ earlier count ("22", "27", "28 / 26") is superseded. The author added the `xtra_
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §59** landed two
-mechanisms. A run of hand-drawn lines can now be *asked* what it is -- `text.list`, the
-third decision point and third plugin, **shipped disabled** -- because §15.2 had already
-measured that no shape signal separates `kiselev`'s track list from `borislova`'s poems.
-And a `colspan` band lifted out of a grid is placed by the grid rather than by itself,
-which closed `xtra_shelechov`'s two `align.spurious` and their two `paragraph.containment`
-shadows and moved **L2 and L3 in the same direction on the same mechanism**.
-Current floor, LLM-off: L0 **962 tests** (914 before §59), 0 FAILED, conservation ok,
-L1 **99.5**, L2 **126 · 72 defect · 2 critical · 32 major**, L3 **20 over 28**.
-With `--hooks text.list`: 34 candidates, 25 calls, 11 LIST / 13 VERSE / 10 PROSE, L2
-165/79/2/39 -- `kiselev` and `jovicic` fixed, nine promotions diverging from four
-references the author has ruled are behind (OPEN §3.16).
-**Read the baseline before reading the delta.** The author edited nine references in
-`fc02636` and L2 fell **138 → 130 with no code change**; converter-defects were unchanged
-at 76, so no edit created or closed a defect.
-**The biggest lesson of §59 is that an abstention is invisible to every rung.**
-`retyped.paragraph-to-list` sat at rank 12 and named **two** of the 34 runs the compiler
-declines to classify. The other 32 produce no finding at all, because a hard-break
-paragraph is a valid block and nothing asks whether it should have been something else.
-`escalations: consulted` in `report.json` is the only place that number appears -- and it
-is reported with the model **off**, which is the whole point of counting it there.
-Next candidates: **`xtra_shelechov`'s two `break.missing`** (OPEN §1.0b, now the only thing
-left on that page besides one hyphenation instance); then **`layout.containment.mismatch`,
-12 over 9**; then the isolated instrument-truthfulness steps -- `paragraph.content`'s
-blanket `critical` (OPEN §5.0aa), the property-line-as-paragraph artefact (§5.0b),
-`code.text`'s whitespace-collapsed comparison (§5.0aaa) and **`emphasis.span`'s mis-split
-of `***x***`** (§5.0aaaaa).
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §60** implemented
+all four rules of `analyze/TODO_Rules.md`, a new rung-1 document. Three were rules,
+one (asterisk escaping) was already correct and is now *measured* rather than quoted,
+and probing the fourth found a case no rung had ever reported: **`<u>` had no case in
+the inline lowering at all**, so every underline outside a link was dropped in silence.
+**L0 was RED in HEAD** -- `b645b7b` flipped `text.list`'s `enabledByDefault` to `true`,
+breaking the four tests that pin the empty default set; restored first.
+Current floor, LLM-off: L0 **991 tests**, 0 FAILED, conservation ok, L1 **99.7**,
+L2 **135 · 87 defect · 1 critical · 27 major**, L3 **14 over 28**.
+**L2 rose by design and the whole rise is `table.align`** (34 → 48, minor,
+priority 6): Rule 2 right-aligns a resource matrix's non-leading columns, which two
+references write and **twelve do not**. Everything above priority 6 improved --
+1 critical closed, 4 majors closed, L3 20 → 14, L1 99.6 → 99.7.
+`text.label` is the **fourth decision point and fourth plugin, shipped disabled**;
+it fills the one abstention Rule 1 leaves.
+**The lesson of §60 is that a contract can falsify a rule before it ships.** Word
+count separated every section label from every lead-in sentence in the corpus -- and
+`recovery.test.ts` already asserted that a **four-word sentence** stays plain. A cap
+fitted to 28 documents would have been wrong on the other ~987.
 
 > **Hook-on output never goes in `bench/out/`.** Use `bench/biomd.llm.config.json`
 > (`bench/out-llm/`, `jobs: 1`, gateway `llama` at `http://192.168.1.26:8080/v1`, keyless).

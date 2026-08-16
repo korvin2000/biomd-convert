@@ -7848,3 +7848,163 @@ Per document, converter-defect, LLM-off: `xtra_karta5` 33 (**author-ruled ceilin
 `xtra_shelechov` 3 · `jovicic` 3 · `kiselev` 3 · `pavlov_azancheev` 3 · rest ≤ 2.
 
 `text.segment` remains the only inert plugin. `hooks list` now reports `text.list` as wired.
+
+## 60 -- four rules the author wrote down, and the one the source had all along (2026-08-16)
+
+`analyze/TODO_Rules.md` is a new rung-1 document: four numbered rules, revised in the same commit
+that landed them (`b645b7b`). This section is what each one turned out to be.
+
+**Baseline, measured at `b645b7b` before any change, LLM-off, 28 documents:**
+
+| rung | value |
+|---|---|
+| L0 | **RED -- 958/962**, 4 failing |
+| L1 | 99.6 |
+| L2 | 126 findings / 71 converter-defect / 2 critical / 31 major |
+| L3 | 20 (12 `layout.containment.mismatch` + 8 `layout.align.mismatch`) |
+
+**L0 was red in HEAD and that had to be fixed first.** `b645b7b` flipped `text.list`'s
+`enabledByDefault` to `true`, which is exactly what `plugins.test.ts` and `llm-session.test.ts`
+exist to catch. Restored (`114d501`). Turning a hook on is a conversion change and belongs to a
+named run -- `--hooks text.list` for one, `llm.hooks.enable` for a campaign.
+
+### 60.1 Rule 4 was already implemented, and the measurement says so
+
+Every literal asterisk in all 28 sources already survives and escapes. Verified end to end on a
+probe page rather than quoted from §56.5: `Em**` becomes `Em\*\*`, `Em*` becomes `Em\*`, `Em***`
+becomes `Em\*\*\*`, a lone `*` in its own block becomes `\*`, and `**double**` in prose becomes
+`\*\*double\*\*`. In the corpus `xtra_rodrigo`'s footnote markers, `borislova`'s 18, `tarrega`'s 12,
+`kiselev`'s leading `*` and `xtra_karta5`'s `(*.gif)` are all byte-identical to their references.
+
+**One case remains and it is not asterisk handling.** `williams2`'s `Em\*\*` comes from
+`…in Em<font …><i>&nbsp;</i></font>` -- an empty italic wrapping a non-breaking space, with **no
+asterisk anywhere in the source**. The brief says *"в оригинальном htm"*, and for this cell that
+premise does not hold. Emitting `\*\*` would invent two visible characters (invariant 4). The blast
+radius was measured: **exactly one empty inline mark in the whole corpus**, so this is one cell, not
+a rule. Open question for the author, stated in `OPEN.md`.
+
+### 60.2 An underline outside a link marks the words it holds (`6643158`)
+
+Found while probing Rule 1, and it is the root cause under five of its candidates. `<u>` had **no
+case in the inline lowering at all** -- it fell through the transparent-wrapper default and the
+distinction was dropped in silence. `xtra_rodrigo` writes `<u>Сочинения для гитары соло</u>:` for
+each of its five section labels and its reference marks all five; the converter wrote plain text for
+all five.
+
+Containment is the whole invariant, with two false friends tested for non-firing: the
+hand-underlined link label (**over 400 of the corpus's 414 `<u>` elements across 14 documents**), and
+`tarrega`'s `<u>*</u>` footnote marker, which sits *outside* the anchor and so survives the ancestor
+walk -- it produced `[WMA](…)*\**`, where mark and escape are indistinguishable.
+
+L2 stayed at 126 and the five `emphasis.span` moved from reference-inconsistency to
+converter-defect: the span now exists on both sides and the only disagreement left is one colon of
+scope, which the source puts outside the underline and the reference puts inside. **A verdict that
+got harsher because the instrument can finally see the construct is a gain.**
+
+### 60.3 A strip of nothing but targets keeps its placement (`8feb967`, Rule 3)
+
+`isAlignableLabelText` demands a letter or a digit, and the false friend it was written for is a rule
+drawn from punctuation. A pager strip carries no letter either, so it was refused for the separator's
+reason while being the opposite thing: **four sources state `align="center"` on it** (`new_karta`,
+`new_lendle2`, `new_rechin4`, `xtra_karta5`) and all four references wrap it.
+
+Cardinality and containment, no vocabulary: at least one target, nothing visible outside one. The
+glyphs are never named. `williams2`'s `[◀ К началу биографии](…)` carries words, so the letter test
+decides it exactly as before and its reference leaves it unwrapped.
+
+L1 99.6 to **99.7** · L2 126 to **122** (73 defect, 2 to 1 critical, 31 to 27 major) · L3 20 to
+**14** (containment 12 to 9, align 8 to 5). `retyped.paragraph-to-align` 5 to 2, and what remains is
+the §44.1 right-aligned-prose family on `segovia` and `tarrega`, which is not this shape.
+
+**One divergence, stated rather than patched.** `new_rechin4` draws its `<hr>` inside the same
+`<center>` as the pager, so the rule joins the centred run and the wrapper spans it while the
+reference keeps the rule outside; `kiselev`'s reference keeps its rule *inside* the same kind of
+wrapper. The references disagree, neither reading generalizes, one `break.containment` traded for the
+major it closed.
+
+### 60.4 A resource matrix sets its resources against its names (`6f8d0b3`, Rule 2)
+
+Every column was emitted with no alignment at all. The gate is `isLinkColumn` -- the same test that
+already heads such a column with the link glyph -- asked of the columns *after* the leading one, once
+per table rather than per column, because `xtra_karta5` right-aligns a column of bare roman numerals
+and a column holding a second work title alongside its link columns.
+
+**This reopens §43.5, on the author's instruction, and the cost is the point.** The corpus divides
+**1-to-12** over structurally identical link matrices -- `new_karta` and `xtra_karta5` are the same
+generator, the same shape and opposite answers -- so there is no discriminator in the references and
+rung 1 decides.
+
+L2 122 to **136**, 73 to 87 converter-defect, criticals and majors unmoved. All of it `table.align`,
+all minor, all priority 6: `xtra_karta5` **31 to 0** (all seventeen tables), `new_kolpakov` 3 to 1
+(its leading column is right-aligned; the author's rule keeps the leading column default), twelve
+others 0 to 47. L1 and L3 unmoved -- **L3 does not model cell alignment**, which is instrument debt,
+not evidence of no effect.
+
+### 60.5 A standalone line can be a section label (`db7254c`, Rule 1)
+
+The scoring and the section vocabulary are `section-labels.ts`; the pass runs **once over the
+finished top-level tree**, so a cell, a list item, a quotation, a column and an `::: align` body are
+out of scope by construction. `goya2`'s centred `(дискография)` is placed by its wrapper and a linked
+`ДИСКОГРАФИЯ` is already distinguished -- both score above the threshold and neither is marked.
+
+**The brief's terms alone over-fire, and this is the finding worth keeping.** A lone paragraph always
+stands clear below (+1.5) and a trailing colon adds +3, so *any* standalone line ending in a colon
+clears the threshold on no other evidence: **nine sentences in the corpus, four of them on `news`**,
+which the author has ruled has no errors at all.
+
+**Word count looked like the discriminator and a contract older than the rule falsified it.** The
+corpus's labels run 1-4 words and its lead-ins 6-15, so a cap at 5 separates them perfectly -- and
+`recovery.test.ts` already asserted that `Формулируя цели Сеговия писал:` stays plain, which is a
+**four-word sentence**. A cap fitted to 28 documents would have shipped and been wrong on the other
+~987. **Killed: length separates a section label from a lead-in sentence.**
+
+What survives is the difference between the brief's own terms. Two are evidence only a label has --
+a shout, and a section-opening word. The other four are satisfied by prose, so they may raise a score
+and cannot carry one. Without one of the two the pass **abstains**.
+
+L2 136 to **135**, converter-defects unmoved at 87. `new_geyzel04`'s `БЛАГОДАРНОСТИ:` matches its
+reference exactly -- the author demonstrated that output in the same commit, rewriting the reference
+from `### БЛАГОДАРНОСТИ:` to `**БЛАГОДАРНОСТИ:**`. `tarrega`'s `Сборник произведений Франсиско
+Тарреги` is distinguished where it was plain, though its reference writes `##`.
+
+### 60.6 `text.label` -- the fourth decision point, shipped disabled (`f9d36d2`)
+
+The abstention above is the hook. Entry tests, on paper before code: the rule produced **no** answer
+(eight lines in the corpus, 113 escalation points overall); `TEXT_LABEL.accept` refuses anything that
+is not an asserted LABEL above 0.75, a request whose text is not the normalized line, and a line past
+the brief's 120-character ceiling, and its contract feeds it the plausible-but-wrong reply -- a
+hedged LABEL -- and asserts the refusal; and the failure mode is a bolded sentence, which is visible
+on the page and invents no text.
+
+The gate closes on a line that ends one sentence and begins another. **Two letters must precede the
+mark**: `В. Ф. Вавилов:` -- a speaker's initials above their own words -- is one of the shapes the
+hook exists for, and the obvious spelling of that gate closed on it.
+
+Measured on `gemma4-31b-local` through `bench/biomd.llm.config.json`: LLM-off output
+**byte-identical on all 28** · 113 escalations, 6 model calls, 2 resolved, **4 refused, all "the line
+reads as SENTENCE"** -- the check working, not failing · 2193 in / 231 out tokens, 20s · `--replay`
+byte-identical with 0 model calls. Two promotions, both correct and both diverging from references
+that leave the line plain: `Примечания:` above its numbered notes and `Надя Борислова:` above her own
+words. Hook-on L2 137 / 89.
+
+### 60.7 State at the end of §60
+
+| rung | before §60 | after §60, LLM-off | with `--hooks text.label` |
+|---|---|---|---|
+| L0 | **958/962, RED** | **991/991**, typecheck clean, 0 FAILED | same |
+| L1 | 99.6 | **99.7** | not re-scored -- L1 is a tripwire, not a hook metric |
+| L2 | 126 / 71 / 2 / 31 | **135 / 87 / 1 / 27** | 137 / 89 / 1 / 27 |
+| L3 | 20 | **14** | not re-measured |
+
+**L2 rose by design and the whole of the rise is `table.align`**, 34 to 48, minor, priority 6, under
+an explicit rung-1 instruction that contradicts twelve references. Everything above priority 6
+improved: one critical closed, four majors closed, L3 down six, L1 up.
+
+Per document, converter-defect, LLM-off: `new_karta` 20 · `xtra_rodrigo` 12 · `segovia` 8 ·
+`kiselev` 6 · `tarrega` 5 · `new_rechin4` 4 · `news_2007` 4 · `jovicic` 3 · `new_dyens` 3 ·
+`pavlov_azancheev` 3 · `xtra_shelechov` 3 · `xtra_karta5` **1** (was 33) · rest <= 2. **The
+distribution inverted.** The document that carried the largest ceiling in the campaign now carries
+one finding, and twelve documents carry a minor alignment divergence each -- which is what a
+rung-1 instruction against a 12-reference majority looks like in a ledger.
+
+Four plugins now, `text.segment` still the only inert one.

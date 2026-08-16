@@ -1,5 +1,5 @@
 {
-  "overall": 0.9952405616135841,
+  "overall": 0.9970338035005027,
   "documents": [
     {
       "name": "authors",
@@ -1354,15 +1354,13 @@
         "missing": []
       },
       "headings": {
-        "recall": 0.8333333333333334,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9090909090909091,
-        "expected": 6,
+        "f1": 1,
+        "expected": 5,
         "actual": 5,
         "matched": 5,
-        "missing": [
-          "3\tблагодарности"
-        ]
+        "missing": []
       },
       "links": {
         "recall": 1,
@@ -1403,7 +1401,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9909090909090909
+      "overall": 1
     },
     {
       "name": "new_karta",
@@ -1444,12 +1442,12 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.6666666666666666,
+        "recall": 0.8333333333333334,
         "precision": 1,
-        "f1": 0.8,
+        "f1": 0.9090909090909091,
         "expected": 6,
-        "actual": 4,
-        "matched": 4,
+        "actual": 5,
+        "matched": 5,
         "missing": [
           "align"
         ]
@@ -1914,7 +1912,7 @@
           ]
         }
       ],
-      "overall": 0.98
+      "overall": 0.990909090909091
     },
     {
       "name": "new_kolpakov",
@@ -2109,15 +2107,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.967741935483871,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.9836065573770492,
+        "f1": 1,
         "expected": 31,
-        "actual": 30,
-        "matched": 30,
-        "missing": [
-          "align"
-        ]
+        "actual": 31,
+        "matched": 31,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2131,7 +2127,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9983606557377049
+      "overall": 1
     },
     {
       "name": "new_rechin4",
@@ -2175,15 +2171,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.75,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.8571428571428571,
+        "f1": 1,
         "expected": 4,
-        "actual": 3,
-        "matched": 3,
-        "missing": [
-          "align"
-        ]
+        "actual": 4,
+        "matched": 4,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -2197,7 +2191,7 @@
       "tableShape": 1,
       "expectedTables": [],
       "actualTables": [],
-      "overall": 0.9626373626373627
+      "overall": 0.9769230769230769
     },
     {
       "name": "news",
@@ -3374,15 +3368,13 @@
         "missing": []
       },
       "directives": {
-        "recall": 0.75,
+        "recall": 1,
         "precision": 1,
-        "f1": 0.8571428571428571,
+        "f1": 1,
         "expected": 4,
-        "actual": 3,
-        "matched": 3,
-        "missing": [
-          "align"
-        ]
+        "actual": 4,
+        "matched": 4,
+        "missing": []
       },
       "tableCells": {
         "recall": 1,
@@ -4142,7 +4134,7 @@
           ]
         }
       ],
-      "overall": 0.9857142857142858
+      "overall": 1
     },
     {
       "name": "xtra_rodrigo",
