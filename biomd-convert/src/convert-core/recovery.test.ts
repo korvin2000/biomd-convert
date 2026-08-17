@@ -185,6 +185,53 @@ async function mdMeasured(body: string): Promise<string> {
   return result.markdown;
 }
 
+/**
+ * A measurement stand-in for the one family whose evidence is *geometry*.
+ *
+ * `InlineAlignMeasurer` above deliberately leaves `box` undefined — it stands
+ * in for computed style and nothing else, and inventing plausible rectangles
+ * everywhere would change unrelated decisions. The float-lane rule compares two
+ * rectangles on the same page, so it needs them stated, and this reads them off
+ * the element the same way the other stand-in reads `text-align`: only where
+ * the markup declares one, in a `--box: x y w h` custom property, plus the
+ * `float` the same declaration carries.
+ */
+class DeclaredBoxMeasurer implements Measurer {
+  readonly available = true;
+
+  async measure(_html: string, doc: LadomDocument): Promise<MeasureResult> {
+    for (const el of walkElements(doc.root)) {
+      el.visible = true;
+      const declared = el.attrs["style"] ?? "";
+      const box = /--box:\s*(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)/u.exec(declared);
+      const float = /(?:^|;)\s*float\s*:\s*(left|right)/iu.exec(declared);
+      if (box) {
+        el.box = {
+          x: Number(box[1]),
+          y: Number(box[2]),
+          w: Number(box[3]),
+          h: Number(box[4]),
+        };
+      }
+      if (float) el.style = { ...NEUTRAL_STYLE, float: (float[1] as string).toLowerCase() };
+    }
+    doc.measured = true;
+    return { measured: true, warnings: [] };
+  }
+
+  async close(): Promise<void> {
+    /* nothing to release */
+  }
+}
+
+async function mdLaidOut(body: string): Promise<string> {
+  const result = await convert(Buffer.from(page(body), "utf8"), {
+    profile: SPEC,
+    measurer: new DeclaredBoxMeasurer(),
+  });
+  return result.markdown;
+}
+
 describe("break-run segmentation", () => {
   it("splits a run into lines at every <br>", () => {
     const lines = splitLines([
@@ -1253,6 +1300,70 @@ describe("standalone image position", () => {
   it("false friend: ordinary page alignment keeps the centred default", async () => {
     const out = await mdMeasured(PROSE + '<p><img src="portrait.jpg" width="180" height="240"></p>' + PROSE);
     expect(out).toMatch(/::: image\nsrc: portrait\.jpg\nposition: center/u);
+  });
+});
+
+/**
+ * A block the source set below a floated figure — rule contract (`CLAUDE.md` §5).
+ *
+ * **Invariant.** Two rectangles on the same rendered page: the floated figure's
+ * own box, and the box of each block after it. A block whose top is above the
+ * figure's bottom stood beside it; the first block whose top is at or below it
+ * is one the source put on a new line, and a `---` — the only thing in this
+ * target that clears a float — is how the target says so. No threshold, no
+ * class, no tag, no length.
+ *
+ * **Recurrence** does not apply and is not claimed: a floated figure occurs
+ * once where it occurs, and the lane it opens closes once.
+ *
+ * **False friends**, each tested for non-firing: a floated picture the prose
+ * merely wraps, which carries no caption and draws no region; a float nothing
+ * stood beside; a boundary the source already marked with a rule of its own;
+ * and an unmeasured page, which has no evidence and must emit nothing.
+ */
+describe("a block below a floated figure", () => {
+  /** A figure the source boxed: picture over caption, floated, 340 px tall. */
+  const FIGURE =
+    '<div style="float: left; width: 218px; --box: 0 0 218 340">' +
+    '<img src="cover.gif" width="209" height="281">' +
+    "<p>Специальный выпуск журнала</p></div>";
+  const BESIDE =
+    '<p style="--box: 0 4 430 250">В истории Испании не было артиста, который бы так активно ' +
+    "пропагандировал испанскую музыку по всему миру, и каждое его выступление становилось событием.</p>" +
+    '<p style="--box: 0 260 430 70">Владимир Бобри о некоторых технических приемах Андреса Сеговии.</p>';
+  const BELOW =
+    '<p style="--box: 0 348 430 120"><b>Сборник материалов о Сеговии, содержащий наиболее значительные ' +
+    "публикации о нем в советской прессе, читайте в специальном выпуске нашего журнала.</b></p>";
+
+  it("starts it on a new line, because the source did", async () => {
+    const out = await mdLaidOut(FIGURE + BESIDE + BELOW);
+    expect(out).toMatch(/position: left/u);
+    expect(out).toMatch(/---\n\n\*\*Сборник материалов/u);
+  });
+
+  it("false friend: a picture the prose merely wraps draws no region", async () => {
+    // Same geometry, same lane, but the float *is* the picture — no caption, no
+    // container, no width the author chose. Where the wrap ends is an accident
+    // of line breaking, in the source exactly as in the target.
+    const bare = '<p style="--box: 0 0 218 340"><img src="cover.gif" style="float: left; --box: 0 0 218 340" width="209" height="281"></p>';
+    const out = await mdLaidOut(bare + BESIDE + BELOW);
+    expect(out).toMatch(/position: left/u);
+    expect(out).not.toMatch(/---/u);
+  });
+
+  it("false friend: a float nothing stood beside closes no lane", async () => {
+    const out = await mdLaidOut(FIGURE + '<p style="--box: 0 348 430 120">Текст под иллюстрацией, целиком под ней.</p>');
+    expect(out).not.toMatch(/---/u);
+  });
+
+  it("false friend: a boundary the source drew itself is not doubled", async () => {
+    const out = await mdLaidOut(FIGURE + BESIDE + '<hr style="--box: 0 344 430 2">' + BELOW);
+    expect(out.match(/^---$/gmu) ?? []).toHaveLength(1);
+  });
+
+  it("emits nothing when the page was never measured", async () => {
+    const out = await md(FIGURE + BESIDE + BELOW);
+    expect(out).not.toMatch(/---/u);
   });
 });
 

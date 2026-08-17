@@ -37,7 +37,7 @@ import {
 } from "../biomd-ast/index.js";
 import { type GridCell, type TableGrid, columnCells, rowCells, trailingEmptyRows } from "../ladom/grid.js";
 import { type PhysicalAlign, foldTextAlign, isDistinctiveAlign, proseAlign } from "../ladom/style.js";
-import { type LadomNode, textOf, walkElements } from "../ladom/types.js";
+import { type Box, type LadomNode, textOf, walkElements } from "../ladom/types.js";
 import { AnchorRegistry, harvestAnchors } from "./anchors.js";
 import { type Classification, classifyTable } from "./classify.js";
 import { stripLabelGlyphs } from "./headings.js";
@@ -222,6 +222,15 @@ interface Ctx {
    */
   blockAlign: WeakMap<object, PhysicalAlign>;
   /**
+   * Emitted block → the source element it came from, for its geometry.
+   *
+   * Recorded at the point of emission for the same reason `blockAlign` is: a
+   * run pass over siblings needs the geometry *after* lowering, when the source
+   * node is no longer in hand. The innermost record wins — a figure lifted out
+   * of a paragraph is placed by its own box, not by the paragraph's.
+   */
+  blockSource: WeakMap<object, LadomNode>;
+  /**
    * Blocks a construct of their own already positions.
    *
    * A table's lifted caption is the case: it left the grid but it still belongs
@@ -368,6 +377,7 @@ export function recoverStructure(
     subordinationRecurs: false,
     proseAlign: proseAlignOf(root),
     blockAlign: new WeakMap(),
+    blockSource: new WeakMap(),
     positionedByConstruct: new WeakSet(),
     documentTextLength: textOf(root).trim().length,
     imageNodes: new Map(),
@@ -945,6 +955,7 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
     // container and not evidence about the run.
     const align = foldTextAlign(child.style?.textAlign);
     if (align !== null) for (const block of produced) ctx.blockAlign.set(block, align);
+    for (const block of produced) noteBlockBox(ctx, block, child);
     // Same reasoning, for §3.5's subordination: the evidence is on the source
     // element and has to be recorded while it is still in hand.
     if (ctx.subordinationRecurs && isSubordinatedBlock(child, ctx)) {
@@ -960,10 +971,23 @@ function blocksFrom(node: LadomNode, ctx: Ctx): BiomdContent[] {
   // interior alignment is the quote's own business, and wrapping its paragraphs
   // in `align` first would leave the quote holding directives instead of prose.
   const ungrouped = [...out];
-  const grouped = bindCaptions(
-    groupAlignedRuns(
-      groupSubordinatedRuns(
-        groupSpannedQuotation(groupBulletedItems(promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx))),
+  // `clearFloatLanes` last, and deliberately: it draws a boundary *between*
+  // blocks, so it has to run once every pass that joins blocks together has
+  // finished. Inserted earlier it lands inside a construct still being
+  // assembled — on `segovia` it split a spanned quotation down the middle,
+  // which is a structural loss (§1 priority 3) traded for a layout gain
+  // (priority 4), and the order forbids that outright.
+  const grouped = clearFloatLanes(
+    bindCaptions(
+      groupAlignedRuns(
+        groupSubordinatedRuns(
+          groupSpannedQuotation(
+            groupBulletedItems(
+              promoteSectionAfterRule(promoteLabelBeforeList(promoteEntryDates(absorbContinuedItems(out), ctx), ctx), ctx),
+            ),
+          ),
+          ctx,
+        ),
         ctx,
       ),
       ctx,
@@ -1974,6 +1998,138 @@ export function promoteSectionAfterRule(nodes: readonly BiomdContent[], ctx: Ctx
 }
 
 /**
+ * Remember where the source drew a block, unless something deeper already did.
+ *
+ * Deeper wins because the deeper node is the more precise claim: a figure
+ * lifted out of a paragraph is drawn at the picture's box, and the paragraph
+ * that used to hold it says nothing about where the picture ends.
+ */
+function noteBlockBox(ctx: Ctx, block: BiomdContent, el: LadomNode): void {
+  if (!el.box) return;
+  if (ctx.blockSource.has(block)) return;
+  ctx.blockSource.set(block, el);
+}
+
+/**
+ * Move a geometry record onto the block that replaced its owner.
+ *
+ * The grouping passes replace rather than mutate, so a figure that gains a
+ * visible caption is a *new* object and the record kept against the old one
+ * would be lost — the same problem {@link rehomeAnchors} solves for marks.
+ */
+function carryBlockBox(ctx: Ctx, from: BiomdContent, to: BiomdContent): void {
+  const el = ctx.blockSource.get(from);
+  if (el) ctx.blockSource.set(to, el);
+}
+
+/**
+ * A block the source set *below* a floated figure does not stand beside it.
+ *
+ * ## Rule contract
+ *
+ * A left- or right-placed `::: image` floats in the target exactly as its
+ * source did, and prose after it wraps around it. That is right for the prose
+ * the source itself wrapped, and wrong for everything after: the source's float
+ * ran out of picture and the flow returned to full width, while the target's
+ * float keeps taking text until the words happen to run out. On `segovia` the
+ * lane is a paragraph and two link lines, and the bold paragraph that follows
+ * them opens in the source at full width and in the target inside the lane.
+ *
+ * **Invariant.** Geometry, and nothing else. The float's own rendered box
+ * against the rendered box of each sibling after it: a sibling whose top is
+ * above the float's bottom stood beside it, and the first sibling whose top is
+ * at or below the float's bottom is the one the source put on a new line. No
+ * threshold, no class, no tag, no length — the comparison is between two
+ * measurements of the same page, so it needs no constant to calibrate.
+ *
+ * The separator is Markdown's only way to say "not beside this": `hr` carries
+ * `clear: both` in every renderer of this target, which is why the author asked
+ * for `---` here by name. Layout, not text — §16.3 constrains invented
+ * *content*, and drawing a separator invents none.
+ *
+ * **Recurrence** does not apply and is not claimed: a floated figure occurs
+ * once where it occurs, and the lane it opens closes once. What replaces it is
+ * that the evidence is *total* — every floated figure is measured the same way,
+ * and the ones the source never made a lane out of produce nothing.
+ *
+ * **False friends, each of which this refuses:**
+ *   - **a float nothing stood beside.** With an empty lane there is no
+ *     boundary the source drew, so there is nothing to reproduce; a centred or
+ *     full-width figure is not floated at all and never reaches this.
+ *   - **a boundary the source already marked.** A rule the author drew, or one
+ *     an earlier pass derived, is already the break — a second one beside it is
+ *     noise.
+ *   - **an unmeasured page.** With no boxes the rule has no evidence and emits
+ *     nothing, which is the same output as before.
+ */
+function clearFloatLanes(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const out = [...nodes];
+  for (let i = 0; i < out.length; i += 1) {
+    const lane = floatLaneOf(out[i] as BiomdContent, ctx);
+    if (lane === null) continue;
+    const bottom = lane.el.box.y + lane.el.box.h;
+    let beside = 0;
+    for (let j = i + 1; j < out.length; j += 1) {
+      const source = ctx.blockSource.get(out[j] as BiomdContent);
+      if (!source?.box) continue;
+      // A caption the figure carried is part of the figure. It sits inside the
+      // float's own box by construction, so counting it would make every float
+      // look like it had a lane beside it.
+      if (containedIn(source, lane.el)) continue;
+      const box = source.box;
+      if (box.y < bottom) {
+        beside += 1;
+        continue;
+      }
+      if (beside === 0) break;
+      const block = out[j] as BiomdContent;
+      if (block.type === "thematicBreak" || (out[j - 1] as BiomdContent).type === "thematicBreak") break;
+      out.splice(j, 0, markDerivedRule());
+      break;
+    }
+  }
+  return out;
+}
+
+/** Whether `node` is `ancestor` or sits inside it. */
+function containedIn(node: LadomNode, ancestor: LadomNode): boolean {
+  for (let n: LadomNode | null = node; n; n = n.parent) if (n === ancestor) return true;
+  return false;
+}
+
+/** The figure whose lane a block opens, or null when it opens none. */
+function floatLaneOf(block: BiomdContent, ctx: Ctx): { el: LadomNode & { box: Box } } | null {
+  if (block.type !== "biomdImage") return null;
+  if (block.position !== "left" && block.position !== "right") return null;
+  const el = ctx.blockSource.get(block);
+  if (!el?.box) return null;
+  // Measured float only. `floatOf` falls back to `align`, which on anything but
+  // an `<img>` is text alignment and not a float at all — and this rule needs
+  // the geometry the same pass measured, so the attribute would be evidence
+  // about a layout nobody rendered.
+  const measured = el.style?.float;
+  if (measured !== "left" && measured !== "right") return null;
+  // The picture must be a *figure the source boxed*, not one its prose wraps.
+  //
+  // A float that carries words of its own is a container the author built
+  // around a picture and its caption: they gave it a width and set text beside
+  // it, so where it ends is a boundary they placed and the two-column region
+  // ends with it. A float that carries no text is the picture itself, dropped
+  // into a paragraph — the prose wraps it for as long as the picture lasts,
+  // and where the wrap stops is an accident of line breaking in the source
+  // exactly as it is in the target. Reproducing the first reproduces
+  // structure; "reproducing" the second draws a rule through running prose.
+  //
+  // This is the rule's named false friend and it is the *common* case, which
+  // is why it is tested rather than assumed: the 28 sources float 13 bare
+  // pictures and one boxed figure, and without this test eleven of the
+  // fifteen lane closes land mid-paragraph — `kiselev`'s 605 px past the
+  // bottom of its portrait is the clearest.
+  if (textOf(el).trim() === "") return null;
+  return { el: el as LadomNode & { box: Box } };
+}
+
+/**
  * A separator this pipeline drew, rather than one the source contained.
  *
  * Marked at the point of emission so no later pass has to guess. Nothing in the
@@ -2531,7 +2687,9 @@ function bindCaptions(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] 
             mergedInto(nextId(ctx, "caption-echo"), nextId(ctx, "image"), { note: "visible caption replaces alt" }),
           );
         }
-        out.push({ ...node, caption });
+        const bound: BiomdContent = { ...node, caption };
+        carryBlockBox(ctx, node, bound);
+        out.push(bound);
         i += run.consumed;
         continue;
       }
@@ -2667,7 +2825,13 @@ function floatedFigures(run: readonly LadomNode[], ctx: Ctx): FloatedFigure[] {
   for (const node of run) {
     if (node.kind === "element" && node.tag === "img" && isFloated(node)) {
       const figure = imageFrom(node, ctx, true);
-      if (figure) out.push({ figure, at: total > 0 ? seen / total : 0 });
+      if (figure) {
+        // The float's own box, not the paragraph it was lifted out of: the
+        // lane it opens ends where the *picture* ends. Recorded here because
+        // this is the only place both the figure and its source node exist.
+        noteBlockBox(ctx, figure, node);
+        out.push({ figure, at: total > 0 ? seen / total : 0 });
+      }
       continue;
     }
     seen += visible(node);
