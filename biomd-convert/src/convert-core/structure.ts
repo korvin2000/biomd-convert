@@ -411,7 +411,10 @@ export function recoverStructure(
   // caption lines that name them, unbinding three `::: images` groups and six
   // captions. Placed here, no pass can see one.
   const placed = new Set<string>();
-  const children = promoteScoredLabel(highlightEmbeddedQuotations(insertAnchors(lowered, ctx, placed), ctx), ctx);
+  const children = numberListsFromSource(
+    promoteScoredLabel(highlightEmbeddedQuotations(insertAnchors(lowered, ctx, placed), ctx), ctx),
+    ctx,
+  );
 
   // Two ways a destination fails to reach the output, both recorded, neither
   // guessed at. A marker put in the wrong place is worse than an absent one:
@@ -449,6 +452,132 @@ export function recoverStructure(
     listCandidates: ctx.listCandidates.filter((c) => surfaced.has(c.id)),
     labelCandidates: ctx.labelCandidates,
   };
+}
+
+/**
+ * A list whose items carry their own numbers is numbered by them.
+ *
+ * ## Rule contract
+ *
+ * A bulleted item that reads `- 01\. Love Story` states its number twice — once
+ * as a bullet the converter chose, once as text the source wrote — and the
+ * escape in front of the stop is there only to stop Markdown reading the second
+ * one as what it is. `Biography-Markup.md` §3.4 has said so all along: *"Use
+ * numbering only when the source supplies numbers"*, *"preserve a consistent
+ * leading-zero marker when the source shows one"*, and *"a converter MUST NOT
+ * replace explicit source numbers with repeated `1.` markers"*. The last clause
+ * is why each item keeps the token the source gave **it**, rather than being
+ * renumbered from `start`: {@link enumeratedItems} accepts an ascending run, not
+ * a contiguous one, and arithmetic would silently rewrite a numbering that skips.
+ *
+ * **Invariant.** The source's own numbering, and nothing else: every item's
+ * text opens with an ordinal token, all with the same delimiter, ascending. No
+ * class, tag, length or word is read, and the pass runs over the finished tree
+ * so it sees a list wherever it ended up — `goya2` writes twenty of them inside
+ * `::: column`.
+ *
+ * **Recurrence** is the run itself: {@link MIN_ENUMERATED_ITEMS} items, so a
+ * pair that happens to open `1.` and `2.` is not a numbering.
+ *
+ * **False friends**, each excluded by the invariant rather than by a guard:
+ * a list whose items carry no ordinal (nothing to read); one where only some do
+ * (`Biography-Markup.md` forbids inventing the rest); a mixed `.`/`)` run, which
+ * Markdown would split into two lists at the delimiter change; and a native
+ * `<ol>`, whose numbers were never in the text to begin with.
+ *
+ * **Padding is a profile question.** `01.` is an ordinary ordered list that a
+ * renderer MAY display unpadded, and `resolveListMarkerPadding` already records
+ * the loss for the profile that cannot keep it. Under a profile that can, the
+ * source's own width survives.
+ */
+function numberListsFromSource(nodes: readonly BiomdContent[], ctx: Ctx): BiomdContent[] {
+  const visitAll = (siblings: readonly BiomdContent[]): BiomdContent[] => {
+    const out: BiomdContent[] = [];
+    for (const node of siblings) {
+      const children = (node as { children?: unknown }).children;
+      const descended = BLOCK_CONTAINERS.has(node.type)
+        ? ({ ...node, children: visitAll(children as BiomdContent[]) } as BiomdContent)
+        : node;
+      // A numbered list directly after a numbered list is read back as its
+      // continuation — one loose list, with the second run's `01.` renumbered
+      // to follow the first. The delimiter alternation the serializer uses to
+      // keep two bullet lists apart is not available once the marker is the
+      // source's own token, so the second run keeps the form it has today.
+      // `goya2`'s restarting track lists are the shape; on that page each sits
+      // in a `::: column` of its own and no pair ever abuts.
+      const previous = out[out.length - 1];
+      const abuts = previous?.type === "list" && previous.ordered === true;
+      const numbered =
+        descended.type === "list" && !abuts ? numberedFromOwnOrdinals(descended as List, ctx) : null;
+      out.push(numbered ?? descended);
+    }
+    return out;
+  };
+  return visitAll(nodes);
+}
+
+/** Node types whose `children` are blocks, so a list can be found inside them. */
+const BLOCK_CONTAINERS = new Set([
+  "biomdAlign", "biomdColumn", "biomdColumns", "biomdFrame", "biomdLead", "biomdSignature",
+  "blockquote", "list", "listItem",
+]);
+
+/** Three is the shortest run whose numbers can be a sequence rather than a coincidence. */
+const MIN_ENUMERATED_ITEMS = 3;
+
+/** The same list written with the source's own numbers as its markers, or null. */
+function numberedFromOwnOrdinals(list: List, ctx: Ctx): List | null {
+  if (list.ordered) return null;
+  if (list.children.length < MIN_ENUMERATED_ITEMS) return null;
+
+  const announced = list.children.map((item) => announcedNumber(blockTextOf(item as unknown as BiomdContent).trim()));
+  if (announced.some((a) => a === null)) return null;
+  const marks = announced as { value: number; delimiter: string }[];
+  const delimiter = (marks[0] as { delimiter: string }).delimiter;
+  if (marks.some((m) => m.delimiter !== delimiter)) return null;
+  for (let i = 0; i + 1 < marks.length; i += 1) {
+    if ((marks[i + 1] as { value: number }).value <= (marks[i] as { value: number }).value) return null;
+  }
+
+  const digits = list.children.map((item) => digitsOf(item as ListItem));
+  const keepPadding = ctx.options.profile.supports.leadingZeroListMarkers;
+  ctx.downgrades.push(...resolveListMarkerPadding(ctx.options.profile, digits.some((d) => /^0\d/u.test(d))));
+
+  const children = list.children.map((item, index) => {
+    const written = keepPadding ? (digits[index] as string) : String((marks[index] as { value: number }).value);
+    const stripped = stripLeadingOrdinal(item as ListItem);
+    return { ...stripped, data: { ...(stripped.data ?? {}), biomdMarker: `${written}${delimiter}` } } as ListItem;
+  });
+  return { ...list, ordered: true, start: (marks[0] as { value: number }).value, children };
+}
+
+/** The digits the source wrote at the head of an item, padding included. */
+function digitsOf(item: ListItem): string {
+  return /^\s*(\d{1,3})[.)]/u.exec(blockTextOf(item as unknown as BiomdContent).trim())?.[1] ?? "";
+}
+
+/** The same item with `NN.` and the space after it taken out of its text. */
+function stripLeadingOrdinal(item: ListItem): ListItem {
+  const strip = (nodes: readonly PhrasingContent[]): PhrasingContent[] => {
+    const out = [...nodes];
+    for (const [i, node] of out.entries()) {
+      if (node.type === "text") {
+        const trimmed = node.value.trimStart();
+        if (trimmed === "") continue;
+        out[i] = { ...node, value: trimmed.replace(/^\d{1,3}[.)][\s ]*/u, "") };
+        return out;
+      }
+      const children = (node as { children?: unknown }).children;
+      if (!Array.isArray(children)) return out;
+      out[i] = { ...node, children: strip(children as PhrasingContent[]) } as PhrasingContent;
+      return out;
+    }
+    return out;
+  };
+  const first = item.children[0];
+  if (first?.type !== "paragraph") return item;
+  const rest = item.children.slice(1);
+  return { ...item, children: [{ ...first, children: strip(first.children) }, ...rest] };
 }
 
 /**

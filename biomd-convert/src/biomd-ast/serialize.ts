@@ -9,10 +9,10 @@
  * this module contributes one handler per directive plus the BioMD-specific
  * escaping rules.
  */
-import { toMarkdown, type Options as ToMarkdownOptions, type State } from "mdast-util-to-markdown";
+import { defaultHandlers, toMarkdown, type Options as ToMarkdownOptions, type State } from "mdast-util-to-markdown";
 import { gfmTableToMarkdown } from "mdast-util-gfm-table";
 import { gfmFootnoteToMarkdown } from "mdast-util-gfm-footnote";
-import type { Nodes, Parents } from "mdast";
+import type { ListItem, Nodes, Parents } from "mdast";
 import { DEFAULT_PROFILE, type TargetProfile } from "./profile.js";
 import {
   DIRECTIVE_NAME,
@@ -239,6 +239,35 @@ function makeHandlers(profile: TargetProfile): Record<string, AnyHandler> {
       });
       exit();
       return `==${inner}==`;
+    }) as AnyHandler,
+
+    /**
+     * An ordered item whose marker the source wrote down keeps that marker.
+     *
+     * mdast has nowhere to put `01.` — a list carries one `start` and the
+     * default handler counts up from it — so a numbering that pads, or that
+     * skips a number, cannot survive a round trip through `start + index`.
+     * `Biography-Markup.md` §3.4 forbids exactly that rewriting, so the token
+     * travels on the item as `data.biomdMarker` and is written verbatim.
+     *
+     * The default handler does everything else — indentation, continuation
+     * lines, the whole container flow — and takes the marker through
+     * `state.bulletCurrent`, which it uses **as given** for an unordered
+     * parent. Presenting the parent as unordered for the length of this one
+     * call is what stops it prefixing its own number to the token.
+     */
+    listItem: ((node: ListItem, parent: unknown, state: State, info: unknown) => {
+      const marker = (node.data as { biomdMarker?: unknown } | undefined)?.biomdMarker;
+      const fallback = defaultHandlers.listItem as unknown as AnyHandler;
+      const item = node as never;
+      if (typeof marker !== "string" || marker === "") return fallback(item, parent, state, info);
+      const outer = state.bulletCurrent;
+      state.bulletCurrent = marker;
+      try {
+        return fallback(item, { ...(parent as { type: string }), ordered: false }, state, info);
+      } finally {
+        state.bulletCurrent = outer;
+      }
     }) as AnyHandler,
   };
 }

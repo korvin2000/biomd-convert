@@ -633,7 +633,15 @@ export function plainTextOf(markdown: string): string {
     .join("\n")
     .replace(/^#{1,6}\s+/gmu, "")
     .replace(/^\s*[-*+]\s+/gmu, "")
-    .replace(/^\s*\d+[.)]\s+/gmu, "")
+    // An **ordered** marker is not stripped, and the asymmetry is deliberate.
+    // A bullet is syntax the converter chose and the source never wrote; a
+    // number is a word the reader sees, and since `numberListsFromSource` it is
+    // routinely a word the *source* wrote — `goya2` writes `01. Love Story`
+    // twenty times over. Stripping it cost that document 98.6 % text recall
+    // → 25.6 %, with nothing missing from the output at all. Where the number
+    // was generated from an `<ol>` instead, it is an output token the source
+    // side has no counterpart for, and recall counts *source* shingles found —
+    // so an unmatched one is invisible to the score and cannot mask a loss.
     .replace(/^\s*>\s?/gmu, "")
     .replace(/^\s*\|/gmu, " ")
     .replace(/\|/gu, " ")

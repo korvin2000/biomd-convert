@@ -2576,8 +2576,10 @@ describe("an announced run of equally indented lines is a list", () => {
     const split =
       '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' + '<p class="t">04. Be<br></p>';
     const out = await md(PROSE + split + PROSE);
-    expect(out).toContain("- 04\\. Be");
-    expect(out).not.toMatch(/^04\\?\. Be/mu);
+    // One list of four, written with the source's own numbers as its markers
+    // (`numberListsFromSource`). Absorption is what the blank line proves: a
+    // fourth block would be separated from the third by one.
+    expect(out).toMatch(/^01\. Everything I Do\n02\. Melodia\n03\. Sacrifice\n04\. Be$/mu);
   });
 
   it("leaves the next album's track list alone — the false friend", async () => {
@@ -2587,14 +2589,16 @@ describe("an announced run of equally indented lines is a list", () => {
       '<p class="t">01. Everything I Do<br>02. Melodia<br>03. Sacrifice</p>' +
       '<p class="t">01. Song Sung Blue<br>02. Hello Again<br>03. Natacha</p>';
     const out = await md(PROSE + restart + PROSE);
-    const first = out.indexOf("03\\. Sacrifice");
+    const first = out.indexOf("03. Sacrifice");
     const second = out.indexOf("01\\. Song Sung Blue");
     expect(first).toBeGreaterThan(-1);
     expect(second).toBeGreaterThan(first);
-    // Two lists, and the serializer alternates the bullet marker to keep them
-    // apart — which is only possible because they were never merged.
     expect(out.slice(first, second)).toMatch(/\n\s*\n/u);
-    expect(out).toMatch(/^[*+] 01\\\. Song Sung Blue/mu);
+    // Two lists, and they stay two. The second keeps the bullet form on
+    // purpose: a second `01.` directly under the first run's `03.` is read
+    // back as that run's continuation and renumbered `04.`, so
+    // `numberListsFromSource` declines a numbered list that abuts one.
+    expect(out).toMatch(/^[-*+] 01\\\. Song Sung Blue/mu);
   });
 
   it("leaves a number that is not the successor alone — the second false friend", async () => {
@@ -2609,6 +2613,76 @@ describe("an announced run of equally indented lines is a list", () => {
     const out = await md(PROSE + repunctuated + PROSE);
     expect(out).not.toContain("- 04) Be");
   });
+});
+
+/**
+ * A list numbered by the source — rule contract (`CLAUDE.md` §5).
+ *
+ * **Invariant.** The source's own numbering and nothing else: every item's text
+ * opens with an ordinal, one delimiter throughout, ascending. The token each
+ * item carries is written verbatim, because `Biography-Markup.md` §3.4 forbids
+ * replacing explicit source numbers — a run that skips would otherwise be
+ * silently renumbered by `start + index`.
+ *
+ * **Recurrence** is the run: three items minimum, so a pair that happens to
+ * open `1.` and `2.` is not a numbering.
+ *
+ * **False friends**, each tested for non-firing: a list no item numbers; a list
+ * only some items number; a mixed `.`/`)` run, which Markdown reads as two
+ * lists; and a numbered list abutting a numbered list, which Markdown reads as
+ * one.
+ */
+describe("a list the source numbered itself", () => {
+  const TRACKS = "01. Speak softly love<br>02. I just called to say I love you<br>03. Moscow nights";
+
+  it("writes the source's numbers as the markers, unescaped and unbulleted", async () => {
+    const out = await md(PROSE + `<p class="t">${TRACKS}</p>` + PROSE);
+    expect(out).toMatch(/^01\. Speak softly love\n02\. I just called to say I love you\n03\. Moscow nights$/mu);
+    expect(out).not.toMatch(/^- 0/mu);
+    expect(out).not.toContain("\\.");
+  });
+
+  it("drops the padding, and records it, under a profile that cannot keep it", async () => {
+    // `01.` is an ordinary ordered list a renderer MAY display unpadded
+    // (`Biography-Markup.md` §3.4), and `PROFILE_RENDERER_CURRENT` is the one
+    // that cannot. The *numbers* still come from the source; only the width goes.
+    const result = await convert(Buffer.from(page(`<p class="t">${TRACKS}</p>`), "utf8"), {
+      profile: resolveProfile("renderer-current"),
+    });
+    expect(result.markdown).toMatch(/^1\. Speak softly love$/mu);
+    expect(result.markdown).toMatch(/^3\. Moscow nights$/mu);
+    // `resolveListMarkerPadding` records the loss, and this is only asserted on
+    // the output because `recoverStructure`'s `downgrades` never reach
+    // `ConvertResult` — a pre-existing gap it shares with the `<ol start="01">`
+    // path that has always fed the same recorder.
+  });
+
+  it("keeps a run that does not start at one on its own numbers", async () => {
+    // `goya2`'s right-hand column opens at 13. Renumbering it from `start`
+    // would be exactly the rewrite §3.4 forbids.
+    const out = await md(PROSE + '<p class="t">13. Et Maintenant<br>14. Green Fields<br>15. Malagueña</p>' + PROSE);
+    expect(out).toMatch(/^13\. Et Maintenant$/mu);
+    expect(out).toMatch(/^15\. Malagueña$/mu);
+  });
+
+  it("false friend: a list the source did not number keeps its bullets", async () => {
+    const bulleted =
+      '<p class="t">• Первый пункт</p><p class="t">• Второй пункт</p><p class="t">• Третий пункт</p>';
+    const out = await md(PROSE + bulleted + PROSE);
+    expect(out).toMatch(/^- Первый пункт$/mu);
+  });
+
+  it("false friend: a run whose numbering the source left incomplete is not completed", async () => {
+    // Half a numbering is not a numbering, and inventing the rest would be
+    // §16.3 fabrication. `enumeratedItems` already declines to build the list;
+    // what matters here is that nothing downstream numbers it either.
+    const out = await md(PROSE + '<p class="t">01. Speak softly love<br>Moscow nights<br>03. Melodia</p>' + PROSE);
+    expect(out).not.toMatch(/^02\./mu);
+    expect(out).not.toMatch(/^- Moscow nights$/mu);
+  });
+});
+
+describe("more list false friends", () => {
 
   it("leaves a uniformly indented letter alone — nothing to be subordinate to", async () => {
     // `pavlov_azancheev`: every line indented alike, no unindented lead-in.
@@ -2715,7 +2789,7 @@ describe("a dot leader is the column it was drawing", () => {
         "</p></blockquote>" +
         PROSE,
     );
-    expect(out).toMatch(/^- 01\\?\. Speak softly love$/mu);
+    expect(out).toMatch(/^01\. Speak softly love$/mu);
     expect(out).not.toContain("| - |");
   });
 });
