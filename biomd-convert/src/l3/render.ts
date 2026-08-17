@@ -191,7 +191,11 @@ function renderParagraphLines(lines: readonly string[], hardBreaks: readonly boo
  */
 function renderList(block: ListBlock, ctx: Ctx, path: string): string {
   const tag = block.ordered ? "ol" : "ul";
-  const out: string[] = [`<${tag}${attrs(block, path)}>`];
+  // A list that opens at 13 renders 13, 14, 15. Dropping the start made both
+  // sides count from one, which hid a numbering difference rather than
+  // reporting it — and `goya2`'s right-hand track columns all open past one.
+  const from = block.ordered && block.start !== undefined && block.start !== 1 ? ` start="${block.start}"` : "";
+  const out: string[] = [`<${tag}${from}${attrs(block, path)}>`];
   let depth = 0;
   block.items.forEach((item, i) => {
     const target = Math.max(0, item.depth);

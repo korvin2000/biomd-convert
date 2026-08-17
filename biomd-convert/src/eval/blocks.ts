@@ -85,6 +85,15 @@ export interface ListItem {
 export interface ListBlock extends BlockBase {
   kind: "list";
   ordered: boolean;
+  /**
+   * The number the first item announces, for an ordered list.
+   *
+   * CommonMark takes it from the first marker and numbers the rest from there,
+   * so a column the source opens at `13.` renders 13, 14, 15 — and a reader
+   * comparing two documents sees different numbers when this is dropped.
+   * Undefined for an unordered list, and 1 when the list opens at 1.
+   */
+  start?: number;
   items: ListItem[];
 }
 
@@ -288,7 +297,17 @@ export function parseMarkdown(value: string, originLine: number): Block[] {
         items.push({ depth: Math.floor(indent / 2), inline: inlineOf(m[3] as string), line: at(i) });
         i += 1;
       }
-      out.push({ kind: "list", ordered, items, line: at(start) });
+      // CommonMark reads the start off the *first* marker and ignores every
+      // later one, including its padding: `01.` is a list starting at 1.
+      const first = ordered ? ORDERED.exec(raw) : null;
+      const startNumber = first ? Number.parseInt(first[2] as string, 10) : undefined;
+      out.push({
+        kind: "list",
+        ordered,
+        ...(startNumber === undefined ? {} : { start: startNumber }),
+        items,
+        line: at(start),
+      });
       continue;
     }
 
