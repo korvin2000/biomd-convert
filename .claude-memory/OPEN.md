@@ -3,8 +3,32 @@
 **The volatile file.** Everything here changes every iteration; update it after each accepted change
 and do not let it accumulate history -- history belongs in `CONVERTER-PROGRESS.md`.
 
-Last touched **2026-08-17**, after PROGRESS §61.
+Last touched **2026-08-17**, after PROGRESS §62.
 Facts marked *measured* were taken then; facts marked *recorded* are quoted and not re-measured.
+
+> **§62 landed `analyze/analyze-4.md`'s three items, one commit each.**
+> A block the source set **below a floated figure** now starts on a new line
+> (`6c7d028`) — two rectangles on the same rendered page, no threshold. A list
+> the source **numbered itself** is numbered by those numbers (`2cec605`) —
+> `Biography-Markup.md` §3.4 had asked for it all along, and the author's
+> *"игнорируй reference файлы"* covers the cost. A **legend of footnote marks**
+> is no longer a `text.list` question (`7067740`), 113 → 112 escalation points,
+> all 28 outputs byte-identical.
+>
+> **L2 161 → 549 and L3 14 → 19, and 388 + 5 of that is `goya2` alone** — the
+> reference writes `- 04\. Nostalgia` where the source wrote `04. Nostalgia`.
+> Priority 6, instructed, and **not** a case for `reference-silent.ts`: the
+> references are not silent about ordered lists, they chose another
+> representation. **Strip `goya2` and the ledger is where §61 left it**:
+> 149 / 114 / 1 critical / 21 major.
+>
+> **Two rungs failed to see the work.** L3 measures one viewport and the
+> author's own defect is invisible at 1024 px — the browser at 620 px moved the
+> paragraph's first line from x=165 to x=16, and L3 said nothing either way.
+> And `plainTextOf` stripped ordered markers as syntax, which cost `goya2`
+> 98.6 % → 25.6 % recall with **nothing missing from the output**; fixed and
+> declared under invariant 2, along with `blocks.ts` never parsing a list's
+> `start` (`54c4a67`).
 
 > **§61 retracted §60.4 on the author's instruction and replaced it with the source.**
 > *"Don't try to guess align, but rather determine it based on the HTML layout and
@@ -46,14 +70,21 @@ stacked `##` are now `***bold italic***`. The holdout (`fixtures/html2/` + `out2
 outside every rung and stays spent. `fixtures/gen_corpus/` is gone; do not reach for the
 946 pages.
 
-**Current state — all four rungs *measured* 2026-08-17 after §61, LLM-off:**
+**Current state — all four rungs *measured* 2026-08-17 after §62, LLM-off:**
 
 | rung | value |
 |---|---|
-| L0 | **998 tests**, typecheck clean, 0 FAILED, `--replay` byte-identical |
+| L0 | **1010 tests**, typecheck clean, 0 FAILED, `--replay` byte-identical, validator 0 errors |
 | L1 | **99.7 %** over the 28 |
-| L2 | **161 findings — 114 converter-defect** · 12 ambiguous · 35 reference-inconsistency · **1 critical** · 27 major |
-| L3 | **14** over 28 documents, 0 critical |
+| L2 | **549 findings — 502 converter-defect** · 12 ambiguous · 35 reference-inconsistency · **65 critical** · 27 major |
+| L3 | **19** over 28 documents |
+| escalation points | **112** |
+
+> **Read that L2 row with `goya2` stripped out.** 400 of the 549 are one
+> document and one instructed divergence (§62.2), and 64 of the 65 criticals are
+> `list.item.content` reporting a short item's changed prefix as critical — the
+> same disproportionate-severity shape as §5.0aa. Without `goya2`:
+> **149 / 114 / 1 critical / 21 major**, which is exactly §61's ledger.
 
 With `--hooks text.label` on a self-hosted `gemma4-31b-local`: 113 escalation points,
 6 model calls, 2 resolved, 4 refused (**all "the line reads as SENTENCE"** — the
@@ -87,7 +118,24 @@ is the LLM-off column.**
   a shout or a section-opening word; abstains on the terms prose shares.
 - **`text.label`, the fourth decision point and plugin, shipped disabled** (`f9d36d2`).
 
+**Landed in §62, one commit each.**
+- **A block the source set below a floated figure does not stand beside it**
+  (`6c7d028`). Named false friend, and it is the common case: 13 of the 28
+  sources' 14 floats are bare pictures the prose wraps, and without the test
+  11 of 15 lane closes land mid-paragraph.
+- **A list the source numbered itself keeps its own numbers** (`2cec605`), plus
+  the `plainTextOf` correction that made the conservation gate stop reading a
+  marker as syntax.
+- **A legend of footnote marks leaves the escalation queue** (`7067740`).
+- **`blocks.ts` and `l3/render.ts` learn a list's `start`** (`54c4a67`),
+  isolated instrument step, conversion output byte-identical.
+
 **Next, in order. Probe before committing (SKILL §6).**
+-1. **Two instrument-truthfulness items §62 added, and they belong with §3's
+   batch, not before it.** L3 measures **one viewport** and the defect the author
+   reported in `analyze-4.md` is invisible at 1024 px (§5.7 is no longer a
+   theoretical debt). And `list.item.content` reports `critical` for a short
+   item whose prefix changed — 64 of 65 criticals.
 0. **One question for the author, and it is the only thing §61 left open.**
    **No reference writes `:-:` anywhere** — 14 references with tables, 2 that align
    at all, both writing only `--:`. `TODO_Rules.md` §2's vocabulary lists `-`, `--:`

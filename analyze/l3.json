@@ -33,10 +33,20 @@
     ]
   },
   "totals": {
-    "findings": 14,
+    "findings": 19,
     "alignmentRows": 243
   },
   "classes": [
+    {
+      "class": "layout.lane.mismatch",
+      "instances": 2,
+      "documents": 1
+    },
+    {
+      "class": "layout.order.mismatch",
+      "instances": 3,
+      "documents": 1
+    },
     {
       "class": "layout.align.mismatch",
       "instances": 5,
@@ -49,6 +59,91 @@
     }
   ],
   "findings": [
+    {
+      "id": "b37cf6f5",
+      "doc": "goya2",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[18]/column[1]/list[0]/item[8]",
+      "producedLine": 330,
+      "referenceLine": 330,
+      "produced": "Twinklin' Twilight",
+      "reference": "18. Twinklin' Twilight",
+      "geometry": {
+        "producedLane": 19,
+        "referenceLane": 0
+      }
+    },
+    {
+      "id": "0ca1f1e2",
+      "doc": "goya2",
+      "class": "layout.lane.mismatch",
+      "severity": "major",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[34]/column[1]/list[0]/item[10]",
+      "producedLine": 577,
+      "referenceLine": 579,
+      "produced": "Woman In Love 3.58",
+      "reference": "21. Woman In Love 3.58",
+      "geometry": {
+        "producedLane": 0,
+        "referenceLane": 22
+      }
+    },
+    {
+      "id": "0913d68d",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[30]/column[1]/list[0]/item[2]",
+      "producedLine": 506,
+      "referenceLine": 508,
+      "produced": "Zorba`s dance",
+      "reference": "11. Zorba`s dance",
+      "geometry": {
+        "producedRank": 154,
+        "referenceRank": 153
+      }
+    },
+    {
+      "id": "964181b1",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[30]/column[1]/list[0]/item[4]",
+      "producedLine": 508,
+      "referenceLine": 510,
+      "produced": "Sleepy Shores",
+      "reference": "13. Sleepy Shores",
+      "geometry": {
+        "producedRank": 157,
+        "referenceRank": 156
+      }
+    },
+    {
+      "id": "0dd8cebd",
+      "doc": "goya2",
+      "class": "layout.order.mismatch",
+      "severity": "critical",
+      "evidence": "structure",
+      "op": "move",
+      "path": "/columns[30]/column[1]/list[0]/item[6]",
+      "producedLine": 510,
+      "referenceLine": 512,
+      "produced": "Are You Lonesome Tonight",
+      "reference": "15. Are You Lonesome Tonight",
+      "geometry": {
+        "producedRank": 160,
+        "referenceRank": 159
+      }
+    },
     {
       "id": "29132624",
       "doc": "new_karta",
@@ -2739,8 +2834,8 @@
     },
     {
       "doc": "segovia",
-      "producedLine": 133,
-      "referenceLine": 138,
+      "producedLine": 135,
+      "referenceLine": 139,
       "text": "",
       "producedAlignment": "center",
       "referenceAlignment": "center",

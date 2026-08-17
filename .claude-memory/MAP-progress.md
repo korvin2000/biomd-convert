@@ -324,3 +324,9 @@ the first movement since: **L2 310 → 316 with converter-defect flat at 199** �
 | `### 61.2` | | L0 998 · L1 99.7 · L2 161/114/1/27 · L3 14. Whole delta is `table.align` 48 → 75, priority 6; non-alignment 87 → 86 |
 | `### 61.3` | | **Open for the author:** no reference writes `:-:` anywhere, though the source states centre and the spec admits it |
 | `### 61.4` | | Two author edits found in the tree: `williams2` loses `Em\*\*` (**closes §56.5**); `TODO_Rules.md` §1/§3 restated, both already implemented |
+| `## 62` | 8119 | **`analyze/analyze-4.md`'s three items, one commit each**, plus one isolated instrument step |
+| `### 62.1` | 8130 | A block the source set **below a floated figure** starts on a new line (`---`). Two rectangles, no threshold. False friend is the common case: 13 bare floats vs 1 boxed figure; without it 11 of 15 lane closes land mid-prose. **L3 at 1024 px sees nothing; the browser at 620 px moved the first line x=165 → x=16** |
+| `### 62.2` | 8167 | A list the source **numbered itself** keeps its own tokens (`data.biomdMarker`). `Biography-Markup.md` §3.4 forbids renumbering from `start`. **L2 161 → 549, all `goya2`, instructed.** `plainTextOf` stopped stripping ordered markers — they cost `goya2` 98.6 % → 25.6 % recall with nothing missing |
+| `### 62.3` | 8207 | A **legend of footnote marks** leaves the `text.list` queue. `FOOTNOTE_MARKS`/`opensWithFootnoteMark` in `glyphs.ts`. 113 → 112 points, all 28 byte-identical |
+| `### 62.4` | 8224 | `blocks.ts`/`l3/render.ts` learn a list's `start`. It **hid** a numbering difference; `goya2` opens columns at 13, 26, 10, 9 |
+| `### 62.5` | 8233 | L0 1010 · L1 99.7 · L2 549/502/65/27 · L3 19 · 112 points. **Strip `goya2`: 149/114/1/21**, i.e. §61's ledger |

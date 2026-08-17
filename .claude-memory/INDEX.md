@@ -40,18 +40,24 @@ earlier count ("22", "27", "28 / 26") is superseded. The author added the `xtra_
 > is outside the conservation and validator gate -- it costs nothing and proves nothing until it is
 > measured deliberately.
 
-**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §61** retracted
-§60.4 on the author's instruction and replaced the guess with the source. Table
-column alignment is now read from the HTML -- measured `text-align` first, stated
-attribute as fallback, walked cell → row → row group and **stopping below
-`<table>`** -- folded per column, unanimous over populated body cells, with a
-band several cells were joined into carrying none.
-Current floor, LLM-off: L0 **998 tests**, 0 FAILED, conservation ok, replay
-byte-identical, L1 **99.7**, L2 **161 · 114 defect · 1 critical · 27 major**,
-L3 **14 over 28**.
+**Next action** -- see [OPEN.md](OPEN.md) §1. In short: **PROGRESS §62** landed
+`analyze/analyze-4.md`'s three items -- a block the source set below a floated
+figure now starts on a new line; a list the source numbered itself keeps its own
+numbers as markers; a legend of footnote marks is no longer a `text.list`
+question.
+Current floor, LLM-off: L0 **1010 tests**, 0 FAILED, conservation ok, validator
+0 errors, replay byte-identical, L1 **99.7**, L2 **549 · 502 defect · 65
+critical · 27 major**, L3 **19 over 28**, **112** escalation points.
+**Read that L2 number with `goya2` stripped out.** 400 of the 549 and 64 of the
+65 criticals are one document and one *instructed* divergence (§62.2) -- the
+reference writes `- 04\. Nostalgia` where the source wrote `04. Nostalgia`, and
+the author said to ignore the references there. Without it: **149 · 114 · 1 ·
+21**, which is §61's ledger unchanged.
 **`table.align` is 75 over 13 documents and none of it is work** -- every emitted
 alignment is attested by the source; these are references that write something else.
-Strip it before ranking anything.
+Strip it too before ranking anything.
+**§62.1 is the first measured cost of L3's single viewport** (§5.7): the defect
+the author reported is invisible at 1024 px and obvious at 620 px.
 **The lesson of §61 is that a permission was read as an instruction.**
 `TODO_Rules.md` §2 says the later columns *"могут"* be right-aligned -- **may**, not
 must -- and §60.4 turned that into "always", across twelve references that disagreed.

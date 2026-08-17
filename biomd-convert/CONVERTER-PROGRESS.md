@@ -8115,3 +8115,137 @@ rule is one predicate away from either reading.
 - **`analyze/TODO_Rules.md` §1's threshold is restated** as `> 3 (>=4)`, which is the threshold §60.5
   already implements, and §3 gains three further pager shapes -- all of which `8feb967` already
   covers, since it keys on a strip of nothing but targets rather than on a glyph list.
+
+## 62 -- three things the author wrote down, and the gate that had to move (2026-08-17)
+
+`analyze/analyze-4.md` is a new rung-1 document with three items. All three landed, one commit each,
+plus one isolated instrument step. Everything below is **LLM-off**.
+
+**Baseline before attribution**, re-measured at `8642a8c` *after* the author's working-tree edits
+(`fixtures/out/segovia.bio.md` gains a `---`; `fixtures/out/williams2.bio.md` loses `Em\*\*`):
+**L0 998 tests, L1 99.7, L2 162 / 115 defect / 1 critical / 27 major, L3 14 over 28.** The reference
+edits alone moved L2 161 -> 162 with no code change -- `segovia`'s new separator became a
+`break.missing` against the converter.
+
+### 62.1 A block the source set below a figure does not stand beside it (`6c7d028`)
+
+`segovia`'s bold "Сборник материалов" paragraph opens at full width in the source (`snapshot_10`) and
+inside the floated figure's lane in the target (`snapshot_10b`). The author asks for it to start on a
+new line and names `---` as the means; `hr` is the one construct in this target that carries
+`clear: both`.
+
+**The evidence is two rectangles on the same rendered page.** `blockSource` records each block's
+source node at the point of emission, the way `blockAlign` records alignment; a sibling whose top is
+above the figure's bottom stood beside it, and the first one at or below it is on a new line. No
+threshold -- the comparison is between two measurements of the same page.
+
+**Two things this cost, and both are the record worth keeping.**
+
+- **Placed early, it split a construct.** Inserted before the grouping passes, the separator landed
+  inside `segovia`'s spanned quotation and destroyed it -- structure (priority 3) traded for layout
+  (priority 4), which the order forbids outright. `clearFloatLanes` runs **after** `bindCaptions`,
+  and `carryBlockBox` moves the record onto a figure the caption binder rebuilt.
+- **The false friend is the common case.** Without a test for it, 15 lanes close in this corpus and
+  **11 of them close inside prose that is still running** -- `kiselev`'s 605 px past the bottom of its
+  portrait is the clearest, and the ratio of gap to figure height is a **continuum** (0.02, 0.09,
+  0.11, 0.31, 0.46 ... 2.41, 3.34, 3.77) with no cliff anywhere in it. The discriminator is not a
+  threshold on that continuum but a role: a float that carries **words of its own** is a container the
+  author built around a picture and its caption, and where it ends is a boundary they placed. A float
+  that carries no text is the picture itself, and where the prose stops wrapping it is an accident of
+  line breaking in the source exactly as in the target. **The 28 sources float 13 bare pictures and
+  one boxed figure.**
+
+**Measured:** 27 of 28 byte-identical. L0 998 -> 1003 · L1 99.7 unchanged · L2 162 / 115 / 1 / 27 ->
+**161 / 114 / 1 / 27** (`break.missing` 5 -> 4, `segovia` 11 / 8 -> 10 / 7) · L3 14 unchanged.
+
+**Browser, and this is the part L3 could not supply.** At 1024 px neither side shows the overlap, so
+the rung that exists to adjudicate rendering says nothing. Rendered at the author's proportions
+(620 px column, tall figure) the paragraph's first line moves from **x=165**, right of a picture
+ending at x=145, to **x=16**. That is `OPEN §5.7`'s one-viewport debt showing its cost for the first
+time: a real rendering defect that is invisible at the only width L3 measures.
+
+### 62.2 A list the source numbered itself is numbered by those numbers (`2cec605`)
+
+`- 01\. (Everything I Do) I Do It For You` states its number twice and escapes the stop only to stop
+Markdown reading the second one as what it is. The author asks for `01. ...` and adds *"игнорируй
+reference файлы. там это неправильно сделано"*.
+
+**`Biography-Markup.md` §3.4 had already said so** -- numbering when the source supplies numbers, a
+leading-zero marker preserved when the source shows one, and **"MUST NOT replace explicit source
+numbers with repeated `1.` markers"**. That last clause is why each item keeps its own token instead
+of being renumbered from `start`: `enumeratedItems` accepts an ascending run, not a contiguous one.
+The token rides on the item as `data.biomdMarker`; `serialize.ts`'s `listItem` handler hands it to
+the default handler through `state.bulletCurrent`, presenting the parent as unordered for that one
+call so it does not prefix its own count.
+
+**Three refusals, each with a contract:** a run only some of whose items number (completing it would
+be §16.3 fabrication); a mixed `.`/`)` run, which Markdown reads as two lists; and a numbered list
+**abutting** a numbered list, which Markdown reads as **one** -- the second run's `01.` renumbered
+`04.`, a visible numbering change, so it keeps the bullet form it has today.
+
+**One instrument change, declared under invariant 2.** `plainTextOf` stripped ordered-list markers as
+syntax. They are not syntax: a number is a word the reader sees, and now routinely one the source
+wrote. Left stripped, `goya2`'s text recall fell **98.6 % -> 25.6 % with nothing missing from the
+output at all** -- the sharpest false alarm the conservation gate has produced in this campaign, and
+the mirror image of §5.0aaaa's blind spot. Bullets are still stripped; those the converter chose.
+Recall counts *source* shingles found, so an output number with no source counterpart is unscored and
+cannot mask a loss.
+
+**Measured:** 26 of 28 byte-identical. L0 1003 -> 1008 · conservation unchanged (`goya2` 98.63 % both
+sides; 6 complete / 22 review / 0 failed) · validator **0 errors over all 28** · L1 99.7 overall and
+`goya2` **100.0**, because `score.ts` is blind to list type and to markers · L2 161 -> **549**, all of
+it `goya2` 0 -> 400 · L3 14 -> **19**, all `goya2`.
+
+**The L2 cost is stated, not hidden.** 64 `list.item.content` (the class reports `critical` for a
+one-word item losing `04. `), 291 `list.item.content.edited`, 33 `list.type`. Every instance is the
+reference writing `- 04\. Nostalgia` where the source wrote `04. Nostalgia` -- priority 6, instructed.
+`reference-silent.ts` does **not** apply and was not extended: the references are not silent about
+ordered lists (`segovia` writes one), they chose a different representation, and that is a divergence
+rather than a silence. The five new L3 findings are rank and pairing shifts from the same divergence
+(`OPEN §5.6b`).
+
+### 62.3 A legend of footnote marks is not a question for the classifier (`7067740`)
+
+`text.list` narrowed on the author's instruction: a run whose every line opens with `*`, `**` or
+`***` must not be asked about. `borislova` is the case -- its works catalogue cites `Soneto (para dos
+guitarras) ***` and, three lines below, `*** CD 1999 ...` says which record that is. As list items the
+marks would read as bullets.
+
+The refusal is **compiler-side**, in `breakRunCandidateOf`, whose own contract is "spend nothing on
+runs whose answer is already known" -- and this answer comes from the source, not from cost.
+`FOOTNOTE_MARKS` / `opensWithFootnoteMark` are lexical data in `glyphs.ts` under invariant 5, where
+`RULE_GLYPHS` already said *"one `*` is a footnote marker"*. One repeated mark, then whitespace, then
+the note: the whitespace is the whole discriminator against emphasis, and `isDrawnRule` is asked
+first because `* * *` also opens with a mark.
+
+**Measured: all 28 outputs byte-identical** -- the hook is disabled and this only removes a question.
+Escalation points **113 -> 112**. L0 1008 -> 1010.
+
+### 62.4 An ordered list starts where it says it starts (`54c4a67`)
+
+Isolated instrument step. `blocks.ts` parsed an ordered list's items and dropped the number the first
+one announces, so `l3/render.ts` wrote a bare `<ol>` and both sides counted from one. That does not
+lose detail, it **hides a numbering difference** -- `goya2`'s right-hand track columns open at 13, 26,
+10 and 9 and L3 drew all of them as 1, 2, 3. Found only because §62.2 gave the produced side starts to
+carry. The start comes off the first marker and ignores later ones and padding, as CommonMark does.
+Conversion output byte-identical; L2 549 and L3 19 unchanged in aggregate.
+
+### 62.5 State at the end of §62
+
+| rung | before §62 (after the author's reference edits) | after §62 |
+|---|---|---|
+| L0 | 998 tests, 0 FAILED | **1010**, typecheck clean, 0 FAILED, `--replay` byte-identical |
+| L1 | 99.7 | **99.7** |
+| L2 | 162 / 115 / 1 crit / 27 maj | **549 / 502 / 65 / 27** -- 388 of the delta is `goya2`, instructed |
+| L3 | 14 | **19** -- 5 of the delta is `goya2`, the same divergence |
+| escalation points | 113 | **112** |
+| conservation | 6 complete / 22 review / 0 failed | unchanged |
+
+**Strip `goya2` and the ledger is where §61 left it**: 149 findings / 114 converter-defects / 1
+critical / 21 major, `table.align` still the largest class at 75 over 13 documents and still not work.
+
+**Two debts this section adds, both about the rung that adjudicates rendering.** L3 measures one
+viewport and the one defect the author reported is invisible at it (§62.1). And L2's
+`list.item.content` calls a short item's changed prefix `critical`, which is the same
+disproportionate-severity shape as §5.0aa's `paragraph.content` -- 64 of the corpus's 65 criticals are
+now this one class on one document.
