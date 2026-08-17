@@ -158,6 +158,51 @@ export const RULE_GLYPHS = new Set([
  * A deliberate subset of `RULE_GLYPHS`: a dash or an em dash opens a line of
  * dialogue far more often than an item in this corpus, and `*` opens emphasis.
  */
+/**
+ * Marks this era keyed a note to the passage that cites it.
+ *
+ * A printer's reference mark: the text carries `Soneto (para dos guitarras)
+ * ***` and, further down, a line opening `*** CD 1999 …` that says what the
+ * three stars stood for. The mark is a *pointer back*, not an item marker, and
+ * {@link RULE_GLYPHS}'s note above already draws the distinction — "one `*` is
+ * a footnote marker".
+ *
+ * Lexical data, not detector literals: a mark that is not listed leaves its
+ * line exactly as it is today. Deliberately disjoint from {@link LIST_BULLETS};
+ * the two vocabularies answer opposite questions, and `*` belongs to this one
+ * because it is also emphasis, which is why no list rule ever claimed it.
+ */
+export const FOOTNOTE_MARKS = new Set([
+  "*", // asterisk — the only one this corpus uses, and it uses it repeated
+  "†", // † dagger
+  "‡", // ‡ double dagger
+  "§", // § section sign
+]);
+
+/**
+ * Whether a line opens with a footnote mark keying it to something else.
+ *
+ * Pure and exported so the contract can be tested on the text alone. One mark
+ * repeated, then whitespace, then the note. The whitespace is what separates a
+ * key from emphasis — `*Артур Рубинштейн*` opens with the same character and is
+ * a word — and requiring something after the run is what leaves `* * *` to
+ * {@link isDrawnRule}, whose whole line is marks.
+ */
+export function opensWithFootnoteMark(text: string): boolean {
+  // `* * *` opens with a mark and continues past it, and it is a division
+  // rather than a key. The dinkus is asked about first because its own rule is
+  // the stricter one — the whole line, and nothing else in the block.
+  if (isDrawnRule(text)) return false;
+  const chars = [...text.trimStart()];
+  const first = chars[0];
+  if (first === undefined || !FOOTNOTE_MARKS.has(first)) return false;
+  let i = 0;
+  while (i < chars.length && chars[i] === first) i += 1;
+  const rest = chars.slice(i).join("");
+  if (rest.trim() === "") return false;
+  return /^[\s ]/u.test(rest);
+}
+
 export const LIST_BULLETS = new Set([
   "•", // • bullet
   "·", // · middle dot

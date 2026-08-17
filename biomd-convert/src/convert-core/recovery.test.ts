@@ -19,7 +19,7 @@ import {
 import type { Classification } from "./classify.js";
 import { type DecisionResolver, emptyStats } from "./resolver.js";
 import { groupIsLineated, isWrapBreak, liftBreaks, splitLines } from "./lines.js";
-import { iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import { iconGlyphFor, isDrawnRule, opensWithFootnoteMark } from "./glyphs.js";
 import { groupColumnsFor, isDecorative, isUiIcon, sizeTokenFor } from "./media.js";
 import { paletteFor } from "./frames.js";
 import { parseHtml } from "../ladom/parse.js";
@@ -700,6 +700,55 @@ describe("outline", () => {
     const out = await md(`${PROSE}<p align="center">* * *</p>${PROSE}`);
     expect(out).toMatch(/^(-{3,}|\*{3,})$/mu);
     expect(out).not.toContain("\\* \\* \\*");
+  });
+
+  /**
+   * A footnote mark is a pointer, not a bullet — rule contract (`CLAUDE.md` §5).
+   *
+   * **Invariant.** One mark repeated, then whitespace, then the note. The
+   * whitespace is the whole discriminator against emphasis, which opens with
+   * the same character and continues into a word; requiring something after the
+   * run leaves a line of nothing but marks to {@link isDrawnRule}.
+   *
+   * **Recurrence** is required by the *caller*, not here: what makes a run a
+   * legend is that **every** line of it is keyed. This predicate answers about
+   * one line, which is what lets a single keyed line inside a run stay a note
+   * attached to one entry.
+   *
+   * **False friends**, all of them real lines in this corpus: emphasis, a
+   * drawn rule, and a bulleted label whose mark belongs to `LIST_BULLETS`.
+   */
+  it("tells a footnote mark from the emphasis that opens the same way", () => {
+    expect(opensWithFootnoteMark("* CD 1995 Надя Борислова")).toBe(true);
+    expect(opensWithFootnoteMark("*** CD 1999 В одной женственной ночи")).toBe(true);
+    expect(opensWithFootnoteMark("† Запись 1962 года")).toBe(true);
+    expect(opensWithFootnoteMark("*Артур Рубинштейн*, пианист")).toBe(false); // emphasis
+    expect(opensWithFootnoteMark("* * *")).toBe(false); // a drawn rule
+    expect(opensWithFootnoteMark("• Из письма А.Максимова")).toBe(false); // a bulleted label
+    expect(opensWithFootnoteMark("Soneto (para dos guitarras) ***")).toBe(false); // the citation
+  });
+
+  it("does not ask what a legend of footnote marks is — the run is already decided", async () => {
+    // `borislova`: three lines keying `*`, `**` and `***` to the records its
+    // works catalogue cites. As list items they would read a pointer as a
+    // bullet. `analyze-4.md` names the shape; the run leaves the escalation
+    // queue rather than being answered wrongly.
+    const legend =
+      '<p class="t">* CD 1995 Надя Борислова (Nadia Borislova)<br>' +
+      "** CD 1999 Океанский поезд (El Tren Oceanico),<br>" +
+      "*** CD 1999 В одной женственной ночи (En una Noche Femenina)</p>";
+    // The citation the legend keys back to: the same three lines, but with the
+    // marks at the *end*, which is a run the gate must still ask about. The two
+    // are converted side by side because `resolverStats` counts every decision
+    // point on the page, and only the difference between them isolates this one.
+    const cited =
+      '<p class="t">Espejismo (para clarinete y guitarra) *<br>' +
+      "Allegro (Dedicada a Hector Azar) **<br>" +
+      "Soneto (para dos guitarras) ***</p>";
+    const asLegend = await convert(Buffer.from(page(PROSE + legend + PROSE), "utf8"), { profile: SPEC });
+    const asCitation = await convert(Buffer.from(page(PROSE + cited + PROSE), "utf8"), { profile: SPEC });
+    expect(asLegend.markdown).toMatch(/^\\\* CD 1995 Надя Борислова/mu);
+    expect(asCitation.resolverStats.consulted).toBeGreaterThan(asLegend.resolverStats.consulted);
   });
 
   it("does not read a rule as introducing a byline set right of the column", async () => {

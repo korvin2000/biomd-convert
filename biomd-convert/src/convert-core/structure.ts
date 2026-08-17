@@ -50,7 +50,7 @@ import {
   leadingCaptionCell,
   planDataTable,
 } from "./data-table.js";
-import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule } from "./glyphs.js";
+import { LINK_GLYPH, LIST_BULLETS, RULE_GLYPHS, iconGlyphFor, isDrawnRule, opensWithFootnoteMark } from "./glyphs.js";
 import {
   LABEL_MAX_CHARS,
   LABEL_SCORE_THRESHOLD,
@@ -3648,6 +3648,18 @@ function breakRunCandidateOf(lines: readonly RunLine[], ctx: Ctx, lead?: string)
   if (new Set(lines.map((line) => line.indent)).size > 1) return null;
   const numbered = texts.filter((t) => opensWithOrdinal(t)).length;
   if (numbered > 0 && numbered < texts.length) return null;
+
+  // A run whose every line opens with a footnote mark is a legend, and the
+  // question is already answered. The marks key the lines to citations
+  // elsewhere on the page — `borislova` writes `Soneto (para dos guitarras)
+  // ***` in its works catalogue and, below it, `*** CD 1999 …` saying which
+  // record that is — so making items of them would read a pointer as a bullet
+  // and put a `- ` in front of a `*` that means something. `analyze-4.md` names
+  // this shape as one the hook must not be asked about.
+  //
+  // Every line, not some: a mark on one line of a run is a note attached to
+  // one entry, and the run around it is still whatever it was.
+  if (texts.every((t) => opensWithFootnoteMark(t))) return null;
 
   const trimmed = lead?.trim();
   return {
